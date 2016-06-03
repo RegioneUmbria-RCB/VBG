@@ -11,10 +11,10 @@ Il repository ha la seguente struttura
 Folder   |  Descrizione
 ---------|-------------
 [bin](./bin)|Questo folder contiente i file compilati o binari. 
-documenti|Questo folder contiene la parte documentale del progetto. Il folder è suddiviso in sub folders per contenere documenti tra loro omogenei. 
-screenshots|Questo folder contiene alcuni screenshots delle schermate principali del prodotto in modo da dare a chi legge un'idea immediata della UI del prodotto
-src|Questa folder contiente la parte del codice sorgente del prodotto. In questo folder vanno inseriti non solo il codice sorgente ma anche tutti gli scripts necessari alla creazione del database
-tools|Questo folder contiene tutti gli eseguibili dei prodotti necessari al corretto funzionamento dell'applicativo e alla sua compilazione (es. maven, ant, ecc.)
+[documenti](./documenti)|Questo folder contiene la parte documentale del progetto. Il folder è suddiviso in sub folders per contenere documenti tra loro omogenei. 
+[screenshots](./screenshots)|Questo folder contiene alcuni screenshots delle schermate principali del prodotto in modo da dare a chi legge un'idea immediata della UI del prodotto
+[src](./src)|Questa folder contiente la parte del codice sorgente del prodotto. In questo folder vanno inseriti non solo il codice sorgente ma anche tutti gli scripts necessari alla creazione del database
+[tools](./tools)|Questo folder contiene tutti gli eseguibili dei prodotti necessari al corretto funzionamento dell'applicativo e alla sua compilazione (es. maven, ant, ecc.)
 
 
 ##Ambiente di sviluppo##
