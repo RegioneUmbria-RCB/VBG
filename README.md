@@ -19,7 +19,7 @@ Folder   |  Descrizione
 
 ##Ambiente di sviluppo##
 In questa sezione vanno inserite tutte le informazioni relative all'ambiente di sviluppo utilizzato per il prodotto. 
-In particolare va indicato con chiarezza sia il nome e la versione dell'IDE utilizzata.
+In particolare va indicato con chiarezza sia il nome sia la versione dell'IDE utilizzata.
 
 ##Licenza##
 In questa sezione va inserita la parte relativa alla licenza con cui si intende distribuire il codice.
