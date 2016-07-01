@@ -1,7 +1,7 @@
-#Project name#
+#VBG (Virtual Business Gate)#
 
 ##Descrizione##
-Virtual Business Gate” è la piattaforma unica (front office e back office) per la gestione di servizi procedurali frutto
+"Virtual Business Gate" è la piattaforma unica (front office e back office) per la gestione di servizi procedurali frutto
 dell’integrazione completa fra lo Sportello Unico per le Attività Produttive (SUAP),il Commercio, lo Sportello Unico per l’Edilizia
 (SUE). Il Cittadino/Impresa, potrà interagire con il front- office di VBG sia attraverso il portale regionale sia accedendo
 direttamente allo Sportello Unico Integrato (SUI). Dalla pagina del SUI, selezionando il Comune di interesse, sarà possibile
