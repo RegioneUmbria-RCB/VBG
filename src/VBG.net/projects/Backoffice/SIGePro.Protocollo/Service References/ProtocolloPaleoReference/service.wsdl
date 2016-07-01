@@ -1,0 +1,442 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://paleo.regione.marche.it/services/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="PaleoService" targetNamespace="http://paleo.regione.marche.it/services/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="BasicHttpBinding_IPaleoService_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:TransportToken>
+              <wsp:Policy>
+                <sp:HttpsToken RequireClientCertificate="false" />
+              </wsp:Policy>
+            </sp:TransportToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256 />
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Lax />
+              </wsp:Policy>
+            </sp:Layout>
+            <sp:IncludeTimestamp />
+          </wsp:Policy>
+        </sp:TransportBinding>
+        <sp:SignedSupportingTokens xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:UsernameToken sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient">
+              <wsp:Policy>
+                <sp:WssUsernameToken10 />
+              </wsp:Policy>
+            </sp:UsernameToken>
+          </wsp:Policy>
+        </sp:SignedSupportingTokens>
+        <sp:Wss10 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:MustSupportRefKeyIdentifier />
+            <sp:MustSupportRefIssuerSerial />
+          </wsp:Policy>
+        </sp:Wss10>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://paleo.regione.marche.it/services/Imports">
+      <xsd:import schemaLocation="" namespace="http://paleo.regione.marche.it/services/" />
+      <xsd:import schemaLocation="" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IPaleoService_ProtocollazioneEntrata_InputMessage">
+    <wsdl:part name="parameters" element="tns:ProtocollazioneEntrata" />
+  </wsdl:message>
+  <wsdl:message name="IPaleoService_ProtocollazioneEntrata_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ProtocollazioneEntrataResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPaleoService_ProtocollazionePartenza_InputMessage">
+    <wsdl:part name="parameters" element="tns:ProtocollazionePartenza" />
+  </wsdl:message>
+  <wsdl:message name="IPaleoService_ProtocollazionePartenza_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ProtocollazionePartenzaResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPaleoService_ArchiviaDocumentoInterno_InputMessage">
+    <wsdl:part name="parameters" element="tns:ArchiviaDocumentoInterno" />
+  </wsdl:message>
+  <wsdl:message name="IPaleoService_ArchiviaDocumentoInterno_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ArchiviaDocumentoInternoResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPaleoService_CercaDocumentoProtocollo_InputMessage">
+    <wsdl:part name="parameters" element="tns:CercaDocumentoProtocollo" />
+  </wsdl:message>
+  <wsdl:message name="IPaleoService_CercaDocumentoProtocollo_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CercaDocumentoProtocolloResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPaleoService_GetOperatori_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetOperatori" />
+  </wsdl:message>
+  <wsdl:message name="IPaleoService_GetOperatori_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetOperatoriResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPaleoService_GetRagioniTrasmissione_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetRagioniTrasmissione" />
+  </wsdl:message>
+  <wsdl:message name="IPaleoService_GetRagioniTrasmissione_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetRagioniTrasmissioneResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPaleoService_GetRegistri_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetRegistri" />
+  </wsdl:message>
+  <wsdl:message name="IPaleoService_GetRegistri_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetRegistriResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPaleoService_GetTitolarioClassificazione_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetTitolarioClassificazione" />
+  </wsdl:message>
+  <wsdl:message name="IPaleoService_GetTitolarioClassificazione_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetTitolarioClassificazioneResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPaleoService_FindRubrica_InputMessage">
+    <wsdl:part name="parameters" element="tns:FindRubrica" />
+  </wsdl:message>
+  <wsdl:message name="IPaleoService_FindRubrica_OutputMessage">
+    <wsdl:part name="parameters" element="tns:FindRubricaResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPaleoService_FindRubricaExt_InputMessage">
+    <wsdl:part name="parameters" element="tns:FindRubricaExt" />
+  </wsdl:message>
+  <wsdl:message name="IPaleoService_FindRubricaExt_OutputMessage">
+    <wsdl:part name="parameters" element="tns:FindRubricaExtResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPaleoService_SaveVoceRubrica_InputMessage">
+    <wsdl:part name="parameters" element="tns:SaveVoceRubrica" />
+  </wsdl:message>
+  <wsdl:message name="IPaleoService_SaveVoceRubrica_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SaveVoceRubricaResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPaleoService_StampaRegistro_InputMessage">
+    <wsdl:part name="parameters" element="tns:StampaRegistro" />
+  </wsdl:message>
+  <wsdl:message name="IPaleoService_StampaRegistro_OutputMessage">
+    <wsdl:part name="parameters" element="tns:StampaRegistroResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPaleoService_ApriRegistro_InputMessage">
+    <wsdl:part name="parameters" element="tns:ApriRegistro" />
+  </wsdl:message>
+  <wsdl:message name="IPaleoService_ApriRegistro_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ApriRegistroResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPaleoService_ChiudiRegistro_InputMessage">
+    <wsdl:part name="parameters" element="tns:ChiudiRegistro" />
+  </wsdl:message>
+  <wsdl:message name="IPaleoService_ChiudiRegistro_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ChiudiRegistroResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPaleoService_ApriFascicolo_InputMessage">
+    <wsdl:part name="parameters" element="tns:ApriFascicolo" />
+  </wsdl:message>
+  <wsdl:message name="IPaleoService_ApriFascicolo_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ApriFascicoloResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPaleoService_ChiudiFascicolo_InputMessage">
+    <wsdl:part name="parameters" element="tns:ChiudiFascicolo" />
+  </wsdl:message>
+  <wsdl:message name="IPaleoService_ChiudiFascicolo_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ChiudiFascicoloResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPaleoService_GetTipiDatiFascicoli_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetTipiDatiFascicoli" />
+  </wsdl:message>
+  <wsdl:message name="IPaleoService_GetTipiDatiFascicoli_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetTipiDatiFascicoliResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPaleoService_GetSerieArchivisticheFascicoli_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetSerieArchivisticheFascicoli" />
+  </wsdl:message>
+  <wsdl:message name="IPaleoService_GetSerieArchivisticheFascicoli_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetSerieArchivisticheFascicoliResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPaleoService_GetScadenzaPassword_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetScadenzaPassword" />
+  </wsdl:message>
+  <wsdl:message name="IPaleoService_GetScadenzaPassword_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetScadenzaPasswordResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPaleoService_CambiaPassword_InputMessage">
+    <wsdl:part name="parameters" element="tns:CambiaPassword" />
+  </wsdl:message>
+  <wsdl:message name="IPaleoService_CambiaPassword_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CambiaPasswordResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IPaleoService">
+    <wsdl:operation name="ProtocollazioneEntrata">
+      <wsdl:input wsaw:Action="http://paleo.regione.marche.it/services/IPaleoService/ProtocollazioneEntrata" message="tns:IPaleoService_ProtocollazioneEntrata_InputMessage" />
+      <wsdl:output wsaw:Action="http://paleo.regione.marche.it/services/IPaleoService/ProtocollazioneEntrataResponse" message="tns:IPaleoService_ProtocollazioneEntrata_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ProtocollazionePartenza">
+      <wsdl:input wsaw:Action="http://paleo.regione.marche.it/services/IPaleoService/ProtocollazionePartenza" message="tns:IPaleoService_ProtocollazionePartenza_InputMessage" />
+      <wsdl:output wsaw:Action="http://paleo.regione.marche.it/services/IPaleoService/ProtocollazionePartenzaResponse" message="tns:IPaleoService_ProtocollazionePartenza_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ArchiviaDocumentoInterno">
+      <wsdl:input wsaw:Action="http://paleo.regione.marche.it/services/IPaleoService/ArchiviaDocumentoInterno" message="tns:IPaleoService_ArchiviaDocumentoInterno_InputMessage" />
+      <wsdl:output wsaw:Action="http://paleo.regione.marche.it/services/IPaleoService/ArchiviaDocumentoInternoResponse" message="tns:IPaleoService_ArchiviaDocumentoInterno_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CercaDocumentoProtocollo">
+      <wsdl:input wsaw:Action="http://paleo.regione.marche.it/services/IPaleoService/CercaDocumentoProtocollo" message="tns:IPaleoService_CercaDocumentoProtocollo_InputMessage" />
+      <wsdl:output wsaw:Action="http://paleo.regione.marche.it/services/IPaleoService/CercaDocumentoProtocolloResponse" message="tns:IPaleoService_CercaDocumentoProtocollo_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetOperatori">
+      <wsdl:input wsaw:Action="http://paleo.regione.marche.it/services/IPaleoService/GetOperatori" message="tns:IPaleoService_GetOperatori_InputMessage" />
+      <wsdl:output wsaw:Action="http://paleo.regione.marche.it/services/IPaleoService/GetOperatoriResponse" message="tns:IPaleoService_GetOperatori_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetRagioniTrasmissione">
+      <wsdl:input wsaw:Action="http://paleo.regione.marche.it/services/IPaleoService/GetRagioniTrasmissione" message="tns:IPaleoService_GetRagioniTrasmissione_InputMessage" />
+      <wsdl:output wsaw:Action="http://paleo.regione.marche.it/services/IPaleoService/GetRagioniTrasmissioneResponse" message="tns:IPaleoService_GetRagioniTrasmissione_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetRegistri">
+      <wsdl:input wsaw:Action="http://paleo.regione.marche.it/services/IPaleoService/GetRegistri" message="tns:IPaleoService_GetRegistri_InputMessage" />
+      <wsdl:output wsaw:Action="http://paleo.regione.marche.it/services/IPaleoService/GetRegistriResponse" message="tns:IPaleoService_GetRegistri_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTitolarioClassificazione">
+      <wsdl:input wsaw:Action="http://paleo.regione.marche.it/services/IPaleoService/GetTitolarioClassificazione" message="tns:IPaleoService_GetTitolarioClassificazione_InputMessage" />
+      <wsdl:output wsaw:Action="http://paleo.regione.marche.it/services/IPaleoService/GetTitolarioClassificazioneResponse" message="tns:IPaleoService_GetTitolarioClassificazione_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FindRubrica">
+      <wsdl:input wsaw:Action="http://paleo.regione.marche.it/services/IPaleoService/FindRubrica" message="tns:IPaleoService_FindRubrica_InputMessage" />
+      <wsdl:output wsaw:Action="http://paleo.regione.marche.it/services/IPaleoService/FindRubricaResponse" message="tns:IPaleoService_FindRubrica_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FindRubricaExt">
+      <wsdl:input wsaw:Action="http://paleo.regione.marche.it/services/IPaleoService/FindRubricaExt" message="tns:IPaleoService_FindRubricaExt_InputMessage" />
+      <wsdl:output wsaw:Action="http://paleo.regione.marche.it/services/IPaleoService/FindRubricaExtResponse" message="tns:IPaleoService_FindRubricaExt_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveVoceRubrica">
+      <wsdl:input wsaw:Action="http://paleo.regione.marche.it/services/IPaleoService/SaveVoceRubrica" message="tns:IPaleoService_SaveVoceRubrica_InputMessage" />
+      <wsdl:output wsaw:Action="http://paleo.regione.marche.it/services/IPaleoService/SaveVoceRubricaResponse" message="tns:IPaleoService_SaveVoceRubrica_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="StampaRegistro">
+      <wsdl:input wsaw:Action="http://paleo.regione.marche.it/services/IPaleoService/StampaRegistro" message="tns:IPaleoService_StampaRegistro_InputMessage" />
+      <wsdl:output wsaw:Action="http://paleo.regione.marche.it/services/IPaleoService/StampaRegistroResponse" message="tns:IPaleoService_StampaRegistro_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ApriRegistro">
+      <wsdl:input wsaw:Action="http://paleo.regione.marche.it/services/IPaleoService/ApriRegistro" message="tns:IPaleoService_ApriRegistro_InputMessage" />
+      <wsdl:output wsaw:Action="http://paleo.regione.marche.it/services/IPaleoService/ApriRegistroResponse" message="tns:IPaleoService_ApriRegistro_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ChiudiRegistro">
+      <wsdl:input wsaw:Action="http://paleo.regione.marche.it/services/IPaleoService/ChiudiRegistro" message="tns:IPaleoService_ChiudiRegistro_InputMessage" />
+      <wsdl:output wsaw:Action="http://paleo.regione.marche.it/services/IPaleoService/ChiudiRegistroResponse" message="tns:IPaleoService_ChiudiRegistro_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ApriFascicolo">
+      <wsdl:input wsaw:Action="http://paleo.regione.marche.it/services/IPaleoService/ApriFascicolo" message="tns:IPaleoService_ApriFascicolo_InputMessage" />
+      <wsdl:output wsaw:Action="http://paleo.regione.marche.it/services/IPaleoService/ApriFascicoloResponse" message="tns:IPaleoService_ApriFascicolo_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ChiudiFascicolo">
+      <wsdl:input wsaw:Action="http://paleo.regione.marche.it/services/IPaleoService/ChiudiFascicolo" message="tns:IPaleoService_ChiudiFascicolo_InputMessage" />
+      <wsdl:output wsaw:Action="http://paleo.regione.marche.it/services/IPaleoService/ChiudiFascicoloResponse" message="tns:IPaleoService_ChiudiFascicolo_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTipiDatiFascicoli">
+      <wsdl:input wsaw:Action="http://paleo.regione.marche.it/services/IPaleoService/GetTipiDatiFascicoli" message="tns:IPaleoService_GetTipiDatiFascicoli_InputMessage" />
+      <wsdl:output wsaw:Action="http://paleo.regione.marche.it/services/IPaleoService/GetTipiDatiFascicoliResponse" message="tns:IPaleoService_GetTipiDatiFascicoli_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSerieArchivisticheFascicoli">
+      <wsdl:input wsaw:Action="http://paleo.regione.marche.it/services/IPaleoService/GetSerieArchivisticheFascicoli" message="tns:IPaleoService_GetSerieArchivisticheFascicoli_InputMessage" />
+      <wsdl:output wsaw:Action="http://paleo.regione.marche.it/services/IPaleoService/GetSerieArchivisticheFascicoliResponse" message="tns:IPaleoService_GetSerieArchivisticheFascicoli_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetScadenzaPassword">
+      <wsdl:input wsaw:Action="http://paleo.regione.marche.it/services/IPaleoService/GetScadenzaPassword" message="tns:IPaleoService_GetScadenzaPassword_InputMessage" />
+      <wsdl:output wsaw:Action="http://paleo.regione.marche.it/services/IPaleoService/GetScadenzaPasswordResponse" message="tns:IPaleoService_GetScadenzaPassword_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CambiaPassword">
+      <wsdl:input wsaw:Action="http://paleo.regione.marche.it/services/IPaleoService/CambiaPassword" message="tns:IPaleoService_CambiaPassword_InputMessage" />
+      <wsdl:output wsaw:Action="http://paleo.regione.marche.it/services/IPaleoService/CambiaPasswordResponse" message="tns:IPaleoService_CambiaPassword_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IPaleoService" type="tns:IPaleoService">
+    <wsp:PolicyReference URI="#BasicHttpBinding_IPaleoService_policy" />
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ProtocollazioneEntrata">
+      <soap:operation soapAction="http://paleo.regione.marche.it/services/IPaleoService/ProtocollazioneEntrata" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProtocollazionePartenza">
+      <soap:operation soapAction="http://paleo.regione.marche.it/services/IPaleoService/ProtocollazionePartenza" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ArchiviaDocumentoInterno">
+      <soap:operation soapAction="http://paleo.regione.marche.it/services/IPaleoService/ArchiviaDocumentoInterno" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CercaDocumentoProtocollo">
+      <soap:operation soapAction="http://paleo.regione.marche.it/services/IPaleoService/CercaDocumentoProtocollo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetOperatori">
+      <soap:operation soapAction="http://paleo.regione.marche.it/services/IPaleoService/GetOperatori" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRagioniTrasmissione">
+      <soap:operation soapAction="http://paleo.regione.marche.it/services/IPaleoService/GetRagioniTrasmissione" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRegistri">
+      <soap:operation soapAction="http://paleo.regione.marche.it/services/IPaleoService/GetRegistri" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTitolarioClassificazione">
+      <soap:operation soapAction="http://paleo.regione.marche.it/services/IPaleoService/GetTitolarioClassificazione" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FindRubrica">
+      <soap:operation soapAction="http://paleo.regione.marche.it/services/IPaleoService/FindRubrica" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FindRubricaExt">
+      <soap:operation soapAction="http://paleo.regione.marche.it/services/IPaleoService/FindRubricaExt" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveVoceRubrica">
+      <soap:operation soapAction="http://paleo.regione.marche.it/services/IPaleoService/SaveVoceRubrica" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="StampaRegistro">
+      <soap:operation soapAction="http://paleo.regione.marche.it/services/IPaleoService/StampaRegistro" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ApriRegistro">
+      <soap:operation soapAction="http://paleo.regione.marche.it/services/IPaleoService/ApriRegistro" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ChiudiRegistro">
+      <soap:operation soapAction="http://paleo.regione.marche.it/services/IPaleoService/ChiudiRegistro" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ApriFascicolo">
+      <soap:operation soapAction="http://paleo.regione.marche.it/services/IPaleoService/ApriFascicolo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ChiudiFascicolo">
+      <soap:operation soapAction="http://paleo.regione.marche.it/services/IPaleoService/ChiudiFascicolo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTipiDatiFascicoli">
+      <soap:operation soapAction="http://paleo.regione.marche.it/services/IPaleoService/GetTipiDatiFascicoli" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSerieArchivisticheFascicoli">
+      <soap:operation soapAction="http://paleo.regione.marche.it/services/IPaleoService/GetSerieArchivisticheFascicoli" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetScadenzaPassword">
+      <soap:operation soapAction="http://paleo.regione.marche.it/services/IPaleoService/GetScadenzaPassword" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CambiaPassword">
+      <soap:operation soapAction="http://paleo.regione.marche.it/services/IPaleoService/CambiaPassword" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="PaleoService">
+    <wsdl:port name="BasicHttpBinding_IPaleoService" binding="tns:BasicHttpBinding_IPaleoService">
+      <soap:address location="https://paleo/PALEOWEBSERVICESC_L500T/PaleoWebService.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

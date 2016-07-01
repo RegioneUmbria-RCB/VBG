@@ -1,0 +1,54 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="AreaRiservataPopupMaster.master.cs"
+	Inherits="Init.Sigepro.FrontEnd.AreaRiservataPopupMaster" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta http-equiv="Content-Type" content="text/html; utf-8" />
+	<title>Untitled Page</title>
+	<base target="_self" />
+	<link href="~/css/less/less.include.css" type="text/css" rel="stylesheet" id="cssIncludeLink"  />
+	<link href="~/css/stili2.css" type="text/css" rel="stylesheet" id="cssLink" />
+	<script type="text/javascript" src='<%= ResolveClientUrl("~/Scripts/jquery-1.5.min.js")%>'></script>
+	<script type="text/javascript" src='<%= ResolveClientUrl("~/Scripts/jquery-ui-1.8.6.custom.min.js")%>'></script>
+
+	<style>
+		#contenitorePrincipale #contenuti {padding-left:10px !important;}		
+		.inputForm fieldset{padding: 0px !important;}	
+	</style>
+
+	<asp:ContentPlaceHolder ID="head" runat="server">
+	</asp:ContentPlaceHolder>
+</head>
+<body>
+	<form id="form1" runat="server">
+	<div id="contenitorePrincipale">
+		<div id="contenuti">
+			<asp:Panel runat="server" ID="pnlTitolo" class="titoloPagina">
+				<asp:Label runat="server" ID="lblTitoloPagina" />
+			</asp:Panel>
+			<div class="errori">
+				<asp:Repeater runat="server" ID="rptErrori">
+					<HeaderTemplate>
+						<b>Sono stati riscontrati i seguenti errori:</b>
+						<ul>
+					</HeaderTemplate>
+					<ItemTemplate>
+						<li>
+							<%# DataBinder.Eval(Container,"DataItem") %></li>
+					</ItemTemplate>
+					<FooterTemplate>
+						</ul>
+					</FooterTemplate>
+				</asp:Repeater>
+			</div>
+			<asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+			</asp:ContentPlaceHolder>
+		</div>
+	</div>
+	<div style="clear: both" id="clear">
+	</div>
+	</form>
+</body>
+</html>

@@ -1,0 +1,782 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="urn:RepWSSGateway" xmlns:impl="urn:RepWSSGateway" xmlns:intf="urn:RepWSSGateway" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+   <wsdl:message name="getDocumentClassRequest">
+
+      <wsdl:part name="logonCredentials" type="xsd:string"/>
+
+      <wsdl:part name="className" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getAvailableDocumentClassesResponse">
+
+      <wsdl:part name="getAvailableDocumentClassesReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="docGetInfoRequest">
+
+      <wsdl:part name="logonCredentials" type="xsd:string"/>
+
+      <wsdl:part name="documentUID" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="docSearchRequest">
+
+      <wsdl:part name="logonCredentials" type="xsd:string"/>
+
+      <wsdl:part name="libraryName" type="xsd:string"/>
+
+      <wsdl:part name="xmlQuery" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="docGetACLRequest">
+
+      <wsdl:part name="logonCredentials" type="xsd:string"/>
+
+      <wsdl:part name="documentUID" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="docSetRelatedRequest">
+
+      <wsdl:part name="logonCredentials" type="xsd:string"/>
+
+      <wsdl:part name="documentUID" type="xsd:string"/>
+
+      <wsdl:part name="relatedDescriptor" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="docGetRelatedRequest">
+
+      <wsdl:part name="logonCredentials" type="xsd:string"/>
+
+      <wsdl:part name="documentUID" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="docBindRequest">
+
+      <wsdl:part name="logonCredentials" type="xsd:string"/>
+
+      <wsdl:part name="document" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="docCheckOutRequest">
+
+      <wsdl:part name="logonCredentials" type="xsd:string"/>
+
+      <wsdl:part name="documentUID" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="docDeleteRequest">
+
+      <wsdl:part name="logonCredentials" type="xsd:string"/>
+
+      <wsdl:part name="documentUID" type="xsd:string"/>
+
+      <wsdl:part name="deletionType" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="docExtractRequest">
+
+      <wsdl:part name="logonCredentials" type="xsd:string"/>
+
+      <wsdl:part name="documentUID" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getAvailableLibrariesRequest">
+
+      <wsdl:part name="logonCredentials" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="docCheckInResponse">
+
+   </wsdl:message>
+
+   <wsdl:message name="docInsertRequest">
+
+      <wsdl:part name="logonCredentials" type="xsd:string"/>
+
+      <wsdl:part name="libraryName" type="xsd:string"/>
+
+      <wsdl:part name="documentBase64" type="xsd:string"/>
+
+      <wsdl:part name="documentInfo" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="docGetInfoResponse">
+
+      <wsdl:part name="docGetInfoReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="docGetRelatedResponse">
+
+      <wsdl:part name="docGetRelatedReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getDocumentClassResponse">
+
+      <wsdl:part name="getDocumentClassReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="docGetMetadataRequest">
+
+      <wsdl:part name="logonCredentials" type="xsd:string"/>
+
+      <wsdl:part name="documentUID" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="docGetACLResponse">
+
+      <wsdl:part name="docGetACLReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="docExtractResponse">
+
+      <wsdl:part name="docExtractReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="docBindResponse">
+
+      <wsdl:part name="docBindReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="docCheckOutResponse">
+
+      <wsdl:part name="docCheckOutReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getAvailableLibrariesResponse">
+
+      <wsdl:part name="getAvailableLibrariesReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="docSetMetadataRequest">
+
+      <wsdl:part name="logonCredentials" type="xsd:string"/>
+
+      <wsdl:part name="documentUID" type="xsd:string"/>
+
+      <wsdl:part name="metaData" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="docSetRelatedResponse">
+
+   </wsdl:message>
+
+   <wsdl:message name="docUndoCheckOutResponse">
+
+   </wsdl:message>
+
+   <wsdl:message name="docSetACLResponse">
+
+   </wsdl:message>
+
+   <wsdl:message name="docSearchResponse">
+
+      <wsdl:part name="docSearchReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="docUndoCheckOutRequest">
+
+      <wsdl:part name="logonCredentials" type="xsd:string"/>
+
+      <wsdl:part name="documentUID" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="docSetMetadataResponse">
+
+   </wsdl:message>
+
+   <wsdl:message name="getAvailableDocumentClassesRequest">
+
+      <wsdl:part name="logonCredentials" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="docCheckInRequest">
+
+      <wsdl:part name="logonCredentials" type="xsd:string"/>
+
+      <wsdl:part name="documentUID" type="xsd:string"/>
+
+      <wsdl:part name="documentBase64" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="docGetMetadataResponse">
+
+      <wsdl:part name="docGetMetadataReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="docSetACLRequest">
+
+      <wsdl:part name="logonCredentials" type="xsd:string"/>
+
+      <wsdl:part name="documentUID" type="xsd:string"/>
+
+      <wsdl:part name="aclDescriptor" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="docInsertResponse">
+
+      <wsdl:part name="docInsertReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="docDeleteResponse">
+
+   </wsdl:message>
+
+   <wsdl:message name="getDefaultLibraryRequest">
+
+      <wsdl:part name="logonCredentials" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getDefaultLibraryResponse">
+
+      <wsdl:part name="getDefaultLibraryReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:portType name="RepWSSGateway">
+
+      <wsdl:operation name="docInsert" parameterOrder="logonCredentials libraryName documentBase64 documentInfo">
+
+         <wsdl:input name="docInsertRequest" message="impl:docInsertRequest"/>
+
+         <wsdl:output name="docInsertResponse" message="impl:docInsertResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="docExtract" parameterOrder="logonCredentials documentUID">
+
+         <wsdl:input name="docExtractRequest" message="impl:docExtractRequest"/>
+
+         <wsdl:output name="docExtractResponse" message="impl:docExtractResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="docCheckOut" parameterOrder="logonCredentials documentUID">
+
+         <wsdl:input name="docCheckOutRequest" message="impl:docCheckOutRequest"/>
+
+         <wsdl:output name="docCheckOutResponse" message="impl:docCheckOutResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="docUndoCheckOut" parameterOrder="logonCredentials documentUID">
+
+         <wsdl:input name="docUndoCheckOutRequest" message="impl:docUndoCheckOutRequest"/>
+
+         <wsdl:output name="docUndoCheckOutResponse" message="impl:docUndoCheckOutResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="docCheckIn" parameterOrder="logonCredentials documentUID documentBase64">
+
+         <wsdl:input name="docCheckInRequest" message="impl:docCheckInRequest"/>
+
+         <wsdl:output name="docCheckInResponse" message="impl:docCheckInResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="docDelete" parameterOrder="logonCredentials documentUID deletionType">
+
+         <wsdl:input name="docDeleteRequest" message="impl:docDeleteRequest"/>
+
+         <wsdl:output name="docDeleteResponse" message="impl:docDeleteResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="docGetInfo" parameterOrder="logonCredentials documentUID">
+
+         <wsdl:input name="docGetInfoRequest" message="impl:docGetInfoRequest"/>
+
+         <wsdl:output name="docGetInfoResponse" message="impl:docGetInfoResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="docSearch" parameterOrder="logonCredentials libraryName xmlQuery">
+
+         <wsdl:input name="docSearchRequest" message="impl:docSearchRequest"/>
+
+         <wsdl:output name="docSearchResponse" message="impl:docSearchResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="docBind" parameterOrder="logonCredentials document">
+
+         <wsdl:input name="docBindRequest" message="impl:docBindRequest"/>
+
+         <wsdl:output name="docBindResponse" message="impl:docBindResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="docGetMetadata" parameterOrder="logonCredentials documentUID">
+
+         <wsdl:input name="docGetMetadataRequest" message="impl:docGetMetadataRequest"/>
+
+         <wsdl:output name="docGetMetadataResponse" message="impl:docGetMetadataResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="docSetMetadata" parameterOrder="logonCredentials documentUID metaData">
+
+         <wsdl:input name="docSetMetadataRequest" message="impl:docSetMetadataRequest"/>
+
+         <wsdl:output name="docSetMetadataResponse" message="impl:docSetMetadataResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getAvailableLibraries" parameterOrder="logonCredentials">
+
+         <wsdl:input name="getAvailableLibrariesRequest" message="impl:getAvailableLibrariesRequest"/>
+
+         <wsdl:output name="getAvailableLibrariesResponse" message="impl:getAvailableLibrariesResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getDefaultLibrary" parameterOrder="logonCredentials">
+
+         <wsdl:input name="getDefaultLibraryRequest" message="impl:getDefaultLibraryRequest"/>
+
+         <wsdl:output name="getDefaultLibraryResponse" message="impl:getDefaultLibraryResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getAvailableDocumentClasses" parameterOrder="logonCredentials">
+
+         <wsdl:input name="getAvailableDocumentClassesRequest" message="impl:getAvailableDocumentClassesRequest"/>
+
+         <wsdl:output name="getAvailableDocumentClassesResponse" message="impl:getAvailableDocumentClassesResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getDocumentClass" parameterOrder="logonCredentials className">
+
+         <wsdl:input name="getDocumentClassRequest" message="impl:getDocumentClassRequest"/>
+
+         <wsdl:output name="getDocumentClassResponse" message="impl:getDocumentClassResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="docGetACL" parameterOrder="logonCredentials documentUID">
+
+         <wsdl:input name="docGetACLRequest" message="impl:docGetACLRequest"/>
+
+         <wsdl:output name="docGetACLResponse" message="impl:docGetACLResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="docSetACL" parameterOrder="logonCredentials documentUID aclDescriptor">
+
+         <wsdl:input name="docSetACLRequest" message="impl:docSetACLRequest"/>
+
+         <wsdl:output name="docSetACLResponse" message="impl:docSetACLResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="docGetRelated" parameterOrder="logonCredentials documentUID">
+
+         <wsdl:input name="docGetRelatedRequest" message="impl:docGetRelatedRequest"/>
+
+         <wsdl:output name="docGetRelatedResponse" message="impl:docGetRelatedResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="docSetRelated" parameterOrder="logonCredentials documentUID relatedDescriptor">
+
+         <wsdl:input name="docSetRelatedRequest" message="impl:docSetRelatedRequest"/>
+
+         <wsdl:output name="docSetRelatedResponse" message="impl:docSetRelatedResponse"/>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="RepWSSGatewaySoapBinding" type="impl:RepWSSGateway">
+
+      <wsdlsoap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="docInsert">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="docInsertRequest">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:RepWSSGateway"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="docInsertResponse">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:RepWSSGateway"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="docExtract">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="docExtractRequest">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:RepWSSGateway"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="docExtractResponse">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:RepWSSGateway"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="docCheckOut">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="docCheckOutRequest">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:RepWSSGateway"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="docCheckOutResponse">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:RepWSSGateway"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="docUndoCheckOut">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="docUndoCheckOutRequest">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:RepWSSGateway"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="docUndoCheckOutResponse">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:RepWSSGateway"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="docCheckIn">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="docCheckInRequest">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:RepWSSGateway"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="docCheckInResponse">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:RepWSSGateway"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="docDelete">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="docDeleteRequest">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:RepWSSGateway"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="docDeleteResponse">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:RepWSSGateway"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="docGetInfo">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="docGetInfoRequest">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:RepWSSGateway"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="docGetInfoResponse">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:RepWSSGateway"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="docSearch">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="docSearchRequest">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:RepWSSGateway"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="docSearchResponse">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:RepWSSGateway"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="docBind">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="docBindRequest">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:RepWSSGateway"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="docBindResponse">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:RepWSSGateway"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="docGetMetadata">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="docGetMetadataRequest">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:RepWSSGateway"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="docGetMetadataResponse">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:RepWSSGateway"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="docSetMetadata">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="docSetMetadataRequest">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:RepWSSGateway"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="docSetMetadataResponse">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:RepWSSGateway"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getAvailableLibraries">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getAvailableLibrariesRequest">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:RepWSSGateway"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getAvailableLibrariesResponse">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:RepWSSGateway"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getDefaultLibrary">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getDefaultLibraryRequest">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:RepWSSGateway"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getDefaultLibraryResponse">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:RepWSSGateway"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getAvailableDocumentClasses">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getAvailableDocumentClassesRequest">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:RepWSSGateway"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getAvailableDocumentClassesResponse">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:RepWSSGateway"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getDocumentClass">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getDocumentClassRequest">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:RepWSSGateway"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getDocumentClassResponse">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:RepWSSGateway"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="docGetACL">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="docGetACLRequest">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:RepWSSGateway"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="docGetACLResponse">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:RepWSSGateway"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="docSetACL">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="docSetACLRequest">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:RepWSSGateway"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="docSetACLResponse">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:RepWSSGateway"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="docGetRelated">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="docGetRelatedRequest">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:RepWSSGateway"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="docGetRelatedResponse">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:RepWSSGateway"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="docSetRelated">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="docSetRelatedRequest">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:RepWSSGateway"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="docSetRelatedResponse">
+
+            <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:RepWSSGateway"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="RepWSSGatewayService">
+
+      <wsdl:port name="RepWSSGateway" binding="impl:RepWSSGatewaySoapBinding">
+
+         <wsdlsoap:address location="http://localhost:8080/client/services/RepWSSGateway"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

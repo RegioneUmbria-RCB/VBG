@@ -1,0 +1,845 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- edited with XMLSpy v2006 sp2 U (http://www.altova.com) by Andrea Campello (Engineering) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:simpleType name="AnnoType">
+		<xs:restriction base="xs:integer">
+			<xs:minInclusive value="1900"/>
+			<xs:maxInclusive value="2100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="NumRegType">
+		<xs:restriction base="xs:integer">
+			<xs:minInclusive value="1"/>
+			<xs:maxInclusive value="9999999"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="LivelloSOType">
+		<xs:annotation>
+			<xs:documentation>Livello della struttura organizzativa del comune</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="Nro" use="required">
+			<xs:annotation>
+				<xs:documentation>1 è il livello più alto, 5 è una postazione virtuale</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:integer">
+					<xs:maxInclusive value="5"/>
+					<xs:minInclusive value="1"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="Codice" use="required">
+			<xs:annotation>
+				<xs:documentation>N.ro che identifica il livello tra i livelli omogenei che ricadono sotto lo stesso livello padre</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:integer">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="9999"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="UOType">
+		<xs:annotation>
+			<xs:documentation>Indica una UO o una postazione attraverso il suo identificativo o attarverso i suoi livelli o attraverso la sua denominazione.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="IdUO" type="xs:integer" minOccurs="0"/>
+			<xs:element name="LivelloUO" type="LivelloSOType" maxOccurs="5"/>
+			<xs:element name="DenominazioneUO" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Denominazione della UO/postazione</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ComuneItalianoType">
+		<xs:choice>
+			<xs:element name="CodISTAT">
+				<xs:annotation>
+					<xs:documentation>Codice ISTAT del comune</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="[0-9]{6}"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Nome" type="xs:string"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="SoggettoEsternoType">
+		<xs:annotation>
+			<xs:documentation>Soggetto (persona fisica o giuridica) esterno all'AOO</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="IdInAnagrafeProt" type="xs:positiveInteger" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Codice identificativo del soggetto nell'anagrafe soggetti del Protocollo.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Denominazione_Cognome" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Denominazione (se persona giuridica) o cognome (se persona fisica)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Nome" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Nome (se valorizzato si tratta di persona fisica)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CodiceFiscale" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="PartitaIva" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="11"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Sesso" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="M|F"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="DataNascita" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Data di nascita / costituzione</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ComuneNascita" type="ComuneItalianoType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Comune italiano di nascita (da valorizzare solo in caso di persona fisica)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ResidenzaSedeLegale" type="IndirizzoSoggType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Indirizzo di residenza/sede legale del soggetto</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ToponimoType">
+		<xs:choice>
+			<xs:element name="IdToponomastico" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Identificato nel viario comunale (se trattasi di inidirizzo nel territorio comunale)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DesToponimo" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Descrizione (incluso il tipo: Via, Vicolo, Piazza ecc)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="IndirizzoSoggType">
+		<xs:annotation>
+			<xs:documentation>Indirizzo di un soggetto (sede legale, residenza ecc.)</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="IndirizzoLocalita" type="ToponimoType">
+				<xs:annotation>
+					<xs:documentation>Via/Piazza ecc.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Civico" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>N.ro civico</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:minInclusive value="1"/>
+						<xs:maxInclusive value="99999"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="EsponenteCivico" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Interno" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>N.ro dell'interno del civico</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:minInclusive value="1"/>
+						<xs:maxInclusive value="99999"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="EsponenteInterno" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Scala" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Piano" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="2"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="CAP" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="[0-9]{5}"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Frazione" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="25"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="ComuneCitta">
+				<xs:complexType>
+					<xs:choice>
+						<xs:element name="ComuneItaliano">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="ComuneItalianoType"/>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+						<xs:sequence>
+							<xs:element name="NomeCittaEstera">
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:maxLength value="40"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="StatoEstero" type="OggDiTabDiSistemaType"/>
+						</xs:sequence>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="DataDecorrenza" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Data da cui l'indirizzo è valido per il soggetto.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="IndirizzoType">
+		<xs:annotation>
+			<xs:documentation>Indirizzo di provenienza/destinazione di un documento</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="IndirizzoLocalita" type="ToponimoType">
+				<xs:annotation>
+					<xs:documentation>Via/Piazza ecc.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Civico" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>N.ro civico</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:minInclusive value="1"/>
+						<xs:maxInclusive value="99999"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="EsponenteCivico" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="CAP" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="[0-9]{5}"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="ComuneItaliano">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="ComuneItalianoType"/>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="SoggettoEstEstesoType">
+		<xs:annotation>
+			<xs:documentation>Soggetto esterno che è mittente/destinatario di un documento</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="SoggettoEsternoType">
+				<xs:sequence>
+					<xs:element name="IndirizzoProvDest" type="IndirizzoType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Indirizzo da cui/a cui è stato inviato il documento dal/al soggetto</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DestinatarioEsternoType">
+		<xs:complexContent>
+			<xs:extension base="SoggettoEstEstesoType">
+				<xs:sequence>
+					<xs:element name="PerConoscenza" fixed="1" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Indica che il destinatario è solo per conoscenza</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="OriginaleType">
+		<xs:annotation>
+			<xs:documentation>Dati dell'originale</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="Assegnatario" type="UOType">
+					<xs:annotation>
+						<xs:documentation>UO o postazione virtuale assegnataria</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="FlagVsUOProvenienza" fixed="1">
+					<xs:annotation>
+						<xs:documentation>Indica che l'assegnatario dell'originale è la UO/postazione di provenienza anzichè la postazione che effettua la registrazione (si può specificare solo in caso di registrazione in uscita)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+			<xs:element name="ClassifFascicolo" type="ClassifFascicoloType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Dati di classificazione ed eventuale fascicolazione</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Note" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Annotazioni</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="250"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CopiaType">
+		<xs:annotation>
+			<xs:documentation>Dati di una copia non per conoscenza</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Assegnatario" type="UOType">
+				<xs:annotation>
+					<xs:documentation>UO o postazione virtuale assegnataria</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ClassifFascicolo" type="ClassifFascicoloType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Dati di classificazione ed eventuale fascicolazione</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Note" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Annotazioni</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="250"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="OggDiTabDiSistemaType">
+		<xs:annotation>
+			<xs:documentation>Rappresenta un oggetto censito in una tabella di sistema del sistema documentale</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="CodId" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Identificativo del dato di sistema nella banca dati del sistema di Protocollo</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Decodifica_Nome" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Decodifica del dato di sistema nella banca dati del sistema di Protocollo</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="ClassifFascicoloType">
+		<xs:annotation>
+			<xs:documentation>Rappresenta la classificazione e/o fascicolazione di una copia dell'unità documentaria. Il fascicolo deve essere già esistente</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="IdFascicolo" type="xs:positiveInteger" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Identificativo del fascicolo</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:choice>
+				<xs:element name="AnnoAperturaFasc" type="AnnoType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Anno di apertura del fascicolo</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="DataAperturaFasc" type="xs:date" minOccurs="0"/>
+			</xs:choice>
+			<xs:element name="Classificazione" minOccurs="0">
+				<xs:complexType>
+					<xs:choice>
+						<xs:element name="VoceIndice" type="OggDiTabDiSistemaType">
+							<xs:annotation>
+								<xs:documentation>Voce di indice di classificazione</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:sequence>
+							<xs:element name="Titolo">
+								<xs:simpleType>
+									<xs:restriction base="xs:integer">
+										<xs:minInclusive value="1"/>
+										<xs:maxInclusive value="99"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="Classe">
+								<xs:simpleType>
+									<xs:restriction base="xs:integer">
+										<xs:minInclusive value="0"/>
+										<xs:maxInclusive value="99"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="Sottoclasse">
+								<xs:simpleType>
+									<xs:restriction base="xs:integer">
+										<xs:minInclusive value="0"/>
+										<xs:maxInclusive value="999"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+						</xs:sequence>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="NroProgrFasc" type="xs:positiveInteger" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Nro del fascicolo (progressivo all'interno di anno e classificazione)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NroSottofasc" type="xs:positiveInteger" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>N.ro di sottofascicolo</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="VersioneElettronicaType">
+		<xs:annotation>
+			<xs:documentation>Contiene le informazioni di come trattare/salvare i file in attach in input al Web Service</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="NroAttachmentAssociato" type="xs:positiveInteger">
+				<xs:annotation>
+					<xs:documentation>Indica quali degli attach in input al Web Service rappresenta la versione elettronica del documento primario o di un allegato (1 è il primo attach, 2 il secondo ecc)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NomeFile" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Nome del file: si tenga conto che l'estensione del nome del file viene utilizzata per ricavare il formato (in particolare solo se questa è pari a p7m si ritiene un file firmato digitalmente)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AttivaVerificaFirma" fixed="1" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Serve a richiedere la verifica dell'eventuale firma sul file  e a inibire l'upload del file stesso in caso di verifica fallita</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AllegatoUDType">
+		<xs:annotation>
+			<xs:documentation>Contiene i dati di un allegato dell''unità documentaria</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<!-- almeno uno dei due elementi seguenti è obbligatorio -->
+			<xs:element name="TipoDocAllegato" type="OggDiTabDiSistemaType">
+				<xs:annotation>
+					<xs:documentation>Tipo dell'allegato (possibile solo uno dei valori in apposita tabella del sistema documentale)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DesAllegato" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Descrizione / oggetto dell'allegato</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="250"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="VersioneElettronica" type="VersioneElettronicaType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Contiene le informazioni su come trattare/salvare l'eventuale attach in input al Web Service che corrispinde all'allegato (nome con cui salvarlo, se la firma eventuale va verificata)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="NuovaUD">
+		<xs:annotation>
+			<xs:documentation>ROOT element dello schema</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<!-- ATTENZIONE: dei due elementi successivi almeno uno deve essere valorizzato -->
+				<xs:element name="RegistrazionePrimariaDaDare">
+					<xs:annotation>
+						<xs:documentation>Registrazione primaria da assegnare al documento</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="CategoriaRegistro" default="PG">
+								<xs:annotation>
+									<xs:documentation>Valori ammessi: PG=Protocollo Generale; PP=Protocollo Particolare; R=Repertorio; N=Corrispondenza non protocollata</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:enumeration value="PG"/>
+										<xs:enumeration value="PP"/>
+										<xs:enumeration value="R"/>
+										<xs:enumeration value="N"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="SiglaRegistro" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Sigla che identifica il tipo di registro; obbligatoria solo se la categoria è "repertorio"</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:maxLength value="2"/>
+										<xs:minLength value="1"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="FlgAnnoPrecedente" fixed="1" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Indica se la registrazione è relativa all'anno già trascorso (da specificare solo se la categoria è repertorio)</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="AltraRegistrazioneDaDare" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Eventuale altra registrazione da assegnare al documento</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="CategoriaRegistro" fixed="R">
+								<xs:annotation>
+									<xs:documentation>Valori ammessi: R=Repertorio</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="SiglaRegistro">
+								<xs:annotation>
+									<xs:documentation>Sigla che identifica il tipo di registro</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:maxLength value="2"/>
+										<xs:minLength value="1"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="FlgAnnoPrecedente" fixed="1" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Indica se la registrazione è relativa all'anno già trascorso </xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="RegistrazioneEmergenza" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Estremi di un'eventuale registrazione d'emergenza</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="SiglaRegistro">
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:maxLength value="5"/>
+										<xs:minLength value="1"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="Anno" type="AnnoType"/>
+							<xs:element name="Numero" type="NumRegType"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="TipoProvenienza" default="I">
+					<xs:annotation>
+						<xs:documentation>Indica se unità documentaria in entrata (E), uscita (U) o interna (I)</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:pattern value="E|U|I"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="OggettoUD">
+					<xs:annotation>
+						<xs:documentation>Oggetto dell'unità documentaria da registrare</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="500"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<!-- i 5 elementi seguenti sono relativi al documento primario dell'unità documentaria-->
+				<xs:choice>
+					<xs:element name="DatiEntrata">
+						<xs:annotation>
+							<xs:documentation>Dati di acquisizione dall'esterno dell'unità documentaria (da valorizzare solo se elemento TipoProvenienza=E)</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="DataOraArrivo" type="xs:dateTime"/>
+								<xs:element name="DataDocRicevuto" type="xs:date" minOccurs="0"/>
+								<xs:element name="ProtocolloDocRicevuto" minOccurs="0">
+									<xs:simpleType>
+										<xs:restriction base="xs:string">
+											<xs:maxLength value="12"/>
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:element>
+								<xs:element name="RiferimentiDocRicevuto" minOccurs="0">
+									<xs:simpleType>
+										<xs:restriction base="xs:string">
+											<xs:maxLength value="20"/>
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:element>
+								<xs:element name="MittenteEsterno" type="SoggettoEstEstesoType" maxOccurs="unbounded"/>
+								<xs:element name="FirmatarioEsterno" type="SoggettoEsternoType" minOccurs="0" maxOccurs="unbounded"/>
+								<xs:element name="AttoAutProtDifferita" minOccurs="0">
+									<xs:annotation>
+										<xs:documentation>Atto di autorizzazione alla protocollazione differita</xs:documentation>
+									</xs:annotation>
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element name="AnnoProt" type="AnnoType">
+												<xs:annotation>
+													<xs:documentation>Anno di protocollo dell'atto</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+											<xs:element name="NroProt" type="NumRegType">
+												<xs:annotation>
+													<xs:documentation>N.ro di protocollo dell'atto</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="DatiProduzione">
+						<xs:annotation>
+							<xs:documentation>Dati di produzione interna del documento; da valorizzare solo se documento interno o in uscita (elemento TipoProvenienza=I o U)</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="DataStesura" type="xs:date" minOccurs="0"/>
+								<xs:element name="Provenienza" type="UOType">
+									<xs:annotation>
+										<xs:documentation>UO o postazione virtuale di provenienza</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:choice>
+				<xs:element name="DatiUscita" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Dati di uscita dell'unità documentaria (da valorizzare solo se elemento TipoProvenienza=U) </xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="DataSped" type="xs:date" minOccurs="0"/>
+							<xs:element name="DestinatarioEsterno" type="DestinatarioEsternoType" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Originale" type="OriginaleType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Dati dell'originale: assegnazione interna, eventuale classificazione e fascicolazione</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="UlterioreCopia" type="CopiaType" minOccurs="0" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Ulteriori copie classificabili e fascicolabili (ovvero non per conoscenza)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="CopiaConoscenza" minOccurs="0" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Copie interne per conoscenza</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Assegnatario" type="UOType">
+								<xs:annotation>
+									<xs:documentation>UO o postazione virtuale assegnataria</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="Note" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Annotazioni</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:maxLength value="250"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="VersioneElettronicaPrimario" type="VersioneElettronicaType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Contiene le informazioni su come trattare/salvare l'eventuale attach in input al Web Service che corrispinde al file primario dell'unità documentaria (nome con cui salvarlo, se la firma eventuale va verificata)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="NroAllegati" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Nro di allegati dell'unità documentaria. Se non specificato o minore del n.ro di allegati specificati nell'elemento AllegatoUD viene impostato pari al nro di elementi di quel tipo.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:integer">
+							<xs:minInclusive value="0"/>
+							<xs:maxInclusive value="999"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="AllegatoUD" type="AllegatoUDType" minOccurs="0" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Dati di un documento allegato dell'unità documentaria. Gli allegati vengono registrati nell'ordine con cui appaiono in questo tracciato (identificandoli con nri da 1 a n)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="TipoLogico" type="OggDiTabDiSistemaType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Tipo logico del documento primario (possibile solo uno dei valori in apposita tabella del sistema di Protocollo)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="SottoTipoLogico" type="OggDiTabDiSistemaType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Tipo logico di dettaglio del documento primario (possibile solo uno dei valori in apposita tabella del sistema di Protocollo)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="MezzoTrasmissione" type="OggDiTabDiSistemaType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Mezzo di trasmissione (possibile solo uno dei valori in apposita tabella del sistema di Protocollo)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="UDPrecedente" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Estremi di registrazione per identificare l'unità documentaria di cui quella corrente rappresenta una risposta/il successivo.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="CategoriaRegistro" default="PG">
+								<xs:annotation>
+									<xs:documentation>Valori ammessi: PG=Protocollo Generale; PP=Protocollo Particolare; R=Repertorio; N=Corrispondenza non protocollata</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:enumeration value="PG"/>
+										<xs:enumeration value="PP"/>
+										<xs:enumeration value="R"/>
+										<xs:enumeration value="N"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="SiglaRegistro" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Sigla che identifica il tipo di registro; obbligatoria solo se la categoria è "repertorio"</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:maxLength value="2"/>
+										<xs:minLength value="1"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="Anno" type="AnnoType"/>
+							<xs:element name="Numero" type="NumRegType"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<!-- documenti allegati (con o senza file associato) -->
+				<!-- l'emento successivo serve ad indicare qual è l'unità documentaria precedente a quella da caricare (ad esempio quella di cui quella da caricare è la risposta) -->
+				<xs:element name="FlagRiservatezza" fixed="1" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Indica che l'unità documentaria è riservata (internamente)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="FlagAccessoEsternoDifferito" fixed="1" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Indica che soggetti esterni all'AOO non possono consultare l'unità documentaria</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="AccessoEsternoDifferitoFinoAl" type="xs:date" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Indica la data fino a cui l'accesso al documento è precluso ai soggetti esterni</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="FlagEvidenza" fixed="1" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Indica che l'unità documentaria va messa in evidenza</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="FlagDocumentazioneCompleta" fixed="1" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Indica che la documentazione è completa</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="ScadenzaRiservProtPart" type="xs:date" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Data di scadenza della riservatezza data dal protocollo particolare (da valorizzare solo nel caso di registrazione a Protocollo particolare)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<schema xmlns:tns="http://gruppoinit.it/sigepro/schemas/messages/rateizzazioni" elementFormDefault="qualified" targetNamespace="http://gruppoinit.it/sigepro/schemas/messages/rateizzazioni" xmlns="http://www.w3.org/2001/XMLSchema">
+  <element name="RateizzazioniRequest">
+    <complexType>
+      <all>
+        <element name="token" type="string" />
+        <element name="codiceOneriTipiRateizzazione" type="int" />
+        <element name="data" type="date" />
+        <element name="importo" type="decimal" />
+        <element name="dataInizio" nillable="true" type="date" />
+      </all>
+    </complexType>
+  </element>
+  <element name="RateizzazioniResponse">
+    <complexType>
+      <sequence>
+        <element minOccurs="1" maxOccurs="unbounded" name="importoRateizzatoXML" type="tns:ImportoRateizzatoXML" />
+      </sequence>
+    </complexType>
+  </element>
+  <complexType name="ImportoRateizzatoXML">
+    <all>
+      <element name="importoRateizzato" type="decimal" />
+      <element name="scadenza" type="date" />
+    </all>
+  </complexType>
+</schema>

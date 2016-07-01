@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:sch="http://gruppoinit.it/schemas/messages/pdfutils" xmlns:tns="http://gruppoinit.it/messages/pdfutils" targetNamespace="http://gruppoinit.it/messages/pdfutils" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <schema xmlns="http://www.w3.org/2001/XMLSchema">
+      <import schemaLocation="http://devel9:8080/pdfutils/services/pdfutils?xsd=pdfutils.xsd" namespace="http://gruppoinit.it/schemas/messages/pdfutils" />
+    </schema>
+  </wsdl:types>
+  <wsdl:message name="PrecompilaPDFRequest">
+    <wsdl:part name="PrecompilaPDFRequest" element="sch:PrecompilaPDFRequest" />
+  </wsdl:message>
+  <wsdl:message name="RecuperaDatiDaPDFRequest">
+    <wsdl:part name="RecuperaDatiDaPDFRequest" element="sch:RecuperaDatiDaPDFRequest" />
+  </wsdl:message>
+  <wsdl:message name="RecuperaDatiDaPDFResponse">
+    <wsdl:part name="RecuperaDatiDaPDFResponse" element="sch:RecuperaDatiDaPDFResponse" />
+  </wsdl:message>
+  <wsdl:message name="PrecompilaPDFResponse">
+    <wsdl:part name="PrecompilaPDFResponse" element="sch:PrecompilaPDFResponse" />
+  </wsdl:message>
+  <wsdl:portType name="PdfUtils">
+    <wsdl:operation name="RecuperaDatiDaPDF">
+      <wsdl:input name="RecuperaDatiDaPDFRequest" message="tns:RecuperaDatiDaPDFRequest" />
+      <wsdl:output name="RecuperaDatiDaPDFResponse" message="tns:RecuperaDatiDaPDFResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="PrecompilaPDF">
+      <wsdl:input name="PrecompilaPDFRequest" message="tns:PrecompilaPDFRequest" />
+      <wsdl:output name="PrecompilaPDFResponse" message="tns:PrecompilaPDFResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="PdfUtilsSoapBinding" type="tns:PdfUtils">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="RecuperaDatiDaPDF">
+      <soap:operation soapAction="recuperaDatiDaPDF" />
+      <wsdl:input name="RecuperaDatiDaPDFRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="RecuperaDatiDaPDFResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PrecompilaPDF">
+      <soap:operation soapAction="precompilaPDF" />
+      <wsdl:input name="PrecompilaPDFRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="PrecompilaPDFResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="PdfUtilsService">
+    <wsdl:port name="PdfUtilsPort" binding="tns:PdfUtilsSoapBinding">
+      <soap:address location="http://devel9:8080/pdfutils/services/pdfutils" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

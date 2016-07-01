@@ -1,0 +1,211 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{63033714-C7C2-4156-BF72-62C61A9C4891}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Init.Sigepro.FrontEnd.GestioneMovimenti</RootNamespace>
+    <AssemblyName>Init.Sigepro.FrontEnd.GestioneMovimenti</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper, Version=2.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\AutoMapper.2.2.1\lib\net40\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="CuttingEdge.Conditions">
+      <HintPath>..\..\..\packages\CuttingEdge.Conditions.1.2.0.0\lib\NET35\CuttingEdge.Conditions.dll</HintPath>
+    </Reference>
+    <Reference Include="Init.Utils, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\libraries\Init.Utils.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject">
+      <HintPath>..\..\..\packages\Ninject.3.2.2.0\lib\net40\Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Text">
+      <HintPath>..\..\..\packages\ServiceStack.Text.4.0.33\lib\net40\ServiceStack.Text.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CampoDinamico.cs" />
+    <Compile Include="Commands\AllegaRiepilogoSchedaDinamicaAMovimento.cs" />
+    <Compile Include="Commands\AggiungiAllegatoAlMovimento.cs" />
+    <Compile Include="Commands\CompletaCompilazioneSchedaDinamica.cs" />
+    <Compile Include="Commands\CreaMovimento.cs" />
+    <Compile Include="Commands\EliminaValoriCampo.cs" />
+    <Compile Include="Commands\FirmaDigitalmenteAllegatoMovimento.cs" />
+    <Compile Include="Commands\FirmaDigitalmenteRiepilogo.cs" />
+    <Compile Include="Commands\ModificaNoteMovimento.cs" />
+    <Compile Include="Commands\ModificaValoreDatoDinamicoDelMovimento.cs" />
+    <Compile Include="Commands\RimuoviAllegatoDalMovimento.cs" />
+    <Compile Include="Commands\RimuoviRiepilogoSchedaDinamicaDalMovimento.cs" />
+    <Compile Include="Commands\TrasmettiMovimento.cs" />
+    <Compile Include="Converters\DatiMovimentoDaEffettuareToNotificaAttivitaRequestConverter.cs" />
+    <Compile Include="Converters\IstanzeStradarioToLocalizzazioneIstanzaConverter.cs" />
+    <Compile Include="Converters\DatiMovimentoToDatiMovimentoDiOrigineConverter.cs" />
+    <Compile Include="DatiDinamiciSpecifications.cs" />
+    <Compile Include="DatiDinamici\Dyn2CampiManager.cs" />
+    <Compile Include="DatiDinamici\Dyn2DataAccessProvider.cs" />
+    <Compile Include="DatiDinamici\Dyn2DettagliModelloManager.cs" />
+    <Compile Include="DatiDinamici\Dyn2ModelliManager.cs" />
+    <Compile Include="DatiDinamici\Dyn2ProprietaCampiManager.cs" />
+    <Compile Include="DatiDinamici\Dyn2ScriptCampiManager.cs" />
+    <Compile Include="DatiDinamici\Dyn2ScriptModelloManager.cs" />
+    <Compile Include="DatiDinamici\Dyn2TestoModelloManager.cs" />
+    <Compile Include="DatiDinamici\IstanzeDyn2DatiManager.cs" />
+    <Compile Include="DatiDinamici\MovimentiIstanzeManager.cs" />
+    <Compile Include="DatiDinamici\NullIstanzeManager.cs" />
+    <Compile Include="DatiDinamici\QueryLocalizzazioni.cs" />
+    <Compile Include="Events\AllegatoFirmatoDigitalmente.cs" />
+    <Compile Include="Events\CompilazioneSchedaDinamicaCompletata.cs" />
+    <Compile Include="Events\MovimentoTrasmesso.cs" />
+    <Compile Include="Events\RiepilogoSchedaDinamicaFirmatoDigitalmente.cs" />
+    <Compile Include="Events\ValoriCampoDinamicoEliminati.cs" />
+    <Compile Include="ExternalServices\TrasmissioneMovimentoService.cs" />
+    <Compile Include="ExternalServices\ScadenzeService.cs" />
+    <Compile Include="GenerazioneRiepiloghiSchedeDinamiche\GenerazioneRiepilogoSchedeDinamicheService.cs" />
+    <Compile Include="GenerazioneRiepiloghiSchedeDinamiche\IGenerazioneRiepilogoSchedeDinamicheService.cs" />
+    <Compile Include="InternalsVisibleTo.cs" />
+    <Compile Include="Persistence\EventJsonSerializer.cs" />
+    <Compile Include="Persistence\GestioneMovimentiDataStore.cs" />
+    <Compile Include="Persistence\GestioneMovimentiHttpDataContext.cs" />
+    <Compile Include="Persistence\JsonEventStream.cs" />
+    <Compile Include="Events\AllegatoAggiuntoAlMovimento.cs" />
+    <Compile Include="Events\AllegatoRimossoDalMovimento.cs" />
+    <Compile Include="Events\MovimentoCreato.cs" />
+    <Compile Include="Events\NoteMovimentoModificate.cs" />
+    <Compile Include="Events\RiepilogoSchedaDinamicaAllegatoAlMovimento.cs" />
+    <Compile Include="Events\RiepilogoSchedaDinamicaRimossoDalMovimento.cs" />
+    <Compile Include="Events\ValoreDatoDinamicoAggiuntoAlMovimento.cs" />
+    <Compile Include="Events\ValoreDatoDinamicoDelMovimentoModificato.cs" />
+    <Compile Include="ExternalServices\MovimentiBackofficeService.cs" />
+    <Compile Include="ExternalServices\MovimentiBackofficeServiceCreator.cs" />
+    <Compile Include="Bootstrap\GestioneMovimentiBootstrapper.cs" />
+    <Compile Include="Persistence\IGestioneMovimentiDataContext.cs" />
+    <Compile Include="Bootstrap\MovimentiAutomapperBootstrapper.cs" />
+    <Compile Include="MovimentiCommandHandler.cs" />
+    <Compile Include="MovimentiEventHandler.cs" />
+    <Compile Include="MovimentoFrontoffice.cs" />
+    <Compile Include="NinjectModule\GestioneMovimentiNinjectModule.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReadInterface\DatiAllegatoMovimento.cs" />
+    <Compile Include="ReadInterface\DatiMovimentoDaEffettuare.cs" />
+    <Compile Include="ReadInterface\DatiMovimentoDiOrigine.cs" />
+    <Compile Include="ReadInterface\DatiProtocolloMovimento.cs" />
+    <Compile Include="Persistence\IMovimentiReadRepository.cs" />
+    <Compile Include="ReadInterface\DatiRiepilogoSchedaDinamica.cs" />
+    <Compile Include="ReadInterface\RiferimentiIstanza.cs" />
+    <Compile Include="ReadInterface\SchedaDinamicaMovimento.cs" />
+    <Compile Include="RiepiloghiSchedeDinamicheMovimentoEventHandler.cs" />
+    <Compile Include="RiepilogoSchedaDinamica.cs" />
+    <Compile Include="Scadenzario\Scadenza.cs" />
+    <Compile Include="Service References\MovimentiWebService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="ValoreDatoDinamico.cs" />
+    <Compile Include="ViewModels\CaricamentoRiepiloghiSchedeViewModel.cs" />
+    <Compile Include="ViewModels\CompilazioneSchedeDinamicheViewModel.cs" />
+    <Compile Include="ViewModels\FirmaDigitaleAllegatoMovimentoViewModel.cs" />
+    <Compile Include="ViewModels\RiepilogoMovimentoDaEffettuareViewModel.cs" />
+    <Compile Include="ViewModels\RiepilogoMovimentoDiOrigineViewModel.cs" />
+    <Compile Include="ViewModels\ValidationException.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+    <None Include="Service References\MovimentiWebService\Init.Sigepro.FrontEnd.GestioneMovimenti.MovimentiWebService.DatiMovimentoDaEffettuareDto.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MovimentiWebService\Init.Sigepro.FrontEnd.GestioneMovimenti.MovimentiWebService.ElementoListaScadenze.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MovimentiWebService\MovimentiFrontofficeService.wsdl" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Backoffice\SIGePro.DatiDinamici\SIGePro.DatiDinamici.v1.csproj">
+      <Project>{9D4E4587-AC9F-44BA-B4E7-492DC01EA466}</Project>
+      <Name>SIGePro.DatiDinamici.v1</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Init.Sigepro.FrontEnd.AppLogic\Init.Sigepro.FrontEnd.AppLogic.csproj">
+      <Project>{C6B96E00-C4D5-418A-80ED-556B4B2FE6C3}</Project>
+      <Name>Init.Sigepro.FrontEnd.AppLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Init.Sigepro.FrontEnd.Infrastructure\Init.Sigepro.FrontEnd.Infrastructure.csproj">
+      <Project>{2C415E9A-9610-4025-8066-6C1DDEA70324}</Project>
+      <Name>Init.Sigepro.FrontEnd.Infrastructure</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\MovimentiWebService\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\MovimentiWebService\MovimentiFrontofficeService.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\MovimentiWebService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\MovimentiWebService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\MovimentiWebService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>rem Synchronize assembly build number with SVN revision
+"$(SolutionDir)Utils\TortoiseSVN\subwcrev.exe" "$(ProjectDir)." "$(SolutionDir)Utils\TortoiseSVN\AssemblyInfo.cs.tmpl" "$(ProjectDir)Properties\AssemblyInfo.cs"</PreBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

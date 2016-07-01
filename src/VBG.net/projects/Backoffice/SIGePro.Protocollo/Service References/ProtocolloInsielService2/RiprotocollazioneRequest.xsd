@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tgen="http://insiel.it/protocollo/schemixsd/TipiGenerali" xmlns:riprotReq="http://insiel.it/protocollo/schemixsd/RiprotocollazioneRequest" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://insiel.it/protocollo/schemixsd/RiprotocollazioneRequest" version="2.0.1" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="tipi_generali.xsd" namespace="http://insiel.it/protocollo/schemixsd/TipiGenerali" />
+  <xs:element name="RiprotocollazioneRequest">
+    <xs:complexType>
+      <xs:all>
+        <xs:element name="utente" type="tgen:Utente" />
+        <xs:element name="estremiRegistrazione" type="tgen:ProtocolloRequest" />
+        <xs:element minOccurs="0" name="codice_ufficio_operante" nillable="true" type="xs:string" />
+        <xs:element name="codice_ufficio" type="xs:string" />
+        <xs:element name="codice_registro" type="xs:string" />
+        <xs:element name="verso" type="tgen:verso" />
+        <xs:element minOccurs="0" name="mittenti" nillable="true" type="riprotReq:Mittenti" />
+        <xs:element minOccurs="0" name="destinatari" nillable="true" type="riprotReq:Destinatari" />
+        <xs:element minOccurs="0" name="uffici" nillable="true" type="riprotReq:Uffici" />
+        <xs:element minOccurs="0" name="classifiche" nillable="true" type="riprotReq:Classifiche" />
+        <xs:element minOccurs="0" name="data_ricezione_spedizione" nillable="true" type="xs:dateTime" />
+        <xs:element minOccurs="0" name="tipo_mittente_mail" nillable="true" type="tgen:tipoMittenteMail" />
+        <xs:element minOccurs="0" name="InserisciInPratica" nillable="true" type="riprotReq:Pratiche" />
+        <xs:element minOccurs="0" name="iteratti" nillable="true" type="xs:boolean" />
+        <xs:element minOccurs="0" name="Mnemonici" nillable="true" type="riprotReq:Mnemonici" />
+        <xs:element minOccurs="0" name="oggettoProtocollo" nillable="true" type="tgen:oggetto" />
+        <xs:element minOccurs="0" name="casellaAOOmittente" nillable="true" type="xs:string" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="Mittenti">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="mittente" type="tgen:MittenteInsProto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Destinatari">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="destinatario" type="tgen:DestinatarioInsProto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Uffici">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ufficio" type="tgen:UfficioInsProto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Classifiche">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="classifica" type="tgen:Classifica" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Pratiche">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Pratiche" nillable="true" type="tgen:PraticaRequest">
+        <xs:annotation>
+          <xs:documentation>n pratiche , anche in aggiornamento</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Mnemonici">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Mnemonico" type="tgen:MnemonicoRequest" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

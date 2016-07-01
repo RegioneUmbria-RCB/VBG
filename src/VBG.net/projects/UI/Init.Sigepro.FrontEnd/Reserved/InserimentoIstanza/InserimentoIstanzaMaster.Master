@@ -1,0 +1,73 @@
+<%@ Master Language="C#" AutoEventWireup="true" MasterPageFile="~/AreaRiservataMaster.Master" Codebehind="InserimentoIstanzaMaster.master.cs" Inherits="Init.Sigepro.FrontEnd.Reserved.InserimentoIstanza.InserimentoIstanzaMaster" %>
+<%@ MasterType VirtualPath="~/AreaRiservataMaster.Master" %>
+
+<asp:Content ID="Content2" ContentPlaceHolderID="headPagina" runat="server">
+
+<script type="text/javascript">
+	require(['app/animazioniPaginatoreSteps'], function (animazioniPaginatoreSteps) {
+		animazioniPaginatoreSteps('paginatoreStep')
+	})
+</script>
+
+
+<asp:ContentPlaceHolder ID="head" runat="server">
+</asp:ContentPlaceHolder>
+</asp:Content>
+
+<asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+	<div id="contenutoStep">
+		<div class="descrizioneStep"><asp:Literal runat="server" ID="ltrDescrizioneStep"></asp:Literal></div>
+		<asp:ContentPlaceHolder ID="stepContent" runat="server">
+		</asp:ContentPlaceHolder>
+	</div>
+	<div class="clear"></div>
+	<div id="paginatoreStep">
+		<asp:Repeater runat="server" ID="rptSteps">
+			<HeaderTemplate>
+				<table>
+					<tr>
+						<% if (!IsFirstStep()){ %>
+						<td>
+							<span runat="server" id="spanFreccial" Visible='<%# !IsFirstStep() %>'>&lt;&lt;&nbsp;</span>
+							<asp:LinkButton runat="server" ID="cmdPrevStep" 
+													   CausesValidation="false" 
+													   Visible='<%# !IsFirstStep() %>' 
+													   Text="Indietro" 
+													   OnClick="cmdPrevStep_Click" 
+													   CssClass="bottoneNavigazione" />
+						</td>
+						<%} %>
+			</HeaderTemplate>
+			<ItemTemplate>
+				<td>
+				<div title="<%# Eval("NomeStep") %>" 
+					 class='<%# Eval("CssClass") %>'>
+						<asp:LinkButton runat="server" ID="lnkVaiAStep" 
+													   CausesValidation="false" 
+													   Text='<%# Eval("IndiceStep") %>' 
+													   CommandArgument='<%# Eval("IndiceStep") %>' 
+													   OnClick="RedirectTo" 
+													   Visible='<%# Eval("MostraLinkVaiA") %>'/>			
+						<asp:Literal runat="server" ID="ltrStep" 
+												    Text='<%# Eval("IndiceStep") %>' 
+													Visible='<%# Eval("MostraLabelStep") %>'/>			
+				</div>
+				</td>
+			</ItemTemplate>
+			<FooterTemplate>
+						<% if (!IsLastStep() && MostraBottoneAvanti){ %>
+						<td>
+							<asp:LinkButton runat="server" ID="cmdNextStep" 
+														   Visible='<%# !IsLastStep() %>' 
+														   Text="Avanti" 
+														   OnClick="cmdNextStep_Click" 
+														   CssClass="bottoneNavigazione" />
+							<span runat="server" id="spanFrecciar" Visible='<%# !IsLastStep() %>'>&nbsp;&gt;&gt;</span>
+						</td>
+						<%} %>
+					</tr> 
+				</table>
+			</FooterTemplate>
+		</asp:Repeater>
+	</div>
+</asp:Content>

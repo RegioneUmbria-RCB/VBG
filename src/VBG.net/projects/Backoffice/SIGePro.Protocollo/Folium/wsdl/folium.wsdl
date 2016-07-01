@@ -1,0 +1,773 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="urn:ProtocolloWebService" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="urn:ProtocolloWebService" xmlns:intf="urn:ProtocolloWebService" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns1="http://ws.folium.agora" xmlns:tns2="http://type.ws.folium.agora" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Apr 22, 2006 (06:55:48 PDT)-->
+ <wsdl:types>
+  <schema targetNamespace="http://ws.folium.agora" xmlns="http://www.w3.org/2001/XMLSchema">
+   <import namespace="urn:ProtocolloWebService"/>
+   <import namespace="http://type.ws.folium.agora"/>
+   <import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+   <complexType name="WSAuthentication">
+    <sequence>
+     <element name="aoo" nillable="true" type="soapenc:string"/>
+     <element name="applicazione" nillable="true" type="soapenc:string"/>
+     <element name="ente" nillable="true" type="soapenc:string"/>
+     <element name="password" nillable="true" type="soapenc:string"/>
+     <element name="username" nillable="true" type="soapenc:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="WSEsito">
+    <sequence>
+     <element name="codiceEsito" nillable="true" type="soapenc:string"/>
+     <element name="descrizioneEsito" nillable="true" type="soapenc:string"/>
+    </sequence>
+   </complexType>
+  </schema>
+  <schema targetNamespace="http://type.ws.folium.agora" xmlns="http://www.w3.org/2001/XMLSchema">
+   <import namespace="urn:ProtocolloWebService"/>
+   <import namespace="http://ws.folium.agora"/>
+   <import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+   <complexType name="VoceTitolario">
+    <sequence>
+     <element name="codice" nillable="true" type="soapenc:string"/>
+     <element name="descrizione" nillable="true" type="soapenc:string"/>
+     <element name="esito" nillable="true" type="tns1:WSEsito"/>
+     <element name="id" nillable="true" type="soapenc:long"/>
+    </sequence>
+   </complexType>
+   <complexType name="Ricerca">
+    <sequence>
+     <element name="codiceTitolario" nillable="true" type="soapenc:string"/>
+     <element name="dataDocumentoA" nillable="true" type="xsd:dateTime"/>
+     <element name="dataDocumentoDa" nillable="true" type="xsd:dateTime"/>
+     <element name="dataProtocolloA" nillable="true" type="xsd:dateTime"/>
+     <element name="dataProtocolloDa" nillable="true" type="xsd:dateTime"/>
+     <element name="mittDest" nillable="true" type="soapenc:string"/>
+     <element name="modalita" nillable="true" type="soapenc:string"/>
+     <element name="numeroA" nillable="true" type="soapenc:string"/>
+     <element name="numeroDa" nillable="true" type="soapenc:string"/>
+     <element name="oggetto" nillable="true" type="soapenc:string"/>
+     <element name="registro" nillable="true" type="soapenc:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="MittenteDestinatario">
+    <sequence>
+     <element name="codiceMezzoSpedizione" type="xsd:string"/>
+     <element name="denominazione" type="xsd:string"/>
+     <element name="email" type="xsd:string"/>
+     <element name="indirizzo" type="xsd:string"/>
+     <element name="invioPC" type="xsd:boolean"/>
+     <element name="codiceMittenteDestinatario" type="xsd:string"/>
+     <element name="citta" nillable="true" type="soapenc:string"/>
+     <element name="cognome" nillable="true" type="soapenc:string"/>
+     <element name="nome" nillable="true" type="soapenc:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="DocumentoProtocollato">
+    <sequence>
+     <element name="contenuto" type="xsd:base64Binary"/>
+     <element name="dataProtocollo" type="xsd:dateTime"/>
+     <element name="isContenuto" type="xsd:boolean"/>
+     <element name="mittentiDestinatari" type="impl:ArrayOf_tns3_MittenteDestinatario"/>
+     <element name="nomeFileContenuto" type="xsd:string"/>
+     <element name="numeroProtocollo" type="xsd:string"/>
+     <element name="oggetto" type="xsd:string"/>
+     <element name="tipoProtocollo" type="xsd:string"/>
+     <element name="esito" nillable="true" type="tns1:WSEsito"/>
+     <element name="dataDocumento" nillable="true" type="xsd:dateTime"/>
+     <element name="id" nillable="true" type="soapenc:long"/>
+     <element name="registro" nillable="true" type="soapenc:string"/>
+     <element name="ufficioCompetente" nillable="true" type="soapenc:string"/>
+     <element name="vociTitolario" nillable="true" type="impl:ArrayOf_soapenc_string"/>
+    </sequence>
+   </complexType>
+   <complexType name="ImmagineDocumentale">
+    <sequence>
+     <element name="contenuto" type="xsd:base64Binary"/>
+     <element name="id" type="soapenc:long"/>
+     <element name="nomeFile" type="xsd:string"/>
+     <element name="esito" nillable="true" type="tns1:WSEsito"/>
+    </sequence>
+   </complexType>
+   <complexType name="Assegnazione">
+    <sequence>
+     <element name="codiceAssegnazione" nillable="true" type="soapenc:string"/>
+     <element name="dataScadenza" nillable="true" type="xsd:dateTime"/>
+     <element name="esito" nillable="true" type="tns1:WSEsito"/>
+     <element name="idProtocollo" nillable="true" type="soapenc:long"/>
+     <element name="note" nillable="true" type="soapenc:string"/>
+     <element name="ufficioAssegnatario" nillable="true" type="soapenc:string"/>
+     <element name="utenteAssegnatario" nillable="true" type="soapenc:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="Allegato">
+    <sequence>
+     <element name="collocazione" nillable="true" type="soapenc:string"/>
+     <element name="contenuto" nillable="true" type="soapenc:base64Binary"/>
+     <element name="descrizione" nillable="true" type="soapenc:string"/>
+     <element name="esito" nillable="true" type="tns1:WSEsito"/>
+     <element name="id" nillable="true" type="soapenc:long"/>
+     <element name="idProfilo" nillable="true" type="soapenc:long"/>
+     <element name="nomeFile" nillable="true" type="soapenc:string"/>
+    </sequence>
+   </complexType>
+  </schema>
+  <schema targetNamespace="urn:ProtocolloWebService" xmlns="http://www.w3.org/2001/XMLSchema">
+   <import namespace="http://type.ws.folium.agora"/>
+   <import namespace="http://ws.folium.agora"/>
+   <import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+   <complexType name="ArrayOf_tns3_VoceTitolario">
+    <complexContent>
+     <restriction base="soapenc:Array">
+      <attribute ref="soapenc:arrayType" wsdl:arrayType="tns2:VoceTitolario[]"/>
+     </restriction>
+    </complexContent>
+   </complexType>
+   <complexType name="ArrayOf_tns3_MittenteDestinatario">
+    <complexContent>
+     <restriction base="soapenc:Array">
+      <attribute ref="soapenc:arrayType" wsdl:arrayType="tns2:MittenteDestinatario[]"/>
+     </restriction>
+    </complexContent>
+   </complexType>
+   <complexType name="ArrayOf_soapenc_string">
+    <complexContent>
+     <restriction base="soapenc:Array">
+      <attribute ref="soapenc:arrayType" wsdl:arrayType="soapenc:string[]"/>
+     </restriction>
+    </complexContent>
+   </complexType>
+   <complexType name="ArrayOf_tns3_DocumentoProtocollato">
+    <complexContent>
+     <restriction base="soapenc:Array">
+      <attribute ref="soapenc:arrayType" wsdl:arrayType="tns2:DocumentoProtocollato[]"/>
+     </restriction>
+    </complexContent>
+   </complexType>
+   <complexType name="ArrayOf_tns3_Allegato">
+    <complexContent>
+     <restriction base="soapenc:Array">
+      <attribute ref="soapenc:arrayType" wsdl:arrayType="tns2:Allegato[]"/>
+     </restriction>
+    </complexContent>
+   </complexType>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="getContenutoAllegatoRequest">
+
+      <wsdl:part name="in0" type="tns1:WSAuthentication"/>
+
+      <wsdl:part name="in1" type="xsd:long"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getAllegatoRequest">
+
+      <wsdl:part name="in0" type="tns1:WSAuthentication"/>
+
+      <wsdl:part name="in1" type="xsd:long"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getContenutoByIdProfiloResponse">
+
+      <wsdl:part name="getContenutoByIdProfiloReturn" type="soapenc:base64Binary"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="testLoginRequest">
+
+      <wsdl:part name="in0" type="tns1:WSAuthentication"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getAllegatiRequest">
+
+      <wsdl:part name="in0" type="tns1:WSAuthentication"/>
+
+      <wsdl:part name="in1" type="xsd:long"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="ricercaProtocolliResponse">
+
+      <wsdl:part name="ricercaProtocolliReturn" type="impl:ArrayOf_tns3_DocumentoProtocollato"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="ricercaTitolarioPerCodiceDescrizioneRequest">
+
+      <wsdl:part name="in0" type="tns1:WSAuthentication"/>
+
+      <wsdl:part name="in1" type="tns2:VoceTitolario"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="protocollaConContenutoResponse">
+
+      <wsdl:part name="protocollaConContenutoReturn" type="tns2:DocumentoProtocollato"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getContenutoByIdProfiloRequest">
+
+      <wsdl:part name="in0" type="tns1:WSAuthentication"/>
+
+      <wsdl:part name="in1" type="xsd:long"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getContenutoAllegatoResponse">
+
+      <wsdl:part name="getContenutoAllegatoReturn" type="soapenc:base64Binary"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getImmagineDocumentaleRequest">
+
+      <wsdl:part name="in0" type="tns1:WSAuthentication"/>
+
+      <wsdl:part name="in1" type="xsd:long"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="inserisciAllegatoRequest">
+
+      <wsdl:part name="in0" type="tns1:WSAuthentication"/>
+
+      <wsdl:part name="in1" type="tns2:Allegato"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="testStatoResponse">
+
+      <wsdl:part name="testStatoReturn" type="tns1:WSEsito"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="testStatoRequest">
+
+      <wsdl:part name="in0" type="tns1:WSAuthentication"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="inserisciContenutoRequest">
+
+      <wsdl:part name="in0" type="tns1:WSAuthentication"/>
+
+      <wsdl:part name="in1" type="tns2:ImmagineDocumentale"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="protocollaConContenutoRequest">
+
+      <wsdl:part name="in0" type="tns1:WSAuthentication"/>
+
+      <wsdl:part name="in1" type="tns2:DocumentoProtocollato"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="inserisciAllegatoResponse">
+
+      <wsdl:part name="inserisciAllegatoReturn" type="tns2:Allegato"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="ricercaTitolarioPerCodiceDescrizioneResponse">
+
+      <wsdl:part name="ricercaTitolarioPerCodiceDescrizioneReturn" type="impl:ArrayOf_tns3_VoceTitolario"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="testLoginResponse">
+
+      <wsdl:part name="testLoginReturn" type="tns1:WSEsito"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="rimuoviAllegatoRequest">
+
+      <wsdl:part name="in0" type="tns1:WSAuthentication"/>
+
+      <wsdl:part name="in1" type="xsd:long"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="ricercaProtocolliRequest">
+
+      <wsdl:part name="in0" type="tns1:WSAuthentication"/>
+
+      <wsdl:part name="in1" type="tns2:Ricerca"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="assegnaRequest">
+
+      <wsdl:part name="in0" type="tns1:WSAuthentication"/>
+
+      <wsdl:part name="in1" type="tns2:Assegnazione"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="inserisciContenutoResponse">
+
+      <wsdl:part name="inserisciContenutoReturn" type="tns2:ImmagineDocumentale"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="protocollaResponse">
+
+      <wsdl:part name="protocollaReturn" type="tns2:DocumentoProtocollato"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getAllegatiResponse">
+
+      <wsdl:part name="getAllegatiReturn" type="impl:ArrayOf_tns3_Allegato"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getImmagineDocumentaleResponse">
+
+      <wsdl:part name="getImmagineDocumentaleReturn" type="tns2:ImmagineDocumentale"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="rimuoviAllegatoResponse">
+
+      <wsdl:part name="rimuoviAllegatoReturn" type="tns2:Allegato"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="protocollaRequest">
+
+      <wsdl:part name="in0" type="tns1:WSAuthentication"/>
+
+      <wsdl:part name="in1" type="tns2:DocumentoProtocollato"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getAllegatoResponse">
+
+      <wsdl:part name="getAllegatoReturn" type="tns2:Allegato"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="assegnaResponse">
+
+      <wsdl:part name="assegnaReturn" type="tns2:Assegnazione"/>
+
+   </wsdl:message>
+
+   <wsdl:portType name="ProtocolloWebService">
+
+      <wsdl:operation name="testLogin" parameterOrder="in0">
+
+         <wsdl:input message="impl:testLoginRequest" name="testLoginRequest"/>
+
+         <wsdl:output message="impl:testLoginResponse" name="testLoginResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="testStato" parameterOrder="in0">
+
+         <wsdl:input message="impl:testStatoRequest" name="testStatoRequest"/>
+
+         <wsdl:output message="impl:testStatoResponse" name="testStatoResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="ricercaTitolarioPerCodiceDescrizione" parameterOrder="in0 in1">
+
+         <wsdl:input message="impl:ricercaTitolarioPerCodiceDescrizioneRequest" name="ricercaTitolarioPerCodiceDescrizioneRequest"/>
+
+         <wsdl:output message="impl:ricercaTitolarioPerCodiceDescrizioneResponse" name="ricercaTitolarioPerCodiceDescrizioneResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="ricercaProtocolli" parameterOrder="in0 in1">
+
+         <wsdl:input message="impl:ricercaProtocolliRequest" name="ricercaProtocolliRequest"/>
+
+         <wsdl:output message="impl:ricercaProtocolliResponse" name="ricercaProtocolliResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="protocolla" parameterOrder="in0 in1">
+
+         <wsdl:input message="impl:protocollaRequest" name="protocollaRequest"/>
+
+         <wsdl:output message="impl:protocollaResponse" name="protocollaResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="protocollaConContenuto" parameterOrder="in0 in1">
+
+         <wsdl:input message="impl:protocollaConContenutoRequest" name="protocollaConContenutoRequest"/>
+
+         <wsdl:output message="impl:protocollaConContenutoResponse" name="protocollaConContenutoResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="inserisciContenuto" parameterOrder="in0 in1">
+
+         <wsdl:input message="impl:inserisciContenutoRequest" name="inserisciContenutoRequest"/>
+
+         <wsdl:output message="impl:inserisciContenutoResponse" name="inserisciContenutoResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="assegna" parameterOrder="in0 in1">
+
+         <wsdl:input message="impl:assegnaRequest" name="assegnaRequest"/>
+
+         <wsdl:output message="impl:assegnaResponse" name="assegnaResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getImmagineDocumentale" parameterOrder="in0 in1">
+
+         <wsdl:input message="impl:getImmagineDocumentaleRequest" name="getImmagineDocumentaleRequest"/>
+
+         <wsdl:output message="impl:getImmagineDocumentaleResponse" name="getImmagineDocumentaleResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getContenutoByIdProfilo" parameterOrder="in0 in1">
+
+         <wsdl:input message="impl:getContenutoByIdProfiloRequest" name="getContenutoByIdProfiloRequest"/>
+
+         <wsdl:output message="impl:getContenutoByIdProfiloResponse" name="getContenutoByIdProfiloResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="inserisciAllegato" parameterOrder="in0 in1">
+
+         <wsdl:input message="impl:inserisciAllegatoRequest" name="inserisciAllegatoRequest"/>
+
+         <wsdl:output message="impl:inserisciAllegatoResponse" name="inserisciAllegatoResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getAllegati" parameterOrder="in0 in1">
+
+         <wsdl:input message="impl:getAllegatiRequest" name="getAllegatiRequest"/>
+
+         <wsdl:output message="impl:getAllegatiResponse" name="getAllegatiResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getAllegato" parameterOrder="in0 in1">
+
+         <wsdl:input message="impl:getAllegatoRequest" name="getAllegatoRequest"/>
+
+         <wsdl:output message="impl:getAllegatoResponse" name="getAllegatoResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getContenutoAllegato" parameterOrder="in0 in1">
+
+         <wsdl:input message="impl:getContenutoAllegatoRequest" name="getContenutoAllegatoRequest"/>
+
+         <wsdl:output message="impl:getContenutoAllegatoResponse" name="getContenutoAllegatoResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="rimuoviAllegato" parameterOrder="in0 in1">
+
+         <wsdl:input message="impl:rimuoviAllegatoRequest" name="rimuoviAllegatoRequest"/>
+
+         <wsdl:output message="impl:rimuoviAllegatoResponse" name="rimuoviAllegatoResponse"/>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="ProtocolloWebServiceSoapBinding" type="impl:ProtocolloWebService">
+
+      <wsdlsoap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="testLogin">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="testLoginRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ProtocolloWebService" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="testLoginResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ProtocolloWebService" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="testStato">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="testStatoRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ProtocolloWebService" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="testStatoResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ProtocolloWebService" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="ricercaTitolarioPerCodiceDescrizione">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="ricercaTitolarioPerCodiceDescrizioneRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ProtocolloWebService" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="ricercaTitolarioPerCodiceDescrizioneResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ProtocolloWebService" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="ricercaProtocolli">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="ricercaProtocolliRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ProtocolloWebService" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="ricercaProtocolliResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ProtocolloWebService" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="protocolla">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="protocollaRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ProtocolloWebService" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="protocollaResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ProtocolloWebService" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="protocollaConContenuto">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="protocollaConContenutoRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ProtocolloWebService" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="protocollaConContenutoResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ProtocolloWebService" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="inserisciContenuto">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="inserisciContenutoRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ProtocolloWebService" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="inserisciContenutoResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ProtocolloWebService" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="assegna">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="assegnaRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ProtocolloWebService" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="assegnaResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ProtocolloWebService" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getImmagineDocumentale">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getImmagineDocumentaleRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ProtocolloWebService" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getImmagineDocumentaleResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ProtocolloWebService" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getContenutoByIdProfilo">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getContenutoByIdProfiloRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ProtocolloWebService" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getContenutoByIdProfiloResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ProtocolloWebService" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="inserisciAllegato">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="inserisciAllegatoRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ProtocolloWebService" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="inserisciAllegatoResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ProtocolloWebService" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getAllegati">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getAllegatiRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ProtocolloWebService" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getAllegatiResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ProtocolloWebService" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getAllegato">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getAllegatoRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ProtocolloWebService" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getAllegatoResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ProtocolloWebService" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getContenutoAllegato">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getContenutoAllegatoRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ProtocolloWebService" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getContenutoAllegatoResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ProtocolloWebService" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="rimuoviAllegato">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="rimuoviAllegatoRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ProtocolloWebService" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="rimuoviAllegatoResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:ProtocolloWebService" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="ProtocolloWebServiceService">
+
+      <wsdl:port binding="impl:ProtocolloWebServiceSoapBinding" name="ProtocolloWebService">
+
+         <wsdlsoap:address location="http://festuccia:8080/folium46/services/ProtocolloWebService"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

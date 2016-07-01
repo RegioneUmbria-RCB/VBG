@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- edited with XMLSpy v2006 sp2 U (http://www.altova.com) by Valentina Martinucci (Engineering) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:simpleType name="AnnoType">
+		<xs:restriction base="xs:integer">
+			<xs:minInclusive value="1900"/>
+			<xs:maxInclusive value="2100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="NumRegType">
+		<xs:restriction base="xs:integer">
+			<xs:minInclusive value="1"/>
+			<xs:maxInclusive value="9999999"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="RegNumUDType">
+		<xs:sequence>
+			<xs:element name="CategoriaRegistro" default="PG">
+				<xs:annotation>
+					<xs:documentation>Valori ammessi: PG=Protocollo Generale; PP=Protocollo Particolare; R=Repertorio; N=Corrispondenza non protocollata</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="PG"/>
+						<xs:enumeration value="PP"/>
+						<xs:enumeration value="R"/>
+						<xs:enumeration value="N"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="SiglaRegistro">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="2"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Anno" type="AnnoType"/>
+			<xs:element name="Numero" type="NumRegType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SoggettoEsternoType">
+		<xs:annotation>
+			<xs:documentation>Soggetto (persona fisica o giuridica) esterno all'AOO</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="FlagNaturaRelConUD">
+				<xs:annotation>
+					<xs:documentation>Indica cosa il soggetto rappresenta per l'unità documentaria registrata. Valori possibili: M=Mittente; D=Destinatario; F=Firmatario</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="M|D|F"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="IdInAnagrafeProt" type="xs:positiveInteger">
+				<xs:annotation>
+					<xs:documentation>Codice identificativo del soggetto nell'anagrafe soggetti del Protocollo.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Denominazione_Cognome" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Denominazione (se persona giuridica) o cognome (se persona fisica)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Nome" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Nome (se valorizzato si tratta di persona fisica)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CodiceFiscale">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="PartitaIva">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="11"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Output_NuovaUD">
+		<xs:annotation>
+			<xs:documentation>ROOT element dello schema. Contiene l'output specifico del Web Service di registrazione di nuova unità documentaria (non l'esito del processo di registrazione dell'unità documentaria e l'eventuale messaggio di errore)</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="IdUD" type="xs:integer">
+					<xs:annotation>
+						<xs:documentation>Identificativo univoco assegnato nel sistema di Protocollo all'unità documentaria registrata</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="EstremiRegistrazione" type="RegNumUDType" maxOccurs="2">
+					<xs:annotation>
+						<xs:documentation>Estremi della/e registrazioni assegnate all'unità documentaria</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="DataEOraRegistrazione" type="xs:dateTime">
+					<xs:annotation>
+						<xs:documentation>Data e ora di registrazione</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="AttachmentInfo" minOccurs="0" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Informazioni sui documenti elettronici passati come attachment del messaggio SOAP e da caricare come file primario/allegato alla registrazione</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="NroAttachment">
+								<xs:annotation>
+									<xs:documentation>N.ro dell'attachment (1 è il primo, 2 il secondo ecc)</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:integer">
+										<xs:minInclusive value="0"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:choice>
+								<xs:sequence>
+									<xs:annotation>
+										<xs:documentation>In caso di file caricato nel sistema</xs:documentation>
+									</xs:annotation>
+									<xs:choice>
+										<xs:element name="FlagPrimario" fixed="1">
+											<xs:annotation>
+												<xs:documentation>Indica se il file è stato caricato come primario</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="NroAllegato" type="xs:positiveInteger">
+											<xs:annotation>
+												<xs:documentation>Indica il n.ro di allegato della registrazione a cui è stato associato il file</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+									</xs:choice>
+									<xs:element name="Impronta" type="xs:string">
+										<xs:annotation>
+											<xs:documentation>Impronta SHA1 del file caricato</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+								</xs:sequence>
+								<xs:element name="MessaggioErrore">
+									<xs:annotation>
+										<xs:documentation>Messaggio di errore che spiega perchè è fallito l'upload del file nel sistema di Protocollo</xs:documentation>
+									</xs:annotation>
+									<xs:simpleType>
+										<xs:restriction base="xs:string"/>
+									</xs:simpleType>
+								</xs:element>
+							</xs:choice>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="NominativiEsterni" type="SoggettoEsternoType" minOccurs="0" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Dati principali di mittenti/destinatari e firmatari esterni dell'unità documentaria</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

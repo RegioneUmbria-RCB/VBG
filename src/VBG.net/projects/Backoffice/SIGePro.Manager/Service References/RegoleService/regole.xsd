@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<schema xmlns:tns="http://gruppoinit.it/sigepro/schemas/messages/regole" xmlns:base="http://gruppoinit.it/sigepro/schemas/messages/base" elementFormDefault="qualified" targetNamespace="http://gruppoinit.it/sigepro/schemas/messages/regole" xmlns="http://www.w3.org/2001/XMLSchema">
+  <import schemaLocation="http://vmdevdesk03:8080/backend/services/regole?xsd=backoffice_oggetti_base.xsd" id="oggettiBase" namespace="http://gruppoinit.it/sigepro/schemas/messages/base" />
+  <element name="GetRegolaRequest" type="tns:RegolaRequest" />
+  <complexType name="RegolaRequest">
+    <sequence>
+      <element minOccurs="1" maxOccurs="1" name="token" type="string" />
+      <element minOccurs="1" maxOccurs="1" name="software" type="string" />
+      <element minOccurs="1" maxOccurs="1" name="nomeRegola" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="recuperaParametri" type="boolean" />
+      <element minOccurs="0" maxOccurs="1" name="codiceComune" type="string" />
+    </sequence>
+  </complexType>
+  <complexType name="RegolaResponse">
+    <sequence>
+      <element name="attiva" type="boolean" />
+      <element minOccurs="0" maxOccurs="unbounded" name="listaParametri" type="tns:ParametroType" />
+    </sequence>
+  </complexType>
+  <complexType name="ParametroType">
+    <sequence>
+      <element minOccurs="1" maxOccurs="1" name="descrizione" />
+      <element minOccurs="1" maxOccurs="1" name="valore" type="string" />
+    </sequence>
+  </complexType>
+  <element name="GetRegolaResponse" type="tns:RegolaResponse" />
+  <element name="GetParametroRegolaRequest" type="tns:ParametroRegolaRequest" />
+  <element name="GetParametroRegolaResponse" type="tns:ParametroRegolaResponse" />
+  <complexType name="ParametroRegolaResponse">
+    <sequence>
+      <choice>
+        <element minOccurs="1" maxOccurs="1" name="parametro" type="tns:ParametroType" />
+        <element minOccurs="1" maxOccurs="1" name="errore" type="base:ErroreBackofficeType" />
+      </choice>
+    </sequence>
+  </complexType>
+  <complexType name="ParametroRegolaRequest">
+    <sequence>
+      <element minOccurs="1" maxOccurs="1" name="token" type="string" />
+      <element minOccurs="1" maxOccurs="1" name="software" type="string" />
+      <element minOccurs="1" maxOccurs="1" name="nomeRegola" type="string" />
+      <element minOccurs="1" maxOccurs="1" name="nomeParametro" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="codiceComune" type="string" />
+    </sequence>
+  </complexType>
+</schema>

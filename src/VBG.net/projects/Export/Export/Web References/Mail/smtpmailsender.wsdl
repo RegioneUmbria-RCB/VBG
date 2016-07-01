@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://init.sigepro.it" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://init.sigepro.it" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://init.sigepro.it">
+      <s:element name="Send">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="software" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="message" type="tns:SIGeProMailMessage" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="SIGeProMailMessage">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="InviaComeHtml" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="Mittente" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CorpoMail" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Oggetto" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Destinatari" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DestinatariInCopia" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DestinatariInCopiaNascosta" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Attachments" type="tns:ArrayOfBinaryObject" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfBinaryObject">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="BinaryObject" nillable="true" type="tns:BinaryObject" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="BinaryObject">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="FileName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FileContent" type="s:base64Binary" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="SendResponse">
+        <s:complexType />
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="SendSoapIn">
+    <wsdl:part name="parameters" element="tns:Send" />
+  </wsdl:message>
+  <wsdl:message name="SendSoapOut">
+    <wsdl:part name="parameters" element="tns:SendResponse" />
+  </wsdl:message>
+  <wsdl:portType name="SmtpMailSenderSoap">
+    <wsdl:operation name="Send">
+      <wsdl:input message="tns:SendSoapIn" />
+      <wsdl:output message="tns:SendSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="SmtpMailSenderHttpGet" />
+  <wsdl:portType name="SmtpMailSenderHttpPost" />
+  <wsdl:binding name="SmtpMailSenderSoap" type="tns:SmtpMailSenderSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Send">
+      <soap:operation soapAction="http://init.sigepro.it/Send" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="SmtpMailSenderSoap12" type="tns:SmtpMailSenderSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Send">
+      <soap12:operation soapAction="http://init.sigepro.it/Send" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="SmtpMailSenderHttpGet" type="tns:SmtpMailSenderHttpGet">
+    <http:binding verb="GET" />
+  </wsdl:binding>
+  <wsdl:binding name="SmtpMailSenderHttpPost" type="tns:SmtpMailSenderHttpPost">
+    <http:binding verb="POST" />
+  </wsdl:binding>
+  <wsdl:service name="SmtpMailSender">
+    <wsdl:port name="SmtpMailSenderSoap" binding="tns:SmtpMailSenderSoap">
+      <soap:address location="http://devel3/aspnet/webservices/wssigeprosmtpmail/smtpmailsender.asmx" />
+    </wsdl:port>
+    <wsdl:port name="SmtpMailSenderSoap12" binding="tns:SmtpMailSenderSoap12">
+      <soap12:address location="http://devel3/aspnet/webservices/wssigeprosmtpmail/smtpmailsender.asmx" />
+    </wsdl:port>
+    <wsdl:port name="SmtpMailSenderHttpGet" binding="tns:SmtpMailSenderHttpGet">
+      <http:address location="http://devel3/aspnet/webservices/wssigeprosmtpmail/smtpmailsender.asmx" />
+    </wsdl:port>
+    <wsdl:port name="SmtpMailSenderHttpPost" binding="tns:SmtpMailSenderHttpPost">
+      <http:address location="http://devel3/aspnet/webservices/wssigeprosmtpmail/smtpmailsender.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

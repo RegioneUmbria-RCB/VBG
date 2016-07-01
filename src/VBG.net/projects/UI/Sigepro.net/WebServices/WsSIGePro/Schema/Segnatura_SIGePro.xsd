@@ -1,0 +1,774 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/03/xml.xsd"/>
+  <xs:element name="AggiornamentoConferma">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Identificatore" />
+        <xs:element ref="MessaggioRicevuto" />
+        <xs:element ref="Riferimenti" minOccurs="0" />
+        <xs:element ref="Descrizione" minOccurs="0" />
+      </xs:sequence>
+      <xs:attribute name="versione" type="xs:string" use="required" fixed="2005-03-29" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Allegati">
+    <xs:complexType>
+      <xs:choice minOccurs="1" maxOccurs="unbounded">
+        <xs:element ref="Documento" />
+        <xs:element ref="Fascicolo" />
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Amministrazione">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Denominazione" />
+        <xs:element ref="CodiceAmministrazione" minOccurs="0" />
+        <xs:choice>
+          <xs:element ref="UnitaOrganizzativa" />
+          <xs:sequence>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element ref="Ruolo" />
+              <xs:element ref="Persona" />
+            </xs:choice>
+            <xs:element ref="IndirizzoPostale" />
+            <xs:element ref="IndirizzoTelematico" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element ref="Telefono" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element ref="Fax" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:choice>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="AnnullamentoProtocollazione">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Identificatore" />
+        <xs:element ref="Motivo" />
+        <xs:element ref="Provvedimento" />
+      </xs:sequence>
+      <xs:attribute name="versione" type="xs:string" use="required" fixed="2005-03-29" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="AOO">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Denominazione" />
+        <xs:element ref="CodiceAOO" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Assegnazione">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="UnitaOrganizzativa" />
+        <xs:element ref="Assegnazione" minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>
+      <xs:attribute name="stato" type="xs:string" use="required" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Assegnazioni">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Assegnazione" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="AutoreProtocollazione">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="CAP">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Civico">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Classifica">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="CodiceAmministrazione" minOccurs="0" />
+        <xs:element ref="CodiceAOO" minOccurs="0" />
+        <xs:element ref="Denominazione" minOccurs="0" />
+        <xs:element ref="Livello" maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="CodiceAmministrazione">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="CodiceAOO">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="CodiceFiscale">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Cognome">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="CollocazioneTelematica">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Comune">
+    <xs:complexType mixed="true">
+      <xs:attribute name="codiceISTAT" type="xs:string" use="optional" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="ConfermaRicezione">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Identificatore" />
+        <xs:element ref="MessaggioRicevuto" />
+        <xs:element ref="Riferimenti" minOccurs="0" />
+        <xs:element ref="Descrizione" minOccurs="0" />
+      </xs:sequence>
+      <xs:attribute name="versione" type="xs:string" use="required" fixed="2005-03-29" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="ContestoProcedurale">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="CodiceAmministrazione" />
+        <xs:element ref="CodiceAOO" />
+        <xs:element ref="Identificativo" />
+        <xs:element ref="TipoContestoProcedurale" minOccurs="0" />
+        <xs:element ref="Oggetto" minOccurs="0" />
+        <xs:element ref="Classifica" minOccurs="0" maxOccurs="unbounded" />
+        <xs:element ref="DataAvvio" minOccurs="0" />
+        <xs:element ref="Note" minOccurs="0" />
+      </xs:sequence>
+      <xs:attribute name="rife" type="xs:IDREF" use="optional" />
+      <xs:attribute name="id" type="xs:ID" use="optional" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="DataArrivo">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="DataAvvio">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="DataDocumento">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="DataRegistrazione">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="DataTermine">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Denominazione">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Descrizione">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:choice>
+          <xs:element ref="Documento" />
+          <xs:element ref="TestoDelMessaggio" />
+        </xs:choice>
+        <xs:element ref="Allegati" minOccurs="0" />
+        <xs:element ref="Note" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="DescrizioneAmministrazione">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="DescrizioneAOO">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="DescrizioneMessaggio">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Destinatario">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:choice>
+          <xs:sequence>
+            <xs:element ref="Amministrazione" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element ref="AOO" minOccurs="0" />
+          </xs:sequence>
+          <xs:element ref="Persona" minOccurs="0" maxOccurs="unbounded" />
+        </xs:choice>
+        <xs:element ref="IndirizzoTelematico" minOccurs="0" />
+        <xs:element ref="Telefono" minOccurs="0" maxOccurs="unbounded" />
+        <xs:element ref="Fax" minOccurs="0" maxOccurs="unbounded" />
+        <xs:element ref="IndirizzoPostale" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Destinazione">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="IndirizzoTelematico" />
+        <xs:element ref="Destinatario" minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>
+      <xs:attribute name="confermaRicezione" use="optional" default="no">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="si" />
+            <xs:enumeration value="no" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Documento">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:sequence minOccurs="0">
+          <xs:element ref="CollocazioneTelematica" />
+          <xs:element ref="Impronta" minOccurs="0" />
+        </xs:sequence>
+        <xs:element ref="TitoloDocumento" minOccurs="0" />
+        <xs:element ref="PrimaRegistrazione" minOccurs="0" />
+        <xs:element ref="TipoDocumento" minOccurs="0" />
+        <xs:element ref="Oggetto" minOccurs="0" />
+        <xs:element ref="Classifica" minOccurs="0" maxOccurs="unbounded" />
+        <xs:element ref="NumeroPagine" minOccurs="0" />
+        <xs:element ref="Note" minOccurs="0" />
+      </xs:sequence>
+      <xs:attribute name="rife" type="xs:IDREF" use="optional" />
+      <xs:attribute name="tipoRiferimento" use="optional" default="MIME">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="MIME" />
+            <xs:enumeration value="telematico" />
+            <xs:enumeration value="cartaceo" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="nome" type="xs:string" use="optional" />
+      <xs:attribute name="tipoMIME" type="xs:string" use="optional" />
+      <xs:attribute name="id" type="xs:ID" use="optional" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Fascicolo">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="CodiceAmministrazione" minOccurs="0" />
+        <xs:element ref="CodiceAOO" minOccurs="0" />
+        <xs:element ref="UnitaOrganizzativa" minOccurs="0" />
+        <xs:element ref="Oggetto" minOccurs="0" />
+        <xs:element ref="Identificativo" minOccurs="0" />
+        <xs:element ref="Classifica" minOccurs="0" maxOccurs="unbounded" />
+        <xs:element ref="Procedimento" minOccurs="0" maxOccurs="unbounded" />
+        <xs:element ref="Note" minOccurs="0" />
+        <xs:choice>
+          <xs:element ref="Documento" />
+          <xs:element ref="Fascicolo" />
+        </xs:choice>
+      </xs:sequence>
+      <xs:attribute name="rife" type="xs:IDREF" use="optional" />
+      <xs:attribute name="dataCreazione" type="xs:string" use="optional" />
+      <xs:attribute name="autore" type="xs:string" use="optional" />
+      <xs:attribute name="id" type="xs:ID" use="optional" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Fax">
+    <xs:complexType mixed="true">
+      <xs:attribute name="note" type="xs:string" use="optional" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Identificativo">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Identificatore">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="CodiceAmministrazione" minOccurs="0" />
+        <xs:element ref="DescrizioneAmministrazione" minOccurs="0" />
+        <xs:element ref="CodiceAOO" minOccurs="0" />
+        <xs:element ref="DescrizioneAOO" minOccurs="0" />
+        <xs:element ref="NumeroRegistrazione" minOccurs="0" />
+        <xs:element ref="DataRegistrazione" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Impronta">
+    <xs:complexType mixed="true">
+      <xs:attribute name="codifica" type="xs:string" use="required" fixed="base64" />
+      <xs:attribute name="algoritmo" type="xs:string" use="required" fixed="SHA-1" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="IndirizzoPostale">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element ref="Denominazione" />
+        <xs:sequence>
+          <xs:element ref="Toponimo" />
+          <xs:element ref="Civico" />
+          <xs:element ref="CAP" />
+          <xs:element ref="Comune" />
+          <xs:element ref="Provincia" />
+          <xs:element ref="Nazione" minOccurs="0" />
+        </xs:sequence>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="IndirizzoTelematico">
+    <xs:complexType mixed="true">
+      <xs:attribute name="tipo" use="optional" default="smtp">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="smtp" />
+            <xs:enumeration value="uri" />
+            <xs:enumeration value="NMTOKEN" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="note" type="xs:string" use="optional" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="InterventoOperatore">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Intestazione">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Identificatore" />
+        <xs:element ref="PrimaRegistrazione" minOccurs="0" />
+        <xs:element ref="OraRegistrazione" minOccurs="0" />
+        <xs:element ref="Origine" />
+        <xs:element ref="Destinazione" maxOccurs="unbounded" />
+        <xs:element ref="PerConoscenza" minOccurs="0" maxOccurs="unbounded" />
+        <xs:element ref="Risposta" minOccurs="0" />
+        <xs:element ref="Riservato" minOccurs="0" />
+        <xs:element ref="InterventoOperatore" minOccurs="0" />
+        <xs:element ref="RiferimentoDocumentiCartacei" minOccurs="0" />
+        <xs:element ref="RiferimentiTelematici" minOccurs="0" />
+        <xs:element ref="Registro" />
+        <xs:element ref="Oggetto" />
+        <xs:element ref="Classifica" minOccurs="0" maxOccurs="unbounded" />
+        <xs:element ref="RiferimentoPadre" minOccurs="0" />
+        <xs:element ref="RiferimentoFiglio" minOccurs="0" maxOccurs="unbounded" />
+        <xs:element ref="Assegnazioni" minOccurs="0" maxOccurs="unbounded" />
+        <xs:element ref="ListaFascicoli" minOccurs="0" />
+        <xs:element ref="Note" minOccurs="0" />
+        <xs:element ref="Parametri" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="ListaFascicoli">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Fascicolo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Livello">
+    <xs:complexType mixed="true">
+      <xs:attribute name="nome" type="xs:string" use="optional" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Messaggio">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:choice>
+          <xs:element ref="Identificatore" />
+          <xs:element ref="DescrizioneMessaggio" />
+        </xs:choice>
+        <xs:element ref="PrimaRegistrazione" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="MessaggioRicevuto">
+    <xs:complexType>
+      <xs:choice>
+        <xs:sequence>
+          <xs:element ref="Identificatore" />
+          <xs:element ref="PrimaRegistrazione" minOccurs="0" />
+        </xs:sequence>
+        <xs:element ref="DescrizioneMessaggio" />
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Mittente">
+    <xs:complexType>
+      <xs:choice>
+        <xs:sequence>
+          <xs:element ref="Amministrazione" />
+          <xs:element ref="AOO" minOccurs="0" />
+        </xs:sequence>
+        <xs:sequence>
+          <xs:element ref="Denominazione" />
+          <xs:element ref="Persona" minOccurs="0"/>
+        </xs:sequence>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Motivo">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Nazione">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Nome">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Note">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="NoteProtocollazione">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="NotificaEccezione">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Identificatore" minOccurs="0" />
+        <xs:element ref="MessaggioRicevuto" />
+        <xs:element ref="Motivo" />
+      </xs:sequence>
+      <xs:attribute name="versione" type="xs:string" use="required" fixed="2005-03-29" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="NumeroPagine">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="NumeroRegistrazione">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="TipologiaDocumento">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Oggetto">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="OraArrivo">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="OraRegistrazione">
+    <xs:complexType mixed="true">
+      <xs:attribute name="tempo" use="optional" default="locale">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="locale" />
+            <xs:enumeration value="rupa" />
+            <xs:enumeration value="NMTOKEN" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Origine">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="IndirizzoTelematico" />
+        <xs:element ref="Mittente" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Parametri">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Parametro" maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Parametro">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="NomeParametro" />
+        <xs:element ref="ValoreParametro" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="NomeParametro">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="ValoreParametro">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="PerConoscenza">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="IndirizzoTelematico" />
+        <xs:element ref="Destinatario" minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>
+      <xs:attribute name="confermaRicezione" use="optional" default="no">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="si" />
+            <xs:enumeration value="no" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Persona">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:choice>
+          <xs:element ref="Denominazione" />
+          <xs:sequence>
+            <xs:element ref="Nome" minOccurs="0" />
+            <xs:element ref="Cognome" />
+            <xs:element ref="Titolo" minOccurs="0" />
+            <xs:element ref="CodiceFiscale" minOccurs="0" />
+          </xs:sequence>
+        </xs:choice>
+        <xs:element ref="Identificativo" minOccurs="0" />
+      </xs:sequence>
+      <xs:attribute name="rife" type="xs:IDREF" use="optional" />
+      <xs:attribute name="id" type="xs:ID" use="optional" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="PrimaRegistrazione">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Identificatore" />
+        <xs:element ref="AutoreProtocollazione" />
+        <xs:element ref="DataDocumento" />
+        <xs:element ref="DataArrivo" />
+        <xs:element ref="OraArrivo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Procedimento">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="CodiceAmministrazione" />
+        <xs:element ref="CodiceAOO" />
+        <xs:element ref="Identificativo" />
+        <xs:element ref="TipoProcedimento" minOccurs="0" />
+        <xs:element ref="Oggetto" minOccurs="0" />
+        <xs:element ref="Classifica" minOccurs="0" maxOccurs="unbounded" />
+        <xs:element ref="Responsabile" minOccurs="0" />
+        <xs:element ref="DataAvvio" minOccurs="0" />
+        <xs:element ref="DataTermine" minOccurs="0" />
+        <xs:element ref="Note" minOccurs="0" />
+      </xs:sequence>
+      <xs:attribute name="rife" type="xs:IDREF" use="optional" />
+      <xs:attribute name="id" type="xs:ID" use="optional" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Provincia">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Provvedimento">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Registro">
+    <xs:complexType mixed="true">
+      <xs:attribute name="tipo" use="optional" default="Arrivo">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="Arrivo" />
+            <xs:enumeration value="Partenza" />
+            <xs:enumeration value="Interno" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Responsabile">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Persona" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Riferimenti">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element ref="Messaggio" />
+        <xs:element ref="ContestoProcedurale" />
+        <xs:element ref="Procedimento" />
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="RiferimentiTelematici" type="xs:string" />
+
+  <xs:element name="RiferimentoDocumentiCartacei" type="xs:string" />
+
+  <xs:element name="RiferimentoFiglio">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Identificatore" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="RiferimentoPadre">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Identificatore" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Riservato">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Risposta">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="IndirizzoTelematico" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Ruolo">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Denominazione" />
+        <xs:element ref="Identificativo" minOccurs="0" />
+        <xs:element ref="Persona" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Segnatura">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Intestazione" />
+        <xs:element ref="Riferimenti" minOccurs="0" />
+        <xs:element ref="Descrizione" />
+      </xs:sequence>
+      <xs:attribute name="versione" type="xs:string" use="required" fixed="2005-03-29" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Telefono">
+    <xs:complexType mixed="true">
+      <xs:attribute name="note" type="xs:string" use="optional" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="TestoDelMessaggio">
+    <xs:complexType>
+      <xs:attribute name="tipoRiferimento" type="xs:NMTOKEN" use="required" fixed="MIME" />
+      <xs:attribute name="tipoMIME" type="xs:string" use="optional" />
+      <xs:attribute name="id" type="xs:string" use="optional" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="TipoContestoProcedurale">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="TipoDocumento">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="TipoProcedimento">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Titolo">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="TitoloDocumento">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Toponimo">
+    <xs:complexType mixed="true">
+      <xs:attribute name="dug" type="xs:string" use="optional" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="UnitaOrganizzativa">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Denominazione" />
+        <xs:element ref="Identificativo" minOccurs="0" />
+        <xs:choice>
+          <xs:element ref="UnitaOrganizzativa" />
+          <xs:sequence>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element ref="Ruolo" />
+              <xs:element ref="Persona" />
+            </xs:choice>
+            <xs:element ref="IndirizzoPostale" />
+            <xs:element ref="IndirizzoTelematico" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element ref="Telefono" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element ref="Fax" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:choice>
+      </xs:sequence>
+      <xs:attribute name="tipo" use="optional" default="permanente">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="permanente" />
+            <xs:enumeration value="temporanea" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

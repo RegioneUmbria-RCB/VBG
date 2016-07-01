@@ -1,0 +1,155 @@
+<%@ Master Language="C#" AutoEventWireup="true" Codebehind="AreaRiservataMaster.master.cs" Inherits="Init.Sigepro.FrontEnd.AreaRiservataMaster" %>
+<%@ Register TagPrefix="cc1" Assembly="Init.Sigepro.FrontEnd.WebControls" Namespace="Init.Sigepro.FrontEnd.WebControls.Common" %>
+<!DOCTYPE html>
+<html>
+<head runat="server">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta http-equiv="Content-Type" content="text/html; utf-8" />
+	<title>Untitled Page</title>
+	<link href="~/css/less/less.include.css" type="text/css" rel="stylesheet" id="cssIncludeLink"  />
+	<link href="~/css/ionicons.min.css" type="text/css" rel="stylesheet" id="Link1" />
+	<link href="~/css/stili2.css" type="text/css" rel="stylesheet" id="cssLink" />
+	
+
+	<script type="text/javascript" src='<%= ResolveClientUrl("~/js/lib/jquery.js")%>'></script>
+	<script type="text/javascript" src='<%= ResolveClientUrl("~/js/lib/requirejs.js")%>' ></script>
+
+	
+	<script type="text/javascript">
+		var paths = {
+			"app": "../app",
+		};
+
+		if (!window.jQuery ) {
+			paths.jquery = ['../lib/jquery'];
+		} else {
+			define('jquery', [], function () { return window.jQuery; });
+		}
+
+		requirejs.config({
+			"baseUrl": '<%= ResolveClientUrl("~/js/lib") %>',
+			"waitSeconds": 0,	// Rimuove il timeout per le installazioni più lente
+			"paths":paths,
+			"shim": {
+			    "jquery.ui": ["jquery"],
+			    "jquery.tooltip.fix": ["jquery"],
+				"jquery.dropdown": ["jquery"],
+				"jquery.form": ["jquery"],
+				"jquery.hoverbox": ["jquery"],
+				"jquery.stickyfloat": ["jquery"],
+				'json': {exports:'JSON'}
+			}
+		});
+
+		require(['jquery', 'app/layoutfix'], function ($, layoutfix) {
+			$(layoutfix.apply());
+		});		
+	</script>
+
+	<asp:ContentPlaceHolder ID="headPagina" runat="server">
+	</asp:ContentPlaceHolder>
+
+	<%if (!String.IsNullOrEmpty(AnalyticsId)) {%>
+		<script type="text/javascript">
+			(function(i, s, o, g, r, a, m) {
+				i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function() {
+					(i[r].q = i[r].q || []).push(arguments)
+				}, i[r].l = 1 * new Date(); a = s.createElement(o),
+				m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+			})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+			ga('create', '<%=AnalyticsId %>', 'auto');
+			ga('send', 'pageview');
+
+		</script>
+	<%}%>
+</head>
+<body>
+	<form id="form1" runat="server">
+		<div>
+			<div id="intestazionePagina">
+				<div id="hrTop">
+				</div>
+				<div id="logo">
+					<asp:LinkButton runat="server" ID="lnkTornaAllaHome" OnClick="lnkTornaAllaHome_Click" ToolTip="Torna alla pagina iniziale dell'area riservata"  >
+						<cc1:ImmagineFrontoffice runat="server" ID="imgLogo" IdRisorsa="logo_suap" />
+					</asp:LinkButton>
+				</div>
+
+				<div id="nomeComuneV2">
+					<h1>Area riservata</h1>
+					<h2><asp:Label runat="server" ID="lblNomeComune2">Nome Comune</asp:Label></h2>
+				</div>
+
+				<div id="datiUtenteV2">
+					Utente connesso:
+					<asp:Label runat="server" ID="lblNomeUtente2">Nome utente</asp:Label>
+				</div>
+
+
+				<div id="nomeComune">
+					<img src='<%=ResolveClientUrl("~/Images/DotMenuSx.gif") %>' alt="." id="preNomeComune" />
+					<asp:Label runat="server" ID="lblNomeComune">Nome Comune</asp:Label>
+					<img src='<%=ResolveClientUrl("~/Images/DotMenuSx.gif") %>' alt="." id="postNomeComune" />
+					<asp:LinkButton runat="server" ID="lnkHOme" OnClick="cmdHome_Click"><img src='<%=ResolveClientUrl("~/Images/img_home.gif") %>' alt="torna alla homepage" /></asp:LinkButton>
+				</div>
+
+				<div class="clear"></div>
+				<div id="datiUtente">
+					<span id="preNomeUtente">
+						Utente Connesso:
+					</span>
+					<asp:Label runat="server" ID="lblNomeUtente">Nome utente</asp:Label>
+				</div>
+				<div id="spacer">
+				</div>
+			</div>
+			<div id="contenitorePrincipale">
+				<div id="menuNavigazione">
+					<asp:Repeater runat="server" ID="rptMenu" >
+						<HeaderTemplate>
+							<ul>
+						</HeaderTemplate>
+							
+						<ItemTemplate>
+							<li>
+                                <asp:HyperLink runat="server" ID="hlMenuUrl" NavigateUrl='<%#Eval("Url") %>' Text='<%#Eval("Descrizione") %>' Target='<%#Eval("Target") %>' />
+                                <%--<asp:LinkButton runat="server" ID="lnkMenu" CausesValidation="false" CommandArgument='<%#DataBinder.Eval( Container.DataItem , "Url" ) %>' Text='<%#DataBinder.Eval( Container.DataItem , "Descrizione" ) %>'></asp:LinkButton></li>--%>
+						</ItemTemplate>
+							
+						<FooterTemplate>
+							</ul>
+						</FooterTemplate>
+					</asp:Repeater>
+				</div>
+				<div id="contenuti">
+					<div class="titoloPagina"><asp:label runat="server" ID="lblTitoloPagina" /></div>
+					<div class="errori">
+						<asp:Repeater runat="server" ID="rptErrori">
+							<HeaderTemplate>
+							<b>Sono stati riscontrati i seguenti errori:</b>
+								<ul>
+							</HeaderTemplate>
+						
+							<ItemTemplate>
+								<li><%# DataBinder.Eval(Container,"DataItem") %></li>
+							</ItemTemplate>
+							
+							<FooterTemplate>
+								</ul>
+							</FooterTemplate>
+						</asp:Repeater>
+					</div>
+					<asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+					</asp:ContentPlaceHolder>
+				</div>
+				<div class="clear">&nbsp;</div>
+			</div>
+			<div id="piedePagina"></div>
+		</div>
+	</form>
+
+	<script type="text/javascript" src='<%= ResolveClientUrl("~/cookie_script.js")%>'></script>
+    <script type="text/javascript">mostrainformativaCookies('<%= ResolveClientUrl("~/InformativaCookies.pdf")%>');</script>
+</body>
+</html>
