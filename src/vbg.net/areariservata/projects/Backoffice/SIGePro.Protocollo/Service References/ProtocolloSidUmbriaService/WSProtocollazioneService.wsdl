@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://ws.sidumbriaws.beta80group.it/" name="WSProtocollazioneService" targetNamespace="http://ws.sidumbriaws.beta80group.it/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema xmlns="http://www.w3.org/2001/XMLSchema">
+      <xsd:import schemaLocation="wsprotocollazione_schema1.xsd" namespace="http://ws.sidumbriaws.beta80group.it/" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="getEstremiRichiesta">
+    <wsdl:part name="parameters" element="tns:getEstremiRichiesta" />
+  </wsdl:message>
+  <wsdl:message name="getEstremiRichiestaResponse">
+    <wsdl:part name="parameters" element="tns:getEstremiRichiestaResponse" />
+  </wsdl:message>
+  <wsdl:message name="protocollazioneDocumento">
+    <wsdl:part name="parameters" element="tns:protocollazioneDocumento" />
+  </wsdl:message>
+  <wsdl:message name="protocollazioneDocumentoResponse">
+    <wsdl:part name="parameters" element="tns:protocollazioneDocumentoResponse" />
+  </wsdl:message>
+  <wsdl:portType name="WSProtocollazioneSEI">
+    <wsdl:operation name="getEstremiRichiesta">
+      <wsdl:input name="getEstremiRichiesta" message="tns:getEstremiRichiesta" />
+      <wsdl:output name="getEstremiRichiestaResponse" message="tns:getEstremiRichiestaResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="protocollazioneDocumento">
+      <wsdl:input name="protocollazioneDocumento" message="tns:protocollazioneDocumento" />
+      <wsdl:output name="protocollazioneDocumentoResponse" message="tns:protocollazioneDocumentoResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="WSProtocollazioneServiceSoapBinding" type="tns:WSProtocollazioneSEI">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="getEstremiRichiesta">
+      <soap:operation soapAction="urn:GetEstremiRichiesta" style="document" />
+      <wsdl:input name="getEstremiRichiesta">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getEstremiRichiestaResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="protocollazioneDocumento">
+      <soap:operation soapAction="urn:ProtocollazioneDocumento" style="document" />
+      <wsdl:input name="protocollazioneDocumento">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="protocollazioneDocumentoResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="WSProtocollazioneService">
+    <wsdl:port name="WSProtocollazionePort" binding="tns:WSProtocollazioneServiceSoapBinding">
+      <soap:address location="http://10.101.101.220:8082/SIDUMBRIAWS/services/WSProtocollazionePort" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

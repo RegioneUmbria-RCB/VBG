@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2005 rel. 3 U (http://www.altova.com) by any (INSIEL S.p.A.) -->
+<xs:schema xmlns:etic="http://insiel.it/protocollo/schemixsd/Etichetta" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tgen="http://insiel.it/protocollo/schemixsd/TipiGenerali" targetNamespace="http://insiel.it/protocollo/schemixsd/Etichetta" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:import namespace="http://insiel.it/protocollo/schemixsd/TipiGenerali" schemaLocation="tipi_generali.xsd"/>
+	<xs:element name="EtichettaRequest">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:all>
+				<xs:element name="Utente" type="tgen:Utente"/>
+				<xs:element name="Registrazione" type="tgen:ProtocolloRequest"/>
+				<xs:element name="codiceSequenza" type="xs:string" nillable="true" minOccurs="0"/>
+				<xs:element name="doppiaProtocollazione" type="xs:boolean" nillable="true" minOccurs="0"/>
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="EtichettaResponse">
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="Etichetta" type="xs:base64Binary" nillable="true"/>
+				<xs:element name="Errore" type="tgen:Errore"/>
+			</xs:choice>
+			<xs:attribute name="esito" type="xs:boolean" use="required"/>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

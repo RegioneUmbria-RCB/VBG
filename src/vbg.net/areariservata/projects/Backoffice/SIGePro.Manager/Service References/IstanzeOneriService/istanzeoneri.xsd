@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<schema xmlns:tns="http://gruppoinit.it/sigepro/schemas/messages/istanzeoneri" xmlns:base="http://gruppoinit.it/sigepro/schemas/messages/base" xmlns:xmime="http://www.w3.org/2005/05/xmlmime" elementFormDefault="qualified" targetNamespace="http://gruppoinit.it/sigepro/schemas/messages/istanzeoneri" xmlns="http://www.w3.org/2001/XMLSchema">
+  <import schemaLocation="http://devel9:8081/backend/services/istanzeoneri?xsd=backoffice_oggetti_base.xsd" id="oggettiBase" namespace="http://gruppoinit.it/sigepro/schemas/messages/base" />
+  <element name="RegistraPagamentoRequest">
+    <complexType>
+      <sequence>
+        <element minOccurs="1" maxOccurs="1" name="token" type="string" />
+        <element minOccurs="1" maxOccurs="1" name="riferimentoOnere" type="integer" />
+        <element minOccurs="1" maxOccurs="1" name="importo" type="decimal" />
+        <element minOccurs="1" maxOccurs="1" name="dataPagamento" type="date" />
+        <element minOccurs="0" maxOccurs="1" name="modalitaPagamento" type="tns:ModalitaPagamentoType" />
+        <element minOccurs="0" maxOccurs="1" name="riferimentiPagamento">
+          <simpleType>
+            <restriction base="string">
+              <minLength value="0" />
+              <maxLength value="200" />
+            </restriction>
+          </simpleType>
+        </element>
+        <element minOccurs="0" maxOccurs="1" name="note">
+          <annotation>
+            <documentation>Annotazioni</documentation>
+          </annotation>
+          <simpleType>
+            <restriction base="string">
+              <minLength value="0" />
+              <maxLength value="4000" />
+            </restriction>
+          </simpleType>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="RegistraPagamentoRataRequest">
+    <complexType>
+      <sequence>
+        <element minOccurs="1" maxOccurs="1" name="token" type="string" />
+        <element minOccurs="1" maxOccurs="1" name="riferimentoIstanza" type="integer" />
+        <element minOccurs="1" maxOccurs="1" name="riferimentoCausale" type="integer" />
+        <element minOccurs="1" maxOccurs="1" name="numeroRata" type="integer" />
+        <element minOccurs="1" maxOccurs="1" name="importo" type="decimal" />
+        <element minOccurs="1" maxOccurs="1" name="dataPagamento" type="date" />
+        <element minOccurs="0" maxOccurs="1" name="modalitaPagamento" type="tns:ModalitaPagamentoType" />
+        <element minOccurs="0" maxOccurs="1" name="riferimentiPagamento">
+          <simpleType>
+            <restriction base="string">
+              <minLength value="0" />
+              <maxLength value="200" />
+            </restriction>
+          </simpleType>
+        </element>
+        <element minOccurs="0" maxOccurs="1" name="note">
+          <annotation>
+            <documentation>Annotazioni</documentation>
+          </annotation>
+          <simpleType>
+            <restriction base="string">
+              <minLength value="0" />
+              <maxLength value="4000" />
+            </restriction>
+          </simpleType>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="InsertOnereRequest">
+    <complexType>
+      <sequence>
+        <element minOccurs="1" maxOccurs="1" name="token" type="string" />
+        <element minOccurs="1" maxOccurs="1" name="riferimentoIstanza" type="integer" />
+        <element minOccurs="1" maxOccurs="1" name="importo" type="decimal" />
+        <element minOccurs="1" maxOccurs="1" name="riferimentoCausale" type="integer" />
+        <element minOccurs="0" maxOccurs="1" name="riferimentoEndoprocedimento" type="integer" />
+        <element minOccurs="0" maxOccurs="1" name="codiceresponsabile" type="integer" />
+        <element minOccurs="0" maxOccurs="1" name="datascadenza" type="dateTime" />
+        <element minOccurs="0" maxOccurs="1" name="dataPagamento" type="dateTime" />
+        <element minOccurs="0" maxOccurs="1" name="modalitaPagamento" type="tns:ModalitaPagamentoType" />
+        <element minOccurs="0" maxOccurs="1" name="importopagato" type="decimal" />
+        <element minOccurs="0" maxOccurs="1" name="codiceamministrazioni" type="integer" />
+        <element minOccurs="0" maxOccurs="1" name="numerorata" type="integer" />
+        <element minOccurs="0" maxOccurs="1" name="importoInteresse" type="decimal" />
+        <element minOccurs="0" maxOccurs="1" name="onereRateizzato" type="boolean" />
+        <element minOccurs="0" maxOccurs="1" name="riferimentiPagamento">
+          <simpleType>
+            <restriction base="string">
+              <minLength value="0" />
+              <maxLength value="200" />
+            </restriction>
+          </simpleType>
+        </element>
+        <element minOccurs="0" maxOccurs="1" name="note">
+          <annotation>
+            <documentation>Annotazioni</documentation>
+          </annotation>
+          <simpleType>
+            <restriction base="string">
+              <minLength value="0" />
+              <maxLength value="4000" />
+            </restriction>
+          </simpleType>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <complexType name="ModalitaPagamentoType">
+    <sequence>
+      <element name="codice" type="string" />
+      <element name="descrizione" type="string" />
+    </sequence>
+  </complexType>
+  <element name="RegistraPagamentoResponse" type="base:EsitoOperazioneType" />
+  <element name="InsertOnereResponse">
+    <complexType>
+      <sequence>
+        <element minOccurs="0" maxOccurs="1" name="codiceonere" type="integer" />
+        <element minOccurs="1" maxOccurs="1" name="esitoOperazione" type="base:EsitoOperazioneType" />
+      </sequence>
+    </complexType>
+  </element>
+</schema>

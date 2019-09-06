@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified"
+  elementFormDefault="qualified"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="Dati">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="TipoDocumento" type="xs:string" minOccurs="0"/>
+        <xs:element name="TipoSmistamento" type="xs:string" minOccurs="0"/>
+        <xs:element name="Oggetto" type="xs:string" minOccurs="0"/>
+        <xs:element name="Flusso" type="xs:string"/>
+        <xs:element name="Classifica" type="xs:string" minOccurs="0"/>
+        <xs:element name="NumProtMitt" type="xs:string" minOccurs="0"/>
+        <xs:element name="DataProtMitt" type="xs:string" minOccurs="0"/>
+        <xs:element name="Mittenti">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="Anagrafe" minOccurs="0" maxOccurs="unbounded"/>
+              <xs:element ref="Amministrazione" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Destinatari">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="Anagrafe" minOccurs="0" maxOccurs="unbounded"/>
+              <xs:element ref="Amministrazione" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Allegati">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="Allegato" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Anagrafe">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Cod" type="xs:string" maxOccurs="1" minOccurs="1"/>
+        <xs:element name="Mezzo" type="xs:string" maxOccurs="1" minOccurs="0"/>
+        <xs:element name="ModalitaTrasmissione" type="xs:string" maxOccurs="1" minOccurs="0"/>
+        <xs:element name="Email" type="xs:string" maxOccurs="1" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Amministrazione">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Cod" type="xs:string" maxOccurs="1" minOccurs="1"/>
+        <xs:element name="Mezzo" type="xs:string" maxOccurs="1" minOccurs="0"/>
+        <xs:element name="ModalitaTrasmissione" type="xs:string" maxOccurs="1" minOccurs="0"/>
+        <xs:element name="Email" type="xs:string" maxOccurs="1" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Allegato">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Cod" type="xs:string"/>
+        <xs:element name="Descrizione" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

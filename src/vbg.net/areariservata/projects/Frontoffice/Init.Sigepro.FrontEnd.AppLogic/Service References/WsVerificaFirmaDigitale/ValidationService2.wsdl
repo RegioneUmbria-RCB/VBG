@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:ns2="http://schemas.xmlsoap.org/soap/http" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://impl.ws.dss.markt.ec.europa.eu/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://ws.dss.markt.ec.europa.eu/" name="ValidationService" targetNamespace="http://impl.ws.dss.markt.ec.europa.eu/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:import namespace="http://ws.dss.markt.ec.europa.eu/" location="http://devdesk18:8080/dss-webapp/wservice/validationService?wsdl=ValidationService.wsdl" />
+  <wsdl:types />
+  <wsdl:binding name="ValidationServiceSoapBinding" type="ns1:ValidationService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="validateDocument">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="validateDocument">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="validateDocumentResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="IOException">
+        <soap:fault use="literal" name="IOException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ValidationService">
+    <wsdl:port name="ValidationServiceImplPort" binding="tns:ValidationServiceSoapBinding">
+      <soap:address location="http://devdesk18:8080/dss-webapp/wservice/validationService" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

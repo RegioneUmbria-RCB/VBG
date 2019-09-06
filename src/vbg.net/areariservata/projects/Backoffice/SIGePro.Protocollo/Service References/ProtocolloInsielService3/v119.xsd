@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://insiel.it/protocollo/schemixsd/getTipiDoc" xmlns:tgen="http://insiel.it/protocollo/schemixsd/tipiGenerali" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://insiel.it/protocollo/schemixsd/getTipiDoc" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://193.42.71.39:8082/protows2-collaudoPN/services/protocollo/v1?xsd=tipiGenerali.xsd" namespace="http://insiel.it/protocollo/schemixsd/tipiGenerali" />
+  <xs:element name="TipiDocRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="utente" type="tgen:Utente" />
+        <xs:element minOccurs="0" name="categoria" type="tns:categoria" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="TipiDocResponse">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="tipiDocumento" type="tns:TipoDocumento" />
+        <xs:element name="errore" type="tgen:Errore" />
+      </xs:choice>
+      <xs:attribute name="esito" type="xs:boolean" use="required" />
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="TipoDocumento">
+    <xs:sequence>
+      <xs:element name="codice" type="xs:string" />
+      <xs:element name="descrizione" type="xs:string" />
+      <xs:element name="categoria" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="categoria">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="POST" />
+      <xs:enumeration value="PRAT" />
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

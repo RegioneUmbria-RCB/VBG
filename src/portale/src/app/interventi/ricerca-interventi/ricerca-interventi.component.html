@@ -1,0 +1,45 @@
+<div class="ricerca-testuale">
+    <div class="form-group">
+        <div class="input-group">
+            <input type="text" class="form-control" [(ngModel)]="text" (keyup)="onKeyUp($event.target.value, $event)" [placeholder]="segnapostoTesto" />
+            <span class="input-group-addon" *ngIf="!loaded">
+                <i class="glyphicon glyphicon-refresh"></i>
+            </span>
+            <span class="input-group-addon" *ngIf="loaded">
+                <i class="glyphicon glyphicon-search"></i>
+            </span>
+        </div>
+
+        <div class="search-results" *ngIf="text && totalmatches > 0">
+            <div *ngFor="let match of matches; let i=index;">
+                <div *ngIf="match.length">
+                    <h3 *ngIf="i === 0 && mostraTitoliSezioni">Altri procedimenti</h3>
+                    <h3 *ngIf="i === 1 && mostraTitoliSezioni">Procedimenti gestiti con modulistica unificata</h3>
+
+                    <ul>
+                        <li *ngFor="let elemento of match | slice:0:10">
+
+                            <a *ngIf="elemento.hasChilds" [routerLink]="[match.urlRedirect]" [queryParams]="{open: elemento.id}" (click)="chiudiRicerca()">
+                                <i class="glyphicon glyphicon-folder-close"></i> {{elemento.text}}
+                            </a>
+
+                            <a *ngIf="!elemento.hasChilds" [routerLink]="[match.urlRedirect, elemento.id]" (click)="chiudiRicerca()">
+                                <i class="glyphicon glyphicon glyphicon-file"></i> {{elemento.text}}
+                            </a>
+                        </li>
+                    </ul>
+
+                    <small *ngIf="match.length >= 10">Primi 10 risultati di {{match.length}}</small>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="search-results" *ngIf="text && totalmatches === 0">
+            La ricerca di "{{text}}" non ha prodotto risultati
+        </div>
+
+
+
+    </div>
+</div>

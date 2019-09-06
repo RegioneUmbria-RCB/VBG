@@ -1,0 +1,38 @@
+<div class="vista-albero">
+
+    <h3>{{titoloSezione}}</h3>
+
+    <nav aria-label="breadcrumb" *ngIf="lastNode.length">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a [routerLink]="router.url.path" [queryParams]="{open: '-1'}">
+                    <i class="glyphicon glyphicon-home" (click)="ripristinaGerarchia('-1')"></i>
+                </a>
+            </li>
+            <li *ngFor="let item of lastNode; let i=index;" [ngClass]="{'breadcrumb-item':i != lastNode.length-1, 'active':i == lastNode.length-1}">
+                    <a [routerLink]="router.url.path" [queryParams]="{open: item.id}" (click)="ripristinaGerarchia(item.id)" *ngIf="i != lastNode.length-1">
+                        {{item.descrizione}}
+                    </a>
+                    <span *ngIf="i == lastNode.length-1">{{item.descrizione}}</span>
+            </li>
+        </ol>
+    </nav>
+<!--
+    <div class="torna-indietro" *ngIf="lastNode.length" (click)="tornaIndietro(lastNode[lastNode.length-1])">
+        <h4>
+            <i class="glyphicon glyphicon-chevron-left"></i> {{lastNode.length ? lastNode[lastNode.length-1].descrizione : ''}}
+        </h4>
+    </div>
+-->
+    <div class="albero">
+        <ul>
+            <li *ngFor="let item of dataSource" (click)="elementoSelezionato(item)">
+                <i class="glyphicon glyphicon-folder-close" *ngIf="item.hasChilds"></i>
+                <i class="glyphicon glyphicon-file" *ngIf="!item.hasChilds"></i> {{item.text}}
+                <div class="pull-right">
+                    <i class="glyphicon glyphicon-chevron-right"></i>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

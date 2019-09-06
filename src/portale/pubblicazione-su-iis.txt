@@ -1,0 +1,45 @@
+La guida è disponibile all'indirizzo: 
+https://blogs.msdn.microsoft.com/premier_developer/2017/06/14/tips-for-running-an-angular-app-in-iis/
+
+Fondamentalmente occorre lanciare il comando 
+
+    > ng build --prod
+
+se si desidera pubblicare l'applicazione sulla root del web server, altrimenti utilizzare 
+
+    > ng build --prod --base-href /nome-applicazione/
+
+se si desidera pubblicare l'applicazione nel path http://www.miosito.com/nome-applicazione/
+
+Una volta preparati i files di installazione occorre creare una virtual directory sotto IIS.
+
+#Deep linking
+Per permettere il deep linking ed evitare errori di tipo 404 quando si chiamano direttamente pagine dell'applicazione
+senza passare per la home è necessario installare il package "url-rewrite" da https://www.iis.net/downloads/microsoft/url-rewrite
+
+Dopo aver configurato l'url-rewrite è necessario creare un nuovo web.config nella root dell'applcazione che
+permetta il redirect di url non esistenti. Un esempio di web.config è:
+
+<configuration>
+<system.webServer>
+  <rewrite>
+    <rules>
+      <rule name="Angular Routes" stopProcessing="true">
+        <match url=".*" />
+	  <conditions logicalGrouping="MatchAll">
+	    <add input="{REQUEST_FILENAME}" matchType="IsFile" negate="true" />
+	    <add input="{REQUEST_FILENAME}" matchType="IsDirectory" negate="true" />
+	  </conditions>
+	  <action type="Rewrite" url="/MyApp/" />
+	  <!--<action type="Rewrite" url="/" />-->
+      </rule>
+    </rules>
+  </rewrite>
+</system.webServer>
+</configuration>
+
+
+
+Per altre informazioni consultare la guida all'indirizzo
+
+https://blogs.msdn.microsoft.com/premier_developer/2017/06/14/tips-for-running-an-angular-app-in-iis/

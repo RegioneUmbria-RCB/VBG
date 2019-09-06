@@ -1,0 +1,27 @@
+<div *ngIf="dataSource && dataSource.length">
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Obbligatorio</th>
+                <th>Descrizione</th>
+                <th>Scarica</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr *ngFor="let item of dataSource">
+                <td><i class="glyphicon glyphicon-ok" *ngIf="item.obbligatorio"></i> </td>
+                <td [innerHtml]="item.descrizione"></td>
+
+                <td>
+                    <span class="link" (click)="download(item.codiceOggetto)" *ngIf="item.codiceOggetto">Scarica</span>
+
+                    <div *ngIf="item.downloads && item.downloads.length">
+                        <span class="link" *ngFor="let d of item.downloads" (click)="download(d.codiceOggetto)">Scarica</span>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+
+    </table>
+</div>

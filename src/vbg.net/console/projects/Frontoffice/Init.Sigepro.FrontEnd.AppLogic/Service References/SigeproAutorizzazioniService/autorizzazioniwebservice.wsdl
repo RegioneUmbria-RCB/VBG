@@ -1,0 +1,440 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:s1="http://tempuri.org/AbstractTypes" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="GetAutorizzazioni">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="registri" type="tns:ArrayOfString" />
+            <s:element minOccurs="1" maxOccurs="1" name="codiceAnagrafe" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="espressioneFormattazioneDati" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="codiceManifestazione" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="codiceUso" nillable="true" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetAutorizzazioniResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAutorizzazioniResult" type="tns:ArrayOfListaAutorizzazioniItem" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfListaAutorizzazioniItem">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ListaAutorizzazioniItem" nillable="true" type="tns:ListaAutorizzazioniItem" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ListaAutorizzazioniItem">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Codice" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Descrizione" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetAutorizzazioniConCodiceIntervento">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="registri" type="tns:ArrayOfString" />
+            <s:element minOccurs="1" maxOccurs="1" name="codiceAnagrafe" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="espressioneFormattazioneDati" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="codiceIntervento" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAutorizzazioniConCodiceInterventoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAutorizzazioniConCodiceInterventoResult" type="tns:ArrayOfListaAutorizzazioniItem" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAutorizzazione">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="idAutorizzazione" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="codiceManifestazione" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="codiceUso" nillable="true" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAutorizzazioneResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAutorizzazioneResult" type="tns:DettagliAutorizzazione" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="DettagliAutorizzazione">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Codice" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Numero" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Data" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="Ente" type="tns:EnteAutorizzazione" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumeroPresenze" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="EnteAutorizzazione">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Codice" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Descrizione" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetAutorizzazioneConCodiceIntervento">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="idAutorizzazione" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="codiceIntervento" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAutorizzazioneConCodiceInterventoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAutorizzazioneConCodiceInterventoResult" type="tns:DettagliAutorizzazione" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetEnti">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetEntiResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetEntiResult" type="tns:ArrayOfEnteAutorizzazione" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfEnteAutorizzazione">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="EnteAutorizzazione" nillable="true" type="tns:EnteAutorizzazione" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ArrayOfListaAutorizzazioniItem" nillable="true" type="tns:ArrayOfListaAutorizzazioniItem" />
+      <s:element name="DettagliAutorizzazione" nillable="true" type="tns:DettagliAutorizzazione" />
+      <s:element name="ArrayOfEnteAutorizzazione" nillable="true" type="tns:ArrayOfEnteAutorizzazione" />
+    </s:schema>
+    <s:schema targetNamespace="http://tempuri.org/AbstractTypes">
+      <s:import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+      <s:complexType name="StringArray">
+        <s:complexContent mixed="false">
+          <s:restriction base="soapenc:Array">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="unbounded" name="String" type="s:string" />
+            </s:sequence>
+          </s:restriction>
+        </s:complexContent>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GetAutorizzazioniSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAutorizzazioni" />
+  </wsdl:message>
+  <wsdl:message name="GetAutorizzazioniSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAutorizzazioniResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAutorizzazioniConCodiceInterventoSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAutorizzazioniConCodiceIntervento" />
+  </wsdl:message>
+  <wsdl:message name="GetAutorizzazioniConCodiceInterventoSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAutorizzazioniConCodiceInterventoResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAutorizzazioneSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAutorizzazione" />
+  </wsdl:message>
+  <wsdl:message name="GetAutorizzazioneSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAutorizzazioneResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAutorizzazioneConCodiceInterventoSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAutorizzazioneConCodiceIntervento" />
+  </wsdl:message>
+  <wsdl:message name="GetAutorizzazioneConCodiceInterventoSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAutorizzazioneConCodiceInterventoResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetEntiSoapIn">
+    <wsdl:part name="parameters" element="tns:GetEnti" />
+  </wsdl:message>
+  <wsdl:message name="GetEntiSoapOut">
+    <wsdl:part name="parameters" element="tns:GetEntiResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAutorizzazioniConCodiceInterventoHttpGetIn">
+    <wsdl:part name="token" type="s:string" />
+    <wsdl:part name="registri" type="s1:StringArray" />
+    <wsdl:part name="codiceAnagrafe" type="s:string" />
+    <wsdl:part name="espressioneFormattazioneDati" type="s:string" />
+    <wsdl:part name="codiceIntervento" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetAutorizzazioniConCodiceInterventoHttpGetOut">
+    <wsdl:part name="Body" element="tns:ArrayOfListaAutorizzazioniItem" />
+  </wsdl:message>
+  <wsdl:message name="GetAutorizzazioneConCodiceInterventoHttpGetIn">
+    <wsdl:part name="token" type="s:string" />
+    <wsdl:part name="idAutorizzazione" type="s:string" />
+    <wsdl:part name="codiceIntervento" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetAutorizzazioneConCodiceInterventoHttpGetOut">
+    <wsdl:part name="Body" element="tns:DettagliAutorizzazione" />
+  </wsdl:message>
+  <wsdl:message name="GetEntiHttpGetIn">
+    <wsdl:part name="token" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetEntiHttpGetOut">
+    <wsdl:part name="Body" element="tns:ArrayOfEnteAutorizzazione" />
+  </wsdl:message>
+  <wsdl:message name="GetAutorizzazioniConCodiceInterventoHttpPostIn">
+    <wsdl:part name="token" type="s:string" />
+    <wsdl:part name="registri" type="s1:StringArray" />
+    <wsdl:part name="codiceAnagrafe" type="s:string" />
+    <wsdl:part name="espressioneFormattazioneDati" type="s:string" />
+    <wsdl:part name="codiceIntervento" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetAutorizzazioniConCodiceInterventoHttpPostOut">
+    <wsdl:part name="Body" element="tns:ArrayOfListaAutorizzazioniItem" />
+  </wsdl:message>
+  <wsdl:message name="GetAutorizzazioneConCodiceInterventoHttpPostIn">
+    <wsdl:part name="token" type="s:string" />
+    <wsdl:part name="idAutorizzazione" type="s:string" />
+    <wsdl:part name="codiceIntervento" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetAutorizzazioneConCodiceInterventoHttpPostOut">
+    <wsdl:part name="Body" element="tns:DettagliAutorizzazione" />
+  </wsdl:message>
+  <wsdl:message name="GetEntiHttpPostIn">
+    <wsdl:part name="token" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetEntiHttpPostOut">
+    <wsdl:part name="Body" element="tns:ArrayOfEnteAutorizzazione" />
+  </wsdl:message>
+  <wsdl:portType name="AutorizzazioniWebServiceSoap">
+    <wsdl:operation name="GetAutorizzazioni">
+      <wsdl:input message="tns:GetAutorizzazioniSoapIn" />
+      <wsdl:output message="tns:GetAutorizzazioniSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAutorizzazioniConCodiceIntervento">
+      <wsdl:input message="tns:GetAutorizzazioniConCodiceInterventoSoapIn" />
+      <wsdl:output message="tns:GetAutorizzazioniConCodiceInterventoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAutorizzazione">
+      <wsdl:input message="tns:GetAutorizzazioneSoapIn" />
+      <wsdl:output message="tns:GetAutorizzazioneSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAutorizzazioneConCodiceIntervento">
+      <wsdl:input message="tns:GetAutorizzazioneConCodiceInterventoSoapIn" />
+      <wsdl:output message="tns:GetAutorizzazioneConCodiceInterventoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetEnti">
+      <wsdl:input message="tns:GetEntiSoapIn" />
+      <wsdl:output message="tns:GetEntiSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="AutorizzazioniWebServiceHttpGet">
+    <wsdl:operation name="GetAutorizzazioniConCodiceIntervento">
+      <wsdl:input message="tns:GetAutorizzazioniConCodiceInterventoHttpGetIn" />
+      <wsdl:output message="tns:GetAutorizzazioniConCodiceInterventoHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAutorizzazioneConCodiceIntervento">
+      <wsdl:input message="tns:GetAutorizzazioneConCodiceInterventoHttpGetIn" />
+      <wsdl:output message="tns:GetAutorizzazioneConCodiceInterventoHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetEnti">
+      <wsdl:input message="tns:GetEntiHttpGetIn" />
+      <wsdl:output message="tns:GetEntiHttpGetOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="AutorizzazioniWebServiceHttpPost">
+    <wsdl:operation name="GetAutorizzazioniConCodiceIntervento">
+      <wsdl:input message="tns:GetAutorizzazioniConCodiceInterventoHttpPostIn" />
+      <wsdl:output message="tns:GetAutorizzazioniConCodiceInterventoHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAutorizzazioneConCodiceIntervento">
+      <wsdl:input message="tns:GetAutorizzazioneConCodiceInterventoHttpPostIn" />
+      <wsdl:output message="tns:GetAutorizzazioneConCodiceInterventoHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetEnti">
+      <wsdl:input message="tns:GetEntiHttpPostIn" />
+      <wsdl:output message="tns:GetEntiHttpPostOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="AutorizzazioniWebServiceSoap" type="tns:AutorizzazioniWebServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetAutorizzazioni">
+      <soap:operation soapAction="http://tempuri.org/GetAutorizzazioni" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAutorizzazioniConCodiceIntervento">
+      <soap:operation soapAction="http://tempuri.org/GetAutorizzazioniConCodiceIntervento" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAutorizzazione">
+      <soap:operation soapAction="http://tempuri.org/GetAutorizzazione" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAutorizzazioneConCodiceIntervento">
+      <soap:operation soapAction="http://tempuri.org/GetAutorizzazioneConCodiceIntervento" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetEnti">
+      <soap:operation soapAction="http://tempuri.org/GetEnti" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="AutorizzazioniWebServiceSoap12" type="tns:AutorizzazioniWebServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetAutorizzazioni">
+      <soap12:operation soapAction="http://tempuri.org/GetAutorizzazioni" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAutorizzazioniConCodiceIntervento">
+      <soap12:operation soapAction="http://tempuri.org/GetAutorizzazioniConCodiceIntervento" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAutorizzazione">
+      <soap12:operation soapAction="http://tempuri.org/GetAutorizzazione" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAutorizzazioneConCodiceIntervento">
+      <soap12:operation soapAction="http://tempuri.org/GetAutorizzazioneConCodiceIntervento" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetEnti">
+      <soap12:operation soapAction="http://tempuri.org/GetEnti" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="AutorizzazioniWebServiceHttpGet" type="tns:AutorizzazioniWebServiceHttpGet">
+    <http:binding verb="GET" />
+    <wsdl:operation name="GetAutorizzazioniConCodiceIntervento">
+      <http:operation location="/GetAutorizzazioniConCodiceIntervento" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAutorizzazioneConCodiceIntervento">
+      <http:operation location="/GetAutorizzazioneConCodiceIntervento" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetEnti">
+      <http:operation location="/GetEnti" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="AutorizzazioniWebServiceHttpPost" type="tns:AutorizzazioniWebServiceHttpPost">
+    <http:binding verb="POST" />
+    <wsdl:operation name="GetAutorizzazioniConCodiceIntervento">
+      <http:operation location="/GetAutorizzazioniConCodiceIntervento" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAutorizzazioneConCodiceIntervento">
+      <http:operation location="/GetAutorizzazioneConCodiceIntervento" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetEnti">
+      <http:operation location="/GetEnti" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="AutorizzazioniWebService">
+    <wsdl:port name="AutorizzazioniWebServiceSoap" binding="tns:AutorizzazioniWebServiceSoap">
+      <soap:address location="http://devel3/aspnet/webservices/wsautorizzazioni/autorizzazioniwebservice.asmx" />
+    </wsdl:port>
+    <wsdl:port name="AutorizzazioniWebServiceSoap12" binding="tns:AutorizzazioniWebServiceSoap12">
+      <soap12:address location="http://devel3/aspnet/webservices/wsautorizzazioni/autorizzazioniwebservice.asmx" />
+    </wsdl:port>
+    <wsdl:port name="AutorizzazioniWebServiceHttpGet" binding="tns:AutorizzazioniWebServiceHttpGet">
+      <http:address location="http://devel3/aspnet/webservices/wsautorizzazioni/autorizzazioniwebservice.asmx" />
+    </wsdl:port>
+    <wsdl:port name="AutorizzazioniWebServiceHttpPost" binding="tns:AutorizzazioniWebServiceHttpPost">
+      <http:address location="http://devel3/aspnet/webservices/wsautorizzazioni/autorizzazioniwebservice.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

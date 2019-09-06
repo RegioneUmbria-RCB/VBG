@@ -1,0 +1,82 @@
+<%@ Master Language="C#" AutoEventWireup="true" Inherits="SigeproNetMaster" Codebehind="SigeproNetMaster.master.cs" %>
+<%@ Register Src="CustomControls/SigeproHelp.ascx" TagName="SigeproHelp" TagPrefix="uc1" %>
+<%@ Register Src="CustomControls/ControlloIntestazione.ascx" TagName="ControlloIntestazione" TagPrefix="uc2" %>
+<!DOCTYPE html>
+<html lang="it">
+<%--
+L'inclusione del foglio di stile e del javascript di avvio avviene nel metodo OnPreRender della BasePage
+--%>
+<head id="pageHead" runat="server">
+	<title>Untitled Page</title>
+	<base target="_self" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta http-equiv="Content-Type" content="text/html; utf-8" />
+	<link rel="stylesheet" type="text/css" media="all" href="~/Stili/Sigepro.css" />
+	<link rel="stylesheet" type="text/css" media="all" href="~/Stili/jqueryui/jquery-ui.custom.min.css" />
+    <link rel="stylesheet" type="text/css" media="all" href="~/fonts/font-awesome/css/font-awesome.min.css" />
+	<script type="text/javascript" src="<%= ResolveClientUrl("~/js/jquery.min.js") %>"></script>
+	<script type="text/javascript" src="<%= ResolveClientUrl("~/js/jquery-ui.min.js") %>"></script>
+    <script type="text/javascript" src="<%= ResolveClientUrl("~/js/jquery.tooltip.fix.js") %>"></script>
+	<script type="text/javascript" src="<%= ResolveClientUrl("~/js/jquery.form.js") %>"></script>
+	<script type="text/javascript" src='<%= ResolveClientUrl("~/js/JSON.js")%>'></script>	
+	<script type="text/javascript" src="<%= ResolveClientUrl("~/js/Sigepronet.js") %>"></script>	
+
+	<script type="text/javascript">
+
+		$(function () {
+			$('fieldset>legend').each(function () {
+				$(this).html("<span>" + $(this).html() + "</span>");
+			});
+            FixLayout();
+
+            $.datepicker.setDefaults({
+                dateFormat: "dd/mm/yy"
+            });
+		});
+	
+	</script>
+
+	<asp:ContentPlaceHolder ID="headPagina" runat="server">
+	</asp:ContentPlaceHolder>
+
+</head>
+<body>
+
+
+	<form id="form1" runat="server">
+			
+
+		<div id="BloccoIntestazione">
+			<div id="TitoloPagina">
+				<uc2:ControlloIntestazione runat="server" ID="intestazionePagina" />
+			</div>
+			<div id="BoxHelp">
+				<uc1:SigeproHelp ID="SigeproHelp1" runat="server" />
+			</div>
+			<div class="clear" ></div>
+		</div>
+		
+		<div id="CorpoPagina">
+			<asp:Repeater runat="server" id="rptErrori" EnableViewState="false">
+				<HeaderTemplate>
+					<div class="riepilogoErrori">
+					Sono stati riscontrati i seguenti errori:
+					<ul>
+				</HeaderTemplate>
+				<ItemTemplate>
+					<li><asp:Literal runat="server" ID="ltrErrore" Text='<%# DataBinder.Eval(Container,"DataItem") %>'/></li>
+				</ItemTemplate>
+				<FooterTemplate>
+					</ul>
+					</div>
+				</FooterTemplate>
+			</asp:Repeater>
+			<asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+			</asp:ContentPlaceHolder>
+		</div>
+		<div id="HelpContainer"></div>
+	</form>
+	
+
+</body>
+</html>

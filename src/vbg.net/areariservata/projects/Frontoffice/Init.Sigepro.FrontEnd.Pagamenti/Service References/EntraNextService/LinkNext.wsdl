@@ -1,0 +1,3060 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://entranext.it/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:s1="http://entranext.it/fohead" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://entranext.it/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://entranext.it/">
+      <s:element name="LoginRequest" type="tns:LoginRequest" />
+      <s:complexType name="LoginRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextRequest">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" form="unqualified" name="Versione" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" form="unqualified" name="Identificativo" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" form="unqualified" name="Username" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" form="unqualified" name="PasswordMD5" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="LinkNextRequest">
+        <s:annotation>
+          <s:appinfo>
+            <keepNamespaceDeclarations>xmlsn</keepNamespaceDeclarations>
+          </s:appinfo>
+        </s:annotation>
+      </s:complexType>
+      <s:element name="LoginResponse" type="tns:LoginResponse" />
+      <s:complexType name="LoginResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextResponse">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="TokenAuth" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="LinkNextResponse">
+        <s:annotation>
+          <s:appinfo>
+            <keepNamespaceDeclarations>xmlsn</keepNamespaceDeclarations>
+          </s:appinfo>
+        </s:annotation>
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Esito" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Descrizione" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Dettagli" type="tns:ArrayOfString" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="InserisciPosizioniInAttesaRequest" type="tns:InserisciPosizioniInAttesaRequest" />
+      <s:complexType name="InserisciPosizioniInAttesaRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextRequest">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" form="unqualified" name="UrlBack" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" form="unqualified" name="UrlReturn" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="unbounded" name="PosizioniDebitorie" type="tns:PosizioneDebitoriaInAttesa" />
+              <s:element minOccurs="0" maxOccurs="1" form="unqualified" name="UrlNotificaRT" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="PosizioneDebitoriaInAttesa">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Descrizione" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="AnnoImposta" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Numero" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Sezionale" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Note" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RiferimentoPraticaEsterna" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ImportoDovuto" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="Annullato" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="GestioneIva" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="CodiceSottoservizio" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SoggettoVersante" type="tns:SoggettoVersante" />
+          <s:element minOccurs="0" maxOccurs="1" name="SoggettoPagatore" type="tns:SoggettoPagatore" />
+          <s:element minOccurs="0" maxOccurs="unbounded" name="SezioniParametriSpecifici" nillable="true" type="tns:SezioneParametriSpecifici" />
+          <s:element minOccurs="0" maxOccurs="1" name="NumeroDocumentoEsterno" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Dettagli" type="tns:PosizioneDebitoriaInAttesa_Dettaglio" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="SoggettoVersante">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:SoggettoBase" />
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="SoggettoBase" abstract="true">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="NaturaGiuridica" type="tns:NaturaGiuridica" />
+          <s:element minOccurs="0" maxOccurs="1" name="RagioneSociale" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Cognome" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Nome" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CodiceFiscale" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PartitaIva" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CodiceIsoNazionalita" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Residenza" type="tns:Ubicazione" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="NaturaGiuridica">
+        <s:restriction base="s:string">
+          <s:enumeration value="NonDefinita" />
+          <s:enumeration value="PersonaFisica" />
+          <s:enumeration value="PersonaGiuridica" />
+          <s:enumeration value="DittaIndividuale" />
+          <s:enumeration value="PubblicaAmministrazione" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="Ubicazione">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Riferimento" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Comune" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Localita" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Provincia" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CAP" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Indirizzo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="NumeroCivico" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Lettera" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Km" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CodiceVia" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="SoggettoPagatore">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:SoggettoBase" />
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="SezioneParametriSpecifici">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ParametriSpecifici" type="tns:ArrayOfParametroSpecifico" />
+        </s:sequence>
+        <s:attribute name="Sezione" type="s:string" />
+      </s:complexType>
+      <s:complexType name="ArrayOfParametroSpecifico">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ParametroSpecifico" nillable="true" type="tns:ParametroSpecifico" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ParametroSpecifico">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Nome" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Valore" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PosizioneDebitoriaInAttesa_Dettaglio">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="NomeVoceDiCosto" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Quantita" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="Importo" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="Iva" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="Descrizione" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CausaleImporto" type="tns:CausaliImporti" />
+          <s:element minOccurs="0" maxOccurs="unbounded" name="SezioniParametriSpecifici" nillable="true" type="tns:SezioneParametriSpecifici" />
+          <s:element minOccurs="1" maxOccurs="1" name="AliquotaIva" nillable="true" type="tns:IVA" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumeroAccertamentoContabile" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AnnoAccertamentoContabile" nillable="true" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="CausaliImporti">
+        <s:restriction base="s:string">
+          <s:enumeration value="Servizi" />
+          <s:enumeration value="Sanzioni" />
+          <s:enumeration value="Spese" />
+          <s:enumeration value="Bollo" />
+          <s:enumeration value="Interessi" />
+          <s:enumeration value="Arrotondamento" />
+          <s:enumeration value="DepositiCauzionali" />
+          <s:enumeration value="RimborsoDepositiCauzionali" />
+          <s:enumeration value="RimborsoServizi" />
+          <s:enumeration value="SpeseTenutaConto" />
+          <s:enumeration value="ImpostaRegistro" />
+          <s:enumeration value="Commissioni" />
+          <s:enumeration value="InteressiPassiviCCP" />
+          <s:enumeration value="SpeseDomiciliazione" />
+          <s:enumeration value="CommissioniBolloSpeseTenutaConto" />
+          <s:enumeration value="CommissioniSpeseTenutaConto" />
+          <s:enumeration value="Urgenza" />
+          <s:enumeration value="SanzioniInfedele" />
+          <s:enumeration value="SanzioniOmessa" />
+          <s:enumeration value="SanzioniLiquidazione" />
+          <s:enumeration value="Addizionali" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="IVA">
+        <s:restriction base="s:string">
+          <s:enumeration value="IVA_22" />
+          <s:enumeration value="IVA_10" />
+          <s:enumeration value="IVA_4" />
+          <s:enumeration value="E01" />
+          <s:enumeration value="E02" />
+          <s:enumeration value="E03" />
+          <s:enumeration value="E04" />
+          <s:enumeration value="E05" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="PosizioneDebitoriaInAttesaResult">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:PosizioneDebitoriaInAttesa">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="IUV" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="InserisciPosizioniInAttesaResponse" type="tns:InserisciPosizioniInAttesaResponse" />
+      <s:complexType name="InserisciPosizioniInAttesaResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextResponse">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="IdentificativoTransazione" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Url" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="unbounded" name="PosizioniDebitorie" type="tns:PosizioneDebitoriaInAttesaResult" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="InserisciPosizioneRequest" type="tns:InserisciPosizioneRequest" />
+      <s:complexType name="InserisciPosizioneRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextRequest">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="PosizioniDebitoria" type="tns:PosizioneDebitoria" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="PosizioneDebitoria">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Descrizione" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="AnnoImposta" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Numero" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Sezionale" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Note" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RiferimentoPraticaEsterna" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ImportoDovuto" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="Annullato" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="GestioneIva" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="NumeroProtocollo" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataProtocollo" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataEmissione" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataInizioPeriodo" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataFinePeriodo" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="TipoDocumento" type="tns:TipiDocumentiSDI" />
+          <s:element minOccurs="0" maxOccurs="1" name="Contribuente" type="tns:Contribuente" />
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Rate" type="tns:PosizioneDebitoria_Rata" />
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Dettagli" type="tns:PosizioneDebitoria_Dettaglio" />
+          <s:element minOccurs="0" maxOccurs="1" name="RiepilogoIva" type="tns:ArrayOfPosizioneDebitoria_RiepilogoIva" />
+          <s:element minOccurs="0" maxOccurs="unbounded" name="SezioniParametriSpecifici" nillable="true" type="tns:SezioneParametriSpecifici" />
+          <s:element minOccurs="0" maxOccurs="1" name="ID_RUOLO" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NomeFileAcquisito" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="RiferimentoPraticaEsternaPrecedente" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Documento" nillable="true" type="s:base64Binary" />
+          <s:element minOccurs="1" maxOccurs="1" name="ScadenzaSoluzioneUnica" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="RiferimentoRuoloEsterno" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="QuintoCampoSoluzioneUnica" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="IUVSoluzioneUnica" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TipoDocumentoPagamento" type="tns:TipiDocumentoPagamento" />
+          <s:element minOccurs="1" maxOccurs="1" name="ModalitaPagamentoContestuale" nillable="true" type="tns:ModalitaPagamentoFuoriNodo" />
+          <s:element minOccurs="0" maxOccurs="1" name="DataNotificaImportazione" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Pagamenti" nillable="true" type="tns:PagamentoFuoriNodo" />
+          <s:element minOccurs="0" maxOccurs="1" name="NumeroDocumentoEsterno" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="TipiDocumentiSDI">
+        <s:restriction base="s:string">
+          <s:enumeration value="Avviso" />
+          <s:enumeration value="Fattura" />
+          <s:enumeration value="PromemoriaDiMancatoPagamento" />
+          <s:enumeration value="SollecitoNonNotificato" />
+          <s:enumeration value="SollecitoNotificato" />
+          <s:enumeration value="IngiunzioneFiscale" />
+          <s:enumeration value="AccertamentoTRBMIN_Liquidazione" />
+          <s:enumeration value="AccertamentoTRBMIN_InfedeleDenuncia" />
+          <s:enumeration value="AccertamentoTRBMIN_OmessaDenuncia" />
+          <s:enumeration value="Rateizzazione" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="Contribuente">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:SoggettoBase">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Codice" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Pec" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Telefono" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Cellulare" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="CodiceIsoCittadinanza" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Domicilio" type="tns:Ubicazione" />
+              <s:element minOccurs="1" maxOccurs="1" name="Domiciliazione" nillable="true" type="tns:Contribuente_Domiciliazione" />
+              <s:element minOccurs="0" maxOccurs="1" name="SoggettoASplitPayment" type="s:boolean" />
+              <s:element minOccurs="0" maxOccurs="1" name="NomeSede" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="Contribuente_Domiciliazione">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="CodiceFiscale" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Nominativo" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="IBAN" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumeroMandato" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CausaleRID" type="tns:Causali_CBI" />
+          <s:element minOccurs="1" maxOccurs="1" name="PrimaDisposizioneAddebito" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataOperazione" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="unbounded" name="SottoserviziAbilitati" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="unbounded" name="VociDiCostoAbilitate" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="Causali_CBI">
+        <s:restriction base="s:string">
+          <s:enumeration value="ComunicazioneRicevutaStornoNonAccettabile" />
+          <s:enumeration value="AutorizzazioneRicevutaBancaDomiciliatariaCliente" />
+          <s:enumeration value="AutorizzazioneAttiva" />
+          <s:enumeration value="RevocaAutorizzazioneAddebitoIntestatario" />
+          <s:enumeration value="RevocaAutorizzazioneAddebitoBanca" />
+          <s:enumeration value="VariazioneCoordinateBancarieSottoscrittore" />
+          <s:enumeration value="VariazioneCoordinateBancarieTrasferibilita" />
+          <s:enumeration value="StornoRevocaAutorizzazioneAddebito" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="PosizioneDebitoria_Rata">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="NumeroRata" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Importo" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="Scadenza" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="QuintoCampo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="IUV" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PosizioneDebitoria_Dettaglio">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:PosizioneDebitoria_DettaglioBase" />
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="PosizioneDebitoria_DettaglioBase" abstract="true">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="RiferimentoDettaglio" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="ProgressivoDettaglio" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="RiferimentoPraticaEsternaPrecedente" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RiferimentoDettaglioPraticaEsterna" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ID_VOCE_DI_COSTO" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="NomeVoceDiCosto" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Fruitore" type="tns:Fruitore" />
+          <s:element minOccurs="1" maxOccurs="1" name="Quantita" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="Importo" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="Iva" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="Descrizione" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CausaleImporto" type="tns:CausaliImporti" />
+          <s:element minOccurs="1" maxOccurs="1" name="AnnoCompetenza" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="unbounded" name="SezioniParametriSpecifici" nillable="true" type="tns:SezioneParametriSpecifici" />
+          <s:element minOccurs="1" maxOccurs="1" name="AliquotaIva" nillable="true" type="tns:IVA" />
+          <s:element minOccurs="0" maxOccurs="1" name="NumeroAccertamentoContabile" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AnnoAccertamentoContabile" nillable="true" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Fruitore">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Cognome" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Nome" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CodiceFiscale" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfPosizioneDebitoria_RiepilogoIva">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="PosizioneDebitoria_RiepilogoIva" nillable="true" type="tns:PosizioneDebitoria_RiepilogoIva" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PosizioneDebitoria_RiepilogoIva">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="AliquotaIva" type="tns:IVA" />
+          <s:element minOccurs="1" maxOccurs="1" name="BaseImponibile" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="Iva" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="Dovuto" type="s:decimal" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="TipiDocumentoPagamento">
+        <s:restriction base="s:string">
+          <s:enumeration value="Nessuno" />
+          <s:enumeration value="BollettinoPostale" />
+          <s:enumeration value="MAVSenzaStampa" />
+          <s:enumeration value="MAVConStampa" />
+          <s:enumeration value="RID" />
+          <s:enumeration value="Quietanza" />
+          <s:enumeration value="F24" />
+          <s:enumeration value="BollettinoPostalePA" />
+          <s:enumeration value="AvvisoAnalogicoPagoPA" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="ModalitaPagamentoFuoriNodo">
+        <s:restriction base="s:string">
+          <s:enumeration value="CassaContanti" />
+          <s:enumeration value="CassaBancomat" />
+          <s:enumeration value="CassaCartaDiCredito" />
+          <s:enumeration value="Prepagato" />
+          <s:enumeration value="POS" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="PagamentoFuoriNodo">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="TipoChiaveApplicativa" type="tns:TipoChiaveApplicativa" />
+          <s:element minOccurs="0" maxOccurs="1" name="ChiaveApplicativa" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Modalita" type="tns:ModalitaPagamentoFuoriNodo" />
+          <s:element minOccurs="0" maxOccurs="1" name="RiferimentoPagamentoImportato" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Importo" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataVersamento" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataAccredito" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="Note" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Dettagli" nillable="true" type="tns:PagamentoFuoriNodo_Dettaglio" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="TipoChiaveApplicativa">
+        <s:restriction base="s:string">
+          <s:enumeration value="IUV" />
+          <s:enumeration value="Gestionale" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="PagamentoFuoriNodo_Dettaglio">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="RiferimentoDettaglioPraticaEsterna" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Importo" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="Iva" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataAccredito" type="s:dateTime" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="InserisciPosizioneResponse" type="tns:InserisciPosizioneResponse" />
+      <s:complexType name="InserisciPosizioneResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextResponse">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="PosizioneDebitoria" type="tns:PosizioneDebitoriaResult" />
+              <s:element minOccurs="0" maxOccurs="1" name="Documento" type="s:base64Binary" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="PosizioneDebitoriaResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Descrizione" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="AnnoImposta" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Numero" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Sezionale" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Note" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RiferimentoPraticaEsterna" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ImportoDovuto" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="Annullato" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="GestioneIva" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="NumeroProtocollo" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataProtocollo" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataEmissione" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataInizioPeriodo" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataFinePeriodo" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="TipoDocumento" type="tns:TipiDocumentiSDI" />
+          <s:element minOccurs="0" maxOccurs="1" name="Contribuente" type="tns:Contribuente" />
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Rate" type="tns:PosizioneDebitoria_Rata" />
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Dettagli" type="tns:PosizioneDebitoria_Dettaglio" />
+          <s:element minOccurs="0" maxOccurs="1" name="RiepilogoIva" type="tns:ArrayOfPosizioneDebitoria_RiepilogoIva" />
+          <s:element minOccurs="0" maxOccurs="unbounded" name="SezioniParametriSpecifici" nillable="true" type="tns:SezioneParametriSpecifici" />
+          <s:element minOccurs="0" maxOccurs="1" name="ID_RUOLO" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NomeFileAcquisito" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="RiferimentoPraticaEsternaPrecedente" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Documento" nillable="true" type="s:base64Binary" />
+          <s:element minOccurs="1" maxOccurs="1" name="ScadenzaSoluzioneUnica" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="RiferimentoRuoloEsterno" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ProgressivoPosizione" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="IUV" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Stato" type="tns:StatoPosizioneDebitoria" />
+          <s:element minOccurs="1" maxOccurs="1" name="ImportoPagato" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataUltimoPagamento" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="IUVSoluzioneUnica" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PagatoAFronteDi" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RiferimentoDocumentoPagamento" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="AttesoAccredito" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="ImportoAttesoAccredito" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="UltimoPagamentoPagoPA" type="tns:PagamentoPagoPA" />
+          <s:element minOccurs="0" maxOccurs="1" name="QuintoCampoSoluzioneUnica" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="TipoDocumentoPagamento" type="tns:TipiDocumentoPagamento" />
+          <s:element minOccurs="0" maxOccurs="1" name="ModalitaPagamentoContestuale" nillable="true" type="tns:ModalitaPagamentoFuoriNodo" />
+          <s:element minOccurs="0" maxOccurs="1" name="DataNotificaImportazione" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Pagamenti" nillable="true" type="tns:PagamentoFuoriNodo" />
+          <s:element minOccurs="0" maxOccurs="1" name="NumeroDocumentoEsterno" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="StatoPosizioneDebitoria">
+        <s:restriction base="s:string">
+          <s:enumeration value="Emesso" />
+          <s:enumeration value="Pagato" />
+          <s:enumeration value="Insoluto" />
+          <s:enumeration value="PagatoDifetto" />
+          <s:enumeration value="RatealeInCorso" />
+          <s:enumeration value="RatealeNonOttemperato" />
+          <s:enumeration value="SuperatoDaAltraPratica" />
+          <s:enumeration value="InviatoRuolo" />
+          <s:enumeration value="ChiusoDaNotaDiCredito" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="PagamentoPagoPA">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Stato" type="tns:StatoPagamentoPagoPA" />
+          <s:element minOccurs="0" maxOccurs="1" name="DataRichiesta" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="Datarisposta" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="Importo" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="IdentificativoTransazione" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="IdentificativoPSP" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DescrizionePSP" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TipoVersamnetoPSP" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="StatoPagamentoPagoPA">
+        <s:restriction base="s:string">
+          <s:enumeration value="NonRichiesto" />
+          <s:enumeration value="InPagamento" />
+          <s:enumeration value="PagamentoRifiutato" />
+          <s:enumeration value="PagamentoAnnullato" />
+          <s:enumeration value="PagamentoAccettato" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="InserisciPosizioneICPRequest" type="tns:InserisciPosizioneICPRequest" />
+      <s:complexType name="InserisciPosizioneICPRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextRequest">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="PosizioniDebitoria" type="tns:PosizioneDebitoriaResult" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="InserisciPosizioneOSAPRequest" type="tns:InserisciPosizioneOSAPRequest" />
+      <s:complexType name="InserisciPosizioneOSAPRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextRequest">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="PosizioniDebitoria" type="tns:PosizioneDebitoriaResult" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="InserisciRuoloPosizioniRequest" type="tns:InserisciRuoloPosizioniRequest" />
+      <s:complexType name="InserisciRuoloPosizioniRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:InserisciRuoloPosizioniRequestBase">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="unbounded" name="PosizioniDebitorie" type="tns:PosizioneDebitoria" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="InserisciRuoloPosizioniRequestBase" abstract="true">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextRequest">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="RuoloPosizioniDebitorie" type="tns:RuoloPosizioniDebitorie" />
+              <s:element minOccurs="0" maxOccurs="1" name="ID_RUOLO" nillable="true" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="RiferimentoRuoloEsterno" nillable="true" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="ModalitaTest" type="s:boolean" />
+              <s:element minOccurs="1" maxOccurs="1" name="UltimoInserimento" type="s:boolean" />
+              <s:element minOccurs="0" maxOccurs="1" name="EmailNotificaAcquisizione" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="RuoloPosizioniDebitorie">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Descrizione" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="AnnoImposta" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataInizioPeriodo" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataFinePeriodo" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="Note" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="TipoDocumento" type="tns:TipiDocumentiSDI" />
+          <s:element minOccurs="0" maxOccurs="1" name="Ruolo_CausaliImporti" type="tns:ArrayOfRuolo_CausaleImporto" />
+          <s:element minOccurs="1" maxOccurs="1" name="GestionePDFACaricoDelFornitore" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="FileAcquisizionePDF" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ImportazioneStorico" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfRuolo_CausaleImporto">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Ruolo_CausaleImporto" nillable="true" type="tns:Ruolo_CausaleImporto" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Ruolo_CausaleImporto">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="CausaleImporto" type="tns:CausaliImporti" />
+          <s:element minOccurs="0" maxOccurs="1" name="Descrizione" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Importo" type="s:decimal" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="RuoloPosizioniDebitorieResult">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:RuoloPosizioniDebitorie">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="ID_RUOLO" type="s:int" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="InserisciRuoloPosizioniResponse" type="tns:InserisciRuoloPosizioniResponse" />
+      <s:complexType name="InserisciRuoloPosizioniResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:InserisciRuoloPosizioniResponseBase">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="unbounded" name="PosizioniDebitorieResult" type="tns:PosizioneDebitoriaResult" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="InserisciRuoloPosizioniResponseBase" abstract="true">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextResponse">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="RuoloPosizioniDebitorie" type="tns:RuoloPosizioniDebitorieResult" />
+              <s:element minOccurs="0" maxOccurs="1" name="NumeroPosizioniInserite" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="NumeroPosizioniScartate" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="NumeroPosizioniGiaInserite" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="PosizioniInserite" type="tns:ArrayOfEsitoPosizioneDebitoriaInserita" />
+              <s:element minOccurs="0" maxOccurs="1" name="PosizioniScartate" type="tns:ArrayOfEsitoPosizioneDebitoriaScartata" />
+              <s:element minOccurs="0" maxOccurs="1" name="PosizioniGiaInserite" type="tns:ArrayOfEsitoPosizioneDebitoriaInserita" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfEsitoPosizioneDebitoriaInserita">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="EsitoPosizioneDebitoriaInserita" nillable="true" type="tns:EsitoPosizioneDebitoriaInserita" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="EsitoPosizioneDebitoriaInserita">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="RiferimentoPraticaEsterna" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="IUVSoluzioneUnica" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Rate" type="tns:ArrayOfEsitoPosizioneDebitoriaInserita_Rate" />
+          <s:element minOccurs="0" maxOccurs="1" name="TipoDocumentoPagamento" type="tns:TipiDocumentoPagamento" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfEsitoPosizioneDebitoriaInserita_Rate">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="EsitoPosizioneDebitoriaInserita_Rate" nillable="true" type="tns:EsitoPosizioneDebitoriaInserita_Rate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="EsitoPosizioneDebitoriaInserita_Rate">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="NumeroRata" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="IUV" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfEsitoPosizioneDebitoriaScartata">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="EsitoPosizioneDebitoriaScartata" nillable="true" type="tns:EsitoPosizioneDebitoriaScartata" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="EsitoPosizioneDebitoriaScartata">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="RiferimentoPraticaEsterna" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Errori" type="tns:ArrayOfAnomaliaPosizioneDebitoria" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfAnomaliaPosizioneDebitoria">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="AnomaliaPosizioneDebitoria" nillable="true" type="tns:AnomaliaPosizioneDebitoria" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="AnomaliaPosizioneDebitoria">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:AnomaliaTRBMIN" />
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="AnomaliaTRBMIN">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Gravita" type="tns:GravitaAnomalia" />
+          <s:element minOccurs="0" maxOccurs="1" name="Descrizione" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="GravitaAnomalia">
+        <s:restriction base="s:string">
+          <s:enumeration value="Bassa" />
+          <s:enumeration value="Alta" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="InserisciRuoloPosizioniICPRequest" type="tns:InserisciRuoloPosizioniICPRequest" />
+      <s:complexType name="InserisciRuoloPosizioniICPRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:InserisciRuoloPosizioniRequestBase">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="unbounded" name="PosizioniDebitorie" type="tns:PosizioneDebitoriaICP" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="PosizioneDebitoriaICP">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Descrizione" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="AnnoImposta" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Numero" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Sezionale" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Note" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RiferimentoPraticaEsterna" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ImportoDovuto" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="Annullato" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="GestioneIva" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="NumeroProtocollo" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataProtocollo" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataEmissione" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataInizioPeriodo" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataFinePeriodo" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="TipoDocumento" type="tns:TipiDocumentiSDI" />
+          <s:element minOccurs="0" maxOccurs="1" name="Contribuente" type="tns:Contribuente" />
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Rate" type="tns:PosizioneDebitoria_Rata" />
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Dettagli" type="tns:PosizioneDebitoria_DettaglioICP" />
+          <s:element minOccurs="0" maxOccurs="1" name="RiepilogoIva" type="tns:ArrayOfPosizioneDebitoria_RiepilogoIva" />
+          <s:element minOccurs="0" maxOccurs="unbounded" name="SezioniParametriSpecifici" nillable="true" type="tns:SezioneParametriSpecifici" />
+          <s:element minOccurs="0" maxOccurs="1" name="ID_RUOLO" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NomeFileAcquisito" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="RiferimentoPraticaEsternaPrecedente" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Documento" nillable="true" type="s:base64Binary" />
+          <s:element minOccurs="1" maxOccurs="1" name="ScadenzaSoluzioneUnica" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="RiferimentoRuoloEsterno" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="QuintoCampoSoluzioneUnica" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="IUVSoluzioneUnica" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TipoDocumentoPagamento" type="tns:TipiDocumentoPagamento" />
+          <s:element minOccurs="1" maxOccurs="1" name="ModalitaPagamentoContestuale" nillable="true" type="tns:ModalitaPagamentoFuoriNodo" />
+          <s:element minOccurs="0" maxOccurs="1" name="DataNotificaImportazione" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Pagamenti" nillable="true" type="tns:PagamentoFuoriNodo" />
+          <s:element minOccurs="0" maxOccurs="1" name="NumeroDocumentoEsterno" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PosizioneDebitoria_DettaglioICP">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:PosizioneDebitoria_DettaglioBase">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Oggetto" type="tns:ICP_Oggetto" />
+              <s:element minOccurs="0" maxOccurs="1" name="Ubicazione" type="tns:Ubicazione" />
+              <s:element minOccurs="0" maxOccurs="1" name="Autorizzazione" type="tns:ICP_Autorizzazione" />
+              <s:element minOccurs="0" maxOccurs="1" name="Denuncia" type="tns:ICP_Denuncia" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ICP_Oggetto">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="TipoStruttura" type="tns:ICP_TipiStrutture" />
+          <s:element minOccurs="1" maxOccurs="1" name="TipoRilevazione" type="tns:ICP_TipiRilevazione" />
+          <s:element minOccurs="1" maxOccurs="1" name="Numero" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataRilevazione" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataIniziale" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataFinale" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="Mesi" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Larghezza" nillable="true" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="Altezza" nillable="true" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="Luminoso" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="Rimorchio" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="Note" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Temporaneo" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="TipologiaVeicoloInGenere" nillable="true" type="tns:ICP_TipologiaVeicoloInGenere" />
+          <s:element minOccurs="1" maxOccurs="1" name="TipologiaVeicoloContoProprio" nillable="true" type="tns:ICP_TipologiaVeicoloContoProprio" />
+          <s:element minOccurs="1" maxOccurs="1" name="ClassificazioneOggetto" nillable="true" type="tns:ICP_ClassificazioneOggetti" />
+          <s:element minOccurs="0" maxOccurs="1" name="Descrizione" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Targa" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="TipoRiduzione" nillable="true" type="tns:ICP_TipiRiduzioni" />
+          <s:element minOccurs="1" maxOccurs="1" name="CategoriaSpeciale" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="Tariffa" type="s:decimal" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="ICP_TipiStrutture">
+        <s:restriction base="s:string">
+          <s:enumeration value="Monofacciale" />
+          <s:enumeration value="Bifacciale" />
+          <s:enumeration value="Polifacciale" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="ICP_TipiRilevazione">
+        <s:restriction base="s:string">
+          <s:enumeration value="Contribuente" />
+          <s:enumeration value="Censimento" />
+          <s:enumeration value="Ispettore" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="ICP_TipologiaVeicoloInGenere">
+        <s:restriction base="s:string">
+          <s:enumeration value="Interno" />
+          <s:enumeration value="Esterno" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="ICP_TipologiaVeicoloContoProprio">
+        <s:restriction base="s:string">
+          <s:enumeration value="PortataInferiore3000" />
+          <s:enumeration value="PortataSuperiore3000" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="ICP_ClassificazioneOggetti">
+        <s:restriction base="s:string">
+          <s:enumeration value="I" />
+          <s:enumeration value="P" />
+          <s:enumeration value="T" />
+          <s:enumeration value="E" />
+          <s:enumeration value="G" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="ICP_TipiRiduzioni">
+        <s:restriction base="s:string">
+          <s:enumeration value="CINQUANTA" />
+          <s:enumeration value="CENTO" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="ICP_Autorizzazione">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="DataRichiesta" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataRilascio" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataRevoca" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="Numero" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Note" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ICP_Denuncia">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="DataPresentazione" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="Numero" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Note" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="InserisciRuoloPosizioniOSAPRequest" type="tns:InserisciRuoloPosizioniOSAPRequest" />
+      <s:complexType name="InserisciRuoloPosizioniOSAPRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:InserisciRuoloPosizioniRequestBase">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="unbounded" name="PosizioniDebitorie" type="tns:PosizioneDebitoriaOSAP" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="PosizioneDebitoriaOSAP">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Descrizione" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="AnnoImposta" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Numero" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Sezionale" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Note" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RiferimentoPraticaEsterna" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ImportoDovuto" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="Annullato" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="GestioneIva" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="NumeroProtocollo" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataProtocollo" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataEmissione" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataInizioPeriodo" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataFinePeriodo" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="TipoDocumento" type="tns:TipiDocumentiSDI" />
+          <s:element minOccurs="0" maxOccurs="1" name="Contribuente" type="tns:Contribuente" />
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Rate" type="tns:PosizioneDebitoria_Rata" />
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Dettagli" type="tns:PosizioneDebitoria_DettaglioOSAP" />
+          <s:element minOccurs="0" maxOccurs="1" name="RiepilogoIva" type="tns:ArrayOfPosizioneDebitoria_RiepilogoIva" />
+          <s:element minOccurs="0" maxOccurs="unbounded" name="SezioniParametriSpecifici" nillable="true" type="tns:SezioneParametriSpecifici" />
+          <s:element minOccurs="0" maxOccurs="1" name="ID_RUOLO" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NomeFileAcquisito" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="RiferimentoPraticaEsternaPrecedente" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Documento" nillable="true" type="s:base64Binary" />
+          <s:element minOccurs="1" maxOccurs="1" name="ScadenzaSoluzioneUnica" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="RiferimentoRuoloEsterno" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="QuintoCampoSoluzioneUnica" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="IUVSoluzioneUnica" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TipoDocumentoPagamento" type="tns:TipiDocumentoPagamento" />
+          <s:element minOccurs="1" maxOccurs="1" name="ModalitaPagamentoContestuale" nillable="true" type="tns:ModalitaPagamentoFuoriNodo" />
+          <s:element minOccurs="0" maxOccurs="1" name="DataNotificaImportazione" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Pagamenti" nillable="true" type="tns:PagamentoFuoriNodo" />
+          <s:element minOccurs="0" maxOccurs="1" name="NumeroDocumentoEsterno" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PosizioneDebitoria_DettaglioOSAP">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:PosizioneDebitoria_DettaglioBase">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Oggetto" type="tns:OSAP_Oggetto" />
+              <s:element minOccurs="0" maxOccurs="1" name="Ubicazione" type="tns:Ubicazione" />
+              <s:element minOccurs="0" maxOccurs="1" name="Autorizzazione" type="tns:OSAP_Autorizzazione" />
+              <s:element minOccurs="0" maxOccurs="1" name="Denuncia" type="tns:OSAP_Denuncia" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="OSAP_Oggetto">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="DataRilevazione" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="Note" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Larghezza" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="Profondita" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="Numero" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Esente" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="NomeCategoria" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Temporanea" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataInizio" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataFine" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="Giorni" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Utenti" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Tariffa" type="s:decimal" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="OSAP_Autorizzazione">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="DataRichiesta" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataRilascio" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataRevoca" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="Numero" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Note" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="OSAP_Denuncia">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="DataPresentazione" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="Numero" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Note" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="InserisciRuoloNoteDiCreditoRequest" type="tns:InserisciRuoloNoteDiCreditoRequest" />
+      <s:complexType name="InserisciRuoloNoteDiCreditoRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextRequest">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="unbounded" name="NoteDiCredito" type="tns:PosizioniNoteDiCredito" />
+              <s:element minOccurs="0" maxOccurs="1" name="RuoloNoteDiCredito" type="tns:RuoloPosizioniNoteDiCredito" />
+              <s:element minOccurs="1" maxOccurs="1" name="ID_RUOLO" nillable="true" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="RiferimentoRuoloEsterno" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="PosizioniNoteDiCredito">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="TipoChiaveApplicativa" type="tns:TipoChiaveApplicativa" />
+          <s:element minOccurs="0" maxOccurs="1" name="ChiaveApplicativa" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Note" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="StornoTotale" nillable="true" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Dettagli" nillable="true" type="tns:PosizioniNoteDiCredito_Dettagli" />
+          <s:element minOccurs="1" maxOccurs="1" name="NomeFileAcquisito" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Documento" nillable="true" type="s:base64Binary" />
+          <s:element minOccurs="1" maxOccurs="1" name="Numero" nillable="true" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PosizioniNoteDiCredito_Dettagli">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="RiferimentoDettaglio" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="ID_VOCE_DI_COSTO" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="NomeVoceDiCosto" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CodiceFiscaleFruitore" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Importo" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="Pagato" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="RuoloPosizioniNoteDiCredito">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:RuoloPosizioniDebitorie" />
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="InserisciRuoloNoteDiCreditoResponse" type="tns:InserisciRuoloNoteDiCreditoResponse" />
+      <s:complexType name="InserisciRuoloNoteDiCreditoResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextResponse">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="unbounded" name="NoteDiCreditoResult" type="tns:NotaDiCreditoResult" />
+              <s:element minOccurs="0" maxOccurs="1" name="RuoloNoteDiCredito" type="tns:RuoloNoteDiCreditoResult" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="NotaDiCreditoResult">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ID_NOTA_DI_CREDITO" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Numero" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Anno" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Importo" type="s:decimal" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="RuoloNoteDiCreditoResult">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:RuoloPosizioniDebitorie">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="ID_RUOLO" type="s:int" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="InserisciNotaDiCreditoRequest" type="tns:InserisciNotaDiCreditoRequest" />
+      <s:complexType name="InserisciNotaDiCreditoRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextRequest">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="NotaDiCredito" type="tns:PosizioniNoteDiCredito" />
+              <s:element minOccurs="0" maxOccurs="1" name="ID_RUOLO" nillable="true" type="s:int" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="InserisciNotaDiCreditoResponse" type="tns:InserisciNotaDiCreditoResponse" />
+      <s:complexType name="InserisciNotaDiCreditoResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextResponse">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="ID_NOTA_DI_CREDITO" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="Numero" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="Anno" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="Importo" type="s:decimal" />
+              <s:element minOccurs="0" maxOccurs="1" name="Documento" type="s:base64Binary" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="InserisciPagamentiRequest" type="tns:InserisciPagamentiRequest" />
+      <s:complexType name="InserisciPagamentiRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextRequest">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="unbounded" name="Pagamenti" type="tns:PagamentoFuoriNodo" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="InserisciPagamentiResponse" type="tns:InserisciPagamentiResponse" />
+      <s:complexType name="InserisciPagamentiResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextResponse" />
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="RiceviEsitoTransazioneRequest" type="tns:RiceviEsitoTransazioneRequest" />
+      <s:complexType name="RiceviEsitoTransazioneRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextRequest">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="IdentificativoTransazione" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="RiceviEsitoTransazioneResponse" type="tns:RiceviEsitoTransazioneResponse" />
+      <s:complexType name="RiceviEsitoTransazioneResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextResponse">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="EsitoTransazione" type="tns:PagamentoPagoPA" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="ScaricaDocumentoPDFRequest" type="tns:ScaricaDocumentoPDFRequest" />
+      <s:complexType name="ScaricaDocumentoPDFRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextRequest">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="TipoChiaveApplicativa" type="tns:TipoChiaveApplicativa" />
+              <s:element minOccurs="0" maxOccurs="1" name="ChiaveApplicativa" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="ScaricaDocumentoPDFResponse" type="tns:ScaricaDocumentoPDFResponse" />
+      <s:complexType name="ScaricaDocumentoPDFResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextResponse">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="PosizioneDebitoria" type="tns:PosizioneDebitoriaResult" />
+              <s:element minOccurs="0" maxOccurs="1" name="Documento" type="s:base64Binary" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="AggiornaPosizioneRequest" type="tns:AggiornaPosizioneRequest" />
+      <s:complexType name="AggiornaPosizioneRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextRequest">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="TipoChiaveApplicativa" type="tns:TipoChiaveApplicativa" />
+              <s:element minOccurs="0" maxOccurs="1" name="ChiaveApplicativa" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="PosizioniDebitoria" type="tns:PosizioneDebitoria" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="AggiornaPosizioneResponse" type="tns:AggiornaPosizioneResponse" />
+      <s:complexType name="AggiornaPosizioneResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextResponse">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="PosizioneDebitoria" type="tns:PosizioneDebitoriaResult" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="AggiornaPosizioneICPRequest" type="tns:AggiornaPosizioneICPRequest" />
+      <s:complexType name="AggiornaPosizioneICPRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextRequest">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="TipoChiaveApplicativa" type="tns:TipoChiaveApplicativa" />
+              <s:element minOccurs="0" maxOccurs="1" name="ChiaveApplicativa" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="PosizioniDebitoria" type="tns:PosizioneDebitoriaICP" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="AggiornaPosizioneOSAPRequest" type="tns:AggiornaPosizioneOSAPRequest" />
+      <s:complexType name="AggiornaPosizioneOSAPRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextRequest">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="TipoChiaveApplicativa" type="tns:TipoChiaveApplicativa" />
+              <s:element minOccurs="0" maxOccurs="1" name="ChiaveApplicativa" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="PosizioniDebitoria" type="tns:PosizioneDebitoriaOSAP" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="VerificaPosizioneRequest" type="tns:VerificaPosizioneRequest" />
+      <s:complexType name="VerificaPosizioneRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextRequest">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="TipoChiaveApplicativa" type="tns:TipoChiaveApplicativa" />
+              <s:element minOccurs="0" maxOccurs="1" name="ChiaveApplicativa" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="VerificaPosizioneResponse" type="tns:VerificaPosizioneResponse" />
+      <s:complexType name="VerificaPosizioneResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextResponse">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="PosizioneDebitoria" type="tns:PosizioneDebitoriaResult" />
+              <s:element minOccurs="0" maxOccurs="unbounded" name="Pagamenti" nillable="true" type="tns:RendicontazionePagamenti" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="RendicontazionePagamenti">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ID_PAGAMENTO" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Ente" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Provenienza" type="tns:ProvenienzePagamenti" />
+          <s:element minOccurs="1" maxOccurs="1" name="Modalita" type="tns:ModalitaPagamento" />
+          <s:element minOccurs="0" maxOccurs="1" name="AnnoImposta" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RiferimentoPraticaEsterna" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="QuintoCampo" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Importo" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataVersamento" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataRiversamento" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataAccredito" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataConsolidamento" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataScadenza" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataInserimento" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="Nominativo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CodiceFiscale" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Cassa" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="TipoPagamento" type="tns:TipiPagamenti" />
+          <s:element minOccurs="1" maxOccurs="1" name="ID_FLUSSO" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Quietanza" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Annullato" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="ContoCorrente" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="IBAN" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Iuv" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="PresenteRT" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="PagatoAFronteDi" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RiferimentoDocumentoPagamento" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="IdentificativoPagamentoEntraNext" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="ProvenienzePagamenti">
+        <s:restriction base="s:string">
+          <s:enumeration value="RiscossioneDiretta" />
+          <s:enumeration value="Posta" />
+          <s:enumeration value="Banca" />
+          <s:enumeration value="Web" />
+          <s:enumeration value="Prepagato" />
+          <s:enumeration value="AltriCircuiti" />
+          <s:enumeration value="Esenzione" />
+          <s:enumeration value="F24" />
+          <s:enumeration value="Tesoreria" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="ModalitaPagamento">
+        <s:restriction base="s:string">
+          <s:enumeration value="CSCT" />
+          <s:enumeration value="CSBA" />
+          <s:enumeration value="CSCC" />
+          <s:enumeration value="PREP" />
+          <s:enumeration value="ONCC" />
+          <s:enumeration value="PT123" />
+          <s:enumeration value="PT451" />
+          <s:enumeration value="PT674" />
+          <s:enumeration value="PTBD" />
+          <s:enumeration value="PTBT" />
+          <s:enumeration value="PTBI" />
+          <s:enumeration value="PTBE" />
+          <s:enumeration value="BABO" />
+          <s:enumeration value="BAMA" />
+          <s:enumeration value="BARI" />
+          <s:enumeration value="LOTT" />
+          <s:enumeration value="COOP" />
+          <s:enumeration value="ESNT" />
+          <s:enumeration value="PTRI" />
+          <s:enumeration value="TESO" />
+          <s:enumeration value="SISL" />
+          <s:enumeration value="PAYPAL" />
+          <s:enumeration value="BAFR" />
+          <s:enumeration value="BAPO" />
+          <s:enumeration value="F24" />
+          <s:enumeration value="PPA1" />
+          <s:enumeration value="PPA3" />
+          <s:enumeration value="PPA1B" />
+          <s:enumeration value="PPA3B" />
+          <s:enumeration value="PRVI" />
+          <s:enumeration value="CVIS" />
+          <s:enumeration value="CMSC" />
+          <s:enumeration value="CMST" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="TipiPagamenti">
+        <s:restriction base="s:string">
+          <s:enumeration value="Versamento" />
+          <s:enumeration value="PartitaDiGiroFruizioneDaBorsellinoElettronico" />
+          <s:enumeration value="RicaricaDaContribuente" />
+          <s:enumeration value="RicaricaDaEccedenza" />
+          <s:enumeration value="RicaricaDaSgravio" />
+          <s:enumeration value="PartitaDiGiroFruizioneDaCompensazione" />
+          <s:enumeration value="PartitaDiGiroRestituzioneDepositiCauzionali" />
+          <s:enumeration value="PartitaDiGiroFruizioneFittiziaBuoniPastiPregressi" />
+          <s:enumeration value="Spese" />
+          <s:enumeration value="GiaRendicontatoDaAltriSoftware" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="RiceviSottoServiziRequest" type="tns:RiceviSottoServiziRequest" />
+      <s:complexType name="RiceviSottoServiziRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextRequest" />
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="RiceviSottoServiziResponse" type="tns:RiceviSottoServiziResponse" />
+      <s:complexType name="RiceviSottoServiziResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextResponse">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="SottoServizi" type="tns:ArrayOfSottoServizi" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfSottoServizi">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="SottoServizi" nillable="true" type="tns:SottoServizi" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="SottoServizi">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ID_SOTTOSERVIZIO" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Nome" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Servizio" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Sottoservizio" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Entrata" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="RiceviVociDiCostoRequest" type="tns:RiceviVociDiCostoRequest" />
+      <s:complexType name="RiceviVociDiCostoRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextRequest">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="CodiceSottoservizio" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="RiceviVociDiCostoResponse" type="tns:RiceviVociDiCostoResponse" />
+      <s:complexType name="RiceviVociDiCostoResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextResponse">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="VociDiCosto" type="tns:ArrayOfVociDiCosto" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfVociDiCosto">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="VociDiCosto" nillable="true" type="tns:VociDiCosto" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="VociDiCosto">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ID_VOCE_DI_COSTO" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="AliquotaIva" type="tns:IVA" />
+          <s:element minOccurs="0" maxOccurs="1" name="DescrizioneAliquota" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Entrata" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Servizio" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Sottoservizio" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="VoceDiCosto" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="NomeVoceDiCosto" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="RiceviPosizioniDebitorieRequest" type="tns:RiceviPosizioniDebitorieRequest" />
+      <s:complexType name="RiceviPosizioniDebitorieRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextRequest">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="CodiceFiscale" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="Da" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="A" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="ContaPosizioni" type="s:boolean" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="RiceviPosizioniDebitorieResponse" type="tns:RiceviPosizioniDebitorieResponse" />
+      <s:complexType name="RiceviPosizioniDebitorieResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextResponse">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="PosizioniDebitorie" type="tns:ArrayOfPosizioneDebitoriaResult" />
+              <s:element minOccurs="1" maxOccurs="1" name="NumeroTotalePosizioni" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="AltrePosizioniPresenti" type="s:boolean" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfPosizioneDebitoriaResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="PosizioneDebitoriaResult" nillable="true" type="tns:PosizioneDebitoriaResult" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="RiceviRendicontazionePagamentiRequest" type="tns:RiceviRendicontazionePagamentiRequest" />
+      <s:complexType name="RiceviRendicontazionePagamentiRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextRequest">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="DataContabileIniziale" nillable="true" type="s:dateTime" />
+              <s:element minOccurs="1" maxOccurs="1" name="DataContabileFinale" nillable="true" type="s:dateTime" />
+              <s:element minOccurs="1" maxOccurs="1" name="DataInserimentoIniziale" nillable="true" type="s:dateTime" />
+              <s:element minOccurs="1" maxOccurs="1" name="DataInserimentoFinale" nillable="true" type="s:dateTime" />
+              <s:element minOccurs="0" maxOccurs="1" default="0" name="Inizio" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" default="1000" name="NumeroPosizioni" type="s:int" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="RiceviRendicontazionePagamentiResponse" type="tns:RiceviRendicontazionePagamentiResponse" />
+      <s:complexType name="RiceviRendicontazionePagamentiResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextResponse">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="NumeroTotalePosizioni" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="AltrePosizioniPresenti" type="s:boolean" />
+              <s:element minOccurs="0" maxOccurs="1" name="RendicontazionePagamenti" type="tns:ArrayOfRendicontazionePagamenti" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfRendicontazionePagamenti">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="RendicontazionePagamenti" nillable="true" type="tns:RendicontazionePagamenti" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ScaricaDocumentiPDFRuoloRequest" type="tns:ScaricaDocumentiPDFRuoloRequest" />
+      <s:complexType name="ScaricaDocumentiPDFRuoloRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextRequest">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="ID_RUOLO" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" default="false" name="ForzaRigenerazione" type="s:boolean" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="ScaricaDocumentiPDFRuoloResponse" type="tns:ScaricaDocumentiPDFRuoloResponse" />
+      <s:complexType name="ScaricaDocumentiPDFRuoloResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextResponse" />
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="VerificaStatoRuoloRequest" type="tns:VerificaStatoRuoloRequest" />
+      <s:complexType name="VerificaStatoRuoloRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextRequest">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="ID_RUOLO" nillable="true" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="RiferimentoRuoloEsterno" nillable="true" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="VerificaStatoRuoloResponse" type="tns:VerificaStatoRuoloResponse" />
+      <s:complexType name="VerificaStatoRuoloResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextResponse">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="StatoRuolo" type="tns:StatoRuolo" />
+              <s:element minOccurs="1" maxOccurs="1" name="Annullato" type="s:boolean" />
+              <s:element minOccurs="1" maxOccurs="1" name="PosizioniApprovate" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="ImportoPosizioniApprovate" type="s:decimal" />
+              <s:element minOccurs="1" maxOccurs="1" name="PosizioniAnnullate" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="ImportoPosizioniAnnullate" type="s:decimal" />
+              <s:element minOccurs="1" maxOccurs="1" name="PosizioniTotali" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="ImportoPosizioniTotali" type="s:decimal" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:simpleType name="StatoRuolo">
+        <s:restriction base="s:string">
+          <s:enumeration value="Nessuno" />
+          <s:enumeration value="Tutti" />
+          <s:enumeration value="Creato" />
+          <s:enumeration value="Emesso" />
+          <s:enumeration value="Approvato" />
+          <s:enumeration value="Postalizzato" />
+          <s:enumeration value="Rifiutato" />
+          <s:enumeration value="InEmissione" />
+          <s:enumeration value="Importato" />
+          <s:enumeration value="InApprovazione" />
+          <s:enumeration value="InAcquisizione" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="RiceviRuoloIUVRequest" type="tns:RiceviRuoloIUVRequest" />
+      <s:complexType name="RiceviRuoloIUVRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextRequest">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="ID_RUOLO" type="s:int" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="RiceviRuoloIUVResponse" type="tns:RiceviRuoloIUVResponse" />
+      <s:complexType name="RiceviRuoloIUVResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextResponse">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="InformazioniIUVRuolo" type="tns:ArrayOfInformazioniIUVRuolo" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfInformazioniIUVRuolo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="InformazioniIUVRuolo" nillable="true" type="tns:InformazioniIUVRuolo" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="InformazioniIUVRuolo">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="RiferimentoDocumento" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="IUV" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RiferimentoPraticaEsterna" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumeroRata" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="IUVSoluzioneUnica" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ScadenzaSoluzioneUnica" nillable="true" type="s:dateTime" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="AnnullaPosizioneDebitoriaRequest" type="tns:AnnullaPosizioneDebitoriaRequest" />
+      <s:complexType name="AnnullaPosizioneDebitoriaRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextRequest">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="TipoChiaveApplicativa" type="tns:TipoChiaveApplicativa" />
+              <s:element minOccurs="0" maxOccurs="1" name="ChiaveApplicativa" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="AnnullaPosizioneDebitoriaResponse" type="tns:AnnullaPosizioneDebitoriaResponse" />
+      <s:complexType name="AnnullaPosizioneDebitoriaResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextResponse" />
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="ValidaPosizioneDebitoriaRequest" type="tns:ValidaPosizioneDebitoriaRequest" />
+      <s:complexType name="ValidaPosizioneDebitoriaRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextRequest">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="PosizioneDebitoria" type="tns:PosizioneDebitoria" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="ValidaPosizioneDebitoriaResponse" type="tns:ValidaPosizioneDebitoriaResponse" />
+      <s:complexType name="ValidaPosizioneDebitoriaResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextResponse" />
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="ValidaPosizioneDebitoriaICPRequest" type="tns:ValidaPosizioneDebitoriaICPRequest" />
+      <s:complexType name="ValidaPosizioneDebitoriaICPRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextRequest">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="PosizioneDebitoria" type="tns:PosizioneDebitoriaICP" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="ValidaPosizioneDebitoriaOSAPRequest" type="tns:ValidaPosizioneDebitoriaOSAPRequest" />
+      <s:complexType name="ValidaPosizioneDebitoriaOSAPRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextRequest">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="PosizioneDebitoria" type="tns:PosizioneDebitoriaOSAP" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="ValidaNotaDiCreditoRequest" type="tns:ValidaNotaDiCreditoRequest" />
+      <s:complexType name="ValidaNotaDiCreditoRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextRequest">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="NotaDiCredito" type="tns:PosizioniNoteDiCredito" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="ValidaNotaDiCreditoResponse" type="tns:ValidaNotaDiCreditoResponse" />
+      <s:complexType name="ValidaNotaDiCreditoResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextResponse" />
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="ValidaRuoloPosizioniDebitorieRequest" type="tns:ValidaRuoloPosizioniDebitorieRequest" />
+      <s:complexType name="ValidaRuoloPosizioniDebitorieRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextRequest">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="RuoloPosizioniDebitorie" type="tns:RuoloPosizioniDebitorie" />
+              <s:element minOccurs="0" maxOccurs="1" name="ID_RUOLO" nillable="true" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="PosizioniDebitorie" type="tns:ArrayOfPosizioneDebitoria" />
+              <s:element minOccurs="0" maxOccurs="1" name="NoteDiCredito" type="tns:ArrayOfPosizioniNoteDiCredito" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfPosizioneDebitoria">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="PosizioneDebitoria" nillable="true" type="tns:PosizioneDebitoria" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfPosizioniNoteDiCredito">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="PosizioniNoteDiCredito" nillable="true" type="tns:PosizioniNoteDiCredito" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ValidaRuoloPosizioniDebitorieResponse" type="tns:ValidaRuoloPosizioniDebitorieResponse" />
+      <s:complexType name="ValidaRuoloPosizioniDebitorieResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextResponse" />
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="ValidaRuoloPosizioniDebitorieICPRequest" type="tns:ValidaRuoloPosizioniDebitorieICPRequest" />
+      <s:complexType name="ValidaRuoloPosizioniDebitorieICPRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextRequest">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="RuoloPosizioniDebitorie" type="tns:RuoloPosizioniDebitorie" />
+              <s:element minOccurs="0" maxOccurs="1" name="ID_RUOLO" nillable="true" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="PosizioniDebitorie" type="tns:ArrayOfPosizioneDebitoriaICP" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfPosizioneDebitoriaICP">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="PosizioneDebitoriaICP" nillable="true" type="tns:PosizioneDebitoriaICP" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ValidaRuoloPosizioniDebitorieOSAPRequest" type="tns:ValidaRuoloPosizioniDebitorieOSAPRequest" />
+      <s:complexType name="ValidaRuoloPosizioniDebitorieOSAPRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextRequest">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="RuoloPosizioniDebitorie" type="tns:RuoloPosizioniDebitorie" />
+              <s:element minOccurs="0" maxOccurs="1" name="ID_RUOLO" nillable="true" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="PosizioniDebitorie" type="tns:ArrayOfPosizioneDebitoriaOSAP" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfPosizioneDebitoriaOSAP">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="PosizioneDebitoriaOSAP" nillable="true" type="tns:PosizioneDebitoriaOSAP" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="AnnullaRuoloPosizioniRequest" type="tns:AnnullaRuoloPosizioniRequest" />
+      <s:complexType name="AnnullaRuoloPosizioniRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextRequest">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="ID_RUOLO" nillable="true" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="RiferimentoRuoloEsterno" nillable="true" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="AnnullaRuoloPosizioniResponse" type="tns:AnnullaRuoloPosizioniResponse" />
+      <s:complexType name="AnnullaRuoloPosizioniResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextResponse" />
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="ApprovaRuoloPosizioniRequest" type="tns:ApprovaRuoloPosizioniRequest" />
+      <s:complexType name="ApprovaRuoloPosizioniRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextRequest">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="ID_RUOLO" nillable="true" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="RiferimentoRuoloEsterno" nillable="true" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="NotificaEmail" nillable="true" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="ApprovaRuoloPosizioniResponse" type="tns:ApprovaRuoloPosizioniResponse" />
+      <s:complexType name="ApprovaRuoloPosizioniResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextResponse" />
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="ScaricaPagamentiRTPosizioniDebitorieRequest" type="tns:ScaricaPagamentiRTPosizioniDebitorieRequest" />
+      <s:complexType name="ScaricaPagamentiRTPosizioniDebitorieRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextRequest">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="TipoChiaveApplicativa" type="tns:TipoChiaveApplicativa" />
+              <s:element minOccurs="0" maxOccurs="1" name="ChiaveApplicativa" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="ScaricaPagamentiRTPosizioniDebitorieResponse" type="tns:ScaricaPagamentiRTPosizioniDebitorieResponse" />
+      <s:complexType name="ScaricaPagamentiRTPosizioniDebitorieResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextResponse">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="PagamentiPosizioniDebitorie" type="tns:ArrayOfScaricaPagamentoRTResponse" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfScaricaPagamentoRTResponse">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ScaricaPagamentoRTResponse" nillable="true" type="tns:ScaricaPagamentoRTResponse" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ScaricaPagamentoRTResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextResponse">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Documento" type="s:base64Binary" />
+              <s:element minOccurs="1" maxOccurs="1" name="DocumentoQuietanza" nillable="true" type="s:base64Binary" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="ScaricaPagamentoRTRequest" type="tns:ScaricaPagamentoRTRequest" />
+      <s:complexType name="ScaricaPagamentoRTRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextRequest">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="ID_PAGAMENTO" type="s:int" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="ScaricaPagamentoRTResponse" type="tns:ScaricaPagamentoRTResponse" />
+      <s:element name="InserisciSgravioPosizioneRequest" type="tns:InserisciSgravioPosizioneRequest" />
+      <s:complexType name="InserisciSgravioPosizioneRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextRequest">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="TipoChiaveApplicativa" type="tns:TipoChiaveApplicativa" />
+              <s:element minOccurs="0" maxOccurs="1" name="ChiaveApplicativa" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Descrizione" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="NumeroMandato" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="unbounded" name="DettagliSgravio" type="tns:DettaglioSgravio" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="DettaglioSgravio">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="RiferimentoDettaglio" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Importo" type="s:decimal" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="InserisciSgravioPosizioneResponse" type="tns:InserisciSgravioPosizioneResponse" />
+      <s:complexType name="InserisciSgravioPosizioneResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextResponse" />
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="InserisciPosizioniInAttesaCARequest" type="tns:InserisciPosizioniInAttesaCARequest" />
+      <s:complexType name="InserisciPosizioniInAttesaCARequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextRequest">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" form="unqualified" name="UrlBack" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" form="unqualified" name="UrlReturn" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="SoggettoVersante" type="tns:SoggettoVersante" />
+              <s:element minOccurs="0" maxOccurs="unbounded" name="ChiaviApplicativePosizioni" type="tns:ChiaveApplicativaPosizione" />
+              <s:element minOccurs="0" maxOccurs="1" form="unqualified" name="UrlNotificaRT" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ChiaveApplicativaPosizione">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="TipoChiaveApplicativa" type="tns:TipoChiaveApplicativa" />
+          <s:element minOccurs="0" maxOccurs="1" name="ChiaveApplicativa" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="InserisciPosizioniInAttesaCAResponse" type="tns:InserisciPosizioniInAttesaCAResponse" />
+      <s:complexType name="InserisciPosizioniInAttesaCAResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextResponse">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="IdentificativoTransazione" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Url" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="VersioneRequest" type="tns:VersioneRequest" />
+      <s:complexType name="VersioneRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextRequest" />
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="VersioneResponse" type="tns:VersioneResponse" />
+      <s:complexType name="VersioneResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:LinkNextResponse">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Versione" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+    </s:schema>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://entranext.it/fohead">
+      <s:element name="IntestazioneFO">
+        <s:complexType>
+          <s:annotation>
+            <s:appinfo>
+              <keepNamespaceDeclarations>xmlsn</keepNamespaceDeclarations>
+            </s:appinfo>
+          </s:annotation>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" form="unqualified" name="TokenAuth" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" form="unqualified" name="IdentificativoConnettore" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" form="unqualified" name="CodiceFiscaleEnte" type="s:string" />
+          </s:sequence>
+          <s:anyAttribute />
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="LoginSoapIn">
+    <wsdl:part name="LoginRequest" element="tns:LoginRequest" />
+  </wsdl:message>
+  <wsdl:message name="LoginSoapOut">
+    <wsdl:part name="LoginResult" element="tns:LoginResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoginIntestazioneFO">
+    <wsdl:part name="IntestazioneFO" element="s1:IntestazioneFO" />
+  </wsdl:message>
+  <wsdl:message name="InserisciPosizioniInAttesaSoapIn">
+    <wsdl:part name="InserisciPosizioniInAttesaRequest" element="tns:InserisciPosizioniInAttesaRequest" />
+  </wsdl:message>
+  <wsdl:message name="InserisciPosizioniInAttesaSoapOut">
+    <wsdl:part name="InserisciPosizioniInAttesaResult" element="tns:InserisciPosizioniInAttesaResponse" />
+  </wsdl:message>
+  <wsdl:message name="InserisciPosizioniInAttesaIntestazioneFO">
+    <wsdl:part name="IntestazioneFO" element="s1:IntestazioneFO" />
+  </wsdl:message>
+  <wsdl:message name="InserisciPosizioneSoapIn">
+    <wsdl:part name="InserisciPosizioneRequest" element="tns:InserisciPosizioneRequest" />
+  </wsdl:message>
+  <wsdl:message name="InserisciPosizioneSoapOut">
+    <wsdl:part name="InserisciPosizioneResult" element="tns:InserisciPosizioneResponse" />
+  </wsdl:message>
+  <wsdl:message name="InserisciPosizioneIntestazioneFO">
+    <wsdl:part name="IntestazioneFO" element="s1:IntestazioneFO" />
+  </wsdl:message>
+  <wsdl:message name="InserisciPosizioneICPSoapIn">
+    <wsdl:part name="InserisciPosizioneRequest" element="tns:InserisciPosizioneICPRequest" />
+  </wsdl:message>
+  <wsdl:message name="InserisciPosizioneICPSoapOut">
+    <wsdl:part name="InserisciPosizioneICPResult" element="tns:InserisciPosizioneResponse" />
+  </wsdl:message>
+  <wsdl:message name="InserisciPosizioneICPIntestazioneFO">
+    <wsdl:part name="IntestazioneFO" element="s1:IntestazioneFO" />
+  </wsdl:message>
+  <wsdl:message name="InserisciPosizioneOSAPSoapIn">
+    <wsdl:part name="InserisciPosizioneRequest" element="tns:InserisciPosizioneOSAPRequest" />
+  </wsdl:message>
+  <wsdl:message name="InserisciPosizioneOSAPSoapOut">
+    <wsdl:part name="InserisciPosizioneOSAPResult" element="tns:InserisciPosizioneResponse" />
+  </wsdl:message>
+  <wsdl:message name="InserisciPosizioneOSAPIntestazioneFO">
+    <wsdl:part name="IntestazioneFO" element="s1:IntestazioneFO" />
+  </wsdl:message>
+  <wsdl:message name="InserisciRuoloPosizioniSoapIn">
+    <wsdl:part name="InserisciRuoloPosizioniRequest" element="tns:InserisciRuoloPosizioniRequest" />
+  </wsdl:message>
+  <wsdl:message name="InserisciRuoloPosizioniSoapOut">
+    <wsdl:part name="InserisciRuoloPosizioniResult" element="tns:InserisciRuoloPosizioniResponse" />
+  </wsdl:message>
+  <wsdl:message name="InserisciRuoloPosizioniIntestazioneFO">
+    <wsdl:part name="IntestazioneFO" element="s1:IntestazioneFO" />
+  </wsdl:message>
+  <wsdl:message name="InserisciRuoloPosizioniICPSoapIn">
+    <wsdl:part name="InserisciRuoloPosizioniRequest" element="tns:InserisciRuoloPosizioniICPRequest" />
+  </wsdl:message>
+  <wsdl:message name="InserisciRuoloPosizioniICPSoapOut">
+    <wsdl:part name="InserisciRuoloPosizioniICPResult" element="tns:InserisciRuoloPosizioniResponse" />
+  </wsdl:message>
+  <wsdl:message name="InserisciRuoloPosizioniICPIntestazioneFO">
+    <wsdl:part name="IntestazioneFO" element="s1:IntestazioneFO" />
+  </wsdl:message>
+  <wsdl:message name="InserisciRuoloPosizioniOSAPSoapIn">
+    <wsdl:part name="InserisciRuoloPosizioniRequest" element="tns:InserisciRuoloPosizioniOSAPRequest" />
+  </wsdl:message>
+  <wsdl:message name="InserisciRuoloPosizioniOSAPSoapOut">
+    <wsdl:part name="InserisciRuoloPosizioniOSAPResult" element="tns:InserisciRuoloPosizioniResponse" />
+  </wsdl:message>
+  <wsdl:message name="InserisciRuoloPosizioniOSAPIntestazioneFO">
+    <wsdl:part name="IntestazioneFO" element="s1:IntestazioneFO" />
+  </wsdl:message>
+  <wsdl:message name="InserisciRuoloNoteDiCreditoSoapIn">
+    <wsdl:part name="InserisciRuoloNoteDiCreditoRequest" element="tns:InserisciRuoloNoteDiCreditoRequest" />
+  </wsdl:message>
+  <wsdl:message name="InserisciRuoloNoteDiCreditoSoapOut">
+    <wsdl:part name="InserisciRuoloNoteDiCreditoResult" element="tns:InserisciRuoloNoteDiCreditoResponse" />
+  </wsdl:message>
+  <wsdl:message name="InserisciRuoloNoteDiCreditoIntestazioneFO">
+    <wsdl:part name="IntestazioneFO" element="s1:IntestazioneFO" />
+  </wsdl:message>
+  <wsdl:message name="InserisciNotaDiCreditoSoapIn">
+    <wsdl:part name="InserisciNotaDiCreditoRequest" element="tns:InserisciNotaDiCreditoRequest" />
+  </wsdl:message>
+  <wsdl:message name="InserisciNotaDiCreditoSoapOut">
+    <wsdl:part name="InserisciNotaDiCreditoResult" element="tns:InserisciNotaDiCreditoResponse" />
+  </wsdl:message>
+  <wsdl:message name="InserisciNotaDiCreditoIntestazioneFO">
+    <wsdl:part name="IntestazioneFO" element="s1:IntestazioneFO" />
+  </wsdl:message>
+  <wsdl:message name="InserisciPagamentiSoapIn">
+    <wsdl:part name="InserisciPagamentiRequest" element="tns:InserisciPagamentiRequest" />
+  </wsdl:message>
+  <wsdl:message name="InserisciPagamentiSoapOut">
+    <wsdl:part name="InserisciPagamentiResult" element="tns:InserisciPagamentiResponse" />
+  </wsdl:message>
+  <wsdl:message name="InserisciPagamentiIntestazioneFO">
+    <wsdl:part name="IntestazioneFO" element="s1:IntestazioneFO" />
+  </wsdl:message>
+  <wsdl:message name="RiceviEsitoTransazioneSoapIn">
+    <wsdl:part name="RiceviEsitoTransazioneRequest" element="tns:RiceviEsitoTransazioneRequest" />
+  </wsdl:message>
+  <wsdl:message name="RiceviEsitoTransazioneSoapOut">
+    <wsdl:part name="RiceviEsitoTransazioneResult" element="tns:RiceviEsitoTransazioneResponse" />
+  </wsdl:message>
+  <wsdl:message name="RiceviEsitoTransazioneIntestazioneFO">
+    <wsdl:part name="IntestazioneFO" element="s1:IntestazioneFO" />
+  </wsdl:message>
+  <wsdl:message name="ScaricaDocumentoPDFSoapIn">
+    <wsdl:part name="ScaricaDocumentoPDFRequest" element="tns:ScaricaDocumentoPDFRequest" />
+  </wsdl:message>
+  <wsdl:message name="ScaricaDocumentoPDFSoapOut">
+    <wsdl:part name="ScaricaDocumentoPDFResult" element="tns:ScaricaDocumentoPDFResponse" />
+  </wsdl:message>
+  <wsdl:message name="ScaricaDocumentoPDFIntestazioneFO">
+    <wsdl:part name="IntestazioneFO" element="s1:IntestazioneFO" />
+  </wsdl:message>
+  <wsdl:message name="AggiornaPosizioneSoapIn">
+    <wsdl:part name="AggiornaPosizioneRequest" element="tns:AggiornaPosizioneRequest" />
+  </wsdl:message>
+  <wsdl:message name="AggiornaPosizioneSoapOut">
+    <wsdl:part name="AggiornaPosizioneResult" element="tns:AggiornaPosizioneResponse" />
+  </wsdl:message>
+  <wsdl:message name="AggiornaPosizioneIntestazioneFO">
+    <wsdl:part name="IntestazioneFO" element="s1:IntestazioneFO" />
+  </wsdl:message>
+  <wsdl:message name="AggiornaPosizioneICPSoapIn">
+    <wsdl:part name="AggiornaPosizioneRequest" element="tns:AggiornaPosizioneICPRequest" />
+  </wsdl:message>
+  <wsdl:message name="AggiornaPosizioneICPSoapOut">
+    <wsdl:part name="AggiornaPosizioneICPResult" element="tns:AggiornaPosizioneResponse" />
+  </wsdl:message>
+  <wsdl:message name="AggiornaPosizioneICPIntestazioneFO">
+    <wsdl:part name="IntestazioneFO" element="s1:IntestazioneFO" />
+  </wsdl:message>
+  <wsdl:message name="AggiornaPosizioneOSAPSoapIn">
+    <wsdl:part name="AggiornaPosizioneRequest" element="tns:AggiornaPosizioneOSAPRequest" />
+  </wsdl:message>
+  <wsdl:message name="AggiornaPosizioneOSAPSoapOut">
+    <wsdl:part name="AggiornaPosizioneOSAPResult" element="tns:AggiornaPosizioneResponse" />
+  </wsdl:message>
+  <wsdl:message name="AggiornaPosizioneOSAPIntestazioneFO">
+    <wsdl:part name="IntestazioneFO" element="s1:IntestazioneFO" />
+  </wsdl:message>
+  <wsdl:message name="VerificaPosizioneSoapIn">
+    <wsdl:part name="VerificaPosizioneRequest" element="tns:VerificaPosizioneRequest" />
+  </wsdl:message>
+  <wsdl:message name="VerificaPosizioneSoapOut">
+    <wsdl:part name="VerificaPosizioneResult" element="tns:VerificaPosizioneResponse" />
+  </wsdl:message>
+  <wsdl:message name="VerificaPosizioneIntestazioneFO">
+    <wsdl:part name="IntestazioneFO" element="s1:IntestazioneFO" />
+  </wsdl:message>
+  <wsdl:message name="RiceviSottoServiziSoapIn">
+    <wsdl:part name="RiceviSottoServiziRequest" element="tns:RiceviSottoServiziRequest" />
+  </wsdl:message>
+  <wsdl:message name="RiceviSottoServiziSoapOut">
+    <wsdl:part name="RiceviSottoServiziResult" element="tns:RiceviSottoServiziResponse" />
+  </wsdl:message>
+  <wsdl:message name="RiceviSottoServiziIntestazioneFO">
+    <wsdl:part name="IntestazioneFO" element="s1:IntestazioneFO" />
+  </wsdl:message>
+  <wsdl:message name="RiceviVociDiCostoSoapIn">
+    <wsdl:part name="RiceviVociDiCostoRequest" element="tns:RiceviVociDiCostoRequest" />
+  </wsdl:message>
+  <wsdl:message name="RiceviVociDiCostoSoapOut">
+    <wsdl:part name="RiceviVociDiCostoResult" element="tns:RiceviVociDiCostoResponse" />
+  </wsdl:message>
+  <wsdl:message name="RiceviVociDiCostoIntestazioneFO">
+    <wsdl:part name="IntestazioneFO" element="s1:IntestazioneFO" />
+  </wsdl:message>
+  <wsdl:message name="RiceviPosizioniDebitorieSoapIn">
+    <wsdl:part name="RiceviPosizioniDebitorieRequest" element="tns:RiceviPosizioniDebitorieRequest" />
+  </wsdl:message>
+  <wsdl:message name="RiceviPosizioniDebitorieSoapOut">
+    <wsdl:part name="RiceviPosizioniDebitorieResult" element="tns:RiceviPosizioniDebitorieResponse" />
+  </wsdl:message>
+  <wsdl:message name="RiceviPosizioniDebitorieIntestazioneFO">
+    <wsdl:part name="IntestazioneFO" element="s1:IntestazioneFO" />
+  </wsdl:message>
+  <wsdl:message name="RiceviRendicontazionePagamentiSoapIn">
+    <wsdl:part name="RiceviRendicontazionePagamentiRequest" element="tns:RiceviRendicontazionePagamentiRequest" />
+  </wsdl:message>
+  <wsdl:message name="RiceviRendicontazionePagamentiSoapOut">
+    <wsdl:part name="RiceviRendicontazionePagamentiResult" element="tns:RiceviRendicontazionePagamentiResponse" />
+  </wsdl:message>
+  <wsdl:message name="RiceviRendicontazionePagamentiIntestazioneFO">
+    <wsdl:part name="IntestazioneFO" element="s1:IntestazioneFO" />
+  </wsdl:message>
+  <wsdl:message name="ScaricaDocumentiPDFRuoloSoapIn">
+    <wsdl:part name="ScaricaDocumentiPDFRuoloRequest" element="tns:ScaricaDocumentiPDFRuoloRequest" />
+  </wsdl:message>
+  <wsdl:message name="ScaricaDocumentiPDFRuoloSoapOut">
+    <wsdl:part name="ScaricaDocumentiPDFRuoloResult" element="tns:ScaricaDocumentiPDFRuoloResponse" />
+  </wsdl:message>
+  <wsdl:message name="ScaricaDocumentiPDFRuoloIntestazioneFO">
+    <wsdl:part name="IntestazioneFO" element="s1:IntestazioneFO" />
+  </wsdl:message>
+  <wsdl:message name="VerificaStatoRuoloSoapIn">
+    <wsdl:part name="VerificaStatoRuoloRequest" element="tns:VerificaStatoRuoloRequest" />
+  </wsdl:message>
+  <wsdl:message name="VerificaStatoRuoloSoapOut">
+    <wsdl:part name="VerificaStatoRuoloResult" element="tns:VerificaStatoRuoloResponse" />
+  </wsdl:message>
+  <wsdl:message name="VerificaStatoRuoloIntestazioneFO">
+    <wsdl:part name="IntestazioneFO" element="s1:IntestazioneFO" />
+  </wsdl:message>
+  <wsdl:message name="RiceviRuoloIUVSoapIn">
+    <wsdl:part name="RiceviRuoloIUVRequest" element="tns:RiceviRuoloIUVRequest" />
+  </wsdl:message>
+  <wsdl:message name="RiceviRuoloIUVSoapOut">
+    <wsdl:part name="RiceviRuoloIUVResult" element="tns:RiceviRuoloIUVResponse" />
+  </wsdl:message>
+  <wsdl:message name="RiceviRuoloIUVIntestazioneFO">
+    <wsdl:part name="IntestazioneFO" element="s1:IntestazioneFO" />
+  </wsdl:message>
+  <wsdl:message name="AnnullaPosizioneDebitoriaSoapIn">
+    <wsdl:part name="AnnullaPosizioneDebitoriaRequest" element="tns:AnnullaPosizioneDebitoriaRequest" />
+  </wsdl:message>
+  <wsdl:message name="AnnullaPosizioneDebitoriaSoapOut">
+    <wsdl:part name="AnnullaPosizioneDebitoriaResult" element="tns:AnnullaPosizioneDebitoriaResponse" />
+  </wsdl:message>
+  <wsdl:message name="AnnullaPosizioneDebitoriaIntestazioneFO">
+    <wsdl:part name="IntestazioneFO" element="s1:IntestazioneFO" />
+  </wsdl:message>
+  <wsdl:message name="ValidaPosizioneDebitoriaSoapIn">
+    <wsdl:part name="ValidaPosizioneDebitoriaRequest" element="tns:ValidaPosizioneDebitoriaRequest" />
+  </wsdl:message>
+  <wsdl:message name="ValidaPosizioneDebitoriaSoapOut">
+    <wsdl:part name="ValidaPosizioneDebitoriaResult" element="tns:ValidaPosizioneDebitoriaResponse" />
+  </wsdl:message>
+  <wsdl:message name="ValidaPosizioneDebitoriaIntestazioneFO">
+    <wsdl:part name="IntestazioneFO" element="s1:IntestazioneFO" />
+  </wsdl:message>
+  <wsdl:message name="ValidaPosizioneDebitoriaICPSoapIn">
+    <wsdl:part name="ValidaPosizioneDebitoriaRequest" element="tns:ValidaPosizioneDebitoriaICPRequest" />
+  </wsdl:message>
+  <wsdl:message name="ValidaPosizioneDebitoriaICPSoapOut">
+    <wsdl:part name="ValidaPosizioneDebitoriaICPResult" element="tns:ValidaPosizioneDebitoriaResponse" />
+  </wsdl:message>
+  <wsdl:message name="ValidaPosizioneDebitoriaICPIntestazioneFO">
+    <wsdl:part name="IntestazioneFO" element="s1:IntestazioneFO" />
+  </wsdl:message>
+  <wsdl:message name="ValidaPosizioneDebitoriaOSAPSoapIn">
+    <wsdl:part name="ValidaPosizioneDebitoriaRequest" element="tns:ValidaPosizioneDebitoriaOSAPRequest" />
+  </wsdl:message>
+  <wsdl:message name="ValidaPosizioneDebitoriaOSAPSoapOut">
+    <wsdl:part name="ValidaPosizioneDebitoriaOSAPResult" element="tns:ValidaPosizioneDebitoriaResponse" />
+  </wsdl:message>
+  <wsdl:message name="ValidaPosizioneDebitoriaOSAPIntestazioneFO">
+    <wsdl:part name="IntestazioneFO" element="s1:IntestazioneFO" />
+  </wsdl:message>
+  <wsdl:message name="ValidaNotaDiCreditoSoapIn">
+    <wsdl:part name="ValidaNotaDiCreditoRequest" element="tns:ValidaNotaDiCreditoRequest" />
+  </wsdl:message>
+  <wsdl:message name="ValidaNotaDiCreditoSoapOut">
+    <wsdl:part name="ValidaNotaDiCreditoResult" element="tns:ValidaNotaDiCreditoResponse" />
+  </wsdl:message>
+  <wsdl:message name="ValidaNotaDiCreditoIntestazioneFO">
+    <wsdl:part name="IntestazioneFO" element="s1:IntestazioneFO" />
+  </wsdl:message>
+  <wsdl:message name="ValidaRuoloPosizioniDebitorieSoapIn">
+    <wsdl:part name="ValidaRuoloPosizioniDebitorieRequest" element="tns:ValidaRuoloPosizioniDebitorieRequest" />
+  </wsdl:message>
+  <wsdl:message name="ValidaRuoloPosizioniDebitorieSoapOut">
+    <wsdl:part name="ValidaRuoloPosizioniDebitorieResult" element="tns:ValidaRuoloPosizioniDebitorieResponse" />
+  </wsdl:message>
+  <wsdl:message name="ValidaRuoloPosizioniDebitorieIntestazioneFO">
+    <wsdl:part name="IntestazioneFO" element="s1:IntestazioneFO" />
+  </wsdl:message>
+  <wsdl:message name="ValidaRuoloPosizioniDebitorieICPSoapIn">
+    <wsdl:part name="ValidaRuoloPosizioniDebitorieRequest" element="tns:ValidaRuoloPosizioniDebitorieICPRequest" />
+  </wsdl:message>
+  <wsdl:message name="ValidaRuoloPosizioniDebitorieICPSoapOut">
+    <wsdl:part name="ValidaRuoloPosizioniDebitorieICPResult" element="tns:ValidaRuoloPosizioniDebitorieResponse" />
+  </wsdl:message>
+  <wsdl:message name="ValidaRuoloPosizioniDebitorieICPIntestazioneFO">
+    <wsdl:part name="IntestazioneFO" element="s1:IntestazioneFO" />
+  </wsdl:message>
+  <wsdl:message name="ValidaRuoloPosizioniDebitorieOSAPSoapIn">
+    <wsdl:part name="ValidaRuoloPosizioniDebitorieRequest" element="tns:ValidaRuoloPosizioniDebitorieOSAPRequest" />
+  </wsdl:message>
+  <wsdl:message name="ValidaRuoloPosizioniDebitorieOSAPSoapOut">
+    <wsdl:part name="ValidaRuoloPosizioniDebitorieOSAPResult" element="tns:ValidaRuoloPosizioniDebitorieResponse" />
+  </wsdl:message>
+  <wsdl:message name="ValidaRuoloPosizioniDebitorieOSAPIntestazioneFO">
+    <wsdl:part name="IntestazioneFO" element="s1:IntestazioneFO" />
+  </wsdl:message>
+  <wsdl:message name="AnnullaRuoloPosizioniSoapIn">
+    <wsdl:part name="AnnullaRuoloPosizioniRequest" element="tns:AnnullaRuoloPosizioniRequest" />
+  </wsdl:message>
+  <wsdl:message name="AnnullaRuoloPosizioniSoapOut">
+    <wsdl:part name="AnnullaRuoloPosizioniResult" element="tns:AnnullaRuoloPosizioniResponse" />
+  </wsdl:message>
+  <wsdl:message name="AnnullaRuoloPosizioniIntestazioneFO">
+    <wsdl:part name="IntestazioneFO" element="s1:IntestazioneFO" />
+  </wsdl:message>
+  <wsdl:message name="ApprovaRuoloPosizioniSoapIn">
+    <wsdl:part name="ApprovaRuoloPosizioniRequest" element="tns:ApprovaRuoloPosizioniRequest" />
+  </wsdl:message>
+  <wsdl:message name="ApprovaRuoloPosizioniSoapOut">
+    <wsdl:part name="ApprovaRuoloPosizioniResult" element="tns:ApprovaRuoloPosizioniResponse" />
+  </wsdl:message>
+  <wsdl:message name="ApprovaRuoloPosizioniIntestazioneFO">
+    <wsdl:part name="IntestazioneFO" element="s1:IntestazioneFO" />
+  </wsdl:message>
+  <wsdl:message name="ScaricaPagamentiRTPosizioniDebitorieSoapIn">
+    <wsdl:part name="ScaricaPagamentiRTPosizioniDebitorieRequest" element="tns:ScaricaPagamentiRTPosizioniDebitorieRequest" />
+  </wsdl:message>
+  <wsdl:message name="ScaricaPagamentiRTPosizioniDebitorieSoapOut">
+    <wsdl:part name="ScaricaPagamentiRTPosizioniDebitorieResult" element="tns:ScaricaPagamentiRTPosizioniDebitorieResponse" />
+  </wsdl:message>
+  <wsdl:message name="ScaricaPagamentiRTPosizioniDebitorieIntestazioneFO">
+    <wsdl:part name="IntestazioneFO" element="s1:IntestazioneFO" />
+  </wsdl:message>
+  <wsdl:message name="ScaricaPagamentoRTSoapIn">
+    <wsdl:part name="ScaricaPagamentoRTRequest" element="tns:ScaricaPagamentoRTRequest" />
+  </wsdl:message>
+  <wsdl:message name="ScaricaPagamentoRTSoapOut">
+    <wsdl:part name="ScaricaPagamentoRTResult" element="tns:ScaricaPagamentoRTResponse" />
+  </wsdl:message>
+  <wsdl:message name="ScaricaPagamentoRTIntestazioneFO">
+    <wsdl:part name="IntestazioneFO" element="s1:IntestazioneFO" />
+  </wsdl:message>
+  <wsdl:message name="InserisciSgravioPosizioneSoapIn">
+    <wsdl:part name="InserisciSgravioPosizioneRequest" element="tns:InserisciSgravioPosizioneRequest" />
+  </wsdl:message>
+  <wsdl:message name="InserisciSgravioPosizioneSoapOut">
+    <wsdl:part name="InserisciSgravioPosizioneResult" element="tns:InserisciSgravioPosizioneResponse" />
+  </wsdl:message>
+  <wsdl:message name="InserisciSgravioPosizioneIntestazioneFO">
+    <wsdl:part name="IntestazioneFO" element="s1:IntestazioneFO" />
+  </wsdl:message>
+  <wsdl:message name="InserisciPosizioniInAttesaCASoapIn">
+    <wsdl:part name="InserisciPosizioniInAttesaCARequest" element="tns:InserisciPosizioniInAttesaCARequest" />
+  </wsdl:message>
+  <wsdl:message name="InserisciPosizioniInAttesaCASoapOut">
+    <wsdl:part name="InserisciPosizioniInAttesaCAResult" element="tns:InserisciPosizioniInAttesaCAResponse" />
+  </wsdl:message>
+  <wsdl:message name="InserisciPosizioniInAttesaCAIntestazioneFO">
+    <wsdl:part name="IntestazioneFO" element="s1:IntestazioneFO" />
+  </wsdl:message>
+  <wsdl:message name="VersioneSoapIn">
+    <wsdl:part name="VersioneRequest" element="tns:VersioneRequest" />
+  </wsdl:message>
+  <wsdl:message name="VersioneSoapOut">
+    <wsdl:part name="VersioneResult" element="tns:VersioneResponse" />
+  </wsdl:message>
+  <wsdl:message name="VersioneIntestazioneFO">
+    <wsdl:part name="IntestazioneFO" element="s1:IntestazioneFO" />
+  </wsdl:message>
+  <wsdl:portType name="LinkNextSoap">
+    <wsdl:operation name="Login">
+      <wsdl:input message="tns:LoginSoapIn" />
+      <wsdl:output message="tns:LoginSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InserisciPosizioniInAttesa">
+      <wsdl:input message="tns:InserisciPosizioniInAttesaSoapIn" />
+      <wsdl:output message="tns:InserisciPosizioniInAttesaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InserisciPosizione">
+      <wsdl:input message="tns:InserisciPosizioneSoapIn" />
+      <wsdl:output message="tns:InserisciPosizioneSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InserisciPosizioneICP">
+      <wsdl:input message="tns:InserisciPosizioneICPSoapIn" />
+      <wsdl:output message="tns:InserisciPosizioneICPSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InserisciPosizioneOSAP">
+      <wsdl:input message="tns:InserisciPosizioneOSAPSoapIn" />
+      <wsdl:output message="tns:InserisciPosizioneOSAPSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InserisciRuoloPosizioni">
+      <wsdl:input message="tns:InserisciRuoloPosizioniSoapIn" />
+      <wsdl:output message="tns:InserisciRuoloPosizioniSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InserisciRuoloPosizioniICP">
+      <wsdl:input message="tns:InserisciRuoloPosizioniICPSoapIn" />
+      <wsdl:output message="tns:InserisciRuoloPosizioniICPSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InserisciRuoloPosizioniOSAP">
+      <wsdl:input message="tns:InserisciRuoloPosizioniOSAPSoapIn" />
+      <wsdl:output message="tns:InserisciRuoloPosizioniOSAPSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InserisciRuoloNoteDiCredito">
+      <wsdl:input message="tns:InserisciRuoloNoteDiCreditoSoapIn" />
+      <wsdl:output message="tns:InserisciRuoloNoteDiCreditoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InserisciNotaDiCredito">
+      <wsdl:input message="tns:InserisciNotaDiCreditoSoapIn" />
+      <wsdl:output message="tns:InserisciNotaDiCreditoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InserisciPagamenti">
+      <wsdl:input message="tns:InserisciPagamentiSoapIn" />
+      <wsdl:output message="tns:InserisciPagamentiSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RiceviEsitoTransazione">
+      <wsdl:input message="tns:RiceviEsitoTransazioneSoapIn" />
+      <wsdl:output message="tns:RiceviEsitoTransazioneSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ScaricaDocumentoPDF">
+      <wsdl:input message="tns:ScaricaDocumentoPDFSoapIn" />
+      <wsdl:output message="tns:ScaricaDocumentoPDFSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AggiornaPosizione">
+      <wsdl:input message="tns:AggiornaPosizioneSoapIn" />
+      <wsdl:output message="tns:AggiornaPosizioneSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AggiornaPosizioneICP">
+      <wsdl:input message="tns:AggiornaPosizioneICPSoapIn" />
+      <wsdl:output message="tns:AggiornaPosizioneICPSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AggiornaPosizioneOSAP">
+      <wsdl:input message="tns:AggiornaPosizioneOSAPSoapIn" />
+      <wsdl:output message="tns:AggiornaPosizioneOSAPSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="VerificaPosizione">
+      <wsdl:input message="tns:VerificaPosizioneSoapIn" />
+      <wsdl:output message="tns:VerificaPosizioneSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RiceviSottoServizi">
+      <wsdl:input message="tns:RiceviSottoServiziSoapIn" />
+      <wsdl:output message="tns:RiceviSottoServiziSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RiceviVociDiCosto">
+      <wsdl:input message="tns:RiceviVociDiCostoSoapIn" />
+      <wsdl:output message="tns:RiceviVociDiCostoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RiceviPosizioniDebitorie">
+      <wsdl:input message="tns:RiceviPosizioniDebitorieSoapIn" />
+      <wsdl:output message="tns:RiceviPosizioniDebitorieSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RiceviRendicontazionePagamenti">
+      <wsdl:input message="tns:RiceviRendicontazionePagamentiSoapIn" />
+      <wsdl:output message="tns:RiceviRendicontazionePagamentiSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ScaricaDocumentiPDFRuolo">
+      <wsdl:input message="tns:ScaricaDocumentiPDFRuoloSoapIn" />
+      <wsdl:output message="tns:ScaricaDocumentiPDFRuoloSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="VerificaStatoRuolo">
+      <wsdl:input message="tns:VerificaStatoRuoloSoapIn" />
+      <wsdl:output message="tns:VerificaStatoRuoloSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RiceviRuoloIUV">
+      <wsdl:input message="tns:RiceviRuoloIUVSoapIn" />
+      <wsdl:output message="tns:RiceviRuoloIUVSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AnnullaPosizioneDebitoria">
+      <wsdl:input message="tns:AnnullaPosizioneDebitoriaSoapIn" />
+      <wsdl:output message="tns:AnnullaPosizioneDebitoriaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidaPosizioneDebitoria">
+      <wsdl:input message="tns:ValidaPosizioneDebitoriaSoapIn" />
+      <wsdl:output message="tns:ValidaPosizioneDebitoriaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidaPosizioneDebitoriaICP">
+      <wsdl:input message="tns:ValidaPosizioneDebitoriaICPSoapIn" />
+      <wsdl:output message="tns:ValidaPosizioneDebitoriaICPSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidaPosizioneDebitoriaOSAP">
+      <wsdl:input message="tns:ValidaPosizioneDebitoriaOSAPSoapIn" />
+      <wsdl:output message="tns:ValidaPosizioneDebitoriaOSAPSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidaNotaDiCredito">
+      <wsdl:input message="tns:ValidaNotaDiCreditoSoapIn" />
+      <wsdl:output message="tns:ValidaNotaDiCreditoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidaRuoloPosizioniDebitorie">
+      <wsdl:input message="tns:ValidaRuoloPosizioniDebitorieSoapIn" />
+      <wsdl:output message="tns:ValidaRuoloPosizioniDebitorieSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidaRuoloPosizioniDebitorieICP">
+      <wsdl:input message="tns:ValidaRuoloPosizioniDebitorieICPSoapIn" />
+      <wsdl:output message="tns:ValidaRuoloPosizioniDebitorieICPSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidaRuoloPosizioniDebitorieOSAP">
+      <wsdl:input message="tns:ValidaRuoloPosizioniDebitorieOSAPSoapIn" />
+      <wsdl:output message="tns:ValidaRuoloPosizioniDebitorieOSAPSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AnnullaRuoloPosizioni">
+      <wsdl:input message="tns:AnnullaRuoloPosizioniSoapIn" />
+      <wsdl:output message="tns:AnnullaRuoloPosizioniSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ApprovaRuoloPosizioni">
+      <wsdl:input message="tns:ApprovaRuoloPosizioniSoapIn" />
+      <wsdl:output message="tns:ApprovaRuoloPosizioniSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ScaricaPagamentiRTPosizioniDebitorie">
+      <wsdl:input message="tns:ScaricaPagamentiRTPosizioniDebitorieSoapIn" />
+      <wsdl:output message="tns:ScaricaPagamentiRTPosizioniDebitorieSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ScaricaPagamentoRT">
+      <wsdl:input message="tns:ScaricaPagamentoRTSoapIn" />
+      <wsdl:output message="tns:ScaricaPagamentoRTSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InserisciSgravioPosizione">
+      <wsdl:input message="tns:InserisciSgravioPosizioneSoapIn" />
+      <wsdl:output message="tns:InserisciSgravioPosizioneSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InserisciPosizioniInAttesaCA">
+      <wsdl:input message="tns:InserisciPosizioniInAttesaCASoapIn" />
+      <wsdl:output message="tns:InserisciPosizioniInAttesaCASoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Versione">
+      <wsdl:input message="tns:VersioneSoapIn" />
+      <wsdl:output message="tns:VersioneSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="LinkNextSoap" type="tns:LinkNextSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Login">
+      <soap:operation soapAction="Login" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:LoginIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InserisciPosizioniInAttesa">
+      <soap:operation soapAction="InserisciPosizioniInAttesa" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:InserisciPosizioniInAttesaIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InserisciPosizione">
+      <soap:operation soapAction="InserisciPosizione" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:InserisciPosizioneIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InserisciPosizioneICP">
+      <soap:operation soapAction="InserisciPosizioneICP" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:InserisciPosizioneICPIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InserisciPosizioneOSAP">
+      <soap:operation soapAction="InserisciPosizioneOSAP" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:InserisciPosizioneOSAPIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InserisciRuoloPosizioni">
+      <soap:operation soapAction="InserisciRuoloPosizioni" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:InserisciRuoloPosizioniIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InserisciRuoloPosizioniICP">
+      <soap:operation soapAction="InserisciRuoloPosizioniICP" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:InserisciRuoloPosizioniICPIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InserisciRuoloPosizioniOSAP">
+      <soap:operation soapAction="InserisciRuoloPosizioniOSAP" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:InserisciRuoloPosizioniOSAPIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InserisciRuoloNoteDiCredito">
+      <soap:operation soapAction="InserisciRuoloNoteDiCredito" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:InserisciRuoloNoteDiCreditoIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InserisciNotaDiCredito">
+      <soap:operation soapAction="InserisciNotaDiCredito" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:InserisciNotaDiCreditoIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InserisciPagamenti">
+      <soap:operation soapAction="InserisciPagamenti" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:InserisciPagamentiIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RiceviEsitoTransazione">
+      <soap:operation soapAction="RiceviEsitoTransazione" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:RiceviEsitoTransazioneIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ScaricaDocumentoPDF">
+      <soap:operation soapAction="ScaricaDocumentoPDF" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:ScaricaDocumentoPDFIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AggiornaPosizione">
+      <soap:operation soapAction="AggiornaPosizione" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:AggiornaPosizioneIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AggiornaPosizioneICP">
+      <soap:operation soapAction="AggiornaPosizioneICP" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:AggiornaPosizioneICPIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AggiornaPosizioneOSAP">
+      <soap:operation soapAction="AggiornaPosizioneOSAP" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:AggiornaPosizioneOSAPIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VerificaPosizione">
+      <soap:operation soapAction="VerificaPosizione" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:VerificaPosizioneIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RiceviSottoServizi">
+      <soap:operation soapAction="RiceviSottoServizi" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:RiceviSottoServiziIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RiceviVociDiCosto">
+      <soap:operation soapAction="RiceviVociDiCosto" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:RiceviVociDiCostoIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RiceviPosizioniDebitorie">
+      <soap:operation soapAction="RiceviPosizioniDebitorie" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:RiceviPosizioniDebitorieIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RiceviRendicontazionePagamenti">
+      <soap:operation soapAction="RiceviRendicontazionePagamenti" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:RiceviRendicontazionePagamentiIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ScaricaDocumentiPDFRuolo">
+      <soap:operation soapAction="ScaricaDocumentiPDFRuolo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:ScaricaDocumentiPDFRuoloIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VerificaStatoRuolo">
+      <soap:operation soapAction="VerificaStatoRuolo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:VerificaStatoRuoloIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RiceviRuoloIUV">
+      <soap:operation soapAction="RiceviRuoloIUV" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:RiceviRuoloIUVIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AnnullaPosizioneDebitoria">
+      <soap:operation soapAction="AnnullaPosizioneDebitoria" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:AnnullaPosizioneDebitoriaIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidaPosizioneDebitoria">
+      <soap:operation soapAction="ValidaPosizioneDebitoria" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:ValidaPosizioneDebitoriaIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidaPosizioneDebitoriaICP">
+      <soap:operation soapAction="ValidaPosizioneDebitoriaICP" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:ValidaPosizioneDebitoriaICPIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidaPosizioneDebitoriaOSAP">
+      <soap:operation soapAction="ValidaPosizioneDebitoriaOSAP" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:ValidaPosizioneDebitoriaOSAPIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidaNotaDiCredito">
+      <soap:operation soapAction="ValidaNotaDiCredito" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:ValidaNotaDiCreditoIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidaRuoloPosizioniDebitorie">
+      <soap:operation soapAction="ValidaRuoloPosizioniDebitorie" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:ValidaRuoloPosizioniDebitorieIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidaRuoloPosizioniDebitorieICP">
+      <soap:operation soapAction="ValidaRuoloPosizioniDebitorieICP" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:ValidaRuoloPosizioniDebitorieICPIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidaRuoloPosizioniDebitorieOSAP">
+      <soap:operation soapAction="ValidaRuoloPosizioniDebitorieOSAP" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:ValidaRuoloPosizioniDebitorieOSAPIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AnnullaRuoloPosizioni">
+      <soap:operation soapAction="AnnullaRuoloPosizioni" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:AnnullaRuoloPosizioniIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ApprovaRuoloPosizioni">
+      <soap:operation soapAction="ApprovaRuoloPosizioni" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:ApprovaRuoloPosizioniIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ScaricaPagamentiRTPosizioniDebitorie">
+      <soap:operation soapAction="ScaricaPagamentiRTPosizioniDebitorie" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:ScaricaPagamentiRTPosizioniDebitorieIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ScaricaPagamentoRT">
+      <soap:operation soapAction="ScaricaPagamentoRT" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:ScaricaPagamentoRTIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InserisciSgravioPosizione">
+      <soap:operation soapAction="InserisciSgravioPosizione" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:InserisciSgravioPosizioneIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InserisciPosizioniInAttesaCA">
+      <soap:operation soapAction="InserisciPosizioniInAttesaCA" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:InserisciPosizioniInAttesaCAIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Versione">
+      <soap:operation soapAction="Versione" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:VersioneIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="LinkNextSoap12" type="tns:LinkNextSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Login">
+      <soap12:operation soapAction="Login" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:LoginIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InserisciPosizioniInAttesa">
+      <soap12:operation soapAction="InserisciPosizioniInAttesa" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:InserisciPosizioniInAttesaIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InserisciPosizione">
+      <soap12:operation soapAction="InserisciPosizione" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:InserisciPosizioneIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InserisciPosizioneICP">
+      <soap12:operation soapAction="InserisciPosizioneICP" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:InserisciPosizioneICPIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InserisciPosizioneOSAP">
+      <soap12:operation soapAction="InserisciPosizioneOSAP" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:InserisciPosizioneOSAPIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InserisciRuoloPosizioni">
+      <soap12:operation soapAction="InserisciRuoloPosizioni" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:InserisciRuoloPosizioniIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InserisciRuoloPosizioniICP">
+      <soap12:operation soapAction="InserisciRuoloPosizioniICP" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:InserisciRuoloPosizioniICPIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InserisciRuoloPosizioniOSAP">
+      <soap12:operation soapAction="InserisciRuoloPosizioniOSAP" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:InserisciRuoloPosizioniOSAPIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InserisciRuoloNoteDiCredito">
+      <soap12:operation soapAction="InserisciRuoloNoteDiCredito" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:InserisciRuoloNoteDiCreditoIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InserisciNotaDiCredito">
+      <soap12:operation soapAction="InserisciNotaDiCredito" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:InserisciNotaDiCreditoIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InserisciPagamenti">
+      <soap12:operation soapAction="InserisciPagamenti" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:InserisciPagamentiIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RiceviEsitoTransazione">
+      <soap12:operation soapAction="RiceviEsitoTransazione" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:RiceviEsitoTransazioneIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ScaricaDocumentoPDF">
+      <soap12:operation soapAction="ScaricaDocumentoPDF" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:ScaricaDocumentoPDFIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AggiornaPosizione">
+      <soap12:operation soapAction="AggiornaPosizione" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:AggiornaPosizioneIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AggiornaPosizioneICP">
+      <soap12:operation soapAction="AggiornaPosizioneICP" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:AggiornaPosizioneICPIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AggiornaPosizioneOSAP">
+      <soap12:operation soapAction="AggiornaPosizioneOSAP" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:AggiornaPosizioneOSAPIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VerificaPosizione">
+      <soap12:operation soapAction="VerificaPosizione" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:VerificaPosizioneIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RiceviSottoServizi">
+      <soap12:operation soapAction="RiceviSottoServizi" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:RiceviSottoServiziIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RiceviVociDiCosto">
+      <soap12:operation soapAction="RiceviVociDiCosto" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:RiceviVociDiCostoIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RiceviPosizioniDebitorie">
+      <soap12:operation soapAction="RiceviPosizioniDebitorie" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:RiceviPosizioniDebitorieIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RiceviRendicontazionePagamenti">
+      <soap12:operation soapAction="RiceviRendicontazionePagamenti" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:RiceviRendicontazionePagamentiIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ScaricaDocumentiPDFRuolo">
+      <soap12:operation soapAction="ScaricaDocumentiPDFRuolo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:ScaricaDocumentiPDFRuoloIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VerificaStatoRuolo">
+      <soap12:operation soapAction="VerificaStatoRuolo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:VerificaStatoRuoloIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RiceviRuoloIUV">
+      <soap12:operation soapAction="RiceviRuoloIUV" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:RiceviRuoloIUVIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AnnullaPosizioneDebitoria">
+      <soap12:operation soapAction="AnnullaPosizioneDebitoria" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:AnnullaPosizioneDebitoriaIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidaPosizioneDebitoria">
+      <soap12:operation soapAction="ValidaPosizioneDebitoria" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:ValidaPosizioneDebitoriaIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidaPosizioneDebitoriaICP">
+      <soap12:operation soapAction="ValidaPosizioneDebitoriaICP" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:ValidaPosizioneDebitoriaICPIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidaPosizioneDebitoriaOSAP">
+      <soap12:operation soapAction="ValidaPosizioneDebitoriaOSAP" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:ValidaPosizioneDebitoriaOSAPIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidaNotaDiCredito">
+      <soap12:operation soapAction="ValidaNotaDiCredito" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:ValidaNotaDiCreditoIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidaRuoloPosizioniDebitorie">
+      <soap12:operation soapAction="ValidaRuoloPosizioniDebitorie" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:ValidaRuoloPosizioniDebitorieIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidaRuoloPosizioniDebitorieICP">
+      <soap12:operation soapAction="ValidaRuoloPosizioniDebitorieICP" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:ValidaRuoloPosizioniDebitorieICPIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidaRuoloPosizioniDebitorieOSAP">
+      <soap12:operation soapAction="ValidaRuoloPosizioniDebitorieOSAP" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:ValidaRuoloPosizioniDebitorieOSAPIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AnnullaRuoloPosizioni">
+      <soap12:operation soapAction="AnnullaRuoloPosizioni" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:AnnullaRuoloPosizioniIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ApprovaRuoloPosizioni">
+      <soap12:operation soapAction="ApprovaRuoloPosizioni" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:ApprovaRuoloPosizioniIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ScaricaPagamentiRTPosizioniDebitorie">
+      <soap12:operation soapAction="ScaricaPagamentiRTPosizioniDebitorie" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:ScaricaPagamentiRTPosizioniDebitorieIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ScaricaPagamentoRT">
+      <soap12:operation soapAction="ScaricaPagamentoRT" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:ScaricaPagamentoRTIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InserisciSgravioPosizione">
+      <soap12:operation soapAction="InserisciSgravioPosizione" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:InserisciSgravioPosizioneIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InserisciPosizioniInAttesaCA">
+      <soap12:operation soapAction="InserisciPosizioniInAttesaCA" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:InserisciPosizioniInAttesaCAIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Versione">
+      <soap12:operation soapAction="Versione" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:VersioneIntestazioneFO" part="IntestazioneFO" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="LinkNext">
+    <wsdl:port name="LinkNextSoap" binding="tns:LinkNextSoap">
+      <soap:address location="https://linknext-t.comune.modena.it/LinkNext.asmx" />
+    </wsdl:port>
+    <wsdl:port name="LinkNextSoap12" binding="tns:LinkNextSoap12">
+      <soap12:address location="https://linknext-t.comune.modena.it/LinkNext.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

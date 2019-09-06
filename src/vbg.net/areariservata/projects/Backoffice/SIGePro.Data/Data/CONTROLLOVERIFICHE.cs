@@ -1,0 +1,12 @@
+using System;
+using System.Data;
+using PersonalLib2.Sql.Attributes;
+
+namespace Init.SIGePro.Data
+{
+	//[DataTable("CONTROLLOVERIFICHE")]
+	public partial class ControlloVerifiche : BaseDataClass
+	{
+      
+	}
+}

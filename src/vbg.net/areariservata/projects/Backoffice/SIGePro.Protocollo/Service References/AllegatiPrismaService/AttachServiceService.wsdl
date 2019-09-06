@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://service.wscxf.dmServer.finmatica.it/" name="AttachServiceService" targetNamespace="http://service.wscxf.dmServer.finmatica.it/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema xmlns="http://www.w3.org/2001/XMLSchema">
+      <xsd:import schemaLocation="http://10.8.1.73:8080/DMServerWSCXF/AttachServicePort?xsd=attachservice_schema1.xsd" namespace="http://service.wscxf.dmServer.finmatica.it/" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="deleteAttachResponse">
+    <wsdl:part name="parameters" element="tns:deleteAttachResponse" />
+  </wsdl:message>
+  <wsdl:message name="updateAttachResponse">
+    <wsdl:part name="parameters" element="tns:updateAttachResponse" />
+  </wsdl:message>
+  <wsdl:message name="downloadAttach">
+    <wsdl:part name="parameters" element="tns:downloadAttach" />
+  </wsdl:message>
+  <wsdl:message name="insertAttach">
+    <wsdl:part name="parameters" element="tns:insertAttach" />
+  </wsdl:message>
+  <wsdl:message name="insertAttachResponse">
+    <wsdl:part name="parameters" element="tns:insertAttachResponse" />
+  </wsdl:message>
+  <wsdl:message name="updateAttach">
+    <wsdl:part name="parameters" element="tns:updateAttach" />
+  </wsdl:message>
+  <wsdl:message name="downloadAttachResponse">
+    <wsdl:part name="parameters" element="tns:downloadAttachResponse" />
+  </wsdl:message>
+  <wsdl:message name="deleteAttach">
+    <wsdl:part name="parameters" element="tns:deleteAttach" />
+  </wsdl:message>
+  <wsdl:portType name="AttachService">
+    <wsdl:operation name="updateAttach">
+      <wsdl:input name="updateAttach" message="tns:updateAttach" />
+      <wsdl:output name="updateAttachResponse" message="tns:updateAttachResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="insertAttach">
+      <wsdl:input name="insertAttach" message="tns:insertAttach" />
+      <wsdl:output name="insertAttachResponse" message="tns:insertAttachResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="deleteAttach">
+      <wsdl:input name="deleteAttach" message="tns:deleteAttach" />
+      <wsdl:output name="deleteAttachResponse" message="tns:deleteAttachResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="downloadAttach">
+      <wsdl:input name="downloadAttach" message="tns:downloadAttach" />
+      <wsdl:output name="downloadAttachResponse" message="tns:downloadAttachResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="AttachServiceServiceSoapBinding" type="tns:AttachService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="insertAttach">
+      <soap:operation soapAction="InsertAttach" style="document" />
+      <wsdl:input name="insertAttach">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="insertAttachResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updateAttach">
+      <soap:operation soapAction="UpdateAttach" style="document" />
+      <wsdl:input name="updateAttach">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="updateAttachResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteAttach">
+      <soap:operation soapAction="DeleteAttach" style="document" />
+      <wsdl:input name="deleteAttach">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="deleteAttachResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downloadAttach">
+      <soap:operation soapAction="DownloadAttach" style="document" />
+      <wsdl:input name="downloadAttach">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="downloadAttachResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="AttachServiceService">
+    <wsdl:port name="AttachServicePort" binding="tns:AttachServiceServiceSoapBinding">
+      <soap:address location="http://10.8.1.73:8080/DMServerWSCXF/AttachServicePort" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

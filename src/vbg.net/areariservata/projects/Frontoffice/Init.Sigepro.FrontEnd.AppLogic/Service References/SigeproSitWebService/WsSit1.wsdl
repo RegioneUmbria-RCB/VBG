@@ -1,0 +1,551 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://init.sigepro.it" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://init.sigepro.it" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://init.sigepro.it">
+      <s:element name="GetListField">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="field" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="dataSit" type="tns:Sit" />
+            <s:element minOccurs="0" maxOccurs="1" name="software" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="Sit">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="IdComune" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CodVia" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Civico" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Km" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Esponente" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Colore" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Scala" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Interno" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="EsponenteInterno" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CodCivico" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TipoCatasto" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Sezione" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Foglio" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Particella" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Sub" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="UI" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Fabbricato" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="OggettoTerritoriale" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DescrizioneVia" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CAP" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Circoscrizione" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Frazione" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Zona" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Piano" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Quartiere" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CodiceComune" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AccessoTipo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AccessoNumero" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AccessoDescrizione" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetListFieldResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetListFieldResult" type="tns:ListSit" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ListSit">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ReturnValue" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="MessageCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Field" type="tns:ArrayOfString" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ValidateField">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="field" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="dataSit" type="tns:Sit" />
+            <s:element minOccurs="0" maxOccurs="1" name="software" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ValidateFieldResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ValidateFieldResult" type="tns:ValidateSit" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ValidateSit">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ReturnValue" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="MessageCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DataSit" type="tns:Sit" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetDetailField">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="field" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="dataSit" type="tns:Sit" />
+            <s:element minOccurs="0" maxOccurs="1" name="software" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDetailFieldResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetDetailFieldResult" type="tns:DetailSit" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="DetailSit">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ReturnValue" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="MessageCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Field" type="tns:ArrayOfDetailField" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfDetailField">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="DetailField" nillable="true" type="tns:DetailField" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="DetailField">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Campo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Valore" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="EffettuaValidazioneFormale">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="software" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sitClass" type="tns:Sit" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="EffettuaValidazioneFormaleResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="EffettuaValidazioneFormaleResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCampiGestiti">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="software" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCampiGestitiResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCampiGestitiResult" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetFeatures">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="software" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetFeaturesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetFeaturesResult" type="tns:SitFeatures" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="SitFeatures">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="VisualizzazioniFrontoffice" type="tns:ArrayOfBaseDtoOfTipoVisualizzazioneString" />
+          <s:element minOccurs="0" maxOccurs="1" name="VisualizzazioniBackoffice" type="tns:ArrayOfBaseDtoOfTipoVisualizzazioneString" />
+          <s:element minOccurs="0" maxOccurs="1" name="CampiGestiti" type="tns:ArrayOfString" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfBaseDtoOfTipoVisualizzazioneString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="BaseDtoOfTipoVisualizzazioneString" nillable="true" type="tns:BaseDtoOfTipoVisualizzazioneString" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="BaseDtoOfTipoVisualizzazioneString">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Codice" type="tns:TipoVisualizzazione" />
+          <s:element minOccurs="0" maxOccurs="1" name="Descrizione" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="TipoVisualizzazione">
+        <s:restriction base="s:string">
+          <s:enumeration value="PuntoDaIndirizzo" />
+          <s:enumeration value="PuntoDaMappale" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="GetListaVie">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="software" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="filtro" type="tns:FiltroRicercaListaVie" />
+            <s:element minOccurs="0" maxOccurs="1" name="codiciComuni" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:simpleType name="FiltroRicercaListaVie">
+        <s:restriction base="s:string">
+          <s:enumeration value="Tutte" />
+          <s:enumeration value="Cessata" />
+          <s:enumeration value="Attiva" />
+          <s:enumeration value="Modificata" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="GetListaVieResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetListaVieResult" type="tns:ArrayOfDettagliVia" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfDettagliVia">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="DettagliVia" nillable="true" type="tns:DettagliVia" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="DettagliVia">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="CodiceViario" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Toponimo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Denominazione" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Localita" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CodiceComune" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataFineValidita" nillable="true" type="s:dateTime" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ArrayOfString" nillable="true" type="tns:ArrayOfString" />
+      <s:element name="SitFeatures" nillable="true" type="tns:SitFeatures" />
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GetListFieldSoapIn">
+    <wsdl:part name="parameters" element="tns:GetListField" />
+  </wsdl:message>
+  <wsdl:message name="GetListFieldSoapOut">
+    <wsdl:part name="parameters" element="tns:GetListFieldResponse" />
+  </wsdl:message>
+  <wsdl:message name="ValidateFieldSoapIn">
+    <wsdl:part name="parameters" element="tns:ValidateField" />
+  </wsdl:message>
+  <wsdl:message name="ValidateFieldSoapOut">
+    <wsdl:part name="parameters" element="tns:ValidateFieldResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetDetailFieldSoapIn">
+    <wsdl:part name="parameters" element="tns:GetDetailField" />
+  </wsdl:message>
+  <wsdl:message name="GetDetailFieldSoapOut">
+    <wsdl:part name="parameters" element="tns:GetDetailFieldResponse" />
+  </wsdl:message>
+  <wsdl:message name="EffettuaValidazioneFormaleSoapIn">
+    <wsdl:part name="parameters" element="tns:EffettuaValidazioneFormale" />
+  </wsdl:message>
+  <wsdl:message name="EffettuaValidazioneFormaleSoapOut">
+    <wsdl:part name="parameters" element="tns:EffettuaValidazioneFormaleResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCampiGestitiSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCampiGestiti" />
+  </wsdl:message>
+  <wsdl:message name="GetCampiGestitiSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCampiGestitiResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetFeaturesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetFeatures" />
+  </wsdl:message>
+  <wsdl:message name="GetFeaturesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetFeaturesResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetListaVieSoapIn">
+    <wsdl:part name="parameters" element="tns:GetListaVie" />
+  </wsdl:message>
+  <wsdl:message name="GetListaVieSoapOut">
+    <wsdl:part name="parameters" element="tns:GetListaVieResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCampiGestitiHttpGetIn">
+    <wsdl:part name="token" type="s:string" />
+    <wsdl:part name="software" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetCampiGestitiHttpGetOut">
+    <wsdl:part name="Body" element="tns:ArrayOfString" />
+  </wsdl:message>
+  <wsdl:message name="GetFeaturesHttpGetIn">
+    <wsdl:part name="token" type="s:string" />
+    <wsdl:part name="software" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetFeaturesHttpGetOut">
+    <wsdl:part name="Body" element="tns:SitFeatures" />
+  </wsdl:message>
+  <wsdl:message name="GetCampiGestitiHttpPostIn">
+    <wsdl:part name="token" type="s:string" />
+    <wsdl:part name="software" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetCampiGestitiHttpPostOut">
+    <wsdl:part name="Body" element="tns:ArrayOfString" />
+  </wsdl:message>
+  <wsdl:message name="GetFeaturesHttpPostIn">
+    <wsdl:part name="token" type="s:string" />
+    <wsdl:part name="software" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetFeaturesHttpPostOut">
+    <wsdl:part name="Body" element="tns:SitFeatures" />
+  </wsdl:message>
+  <wsdl:portType name="WsSitSoap">
+    <wsdl:operation name="GetListField">
+      <wsdl:input message="tns:GetListFieldSoapIn" />
+      <wsdl:output message="tns:GetListFieldSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidateField">
+      <wsdl:input message="tns:ValidateFieldSoapIn" />
+      <wsdl:output message="tns:ValidateFieldSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDetailField">
+      <wsdl:input message="tns:GetDetailFieldSoapIn" />
+      <wsdl:output message="tns:GetDetailFieldSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="EffettuaValidazioneFormale">
+      <wsdl:input message="tns:EffettuaValidazioneFormaleSoapIn" />
+      <wsdl:output message="tns:EffettuaValidazioneFormaleSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCampiGestiti">
+      <wsdl:input message="tns:GetCampiGestitiSoapIn" />
+      <wsdl:output message="tns:GetCampiGestitiSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetFeatures">
+      <wsdl:input message="tns:GetFeaturesSoapIn" />
+      <wsdl:output message="tns:GetFeaturesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetListaVie">
+      <wsdl:input message="tns:GetListaVieSoapIn" />
+      <wsdl:output message="tns:GetListaVieSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="WsSitHttpGet">
+    <wsdl:operation name="GetCampiGestiti">
+      <wsdl:input message="tns:GetCampiGestitiHttpGetIn" />
+      <wsdl:output message="tns:GetCampiGestitiHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetFeatures">
+      <wsdl:input message="tns:GetFeaturesHttpGetIn" />
+      <wsdl:output message="tns:GetFeaturesHttpGetOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="WsSitHttpPost">
+    <wsdl:operation name="GetCampiGestiti">
+      <wsdl:input message="tns:GetCampiGestitiHttpPostIn" />
+      <wsdl:output message="tns:GetCampiGestitiHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetFeatures">
+      <wsdl:input message="tns:GetFeaturesHttpPostIn" />
+      <wsdl:output message="tns:GetFeaturesHttpPostOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="WsSitSoap" type="tns:WsSitSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetListField">
+      <soap:operation soapAction="http://init.sigepro.it/GetListField" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateField">
+      <soap:operation soapAction="http://init.sigepro.it/ValidateField" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDetailField">
+      <soap:operation soapAction="http://init.sigepro.it/GetDetailField" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EffettuaValidazioneFormale">
+      <soap:operation soapAction="http://init.sigepro.it/EffettuaValidazioneFormale" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCampiGestiti">
+      <soap:operation soapAction="http://init.sigepro.it/GetCampiGestiti" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFeatures">
+      <soap:operation soapAction="http://init.sigepro.it/GetFeatures" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetListaVie">
+      <soap:operation soapAction="http://init.sigepro.it/GetListaVie" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="WsSitSoap12" type="tns:WsSitSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetListField">
+      <soap12:operation soapAction="http://init.sigepro.it/GetListField" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateField">
+      <soap12:operation soapAction="http://init.sigepro.it/ValidateField" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDetailField">
+      <soap12:operation soapAction="http://init.sigepro.it/GetDetailField" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EffettuaValidazioneFormale">
+      <soap12:operation soapAction="http://init.sigepro.it/EffettuaValidazioneFormale" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCampiGestiti">
+      <soap12:operation soapAction="http://init.sigepro.it/GetCampiGestiti" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFeatures">
+      <soap12:operation soapAction="http://init.sigepro.it/GetFeatures" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetListaVie">
+      <soap12:operation soapAction="http://init.sigepro.it/GetListaVie" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="WsSitHttpGet" type="tns:WsSitHttpGet">
+    <http:binding verb="GET" />
+    <wsdl:operation name="GetCampiGestiti">
+      <http:operation location="/GetCampiGestiti" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFeatures">
+      <http:operation location="/GetFeatures" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="WsSitHttpPost" type="tns:WsSitHttpPost">
+    <http:binding verb="POST" />
+    <wsdl:operation name="GetCampiGestiti">
+      <http:operation location="/GetCampiGestiti" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFeatures">
+      <http:operation location="/GetFeatures" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="WsSit">
+    <wsdl:port name="WsSitSoap" binding="tns:WsSitSoap">
+      <soap:address location="http://localhost:2640/sigepro.net/WebServices/WsSIGePro/WsSit.asmx" />
+    </wsdl:port>
+    <wsdl:port name="WsSitSoap12" binding="tns:WsSitSoap12">
+      <soap12:address location="http://localhost:2640/sigepro.net/WebServices/WsSIGePro/WsSit.asmx" />
+    </wsdl:port>
+    <wsdl:port name="WsSitHttpGet" binding="tns:WsSitHttpGet">
+      <http:address location="http://localhost:2640/sigepro.net/WebServices/WsSIGePro/WsSit.asmx" />
+    </wsdl:port>
+    <wsdl:port name="WsSitHttpPost" binding="tns:WsSitHttpPost">
+      <http:address location="http://localhost:2640/sigepro.net/WebServices/WsSIGePro/WsSit.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

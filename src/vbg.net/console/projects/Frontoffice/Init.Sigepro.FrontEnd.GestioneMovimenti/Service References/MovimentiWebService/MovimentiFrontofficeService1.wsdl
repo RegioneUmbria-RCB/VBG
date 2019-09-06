@@ -1,0 +1,951 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://init.sigepro.it" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:s1="http://init.sigepro.it/Scadenzario" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://init.sigepro.it" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://init.sigepro.it">
+      <s:import namespace="http://init.sigepro.it/Scadenzario" />
+      <s:element name="GetMovimento">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="strCodiceMovimento" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMovimentoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetMovimentoResult" type="tns:DatiMovimentoDaEffettuareDto" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="DatiMovimentoDaEffettuareDto">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="CodiceMovimento" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="TipoMovimento" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DescInventario" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Amministrazione" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Esito" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Parere" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Note" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Allegati" type="tns:MovimentiAllegati" />
+          <s:element minOccurs="0" maxOccurs="1" name="Descrizione" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataMovimento" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="CodiceIstanza" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="NumeroIstanza" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="VisualizzaParere" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="VisualizzaEsito" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="Pubblica" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="NumeroProtocollo" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataProtocollo" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="IdComune" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="NumeroProtocolloIstanza" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataProtocolloIstanza" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataIstanza" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="unbounded" name="SchedeDinamiche" type="tns:SchedaDinamicaMovimentoDto" />
+          <s:element minOccurs="0" maxOccurs="1" name="CodiceInventario" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="PubblicaSchede" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="Software" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="MovimentiAllegati">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:BaseDataClass">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="IDCOMUNE" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Id" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="IDALLEGATO" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="CODICEMOVIMENTO" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="DESCRIZIONE" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="NOTE" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="CODICEOGGETTO" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="DATAREGISTRAZIONE" nillable="true" type="s:dateTime" />
+              <s:element minOccurs="0" maxOccurs="1" name="STC_IDDOCUMENTO" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="STC_IDALLEGATO" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="FlagPubblica" nillable="true" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="Oggetto" type="tns:MovimentiAllegatiOggetti" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="BaseDataClass">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:DataClass" />
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="DataClass" />
+      <s:complexType name="MovimentiAllegatiOggetti">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:BaseDataClass">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="CODICEOGGETTO" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="IDCOMUNE" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="NOMEFILE" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="SchedaDinamicaMovimentoDto">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Titolo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Valori" type="tns:ValoreDatoDinamicoMovimentoDto" />
+          <s:element minOccurs="0" maxOccurs="unbounded" name="IdCampiContenuti" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ValoreDatoDinamicoMovimentoDto">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Indice" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Valore" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ValoreDecodificato" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetDocumentiSostituibili">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="codiceMovimentodaeffettuare" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDocumentiSostituibiliResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetDocumentiSostituibiliResult" type="tns:DocumentiIstanzaSostituibili" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="DocumentiIstanzaSostituibili">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="DocumentiIntervento" type="tns:ListaDocumentiSostituibili" />
+          <s:element minOccurs="0" maxOccurs="unbounded" name="DocumentiEndo" type="tns:ListaDocumentiSostituibili" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ListaDocumentiSostituibili">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Descrizione" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Documenti" type="tns:DocumentoSostituibileMovimentoDto" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="DocumentoSostituibileMovimentoDto">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Origine" type="tns:OrigineDocumentoEnum" />
+          <s:element minOccurs="1" maxOccurs="1" name="IdDocumento" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="CodiceOggetto" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Descrizione" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="NomeFile" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="OrigineDocumentoEnum">
+        <s:restriction base="s:string">
+          <s:enumeration value="Intervento" />
+          <s:enumeration value="Endoprocedimento" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="GetListaScadenze">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" ref="s1:richiesta" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetListaScadenzeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" ref="s1:GetListaScadenzeResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetScadenza">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="codiceScadenza" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetScadenzaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetScadenzaResult" type="s1:ElementoListaScadenze" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetConfigurazioneMovimento">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="codiceMovimento" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetConfigurazioneMovimentoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetConfigurazioneMovimentoResult" nillable="true" type="tns:ConfigurazioneMovimentoDaEffettuare" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ConfigurazioneMovimentoDaEffettuare">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="PermetteSostituzioneDocumentale" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="RichiedeFirmaDocumenti" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetJsonMovimentoFrontoffice">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="idMovimento" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetJsonMovimentoFrontofficeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetJsonMovimentoFrontofficeResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SalvaJsonMovimentoFrontoffice">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="idMovimento" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="datiJson" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SalvaJsonMovimentoFrontofficeResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="ImpostaFlagTrasmesso">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="idMovimento" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ImpostaFlagTrasmessoResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="MarcaMovimentoFrontofficeComeInviato">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="idMovimento" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="MarcaMovimentoFrontofficeComeInviatoResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="DatiMovimentoDaEffettuareDto" nillable="true" type="tns:DatiMovimentoDaEffettuareDto" />
+      <s:element name="DocumentiIstanzaSostituibili" nillable="true" type="tns:DocumentiIstanzaSostituibili" />
+      <s:element name="ElementoListaScadenze" nillable="true" type="s1:ElementoListaScadenze" />
+      <s:element name="ConfigurazioneMovimentoDaEffettuare" nillable="true" type="tns:ConfigurazioneMovimentoDaEffettuare" />
+      <s:element name="string" nillable="true" type="s:string" />
+    </s:schema>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://init.sigepro.it/Scadenzario">
+      <s:element name="richiesta" type="s1:RichiestaListaScadenze" />
+      <s:complexType name="RichiestaListaScadenze">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" form="unqualified" name="CodEnte" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" form="unqualified" name="CodSportello" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" form="unqualified" name="IdPratica" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" form="unqualified" name="Filtro_Fo_SoggettiEsterni" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" form="unqualified" name="NumeroPratica" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" form="unqualified" name="NumeroProtocollo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" form="unqualified" name="DatiAmministrazione" type="s1:DatiAmministrazione" />
+          <s:element minOccurs="0" maxOccurs="1" form="unqualified" name="Stato" type="s:string" />
+          <s:choice minOccurs="1" maxOccurs="1">
+            <s:element minOccurs="0" maxOccurs="1" form="unqualified" name="PartitaIvaSoggetto" type="s1:PartitaIva" />
+            <s:element minOccurs="0" maxOccurs="1" form="unqualified" name="CodiceFiscaleSoggetto" type="s1:CodFiscale" />
+          </s:choice>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="DatiAmministrazione">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" form="unqualified" name="PartitaIva" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PartitaIva">
+        <s:simpleContent>
+          <s:extension base="s:string">
+            <s:attribute default="true" form="qualified" name="cercaComeRichiedente" type="s:boolean" />
+            <s:attribute default="false" form="qualified" name="cercaComeAzienda" type="s:boolean" />
+            <s:attribute default="false" form="qualified" name="cercaComeTecnico" type="s:boolean" />
+            <s:attribute default="false" form="qualified" name="cercaAncheComeCodiceFiscale" type="s:boolean" />
+          </s:extension>
+        </s:simpleContent>
+      </s:complexType>
+      <s:complexType name="CodFiscale">
+        <s:simpleContent>
+          <s:extension base="s:string">
+            <s:attribute default="true" form="qualified" name="cercaComeRichiedente" type="s:boolean" />
+            <s:attribute default="false" form="qualified" name="cercaComeAzienda" type="s:boolean" />
+            <s:attribute default="false" form="qualified" name="cercaComeTecnico" type="s:boolean" />
+            <s:attribute default="false" form="qualified" name="cercaAncheComePartitaIva" type="s:boolean" />
+          </s:extension>
+        </s:simpleContent>
+      </s:complexType>
+      <s:element name="GetListaScadenzeResult" type="s1:ListaScadenze" />
+      <s:complexType name="ListaScadenze">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Scadenza" type="s1:ElementoListaScadenze" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ElementoListaScadenze">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="CodEnte" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CodScadenza" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CodSportello" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CodiceIstanza" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="NumeroProtocollo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DataProtocollo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="NumeroIstanza" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CodStatoIstanza" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DescrStatoIstanza" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CodMovimento" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DescrMovimento" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DataMovimento" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CodMovimentoDaFare" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DescrMovimentoDaFare" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DataScadenza" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Responsabile" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Procedimento" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Procedura" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ModuloSoftware" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AmmAmministrazione" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AmmPartitaiva" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RicNominativo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RicCodiceFiscale" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RicPartitaIva" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RicIndirizzo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RicCap" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RicLocalita" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RicCitta" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RicProvincia" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TecNominativo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TecCodiceFiscale" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TecPartitaIva" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AzNominativo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AzCodiceFiscale" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AzPartitaIva" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CodiceAmministrazione" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CodiceInventario" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Uuid" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GetMovimentoSoapIn">
+    <wsdl:part name="parameters" element="tns:GetMovimento" />
+  </wsdl:message>
+  <wsdl:message name="GetMovimentoSoapOut">
+    <wsdl:part name="parameters" element="tns:GetMovimentoResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetDocumentiSostituibiliSoapIn">
+    <wsdl:part name="parameters" element="tns:GetDocumentiSostituibili" />
+  </wsdl:message>
+  <wsdl:message name="GetDocumentiSostituibiliSoapOut">
+    <wsdl:part name="parameters" element="tns:GetDocumentiSostituibiliResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetListaScadenzeSoapIn">
+    <wsdl:part name="parameters" element="tns:GetListaScadenze" />
+  </wsdl:message>
+  <wsdl:message name="GetListaScadenzeSoapOut">
+    <wsdl:part name="parameters" element="tns:GetListaScadenzeResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetScadenzaSoapIn">
+    <wsdl:part name="parameters" element="tns:GetScadenza" />
+  </wsdl:message>
+  <wsdl:message name="GetScadenzaSoapOut">
+    <wsdl:part name="parameters" element="tns:GetScadenzaResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetConfigurazioneMovimentoSoapIn">
+    <wsdl:part name="parameters" element="tns:GetConfigurazioneMovimento" />
+  </wsdl:message>
+  <wsdl:message name="GetConfigurazioneMovimentoSoapOut">
+    <wsdl:part name="parameters" element="tns:GetConfigurazioneMovimentoResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetJsonMovimentoFrontofficeSoapIn">
+    <wsdl:part name="parameters" element="tns:GetJsonMovimentoFrontoffice" />
+  </wsdl:message>
+  <wsdl:message name="GetJsonMovimentoFrontofficeSoapOut">
+    <wsdl:part name="parameters" element="tns:GetJsonMovimentoFrontofficeResponse" />
+  </wsdl:message>
+  <wsdl:message name="SalvaJsonMovimentoFrontofficeSoapIn">
+    <wsdl:part name="parameters" element="tns:SalvaJsonMovimentoFrontoffice" />
+  </wsdl:message>
+  <wsdl:message name="SalvaJsonMovimentoFrontofficeSoapOut">
+    <wsdl:part name="parameters" element="tns:SalvaJsonMovimentoFrontofficeResponse" />
+  </wsdl:message>
+  <wsdl:message name="ImpostaFlagTrasmessoSoapIn">
+    <wsdl:part name="parameters" element="tns:ImpostaFlagTrasmesso" />
+  </wsdl:message>
+  <wsdl:message name="ImpostaFlagTrasmessoSoapOut">
+    <wsdl:part name="parameters" element="tns:ImpostaFlagTrasmessoResponse" />
+  </wsdl:message>
+  <wsdl:message name="MarcaMovimentoFrontofficeComeInviatoSoapIn">
+    <wsdl:part name="parameters" element="tns:MarcaMovimentoFrontofficeComeInviato" />
+  </wsdl:message>
+  <wsdl:message name="MarcaMovimentoFrontofficeComeInviatoSoapOut">
+    <wsdl:part name="parameters" element="tns:MarcaMovimentoFrontofficeComeInviatoResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetMovimentoHttpGetIn">
+    <wsdl:part name="token" type="s:string" />
+    <wsdl:part name="strCodiceMovimento" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetMovimentoHttpGetOut">
+    <wsdl:part name="Body" element="tns:DatiMovimentoDaEffettuareDto" />
+  </wsdl:message>
+  <wsdl:message name="GetDocumentiSostituibiliHttpGetIn">
+    <wsdl:part name="token" type="s:string" />
+    <wsdl:part name="codiceMovimentodaeffettuare" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetDocumentiSostituibiliHttpGetOut">
+    <wsdl:part name="Body" element="tns:DocumentiIstanzaSostituibili" />
+  </wsdl:message>
+  <wsdl:message name="GetScadenzaHttpGetIn">
+    <wsdl:part name="token" type="s:string" />
+    <wsdl:part name="codiceScadenza" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetScadenzaHttpGetOut">
+    <wsdl:part name="Body" element="tns:ElementoListaScadenze" />
+  </wsdl:message>
+  <wsdl:message name="GetConfigurazioneMovimentoHttpGetIn">
+    <wsdl:part name="token" type="s:string" />
+    <wsdl:part name="codiceMovimento" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetConfigurazioneMovimentoHttpGetOut">
+    <wsdl:part name="Body" element="tns:ConfigurazioneMovimentoDaEffettuare" />
+  </wsdl:message>
+  <wsdl:message name="GetJsonMovimentoFrontofficeHttpGetIn">
+    <wsdl:part name="token" type="s:string" />
+    <wsdl:part name="idMovimento" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetJsonMovimentoFrontofficeHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="SalvaJsonMovimentoFrontofficeHttpGetIn">
+    <wsdl:part name="token" type="s:string" />
+    <wsdl:part name="idMovimento" type="s:string" />
+    <wsdl:part name="datiJson" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="SalvaJsonMovimentoFrontofficeHttpGetOut" />
+  <wsdl:message name="ImpostaFlagTrasmessoHttpGetIn">
+    <wsdl:part name="token" type="s:string" />
+    <wsdl:part name="idMovimento" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ImpostaFlagTrasmessoHttpGetOut" />
+  <wsdl:message name="MarcaMovimentoFrontofficeComeInviatoHttpGetIn">
+    <wsdl:part name="token" type="s:string" />
+    <wsdl:part name="idMovimento" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="MarcaMovimentoFrontofficeComeInviatoHttpGetOut" />
+  <wsdl:message name="GetMovimentoHttpPostIn">
+    <wsdl:part name="token" type="s:string" />
+    <wsdl:part name="strCodiceMovimento" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetMovimentoHttpPostOut">
+    <wsdl:part name="Body" element="tns:DatiMovimentoDaEffettuareDto" />
+  </wsdl:message>
+  <wsdl:message name="GetDocumentiSostituibiliHttpPostIn">
+    <wsdl:part name="token" type="s:string" />
+    <wsdl:part name="codiceMovimentodaeffettuare" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetDocumentiSostituibiliHttpPostOut">
+    <wsdl:part name="Body" element="tns:DocumentiIstanzaSostituibili" />
+  </wsdl:message>
+  <wsdl:message name="GetScadenzaHttpPostIn">
+    <wsdl:part name="token" type="s:string" />
+    <wsdl:part name="codiceScadenza" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetScadenzaHttpPostOut">
+    <wsdl:part name="Body" element="tns:ElementoListaScadenze" />
+  </wsdl:message>
+  <wsdl:message name="GetConfigurazioneMovimentoHttpPostIn">
+    <wsdl:part name="token" type="s:string" />
+    <wsdl:part name="codiceMovimento" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetConfigurazioneMovimentoHttpPostOut">
+    <wsdl:part name="Body" element="tns:ConfigurazioneMovimentoDaEffettuare" />
+  </wsdl:message>
+  <wsdl:message name="GetJsonMovimentoFrontofficeHttpPostIn">
+    <wsdl:part name="token" type="s:string" />
+    <wsdl:part name="idMovimento" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetJsonMovimentoFrontofficeHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="SalvaJsonMovimentoFrontofficeHttpPostIn">
+    <wsdl:part name="token" type="s:string" />
+    <wsdl:part name="idMovimento" type="s:string" />
+    <wsdl:part name="datiJson" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="SalvaJsonMovimentoFrontofficeHttpPostOut" />
+  <wsdl:message name="ImpostaFlagTrasmessoHttpPostIn">
+    <wsdl:part name="token" type="s:string" />
+    <wsdl:part name="idMovimento" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ImpostaFlagTrasmessoHttpPostOut" />
+  <wsdl:message name="MarcaMovimentoFrontofficeComeInviatoHttpPostIn">
+    <wsdl:part name="token" type="s:string" />
+    <wsdl:part name="idMovimento" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="MarcaMovimentoFrontofficeComeInviatoHttpPostOut" />
+  <wsdl:portType name="MovimentiFrontofficeSvcSoap">
+    <wsdl:operation name="GetMovimento">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Permette di leggere i dati di un movimento effettuato</wsdl:documentation>
+      <wsdl:input message="tns:GetMovimentoSoapIn" />
+      <wsdl:output message="tns:GetMovimentoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDocumentiSostituibili">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Restituisce la lista dei documenti sostituibili</wsdl:documentation>
+      <wsdl:input message="tns:GetDocumentiSostituibiliSoapIn" />
+      <wsdl:output message="tns:GetDocumentiSostituibiliSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetListaScadenze">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Permette di leggere le scadenze delle pratiche in base a una serie di filtri</wsdl:documentation>
+      <wsdl:input message="tns:GetListaScadenzeSoapIn" />
+      <wsdl:output message="tns:GetListaScadenzeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetScadenza">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Permette di leggere i dati di una scadenza in base al suo id univoco</wsdl:documentation>
+      <wsdl:input message="tns:GetScadenzaSoapIn" />
+      <wsdl:output message="tns:GetScadenzaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetConfigurazioneMovimento">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Restituisce i parrametri di configurazione del movimento da effettuare</wsdl:documentation>
+      <wsdl:input message="tns:GetConfigurazioneMovimentoSoapIn" />
+      <wsdl:output message="tns:GetConfigurazioneMovimentoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetJsonMovimentoFrontoffice">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Restituisce i dati di un movimento parzialmente compilato dall'utente</wsdl:documentation>
+      <wsdl:input message="tns:GetJsonMovimentoFrontofficeSoapIn" />
+      <wsdl:output message="tns:GetJsonMovimentoFrontofficeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SalvaJsonMovimentoFrontoffice">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Salva i dati di un movimento parzialmente compilato dall'utente</wsdl:documentation>
+      <wsdl:input message="tns:SalvaJsonMovimentoFrontofficeSoapIn" />
+      <wsdl:output message="tns:SalvaJsonMovimentoFrontofficeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ImpostaFlagTrasmesso">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Imposta un movimento effettuato dall'utente come inviato</wsdl:documentation>
+      <wsdl:input message="tns:ImpostaFlagTrasmessoSoapIn" />
+      <wsdl:output message="tns:ImpostaFlagTrasmessoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="MarcaMovimentoFrontofficeComeInviato">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Marca un movimento compilato compilato dall'utente come compilato</wsdl:documentation>
+      <wsdl:input message="tns:MarcaMovimentoFrontofficeComeInviatoSoapIn" />
+      <wsdl:output message="tns:MarcaMovimentoFrontofficeComeInviatoSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="MovimentiFrontofficeSvcHttpGet">
+    <wsdl:operation name="GetMovimento">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Permette di leggere i dati di un movimento effettuato</wsdl:documentation>
+      <wsdl:input message="tns:GetMovimentoHttpGetIn" />
+      <wsdl:output message="tns:GetMovimentoHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDocumentiSostituibili">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Restituisce la lista dei documenti sostituibili</wsdl:documentation>
+      <wsdl:input message="tns:GetDocumentiSostituibiliHttpGetIn" />
+      <wsdl:output message="tns:GetDocumentiSostituibiliHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetScadenza">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Permette di leggere i dati di una scadenza in base al suo id univoco</wsdl:documentation>
+      <wsdl:input message="tns:GetScadenzaHttpGetIn" />
+      <wsdl:output message="tns:GetScadenzaHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetConfigurazioneMovimento">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Restituisce i parrametri di configurazione del movimento da effettuare</wsdl:documentation>
+      <wsdl:input message="tns:GetConfigurazioneMovimentoHttpGetIn" />
+      <wsdl:output message="tns:GetConfigurazioneMovimentoHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetJsonMovimentoFrontoffice">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Restituisce i dati di un movimento parzialmente compilato dall'utente</wsdl:documentation>
+      <wsdl:input message="tns:GetJsonMovimentoFrontofficeHttpGetIn" />
+      <wsdl:output message="tns:GetJsonMovimentoFrontofficeHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SalvaJsonMovimentoFrontoffice">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Salva i dati di un movimento parzialmente compilato dall'utente</wsdl:documentation>
+      <wsdl:input message="tns:SalvaJsonMovimentoFrontofficeHttpGetIn" />
+      <wsdl:output message="tns:SalvaJsonMovimentoFrontofficeHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ImpostaFlagTrasmesso">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Imposta un movimento effettuato dall'utente come inviato</wsdl:documentation>
+      <wsdl:input message="tns:ImpostaFlagTrasmessoHttpGetIn" />
+      <wsdl:output message="tns:ImpostaFlagTrasmessoHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="MarcaMovimentoFrontofficeComeInviato">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Marca un movimento compilato compilato dall'utente come compilato</wsdl:documentation>
+      <wsdl:input message="tns:MarcaMovimentoFrontofficeComeInviatoHttpGetIn" />
+      <wsdl:output message="tns:MarcaMovimentoFrontofficeComeInviatoHttpGetOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="MovimentiFrontofficeSvcHttpPost">
+    <wsdl:operation name="GetMovimento">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Permette di leggere i dati di un movimento effettuato</wsdl:documentation>
+      <wsdl:input message="tns:GetMovimentoHttpPostIn" />
+      <wsdl:output message="tns:GetMovimentoHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDocumentiSostituibili">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Restituisce la lista dei documenti sostituibili</wsdl:documentation>
+      <wsdl:input message="tns:GetDocumentiSostituibiliHttpPostIn" />
+      <wsdl:output message="tns:GetDocumentiSostituibiliHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetScadenza">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Permette di leggere i dati di una scadenza in base al suo id univoco</wsdl:documentation>
+      <wsdl:input message="tns:GetScadenzaHttpPostIn" />
+      <wsdl:output message="tns:GetScadenzaHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetConfigurazioneMovimento">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Restituisce i parrametri di configurazione del movimento da effettuare</wsdl:documentation>
+      <wsdl:input message="tns:GetConfigurazioneMovimentoHttpPostIn" />
+      <wsdl:output message="tns:GetConfigurazioneMovimentoHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetJsonMovimentoFrontoffice">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Restituisce i dati di un movimento parzialmente compilato dall'utente</wsdl:documentation>
+      <wsdl:input message="tns:GetJsonMovimentoFrontofficeHttpPostIn" />
+      <wsdl:output message="tns:GetJsonMovimentoFrontofficeHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SalvaJsonMovimentoFrontoffice">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Salva i dati di un movimento parzialmente compilato dall'utente</wsdl:documentation>
+      <wsdl:input message="tns:SalvaJsonMovimentoFrontofficeHttpPostIn" />
+      <wsdl:output message="tns:SalvaJsonMovimentoFrontofficeHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ImpostaFlagTrasmesso">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Imposta un movimento effettuato dall'utente come inviato</wsdl:documentation>
+      <wsdl:input message="tns:ImpostaFlagTrasmessoHttpPostIn" />
+      <wsdl:output message="tns:ImpostaFlagTrasmessoHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="MarcaMovimentoFrontofficeComeInviato">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Marca un movimento compilato compilato dall'utente come compilato</wsdl:documentation>
+      <wsdl:input message="tns:MarcaMovimentoFrontofficeComeInviatoHttpPostIn" />
+      <wsdl:output message="tns:MarcaMovimentoFrontofficeComeInviatoHttpPostOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="MovimentiFrontofficeSvcSoap" type="tns:MovimentiFrontofficeSvcSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetMovimento">
+      <soap:operation soapAction="http://init.sigepro.it/GetMovimento" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDocumentiSostituibili">
+      <soap:operation soapAction="http://init.sigepro.it/GetDocumentiSostituibili" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetListaScadenze">
+      <soap:operation soapAction="http://init.sigepro.it/GetListaScadenze" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetScadenza">
+      <soap:operation soapAction="http://init.sigepro.it/GetScadenza" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetConfigurazioneMovimento">
+      <soap:operation soapAction="http://init.sigepro.it/GetConfigurazioneMovimento" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetJsonMovimentoFrontoffice">
+      <soap:operation soapAction="http://init.sigepro.it/GetJsonMovimentoFrontoffice" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SalvaJsonMovimentoFrontoffice">
+      <soap:operation soapAction="http://init.sigepro.it/SalvaJsonMovimentoFrontoffice" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ImpostaFlagTrasmesso">
+      <soap:operation soapAction="http://init.sigepro.it/ImpostaFlagTrasmesso" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MarcaMovimentoFrontofficeComeInviato">
+      <soap:operation soapAction="http://init.sigepro.it/MarcaMovimentoFrontofficeComeInviato" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="MovimentiFrontofficeSvcSoap12" type="tns:MovimentiFrontofficeSvcSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetMovimento">
+      <soap12:operation soapAction="http://init.sigepro.it/GetMovimento" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDocumentiSostituibili">
+      <soap12:operation soapAction="http://init.sigepro.it/GetDocumentiSostituibili" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetListaScadenze">
+      <soap12:operation soapAction="http://init.sigepro.it/GetListaScadenze" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetScadenza">
+      <soap12:operation soapAction="http://init.sigepro.it/GetScadenza" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetConfigurazioneMovimento">
+      <soap12:operation soapAction="http://init.sigepro.it/GetConfigurazioneMovimento" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetJsonMovimentoFrontoffice">
+      <soap12:operation soapAction="http://init.sigepro.it/GetJsonMovimentoFrontoffice" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SalvaJsonMovimentoFrontoffice">
+      <soap12:operation soapAction="http://init.sigepro.it/SalvaJsonMovimentoFrontoffice" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ImpostaFlagTrasmesso">
+      <soap12:operation soapAction="http://init.sigepro.it/ImpostaFlagTrasmesso" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MarcaMovimentoFrontofficeComeInviato">
+      <soap12:operation soapAction="http://init.sigepro.it/MarcaMovimentoFrontofficeComeInviato" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="MovimentiFrontofficeSvcHttpGet" type="tns:MovimentiFrontofficeSvcHttpGet">
+    <http:binding verb="GET" />
+    <wsdl:operation name="GetMovimento">
+      <http:operation location="/GetMovimento" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDocumentiSostituibili">
+      <http:operation location="/GetDocumentiSostituibili" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetScadenza">
+      <http:operation location="/GetScadenza" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetConfigurazioneMovimento">
+      <http:operation location="/GetConfigurazioneMovimento" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetJsonMovimentoFrontoffice">
+      <http:operation location="/GetJsonMovimentoFrontoffice" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SalvaJsonMovimentoFrontoffice">
+      <http:operation location="/SalvaJsonMovimentoFrontoffice" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output />
+    </wsdl:operation>
+    <wsdl:operation name="ImpostaFlagTrasmesso">
+      <http:operation location="/ImpostaFlagTrasmesso" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output />
+    </wsdl:operation>
+    <wsdl:operation name="MarcaMovimentoFrontofficeComeInviato">
+      <http:operation location="/MarcaMovimentoFrontofficeComeInviato" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output />
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="MovimentiFrontofficeSvcHttpPost" type="tns:MovimentiFrontofficeSvcHttpPost">
+    <http:binding verb="POST" />
+    <wsdl:operation name="GetMovimento">
+      <http:operation location="/GetMovimento" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDocumentiSostituibili">
+      <http:operation location="/GetDocumentiSostituibili" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetScadenza">
+      <http:operation location="/GetScadenza" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetConfigurazioneMovimento">
+      <http:operation location="/GetConfigurazioneMovimento" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetJsonMovimentoFrontoffice">
+      <http:operation location="/GetJsonMovimentoFrontoffice" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SalvaJsonMovimentoFrontoffice">
+      <http:operation location="/SalvaJsonMovimentoFrontoffice" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output />
+    </wsdl:operation>
+    <wsdl:operation name="ImpostaFlagTrasmesso">
+      <http:operation location="/ImpostaFlagTrasmesso" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output />
+    </wsdl:operation>
+    <wsdl:operation name="MarcaMovimentoFrontofficeComeInviato">
+      <http:operation location="/MarcaMovimentoFrontofficeComeInviato" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output />
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="MovimentiFrontofficeSvc">
+    <wsdl:port name="MovimentiFrontofficeSvcSoap" binding="tns:MovimentiFrontofficeSvcSoap">
+      <soap:address location="http://localhost:2640/sigepro.net/WebServices/WsAreaRiservata/MovimentiFrontofficeService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="MovimentiFrontofficeSvcSoap12" binding="tns:MovimentiFrontofficeSvcSoap12">
+      <soap12:address location="http://localhost:2640/sigepro.net/WebServices/WsAreaRiservata/MovimentiFrontofficeService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="MovimentiFrontofficeSvcHttpGet" binding="tns:MovimentiFrontofficeSvcHttpGet">
+      <http:address location="http://localhost:2640/sigepro.net/WebServices/WsAreaRiservata/MovimentiFrontofficeService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="MovimentiFrontofficeSvcHttpPost" binding="tns:MovimentiFrontofficeSvcHttpPost">
+      <http:address location="http://localhost:2640/sigepro.net/WebServices/WsAreaRiservata/MovimentiFrontofficeService.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

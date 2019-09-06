@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- edited with XMLSpy v2006 sp2 U (http://www.altova.com) by Valentina Martinucci (Engineering) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:simpleType name="WSResultType">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="0|1"/>
+			<!-- 1=Successo, 0=Fallito -->
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="WSErrorType">
+		<xs:sequence>
+			<xs:element name="ErrorContext" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Indica il contesto, ovvero la funzione/libreria/procedura in cui si è verificato l'errore che ha dato esito "Fallito" al Web Service.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ErrorNumber" type="xs:integer"/>
+			<xs:element name="ErrorMessage" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="BaseOutput_WS">
+		<xs:annotation>
+			<xs:documentation>ROOT element dello schema. Contiene  l'output di un Web Service che resituisce solo l'esito del processo e l'eventuale messaggio di errore</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="WSResult" type="WSResultType">
+					<xs:annotation>
+						<xs:documentation>Esito del Web Services (1=Successo, 0=Fallito)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="WSError" type="WSErrorType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Eventuale errore verificatosi durante il processo</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

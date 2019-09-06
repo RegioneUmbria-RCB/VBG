@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:dProt="http://insiel.it/protocollo/schemixsd/dettagliProtocollo" xmlns:tgen="http://insiel.it/protocollo/schemixsd/tipiGenerali" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://insiel.it/protocollo/schemixsd/dettagliProtocollo" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://193.42.71.39:8082/protows2-collaudoPN/services/protocollo/v1?xsd=tipiGenerali.xsd" namespace="http://insiel.it/protocollo/schemixsd/tipiGenerali" />
+  <xs:element name="DettagliProtocolloRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="utente" type="tgen:Utente" />
+        <xs:element name="registrazione" type="tgen:ProtocolloRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DettagliProtocolloResponse">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element name="dettagliProtocollo" type="dProt:DettagliProtocollo" />
+        <xs:element name="errore" type="tgen:Errore" />
+      </xs:choice>
+      <xs:attribute name="esito" type="xs:boolean" use="required" />
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="DettagliProtocollo">
+    <xs:sequence>
+      <xs:element name="infoGenerali" type="tgen:DettagliProtocollo" />
+      <xs:element minOccurs="0" name="mittenti" type="dProt:Mittenti" />
+      <xs:element minOccurs="0" name="destinatari" type="dProt:Destinatari" />
+      <xs:element minOccurs="0" name="uffici" type="dProt:Uffici" />
+      <xs:element minOccurs="0" name="precedenti" type="dProt:Precedenti" />
+      <xs:element minOccurs="0" name="classifiche" type="dProt:Classifiche" />
+      <xs:element minOccurs="0" name="documenti" type="dProt:DocumentiAllegati" />
+      <xs:element minOccurs="0" name="documentoInCarico" type="dProt:DocumentoInCarico" />
+      <xs:element minOccurs="0" name="pratiche" type="dProt:Pratiche" />
+      <xs:element minOccurs="0" name="mnemonici" type="dProt:Mnemonici" />
+      <xs:element minOccurs="0" name="sigle" type="dProt:Sigle" />
+      <xs:element minOccurs="0" name="allegati" type="dProt:Allegati" />
+      <xs:element minOccurs="0" name="riprotocollazioni" type="dProt:Riprotocollazioni" />
+      <xs:element minOccurs="0" name="testoMessaggio" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Mittenti">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="mittente" type="dProt:Corrispondente" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Destinatari">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="destinatario" type="dProt:Destinatario" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Uffici">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ufficio" type="dProt:Corrispondente" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Precedenti">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="precedente" type="dProt:Precedente" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Classifiche">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="classifica" type="tgen:ClassificaView" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Pratiche">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="pratica" type="dProt:Pratica" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="DocumentiAllegati">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="documento" type="dProt:DocumentoAllegato" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Mnemonici">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="mnemonico" type="tgen:MnemonicoView" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Allegati">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="allegato" type="dProt:Allegato" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Riprotocollazioni">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="protocollo" type="dProt:Protocollo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Precedente">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="codUff" type="xs:string" />
+      <xs:element minOccurs="0" name="codReg" type="xs:string" />
+      <xs:element minOccurs="0" name="anno" type="tgen:anno" />
+      <xs:element minOccurs="0" name="num" type="tgen:numero" />
+      <xs:element minOccurs="0" name="subn" type="tgen:subNumero" />
+      <xs:element minOccurs="0" name="verso" type="tgen:verso" />
+      <xs:element minOccurs="0" name="tipoLegame" type="xs:string" />
+      <xs:element minOccurs="0" name="tipoLegameDesc" type="xs:string" />
+      <xs:element minOccurs="0" name="estremiProto" type="xs:string" />
+      <xs:element minOccurs="0" name="idProt" type="tgen:IdProtocollo" />
+      <xs:element minOccurs="0" name="progPrecedente" type="xs:integer" />
+      <xs:element minOccurs="0" name="descTipoRife" type="xs:string" />
+      <xs:element minOccurs="0" name="codTipoRife" type="xs:string" />
+      <xs:element minOccurs="0" name="codTipoRifeCol" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Protocollo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="codUff" type="xs:string" />
+      <xs:element minOccurs="0" name="codReg" type="xs:string" />
+      <xs:element minOccurs="0" name="anno" type="tgen:anno" />
+      <xs:element minOccurs="0" name="num" type="tgen:numero" />
+      <xs:element minOccurs="0" name="subn" type="tgen:subNumero" />
+      <xs:element minOccurs="0" name="verso" type="tgen:verso" />
+      <xs:element minOccurs="0" name="data" type="xs:date" />
+      <xs:element minOccurs="0" name="oggetto" type="xs:string" />
+      <xs:element minOccurs="0" name="idProt" type="tgen:IdProtocollo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Corrispondente">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="codAna" type="xs:string" />
+      <xs:element minOccurs="0" name="descAna" type="xs:string" />
+      <xs:element minOccurs="0" name="codCatRife" type="xs:string" />
+      <xs:element minOccurs="0" name="codTipoRife" type="xs:string" />
+      <xs:element minOccurs="0" name="descTipoRife" type="xs:string" />
+      <xs:element minOccurs="0" name="codTipoDoc" type="xs:string" />
+      <xs:element minOccurs="0" name="descTipoDoc" type="xs:string" />
+      <xs:element minOccurs="0" name="dataRiferim" type="xs:date" />
+      <xs:element minOccurs="0" name="numRiferim" type="xs:string" />
+      <xs:element minOccurs="0" name="numCopie" type="xs:integer" />
+      <xs:element minOccurs="0" name="note" type="xs:string" />
+      <xs:element minOccurs="0" name="giaInviato" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Destinatario">
+    <xs:complexContent mixed="false">
+      <xs:extension base="dProt:Corrispondente">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="dataCarico" type="xs:date" />
+          <xs:element minOccurs="0" name="flIop" type="xs:integer" />
+          <xs:element minOccurs="0" name="flTipoCasella" type="xs:integer" />
+          <xs:element minOccurs="0" name="flTipoInoltro" type="xs:integer" />
+          <xs:element minOccurs="0" name="flStatoPec" type="xs:integer" />
+          <xs:element minOccurs="0" name="invioTelemTipoMessaggio">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="PEC" />
+                <xs:enumeration value="IOP" />
+                <xs:enumeration value="INT" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element minOccurs="0" name="invioTelemStatoConsegna">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="MSG_ACCETTATO" />
+                <xs:enumeration value="MSG_CONSEGNATO" />
+                <xs:enumeration value="MSG_NON_ACCETTATO" />
+                <xs:enumeration value="MSG_NON_CONSEGNATO" />
+                <xs:enumeration value="MSG_PREAVVISO_ERRORE_CONSEGNA" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element minOccurs="0" name="invioTelemStatoInvio">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="NON_INVIATO" />
+                <xs:enumeration value="INVIATO" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element minOccurs="0" name="casellaTrasmissioneTelematica" type="xs:string" />
+          <xs:element minOccurs="0" name="invioTelemTipoCasella">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="NON_CERTIFICATA" />
+                <xs:enumeration value="CERTIFICATA" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="DocumentoInCarico">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="descUff" type="xs:string" />
+      <xs:element minOccurs="0" name="descAna" type="xs:string" />
+      <xs:element minOccurs="0" name="dataCarico" type="xs:date" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Pratica">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="codiceUfficio" type="xs:string" />
+      <xs:element minOccurs="0" name="codiceRegistro" type="tgen:ClassificaView" />
+      <xs:element minOccurs="0" name="anno" type="xs:integer" />
+      <xs:element minOccurs="0" name="numero" type="xs:integer" />
+      <xs:element minOccurs="0" name="subNumero" type="xs:string" />
+      <xs:element minOccurs="0" name="data" type="xs:date" />
+      <xs:element minOccurs="0" name="oggetto" type="xs:string" />
+      <xs:element minOccurs="0" name="progDoc" type="tgen:progDoc" />
+      <xs:element minOccurs="0" name="progMovi" type="tgen:progMovi" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="DocumentoAllegato">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="nome" type="xs:string" />
+      <xs:element minOccurs="0" name="idDoc" type="xs:long" />
+      <xs:element minOccurs="0" name="tipoDoc" type="xs:string" />
+      <xs:element minOccurs="0" name="tipo" type="xs:short" />
+      <xs:element minOccurs="0" name="impronta" type="xs:string" />
+      <xs:element minOccurs="0" name="flIop" type="xs:short" />
+      <xs:element minOccurs="0" name="flDgr" type="xs:short" />
+      <xs:element minOccurs="0" name="gestDocId" type="xs:long" />
+      <xs:element minOccurs="0" name="flPrincipale" type="xs:short" />
+      <xs:element minOccurs="0" name="gestDocIndir" type="xs:string" />
+      <xs:element minOccurs="0" name="lungh" type="xs:long" />
+      <xs:element minOccurs="0" name="est" type="xs:string" />
+      <xs:element minOccurs="0" name="crc" type="xs:long" />
+      <xs:element minOccurs="0" name="flIteratti" type="xs:short" />
+      <xs:element minOccurs="0" name="flTestoMsg" type="xs:short" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Sigle">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="operatoreCodice" type="xs:string" />
+      <xs:element minOccurs="0" name="operatoreDescrizione" type="xs:string" />
+      <xs:element minOccurs="0" name="estensoreCodice" type="xs:string" />
+      <xs:element minOccurs="0" name="estensoreDescrizione" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Allegato">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="oggetto" type="xs:string" />
+      <xs:element minOccurs="0" name="importo" type="xs:decimal" />
+      <xs:element minOccurs="0" name="valuta" type="xs:string" />
+      <xs:element minOccurs="0" name="valutaDesc" type="xs:string" />
+      <xs:element minOccurs="0" name="tipoAllegato" type="xs:string" />
+      <xs:element minOccurs="0" name="tipoAllegatoDesc" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

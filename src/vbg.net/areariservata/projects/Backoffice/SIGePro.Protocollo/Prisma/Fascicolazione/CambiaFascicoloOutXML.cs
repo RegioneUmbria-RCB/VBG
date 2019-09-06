@@ -1,0 +1,42 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Xml.Serialization;
+
+namespace Init.SIGePro.Protocollo.Prisma.Fascicolazione
+{
+    [XmlRoot(Namespace = "", ElementName = "ROOT", IsNullable = false)]
+    public class CambiaFascicoloOutXML
+    {
+        public enum ResultEnum { OK, KO }
+
+        [XmlElement("RESULT")]
+        public string _result { get; set; }
+
+        public ResultEnum Result
+        {
+            get
+            {
+                if (String.IsNullOrEmpty(this._result))
+                {
+                    return ResultEnum.KO;
+                }
+
+                ResultEnum retVal = ResultEnum.KO;
+
+                var isParsable = Enum.TryParse(this._result, out retVal);
+                return retVal;
+            }
+        }
+
+        [XmlElement("EXCEPTION")]
+        public string Exception { get; set; }
+
+        [XmlElement("MESSAGE")]
+        public string Message { get; set; }
+
+        [XmlElement("ERROR_NUMBER")]
+        public string ErrorNumber { get; set; }
+    }
+}

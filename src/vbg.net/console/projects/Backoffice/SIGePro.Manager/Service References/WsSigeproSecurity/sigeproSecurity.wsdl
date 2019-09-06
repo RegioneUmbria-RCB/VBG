@@ -1,0 +1,535 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:sch="http://sigeprosecurity.gruppoinit.it/schema" xmlns:tns="http://sigeprosecurity.gruppoinit.it/ws" targetNamespace="http://sigeprosecurity.gruppoinit.it/ws" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <schema xmlns:tns="http://sigeprosecurity.gruppoinit.it/schema" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://sigeprosecurity.gruppoinit.it/schema" xmlns="http://www.w3.org/2001/XMLSchema">
+      <element name="LoginRequest">
+        <complexType>
+          <sequence>
+            <element name="alias" type="string" />
+            <element name="contesto" type="tns:ContestoType" />
+            <element name="username" type="string" />
+            <element name="password" type="string" />
+            <element name="ipAddress" type="string" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="LoginResponse">
+        <complexType>
+          <complexContent mixed="false">
+            <extension base="tns:TokenResultType" />
+          </complexContent>
+        </complexType>
+      </element>
+      <element name="LoginSSORequest">
+        <complexType>
+          <sequence>
+            <element name="alias" type="string" />
+            <element name="contesto" type="tns:ContestoType" />
+            <element name="username" type="string" />
+            <element name="ipAddress" type="string" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="LoginSSOResponse">
+        <complexType>
+          <complexContent mixed="false">
+            <extension base="tns:TokenResultType" />
+          </complexContent>
+        </complexType>
+      </element>
+      <element name="CheckTokenRequest">
+        <complexType>
+          <sequence>
+            <element name="token" type="string" />
+            <element name="tokenInfo" type="boolean" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="CheckTokenResponse">
+        <complexType>
+          <sequence>
+            <element name="valid" type="boolean" />
+            <element minOccurs="0" name="tokenInfo" type="tns:TokenInfoType" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="LogoutRequest">
+        <complexType>
+          <sequence>
+            <element name="token" type="string" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="LogoutResponse">
+        <complexType>
+          <sequence>
+            <element name="success" type="boolean" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetDbConnectionInfoRequest">
+        <complexType>
+          <sequence>
+            <element name="alias" type="string" />
+            <element name="ambiente" type="tns:AmbienteType" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetDbConnectionInfoResponse">
+        <complexType>
+          <sequence>
+            <element name="alias" type="string" />
+            <element minOccurs="0" name="idComune" type="string" />
+            <element name="connectionString" type="string" />
+            <element name="dbUser" type="string" />
+            <element name="dbPassword" type="string" />
+            <element minOccurs="0" name="provider" type="string" />
+            <element name="dbOwner" type="string" />
+            <element minOccurs="0" name="dbMsName" type="string" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetApplicationInfoRequest">
+        <complexType>
+          <sequence>
+            <element minOccurs="0" name="param" type="string" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetApplicationInfoResponse">
+        <complexType>
+          <sequence>
+            <element minOccurs="0" maxOccurs="unbounded" name="applicationInfo" type="tns:ApplicationInfoType" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetSecurityListRequest">
+        <complexType>
+          <sequence>
+            <element minOccurs="0" name="alias" type="string" />
+            <element minOccurs="0" name="tipo" type="tns:ComunisecurityAttiviType" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetSecurityListResponse">
+        <complexType>
+          <sequence>
+            <element minOccurs="0" maxOccurs="unbounded" name="security" type="tns:SecurityListType" />
+          </sequence>
+        </complexType>
+      </element>
+      <complexType name="SecurityListType">
+        <sequence>
+          <element name="alias" type="string" />
+          <element minOccurs="0" name="descrizione" type="string" />
+          <element name="attivo" type="boolean" />
+        </sequence>
+      </complexType>
+      <complexType name="ApplicationInfoType">
+        <sequence>
+          <element name="param" type="string" />
+          <element minOccurs="0" name="value" type="string" />
+        </sequence>
+      </complexType>
+      <simpleType name="ComunisecurityAttiviType">
+        <restriction base="string">
+          <enumeration value="TUTTI" />
+          <enumeration value="ATTIVI" />
+          <enumeration value="DISATTIVATI" />
+        </restriction>
+      </simpleType>
+      <simpleType name="AmbienteType">
+        <restriction base="string">
+          <enumeration value="ASP" />
+          <enumeration value="DOTNET" />
+          <enumeration value="JAVA" />
+        </restriction>
+      </simpleType>
+      <simpleType name="ContestoType">
+        <annotation>
+          <documentation>
+				Enumerazione dei Contesti disponibili 
+				AMM: Amministrazioni 
+				APP: Applicazioni 
+				OPE: Utenti di Backoffice 
+				UTE: Utenti di Frontoffice
+				UTEG: Utenti di Frontoffice Persone giuridiche
+			</documentation>
+        </annotation>
+        <restriction base="string">
+          <enumeration value="AMM" />
+          <enumeration value="APP" />
+          <enumeration value="OPE" />
+          <enumeration value="UTE" />
+          <enumeration value="UTEG" />
+        </restriction>
+      </simpleType>
+      <complexType name="TokenInfoType">
+        <sequence>
+          <element name="contesto" type="tns:ContestoType" />
+          <element name="clientIp" type="string" />
+          <element name="alias" type="string" />
+          <element name="idcomune" type="string" />
+          <element name="firstrequest" type="string" />
+          <element name="lastrequest" type="string" />
+          <element name="userid" type="string" />
+        </sequence>
+      </complexType>
+      <complexType name="TokenResultType">
+        <sequence>
+          <element name="token" type="string" />
+        </sequence>
+      </complexType>
+      <element name="SetTokenPartnerAppRequest">
+        <complexType>
+          <sequence>
+            <element name="token" type="string" />
+            <element name="tokenPartnerApp" type="string" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="SetTokenPartnerAppResponse">
+        <complexType>
+          <sequence>
+            <element name="code" type="integer" />
+            <element minOccurs="0" name="message" type="string" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetTokenPartnerAppRequest">
+        <complexType>
+          <sequence>
+            <element name="token" type="string" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetTokenPartnerAppResponse">
+        <complexType>
+          <sequence>
+            <element name="tokenPartnerApp" type="string" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="SetAuthLevelRequest">
+        <complexType>
+          <sequence>
+            <element name="token" type="string" />
+            <element name="authlevel" type="integer" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="SetAuthLevelResponse">
+        <complexType>
+          <sequence>
+            <element name="success" type="boolean" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetAuthLevelRequest">
+        <complexType>
+          <sequence>
+            <element name="token" type="string" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetAuthLevelResponse">
+        <complexType>
+          <sequence>
+            <element name="authlevel" type="integer" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="SetTokenPartnerAppPerComuneESoftwareRequest">
+        <complexType>
+          <sequence>
+            <element name="token" type="string" />
+            <element name="tokenPartnerApp" type="string" />
+            <element minOccurs="0" name="codicecomune" type="string" />
+            <element minOccurs="0" name="software" type="string" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="SetTokenPartnerAppPerComuneESoftwareResponse">
+        <complexType>
+          <sequence>
+            <element name="code" type="integer" />
+            <element minOccurs="0" name="message" type="string" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetTokenPartnerAppPerComuneESoftwareRequest">
+        <complexType>
+          <sequence>
+            <element name="token" type="string" />
+            <element minOccurs="0" name="codicecomune" type="string" />
+            <element minOccurs="0" name="software" type="string" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetTokenPartnerAppPerComuneESoftwareResponse">
+        <complexType>
+          <sequence>
+            <element name="tokenPartnerApp" type="string" />
+          </sequence>
+        </complexType>
+      </element>
+    </schema>
+  </wsdl:types>
+  <wsdl:message name="LoginSSORequest">
+    <wsdl:part name="LoginSSORequest" element="sch:LoginSSORequest" />
+  </wsdl:message>
+  <wsdl:message name="GetSecurityListRequest">
+    <wsdl:part name="GetSecurityListRequest" element="sch:GetSecurityListRequest" />
+  </wsdl:message>
+  <wsdl:message name="GetAuthLevelRequest">
+    <wsdl:part name="GetAuthLevelRequest" element="sch:GetAuthLevelRequest" />
+  </wsdl:message>
+  <wsdl:message name="SetTokenPartnerAppRequest">
+    <wsdl:part name="SetTokenPartnerAppRequest" element="sch:SetTokenPartnerAppRequest" />
+  </wsdl:message>
+  <wsdl:message name="GetTokenPartnerAppPerComuneESoftwareResponse">
+    <wsdl:part name="GetTokenPartnerAppPerComuneESoftwareResponse" element="sch:GetTokenPartnerAppPerComuneESoftwareResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetSecurityListResponse">
+    <wsdl:part name="GetSecurityListResponse" element="sch:GetSecurityListResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoginSSOResponse">
+    <wsdl:part name="LoginSSOResponse" element="sch:LoginSSOResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoginRequest">
+    <wsdl:part name="LoginRequest" element="sch:LoginRequest" />
+  </wsdl:message>
+  <wsdl:message name="LogoutRequest">
+    <wsdl:part name="LogoutRequest" element="sch:LogoutRequest" />
+  </wsdl:message>
+  <wsdl:message name="LoginResponse">
+    <wsdl:part name="LoginResponse" element="sch:LoginResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetDbConnectionInfoResponse">
+    <wsdl:part name="GetDbConnectionInfoResponse" element="sch:GetDbConnectionInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="CheckTokenResponse">
+    <wsdl:part name="CheckTokenResponse" element="sch:CheckTokenResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetTokenPartnerAppPerComuneESoftwareRequest">
+    <wsdl:part name="GetTokenPartnerAppPerComuneESoftwareRequest" element="sch:GetTokenPartnerAppPerComuneESoftwareRequest" />
+  </wsdl:message>
+  <wsdl:message name="SetTokenPartnerAppPerComuneESoftwareResponse">
+    <wsdl:part name="SetTokenPartnerAppPerComuneESoftwareResponse" element="sch:SetTokenPartnerAppPerComuneESoftwareResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetDbConnectionInfoRequest">
+    <wsdl:part name="GetDbConnectionInfoRequest" element="sch:GetDbConnectionInfoRequest" />
+  </wsdl:message>
+  <wsdl:message name="GetApplicationInfoResponse">
+    <wsdl:part name="GetApplicationInfoResponse" element="sch:GetApplicationInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetTokenPartnerAppResponse">
+    <wsdl:part name="GetTokenPartnerAppResponse" element="sch:GetTokenPartnerAppResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetAuthLevelRequest">
+    <wsdl:part name="SetAuthLevelRequest" element="sch:SetAuthLevelRequest" />
+  </wsdl:message>
+  <wsdl:message name="GetTokenPartnerAppRequest">
+    <wsdl:part name="GetTokenPartnerAppRequest" element="sch:GetTokenPartnerAppRequest" />
+  </wsdl:message>
+  <wsdl:message name="CheckTokenRequest">
+    <wsdl:part name="CheckTokenRequest" element="sch:CheckTokenRequest" />
+  </wsdl:message>
+  <wsdl:message name="GetAuthLevelResponse">
+    <wsdl:part name="GetAuthLevelResponse" element="sch:GetAuthLevelResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetTokenPartnerAppPerComuneESoftwareRequest">
+    <wsdl:part name="SetTokenPartnerAppPerComuneESoftwareRequest" element="sch:SetTokenPartnerAppPerComuneESoftwareRequest" />
+  </wsdl:message>
+  <wsdl:message name="LogoutResponse">
+    <wsdl:part name="LogoutResponse" element="sch:LogoutResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetApplicationInfoRequest">
+    <wsdl:part name="GetApplicationInfoRequest" element="sch:GetApplicationInfoRequest" />
+  </wsdl:message>
+  <wsdl:message name="SetAuthLevelResponse">
+    <wsdl:part name="SetAuthLevelResponse" element="sch:SetAuthLevelResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetTokenPartnerAppResponse">
+    <wsdl:part name="SetTokenPartnerAppResponse" element="sch:SetTokenPartnerAppResponse" />
+  </wsdl:message>
+  <wsdl:portType name="sigeproSecurity">
+    <wsdl:operation name="LoginSSO">
+      <wsdl:input name="LoginSSORequest" message="tns:LoginSSORequest" />
+      <wsdl:output name="LoginSSOResponse" message="tns:LoginSSOResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="Login">
+      <wsdl:input name="LoginRequest" message="tns:LoginRequest" />
+      <wsdl:output name="LoginResponse" message="tns:LoginResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSecurityList">
+      <wsdl:input name="GetSecurityListRequest" message="tns:GetSecurityListRequest" />
+      <wsdl:output name="GetSecurityListResponse" message="tns:GetSecurityListResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="Logout">
+      <wsdl:input name="LogoutRequest" message="tns:LogoutRequest" />
+      <wsdl:output name="LogoutResponse" message="tns:LogoutResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="SetTokenPartnerAppPerComuneESoftware">
+      <wsdl:input name="SetTokenPartnerAppPerComuneESoftwareRequest" message="tns:SetTokenPartnerAppPerComuneESoftwareRequest" />
+      <wsdl:output name="SetTokenPartnerAppPerComuneESoftwareResponse" message="tns:SetTokenPartnerAppPerComuneESoftwareResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckToken">
+      <wsdl:input name="CheckTokenRequest" message="tns:CheckTokenRequest" />
+      <wsdl:output name="CheckTokenResponse" message="tns:CheckTokenResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTokenPartnerAppPerComuneESoftware">
+      <wsdl:input name="GetTokenPartnerAppPerComuneESoftwareRequest" message="tns:GetTokenPartnerAppPerComuneESoftwareRequest" />
+      <wsdl:output name="GetTokenPartnerAppPerComuneESoftwareResponse" message="tns:GetTokenPartnerAppPerComuneESoftwareResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTokenPartnerApp">
+      <wsdl:input name="GetTokenPartnerAppRequest" message="tns:GetTokenPartnerAppRequest" />
+      <wsdl:output name="GetTokenPartnerAppResponse" message="tns:GetTokenPartnerAppResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAuthLevel">
+      <wsdl:input name="GetAuthLevelRequest" message="tns:GetAuthLevelRequest" />
+      <wsdl:output name="GetAuthLevelResponse" message="tns:GetAuthLevelResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDbConnectionInfo">
+      <wsdl:input name="GetDbConnectionInfoRequest" message="tns:GetDbConnectionInfoRequest" />
+      <wsdl:output name="GetDbConnectionInfoResponse" message="tns:GetDbConnectionInfoResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="SetAuthLevel">
+      <wsdl:input name="SetAuthLevelRequest" message="tns:SetAuthLevelRequest" />
+      <wsdl:output name="SetAuthLevelResponse" message="tns:SetAuthLevelResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="SetTokenPartnerApp">
+      <wsdl:input name="SetTokenPartnerAppRequest" message="tns:SetTokenPartnerAppRequest" />
+      <wsdl:output name="SetTokenPartnerAppResponse" message="tns:SetTokenPartnerAppResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="GetApplicationInfo">
+      <wsdl:input name="GetApplicationInfoRequest" message="tns:GetApplicationInfoRequest" />
+      <wsdl:output name="GetApplicationInfoResponse" message="tns:GetApplicationInfoResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="sigeproSecuritySoap11" type="tns:sigeproSecurity">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="LoginSSO">
+      <soap:operation soapAction="" />
+      <wsdl:input name="LoginSSORequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="LoginSSOResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Login">
+      <soap:operation soapAction="" />
+      <wsdl:input name="LoginRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="LoginResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSecurityList">
+      <soap:operation soapAction="" />
+      <wsdl:input name="GetSecurityListRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="GetSecurityListResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Logout">
+      <soap:operation soapAction="" />
+      <wsdl:input name="LogoutRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="LogoutResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetTokenPartnerAppPerComuneESoftware">
+      <soap:operation soapAction="" />
+      <wsdl:input name="SetTokenPartnerAppPerComuneESoftwareRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="SetTokenPartnerAppPerComuneESoftwareResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckToken">
+      <soap:operation soapAction="" />
+      <wsdl:input name="CheckTokenRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="CheckTokenResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTokenPartnerAppPerComuneESoftware">
+      <soap:operation soapAction="" />
+      <wsdl:input name="GetTokenPartnerAppPerComuneESoftwareRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="GetTokenPartnerAppPerComuneESoftwareResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTokenPartnerApp">
+      <soap:operation soapAction="" />
+      <wsdl:input name="GetTokenPartnerAppRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="GetTokenPartnerAppResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAuthLevel">
+      <soap:operation soapAction="" />
+      <wsdl:input name="GetAuthLevelRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="GetAuthLevelResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDbConnectionInfo">
+      <soap:operation soapAction="" />
+      <wsdl:input name="GetDbConnectionInfoRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="GetDbConnectionInfoResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetAuthLevel">
+      <soap:operation soapAction="" />
+      <wsdl:input name="SetAuthLevelRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="SetAuthLevelResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetTokenPartnerApp">
+      <soap:operation soapAction="" />
+      <wsdl:input name="SetTokenPartnerAppRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="SetTokenPartnerAppResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetApplicationInfo">
+      <soap:operation soapAction="" />
+      <wsdl:input name="GetApplicationInfoRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="GetApplicationInfoResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="sigeproSecurityService">
+    <wsdl:port name="sigeproSecuritySoap11" binding="tns:sigeproSecuritySoap11">
+      <soap:address location="http://devel9:8080/ibcsecurity/services" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

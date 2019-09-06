@@ -1,0 +1,30 @@
+<app-inner-page-layout [isLoading]="!caricamentoCompletato">
+
+    <div class="faq-list">
+        <h2>Domande frequenti</h2>
+
+        <div class="row">
+            <div class="col-md-9" #scrollContainer>
+                <div *ngFor="let modulo of fullList$ | async">
+
+                    <h3 id="mod-{{modulo.id}}">
+                        {{modulo.descrizione}}
+                    </h3>
+
+                    <div *ngFor="let faq of modulo.faq" [ngClass]="{'active': faq.visibile}" id="faq-{{faq.id}}">
+                        <h4 [innerHtml]="faq.titolo" (click)='attiva(faq)' class="link"></h4>
+                        <p [innerHtml]="faq.descrizione" *ngIf="faq.visibile"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="lista-scorciatoie">
+                    <div *ngFor="let modulo of fullList$ | async" class="scorciatoia color-inverse link" pageScroll href="#mod-{{modulo.id}}">
+                        {{modulo.descrizione}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</app-inner-page-layout>

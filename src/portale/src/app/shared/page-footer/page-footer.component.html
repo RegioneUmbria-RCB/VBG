@@ -1,0 +1,71 @@
+<div class="frame-footer" *ngIf="loaded">
+    <footer>
+        <div class="barra-feedback" *ngIf="datiComune.urlQuestionario">
+            <a href="{{datiComune.urlQuestionario}}">Valuta questo sito</a>
+        </div>
+
+        <div class="container  contenuto">
+            <h1>
+                {{datiComune.denominazioneComune}}
+                <small>{{datiComune.denominazioneSportello}}</small>
+            </h1>
+
+            <div class="row">
+                <div class="col-md-3 contatti">
+                    <h2>Recapiti e contatti</h2>
+                    <div class="sezione-footer">
+                        <span *ngFor="let ind of datiComune.contatti.indirizzo">{{ind}}<br /></span>
+                    </div>
+                </div>
+
+                <div class="col-md-3 contatti">
+                    <h2>&nbsp;</h2>
+                    <div class="sezione-footer">
+                        <p *ngIf="datiComune.contatti.pec">
+                            Posta elettronica certificata (PEC):
+                            <a href="mailto:{{datiComune.contatti.pec}}">{{datiComune.contatti.pec}}</a>
+                        </p>
+
+                        <p *ngIf="datiComune.contatti.email">
+                            Posta elettronica:
+                            <a href="mailto:{{datiComune.contatti.email}}">{{datiComune.contatti.email}}</a>
+                        </p>
+
+                        <p *ngIf="datiComune.contatti.telefono">
+                            Telefono:<br /> {{datiComune.contatti.telefono}}
+                        </p>
+
+                        <p *ngIf="datiComune.contatti.fax">
+                            Fax:<br /> {{datiComune.contatti.fax}}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-3 ">
+                </div>
+
+                <div class="col-md-3 " *ngIf="datiComune.canaliSocial">
+                    <h2>Seguici su</h2>
+                    <div class="sezione-footer social-links">
+                        <a href="{{canale.link}}" title="Seguici su {{canale.tipo}}" target="_blank" *ngFor="let canale of datiComune.canaliSocial">
+                            <span class="fa-stack fa-lg">
+                                      <span class="fa fa-circle fa-stack-2x"></span>
+                            <span class="fa fa-{{canale.tipo}} fa-stack-1x fa-inverse"></span>
+                            </span><span class="sr-only">{{canale.tipo}}</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="altre-informazioni" *ngIf="datiComune.footerLinks">
+                <ul>
+                    <li *ngFor="let item of datiComune.footerLinks">
+                        <a href="{{item.link}}">{{item.titolo}}</a>
+                    </li>
+                </ul>
+
+
+            </div>
+        </div>
+    </footer>
+</div>

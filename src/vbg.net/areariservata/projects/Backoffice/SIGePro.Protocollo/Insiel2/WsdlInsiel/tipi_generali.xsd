@@ -1,0 +1,667 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2005 rel. 3 U (http://www.altova.com) by any (INSIEL S.p.A.) -->
+<xs:schema xmlns:tgen="http://insiel.it/protocollo/schemixsd/TipiGenerali" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://insiel.it/protocollo/schemixsd/TipiGenerali" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:simpleType name="progMovi">
+		<xs:restriction base="xs:integer"/>
+	</xs:simpleType>
+	<xs:simpleType name="progDoc">
+		<xs:restriction base="xs:long"/>
+	</xs:simpleType>
+	<xs:simpleType name="oggetto">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="2000"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="note">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="2000"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="anno">
+		<xs:restriction base="xs:nonNegativeInteger"/>
+	</xs:simpleType>
+	<xs:simpleType name="numero">
+		<xs:restriction base="xs:positiveInteger"/>
+	</xs:simpleType>
+	<xs:simpleType name="subNumero">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="40"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="verso">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="P"/>
+			<xs:enumeration value="A"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PraticaAC">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="agliAtti"/>
+			<xs:enumeration value="inEvidenza"/>
+			<xs:enumeration value="altro"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="stato">
+		<xs:annotation>
+			<xs:documentation>0 attivo, 1 disattivato/annullato</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:integer"/>
+	</xs:simpleType>
+	<xs:simpleType name="tipoMittenteMail">
+		<xs:restriction base="xs:integer">
+			<xs:totalDigits value="1"/>
+			<xs:minInclusive value="-1"/>
+			<xs:maxInclusive value="3"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="operatoreRelazionale">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="uguale"/>
+			<xs:enumeration value="iniziaCon"/>
+			<xs:enumeration value="contiene"/>
+			<xs:enumeration value="finisceCon"/>
+			<xs:enumeration value="minore"/>
+			<xs:enumeration value="minoreUguale"/>
+			<xs:enumeration value="maggiore"/>
+			<xs:enumeration value="maggioreUguale"/>
+			<xs:enumeration value="compresoTra"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="RegistrazioneEstratta">
+		<xs:annotation>
+			<xs:documentation>eliminao vedi se serve</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="codiceUfficio" type="xs:string"/>
+			<xs:element name="descUfficio" type="xs:string" nillable="true"/>
+			<xs:element name="codiceRegistro" type="xs:string"/>
+			<xs:element name="descRegistro" type="xs:string" nillable="true"/>
+			<xs:element name="anno" type="tgen:anno"/>
+			<xs:element name="numero" type="tgen:numero"/>
+			<xs:element name="subNumero" type="tgen:subNumero"/>
+			<xs:element name="verso" type="tgen:verso"/>
+			<xs:element name="data" type="xs:date"/>
+			<xs:element name="dataAP" type="xs:dateTime" nillable="true" minOccurs="0"/>
+			<xs:element name="oggetto" type="tgen:oggetto"/>
+			<xs:element name="corrispondente" type="xs:string" nillable="true"/>
+			<xs:element name="ufficio" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="classifica" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="idProtocollo" type="tgen:IdProtocollo"/>
+			<xs:element name="estremiDocumento">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="docAnno" type="xs:integer" nillable="true"/>
+						<xs:element name="docNumero" type="xs:string" nillable="true"/>
+						<xs:element name="docNumeroN" type="xs:integer" nillable="true"/>
+						<xs:element name="docData" type="xs:date" nillable="true"/>
+						<xs:element name="docTipo" type="xs:string" nillable="true"/>
+						<xs:element name="docDescTipo" type="xs:string" nillable="true"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="isImmagini" type="xs:boolean" nillable="true"/>
+			<xs:element name="isDocumenti" type="xs:boolean" nillable="true"/>
+			<xs:element name="isIOP" type="xs:boolean" nillable="true" minOccurs="0"/>
+			<xs:element name="isAnnullato" type="xs:boolean" nillable="true" minOccurs="0"/>
+			<xs:element name="livSegretezza" type="xs:integer" nillable="true" minOccurs="0"/>
+			<xs:element name="dati_ultimo_aggiornamento">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="cod_login_agg" type="xs:string" nillable="true"/>
+						<xs:element name="data_ora_agg" type="xs:dateTime"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="primaPratica">
+				<xs:complexType/>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DettagliProtocollo">
+		<xs:annotation>
+			<xs:documentation>up0_view_dati_protocollo_f_e</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="clasCodClas" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="clasLiv1" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="clasLiv2" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="clasLiv3" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="clasLiv4" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="clasLiv5" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="clasLiv6" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="clasLiv7" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="clasLiv8" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="corrCodTipoDoc" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="corrDataRiferim" type="xs:dateTime" nillable="true" minOccurs="0"/>
+			<xs:element name="corrDescAna" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="corrNumRiferim" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="dest2ProgInteressa" type="xs:int" nillable="true" minOccurs="0"/>
+			<xs:element name="docAnnoDoc" type="xs:short" nillable="true" minOccurs="0"/>
+			<xs:element name="docCntMovi" type="xs:int" nillable="true" minOccurs="0"/>
+			<xs:element name="docCodCatDoc" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="docCodTipoDoc" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="docDataDoc" type="xs:dateTime" nillable="true" minOccurs="0"/>
+			<xs:element name="docDataFirma" type="xs:dateTime" nillable="true" minOccurs="0"/>
+			<xs:element name="docDescOgge" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="docFlIop" type="xs:short" nillable="true" minOccurs="0"/>
+			<xs:element name="docImporto" type="xs:decimal" nillable="true" minOccurs="0"/>
+			<xs:element name="docNumDoc" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="docNumDocN" type="xs:int" nillable="true" minOccurs="0"/>
+			<xs:element name="docSubnDoc" type="xs:short" nillable="true" minOccurs="0"/>
+			<xs:element name="docTotAlle" type="xs:int" nillable="true" minOccurs="0"/>
+			<xs:element name="docValuta" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="docVariAlle" type="xs:short" nillable="true" minOccurs="0"/>
+			<xs:element name="eccezioni" type="xs:decimal" nillable="true" minOccurs="0"/>
+			<xs:element name="estSigla" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="fileEstDocProgDoc" type="xs:long" nillable="true" minOccurs="0"/>
+			<xs:element name="fileEstOleDocProgDoc" type="xs:long" nillable="true" minOccurs="0"/>
+			<xs:element name="fileEstOleProgDoc" type="xs:long" nillable="true" minOccurs="0"/>
+			<xs:element name="fileEstProgDoc" type="xs:long" nillable="true" minOccurs="0"/>
+			<xs:element name="flCopiaBlob" type="xs:short" nillable="true" minOccurs="0"/>
+			<xs:element name="flPerConoscenza" type="xs:short" nillable="true" minOccurs="0"/>
+			<xs:element name="flScarto" type="xs:short" nillable="true" minOccurs="0"/>
+			<xs:element name="legato2ProgLegato" type="xs:int" nillable="true" minOccurs="0"/>
+			<xs:element name="logMoviVersione" type="xs:int" nillable="true" minOccurs="0"/>
+			<xs:element name="minimoStato" type="xs:decimal" nillable="true" minOccurs="0"/>
+			<xs:element name="mitt2ProgInteressa" type="xs:int" nillable="true" minOccurs="0"/>
+			<xs:element name="opeSigla" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="pratAnnoProt" type="xs:short" nillable="true" minOccurs="0"/>
+			<xs:element name="pratCodAna" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="pratCodReg" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="pratDescOgge" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="pratNote" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="pratNumProt" type="xs:int" nillable="true" minOccurs="0"/>
+			<xs:element name="pratPraticaAc" type="xs:short" nillable="true" minOccurs="0"/>
+			<xs:element name="pratPraticaDataAc" type="xs:dateTime" nillable="true" minOccurs="0"/>
+			<xs:element name="pratProgDoc" type="xs:long" nillable="true" minOccurs="0"/>
+			<xs:element name="pratProgInPrat" type="xs:int" nillable="true" minOccurs="0"/>
+			<xs:element name="pratProgLegato" type="xs:int" nillable="true" minOccurs="0"/>
+			<xs:element name="pratSubnProt" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="precedentePrimoProgDocP" type="xs:long" nillable="true" minOccurs="0"/>
+			<xs:element name="precedenteProgDocP" type="xs:long" nillable="true" minOccurs="0"/>
+			<xs:element name="protoAnnoProt" type="xs:short" nillable="true" minOccurs="0"/>
+			<xs:element name="protoApProt" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="protoCodLoginAgg" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="protoCodReg" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="protoCollEmergenza" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="protoDataAp" type="xs:dateTime" nillable="true" minOccurs="0"/>
+			<xs:element name="protoDataAtti" type="xs:dateTime" nillable="true" minOccurs="0"/>
+			<xs:element name="protoDataMovi" type="xs:dateTime" nillable="true" minOccurs="0"/>
+			<xs:element name="protoDataOraAgg" type="xs:dateTime" nillable="true" minOccurs="0"/>
+			<xs:element name="protoDescOgge" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="protoFlAtti" type="xs:short" nillable="true" minOccurs="0"/>
+			<xs:element name="protoFlImmDocumatic" type="xs:short" nillable="true" minOccurs="0"/>
+			<xs:element name="protoLivSegretezza" type="xs:short" nillable="true" minOccurs="0"/>
+			<xs:element name="protoNoteAtti" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="protoNoteRiservate" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="protoNumProt" type="xs:int" nillable="true" minOccurs="0"/>
+			<xs:element name="protoProgAnaUff" type="xs:long" nillable="true" minOccurs="0"/>
+			<xs:element name="protoProgDoc" type="xs:long" nillable="true" minOccurs="0"/>
+			<xs:element name="protoProgMovi" type="xs:int" nillable="true" minOccurs="0"/>
+			<xs:element name="protoStato" type="xs:short" nillable="true" minOccurs="0"/>
+			<xs:element name="protoSubnProt" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="qualRegProgQualReg" type="xs:int" nillable="true" minOccurs="0"/>
+			<xs:element name="regCodAna" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="regCodAnaInterr" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="regCodReg" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="regCodRegInterr" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="regDescAna" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="regDescReg" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="regNoApProtInterr" type="xs:short" nillable="true" minOccurs="0"/>
+			<xs:element name="regProgAna" type="xs:long" nillable="true" minOccurs="0"/>
+			<xs:element name="ricevuteArrivate" type="xs:decimal" nillable="true" minOccurs="0"/>
+			<xs:element name="ricevuteRichieste" type="xs:decimal" nillable="true" minOccurs="0"/>
+			<xs:element name="tipoDocColoreSfondo" type="xs:int" nillable="true" minOccurs="0"/>
+			<xs:element name="tipoDocColoreTesto" type="xs:int" nillable="true" minOccurs="0"/>
+			<xs:element name="tipoDocDescTipoDoc" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="uffFlNonVedo" type="xs:short" nillable="true" minOccurs="0"/>
+			<xs:element name="uffOpeCodAna" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="uffOpeDescAna" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="uffi2ProgInteressa" type="xs:decimal" nillable="true" minOccurs="0"/>
+			<xs:element name="uffiDataRiferim" type="xs:dateTime" nillable="true" minOccurs="0"/>
+			<xs:element name="uffiDescAna" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="valuteSimbolo" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="isImmagini" type="xs:boolean" nillable="true" minOccurs="0"/>
+			<xs:element name="isDocumenti" type="xs:boolean" nillable="true" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Errore">
+		<xs:sequence>
+			<xs:element name="codice" type="xs:string" nillable="true"/>
+			<xs:element name="descrizione" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Classifica">
+		<xs:choice>
+			<xs:element name="codice" type="xs:string"/>
+			<xs:element name="livelli">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="livello" maxOccurs="8">
+							<xs:complexType>
+								<xs:simpleContent>
+									<xs:extension base="xs:string">
+										<xs:attribute name="numero" type="xs:int" use="required"/>
+									</xs:extension>
+								</xs:simpleContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="ClassificaResponse">
+		<xs:sequence>
+			<xs:element name="codice" type="xs:string" nillable="true"/>
+			<xs:element name="livelli">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="livello" nillable="true" minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:simpleContent>
+									<xs:extension base="xs:string">
+										<xs:attribute name="numero" type="xs:int" use="required"/>
+									</xs:extension>
+								</xs:simpleContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Utente">
+		<xs:sequence>
+			<xs:element name="codice" type="xs:string"/>
+			<xs:element name="password" type="xs:string" nillable="true"/>
+			<xs:element name="token" type="xs:string" nillable="true" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="documentoVisura">
+		<xs:sequence>
+			<xs:element name="nome" type="xs:string"/>
+			<xs:element name="idDoc" type="xs:long"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ProtocolloRequest">
+		<xs:choice>
+			<xs:element name="IdentificatoreProt">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="CodiceUfficio" type="xs:string"/>
+						<xs:element name="CodiceRegistro" type="xs:string"/>
+						<xs:element name="Anno" type="tgen:anno"/>
+						<xs:element name="Numero" type="tgen:numero"/>
+						<xs:element name="verso" type="tgen:verso"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="IdProt" type="tgen:IdProtocollo"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="ProtocolloResponse">
+		<xs:sequence>
+			<xs:element name="CodiceUfficio" type="xs:string"/>
+			<xs:element name="CodiceRegistro" type="xs:string"/>
+			<xs:element name="Anno" type="tgen:anno"/>
+			<xs:element name="Numero" type="tgen:numero"/>
+			<xs:element name="verso" type="tgen:verso"/>
+			<xs:element name="Data" type="xs:date"/>
+			<xs:element name="ProgDoc" type="tgen:progDoc"/>
+			<xs:element name="ProgMovi" type="tgen:progMovi"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="IdProtocollo">
+		<xs:sequence>
+			<xs:element name="ProgDoc" type="tgen:progDoc"/>
+			<xs:element name="ProgMovi" type="tgen:progMovi"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PraticaRequest">
+		<xs:choice>
+			<xs:element name="IdPrat" type="tgen:IdProtocollo"/>
+			<xs:element name="Identificatore">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="CodiceUfficio" type="xs:string"/>
+						<xs:element name="CodiceRegistro" type="xs:string"/>
+						<xs:element name="Anno" type="tgen:anno"/>
+						<xs:element name="Numero" type="tgen:numero"/>
+						<xs:element name="SubNumero" type="tgen:subNumero"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="PraticaResponse">
+		<xs:sequence>
+			<xs:element name="CodiceUfficio" type="xs:string"/>
+			<xs:element name="CodiceRegistro" type="xs:string"/>
+			<xs:element name="Anno" type="tgen:anno"/>
+			<xs:element name="Numero" type="tgen:numero"/>
+			<xs:element name="SubNumero" type="tgen:subNumero"/>
+			<xs:element name="ProgDoc" type="tgen:progDoc"/>
+			<xs:element name="ProgMovi" type="tgen:progMovi"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UfficioPrat">
+		<xs:sequence>
+			<xs:element name="codice" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="descrizione" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="data_riferim" type="xs:date" nillable="true" minOccurs="0"/>
+			<xs:element name="modalita_trasmissione" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="note" type="tgen:note" nillable="true" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RiferimentoAnagrafico">
+		<xs:annotation>
+			<xs:documentation>riferimento anagrafico pratica</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="codice" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="descrizione" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="cod_tipo" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="desc_tipo" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="data" type="xs:date" nillable="true" minOccurs="0"/>
+			<xs:element name="inserisci" type="xs:boolean" nillable="true" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UfficioPratResponse">
+		<xs:sequence>
+			<xs:element name="codice" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="descrizione" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="data_riferim" type="xs:date" nillable="true" minOccurs="0"/>
+			<xs:element name="modalita_trasmissione_cod" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="modalita_trasmissione_desc" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="note" type="tgen:note" nillable="true" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PraticaAcPlusData">
+		<xs:all>
+			<xs:element name="data" type="xs:date" minOccurs="0"/>
+			<xs:element name="valore" type="tgen:PraticaAC"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="DatiAnagrafica">
+		<xs:all>
+			<xs:element name="nome" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="cognome" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="denominaz" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="indirizzo" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="localita" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="provincia" nillable="true" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:length value="2"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="cap" nillable="true" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:length value="5"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="stato" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="codfis" nillable="true" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:length value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="piva" nillable="true" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:length value="11"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="EstremiDocumento">
+		<xs:all>
+			<xs:element name="numero" nillable="true" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="40"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="data" type="xs:date" nillable="true" minOccurs="0"/>
+			<xs:element name="anno" nillable="true" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:unsignedShort">
+						<xs:totalDigits value="4"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="tipo" type="xs:string" nillable="true" minOccurs="0"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="MittenteInsProto">
+		<xs:sequence>
+			<xs:element name="codice" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="descrizione" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="inserisci" type="xs:boolean" nillable="true" minOccurs="0"/>
+			<xs:element name="dati_anagrafica" type="tgen:DatiAnagrafica" minOccurs="0"/>
+			<xs:element name="data_riferim" type="xs:date" nillable="true" minOccurs="0"/>
+			<xs:element name="num_riferim" nillable="true" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="40"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="note" nillable="true" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="2000"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="modalita_trasmissione" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="tipo" type="xs:string" nillable="true" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DestinatarioIOPInsProto">
+		<xs:complexContent>
+			<xs:extension base="tgen:DestinatarioInsProto">
+				<xs:sequence>
+					<xs:element name="iop" type="xs:boolean" nillable="true" minOccurs="0"/>
+					<xs:element name="iop_ra" type="xs:boolean" nillable="true" minOccurs="0"/>
+					<xs:element name="iop_rc" type="xs:boolean" nillable="true" minOccurs="0"/>
+					<xs:element name="pec" type="xs:boolean" nillable="true" minOccurs="0"/>
+					<xs:element name="mail" type="xs:string" nillable="true" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DestinatarioInsProto">
+		<xs:complexContent>
+			<xs:extension base="tgen:MittenteInsProto">
+				<xs:sequence>
+					<xs:element name="invio_mail" type="xs:boolean" nillable="true" minOccurs="0"/>
+					<xs:element name="invio_mail_allegati" type="xs:boolean" nillable="true" minOccurs="0"/>
+					<xs:element name="invio_mail_cc" type="xs:boolean" nillable="true" minOccurs="0"/>
+					<xs:element name="invio_mail_rr" type="xs:boolean" nillable="true" minOccurs="0"/>
+					<xs:element name="giaInviato" type="xs:boolean" nillable="true" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="UfficioInsProto">
+		<xs:all>
+			<xs:element name="codice" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="descrizione" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="data_riferim" type="xs:date" nillable="true" minOccurs="0"/>
+			<xs:element name="num_riferim" nillable="true" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="40"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="note" nillable="true" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="2000"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="modalita_trasmissione" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="tipo" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="invio_mail" type="xs:boolean" nillable="true" minOccurs="0"/>
+			<xs:element name="invio_mail_allegati" type="xs:boolean" nillable="true" minOccurs="0"/>
+			<xs:element name="invio_mail_cc" type="xs:boolean" nillable="true" minOccurs="0"/>
+			<xs:element name="invio_mail_rr" type="xs:boolean" nillable="true" minOccurs="0"/>
+			<xs:element name="giaInviato" type="xs:boolean" nillable="true" minOccurs="0"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="documentiInsProto">
+		<xs:sequence>
+			<xs:element name="documenti" type="tgen:documentoInsProto" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="documentoInsProto">
+		<xs:sequence>
+			<xs:element name="id" type="xs:string" nillable="false"/>
+			<xs:element name="nome" type="xs:string" nillable="false"/>
+			<xs:element name="is_primario" type="xs:boolean" nillable="true" minOccurs="0"/>
+			<xs:element name="inviaIOP" type="xs:boolean" nillable="true" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EstremiProvvedimento">
+		<xs:sequence>
+			<xs:element name="data" type="xs:date" nillable="true" minOccurs="0"/>
+			<xs:element name="estremi" nillable="true" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="motivo" nillable="true" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ValoreRelazioneType">
+		<xs:sequence>
+			<xs:element name="valore" type="xs:string" nillable="false"/>
+			<xs:element name="relazione" nillable="true" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="uguale"/>
+						<xs:enumeration value="iniziaCon"/>
+						<xs:enumeration value="contiene"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MnemonicoRequest">
+		<xs:choice>
+			<xs:element name="codiceTipo" type="xs:string"/>
+			<xs:element name="livello" maxOccurs="8">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="numero" type="xs:int" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="MnemonicoResponse">
+		<xs:choice>
+			<xs:element name="codiceTipo" type="xs:string"/>
+			<xs:element name="descTipo" type="xs:string"/>
+			<xs:element name="codiceMnem" type="xs:string"/>
+			<xs:element name="livello" maxOccurs="8">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="numero" type="xs:int" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="descLivello" maxOccurs="8">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="numero" type="xs:int" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="Mnemonico">
+		<xs:sequence>
+			<xs:element name="codiceTipo" type="xs:string"/>
+			<xs:element name="codiceMnem" type="xs:string" nillable="true"/>
+			<xs:element name="codiceMnemLiv1" type="xs:string" nillable="true"/>
+			<xs:element name="codiceMnemLiv2" type="xs:string" nillable="true"/>
+			<xs:element name="codiceMnemLiv3" type="xs:string" nillable="true"/>
+			<xs:element name="codiceMnemLiv4" type="xs:string" nillable="true"/>
+			<xs:element name="codiceMnemLiv5" type="xs:string" nillable="true"/>
+			<xs:element name="codiceMnemLiv6" type="xs:string" nillable="true"/>
+			<xs:element name="codiceMnemLiv7" type="xs:string" nillable="true"/>
+			<xs:element name="codiceMnemLiv8" type="xs:string" nillable="true"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ClassificaView">
+		<xs:sequence>
+			<xs:element name="codClas" type="xs:string" nillable="true"/>
+			<xs:element name="descClas" type="xs:string" nillable="true"/>
+			<xs:element name="codLiv1" type="xs:string" nillable="true"/>
+			<xs:element name="codLiv2" type="xs:string" nillable="true"/>
+			<xs:element name="codLiv3" type="xs:string" nillable="true"/>
+			<xs:element name="codLiv4" type="xs:string" nillable="true"/>
+			<xs:element name="codLiv5" type="xs:string" nillable="true"/>
+			<xs:element name="codLiv6" type="xs:string" nillable="true"/>
+			<xs:element name="codLiv7" type="xs:string" nillable="true"/>
+			<xs:element name="codLiv8" type="xs:string" nillable="true"/>
+			<xs:element name="descLiv1" type="xs:string" nillable="true"/>
+			<xs:element name="descLiv2" type="xs:string" nillable="true"/>
+			<xs:element name="descLiv3" type="xs:string" nillable="true"/>
+			<xs:element name="descLiv4" type="xs:string" nillable="true"/>
+			<xs:element name="descLiv5" type="xs:string" nillable="true"/>
+			<xs:element name="descLiv6" type="xs:string" nillable="true"/>
+			<xs:element name="descLiv7" type="xs:string" nillable="true"/>
+			<xs:element name="descLiv8" type="xs:string" nillable="true"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MnemonicoView">
+		<xs:sequence>
+			<xs:element name="codTipo" type="xs:string" nillable="true"/>
+			<xs:element name="descTipo" type="xs:string" nillable="true"/>
+			<xs:element name="codMnem" type="xs:string" nillable="true"/>
+			<xs:element name="codLiv1" type="xs:string" nillable="true"/>
+			<xs:element name="codLiv2" type="xs:string" nillable="true"/>
+			<xs:element name="codLiv3" type="xs:string" nillable="true"/>
+			<xs:element name="codLiv4" type="xs:string" nillable="true"/>
+			<xs:element name="codLiv5" type="xs:string" nillable="true"/>
+			<xs:element name="codLiv6" type="xs:string" nillable="true"/>
+			<xs:element name="codLiv7" type="xs:string" nillable="true"/>
+			<xs:element name="codLiv8" type="xs:string" nillable="true"/>
+			<xs:element name="descLiv1" type="xs:string" nillable="true"/>
+			<xs:element name="descLiv2" type="xs:string" nillable="true"/>
+			<xs:element name="descLiv3" type="xs:string" nillable="true"/>
+			<xs:element name="descLiv4" type="xs:string" nillable="true"/>
+			<xs:element name="descLiv5" type="xs:string" nillable="true"/>
+			<xs:element name="descLiv6" type="xs:string" nillable="true"/>
+			<xs:element name="descLiv7" type="xs:string" nillable="true"/>
+			<xs:element name="descLiv8" type="xs:string" nillable="true"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

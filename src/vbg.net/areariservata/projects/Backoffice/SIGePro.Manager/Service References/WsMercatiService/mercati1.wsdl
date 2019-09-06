@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:sch="http://gruppoinit.it/sigepro/schemas/messages/mercati" xmlns:tns="http://gruppoinit.it/sigepro/definitions/mercati" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="http://gruppoinit.it/sigepro/definitions/mercati" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <schema xmlns="http://www.w3.org/2001/XMLSchema">
+      <import schemaLocation="http://devel9:8080/backend/services/mercati?xsd=mercati.xsd" namespace="http://gruppoinit.it/sigepro/schemas/messages/mercati" />
+    </schema>
+  </wsdl:types>
+  <wsdl:message name="PresenzePosteggioResponse">
+    <wsdl:part name="PresenzePosteggioResponse" element="sch:PresenzePosteggioResponse" />
+  </wsdl:message>
+  <wsdl:message name="PresenzeManifestazioneResponse">
+    <wsdl:part name="PresenzeManifestazioneResponse" element="sch:PresenzeManifestazioneResponse" />
+  </wsdl:message>
+  <wsdl:message name="PresenzeManifestazioneRequest">
+    <wsdl:part name="PresenzeManifestazioneRequest" element="sch:PresenzeManifestazioneRequest" />
+  </wsdl:message>
+  <wsdl:message name="PresenzeRequest">
+    <wsdl:part name="PresenzeRequest" element="sch:PresenzeRequest" />
+  </wsdl:message>
+  <wsdl:message name="PresenzeProprietarioResponse">
+    <wsdl:part name="PresenzeProprietarioResponse" element="sch:PresenzeProprietarioResponse" />
+  </wsdl:message>
+  <wsdl:message name="PresenzeResponse">
+    <wsdl:part name="PresenzeResponse" element="sch:PresenzeResponse" />
+  </wsdl:message>
+  <wsdl:message name="PresenzePosteggioRequest">
+    <wsdl:part name="PresenzePosteggioRequest" element="sch:PresenzePosteggioRequest" />
+  </wsdl:message>
+  <wsdl:message name="PresenzeProprietarioRequest">
+    <wsdl:part name="PresenzeProprietarioRequest" element="sch:PresenzeProprietarioRequest" />
+  </wsdl:message>
+  <wsdl:portType name="Mercati">
+    <wsdl:operation name="PresenzePosteggio">
+      <wsdl:input name="PresenzePosteggioRequest" message="tns:PresenzePosteggioRequest" />
+      <wsdl:output name="PresenzePosteggioResponse" message="tns:PresenzePosteggioResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="PresenzeProprietario">
+      <wsdl:input name="PresenzeProprietarioRequest" message="tns:PresenzeProprietarioRequest" />
+      <wsdl:output name="PresenzeProprietarioResponse" message="tns:PresenzeProprietarioResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="Presenze">
+      <wsdl:input name="PresenzeRequest" message="tns:PresenzeRequest" />
+      <wsdl:output name="PresenzeResponse" message="tns:PresenzeResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="PresenzeManifestazione">
+      <wsdl:input name="PresenzeManifestazioneRequest" message="tns:PresenzeManifestazioneRequest" />
+      <wsdl:output name="PresenzeManifestazioneResponse" message="tns:PresenzeManifestazioneResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="MercatiSoap11" type="tns:Mercati">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="PresenzePosteggio">
+      <soap:operation soapAction="getPresenzePosteggio" />
+      <wsdl:input name="PresenzePosteggioRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="PresenzePosteggioResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PresenzeProprietario">
+      <soap:operation soapAction="getPresenzeProprietario" />
+      <wsdl:input name="PresenzeProprietarioRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="PresenzeProprietarioResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Presenze">
+      <soap:operation soapAction="getPresenze" />
+      <wsdl:input name="PresenzeRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="PresenzeResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PresenzeManifestazione">
+      <soap:operation soapAction="getPresenzeManifestazione" />
+      <wsdl:input name="PresenzeManifestazioneRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="PresenzeManifestazioneResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="MercatiService">
+    <wsdl:port name="MercatiSoap11" binding="tns:MercatiSoap11">
+      <soap:address location="http://devel9:8080/backend/services/mercati" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

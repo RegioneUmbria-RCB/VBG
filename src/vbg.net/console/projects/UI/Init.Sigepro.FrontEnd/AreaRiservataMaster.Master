@@ -1,0 +1,354 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="AreaRiservataMaster.master.cs" Inherits="Init.Sigepro.FrontEnd.AreaRiservataMaster" %>
+
+<%@ Register TagPrefix="ar" Namespace="Init.Sigepro.FrontEnd.WebControls.FormControls" Assembly="Init.Sigepro.FrontEnd.WebControls" %>
+<%@ Register Src="~/CommonControls/torna-a-scrivania-virtuale.ascx" TagPrefix="uc1" TagName="tornaascrivaniavirtuale" %>
+
+
+<!DOCTYPE html>
+<html class="aida-smart">
+<head runat="server">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Type" content="text/html; utf-8" />
+    <title>Untitled Page</title>
+    <link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,400italic,600,600italic,700,700italic,900,300italic,300,200italic,200' rel='stylesheet' type='text/css'>
+    <link href="~/vendor/bootstrap-3.3.6-dist/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+    <link href="~/css/jqueryui/ui-bootstrap/jquery-ui-1.10.0.custom.css" type="text/css" rel="stylesheet" />
+    <link href="~/vendor/ionicons-2.0.1/css/ionicons.min.css" type="text/css" rel="stylesheet" />
+    <link href="~/vendor/font-awesome-4.6.3/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
+
+    <link href="~/styles/areariservata.css" type="text/css" rel="stylesheet" id="cssLink" />
+
+    <script type="text/javascript" src='<%= ResolveClientUrl("~/js/lib/jquery.js")%>'></script>
+    <script type="text/javascript" src='<%= ResolveClientUrl("~/vendor/bootstrap-3.3.6-dist/js/bootstrap.min.js")%>'></script>
+    <script type="text/javascript" src='<%= ResolveClientUrl("~/vendor/bootstrap-validator-0.11.5/dist/validator.js")%>'></script>
+    <script type="text/javascript" src='<%= ResolveClientUrl("~/js/lib/requirejs.js")%>'></script>
+
+    <script type="text/javascript">
+        var paths = {
+            "app": "../app",
+        };
+
+        if (!window.jQuery) {
+            paths.jquery = ['../lib/jquery'];
+        } else {
+            define('jquery', [], function () { return window.jQuery; });
+        }
+
+        requirejs.config({
+            urlArgs: "bust=" + (new Date()).getTime(),
+            "baseUrl": '<%= ResolveClientUrl("~/js/lib") %>',
+            "waitSeconds": 0,	// Rimuove il timeout per le installazioni più lente
+            "paths": paths,
+            "shim": {
+                "jquery.ui": ["jquery"],
+                "jquery.tooltip.fix": ["jquery"],
+                "jquery.dropdown": ["jquery"],
+                "jquery.form": ["jquery"],
+                "jquery.hoverbox": ["jquery"],
+                "jquery.stickyfloat": ["jquery"]
+            }
+        });
+
+        $(function onInit() {
+
+            // ridimensiona il container
+            //$("form>.container").height(
+            $("form>.container").css("min-height",
+                $(window).height()
+                - $("header").height()
+                - $(".paginatore-step").height()
+                - $(".main-nav-bar").height()
+            );
+
+            // validatori
+            $.fn.validator.Constructor.INPUT_SELECTOR = ':input:not([type="hidden"], [type="submit"], [type="reset"], button, [formnovalidate], :hidden), .vai-avanti';
+            $.fn.validator.Constructor.FOCUS_OFFSET = 80;
+            $.fn.validator.Constructor.DEFAULTS.custom = {
+                equals: function ($el) {
+                    var matchValue = $el.data("equals") // foo
+                    if ($el.val() !== matchValue.toString()) {
+                        return "Il campo contiene un valore non valido";
+                    }
+                }
+            };
+
+            <% if (ResetValidatorsOnLoad)
+        {%>
+            resetValidators();
+            <%}%>
+
+            $(".table").addClass("table-striped table-hover");
+        });
+
+        require(['app/fix-bottoni', 'jquery'], function (fixBottoni, $) {
+
+            $(function () {
+                fixBottoni.applyFix();
+
+                /*
+                var banner = $('.banner'),
+                    nav = $('.main-nav-bar'),
+                    bannerHeight = banner.height();
+
+                nav.css('margin-top', bannerHeight);
+
+                $(window).on('scroll', function () {
+                    var scroll = $(this).scrollTop(),
+                        amount = bannerHeight - scroll;
+
+                    if (amount < 0) {
+                        amount = 0;
+                    }
+
+                    nav.css('margin-top', amount);
+                });*/
+            });
+        });
+
+
+        // Metodi globali per la gestione dei validatori
+        function resetValidators() {
+            $('#aspnetForm').validator('reset');
+            $('#aspnetForm').validator('update');
+        }
+
+
+        function updateValidators() {
+            $('#aspnetForm').validator('update');
+        }
+
+        function fireValidators() {
+            $('#aspnetForm').validator('validate');
+        }
+
+        function updateValidatedButtons() {
+            $('#aspnetForm').validator('toggleSubmit');
+        }
+
+        function disableValidators() {
+            $('#aspnetForm').validator('destroy');
+        }
+
+
+        <%if (this.UtenteTester)
+        {%>
+
+        $(function () {
+            var modal = $("#<%=bmModificaRisorse.ClientID%>"),
+                modalOkButton = modal.find(".modal-ok-button"),
+                txtIdRisorsa = modal.find("#<%=txtIdRisorsa.ClientID%>"),
+                txtNuovoTesto = modal.find("#<%=txtNuovoTesto.Inner.ClientID%>"),
+                editingElement = null;
+
+            modalOkButton.on("click", function () {
+                var val = txtNuovoTesto.val();
+
+                if (editingElement) {
+                    editingElement.text(val);
+                }
+
+
+                val = val.replace(new RegExp("<", "g"), "&lt;");
+                val = val.replace(new RegExp(">", "g"), "&gt;");
+
+                txtNuovoTesto.val(val);
+
+                disableValidators();
+                $('#aspnetForm').attr("novalidate", "true");
+            });
+
+            $(".risorsa-testuale").each(function () {
+                var editabile = $("<div class='editabile'></div>"),
+                    el = $(this),
+                    html = el.html();
+                el.empty();
+                el.append(editabile);
+                editabile.html(html);
+            });
+
+            // Aggiungo l'elemento per visualizzare o nascondere il layer di edit
+            $(".risorsa-testuale").each(function () {
+                var elHide = $("<i class='glyphicon glyphicon-eye-close'></i>");
+
+                elHide.on("click", function () {
+                    var divEditabile = $(this).parent().find(">div"),
+                        editabile = divEditabile.hasClass("editabile");
+
+                    if (editabile) {
+                        divEditabile.removeClass("editabile");
+                        elHide.removeClass("glyphicon-eye-close");
+                        elHide.addClass("glyphicon glyphicon-eye-open");
+                    } else {
+                        divEditabile.addClass("editabile");
+                        elHide.addClass("glyphicon-eye-close");
+                        elHide.removeClass("glyphicon-eye-open");
+                    }
+                });
+
+                $(this).append(elHide);
+            })
+
+            $(".risorsa-testuale>.editabile").on("dblclick", function () {
+                var el = $(this);
+
+                editingElement = el;
+
+                txtIdRisorsa.val(el.parent().data("idRisorsa"));
+                txtNuovoTesto.val(el.html().trim());
+
+                modal.modal("show");
+            });
+        });
+
+        <%}%>
+</script>
+
+    <asp:ContentPlaceHolder ID="headPagina" runat="server">
+    </asp:ContentPlaceHolder>
+
+    <%if (!String.IsNullOrEmpty(AnalyticsId))
+        {%>
+    <script type="text/javascript">
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', '<%=AnalyticsId %>', 'auto');
+        ga('send', 'pageview');
+
+    </script>
+    <%}%>
+</head>
+<body>
+    <form id="form1" runat="server">
+
+        <div class="container <%= UtenteAnonimo? "contenuti-anonimo" : "" %>">
+
+            <div class="main-content">
+<%--                <div class="menu-laterale">
+                    <div>
+                        <i class="glyphicon glyphicon-home"></i>
+
+                        <div>Torna alla scrivania virtuale</div>
+                    </div>
+                </div>--%>
+                <uc1:tornaascrivaniavirtuale runat="server" ID="tornaascrivaniavirtuale" />
+                <div>
+                    <div class="flex-contenuti">
+                        <div>
+                            <% if (!NascondiTitoloPagina)
+                                {%>
+                            <h1>
+                                <asp:Label runat="server" ID="lblTitoloPagina" />
+                            </h1>
+                            <%} %>
+
+                            <div class="errori">
+                                <asp:Repeater runat="server" ID="rptErrori">
+
+                                    <ItemTemplate>
+                                        <div class="alert alert-danger" role="alert">
+                                            <i class="glyphicon glyphicon-alert"></i>
+                                            <%# DataBinder.Eval(Container,"DataItem") %>
+                                        </div>
+                                    </ItemTemplate>
+                                </asp:Repeater>
+                            </div>
+                        </div>
+                        <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                        </asp:ContentPlaceHolder>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade modal-salvataggio-schede-in-corso" class="modal-salvataggio-schede-in-corso" data-backdrop="static" data-keyboard="false" role="dialog" aria-hidden="true" style="padding-top: 15%; overflow-y: visible; display: none;">
+            <div class="modal-dialog modal-m">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 style="margin: 0;">Salvataggio dati in corso...</h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="progress progress-striped active" style="margin-bottom: 0;">
+                            <div class="progress-bar" style="width: 100%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade modal-caricamento-file-in-corso" id="caricamentoFileIncorso" data-backdrop="static" data-keyboard="false" role="dialog" aria-hidden="true" style="padding-top: 15%; overflow-y: visible; display: none;">
+            <div class="modal-dialog modal-m">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 style="margin: 0;">Caricamento del file in corso...</h3>
+                    </div>
+                    <div class="modal-body">
+
+                        <div>
+                            L'invio di un file di grandi dimensioni potrebbe richiedere anche alcuni minuti
+                        </div>
+
+                        <div class="progress progress-striped active" style="margin-bottom: 0;">
+                            <div class="progress-bar" style="width: 100%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade modal-invio-istanza-in-corso" data-backdrop="static" data-keyboard="false" role="dialog" aria-hidden="true" style="padding-top: 15%; overflow-y: visible; display: none;">
+            <div class="modal-dialog modal-m">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 style="margin: 0;">Invio della pratica in corso...</h3>
+                    </div>
+                    <div class="modal-body">
+
+                        <div>
+                            L'operazione potrebbe richiedere anche alcuni minuti. Si prega di attendere senza effettuare altre operazioni.
+                        </div>
+
+                        <div class="progress progress-striped active" style="margin-bottom: 0;">
+                            <div class="progress-bar" style="width: 100%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade modal-invio-dati-in-corso" data-backdrop="static" data-keyboard="false" role="dialog" aria-hidden="true" style="padding-top: 15%; overflow-y: visible; display: none;">
+            <div class="modal-dialog modal-m">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 style="margin: 0;">Invio dei dati corso...</h3>
+                    </div>
+                    <div class="modal-body">
+
+                        <div>
+                            L'operazione potrebbe richiedere anche alcuni minuti. Si prega di attendere senza effettuare altre operazioni.
+                        </div>
+
+                        <div class="progress progress-striped active" style="margin-bottom: 0;">
+                            <div class="progress-bar" style="width: 100%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <%if (this.UtenteTester)
+            {%>
+        <ar:BootstrapModal runat="server" ID="bmModificaRisorse" OnOkClicked="bmModificaRisorse_OkClicked" Title="Modifica risorsa testuale">
+            <ModalBody>
+                <asp:TextBox runat="server" ID="txtIdRisorsa" Style="width: 100%"></asp:TextBox>
+                <ar:TextBox runat="server" ID="txtNuovoTesto" Label="Testo risorsa" TextMode="MultiLine" Rows="6" />
+            </ModalBody>
+        </ar:BootstrapModal>
+        <%} %>
+    </form>
+</body>
+</html>

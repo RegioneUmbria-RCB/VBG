@@ -1,0 +1,22 @@
+<div class="container-fluid sezione-home home-news">
+    <div class="container">
+        <h2>Notizie in evidenza</h2>
+
+        <div class="lista-news">
+            <div class="news-item" *ngFor="let n of topNews$ | async">
+                <div class="corpo-news">
+                    <a [routerLink]="[urlDettaglioNews,n.id]">
+                        <h3 [innerHTML]="n.titolo | stripHtml"></h3>
+                        <div class="data-pubblicazione" *ngIf="n.data">
+                            <i class="glyphicon glyphicon-calendar"></i> {{n.data}}
+                        </div>
+                        <p>
+                            {{n.sottotitolo | stripHtml}}
+                        </p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

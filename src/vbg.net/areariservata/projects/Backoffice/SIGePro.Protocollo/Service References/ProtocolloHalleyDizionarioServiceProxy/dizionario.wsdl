@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s0="http://tempuri.org/" targetNamespace="http://tempuri.org/" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:s="http://www.w3.org/2001/XMLSchema">
+      <s:complexType name="LoginRet">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="strDST" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="lngErrNumber" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="strErrString" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Uffici">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Ufficio">
+            <s:complexType>
+              <s:sequence>
+                <s:element name="Nome" type="s:string" />
+              </s:sequence>
+              <s:attribute name="id" type="s:integer" use="required" />
+            </s:complexType>
+          </s:element>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="CodiciTitolario">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="CodiceTitolario">
+            <s:complexType>
+              <s:sequence>
+                <s:element name="Categoria">
+                  <s:complexType>
+                    <s:simpleContent>
+                      <s:extension base="s:string">
+                        <s:attribute name="id" type="s:integer" use="required" />
+                      </s:extension>
+                    </s:simpleContent>
+                  </s:complexType>
+                </s:element>
+                <s:element name="Classe">
+                  <s:complexType>
+                    <s:simpleContent>
+                      <s:extension base="s:string">
+                        <s:attribute name="id" type="s:integer" use="required" />
+                      </s:extension>
+                    </s:simpleContent>
+                  </s:complexType>
+                </s:element>
+                <s:element minOccurs="0" name="Fascicolo">
+                  <s:complexType>
+                    <s:simpleContent>
+                      <s:extension base="s:string">
+                        <s:attribute name="id" type="s:integer" use="required" />
+                      </s:extension>
+                    </s:simpleContent>
+                  </s:complexType>
+                </s:element>
+              </s:sequence>
+              <s:attribute name="id" type="s:integer" use="required" />
+            </s:complexType>
+          </s:element>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Fascicoli">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Fascicolo">
+            <s:complexType>
+              <s:sequence>
+                <s:element name="Nome" type="s:string" />
+                <s:element name="CodiceTitolario" type="s:integer" />
+              </s:sequence>
+              <s:attribute name="id" type="s:integer" use="required" />
+              <s:attribute name="anno" type="s:gYear" use="required" />
+            </s:complexType>
+          </s:element>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="LoginRequest">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="strCodEnte" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="strUserName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="strPassword" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LoginResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LoginResult" type="s0:LoginRet" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListaCodiceTitolarioRequest">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="strUserName" type="s:string" />
+            <s:element name="strDST" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListaCodiceTitolarioResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="CodiciTitolario" type="s0:CodiciTitolario" />
+            <s:element name="lngErrNumber" type="s:long" />
+            <s:element minOccurs="0" name="strErrString" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SearchCodiceTitolarioRequest">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="strUserName" type="s:string" />
+            <s:element name="strDST" type="s:string" />
+            <s:element minOccurs="0" name="strSearch" type="s:string" />
+            <s:element minOccurs="0" name="codiceCategoria" type="s:integer" />
+            <s:element minOccurs="0" name="codiceClasse" type="s:integer" />
+            <s:element minOccurs="0" name="codiceFascicolo" type="s:integer" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SearchCodiceTitolarioResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="CodiciTitolario" type="s0:CodiciTitolario" />
+            <s:element name="lngErrNumber" type="s:long" />
+            <s:element minOccurs="0" name="strErrString" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListaUfficiRequest">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="strUserName" type="s:string" />
+            <s:element name="strDST" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListaUfficiResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="Uffici" type="s0:Uffici" />
+            <s:element name="lngErrNumber" type="s:long" />
+            <s:element minOccurs="0" name="strErrString" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SearchUfficiRequest">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="strUserName" type="s:string" />
+            <s:element name="strDST" type="s:string" />
+            <s:element name="strSearch" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SearchUfficiResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="Uffici" type="s0:Uffici" />
+            <s:element name="lngErrNumber" type="s:long" />
+            <s:element minOccurs="0" name="strErrString" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListaFascicoliRequest">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="strUserName" type="s:string" />
+            <s:element name="strDST" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListaFascicoliResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="Fascicoli" type="s0:Fascicoli" />
+            <s:element name="lngErrNumber" type="s:long" />
+            <s:element minOccurs="0" name="strErrString" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SearchFascicoliRequest">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="strUserName" type="s:string" />
+            <s:element name="strDST" type="s:string" />
+            <s:element name="codiceAOO" type="s:integer" />
+            <s:element name="numeroProtocollo" type="s:integer" />
+            <s:element name="annoProtocollo" type="s:gYear" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SearchFascicoliResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="Fascicoli" type="s0:Fascicoli" />
+            <s:element name="lngErrNumber" type="s:long" />
+            <s:element minOccurs="0" name="strErrString" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </types>
+  <message name="LoginSoapIn">
+    <part name="parameters" element="s0:LoginRequest" />
+  </message>
+  <message name="LoginSoapOut">
+    <part name="parameters" element="s0:LoginResponse" />
+  </message>
+  <message name="ListaCodiceTitolarioIn">
+    <part name="parameters" element="s0:ListaCodiceTitolarioRequest" />
+  </message>
+  <message name="ListaCodiceTitolarioOut">
+    <part name="parameters" element="s0:ListaCodiceTitolarioResponse" />
+  </message>
+  <message name="SearchCodiceTitolarioIn">
+    <part name="parameters" element="s0:SearchCodiceTitolarioRequest" />
+  </message>
+  <message name="SearchCodiceTitolarioOut">
+    <part name="parameters" element="s0:SearchCodiceTitolarioResponse" />
+  </message>
+  <message name="ListaUfficiIn">
+    <part name="parameters" element="s0:ListaUfficiRequest" />
+  </message>
+  <message name="ListaUfficiOut">
+    <part name="parameters" element="s0:ListaUfficiResponse" />
+  </message>
+  <message name="SearchUfficiIn">
+    <part name="parameters" element="s0:SearchUfficiRequest" />
+  </message>
+  <message name="SearchUfficiOut">
+    <part name="parameters" element="s0:SearchUfficiResponse" />
+  </message>
+  <message name="ListaFascicoliIn">
+    <part name="parameters" element="s0:ListaFascicoliRequest" />
+  </message>
+  <message name="ListaFascicoliOut">
+    <part name="parameters" element="s0:ListaFascicoliResponse" />
+  </message>
+  <message name="SearchFascicoliIn">
+    <part name="parameters" element="s0:SearchFascicoliRequest" />
+  </message>
+  <message name="SearchFascicoliOut">
+    <part name="parameters" element="s0:SearchFascicoliResponse" />
+  </message>
+  <portType name="DizionarioPort">
+    <operation name="Login">
+      <input message="s0:LoginSoapIn" />
+      <output message="s0:LoginSoapOut" />
+    </operation>
+    <operation name="ListaCodiceTitolario">
+      <input message="s0:ListaCodiceTitolarioIn" />
+      <output message="s0:ListaCodiceTitolarioOut" />
+    </operation>
+    <operation name="SearchCodiceTitolario">
+      <input message="s0:SearchCodiceTitolarioIn" />
+      <output message="s0:SearchCodiceTitolarioOut" />
+    </operation>
+    <operation name="ListaUffici">
+      <input message="s0:ListaUfficiIn" />
+      <output message="s0:ListaUfficiOut" />
+    </operation>
+    <operation name="SearchUffici">
+      <input message="s0:SearchUfficiIn" />
+      <output message="s0:SearchUfficiOut" />
+    </operation>
+    <operation name="ListaFascicoli">
+      <input message="s0:ListaFascicoliIn" />
+      <output message="s0:ListaFascicoliOut" />
+    </operation>
+    <operation name="SearchFascicoli">
+      <input message="s0:SearchFascicoliIn" />
+      <output message="s0:SearchFascicoliOut" />
+    </operation>
+  </portType>
+  <binding name="Dizionario" type="s0:DizionarioPort">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="Login">
+      <soap:operation soapAction="http://tempuri.org/Login" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="ListaCodiceTitolario">
+      <soap:operation soapAction="http://tempuri.org/Inserimento" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="SearchCodiceTitolario">
+      <soap:operation soapAction="http://tempuri.org/Protocollazione" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="ListaUffici">
+      <soap:operation soapAction="http://tempuri.org/Inserimento" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="SearchUffici">
+      <soap:operation soapAction="http://tempuri.org/Protocollazione" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="ListaFascicoli">
+      <soap:operation soapAction="http://tempuri.org/Inserimento" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="SearchFascicoli">
+      <soap:operation soapAction="http://tempuri.org/Protocollazione" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+  </binding>
+  <service name="DizionarioServices">
+    <port name="Dizionario" binding="s0:Dizionario">
+      <soap:address location="http://213.82.177.135:4080/suap/dizionario.php" />
+    </port>
+  </service>
+</definitions>

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s0="http://tempuri.org/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" targetNamespace="http://tempuri.org/" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="Login">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="strCodEnte" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="strUserName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="strPassword" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LoginResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LoginResult" type="s0:LoginRet" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="LoginRet">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="strDST" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="lngErrNumber" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="strErrString" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="Inserimento">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="strUserName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="strDST" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="strDocument" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="objDocument" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InserimentoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="InserimentoResult" type="s0:InserimentoRet" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="InserimentoRet">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="lngDocID" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="lngErrNumber" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="strErrString" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="Protocollazione">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="strUserName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="strDST" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="strDocumentInfo" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ProtocollazioneResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ProtocollazioneResult" type="s0:ProtocollazioneRet" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ProtocollazioneRet">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="lngNumPG" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="lngAnnoPG" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="strDataPG" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="lngErrNumber" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="strErrString" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+  </types>
+  <message name="LoginSoapIn">
+    <part name="parameters" element="s0:Login" />
+  </message>
+  <message name="LoginSoapOut">
+    <part name="parameters" element="s0:LoginResponse" />
+  </message>
+  <message name="InserimentoSoapIn">
+    <part name="parameters" element="s0:Inserimento" />
+  </message>
+  <message name="InserimentoSoapOut">
+    <part name="parameters" element="s0:InserimentoResponse" />
+  </message>
+  <message name="ProtocollazioneSoapIn">
+    <part name="parameters" element="s0:Protocollazione" />
+  </message>
+  <message name="ProtocollazioneSoapOut">
+    <part name="parameters" element="s0:ProtocollazioneResponse" />
+  </message>
+  <portType name="DOCAREAProtoSoap">
+    <operation name="Login">
+      <input message="s0:LoginSoapIn" />
+      <output message="s0:LoginSoapOut" />
+    </operation>
+    <operation name="Inserimento">
+      <input message="s0:InserimentoSoapIn" />
+      <output message="s0:InserimentoSoapOut" />
+    </operation>
+    <operation name="Protocollazione">
+      <input message="s0:ProtocollazioneSoapIn" />
+      <output message="s0:ProtocollazioneSoapOut" />
+    </operation>
+  </portType>
+  <binding name="DOCAREAProtoSoap" type="s0:DOCAREAProtoSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="Login">
+      <soap:operation soapAction="http://tempuri.org/Login" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="Inserimento">
+      <soap:operation soapAction="http://tempuri.org/Inserimento" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="Protocollazione">
+      <soap:operation soapAction="http://tempuri.org/Protocollazione" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+  </binding>
+  <service name="DOCAREAProto">
+    <port name="DOCAREAProtoSoap" binding="s0:DOCAREAProtoSoap">
+      <soap:address location="http://213.82.177.135:4080/HalleySuapDOCAREA/suap_local/suap.php" />
+    </port>
+  </service>
+</definitions>

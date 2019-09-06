@@ -1,0 +1,54 @@
+<div *ngIf="intervento" class="scheda-intervento">
+    <div class="torna-indietro link" (click)="tornaIndietro()">
+        <h4>
+            <i class="glyphicon glyphicon-chevron-left"></i> Torna indietro
+        </h4>
+    </div>
+
+    <h2>{{intervento.nome}}</h2>
+
+    <app-sezione-intervento titolo="Informazioni varie" *ngIf="intervento.informazioni && intervento.informazioni.length">
+        <p [innerHtml]="intervento.informazioni"></p>
+    </app-sezione-intervento>
+
+    <app-sezione-intervento titolo="Altre informazioni" *ngIf="intervento.note && intervento.note.length">
+        <p *ngFor="let n of intervento.note" [innerHtml]="n"></p>
+    </app-sezione-intervento>
+
+    <app-sezione-intervento titolo="Scheda regionale" *ngIf="intervento.schedaRegionale">
+        <p [innerHtml]="intervento.schedaRegionale"></p>
+    </app-sezione-intervento>
+
+    <app-sezione-intervento titolo="Oneri" *ngIf="intervento.oneri && intervento.oneri.length">
+        <app-griglia-oneri [dataSource]="intervento.oneri"></app-griglia-oneri>
+    </app-sezione-intervento>
+
+    <app-sezione-intervento titolo="Normativa" *ngIf="intervento.normativa && intervento.normativa.length">
+        <app-griglia-normativa [dataSource]="intervento.normativa" (onDownload)="download($event)"></app-griglia-normativa>
+    </app-sezione-intervento>
+
+    <app-sezione-intervento titolo="Fasi attuative" *ngIf="intervento.fasiAttuative && intervento.fasiAttuative.length">
+        <app-intervento-fasi-attuative [dataSource]="intervento.fasiAttuative"></app-intervento-fasi-attuative>
+    </app-sezione-intervento>
+
+    <app-sezione-intervento titolo="Modulistica" *ngIf="intervento.modulistica && intervento.modulistica.length">
+        <app-griglia-modulistica [dataSource]="intervento.modulistica" (onDownload)="download($event)"></app-griglia-modulistica>
+    </app-sezione-intervento>
+
+    <app-sezione-intervento titolo="Interventi locali" *ngIf="intervento.interventiLocali && intervento.interventiLocali.length">
+        <app-intervento-lista-interventi-locali [dataSource]="intervento.interventiLocali" (onEndoprocedimentoSelezionato)="endoprocedimentoSelezionato($event)"></app-intervento-lista-interventi-locali>
+    </app-sezione-intervento>
+
+    <app-sezione-intervento titolo="Procedimenti necessari" *ngIf="intervento.procedimentiNecessari && intervento.procedimentiNecessari.length">
+        <app-intervento-griglia-endo [dataSource]="intervento.procedimentiNecessari" (onEndoprocedimentoSelezionato)="endoprocedimentoSelezionato($event)"></app-intervento-griglia-endo>
+    </app-sezione-intervento>
+
+    <app-sezione-intervento titolo="Procedimenti ricorrenti" *ngIf="intervento.procedimentiRicorrenti && intervento.procedimentiRicorrenti.length">
+        <app-intervento-griglia-endo [dataSource]="intervento.procedimentiRicorrenti" (onEndoprocedimentoSelezionato)="endoprocedimentoSelezionato($event)"></app-intervento-griglia-endo>
+    </app-sezione-intervento>
+
+    <app-sezione-intervento titolo="Procedimenti eventuali" *ngIf="intervento.procedimentiEventuali && intervento.procedimentiEventuali.length">
+        <app-intervento-griglia-endo [dataSource]="intervento.procedimentiEventuali" (onEndoprocedimentoSelezionato)="endoprocedimentoSelezionato($event)"></app-intervento-griglia-endo>
+    </app-sezione-intervento>
+
+</div>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://gruppoinit.it/sigepro/definitions/attivita" xmlns:sch="http://gruppoinit.it/sigepro/schemas/messages/attivita" targetNamespace="http://gruppoinit.it/sigepro/definitions/attivita" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema xmlns="http://www.w3.org/2001/XMLSchema">
+      <xsd:import schemaLocation="attivita.xsd" namespace="http://gruppoinit.it/sigepro/schemas/messages/attivita" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="SnapShotRequest">
+    <wsdl:part name="parameters" element="sch:SnapShotRequest" />
+  </wsdl:message>
+  <wsdl:message name="SnapShotResponse">
+    <wsdl:part name="parameters" element="sch:SnapShotResponse" />
+  </wsdl:message>
+  <wsdl:message name="AggiornaCampiSchedeRequest">
+    <wsdl:part name="parameters" element="sch:AggiornaCampiSchedeRequest" />
+  </wsdl:message>
+  <wsdl:message name="AggiornaCampiSchedeResponse">
+    <wsdl:part name="parameters" element="sch:AggiornaCampiSchedeResponse" />
+  </wsdl:message>
+  <wsdl:portType name="attivita">
+    <wsdl:operation name="SnapShot">
+      <wsdl:input message="tns:SnapShotRequest" />
+      <wsdl:output message="tns:SnapShotResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="AggiornaCampiSchede">
+      <wsdl:input message="tns:AggiornaCampiSchedeRequest" />
+      <wsdl:output message="tns:AggiornaCampiSchedeResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="attivitaSOAP" type="tns:attivita">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="SnapShot">
+      <soap:operation soapAction="http://gruppoinit.it/sigepro/schemas/messages/attivita/SnapShot" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AggiornaCampiSchede">
+      <soap:operation soapAction="http://gruppoinit.it/sigepro/schemas/messages/attivita/AggiornaCampiSchede" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="attivita">
+    <wsdl:port name="attivitaSOAP" binding="tns:attivitaSOAP">
+      <soap:address location="http://devel9:8080/vbg/services/" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

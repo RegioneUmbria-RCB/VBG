@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<schema xmlns:tns="http://gruppoinit.it/sigepro/schemas/messages/base" xmlns:xmime="http://www.w3.org/2005/05/xmlmime" elementFormDefault="qualified" targetNamespace="http://gruppoinit.it/sigepro/schemas/messages/base" xmlns="http://www.w3.org/2001/XMLSchema">
+  <complexType name="AllegatoBaseType">
+    <sequence>
+      <element minOccurs="0" maxOccurs="1" name="id" type="integer" />
+      <element minOccurs="0" maxOccurs="1" name="descrizione" type="string" />
+      <element name="fileName" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="mimeType" type="string" />
+      <element xmime:expectedContentTypes="application/octet-stream" minOccurs="0" maxOccurs="1" name="binaryData" type="base64Binary" />
+    </sequence>
+  </complexType>
+  <complexType name="EsitoOperazioneType">
+    <sequence>
+      <element minOccurs="1" maxOccurs="1" name="esito" type="int" />
+      <element minOccurs="0" maxOccurs="unbounded" name="listaErrori" type="tns:ErroreBackofficeType" />
+    </sequence>
+  </complexType>
+  <complexType name="ErroreBackofficeType">
+    <sequence>
+      <element name="codice" type="string" />
+      <element name="descrizione" type="string" />
+    </sequence>
+  </complexType>
+</schema>

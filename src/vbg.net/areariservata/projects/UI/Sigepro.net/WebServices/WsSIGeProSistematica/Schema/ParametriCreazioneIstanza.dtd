@@ -1,0 +1,86 @@
+<!ELEMENT ParametriCreazioneIstanza (Tipologia, (PersonaFisica | PersonaGiuridica), 
+				            DatiIstanza, ListaAllegati?, DatiProtocollo?)>
+<!ATTLIST ParametriCreazioneIstanza
+	versione NMTOKEN #FIXED "2005-04-18"
+>
+
+<!ELEMENT Tipologia EMPTY>
+<!ATTLIST Tipologia
+	tipo (F | G) "F"
+>
+
+<!ELEMENT PersonaFisica (CodiceFiscale, Nome, Cognome, Titolo?, Cittadinanza?, 
+			     Sesso, DataNascita, LuogoNascita?, Residenza?, Recapiti?, Referente?)>
+<!ELEMENT CodiceFiscale (#PCDATA)>
+<!ELEMENT Nome (#PCDATA)>
+<!ELEMENT Cognome (#PCDATA)>
+<!ELEMENT Titolo (#PCDATA)>
+<!ELEMENT Cittadinanza (#PCDATA)>
+<!ELEMENT Sesso EMPTY>
+<!ATTLIST Sesso 
+	tipo (M | F) "M"
+>
+<!ELEMENT DataNascita (#PCDATA)>
+<!ELEMENT LuogoNascita (Toponimo, Civico, CAP, Comune, Provincia, Nazione?)>
+<!ELEMENT Residenza (Toponimo, Civico, CAP, Comune, Provincia, Nazione?)>
+<!ELEMENT Recapiti (Telefono, Cellulare?, Fax?, EMail?)>
+<!ELEMENT Referente (#PCDATA)>
+
+<!ELEMENT Toponimo (#PCDATA)>
+<!ATTLIST Toponimo
+	dug CDATA #IMPLIED
+>
+<!ELEMENT Civico (#PCDATA)>
+<!ELEMENT CAP (#PCDATA)>
+<!ELEMENT Comune (#PCDATA)>
+<!ELEMENT Provincia (#PCDATA)>
+<!ELEMENT Nazione (#PCDATA)>
+<!ELEMENT Telefono (#PCDATA)>
+<!ELEMENT Cellulare (#PCDATA)>
+<!ELEMENT Fax (#PCDATA)>
+<!ELEMENT EMail (#PCDATA)>
+
+<!ELEMENT PersonaGiuridica (PartitaIva, RagioneSociale, FormaGiuridica?, SedeLegale?, Corrispondenza?,       DatiAzienda?)>
+<!ELEMENT PartitaIva (#PCDATA)>
+<!ELEMENT RagioneSociale (#PCDATA)>
+<!ELEMENT FormaGiuridica (#PCDATA)>
+<!ELEMENT SedeLegale (Toponimo, Civico, CAP, Comune, Provincia, Nazione?)>
+<!ELEMENT Corrispondenza (Toponimo, Civico, CAP, Comune, Provincia, Nazione?)>
+<!ELEMENT DatiAzienda (DataCostituzione, Recapiti, RegistroDitte, RegistroTribunale, LegaleRappresentante, Referente)>
+<!ELEMENT DataCostituzione (#PCDATA)>
+<!ELEMENT RegistroDitte (NumeroRegistrazione, DataRegistrazione, Comune)>
+<!ELEMENT RegistroTribunale (NumeroRegistrazione, DataRegistrazione, Comune)>
+<!ELEMENT LegaleRappresentante (PersonaFisica)>
+<!ELEMENT NumeroRegistrazione (#PCDATA)>
+<!ELEMENT DataRegistrazione (#PCDATA)>
+
+<!ELEMENT DatiIstanza (CodiceEnte, CodiceProcedimento, DataPresentazione, CodiceIntervento, CodiceImpianto?,     DescrizioneImpianto?,  CodiceProcedura, DescrizioneProcedura?, CodiceArea?, DescrizioneArea?, CodiceIndirizzo, 
+			DescrizioneIndirizzo?, Lotto?, Civico?, DescrizioneLavori?, DescrizioneProgetto?)>
+<!ELEMENT CodiceEnte (#PCDATA)>
+<!ELEMENT CodiceProcedimento (#PCDATA)>
+<!ELEMENT DataPresentazione (#PCDATA)>
+<!ELEMENT CodiceIntervento (#PCDATA)>
+<!ELEMENT CodiceImpianto (#PCDATA)>
+<!ELEMENT DescrizioneImpianto (#PCDATA)>
+<!ELEMENT CodiceProcedura (#PCDATA)>
+<!ELEMENT DescrizioneProcedura (#PCDATA)>
+<!ELEMENT CodiceArea (#PCDATA)>
+<!ELEMENT DescrizioneArea (#PCDATA)>
+<!ELEMENT CodiceIndirizzo (#PCDATA)>
+<!ELEMENT DescrizioneIndirizzo (#PCDATA)>
+<!ELEMENT Lotto (#PCDATA)>
+<!ELEMENT DescrizioneLavori (#PCDATA)>
+<!ELEMENT DescrizioneProgetto (#PCDATA)>
+
+<!ELEMENT ListaAllegati (Allegato+)>
+<!ELEMENT Allegato (NomeAllegato)>
+<!ELEMENT NomeAllegato (#PCDATA)>
+
+<!ELEMENT DatiProtocollo (Segnatura, DenominazioneEnte, DenominazioneAOO, NumeroProtocollo,
+			         DataProtocollo, OraProtocollo)> 
+<!ELEMENT Segnatura (#PCDATA)>
+<!ELEMENT DenominazioneEnte (#PCDATA)>
+<!ELEMENT DenominazioneAOO (#PCDATA)>
+<!ELEMENT NumeroProtocollo (#PCDATA)>
+<!ELEMENT DataProtocollo (#PCDATA)>
+<!ELEMENT OraProtocollo (#PCDATA)>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://ws.sidumbriaws.beta80group.it/" targetNamespace="http://ws.sidumbriaws.beta80group.it/" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="getEstremiRichiesta" type="tns:getEstremiRichiesta" />
+  <xs:element name="getEstremiRichiestaResponse" type="tns:getEstremiRichiestaResponse" />
+  <xs:element name="protocollazioneDocumento" type="tns:protocollazioneDocumento" />
+  <xs:element name="protocollazioneDocumentoResponse" type="tns:protocollazioneDocumentoResponse" />
+  <xs:complexType name="getEstremiRichiesta">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="tns:authToken" />
+      <xs:element minOccurs="0" name="arg1" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="authToken">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="service" type="xs:string" />
+      <xs:element minOccurs="0" name="token" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getEstremiRichiestaResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:esitoElaborazione" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="esitoElaborazione">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="elCode" type="xs:string" />
+      <xs:element minOccurs="0" name="elMessage" type="xs:string" />
+      <xs:element minOccurs="0" name="esito" type="xs:string" />
+      <xs:element minOccurs="0" name="idEsito" type="xs:string" />
+      <xs:element minOccurs="0" name="idRichiesta" type="xs:string" />
+      <xs:element minOccurs="0" name="identificatore" type="tns:identificatore" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="identificatore">
+    <xs:sequence>
+      <xs:element name="anno" type="xs:int" />
+      <xs:element minOccurs="0" name="aoo" type="xs:string" />
+      <xs:element minOccurs="0" name="data" type="xs:string" />
+      <xs:element name="numero" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="protocollazioneDocumento">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="tns:authToken" />
+      <xs:element minOccurs="0" name="arg1" type="tns:infoProtocollo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="infoProtocollo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="allegati" nillable="true" type="tns:allegato" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="corrispondenti" nillable="true" type="tns:corrispondente" />
+      <xs:element minOccurs="0" name="data" type="xs:string" />
+      <xs:element minOccurs="0" name="dataRiferimentoMittente" type="xs:string" />
+      <xs:element minOccurs="0" name="idRichiesta" type="xs:string" />
+      <xs:element minOccurs="0" name="note" type="xs:string" />
+      <xs:element minOccurs="0" name="oggetto" type="xs:string" />
+      <xs:element minOccurs="0" name="riferimentoMittente" type="xs:string" />
+      <xs:element minOccurs="0" name="tipo" type="xs:string" />
+      <xs:element minOccurs="0" name="tipologia" type="xs:string" />
+      <xs:element minOccurs="0" name="trasmissione" type="xs:string" />
+      <xs:element name="nAllegati" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="allegato">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="documento" type="xs:base64Binary" />
+      <xs:element minOccurs="0" name="id" type="xs:string" />
+      <xs:element minOccurs="0" name="nome" type="xs:string" />
+      <xs:element minOccurs="0" name="nota" type="xs:string" />
+      <xs:element name="principale" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="corrispondente">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="aoo" type="xs:string" />
+      <xs:element minOccurs="0" name="cap" type="xs:string" />
+      <xs:element minOccurs="0" name="codAmm" type="xs:string" />
+      <xs:element minOccurs="0" name="denominazione" type="xs:string" />
+      <xs:element name="diretto" type="xs:boolean" />
+      <xs:element minOccurs="0" name="email" type="xs:string" />
+      <xs:element minOccurs="0" name="id" type="xs:string" />
+      <xs:element name="interno" type="xs:boolean" />
+      <xs:element minOccurs="0" name="paese" type="xs:string" />
+      <xs:element minOccurs="0" name="provincia" type="xs:string" />
+      <xs:element minOccurs="0" name="uor" type="xs:string" />
+      <xs:element minOccurs="0" name="via" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="arrayList">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:abstractList">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="abstractList" abstract="true">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:abstractCollection">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="abstractCollection" abstract="true">
+    <xs:sequence />
+  </xs:complexType>
+  <xs:complexType name="protocollazioneDocumentoResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:esitoElaborazione" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

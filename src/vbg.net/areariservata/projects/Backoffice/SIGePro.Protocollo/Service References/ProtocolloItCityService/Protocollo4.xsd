@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/protocollo.service.contract.dto" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/protocollo.service.contract.dto" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://webservicestesthttp.comune.parma.it/WSPROTOCOLLAZIONE/svc/Protocollo.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/protocollo.shared.contract.dto" />
+  <xs:import schemaLocation="http://webservicestesthttp.comune.parma.it/WSPROTOCOLLAZIONE/svc/Protocollo.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:complexType name="ArrayOfRecapitoEsterno">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="RecapitoEsterno" nillable="true" type="tns:RecapitoEsterno" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfRecapitoEsterno" nillable="true" type="tns:ArrayOfRecapitoEsterno" />
+  <xs:complexType name="RecapitoEsterno">
+    <xs:sequence>
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/protocollo.shared.contract.dto" minOccurs="0" name="Anagrafica" nillable="true" type="q1:Anagrafica" />
+      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/protocollo.shared.contract.dto" minOccurs="0" name="ChiaveDwh" nillable="true" type="q2:ChiaveAnagraficaDwh" />
+      <xs:element minOccurs="0" name="FlagPersonaDitta" type="tns:FlagPersonaDitta" />
+      <xs:element minOccurs="0" name="IdAnagraficaProtocollo" type="xs:int" />
+      <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/protocollo.shared.contract.dto" minOccurs="0" name="Indirizzo" nillable="true" type="q3:Indirizzo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RecapitoEsterno" nillable="true" type="tns:RecapitoEsterno" />
+  <xs:simpleType name="FlagPersonaDitta">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="P">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="D">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">2</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="none">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">0</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="FlagPersonaDitta" nillable="true" type="tns:FlagPersonaDitta" />
+  <xs:complexType name="FascicoloDiRiferimento">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Anno" type="xs:int" />
+      <xs:element minOccurs="0" name="Classe" type="xs:int" />
+      <xs:element minOccurs="0" name="IdFascicolo" type="xs:int" />
+      <xs:element minOccurs="0" name="Numero" type="xs:int" />
+      <xs:element minOccurs="0" name="NumeroSottofascicolo" type="xs:int" />
+      <xs:element minOccurs="0" name="SottoClasse" type="xs:int" />
+      <xs:element minOccurs="0" name="TitoloNumerico" type="xs:int" />
+      <xs:element minOccurs="0" name="TitoloRomano" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FascicoloDiRiferimento" nillable="true" type="tns:FascicoloDiRiferimento" />
+  <xs:complexType name="ArrayOfAllegato">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Allegato" nillable="true" type="tns:Allegato" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfAllegato" nillable="true" type="tns:ArrayOfAllegato" />
+  <xs:complexType name="Allegato">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Descrizione" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="NomeFile" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Numero" type="xs:int" />
+      <xs:element minOccurs="0" name="Primario" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Tipo" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Allegato" nillable="true" type="tns:Allegato" />
+</xs:schema>

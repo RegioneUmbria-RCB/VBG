@@ -1,0 +1,39 @@
+<app-inner-page-layout [isLoading]="!caricamentoCompletato">
+    <h2>News</h2>
+
+    <div class="griglia-lista-news">
+        <div class="news-item  row" *ngFor="let n of (dataSource$ | async)">
+            <div class="data-pubblicazione col-md-2 col-sm-12">
+                {{n.data}}
+            </div>
+            <div class="corpo-news col-md-10 col-sm-12">
+                <a [routerLink]="[urlDettaglio,n.id]">
+                    <h3 [innerHTML]="n.titolo | stripHtml"></h3>
+                </a>
+                <p>
+                    {{n.sottotitolo | stripHtml}}
+                </p>
+
+            </div>
+        </div>
+
+        <div class="row paginatore">
+            <div class="col-sm-4 col-xs-6 paginatore-precedente">
+                <div class="btn btn-primary" (click)="newsPrecedenti()" *ngIf="currentPage !== pageCount - 1">
+
+                    <i class="glyphicon glyphicon-chevron-left"></i> News precedenti
+                </div>
+            </div>
+            <div class="col-sm-4 hidden-xs paginatore-pagine">
+                Pagina {{currentPage + 1}} di {{pageCount}}
+            </div>
+            <div class="col-sm-4 col-xs-6 paginatore-successiva">
+                <div class="btn btn-primary" (click)="newsSuccessive()" *ngIf="currentPage != 0">
+                    News successive <i class="glyphicon glyphicon-chevron-right"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</app-inner-page-layout>

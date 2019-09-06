@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- edited with XMLSpy v2005 rel. 3 U (http://www.altova.com) by any (INSIEL S.p.A.) -->
+<xs:schema xmlns:aggProtReq="http://insiel.it/protocollo/schemixsd/AggProtocolloRequest" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tgen="http://insiel.it/protocollo/schemixsd/TipiGenerali" targetNamespace="http://insiel.it/protocollo/schemixsd/AggProtocolloRequest" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:import namespace="http://insiel.it/protocollo/schemixsd/TipiGenerali" schemaLocation="tipi_generali.xsd"/>
+	<xs:element name="AggProtocolloRequest">
+		<xs:complexType>
+			<xs:all>
+				<xs:element name="utente" type="tgen:Utente"/>
+				<xs:element name="estremiRegAgg" type="tgen:ProtocolloRequest"/>
+				<xs:element name="oggetto" type="tgen:oggetto" nillable="true" minOccurs="0"/>
+				<xs:element name="mittenti" type="aggProtReq:MittentiAgg" nillable="true" minOccurs="0"/>
+				<xs:element name="destinatari" type="aggProtReq:DestinatariAgg" nillable="true" minOccurs="0"/>
+				<xs:element name="uffici" type="aggProtReq:UfficiAgg" nillable="true" minOccurs="0"/>
+				<xs:element name="documenti" type="aggProtReq:DocumentiAgg" nillable="true" minOccurs="0"/>
+				<xs:element name="classifiche" type="aggProtReq:ClassificheAgg" nillable="true" minOccurs="0"/>
+				<xs:element name="estremi_documento" type="tgen:EstremiDocumento" nillable="true" minOccurs="0"/>
+				<xs:element name="data_ricezione_spedizione" type="xs:dateTime" nillable="true" minOccurs="0"/>
+				<xs:element name="tipo_mittente_mail" type="tgen:tipoMittenteMail" nillable="true" minOccurs="0"/>
+				<xs:element name="Pratiche" type="aggProtReq:PraticheAgg" nillable="true" minOccurs="0"/>
+				<xs:element name="Provvedimento" type="tgen:EstremiProvvedimento" nillable="true" minOccurs="0"/>
+				<xs:element name="Precedenti" type="aggProtReq:PrecedentiAgg" nillable="true" minOccurs="0"/>
+				<xs:element name="oggettoProtocollo" type="tgen:oggetto" nillable="true" minOccurs="0"/>
+				<xs:element name="codice_ufficio_operante" type="xs:string" nillable="true" minOccurs="0"/>
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="ClassificheAgg">
+		<xs:sequence>
+			<xs:element name="classifica" type="aggProtReq:ClassificaAgg" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="_virtual" type="xs:boolean" nillable="true" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="statoParziale" type="xs:boolean"/>
+	</xs:complexType>
+	<xs:complexType name="ClassificaAgg">
+		<xs:complexContent>
+			<xs:extension base="tgen:Classifica">
+				<xs:attribute name="elimina" type="xs:boolean"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="MittentiAgg">
+		<xs:sequence>
+			<xs:element name="Mittente" type="aggProtReq:MittenteAgg" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="_virtual" type="xs:boolean" nillable="true" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="statoParziale" type="xs:boolean"/>
+	</xs:complexType>
+	<xs:complexType name="MittenteAgg">
+		<xs:complexContent>
+			<xs:extension base="tgen:MittenteInsProto">
+				<xs:attribute name="elimina" type="xs:boolean"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DestinatariAgg">
+		<xs:sequence>
+			<xs:element name="Destinatario" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="aggProtReq:DestinatarioAgg"/>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="_virtual" type="xs:boolean" nillable="true" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="statoParziale" type="xs:boolean"/>
+	</xs:complexType>
+	<xs:complexType name="DestinatarioAgg">
+		<xs:complexContent>
+			<xs:extension base="tgen:DestinatarioIOPInsProto">
+				<xs:attribute name="elimina" type="xs:boolean"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="UfficiAgg">
+		<xs:sequence>
+			<xs:element name="Uffici" type="aggProtReq:UfficioAgg" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="_virtual" type="xs:boolean" nillable="true" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="statoParziale" type="xs:boolean"/>
+	</xs:complexType>
+	<xs:complexType name="UfficioAgg">
+		<xs:complexContent>
+			<xs:extension base="tgen:UfficioInsProto">
+				<xs:attribute name="elimina" type="xs:boolean"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DocumentiAgg">
+		<xs:sequence>
+			<xs:element name="Documenti" type="aggProtReq:DocumentoAgg" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="_virtual" type="xs:boolean" nillable="true" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="statoParziale" type="xs:boolean"/>
+	</xs:complexType>
+	<xs:complexType name="DocumentoAgg">
+		<xs:sequence>
+			<xs:element name="id" type="xs:string" nillable="true" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>abbigatorio in inserimento</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="nome" type="xs:string" nillable="true" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>abbigatorio in inserimento</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="isPrimario" type="xs:boolean" nillable="true" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>abbigatorio in inserimento se iop</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="idDoc" type="xs:long" nillable="true" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>facoltativo in eliminazione in altrenativa al nome</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="elimina" type="xs:boolean"/>
+	</xs:complexType>
+	<xs:complexType name="PraticheAgg">
+		<xs:sequence>
+			<xs:element name="Pratica" type="aggProtReq:PraticaAgg" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="_virtual" type="xs:boolean" nillable="true" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="statoParziale" type="xs:boolean"/>
+	</xs:complexType>
+	<xs:complexType name="PraticaAgg">
+		<xs:complexContent>
+			<xs:extension base="tgen:PraticaRequest">
+				<xs:attribute name="elimina" type="xs:boolean"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="PrecedentiAgg">
+		<xs:sequence>
+			<xs:element name="PrecedenteAgg" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Precedente" type="tgen:ProtocolloRequest"/>
+						<xs:element name="tipoLegame" type="xs:string" nillable="false"/>
+						<xs:element name="elimina" type="xs:boolean" nillable="true" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:choice>
+				<xs:element name="statoParziale" type="xs:boolean" nillable="false"/>
+				<xs:element name="statoGlobale" type="xs:boolean" nillable="false"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

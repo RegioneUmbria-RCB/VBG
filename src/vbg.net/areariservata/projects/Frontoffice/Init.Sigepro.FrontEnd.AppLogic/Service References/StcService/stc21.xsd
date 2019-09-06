@@ -1,0 +1,998 @@
+<?xml version="1.0" encoding="utf-8"?>
+<schema xmlns:tns="http://sigepro.init.it/rte/types" xmlns:xmime="http://www.w3.org/2005/05/xmlmime" elementFormDefault="qualified" targetNamespace="http://sigepro.init.it/rte/types" xmlns="http://www.w3.org/2001/XMLSchema">
+  <simpleType name="XsdTypesVersion">
+    <restriction base="string">
+      <enumeration value="V_1_0" />
+      <enumeration value="V_1_1" />
+      <enumeration value="V_1_2" />
+      <enumeration value="V_1_3" />
+      <enumeration value="V_1_4" />
+      <enumeration value="V_1_5" />
+      <enumeration value="V_1_6" />
+      <enumeration value="V_1_7" />
+      <enumeration value="V_1_8" />
+      <enumeration value="V_1_9" />
+      <enumeration value="V_1_10" />
+      <enumeration value="V_1_11" />
+      <enumeration value="V_1_12" />
+      <enumeration value="V_1_13" />
+    </restriction>
+  </simpleType>
+  <simpleType name="NaturaFoType">
+    <restriction base="string">
+      <enumeration value="comunicazione" />
+      <enumeration value="ordinario" />
+      <enumeration value="scia" />
+    </restriction>
+  </simpleType>
+  <complexType name="DettaglioAttivitaType">
+    <sequence>
+      <element name="idPratica" type="string" />
+      <element name="idAttivita" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="dataAttivita" type="date" />
+      <element minOccurs="0" name="oraDataAttivita">
+        <simpleType>
+          <restriction base="string">
+            <pattern value="[0-2][0-9]:[0-5][0-9]" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="dataScadenza" type="date" />
+      <element minOccurs="0" name="numeroProtocolloGenerale" type="string">
+        <annotation>
+          <documentation> E' il protocollo generale riferito all'attivita'
+					</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="dataProtocolloGenerale" type="date" />
+      <element name="tipoAttivita" type="tns:TipoAttivitaType">
+        <annotation>
+          <documentation> Indicare l'attivita' da notificare Es. 'Richiesta
+						di parere' o 'Comunicazione parere'
+					</documentation>
+        </annotation>
+      </element>
+      <element name="esito" type="boolean">
+        <annotation>
+          <documentation> Indica se l'attivita' ha avuto un esito positivo o
+						meno Es. 'Invio parere' o 'Rilascio atto/autorizzazione'. Nelle
+						attivita' che non prevedono esito indicare sempre true.
+						Es. 'Comunicazione atti'
+					</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="parere" type="string">
+        <annotation>
+          <documentation> E' il parere nel caso di notifica attivita'
+						'Comunicazione parere'.
+					</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="note" type="string" />
+      <element minOccurs="0" maxOccurs="unbounded" name="altriDati" type="tns:ParametroType" />
+      <element minOccurs="0" maxOccurs="unbounded" name="documenti" type="tns:DocumentiType">
+        <annotation>
+          <documentation> E' la lista dei documenti allegati all'attivita'
+					</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" maxOccurs="unbounded" name="procedimenti" type="tns:ProcedimentoType" />
+      <element minOccurs="0" maxOccurs="unbounded" name="documentiDaSostituire" type="tns:SostituzioniDocumentaliType" />
+    </sequence>
+  </complexType>
+  <complexType name="TipoAttivitaType">
+    <sequence minOccurs="1">
+      <element name="codice" type="string" />
+      <element name="descrizione" type="string" />
+    </sequence>
+  </complexType>
+  <complexType name="RiferimentiAttivitaType">
+    <sequence>
+      <element name="idPratica" type="string" />
+      <element minOccurs="0" name="idProcedimento" type="string" />
+      <element name="idAttivita" type="string" />
+      <element minOccurs="0" name="numeroProtocolloGenerale" type="string">
+        <annotation>
+          <documentation> Va indicato solo se si tratta di protocollo
+						generale e non di
+						settore/direzione.
+					</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="dataProtocolloGenerale" type="date" />
+      <element minOccurs="0" maxOccurs="unbounded" name="altriDati" type="tns:ParametroType" />
+    </sequence>
+  </complexType>
+  <complexType name="AltriSoggettiType">
+    <sequence>
+      <element name="tipoRapporto" type="tns:RuoloType" />
+      <element name="soggetto" type="tns:AnagrafeType" />
+      <element minOccurs="0" maxOccurs="1" name="anagraficaCollegata" type="tns:AnagrafeType" />
+    </sequence>
+  </complexType>
+  <complexType name="AnagrafeType">
+    <choice minOccurs="1">
+      <element name="personaFisica" type="tns:PersonaFisicaType" />
+      <element name="personaGiuridica" type="tns:PersonaGiuridicaType" />
+    </choice>
+  </complexType>
+  <complexType name="ComuneType">
+    <annotation>
+      <documentation> Sara' possibile decodificare il comune attraverso
+				l'indicazione del
+				CodiceCatastale (Es.D612), del CodiceIstat (Es.
+				048017) o del nome del comune (Es.
+				Firenze)
+			</documentation>
+    </annotation>
+    <choice minOccurs="1">
+      <element name="codiceCatastale" type="string" />
+      <element name="codiceIstat" type="string" />
+      <element name="comune" type="string" />
+    </choice>
+  </complexType>
+  <complexType name="InterventoType">
+    <sequence>
+      <element minOccurs="0" name="codice" type="string" />
+      <element name="descrizione" type="string" />
+    </sequence>
+  </complexType>
+  <complexType name="IscrizioneRegistroType">
+    <sequence minOccurs="1">
+      <element minOccurs="1" maxOccurs="1" name="numero" type="string" />
+      <element minOccurs="1" maxOccurs="1" name="data" type="date" />
+      <element minOccurs="1" maxOccurs="1" name="comune" type="tns:ComuneType" />
+    </sequence>
+  </complexType>
+  <complexType name="LocalizzazioneNelComuneType">
+    <sequence>
+      <element name="id" type="string" />
+      <element name="codiceViario" type="string" />
+      <element name="denominazione" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="civico" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="esponente" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="colore" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="scala" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="interno" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="esponenteInterno" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="piano" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="fabbricato" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="km" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="frazione" type="tns:FrazioneType" />
+      <element minOccurs="0" maxOccurs="1" name="circoscrizione" type="tns:CircoscrizioneType" />
+      <element minOccurs="0" maxOccurs="1" name="quartiere" type="tns:QuartiereType" />
+      <element minOccurs="0" maxOccurs="unbounded" name="riferimentoCatastale" type="tns:RiferimentoCatastaleType" />
+      <element minOccurs="0" maxOccurs="1" name="coordinate" type="tns:CoordinateType" />
+      <element minOccurs="0" maxOccurs="1" name="tipo" type="tns:TipoLocalizzazioneType" />
+      <element minOccurs="0" maxOccurs="1" name="uuid" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="cap" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="accessoTipo" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="accessoNumero" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="accessoDescrizione" type="string" />
+    </sequence>
+  </complexType>
+  <complexType name="LocalizzazioneType">
+    <sequence minOccurs="1">
+      <element name="indirizzo" type="string" />
+      <element minOccurs="0" name="civico" type="string" />
+      <element minOccurs="0" name="localita" type="string" />
+      <element minOccurs="0" name="cap" type="string" />
+      <element minOccurs="0" name="comune" type="tns:ComuneType" />
+      <element minOccurs="0" name="provincia" type="string" />
+    </sequence>
+  </complexType>
+  <complexType name="PersonaFisicaType">
+    <sequence>
+      <element name="codiceFiscale" type="string" />
+      <element name="nome" type="string" />
+      <element name="cognome" type="string" />
+      <element minOccurs="0" name="titolo" type="string" />
+      <element minOccurs="0" name="sesso" type="string" />
+      <element minOccurs="0" name="dataNascita" type="date" />
+      <element minOccurs="0" name="comuneNascita" type="tns:ComuneType" />
+      <element minOccurs="0" name="residenza" type="tns:LocalizzazioneType" />
+      <element minOccurs="0" maxOccurs="1" name="corrispondenza" type="tns:LocalizzazioneType">
+        <annotation>
+          <documentation>
+						Le informazioni dell'indirizzo dove inviare le comunicazioni. La sezione viene di solito compilata se diversa dalla sezione
+						resid
+					</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="cittadinanza" type="tns:CittadinanzaType" />
+      <element minOccurs="0" maxOccurs="unbounded" name="altriDati" type="tns:ParametroType" />
+      <element minOccurs="0" maxOccurs="1" name="procura" type="tns:DocumentiType" />
+      <element minOccurs="0" maxOccurs="1" name="telefono" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="email" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="pec" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="telefonoCellulare" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="datiIscrizioneAlbo" type="tns:DatiIscrizioneAlboType" />
+    </sequence>
+  </complexType>
+  <complexType name="PersonaGiuridicaType">
+    <sequence>
+      <element minOccurs="0" name="partitaIva" type="string" />
+      <element minOccurs="0" name="codiceFiscale" type="string" />
+      <element name="ragioneSociale" type="string" />
+      <element minOccurs="0" name="naturaGiuridica" type="string" />
+      <element minOccurs="0" name="sedeLegale" type="tns:LocalizzazioneType" />
+      <element minOccurs="0" name="indirizzoCorrispondenza" type="tns:LocalizzazioneType" />
+      <element minOccurs="0" name="telefono" type="string" />
+      <element minOccurs="0" name="fax" type="string" />
+      <element minOccurs="0" name="iscrizioneCCIAA" type="tns:IscrizioneRegistroType" />
+      <element minOccurs="0" name="iscrizioneREA" type="tns:RegistroREAType" />
+      <element minOccurs="0" maxOccurs="1" name="legaleRappresentante" type="tns:PersonaFisicaType" />
+      <element minOccurs="0" maxOccurs="unbounded" name="altriDati" type="tns:ParametroType" />
+      <element minOccurs="0" maxOccurs="1" name="email" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="pec" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="telefonoCellulare" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="datiInps" type="tns:DatiInpsType" />
+      <element minOccurs="0" maxOccurs="1" name="datiInail" type="tns:DatiInailType" />
+      <element minOccurs="0" maxOccurs="1" name="datiCassaEdile" type="tns:DatiCassaEdileType" />
+      <element minOccurs="0" maxOccurs="1" name="datiIscrizioneAlbo" type="tns:DatiIscrizioneAlboType" />
+      <element minOccurs="0" maxOccurs="1" name="dataInizioAttivita" type="date" />
+    </sequence>
+  </complexType>
+  <complexType name="RegistroREAType">
+    <sequence>
+      <element name="numero" type="string" />
+      <element name="data" type="date" />
+      <element name="siglaProvincia" type="tns:SiglaProvinciaType" />
+    </sequence>
+  </complexType>
+  <simpleType name="SiglaProvinciaType">
+    <restriction base="string">
+      <pattern value="[A-Za-z][A-Za-z]" />
+    </restriction>
+  </simpleType>
+  <complexType name="RuoloType">
+    <sequence>
+      <element minOccurs="0" name="idRuolo" type="string" />
+      <element name="ruolo" type="string" />
+    </sequence>
+  </complexType>
+  <complexType name="RiferimentoCatastaleType">
+    <sequence>
+      <element name="tipoCatasto">
+        <simpleType>
+          <restriction base="string">
+            <enumeration value="Terreni" />
+            <enumeration value="Edilizio Urbano" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element name="foglio" type="string" />
+      <element name="particella" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="sub" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="sezione" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="unitaImobiliare" type="string" />
+    </sequence>
+  </complexType>
+  <complexType name="RiferimentiPraticaType">
+    <sequence>
+      <element minOccurs="0" maxOccurs="1" name="idPratica" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="numeroPratica" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="dataPratica" type="date" />
+      <element minOccurs="0" name="oraDataPratica">
+        <simpleType>
+          <restriction base="string">
+            <pattern value="[0-2][0-9]:[0-5][0-9]" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" name="numeroProtocolloGenerale" type="string">
+        <annotation>
+          <documentation> Va indicato il numero di protocollo della pratica
+						solo in caso di integrazione
+						con il protocollo generale (non va
+						specificato nulla se il protocollo e' di
+						settore/direzione).
+					</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="dataProtocolloGenerale" type="date" />
+      <element minOccurs="0" maxOccurs="unbounded" name="altriDati" type="tns:ParametroType" />
+    </sequence>
+  </complexType>
+  <complexType name="DettaglioPraticaType">
+    <sequence>
+      <element name="idPratica" type="string">
+        <annotation>
+          <documentation>
+						E' l'identificativo univoco della pratica
+						all'interno del backoffice mittente.
+					</documentation>
+        </annotation>
+      </element>
+      <element name="numeroPratica" type="string">
+        <annotation>
+          <documentation>
+						E' il numero della pratica leggibile dagli
+						operatori.
+					</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="codicePraticaTelematica" type="string" />
+      <element name="dataPratica" type="date" />
+      <element minOccurs="0" name="oraDataPratica">
+        <simpleType>
+          <restriction base="string">
+            <pattern value="[0-2][0-9]:[0-5][0-9]" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" name="numeroProtocolloGenerale" type="string">
+        <annotation>
+          <documentation>
+						Va indicato il numero di protocollo della
+						pratica solo in caso di integrazione con il
+						protocollo generale (non va specificato nulla se
+						il protocollo e' di settore/direzione).
+					</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="dataProtocolloGenerale" type="date" />
+      <element minOccurs="0" maxOccurs="1" name="codiceComune" type="tns:ComuneType" />
+      <element minOccurs="0" maxOccurs="1" name="codiceAccreditamentoSUAP" type="string">
+        <annotation>
+          <documentation>
+						Va indicato il codice di accreditamento suap
+						configurato nel portale impresainungiorno. Usato
+						in caso di software Sportello unico.
+					</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="domicilioElettronico" type="string">
+        <annotation>
+          <documentation>
+						E' il domicilio elettronico di riferimento
+						(tipicamente PEC) per ricevere comunicazioni in
+						merito alla pratica da parte dei
+						richiedenti/professionisti.
+					</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="richiedente" type="tns:RichiedenteType">
+        <annotation>
+          <documentation>
+						Il richiedente e' colui che presenta la domanda.
+					</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="aziendaRichiedente" type="tns:PersonaGiuridicaType" />
+      <element minOccurs="0" maxOccurs="unbounded" name="procure" type="tns:ProcuraType" />
+      <element minOccurs="0" maxOccurs="1" name="intermediario" type="tns:AnagrafeType">
+        <annotation>
+          <documentation>
+						E' il tecnico esterno o l'associazione che
+						presenta la domanda per conto del richiedente.
+					</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" maxOccurs="unbounded" name="altriSoggetti" type="tns:AltriSoggettiType">
+        <annotation>
+          <documentation>
+						Eventuale lista di soggetti collegati alla
+						pratica: soci, curatori fallimentari o in caso
+						di edilizia direttore lavori o responsabile
+						della sicurezza.
+					</documentation>
+        </annotation>
+      </element>
+      <element name="oggetto" type="string">
+        <annotation>
+          <documentation>
+						E' necessario descrivere bene l'oggetto che
+						rappresenta la pratica.
+					</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="insegna" type="string" />
+      <element minOccurs="0" name="intervento" type="tns:InterventoType">
+        <annotation>
+          <documentation>
+						E' l'intervento codificato che i due backoffice
+						mittente e destinatario decidono di comunicarsi,
+						specifica la codifica del tipo di pratica.
+					</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" maxOccurs="unbounded" name="localizzazione" type="tns:LocalizzazioneNelComuneType">
+        <annotation>
+          <documentation>
+						Indica la localizzazione dell'intervento. Si
+						potrebbero aggiungere anche i dati catastali.
+					</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" maxOccurs="unbounded" name="documenti" type="tns:DocumentiType">
+        <annotation>
+          <documentation>
+						E' la lista dei documenti a corredo della
+						pratica. Domanda, dichiarazioni e comunicazioni
+						per il richiedente.
+					</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" maxOccurs="unbounded" name="altriDati" type="tns:ParametroType" />
+      <element minOccurs="0" maxOccurs="unbounded" name="procedimenti" type="tns:ProcedimentoType" />
+      <element minOccurs="0" maxOccurs="unbounded" name="schede" type="tns:SchedaType" />
+      <element minOccurs="0" maxOccurs="unbounded" name="oneri" type="tns:OneriType" />
+      <element minOccurs="0" name="annotazioni" type="string">
+        <annotation>
+          <documentation>
+						Eventuali informazioni aggiuntive o note sulla
+						pratica.
+					</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="naturaFo" type="tns:NaturaFoType">
+        <annotation>
+          <documentation>
+						la natura del procedimento che viene impostato dal frontend
+					</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="DettaglioPraticaBreveType">
+    <sequence>
+      <element minOccurs="0" maxOccurs="1" name="codiceComune" type="tns:ComuneType" />
+      <element minOccurs="1" maxOccurs="1" name="idPratica" type="string">
+        <annotation>
+          <documentation>
+						E' l'identificativo univoco della pratica
+						all'interno del backoffice mittente.
+					</documentation>
+        </annotation>
+      </element>
+      <element name="numeroPratica" type="string">
+        <annotation>
+          <documentation>
+						E' il numero della pratica leggibile dagli
+						operatori.
+					</documentation>
+        </annotation>
+      </element>
+      <element name="dataPratica" type="date" />
+      <element minOccurs="0" name="oraDataPratica">
+        <simpleType>
+          <restriction base="string">
+            <pattern value="[0-2][0-9]:[0-5][0-9]" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" name="numeroProtocolloGenerale" type="string">
+        <annotation>
+          <documentation>
+						Va indicato il numero di protocollo della
+						pratica solo in caso di integrazione con il
+						protocollo generale (non va specificato nulla se
+						il protocollo e' di settore/direzione).
+					</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="dataProtocolloGenerale" type="date" />
+      <element minOccurs="0" name="richiedente" type="tns:RichiedenteType">
+        <annotation>
+          <documentation>
+						Il richiedente e' colui che presenta la domanda.
+					</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="aziendaRichiedente" type="tns:PersonaGiuridicaType" />
+      <element minOccurs="0" maxOccurs="1" name="intermediario" type="tns:AnagrafeType">
+        <annotation>
+          <documentation>
+						E' il tecnico esterno o l'associazione che
+						presenta la domanda per conto del richiedente.
+					</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="oggetto" type="string">
+        <annotation>
+          <documentation>
+						E' necessario descrivere bene l'oggetto che
+						rappresenta la pratica.
+					</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="intervento" type="tns:InterventoType">
+        <annotation>
+          <documentation>
+						E' l'intervento codificato che i due backoffice
+						mittente e destinatario decidono di comunicarsi,
+						specifica la codifica del tipo di pratica.
+					</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" maxOccurs="unbounded" name="localizzazione" type="tns:LocalizzazioneNelComuneType">
+        <annotation>
+          <documentation>
+						Indica la localizzazione dell'intervento. Si
+						potrebbero aggiungere anche i dati catastali.
+					</documentation>
+        </annotation>
+      </element>
+      <element name="statoPratica" type="tns:StatoPraticaType" />
+    </sequence>
+  </complexType>
+  <complexType name="RichiedenteType">
+    <sequence>
+      <element minOccurs="0" maxOccurs="1" name="ruolo" type="tns:RuoloType" />
+      <element name="anagrafica" type="tns:PersonaFisicaType" />
+    </sequence>
+  </complexType>
+  <complexType name="ProcuraType">
+    <sequence>
+      <element name="cfRappresentato" type="string" />
+      <element name="cfProcuratore" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="procura" type="tns:DocumentiType" />
+      <element minOccurs="0" maxOccurs="1" name="documentoIdentita" type="tns:DocumentiType" />
+    </sequence>
+  </complexType>
+  <complexType name="ParametroType">
+    <annotation>
+      <documentation> Sono dei dati aggiuntivi che permettono di integrare
+				lo scambio di informazioni
+				tra i backoffice.
+			</documentation>
+    </annotation>
+    <sequence>
+      <element name="nome" type="string" />
+      <element minOccurs="1" maxOccurs="unbounded" name="valore" type="tns:ValoreParametroType" />
+    </sequence>
+  </complexType>
+  <complexType name="SportelloType">
+    <sequence>
+      <element name="idNodo" type="string" />
+      <element name="idEnte" type="string" />
+      <element name="idSportello" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="pecSportello" type="string" />
+    </sequence>
+  </complexType>
+  <complexType name="ErroreType">
+    <sequence>
+      <element name="numeroErrore" type="string" />
+      <element name="descrizione" type="string" />
+    </sequence>
+  </complexType>
+  <complexType name="DocumentiType">
+    <sequence>
+      <element name="id" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="tipoDocumento" type="string" />
+      <element name="documento" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="allegati" type="tns:AllegatiType" />
+      <element minOccurs="0" maxOccurs="1" name="annotazioni" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="data" type="date" />
+    </sequence>
+  </complexType>
+  <simpleType name="StatoPraticaType">
+    <restriction base="string">
+      <enumeration value="Attiva" />
+      <enumeration value="ChiusaPositivamente" />
+      <enumeration value="ChiusaNegativamente" />
+    </restriction>
+  </simpleType>
+  <simpleType name="StatoIterType">
+    <restriction base="string">
+      <enumeration value="Sospesa" />
+      <enumeration value="Interrotta" />
+    </restriction>
+  </simpleType>
+  <complexType name="EstremiAttoEstesoType">
+    <sequence>
+      <element name="numero" type="string" />
+      <element name="data" type="date" />
+      <element name="tipoRegistro" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="note" type="string" />
+    </sequence>
+  </complexType>
+  <complexType name="AllegatiType">
+    <sequence>
+      <element name="id" type="string" />
+      <element name="allegato" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="file" type="tns:AllegatoBinarioType" />
+      <element minOccurs="0" maxOccurs="unbounded" name="metaDati" type="tns:MetaDatoType" />
+    </sequence>
+  </complexType>
+  <complexType name="AllegatoBinarioType">
+    <sequence>
+      <element minOccurs="0" maxOccurs="1" name="mimeType" type="string" />
+      <element xmime:expectedContentTypes="application/octet-stream" name="binaryData" type="base64Binary" />
+      <element name="fileName" type="string" />
+    </sequence>
+  </complexType>
+  <complexType name="ProcedimentoType">
+    <sequence>
+      <element name="codice" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="descrizione" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="dataAttivazione" type="date" />
+      <element minOccurs="0" maxOccurs="1" name="principale" type="boolean" />
+      <element minOccurs="0" maxOccurs="unbounded" name="documenti" type="tns:DocumentiType" />
+      <element minOccurs="0" maxOccurs="1" name="estremiAtto" type="tns:EstremiAttoType" />
+    </sequence>
+  </complexType>
+  <complexType name="DirezioneType">
+    <sequence>
+      <element name="codice" type="string" />
+      <element name="descrizione" type="string" />
+    </sequence>
+  </complexType>
+  <complexType name="RiferimentiAllegatoType">
+    <sequence>
+      <element name="idPratica" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="idAttivita" type="string" />
+      <element name="idDocumento" type="string" />
+      <element name="idAllegato" type="string" />
+    </sequence>
+  </complexType>
+  <complexType name="SchedaType">
+    <sequence>
+      <element name="codice" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="descrizione" type="string" />
+      <element name="nome" type="string" />
+      <element minOccurs="0" maxOccurs="unbounded" name="campi" type="tns:CampoSchedaType" />
+    </sequence>
+  </complexType>
+  <complexType name="CampoSchedaType">
+    <sequence>
+      <element name="codice" type="string" />
+      <element name="descrizione" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="campoDinamico" type="tns:CampoDinamicoType" />
+      <element minOccurs="0" maxOccurs="1" name="campoStatico" type="tns:CampoStaticoType" />
+    </sequence>
+  </complexType>
+  <complexType name="CampoStaticoType">
+    <sequence>
+      <element minOccurs="1" maxOccurs="1" name="tipoCampo" type="tns:TipoCampoStaticoType" />
+      <element minOccurs="1" maxOccurs="1" name="posizione" type="tns:PosizioneCampoType" />
+      <element minOccurs="1" maxOccurs="1" name="testoFisso" type="string" />
+    </sequence>
+  </complexType>
+  <complexType name="CampoDinamicoType">
+    <sequence>
+      <element minOccurs="0" maxOccurs="1" name="proprieta" type="tns:ProprietaCampoDinamicoType" />
+      <element minOccurs="1" maxOccurs="1" name="valoreUtente" type="tns:ValoreCampoDinamicoType" />
+    </sequence>
+  </complexType>
+  <complexType name="ProprietaCampoDinamicoType">
+    <sequence>
+      <element minOccurs="1" maxOccurs="1" name="tipoCampo" type="tns:TipoCampoDinamicoType" />
+      <element minOccurs="1" maxOccurs="1" name="posizione" type="tns:PosizioneCampoType" />
+      <element name="obbligatorio" type="boolean" />
+      <element name="multiplo" type="boolean" />
+      <element minOccurs="0" maxOccurs="1" name="lunghezza">
+        <simpleType>
+          <restriction base="integer">
+            <minInclusive value="0" />
+            <maxInclusive value="9999" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="cifreDecimali">
+        <simpleType>
+          <restriction base="integer">
+            <minInclusive value="0" />
+            <maxInclusive value="9" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="unbounded" name="valoreLista" type="tns:ValoreParametroType" />
+      <element minOccurs="0" maxOccurs="1" name="valoriCheckBox" type="tns:ValoriCampoCheckboxType" />
+    </sequence>
+  </complexType>
+  <simpleType name="TipoCampoStaticoType">
+    <restriction base="string">
+      <enumeration value="Titolo" />
+      <enumeration value="TestoEsteso" />
+    </restriction>
+  </simpleType>
+  <simpleType name="TipoCampoDinamicoType">
+    <restriction base="string">
+      <enumeration value="Checkbox" />
+      <enumeration value="Data" />
+      <enumeration value="Lista" />
+      <enumeration value="Testo" />
+      <enumeration value="NumericoIntero" />
+      <enumeration value="NumericoDouble" />
+    </restriction>
+  </simpleType>
+  <complexType name="ValoriCampoCheckboxType">
+    <sequence>
+      <element minOccurs="1" maxOccurs="1" name="valoreSelezionato" type="string" />
+      <element minOccurs="1" maxOccurs="1" name="valoreNonSelezionato" type="string" />
+    </sequence>
+  </complexType>
+  <complexType name="PosizioneCampoType">
+    <annotation>
+      <documentation>Rappresenta la posizione di un campo all'interno di
+				una scheda dinamica, la posizione verticale puÃ² essere compresa tra
+				0 e 9999 mentre la posizione orizzontale puÃ² essere compresa tra 0 e 9
+			</documentation>
+    </annotation>
+    <sequence>
+      <element name="riga">
+        <simpleType>
+          <restriction base="integer">
+            <minInclusive value="0" />
+            <maxInclusive value="9999" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element name="colonna">
+        <simpleType>
+          <restriction base="integer">
+            <minInclusive value="0" />
+            <maxInclusive value="9" />
+          </restriction>
+        </simpleType>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="ValoreParametroType">
+    <sequence>
+      <element name="codice" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="descrizione" type="string" />
+    </sequence>
+  </complexType>
+  <complexType name="ElementoValoreCampoDinamicoType">
+    <complexContent mixed="false">
+      <extension base="tns:ValoreParametroType">
+        <sequence>
+          <element minOccurs="0" maxOccurs="1" name="indice" type="int" />
+          <element minOccurs="0" maxOccurs="1" name="indiceMolteplicita" type="int" />
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="ValoreCampoDinamicoType">
+    <sequence>
+      <element name="nome" type="string" />
+      <element minOccurs="1" maxOccurs="unbounded" name="valore" type="tns:ElementoValoreCampoDinamicoType" />
+    </sequence>
+  </complexType>
+  <complexType name="EstremiAttoType">
+    <sequence>
+      <element minOccurs="0" maxOccurs="1" name="riferimento" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="data" type="date" />
+      <element minOccurs="0" maxOccurs="1" name="tipoAtto" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="rilasciatoDa" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="note" type="string" />
+    </sequence>
+  </complexType>
+  <complexType name="DettaglioPraticaVisuraType">
+    <sequence>
+      <element minOccurs="1" maxOccurs="1" name="dettaglioPratica" type="tns:DettaglioPraticaType" />
+      <element minOccurs="0" maxOccurs="unbounded" name="listaAttivita" type="tns:DettaglioAttivitaType" />
+      <element name="statoPratica" type="tns:StatoPraticaType">
+        <annotation>
+          <documentation>
+						Esempio "chiusa positivamente";"chiusa per archiviazione";"chiusa negativamente";"chiusa per rinuncia";"in corso";"in
+						istruttoria";
+					</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="statoIter" type="tns:StatoIterType" />
+      <element minOccurs="0" maxOccurs="1" name="passwordMD5" type="string">
+        <annotation>
+          <documentation>
+						La logica del nodo che ha effettuato la richiesta ha la facoltÃ  di verificare che la password dell'istanza corrisponda a
+						quella eventualmente imputata dall'operatore. Utilizzato nei sistemi di front office per la visura on-line in mancanza di
+						delega.
+					</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="responsabileProcedimento" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="istruttorePratica" type="string" />
+      <element minOccurs="0" maxOccurs="unbounded" name="listaAtti" type="tns:EstremiAttoEstesoType" />
+      <element minOccurs="0" maxOccurs="1" name="tempisticaProcedimento" type="tns:TempisticaProcedimentoType" />
+    </sequence>
+  </complexType>
+  <complexType name="OneriType">
+    <sequence>
+      <element name="causale" type="tns:CausaleOnereType" />
+      <element name="importo" type="double" />
+      <element minOccurs="0" maxOccurs="1" name="codiceProcedimento" type="string" />
+      <element minOccurs="0" maxOccurs="unbounded" name="scadenze" type="tns:OneriScadenzeType" />
+      <element minOccurs="1" maxOccurs="1" name="segno" type="tns:segnoType">
+        <annotation>
+          <documentation>Determina se l'onere Ã¨ in entrata o uscita</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="annotazioni" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="nonDovuto" type="boolean" />
+    </sequence>
+  </complexType>
+  <complexType name="CausaleOnereType">
+    <sequence>
+      <element name="id" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="causale" type="string" />
+    </sequence>
+  </complexType>
+  <complexType name="OneriScadenzeType">
+    <sequence>
+      <element minOccurs="0" maxOccurs="1" name="numeroRata" type="string" />
+      <element name="importoRata" type="double" />
+      <element minOccurs="0" maxOccurs="1" name="dataScadenza" type="date" />
+      <element minOccurs="0" maxOccurs="unbounded" name="pagamenti" type="tns:OneriPagamentiType" />
+    </sequence>
+  </complexType>
+  <complexType name="OneriPagamentiType">
+    <sequence>
+      <element name="importo" type="double" />
+      <element name="data" type="date" />
+      <element minOccurs="0" maxOccurs="1" name="modalita" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="rifDocumento" type="string" />
+    </sequence>
+  </complexType>
+  <simpleType name="segnoType">
+    <restriction base="string">
+      <enumeration value="ENTRATA" />
+      <enumeration value="USCITA" />
+    </restriction>
+  </simpleType>
+  <complexType name="FiltriPraticaType">
+    <sequence>
+      <element minOccurs="0" maxOccurs="1" name="comune" type="tns:ComuneType" />
+      <element minOccurs="0" maxOccurs="1" name="idPratica" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="numeroPratica" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="dataPresentazionePraticaDa" type="date" />
+      <element minOccurs="0" maxOccurs="1" name="dataPresentazionePraticaA" type="date" />
+      <element minOccurs="0" maxOccurs="1" name="numeroProtocolloGenerale" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="dataProtocolloGeneraleDa" type="date" />
+      <element minOccurs="0" maxOccurs="1" name="dataProtocolloGeneraleA" type="date" />
+      <element minOccurs="0" maxOccurs="1" name="numeroAtto" type="string">
+        <annotation>
+          <documentation>Atto autorizzativo</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="codiceIntervento" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="oggetto" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="localizzazioneCodiceViario" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="localizzazioneIndirizzo" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="localizzazioneCivico" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="rifCatastaliTipoCatasto">
+        <simpleType>
+          <restriction base="string">
+            <enumeration value="Fabbricati" />
+            <enumeration value="Terreni" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="rifCatastaliFoglio" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="rifCatastaliParticella" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="rifCatastaliSub" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="limiteRecords" type="int">
+        <annotation>
+          <documentation>
+						Indica il numero massimo di record da tornare
+					</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="codiceFiscaleRichiedente" type="string">
+        <annotation>
+          <documentation>
+						Codice fiscale o partita iva richiedente o
+						azienda richiedente
+					</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" maxOccurs="1" name="statoPratica" type="tns:StatoPraticaType" />
+    </sequence>
+  </complexType>
+  <complexType name="FiltriUtenteType">
+    <sequence>
+      <element name="codiceFiscale" type="string">
+        <annotation>
+          <documentation>Codice fiscale o partita iva</documentation>
+        </annotation>
+      </element>
+    </sequence>
+    <attribute name="cercaComeRichiedente" type="boolean" />
+    <attribute name="cercaComeAziendaRichiedente" type="boolean" />
+    <attribute name="cercaNeiSoggettiCollegati" type="boolean" />
+    <attribute name="cercaComeIntermediario" type="boolean" />
+  </complexType>
+  <complexType name="CittadinanzaType">
+    <sequence>
+      <element minOccurs="0" maxOccurs="1" name="id" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="codiceCatastale" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="descrizione" type="string" />
+    </sequence>
+  </complexType>
+  <complexType name="FrazioneType">
+    <sequence>
+      <element minOccurs="0" maxOccurs="1" name="codice" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="descrizione" type="string" />
+    </sequence>
+  </complexType>
+  <complexType name="CircoscrizioneType">
+    <sequence>
+      <element minOccurs="0" maxOccurs="1" name="codice" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="descrizione" type="string" />
+    </sequence>
+  </complexType>
+  <complexType name="QuartiereType">
+    <sequence>
+      <element minOccurs="0" maxOccurs="1" name="codice" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="descrizione" type="string" />
+    </sequence>
+  </complexType>
+  <complexType name="CoordinateType">
+    <sequence>
+      <element minOccurs="1" maxOccurs="1" name="latitudine" type="string" />
+      <element minOccurs="1" maxOccurs="1" name="longitudine" type="string" />
+    </sequence>
+  </complexType>
+  <complexType name="TipoLocalizzazioneType">
+    <sequence>
+      <element minOccurs="0" maxOccurs="1" name="codice" type="string" />
+      <element minOccurs="1" maxOccurs="1" name="descrizione" type="string" />
+    </sequence>
+  </complexType>
+  <complexType name="MetaDatoType">
+    <sequence>
+      <element minOccurs="1" maxOccurs="1" name="codice" type="string" />
+      <element minOccurs="1" maxOccurs="1" name="valore" type="string" />
+    </sequence>
+  </complexType>
+  <complexType name="TempisticaProcedimentoType">
+    <sequence>
+      <element minOccurs="0" maxOccurs="1" name="dataInizio" type="date" />
+      <element minOccurs="0" maxOccurs="1" name="dataFine" type="date" />
+      <element minOccurs="0" maxOccurs="1" name="durataGG" type="int" />
+    </sequence>
+  </complexType>
+  <complexType name="DatiInpsType">
+    <sequence>
+      <element name="numero" type="string" />
+      <element name="sedeIscrizione" type="tns:CodiceDescrizioneType" />
+    </sequence>
+  </complexType>
+  <complexType name="DatiInailType">
+    <sequence>
+      <element name="numero" type="string" />
+      <element name="sedeIscrizione" type="tns:CodiceDescrizioneType" />
+    </sequence>
+  </complexType>
+  <complexType name="DatiCassaEdileType">
+    <sequence>
+      <element name="numero" type="string" />
+      <element name="cassaEdile" type="tns:CodiceDescrizioneType" />
+    </sequence>
+  </complexType>
+  <complexType name="CodiceDescrizioneType">
+    <sequence>
+      <element minOccurs="0" maxOccurs="1" name="codice" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="descrizione" type="string" />
+    </sequence>
+  </complexType>
+  <complexType name="DatiIscrizioneAlboType">
+    <sequence>
+      <element minOccurs="0" maxOccurs="1" name="numeroIscrizione" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="siglaProvincia" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="tipoOrdineProfessionisti" type="tns:CodiceDescrizioneType" />
+    </sequence>
+  </complexType>
+  <complexType name="SostituzioniDocumentaliType">
+    <annotation>
+      <documentation>Sono i documenti che devono andare a sostituire quelli presenti 
+			in fase di integrazione.L'oggetto conterrà sia il codice del docuemnto da sostituire che quello che deve essere
+			sostituito.
+			</documentation>
+    </annotation>
+    <sequence>
+      <element name="tipoDocumentoPratica">
+        <simpleType>
+          <restriction base="string">
+            <enumeration value="DOC_ISTANZA" />
+            <enumeration value="DOC_ENDO" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element minOccurs="1" maxOccurs="1" name="documentoDaSostituire" type="string" />
+      <element minOccurs="1" maxOccurs="1" name="nuovoDocumento" type="tns:AllegatiType" />
+    </sequence>
+  </complexType>
+</schema>

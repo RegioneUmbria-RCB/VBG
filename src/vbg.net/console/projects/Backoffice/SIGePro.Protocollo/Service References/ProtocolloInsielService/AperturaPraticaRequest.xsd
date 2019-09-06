@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:TipiGenerali="http://insiel.it/protocollo/schemixsd/TipiGenerali" xmlns:apreq="http://insiel.it/protocollo/schemixsd/AperturaPraticaRequest" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://insiel.it/protocollo/schemixsd/AperturaPraticaRequest" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="tipi_generali.xsd" namespace="http://insiel.it/protocollo/schemixsd/TipiGenerali" />
+  <xs:element name="AperturaPraticaRequest">
+    <xs:annotation>
+      <xs:documentation>Comment describing your root element</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:all>
+        <xs:element name="Utente" type="TipiGenerali:Utente" />
+        <xs:element name="codiceUfficio" type="xs:string" />
+        <xs:element name="codiceRegistro" type="TipiGenerali:Classifica" />
+        <xs:element name="oggetto" type="TipiGenerali:oggetto" />
+        <xs:element name="anno" type="TipiGenerali:anno" />
+        <xs:element minOccurs="0" name="numero" nillable="true" type="TipiGenerali:numero" />
+        <xs:element minOccurs="0" name="subNumero" nillable="true" type="TipiGenerali:subNumero" />
+        <xs:element minOccurs="0" name="numerazioneManuale" nillable="true" type="xs:boolean" />
+        <xs:element minOccurs="0" name="data" nillable="true" type="xs:date" />
+        <xs:element minOccurs="0" name="note" nillable="true" type="TipiGenerali:note" />
+        <xs:element minOccurs="0" name="codiceTipoPratica" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="codiceUfficioOperante" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="praticaAc" nillable="true" type="TipiGenerali:PraticaAcPlusData" />
+        <xs:element minOccurs="0" name="Uffici" nillable="true" type="apreq:Uffici" />
+        <xs:element minOccurs="0" name="RiferimentiAnagrafici" nillable="true" type="apreq:RiferimentiAnagrafici" />
+        <xs:element minOccurs="0" name="Mnemonici" nillable="true" type="apreq:Mnemonici" />
+        <xs:element minOccurs="0" name="iteratti" nillable="true" type="xs:boolean" />
+        <xs:element minOccurs="0" name="livSegretezza" nillable="true" type="xs:int" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="RiferimentiAnagrafici">
+    <xs:sequence minOccurs="0">
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="RiferimentoAnagrafico" type="TipiGenerali:RiferimentoAnagrafico" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Uffici">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Ufficio" type="TipiGenerali:UfficioPrat" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Mnemonici">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Mnemonico" type="TipiGenerali:MnemonicoRequest" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

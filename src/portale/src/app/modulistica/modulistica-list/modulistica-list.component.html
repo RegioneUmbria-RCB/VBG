@@ -1,0 +1,69 @@
+<app-inner-page-layout [isLoading]="!caricamentoCompletato">
+    <h2>
+        Modulistica
+    </h2>
+
+    <div class="ricerca-testuale">
+        <input type="text" class="form-control" (keyup)="onKeyUp($event.target.value, $event)"
+            placeholder="Cerca tra la modulistica...">
+
+        <div class="btn-group controlli-ricerca" role="group" aria-label="...">
+            <div role="group" class="btn btn-default" (click)="mostraInPrimoPiano()"
+                [ngClass]="{active: dataSource === elementiTop}">
+                <i class="glyphicon glyphicon-ok" *ngIf="dataSource === elementiTop"></i> In primo piano</div>
+            <div role="group" class="btn btn-default" (click)="mostraListaCompleta()"
+                [ngClass]="{active: dataSource === listaCompleta}">
+                <i class="glyphicon glyphicon-ok" *ngIf="dataSource === listaCompleta"></i> Lista completa</div>
+        </div>
+    </div>
+
+    <div *ngIf="!dataSource.length" class="nessun-risultato-trovato">
+        Non sono stati trovati risultati corrispondenti al testo cercato
+    </div>
+
+    <div *ngIf="dataSource.length" class="lista-modulistica">
+        <div class="row">
+            <div class="col-md-9">
+
+                <div *ngFor="let categoria of dataSource" class="categoria">
+
+                    <div class="row titolo-categoria" id="mod-{{categoria.codice}}">
+                        <div class="col-md-12">
+                            <h3>{{categoria.nome || "Modulistica generale"}}</h3>
+                        </div>
+                    </div>
+
+                    <div class="elemento-lista-moulistica" *ngFor="let item of categoria.modulistica">
+                        <div class="row">
+
+                            <div class="col-md-1">
+                                <a href="{{urlDownload(item.fileId)}}" target="_blank" *ngIf="item.fileId">
+                                    <i class="glyphicon glyphicon-download-alt"></i>
+                                </a>
+                            </div>
+
+                            <div class="col-md-11 descrizione-modulistica">
+                                <h4>
+                                    {{item.titolo | stripHtml}}
+                                </h4>
+                                <p [innerHTML]="item.descrizione"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="col-md-3">
+                <div class="lista-scorciatoie">
+                    <div *ngFor="let categoria of dataSource" class="scorciatoia color-inverse link" pageScroll
+                        href="#mod-{{categoria.codice}}">
+                        {{categoria.nome || "Modulistica generale"}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</app-inner-page-layout>

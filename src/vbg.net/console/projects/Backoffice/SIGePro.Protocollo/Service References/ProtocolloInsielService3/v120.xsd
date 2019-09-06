@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:anagrafica="http://insiel.it/protocollo/schemixsd/tipiAnagrafica" xmlns:tgen="http://insiel.it/protocollo/schemixsd/tipiGenerali" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://insiel.it/protocollo/schemixsd/tipiAnagrafica" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://193.42.71.39:8082/protows2-collaudoPN/services/protocollo/v1?xsd=tipiGenerali.xsd" namespace="http://insiel.it/protocollo/schemixsd/tipiGenerali" />
+  <xs:complexType name="EmailAnagrafica">
+    <xs:sequence>
+      <xs:element name="email" type="xs:string" />
+      <xs:element name="tipo" type="anagrafica:tipoEmailAnagrafica" />
+      <xs:element minOccurs="0" name="note" type="xs:string" />
+      <xs:element minOccurs="0" name="principale" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="tipoEmailAnagrafica">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="pec" />
+      <xs:enumeration value="peo" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="IdAnagrafica">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="codAna" type="xs:string" />
+      <xs:element minOccurs="0" name="descAna" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="NuovaAnagrafica">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="codAna" type="xs:string" />
+      <xs:element minOccurs="0" name="descAna" type="xs:string" />
+      <xs:element minOccurs="0" name="codTipoAna" type="xs:string" />
+      <xs:element minOccurs="0" name="cognome" type="xs:string" />
+      <xs:element minOccurs="0" name="nome" type="xs:string" />
+      <xs:element minOccurs="0" name="titolo" type="xs:string" />
+      <xs:element minOccurs="0" name="denominaz" type="xs:string" />
+      <xs:element minOccurs="0" name="indirizzo" type="xs:string" />
+      <xs:element minOccurs="0" name="localita" type="xs:string" />
+      <xs:element minOccurs="0" name="provincia">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:length value="2" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element minOccurs="0" name="cap">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:length value="5" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element minOccurs="0" name="stato" type="xs:string" />
+      <xs:element minOccurs="0" name="codfis">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="16" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element minOccurs="0" name="piva">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:length value="11" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element minOccurs="0" name="codQualDipe" type="xs:string" />
+      <xs:element minOccurs="0" name="sigla" type="xs:string" />
+      <xs:element minOccurs="0" name="datanasc" type="xs:date" />
+      <xs:element minOccurs="0" name="locnasc" type="xs:string" />
+      <xs:element minOccurs="0" name="provnasc">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:length value="2" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element minOccurs="0" name="sesso">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="M" />
+            <xs:enumeration value="F" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element minOccurs="0" name="desc_ana_2" type="xs:string" />
+      <xs:element minOccurs="0" name="codTipolAna" type="xs:string" />
+      <xs:element minOccurs="0" name="flImportGd" type="xs:integer" />
+      <xs:element minOccurs="0" name="flUtilizzaProt" type="xs:integer" />
+      <xs:element minOccurs="0" name="flNoAlbero" type="xs:integer" />
+      <xs:element minOccurs="0" name="livAbil">
+        <xs:simpleType>
+          <xs:restriction base="xs:integer">
+            <xs:minInclusive value="0" />
+            <xs:maxInclusive value="9" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element minOccurs="0" name="disattivato" type="xs:boolean" />
+      <xs:element minOccurs="0" name="certificata" type="xs:boolean" />
+      <xs:element minOccurs="0" name="emailList" type="anagrafica:EmailList" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="AnagraficaView">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="codAna" type="xs:string" />
+      <xs:element minOccurs="0" name="descAna" type="xs:string" />
+      <xs:element minOccurs="0" name="codTipoAna" type="xs:string" />
+      <xs:element minOccurs="0" name="cognome" type="xs:string" />
+      <xs:element minOccurs="0" name="nome" type="xs:string" />
+      <xs:element minOccurs="0" name="titolo" type="xs:string" />
+      <xs:element minOccurs="0" name="denominaz" type="xs:string" />
+      <xs:element minOccurs="0" name="indirizzo" type="xs:string" />
+      <xs:element minOccurs="0" name="localita" type="xs:string" />
+      <xs:element minOccurs="0" name="provincia" type="xs:string" />
+      <xs:element minOccurs="0" name="cap" type="xs:string" />
+      <xs:element minOccurs="0" name="stato" type="xs:string" />
+      <xs:element minOccurs="0" name="codfis" type="xs:string" />
+      <xs:element minOccurs="0" name="piva" type="xs:string" />
+      <xs:element minOccurs="0" name="codQualDipe" type="xs:string" />
+      <xs:element minOccurs="0" name="sigla" type="xs:string" />
+      <xs:element minOccurs="0" name="datanasc" type="xs:date" />
+      <xs:element minOccurs="0" name="locnasc" type="xs:string" />
+      <xs:element minOccurs="0" name="provnasc" type="xs:string" />
+      <xs:element minOccurs="0" name="sesso" type="xs:string" />
+      <xs:element minOccurs="0" name="eMail" type="xs:string" />
+      <xs:element minOccurs="0" name="codTipolAna" type="xs:string" />
+      <xs:element minOccurs="0" name="codIop" type="xs:string" />
+      <xs:element minOccurs="0" name="codAmm" type="xs:string" />
+      <xs:element minOccurs="0" name="eMailIop" type="xs:string" />
+      <xs:element minOccurs="0" name="disattivata" type="xs:boolean" />
+      <xs:element minOccurs="0" name="certificata" type="xs:boolean" />
+      <xs:element minOccurs="0" name="emailList" type="anagrafica:EmailList" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="EmailList">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="email" type="anagrafica:EmailAnagrafica" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="AnagraficaRicerca">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="codAna">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="valore" type="xs:string" />
+            <xs:element minOccurs="0" name="relazione" type="tgen:operatoreRelazionaleUI" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="descAna">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="valore" type="xs:string" />
+            <xs:element minOccurs="0" name="relazione" type="tgen:operatoreRelazionaleUIC" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="codTipoAna" type="xs:string" />
+      <xs:element minOccurs="0" name="codfis" type="xs:string" />
+      <xs:element minOccurs="0" name="piva" type="xs:string" />
+      <xs:element minOccurs="0" name="nome" type="xs:string" />
+      <xs:element minOccurs="0" name="cognome" type="xs:string" />
+      <xs:element minOccurs="0" name="codUff" type="xs:string" />
+      <xs:element minOccurs="0" name="email">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="tipo" type="anagrafica:tipoEmailAnagrafica" />
+            <xs:element minOccurs="0" name="relazione" type="tgen:operatoreRelazionaleUIC" />
+            <xs:element minOccurs="0" name="valore" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="conCasella" type="xs:boolean" />
+      <xs:element minOccurs="0" name="attiva" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

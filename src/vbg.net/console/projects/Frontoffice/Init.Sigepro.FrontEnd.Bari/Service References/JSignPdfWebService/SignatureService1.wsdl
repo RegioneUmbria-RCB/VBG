@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://ws.dss.markt.ec.europa.eu/" name="SignatureService" targetNamespace="http://ws.dss.markt.ec.europa.eu/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xs:schema xmlns:tns="http://ws.dss.markt.ec.europa.eu/" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://ws.dss.markt.ec.europa.eu/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="digestDocument" type="tns:digestDocument" />
+      <xs:element name="digestDocumentResponse" type="tns:digestDocumentResponse" />
+      <xs:element name="extendSignature" type="tns:extendSignature" />
+      <xs:element name="extendSignatureResponse" type="tns:extendSignatureResponse" />
+      <xs:element name="signDocument" type="tns:signDocument" />
+      <xs:element name="signDocument2" type="tns:signDocument2" />
+      <xs:element name="signDocument2Response" type="tns:signDocument2Response" />
+      <xs:element name="signDocumentResponse" type="tns:signDocumentResponse" />
+      <xs:complexType name="signDocument">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="document" type="tns:wsDocument" />
+          <xs:element minOccurs="0" name="signedDigest" type="xs:base64Binary" />
+          <xs:element minOccurs="0" name="signedProperties" type="tns:signedPropertiesContainer" />
+          <xs:element minOccurs="0" name="signatureInfoLevel" type="tns:signatureFormat" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="wsDocument">
+        <xs:sequence>
+          <xs:element xmlns:ns1="http://www.w3.org/2005/05/xmlmime" ns1:expectedContentTypes="application/octet-stream" minOccurs="0" name="binary" type="xs:base64Binary" />
+          <xs:element minOccurs="0" name="name" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="signedPropertiesContainer">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="certificateChain" nillable="true" type="xs:base64Binary" />
+          <xs:element minOccurs="0" name="claimedSignerRole" type="xs:string" />
+          <xs:element minOccurs="0" name="signaturePackaging" type="xs:string" />
+          <xs:element minOccurs="0" name="signaturePolicy" type="xs:string" />
+          <xs:element minOccurs="0" name="signaturePolicyHashAlgo" type="xs:string" />
+          <xs:element minOccurs="0" name="signaturePolicyHashValue" type="xs:base64Binary" />
+          <xs:element minOccurs="0" name="signaturePolicyId" type="xs:string" />
+          <xs:element minOccurs="0" name="signingCertificate" type="xs:base64Binary" />
+          <xs:element minOccurs="0" name="signingDate" type="xs:dateTime" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="signDocumentResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="response" type="tns:wsDocument" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="extendSignature">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="signedDocument" type="tns:wsDocument" />
+          <xs:element minOccurs="0" name="originalDocument" type="tns:wsDocument" />
+          <xs:element minOccurs="0" name="signatureInfoLevel" type="tns:signatureFormat" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="extendSignatureResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="response" type="tns:wsDocument" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="digestDocument">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="document" type="tns:wsDocument" />
+          <xs:element minOccurs="0" name="signedProperties" type="tns:signedPropertiesContainer" />
+          <xs:element minOccurs="0" name="signatureInfo" type="tns:signatureFormat" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="digestDocumentResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="response" type="xs:base64Binary" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="signDocument2">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="document" type="tns:wsDocument" />
+          <xs:element minOccurs="0" name="signatureInfoLevel" type="tns:signatureFormat" />
+          <xs:element minOccurs="0" name="signaturePackaging" type="tns:signaturePackaging" />
+          <xs:element minOccurs="0" name="claimedRole" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="signDocument2Response">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="response" type="tns:wsDocument" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:simpleType name="signatureFormat">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="XAdES_BES" />
+          <xs:enumeration value="XAdES_EPES" />
+          <xs:enumeration value="XAdES_T" />
+          <xs:enumeration value="XAdES_C" />
+          <xs:enumeration value="XAdES_X" />
+          <xs:enumeration value="XAdES_XL" />
+          <xs:enumeration value="XAdES_A" />
+          <xs:enumeration value="CAdES_BES" />
+          <xs:enumeration value="CAdES_EPES" />
+          <xs:enumeration value="CAdES_T" />
+          <xs:enumeration value="CAdES_C" />
+          <xs:enumeration value="CAdES_X" />
+          <xs:enumeration value="CAdES_XL" />
+          <xs:enumeration value="CAdES_A" />
+          <xs:enumeration value="PAdES_BES" />
+          <xs:enumeration value="PAdES_EPES" />
+          <xs:enumeration value="PAdES_LTV" />
+          <xs:enumeration value="ASiC_S_BES" />
+          <xs:enumeration value="ASiC_S_EPES" />
+          <xs:enumeration value="ASiC_S_T" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="signaturePackaging">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="ENVELOPED" />
+          <xs:enumeration value="ENVELOPING" />
+          <xs:enumeration value="DETACHED" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="IOException" type="tns:IOException" />
+      <xs:complexType name="IOException">
+        <xs:sequence />
+      </xs:complexType>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="IOException">
+    <wsdl:part name="IOException" element="ns1:IOException" />
+  </wsdl:message>
+  <wsdl:message name="digestDocumentResponse">
+    <wsdl:part name="parameters" element="ns1:digestDocumentResponse" />
+  </wsdl:message>
+  <wsdl:message name="signDocument">
+    <wsdl:part name="parameters" element="ns1:signDocument" />
+  </wsdl:message>
+  <wsdl:message name="extendSignature">
+    <wsdl:part name="parameters" element="ns1:extendSignature" />
+  </wsdl:message>
+  <wsdl:message name="signDocument2Response">
+    <wsdl:part name="parameters" element="ns1:signDocument2Response" />
+  </wsdl:message>
+  <wsdl:message name="signDocument2">
+    <wsdl:part name="parameters" element="ns1:signDocument2" />
+  </wsdl:message>
+  <wsdl:message name="signDocumentResponse">
+    <wsdl:part name="parameters" element="ns1:signDocumentResponse" />
+  </wsdl:message>
+  <wsdl:message name="digestDocument">
+    <wsdl:part name="parameters" element="ns1:digestDocument" />
+  </wsdl:message>
+  <wsdl:message name="extendSignatureResponse">
+    <wsdl:part name="parameters" element="ns1:extendSignatureResponse" />
+  </wsdl:message>
+  <wsdl:portType name="SignatureService">
+    <wsdl:operation name="signDocument">
+      <wsdl:input name="signDocument" message="ns1:signDocument" />
+      <wsdl:output name="signDocumentResponse" message="ns1:signDocumentResponse" />
+      <wsdl:fault name="IOException" message="ns1:IOException" />
+    </wsdl:operation>
+    <wsdl:operation name="extendSignature">
+      <wsdl:input name="extendSignature" message="ns1:extendSignature" />
+      <wsdl:output name="extendSignatureResponse" message="ns1:extendSignatureResponse" />
+      <wsdl:fault name="IOException" message="ns1:IOException" />
+    </wsdl:operation>
+    <wsdl:operation name="digestDocument">
+      <wsdl:input name="digestDocument" message="ns1:digestDocument" />
+      <wsdl:output name="digestDocumentResponse" message="ns1:digestDocumentResponse" />
+      <wsdl:fault name="IOException" message="ns1:IOException" />
+    </wsdl:operation>
+    <wsdl:operation name="signDocument2">
+      <wsdl:input name="signDocument2" message="ns1:signDocument2" />
+      <wsdl:output name="signDocument2Response" message="ns1:signDocument2Response" />
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>

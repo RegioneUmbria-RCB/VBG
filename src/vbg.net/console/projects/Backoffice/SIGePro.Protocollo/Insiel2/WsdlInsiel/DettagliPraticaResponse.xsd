@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2005 rel. 3 U (http://www.altova.com) by any (INSIEL S.p.A.) -->
+<xs:schema xmlns:dpratres="http://insiel.it/protocollo/schemixsd/DettagliPraticaResponse" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:TipiGenerali="http://insiel.it/protocollo/schemixsd/TipiGenerali" targetNamespace="http://insiel.it/protocollo/schemixsd/DettagliPraticaResponse" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:import namespace="http://insiel.it/protocollo/schemixsd/TipiGenerali" schemaLocation="tipi_generali.xsd"/>
+	<xs:element name="DettagliPraticaResponse">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="Dettagli" type="dpratres:Dettagli"/>
+				<xs:element name="Errore" type="TipiGenerali:Errore"/>
+			</xs:choice>
+			<xs:attribute name="esito" type="xs:boolean" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="Dettagli">
+		<xs:complexContent>
+			<xs:extension base="dpratres:DettagliPratica">
+				<xs:sequence>
+					<xs:element name="Uffici" type="dpratres:Uffici"/>
+					<xs:element name="RiferimentiAnagrafici" type="dpratres:RiferimentiAnagrafici"/>
+					<xs:element name="Mnemonici" type="dpratres:Mnemonici"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DettagliPratica">
+		<xs:sequence>
+			<xs:annotation>
+				<xs:documentation>copiato in parte da ricerca prat</xs:documentation>
+			</xs:annotation>
+			<xs:element name="codice_ufficio" type="xs:string" nillable="true"/>
+			<xs:element name="descrizione_ufficio" type="xs:string" nillable="true"/>
+			<xs:element name="codice_registro" type="xs:string" nillable="true"/>
+			<xs:element name="descrizione_registro" type="xs:string" nillable="true"/>
+			<xs:element name="anno" type="xs:integer" nillable="true"/>
+			<xs:element name="numero" type="xs:integer" nillable="true"/>
+			<xs:element name="sub_numero" type="xs:string" nillable="true"/>
+			<xs:element name="data" type="xs:date" nillable="true"/>
+			<xs:element name="oggetto" type="xs:string" nillable="true"/>
+			<xs:element name="note" type="xs:string" nillable="true"/>
+			<xs:element name="codice_tipo_pratica" type="xs:string" nillable="true"/>
+			<xs:element name="data_chiusura" type="xs:date" nillable="true"/>
+			<xs:element name="prog_doc" type="TipiGenerali:progDoc" nillable="true"/>
+			<xs:element name="prog_movi" type="TipiGenerali:progMovi" nillable="true"/>
+			<xs:element name="stato" type="xs:integer" nillable="true"/>
+			<xs:element name="movi_liv_segretezza" type="xs:integer" nillable="true"/>
+			<xs:element name="doc_liv_segretezza" type="xs:integer" nillable="true"/>
+			<xs:element name="codice_ufficio_operante" type="xs:string" nillable="true"/>
+			<xs:element name="desc_ufficio_operante" type="xs:string" nillable="true"/>
+			<xs:element name="reg_da_classifica" type="dpratres:RegistroDaClassfica"/>
+			<xs:element name="pratica_ac" type="TipiGenerali:PraticaAC" nillable="true"/>
+			<xs:element name="pratica_data_ac" type="xs:date" nillable="true"/>
+			<xs:element name="dati_ultimo_aggiornamento" type="dpratres:DatiUltimoAggiornamento"/>
+			<xs:element name="ind_coll_clas" type="xs:integer" nillable="true" minOccurs="0"/>
+			<xs:element name="fl_anno" type="xs:integer" nillable="true" minOccurs="0"/>
+			<xs:element name="fl_legislatura" type="xs:integer" nillable="true" minOccurs="0"/>
+			<xs:element name="primo_ufficio" type="xs:string" nillable="true" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RiferimentiAnagrafici">
+		<xs:sequence minOccurs="0">
+			<xs:element name="RiferimentoAnagrafico" type="TipiGenerali:RiferimentoAnagrafico" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Mnemonici">
+		<xs:sequence minOccurs="0">
+			<xs:element name="Mnemonico" type="TipiGenerali:MnemonicoResponse" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Uffici">
+		<xs:sequence minOccurs="0">
+			<xs:element name="Uffici" type="TipiGenerali:UfficioPratResponse" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DatiUltimoAggiornamento">
+		<xs:sequence>
+			<xs:element name="cod_login_agg" type="xs:string" nillable="true"/>
+			<xs:element name="desc_login_agg" type="xs:string" nillable="true"/>
+			<xs:element name="data_ora_agg" type="xs:dateTime" nillable="true"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RegistroDaClassfica">
+		<xs:sequence>
+			<xs:element name="desc" type="xs:string" nillable="true"/>
+			<xs:element name="versione" type="xs:integer" nillable="true"/>
+			<xs:element name="livelli">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="livello" minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:simpleContent>
+									<xs:extension base="xs:string">
+										<xs:attribute name="numLiv" type="xs:int"/>
+									</xs:extension>
+								</xs:simpleContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

@@ -1,0 +1,91 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="SirMaster.master.cs" Inherits="Init.Sigepro.FrontEnd.Sir.SirMaster" %>
+<%@ Register Src="~/Sir/BoxComune.ascx" TagPrefix="uc1" TagName="BoxComune" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+	<title>SUAPE - Sportello Unico Attività Produttive ed Edilizia</title>
+    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.17.2/build/cssreset/cssreset-min.css" />
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />        
+    <link rel="stylesheet" type="text/css" href="../css/contenuti/style.css" />
+	<link rel="stylesheet" type="text/css" href="../css/tables.css" />
+	<link rel="stylesheet" type="text/css" href="css/sir.css" />	
+	<link rel="stylesheet" type="text/css" href="css/fix.css" />
+	
+	<script type="text/javascript" src='<%= ResolveClientUrl("~/js/lib/requirejs.js")%>' ></script>
+	
+	<script type="text/javascript">
+
+		requirejs.config({
+			"baseUrl": '<%= ResolveClientUrl("~/js/lib") %>',
+			"waitSeconds": 0,
+			"paths": {
+				"app": "../app"
+			},
+			"shim": {
+				"jquery.ui": ["jquery"],
+				"jquery.dropdown": ["jquery"],
+				"jquery.form": ["jquery"],
+				"jquery.hoverbox": ["jquery"],
+				"jquery.stickyfloat": ["jquery"],
+				'json': { exports: 'JSON' }
+			}
+		});
+
+		require(['jquery','jquery.hoverbox'], function ($) {
+			$(function() {
+				$('#lnkTornaAllaHome').hoverbox({ id: 'tooltipHomePage' });
+			});
+		});		
+
+	</script>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+
+<body class="sir-body">
+	<form id="form1" runat="server">
+		<header class="sir-header">
+			<div class="sir-loghi">
+				<img src="<%= ResolveClientUrl("~/sir/images/logo-main.png")%>" alt="home" class="sir-main-logo">
+				<div class="sir-logo-comune">
+					<img src="<%= Dati.LogoComune %>"><br />
+					<span class="sir-nome-comune"><%= Dati.NomeComune %></span>
+				</div>
+				<div class="clear"></div>
+			</div>
+		</header>        
+		<div class="sir-nav-menu">
+			<ul>
+				<li><a href="<%= Links.Home %>">Home</a></li>
+				<li><a href="<%= Links.Suape %>">Cosa è il SUAPE</a></li>
+				<li><a href="<%= Links.Istruzioni %>">Istruzioni per l'uso</a></li>
+				<li><a href="<%= Links.Faq %>">FAQ</a></li>
+				<li><a href="<%= Links.Note %>">Note legali</a></li>
+			</ul>
+		</div>
+            
+		<div class="sir-content">
+			<asp:ContentPlaceHolder ID="phContenuto" runat="server">
+        
+			</asp:ContentPlaceHolder>
+		</div>
+        <div class="sir-footer">
+            <div class="sir-separator">
+                
+            </div>
+                
+            <uc1:BoxComune runat="server"  />
+
+            <div class="sir-box-regione">
+                <span class="sottotitolo">SUAPE</span>
+                è un progetto realizzato e cofinanziato da:
+                <img src="<%= ResolveClientUrl("~/sir/images/logo-adu-ru.png")%>">
+            </div>
+			<div class="clear"></div>
+		</div>
+    </form>
+</body>
+
+
+</html>

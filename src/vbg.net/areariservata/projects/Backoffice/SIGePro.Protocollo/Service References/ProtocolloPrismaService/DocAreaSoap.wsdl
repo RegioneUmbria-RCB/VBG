@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:intf="http://tempuri.org/" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:impl="http://tempuri.org/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema xmlns:intf="http://tempuri.org/" xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://tempuri.org/">
+      <xsd:import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+      <xsd:element name="login">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="strCodEnte" type="xsd:string" />
+            <xsd:element name="strUserName" type="xsd:string" />
+            <xsd:element name="strPassword" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="LoginRet">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="strDST" nillable="true" type="xsd:string" />
+          <xsd:element name="lngErrNumber" type="xsd:long" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="strErrString" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="loginResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="LoginResult" type="impl:LoginRet" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="inserimento">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="strUserName" type="xsd:string" />
+            <xsd:element name="strDST" type="xsd:string" />
+            <xsd:element name="strAttachment" type="xsd:base64Binary" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="InserimentoRet">
+        <xsd:sequence>
+          <xsd:element name="lngDocID" type="xsd:long" />
+          <xsd:element name="lngErrNumber" type="xsd:long" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="strErrString" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="inserimentoResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="InserimentoResult" type="impl:InserimentoRet" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="smistamentoAction">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="strUserName" type="xsd:string" />
+            <xsd:element name="strDST" type="xsd:string" />
+            <xsd:element name="strAttachment" type="xsd:base64Binary" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="SmistamentoActionRet">
+        <xsd:sequence>
+          <xsd:element name="lngDocID" type="xsd:long" />
+          <xsd:element name="lngErrNumber" type="xsd:long" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="strErrString" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="smistamentoActionResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="SmistamentoActionResult" type="impl:SmistamentoActionRet" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="protocollazione">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="strUserName" type="xsd:string" />
+            <xsd:element name="strDST" type="xsd:string" />
+            <xsd:element name="strAttachment" type="xsd:base64Binary" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="ProtocollazioneRet">
+        <xsd:sequence>
+          <xsd:element name="lngNumPG" type="xsd:long" />
+          <xsd:element name="lngAnnoPG" type="xsd:long" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="strDataPG" nillable="true" type="xsd:string" />
+          <xsd:element name="lngErrNumber" type="xsd:long" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="strErrString" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="protocollazioneResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="ProtocollazioneResult" type="impl:ProtocollazioneRet" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="aggiungiAllegato">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="strUserName" type="xsd:string" />
+            <xsd:element name="strDST" type="xsd:string" />
+            <xsd:element name="strAttachment" type="xsd:base64Binary" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="AggiungiAllegatoRet">
+        <xsd:sequence>
+          <xsd:element name="lngDocID" type="xsd:long" />
+          <xsd:element name="lngErrNumber" type="xsd:long" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="strErrString" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="aggiungiAllegatoResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="AggiungiAllegatoResult" type="impl:AggiungiAllegatoRet" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="sostituisciDocumentoPrincipale">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="strUserName" type="xsd:string" />
+            <xsd:element name="strDST" type="xsd:string" />
+            <xsd:element name="strAttachment" type="xsd:base64Binary" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="SostituisciDocumentoPrincipaleRet">
+        <xsd:sequence>
+          <xsd:element name="lngDocID" type="xsd:long" />
+          <xsd:element name="lngErrNumber" type="xsd:long" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="strErrString" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="sostituisciDocumentoPrincipaleResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="SostituisciDocumentoPrincipaleResult" type="impl:SostituisciDocumentoPrincipaleRet" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="loginRequest">
+    <wsdl:part name="parameters" element="impl:login" />
+  </wsdl:message>
+  <wsdl:message name="sostituisciDocumentoPrincipaleRequest">
+    <wsdl:part name="parameters" element="impl:sostituisciDocumentoPrincipale" />
+  </wsdl:message>
+  <wsdl:message name="loginResponse">
+    <wsdl:part name="parameters" element="impl:loginResponse" />
+  </wsdl:message>
+  <wsdl:message name="smistamentoActionRequest">
+    <wsdl:part name="parameters" element="impl:smistamentoAction" />
+  </wsdl:message>
+  <wsdl:message name="inserimentoResponse">
+    <wsdl:part name="parameters" element="impl:inserimentoResponse" />
+  </wsdl:message>
+  <wsdl:message name="smistamentoActionResponse">
+    <wsdl:part name="parameters" element="impl:smistamentoActionResponse" />
+  </wsdl:message>
+  <wsdl:message name="aggiungiAllegatoRequest">
+    <wsdl:part name="parameters" element="impl:aggiungiAllegato" />
+  </wsdl:message>
+  <wsdl:message name="aggiungiAllegatoResponse">
+    <wsdl:part name="parameters" element="impl:aggiungiAllegatoResponse" />
+  </wsdl:message>
+  <wsdl:message name="sostituisciDocumentoPrincipaleResponse">
+    <wsdl:part name="parameters" element="impl:sostituisciDocumentoPrincipaleResponse" />
+  </wsdl:message>
+  <wsdl:message name="inserimentoRequest">
+    <wsdl:part name="parameters" element="impl:inserimento" />
+  </wsdl:message>
+  <wsdl:message name="protocollazioneResponse">
+    <wsdl:part name="parameters" element="impl:protocollazioneResponse" />
+  </wsdl:message>
+  <wsdl:message name="protocollazioneRequest">
+    <wsdl:part name="parameters" element="impl:protocollazione" />
+  </wsdl:message>
+  <wsdl:portType name="DOCAREAProtoSoap">
+    <wsdl:operation name="login">
+      <wsdl:input name="loginRequest" message="impl:loginRequest" />
+      <wsdl:output name="loginResponse" message="impl:loginResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="inserimento">
+      <wsdl:input name="inserimentoRequest" message="impl:inserimentoRequest" />
+      <wsdl:output name="inserimentoResponse" message="impl:inserimentoResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="smistamentoAction">
+      <wsdl:input name="smistamentoActionRequest" message="impl:smistamentoActionRequest" />
+      <wsdl:output name="smistamentoActionResponse" message="impl:smistamentoActionResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="protocollazione">
+      <wsdl:input name="protocollazioneRequest" message="impl:protocollazioneRequest" />
+      <wsdl:output name="protocollazioneResponse" message="impl:protocollazioneResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="aggiungiAllegato">
+      <wsdl:input name="aggiungiAllegatoRequest" message="impl:aggiungiAllegatoRequest" />
+      <wsdl:output name="aggiungiAllegatoResponse" message="impl:aggiungiAllegatoResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="sostituisciDocumentoPrincipale">
+      <wsdl:input name="sostituisciDocumentoPrincipaleRequest" message="impl:sostituisciDocumentoPrincipaleRequest" />
+      <wsdl:output name="sostituisciDocumentoPrincipaleResponse" message="impl:sostituisciDocumentoPrincipaleResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="DOCAREAProtoSoapSoapBinding" type="impl:DOCAREAProtoSoap">
+    <wsdlsoap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="login">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="loginRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="loginResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="inserimento">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="inserimentoRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="inserimentoResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="smistamentoAction">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="smistamentoActionRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="smistamentoActionResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="protocollazione">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="protocollazioneRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="protocollazioneResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="aggiungiAllegato">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="aggiungiAllegatoRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="aggiungiAllegatoResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="sostituisciDocumentoPrincipale">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="sostituisciDocumentoPrincipaleRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="sostituisciDocumentoPrincipaleResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="DOCAREAProto">
+    <wsdl:port name="DOCAREAProtoSoap" binding="impl:DOCAREAProtoSoapSoapBinding">
+      <wsdlsoap:address location="http://10.8.1.73:8080/agspr/services/DOCAREAProtoSoap" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

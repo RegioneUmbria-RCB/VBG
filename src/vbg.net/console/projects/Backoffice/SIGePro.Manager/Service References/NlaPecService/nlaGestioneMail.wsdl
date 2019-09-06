@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:sch="http://gruppoinit.it/nlapec" xmlns:tns="http://gruppoinit.it/nlapec" targetNamespace="http://gruppoinit.it/nlapec" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <schema xmlns:xmime="http://www.w3.org/2005/05/xmlmime" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://gruppoinit.it/nlapec" xmlns="http://www.w3.org/2001/XMLSchema">
+      <element name="ListaMessaggiRequest">
+        <complexType>
+          <sequence>
+            <element name="token" type="string" />
+            <element name="software" type="string" />
+            <element minOccurs="0" maxOccurs="unbounded" name="listaFiltri" type="tns:FiltroType" />
+          </sequence>
+        </complexType>
+      </element>
+      <complexType name="FiltroType">
+        <sequence>
+          <element name="tipo">
+            <simpleType>
+              <restriction base="string">
+                <enumeration value="DATA_DA" />
+                <enumeration value="DATA_A" />
+                <enumeration value="LETTI" />
+                <enumeration value="NON_LETTI" />
+                <enumeration value="CORPO" />
+              </restriction>
+            </simpleType>
+          </element>
+          <element name="valore">
+            <simpleType>
+              <restriction base="string">
+                <pattern value="^((((0[1-9]|[12][0-9]|3[01])[- /.](0[13578]|1[02])|(0[1-9]|[12][0-9]|30)[- /.](0[469]|11)|(0[1-9]|1\d|2[0-8])[- /.]02)[- /.]\d{4}|29[- /.]02[- /.](\d{2}(0[48]|[2468][048]|[13579][26])|([02468][048]|[1359][26])00)))|[Ss]|[Nn]$" />
+              </restriction>
+            </simpleType>
+          </element>
+        </sequence>
+      </complexType>
+      <element name="ListaMessaggiResponse">
+        <complexType>
+          <sequence>
+            <element minOccurs="0" maxOccurs="unbounded" name="messaggio" type="tns:MessaggioType" />
+          </sequence>
+        </complexType>
+      </element>
+      <complexType name="MessaggioType">
+        <sequence>
+          <element name="identificativo" type="string" />
+          <element maxOccurs="unbounded" name="mittenti" type="string" />
+          <element minOccurs="0" maxOccurs="unbounded" name="destinatari" type="string" />
+          <element minOccurs="0" maxOccurs="unbounded" name="destinataricc" type="string" />
+          <element name="oggetto" type="string" />
+          <element name="corpo" type="string" />
+          <element minOccurs="0" name="dataSpedizione" type="dateTime" />
+          <element minOccurs="0" name="dataRicezione" type="dateTime" />
+          <element name="letto" type="boolean" />
+          <element minOccurs="0" name="dimensione" type="long" />
+          <element minOccurs="0" maxOccurs="unbounded" name="altriDati" type="tns:AltriDatiType" />
+        </sequence>
+      </complexType>
+      <complexType name="AltriDatiType">
+        <sequence>
+          <element name="codice" type="string" />
+          <element maxOccurs="unbounded" name="valori" type="string" />
+        </sequence>
+      </complexType>
+      <element name="ProcessaMessaggiRequest">
+        <complexType>
+          <sequence>
+            <element name="token" type="string" />
+            <element name="software" type="string" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="ProcessaMessaggiResponse">
+        <complexType>
+          <sequence>
+            <element name="descrizioneEnte" type="string" />
+            <element name="alias" type="string" />
+            <element minOccurs="0" name="errore" type="string" />
+            <element minOccurs="0" name="avviso" type="string" />
+            <element name="listaDettagli" type="tns:DettaglioReportType" />
+          </sequence>
+        </complexType>
+      </element>
+      <complexType name="DettaglioReportType">
+        <sequence>
+          <element name="software" type="string" />
+          <element minOccurs="0" name="tipologiaMessaggiDaProcessare" type="string" />
+          <element name="numeroMessaggiTotali" type="int" />
+          <element name="numeroMessaggiConErrore" type="int" />
+          <element minOccurs="0" maxOccurs="unbounded" name="listaErrori" type="string" />
+        </sequence>
+      </complexType>
+      <element name="ScaricaAllegatiMessaggioRequest">
+        <complexType>
+          <sequence>
+            <element name="token" type="string" />
+            <element name="software" type="string" />
+            <element name="identificativoMessaggio" type="string" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="ScaricaAllegatiMessaggioResponse">
+        <complexType>
+          <sequence>
+            <element name="messaggio" type="tns:MessaggioType" />
+            <element minOccurs="0" maxOccurs="unbounded" name="allegati" type="tns:AllegatoMailType" />
+          </sequence>
+        </complexType>
+      </element>
+      <complexType name="AllegatoMailType">
+        <sequence>
+          <element minOccurs="0" name="contentType" type="string" />
+          <element minOccurs="0" name="encoding" type="string" />
+          <element minOccurs="0" name="nomeFile" type="string" />
+          <element name="content" type="base64Binary" />
+        </sequence>
+      </complexType>
+      <element name="MessaggiNonLettiRequest">
+        <complexType>
+          <sequence>
+            <element name="token" type="string" />
+            <element name="software" type="string" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="MessaggiNonLettiResponse">
+        <complexType>
+          <sequence>
+            <element name="proprietarioCasella" type="string" />
+            <element name="numMessaggi" type="int" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="ScaricaMessaggioBinarioRequest">
+        <complexType>
+          <sequence>
+            <element name="token" type="string" />
+            <element name="software" type="string" />
+            <element name="identificativoMessaggio" type="string" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="ScaricaMessaggioBinarioResponse">
+        <complexType>
+          <sequence>
+            <element name="nomeFile" type="string" />
+            <element name="contentType" type="string" />
+            <element name="content" type="base64Binary" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="SetFlagLetturaMessaggioRequest">
+        <complexType>
+          <sequence>
+            <element name="token" type="string" />
+            <element name="software" type="string" />
+            <element name="identificativoMessaggio" type="string" />
+            <element name="flagValue" type="boolean" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="SetFlagLetturaMessaggioResponse">
+        <complexType>
+          <sequence>
+            <element name="esito" type="string" />
+          </sequence>
+        </complexType>
+      </element>
+    </schema>
+  </wsdl:types>
+  <wsdl:message name="MessaggiNonLettiResponse">
+    <wsdl:part name="MessaggiNonLettiResponse" element="tns:MessaggiNonLettiResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetFlagLetturaMessaggioResponse">
+    <wsdl:part name="SetFlagLetturaMessaggioResponse" element="tns:SetFlagLetturaMessaggioResponse" />
+  </wsdl:message>
+  <wsdl:message name="MessaggiNonLettiRequest">
+    <wsdl:part name="MessaggiNonLettiRequest" element="tns:MessaggiNonLettiRequest" />
+  </wsdl:message>
+  <wsdl:message name="ProcessaMessaggiResponse">
+    <wsdl:part name="ProcessaMessaggiResponse" element="tns:ProcessaMessaggiResponse" />
+  </wsdl:message>
+  <wsdl:message name="ListaMessaggiRequest">
+    <wsdl:part name="ListaMessaggiRequest" element="tns:ListaMessaggiRequest" />
+  </wsdl:message>
+  <wsdl:message name="ScaricaMessaggioBinarioRequest">
+    <wsdl:part name="ScaricaMessaggioBinarioRequest" element="tns:ScaricaMessaggioBinarioRequest" />
+  </wsdl:message>
+  <wsdl:message name="SetFlagLetturaMessaggioRequest">
+    <wsdl:part name="SetFlagLetturaMessaggioRequest" element="tns:SetFlagLetturaMessaggioRequest" />
+  </wsdl:message>
+  <wsdl:message name="ScaricaMessaggioBinarioResponse">
+    <wsdl:part name="ScaricaMessaggioBinarioResponse" element="tns:ScaricaMessaggioBinarioResponse" />
+  </wsdl:message>
+  <wsdl:message name="ProcessaMessaggiRequest">
+    <wsdl:part name="ProcessaMessaggiRequest" element="tns:ProcessaMessaggiRequest" />
+  </wsdl:message>
+  <wsdl:message name="ScaricaAllegatiMessaggioResponse">
+    <wsdl:part name="ScaricaAllegatiMessaggioResponse" element="tns:ScaricaAllegatiMessaggioResponse" />
+  </wsdl:message>
+  <wsdl:message name="ScaricaAllegatiMessaggioRequest">
+    <wsdl:part name="ScaricaAllegatiMessaggioRequest" element="tns:ScaricaAllegatiMessaggioRequest" />
+  </wsdl:message>
+  <wsdl:message name="ListaMessaggiResponse">
+    <wsdl:part name="ListaMessaggiResponse" element="tns:ListaMessaggiResponse" />
+  </wsdl:message>
+  <wsdl:portType name="NlaGestioneMail">
+    <wsdl:operation name="ScaricaMessaggioBinario">
+      <wsdl:input name="ScaricaMessaggioBinarioRequest" message="tns:ScaricaMessaggioBinarioRequest" />
+      <wsdl:output name="ScaricaMessaggioBinarioResponse" message="tns:ScaricaMessaggioBinarioResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="ScaricaAllegatiMessaggio">
+      <wsdl:input name="ScaricaAllegatiMessaggioRequest" message="tns:ScaricaAllegatiMessaggioRequest" />
+      <wsdl:output name="ScaricaAllegatiMessaggioResponse" message="tns:ScaricaAllegatiMessaggioResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="ListaMessaggi">
+      <wsdl:input name="ListaMessaggiRequest" message="tns:ListaMessaggiRequest" />
+      <wsdl:output name="ListaMessaggiResponse" message="tns:ListaMessaggiResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="SetFlagLetturaMessaggio">
+      <wsdl:input name="SetFlagLetturaMessaggioRequest" message="tns:SetFlagLetturaMessaggioRequest" />
+      <wsdl:output name="SetFlagLetturaMessaggioResponse" message="tns:SetFlagLetturaMessaggioResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="ProcessaMessaggi">
+      <wsdl:input name="ProcessaMessaggiRequest" message="tns:ProcessaMessaggiRequest" />
+      <wsdl:output name="ProcessaMessaggiResponse" message="tns:ProcessaMessaggiResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="MessaggiNonLetti">
+      <wsdl:input name="MessaggiNonLettiRequest" message="tns:MessaggiNonLettiRequest" />
+      <wsdl:output name="MessaggiNonLettiResponse" message="tns:MessaggiNonLettiResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="NlaGestioneMailSoap11" type="tns:NlaGestioneMail">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ScaricaMessaggioBinario">
+      <soap:operation soapAction="" />
+      <wsdl:input name="ScaricaMessaggioBinarioRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="ScaricaMessaggioBinarioResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ScaricaAllegatiMessaggio">
+      <soap:operation soapAction="" />
+      <wsdl:input name="ScaricaAllegatiMessaggioRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="ScaricaAllegatiMessaggioResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListaMessaggi">
+      <soap:operation soapAction="" />
+      <wsdl:input name="ListaMessaggiRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="ListaMessaggiResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetFlagLetturaMessaggio">
+      <soap:operation soapAction="" />
+      <wsdl:input name="SetFlagLetturaMessaggioRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="SetFlagLetturaMessaggioResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProcessaMessaggi">
+      <soap:operation soapAction="" />
+      <wsdl:input name="ProcessaMessaggiRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="ProcessaMessaggiResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MessaggiNonLetti">
+      <soap:operation soapAction="" />
+      <wsdl:input name="MessaggiNonLettiRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="MessaggiNonLettiResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="NlaGestioneMailService">
+    <wsdl:port name="NlaGestioneMailSoap11" binding="tns:NlaGestioneMailSoap11">
+      <soap:address location="http://localhost:8080/nla-pec/services" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

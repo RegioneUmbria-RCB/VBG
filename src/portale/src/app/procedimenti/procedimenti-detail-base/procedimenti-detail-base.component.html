@@ -1,0 +1,50 @@
+<div *ngIf="procedimento">
+    <div class="torna-indietro link" (click)="tornaAdAttivita()">
+        <h4>
+            <i class="glyphicon glyphicon-chevron-left"></i> Torna indietro
+        </h4>
+    </div>
+
+    <h3>{{procedimento.nome}}</h3>
+
+    <app-sezione-intervento titolo="Amministrazione competente" *ngIf="procedimento.amministrazione">
+        <p [innerHtml]="procedimento.amministrazione"></p>
+    </app-sezione-intervento>
+
+    <app-sezione-intervento titolo="Scheda regionale" *ngIf="procedimento.schedaRegionale">
+        <p [innerHtml]="procedimento.schedaRegionale"></p>
+    </app-sezione-intervento>
+
+    <app-sezione-intervento titolo="Tipologia" *ngIf="procedimento.tipologia">
+        <p [innerHtml]="procedimento.tipologia"></p>
+    </app-sezione-intervento>
+
+    <app-sezione-intervento titolo="Natura del procedimento" *ngIf="procedimento.natura">
+        <p [innerHtml]="procedimento.natura"></p>
+    </app-sezione-intervento>
+
+    <app-sezione-intervento titolo="Requisiti" *ngIf="procedimento.requisiti">
+        <p [innerHtml]="procedimento.requisiti"></p>
+    </app-sezione-intervento>
+
+    <app-sezione-intervento titolo="Adempimenti" *ngIf="procedimento.adempimenti">
+        <p [innerHtml]="procedimento.requisiti"></p>
+    </app-sezione-intervento>
+
+
+    <app-sezione-intervento titolo="Oneri" *ngIf="procedimento.oneri">
+        <app-griglia-oneri [dataSource]="procedimento.oneri"></app-griglia-oneri>
+    </app-sezione-intervento>
+
+    <app-sezione-intervento titolo="Modulistica" *ngIf="procedimento.modulistica">
+        <app-griglia-modulistica [dataSource]="procedimento.modulistica" (onDownload)="download($event)"></app-griglia-modulistica>
+    </app-sezione-intervento>
+
+    <app-sezione-intervento titolo="Normativa" *ngIf="procedimento.normativa">
+        <app-griglia-normativa [dataSource]="procedimento.normativa" (onDownload)="download($event)"></app-griglia-normativa>
+    </app-sezione-intervento>
+
+    <app-sezione-intervento titolo="Data aggiornamento" *ngIf="procedimento.dataAggiornamento">
+        <p [innerHtml]="procedimento.dataAggiornamento"></p>
+    </app-sezione-intervento>
+</div>
