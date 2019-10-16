@@ -44,22 +44,23 @@ Il repository ha la seguente struttura
 
 Folder   |  Descrizione
 ---------|-------------
-[bin](./bin)|Questo folder contiente i file compilati o binari. 
+[bin](./bin)|Questo folder contiente i file compilati o binari delle web app java. Negli war sono inclusi i sorgenti applicativi. 
 [documenti](./documenti)|Questo folder contiene la parte documentale del progetto. Il folder è suddiviso in sub folders per contenere documenti tra loro omogenei. 
-[screenshots](./screenshots)|Questo folder contiene alcuni screenshots delle schermate principali del prodotto in modo da dare a chi legge un'idea immediata della UI del prodotto
-[src](./src)|Questo folder contiente la parte del codice sorgente del prodotto. In questo folder vanno inseriti non solo il codice sorgente ma anche tutti gli scripts necessari alla creazione del database
+[src](./src)|Questo folder contiente la parte del codice sorgente delle componenti .NET. I sorgenti degli applicativi java sono inclusi negli archivi war presenti nella directory [bin] 
 [tools](./tools)|Questo folder contiene tutti gli eseguibili dei prodotti necessari al corretto funzionamento dell'applicativo e alla sua compilazione (es. maven, ant, ecc.)
 
 
 ## Ambiente di esercizio e di sviluppo ##
-Prerequisiti di natura tecnica (hw e sw di base) per il funzionamento della soluzione
-Il prodotto è realizzato con componenti open-source.
-Red Hat Enterprise Linux ES
-Apache webserver
-PHP 4.3.7
-Tomcat 5
-JRE 1.4.2
-PostgreSQL 7.3.10
+Prerequisiti di natura tecnica (hw e sw di base) per il funzionamento della soluzione.
++ Linux OS
++ Windows OS
++ Apache webserver
++ IIS Web Server
++ Nginx 
++ Tomcat 6
++ JRE 1.6.x
++ MySQL 5.x
++ Eclipse
 
 ## Licenza ##
 Il software è rilasciato secondo la licenza EUPL 1.2. Per maggiori informazioni fare riferimento al [testo della licenza](https://joinup.ec.europa.eu/sites/default/files/custom-page/attachment/eupl_v1.2_it.pdf)
