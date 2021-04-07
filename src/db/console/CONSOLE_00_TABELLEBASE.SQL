@@ -15262,6 +15262,8 @@ insert  into `verticalizzazioniparametribase`(`MODULO`,`PARAMETRO`,`DESCRIZIONE`
 insert  into `verticalizzazioniparametribase`(`MODULO`,`PARAMETRO`,`DESCRIZIONE`) values ('WS_IMPORTAZIONEISTANZA','STATOISTANZA','Imposta lo stato dell\'istanza in base al codice indicato nel parametro. I possibili valori sono quelli contenuti in STATIISTANZA');
 insert  into `verticalizzazioniparametribase`(`MODULO`,`PARAMETRO`,`DESCRIZIONE`) values ('WS_LOGIN','USERID_OPERATORE','User Id dell\'operatore');
 
+INSERT INTO VERSIONE (VERSIONE) VALUES('3.15');
+
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;

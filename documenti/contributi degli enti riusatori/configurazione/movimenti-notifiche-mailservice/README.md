@@ -1,0 +1,1 @@
+Descrivere la funzionalità che permette di notificare al mail service usando la mail/PEC dell'amministrazione del movimento
