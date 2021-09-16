@@ -68,5 +68,5 @@ Il software è rilasciato secondo la licenza EUPL 1.2. Per maggiori informazioni
 ## Librerie utilizzate ##
 Il file denominato ["Componenti e librerie"](./Componenti-e-librerie.xlsx) contiene la lista delle librerie utilizzate nell'applicativo e le relative licenze d'utilizzo.
 
-## Riferimenti ##
+## Riferimenti ## 
 In questa sezione vanno inseriti i riferimenti alla persona/persone ovvero alla struttura che ha in carico la gestione del prodotto e può fornire informazioni utili. 
