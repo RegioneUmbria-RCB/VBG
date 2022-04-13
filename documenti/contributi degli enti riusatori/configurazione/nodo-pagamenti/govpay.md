@@ -1,10 +1,12 @@
-# Connettore GovPay [(Documentazione tecnica)](https://govpay.readthedocs.io/it/latest)
+# Connettore GovPay
 
 In questa documentazione verrà trattata la configurazione che è necessaria per attivare il connettore GovPay nel nodo pagamenti.
 Per quanto riguarda l'installazione del nodo pagamenti in generale e la configurazione delle verticalizzazioni sul backoffice fare riferimento al documento  [Configurazione del nodo dei pagamenti](./configurazione-nodo-pagamenti.md)
 
 ## Servizi utilizzati dal connettore
+
 Il connettore di GovPay implementa:
+
 1. Caricamento della Pendenza;
 2. Consultazione della Posizione Debitoria;
 3. Esecuzione del pagamento;
@@ -13,6 +15,7 @@ Il connettore di GovPay implementa:
 6. Invio avvisi di pagamento
 
 ## Configurazioni preliminari
+
 L'URL web service per le varie chiamate API dovrà essere configurato in un nuovo record della tabellla _PAY_CONNECTOR_WS_ENDPOINT_. 
 
 I valori da inserire sono i seguenti:
@@ -21,7 +24,7 @@ I valori da inserire sono i seguenti:
 | ------ | ------ | ------ |
 | **CODICE_CONNETTORE** | GOVPAY | Codice del connettore nel nodo pagamenti, si può impostare qualunque codice. Il codice deve essere valorizzato in FK nel campo PAY_PROFILI_ENTI_CREDITORI.CODICE_CONNETTORE   |
 | **ID** |  | Numero progressivo |
-| ENDPOINT_URL | http://SERVER_NAME:SERVERPORT | URL WS dell'ambiente di test |
+| ENDPOINT_URL | `http://SERVER_NAME:SERVERPORT` | URL WS dell'ambiente di test |
 | UTENTE | (inserire utente) | nome utente fornito |
 | PASSWORD | (password)| password fornita  |
 | TIMEOUT |  | Se impostato, serve a configurare il timeout di attesa nell'invocazione del servizio configurato nel campo ENDPOINT_URL |
@@ -32,9 +35,11 @@ I valori da inserire sono i seguenti:
 | FLAG_SPEGNI_SCHEDULER | 0 | utile per disattivare gli scheduler mantenendo memorizzata l'espressione che lo configura in quartz_schedule |
 
 ## Configurazione del connettore
+
 Il connettore GovPay per la regione Abruzzo è deployato già col nodo pagamenti e per poter essere utilizzato deve essere configurato inserendo un record nella tabella _PAY_CONNECTOR_CONFIG_
 
-#### PAY_CONNECTOR_CONFIG
+### PAY_CONNECTOR_CONFIG
+
 | Colonna | Valore | Note |
 | ------ | ------ | ------------ |
 | **CODICE** |  | Identificativo del connettore che deve essere poi associato al profilo dell'ente creditore in PAY_PROFILI_ENTI_CREDITORI.CODICE_CONNETTORE
@@ -56,6 +61,7 @@ GOVPAY|1|https://SERVER_NAME|..in prod si usa il certificato..|....||url base pe
 gli altri campi devono essere lasciati vuoti
 
 ## Configurazione dell'amministrazione
+
 Deve essere inserito un record in _AMMINISTRAZIONI_ per popolare gli attributi dell'anagrafica della Regione Abruzzo.
 I campi nell'elenco sottostante, se presenti, vengono riportati nei dati (facoltativi) descritttivi dell'ente creditore durante la trasmissione delle posizioni debitorie al sistema di pagamento GovPay.
 
@@ -72,7 +78,8 @@ I campi nell'elenco sottostante, se presenti, vengono riportati nei dati (facolt
 | EMAIL | Email  |
 
 ### pay_connector_config_params
-![](./immagini/PAY_CONNECTOR_CONFIG_PARAMS.png )
+
+![Parametri](./immagini/PAY_CONNECTOR_CONFIG_PARAMS.png )
 | Colonna | Descrizione |
 | ------ | ------ |
 | **CONFIG_PARAM** | Nome del parametro |
@@ -80,7 +87,8 @@ I campi nell'elenco sottostante, se presenti, vengono riportati nei dati (facolt
 | CODICE_CONNETTORE | Riferimento al connettore per cui e' prevista la valorizzazione del parametro, se lasciato vuoto il parametro esiste per tutti i connettori |
 
 ### pay_connector_config_values
-![](./immagini/PAY_CONNECTOR_CONFIG_VALUES.png )
+
+![valori](./immagini/PAY_CONNECTOR_CONFIG_VALUES.png )
 | Colonna | Descrizione |
 | ------ | ------ |
 | **IDCOMUNE** | Identificativo dell'installazione |
@@ -101,15 +109,16 @@ IDCOMUNE|PROGRESSIVO|SSL_KEY_STORE_CERT_ALIAS|GOVPAY|1
 IDCOMUNE|PROGRESSIVO|GOV_PAY_URL_API_PENDENZE|GOVPAY|/govway/in/RegioneAbruzzo/GovPay-Pendenze/v2/pendenze
 IDCOMUNE|PROGRESSIVO|GOV_PAY_URL_API_PROFILO|GOVPAY|/govway/in/RegioneAbruzzo/GovPay-Pendenze/v2
 IDCOMUNE|PROGRESSIVO|GOV_PAY_URL_API_PAGAMENTI|GOVPAY|/govway/in/RegioneAbruzzo/GovPay-Pagamenti/v2/pagamenti
-IDCOMUNE|PROGRESSIVO|URL_CALLBACK_CAMBIO_STATO|GOVPAY|http://10.10.45.64:8080/api-backend/services/rest-auth-token/nodo-pagamenti/posizione-debitoria/aggiorna-stato
+IDCOMUNE|PROGRESSIVO|GOV_PAY_BASE_URL_PATCH_OPS|GOVPAY|`https://govway-patch-dev.regione.abruzzo.it`
+IDCOMUNE|PROGRESSIVO|URL_CALLBACK_CAMBIO_STATO|GOVPAY|`http://10.10.45.64:8080/api-backend/services/rest-auth-token/nodo-pagamenti/posizione-debitoria/aggiorna-stato`
 IDCOMUNE|PROGRESSIVO|SECURITY_ALIAS|GOVPAY|E256
-IDCOMUNE|PROGRESSIVO|SECURITY_URL|GOVPAY|http://devel9:8080/ibcsecurity/services/sigeproSecurity.wsdl
+IDCOMUNE|PROGRESSIVO|SECURITY_URL|GOVPAY|`http://devel9:8080/ibcsecurity/services/sigeproSecurity.wsdl`
 IDCOMUNE|PROGRESSIVO|SECURITY_USER|GOVPAY|NODO_PAGAMENTI
 IDCOMUNE|PROGRESSIVO|SECURITY_PWD|GOVPAY|.....
 
-
 ### pay_registrazioni_causali
-![](./immagini/PAY_REGISTRAZIONI_CAUSALI.png )
+
+![causali](./immagini/PAY_REGISTRAZIONI_CAUSALI.png )
 | Colonna | Descrizione |
 | ------ | ------ |
 | **ID** | Numero progressivo |
@@ -129,9 +138,28 @@ progressivo|idcomune|TT|Ticket ASL|1|ASL_TICKET|
 
 **ASL_TICKET** è l'identificativo dellapendenza configurata in GOV pay per l'ente
 
+### pay_regcausali_parametri
+
+Per ogni causale è possibile specificare un **idUnitaOperativa** che viene passata durante il caricamento della pendenza.
+Questo identificativo è usato ad esempio nel caso del genio civile regione abruzzo dove le configurazioni sono divise per competenza su quattro enti differenti ognuno dei quali ha una serie di comuni da gestire.
+In questo caso è possibile configurare questo parametro per indicare anche questo parametro della pendenza.
+**Attenzione!!** Il valore viene assegnato dal fornitere GOVPAY e nelle configurazioni va messo quello.
+
+Es.
+IDCOMUNE|ID|FK_PAYREGCAUSALE_ID|CHIAVE|valore
+---|---|---|---|---
+idcomune|progressivo|__codicecausaleriferimento__|**ID_UNITA_OPERATIVA**|valore assegnato in fase di configurazione da GOVPAY|
+
+```java
+    @XmlElement(name = "idDominio")
+    private String idDominio = null;
+    @XmlElement(name = "idUnitaOperativa")
+    private String idUnitaOperativa = null;
+```
 
 ### pay_profili_enti_creditori
-![](./immagini/PAY_PROFILI_ENTI_CREDITORI.png )
+
+!cf_enti_creditori[](./immagini/PAY_PROFILI_ENTI_CREDITORI.png )
 | Colonna | Descrizione |
 | ------ | ------ |
 | **IDCOMUNE** | Identificativo dell'ente |
@@ -155,21 +183,21 @@ progressivo|idcomune|TT|Ticket ASL|1|ASL_TICKET|
 Ad esempio:
 IDCOMUNE|ID|CODICECOMUNE|CODICEAMMINISTRAZIONE|SOFTWARE|CBILL|CC_POSTALE|CF_CODICE_PROFILO|CODICE_CONNETTORE|FK_CUSALE_REG_DEFAULT|ID_APP_PSP|CF_CODICE_PROFILO_PSP|URL_ESITO_PAGAMENTO|URL_ANNULLAMENTO_PAGAMENTO|CODICE_SEGREGAZIONE|APPLICATION_CODE|CF_ENTE_QRCODE_PAGOPA
 ---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---
-IDCOMUNE|PROGRESSSIVO||1|TT|||G482_GOVPAY|GOVPAY|1|PAEVOLUTION|02307130696|http://devel3.init.gruppoinit.it/nodo-pagamenti/esitoSessionePagamento/g482_govpay?stato=1|http://devel3.init.gruppoinit.it/nodo-pagamenti/esitoSessionePagamento/g482_govpay?stato=0|||00193460680
-
+IDCOMUNE|PROGRESSSIVO||1|TT|||G482_GOVPAY|GOVPAY|1|PAEVOLUTION|02307130696|`http://devel3.init.gruppoinit.it/nodo-pagamenti/esitoSessionePagamento/g482_govpay?stato=1`|`http://devel3.init.gruppoinit.it/nodo-pagamenti/esitoSessionePagamento/g482_govpay?stato=0`|||00193460680
 
 # Configurazione del backend/console
-Ora che il nodo-pagamenti e il connettore sono configurati, bisogna indicare al backend che è attivo un sistema per poter pagare in maniera integrata. Per fare ciò bisogna recarsi nella voce di menù del backend _**Configurazione**_ -> _**Tutti i backoffice**_ -> _**Configurazione regole**_ 
 
-![](./immagini/backend_01.png )
+Ora che il nodo-pagamenti e il connettore sono configurati, bisogna indicare al backend che è attivo un sistema per poter pagare in maniera integrata. Per fare ciò bisogna recarsi nella voce di menù del backend _**Configurazione**_ -> _**Tutti i backoffice**_ -> _**Configurazione regole**_  
+
+![Verticalizzazione](./immagini/backend_01.png )
 
 attivare la verticalizzazione NODO_PAGAMENTI
 
-![](./immagini/backend_02.png )
+![Verticalizzazione](./immagini/backend_02.png )
 
 e configurare i seguenti parametri personalizzandoli a seconda dell'ente
 
-![](./immagini/gov-pay/gov-pay-verticalizzazioni.png )
+![Verticalizzazione](./immagini/gov-pay/gov-pay-verticalizzazioni.png )
 
 | Parametro | Valore |
 | ------ | ------ |
@@ -177,29 +205,33 @@ e configurare i seguenti parametri personalizzandoli a seconda dell'ente
 
 # Tipicausali oneri
 
-![](./immagini/gov-pay/govpay-tipicausali-oneri.png )
+![causali](./immagini/gov-pay/govpay-tipicausali-oneri.png )
 
 # Tipi modalità pagamento
 
-![](./immagini/gov-pay/gov-pay-modalita-pagamento.png )
-
+![causali](./immagini/gov-pay/gov-pay-modalita-pagamento.png )
 
 # creazione del certificato di autenticazione
+
 Quello che segue è la procedura per generare il jks per il certificato client
+
 ### esportazione in pfx dei certificati forniti
-```
+
+```bash
 [root@sporvic3app01 prod]# openssl pkcs12 -export -in pae-gp-prod4.cer -inkey pae-gp-prod.key -out pae-gp-prod4.pfx
 Enter Export Password:
 Verifying - Enter Export Password:
 ```
-### creazione del certificato client
-```
 
+### creazione del certificato client
+
+```bash
 [root@sporvic3app01 prod]# keytool -importkeystore -srckeystore /root/certs/arit/prod/pae-gp-prod4.pfx -srcstoretype pkcs12 -destkeystore /root/certs/arit/prod/pae-gp-prod4.jks -deststoretype JKS
 ```
-### nome dell'alias creato
-```
 
+### nome dell'alias creato
+
+```bash
 [root@sporvic3app01 prod]# keytool -list -v -keystore /root/certs/arit/prod/pae-gp-prod4.jks
 Immettere la password del keystore:
 
@@ -211,8 +243,10 @@ Il keystore contiene 1 entry
 Nome alias: 1
 
 ```
+
 ## creazione del truststore
-```
+
+```bash
 [root@sporvic3app01 prod]# keytool -import -file pae-gp- -alias firstCA -keystore pae-gp-test4_truststore.jks
 
 Considerare attendibile questo certificato? [no]:  si

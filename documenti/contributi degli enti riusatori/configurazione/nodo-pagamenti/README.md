@@ -22,11 +22,11 @@ Le ultime integrazioni sviluppate sono state documentate e di seguito vengono ri
 
 ## Secondo passo: configurare la specifica integrazione
 
-#### Integrazione con sistema dei pagamenti IRIS 
-[Visualizza la configurazione dell'integrazione](./connettore-IRIS.md)
-
 #### Integrazione con sistema dei pagamenti EntraNext
 [Visualizza la configurazione dell'integrazione](./EntraNext.md)
+
+#### Integrazione con sistema dei pagamenti IRIS 
+[Visualizza la configurazione dell'integrazione](./connettore-IRIS.md)
 
 #### Integrazione con sistema dei pagamenti GovPay
 [Visualizza la configurazione dell'integrazione](./govpay.md)
@@ -37,5 +37,17 @@ Le ultime integrazioni sviluppate sono state documentate e di seguito vengono ri
 #### Integrazione con sistema dei pagamenti Pago Umbria
 [Visualizza la configurazione dell'integrazione](./pagoumbria.md)
 
+#### Integrazione con sistema dei pagamenti PayER
+[Visualizza la configurazione dell'integrazione](./payer.md)
+
 #### Integrazione con sistema dei pagamenti Piemonte Pay
 [Visualizza la configurazione dell'integrazione](./piemontepay.md)
+
+#### Integrazione con sistema dei pagamenti Plug And Pay
+[Visualizza la configurazione dell'integrazione](./PlugAndPay.md)
+
+#### Integrazione con sistema dei pagamenti Silfi
+[Visualizza la configurazione dell'integrazione](./Silfi.md)
+
+#### Integrazione con sistema dei pagamenti Unicrediti EasyPA
+[Visualizza la configurazione dell'integrazione](./unicredit-easypa.md)

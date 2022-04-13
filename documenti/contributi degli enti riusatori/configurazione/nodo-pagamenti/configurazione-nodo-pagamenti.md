@@ -213,3 +213,15 @@ Mentre L'URL_WS deve riportare l'URL su cui è esposto il nodo pagamenti.
 | ------ | ------ |
 | AR_COD_FISC_ENTE_CREDITORE | <id_profilo_ente> |
 | URL_WS |  http://devel9:8085/nodo-pagamenti/services/pagamentiSOAP?wsdl |
+
+
+## Configurazione soggetto debitore
+
+È possibile aggiungere un nuovo parametro sulla verticalizzazione NODO_PAGAMENTI per determinare se la posizione debitoria deve essere aperta verso l'azienda (se presente, altrimenti il richiedente ) o direttamente verso il richiedente (comportamento di DEFAULT). Il parametro è configurabile per comune e software.
+
+![](./immagini/parametro_soggetto_pendenza.png)
+
+Se configurato accetta come parametri:
+- AZIENDA: inserirà il titolare legale della società ;
+- RICHIEDENTE: inserirà il richiedente della pratica.
+Se non configurato, di default la posizione sarà aperta verso il richiedente.

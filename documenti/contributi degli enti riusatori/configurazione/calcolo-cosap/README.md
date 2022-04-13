@@ -7,3 +7,7 @@ Configurazioni attuate presso il CSI Piemonte per calcolare la COSAP per quanto 
 ## Comune di Modena
 Configurazione attuate per calcolare la COSAP e registrare le posizioni debitorie messe in atto al Comune di Modena
 <br />[Vai alla documentazione >>](./comune-modena/README.md)
+
+## Comune di Trieste
+Configurazione attuate per calcolare la COSAP e registrare le posizioni debitorie messe in atto al Comune di Trieste
+<br />[Vai alla documentazione >>](./comune-trieste/README.md)

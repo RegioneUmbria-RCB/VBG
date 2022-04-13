@@ -36,12 +36,32 @@ Archivi --> Archivi < modulo software > --> Bollettazione
 Alla creazione di una nuova tipologia di bollettazione verrà presentata una maschera di questo tipo 
 
 
-![Configurazione della tipologia di bollettazione](./immagini/Tipo_bollettazione_mercati.jpg )
+![Configurazione della tipologia di bollettazione](./immagini/tipo_bollettazione.jpg )
 
 dove sarà chiesto di immettere i valori relativi a
+- Descrizione
+
+    Il nome che avrà quella tipologia di bollettazione
+
+-   Prevede conguaglio
+
+    Specifico per l'implementazione dei **Mercati**, se spuntato viene ricalcolato anche il conguaglio sul periodo precedente
+
+-   Raggruppa pagamenti per l'utenza
+
+    Le posizioni debitorie vengono inviate uno per anagrafe individuata (al momento è l'unica implementazione)
+
 - Implementazione di calcolo **Istanze** o **Mercati**
 
     Decide se recuperare le informazioni della bollettazione dagli oneri dell'istanza o dalle configurazioni dei mercati/concessioni
+
+-  Tipologia di Scadenza della bollettazione (Vedi tabella `TIPI_SCADENZA`)
+
+    Imposta la data di scadenza della bolletta a partire dal periodo di riferimento scelto
+    - Fine Mese
+    - 15 del mese successivo
+    - Scadenze periodiche fisse
+    - ....
 
 - Periodi di bollettazione
 
@@ -51,19 +71,12 @@ dove sarà chiesto di immettere i valori relativi a
     - Trimestrale
     - ...
 
--  Tipologia di Scadenza della bollettazione (Vedi tabella `TIPI_SCADENZA`)
+- Scadenza periodo
 
-    Imposta la data di scadenza della bolletta a partire dal periodo di riferimento scelto
-    - Fine Mese
-    - 15 del mese successivo
-
--   Prevede conguaglio
-
-    Specifico per l'implementazione dei **Mercati**, se spuntato viene ricalcolato anche il conguaglio sul periodo precedente
-
--   Raggruppa pagamenti per l'utenza
-
-    Le posizioni debitorie vengono inviate uno per anagrafe individuata (al momento è l'unica implementazione)
+    Specificabile nel formato "DD/MM", comparirà solamente selezionando "Scadenze periodiche fisse" nel parametro "Calcola data scadenza".
+    Viene utilizzata come data scadenza ( insieme all'anno corrente ) nella bollettazione. Se è prevista una rateizzazione, questo parametro
+    indicherà comunque la data di scadenza per tutti gli importi che non sono soggetti a rateizzazione ( ad esempio se si rateizzano gli importi 
+    superiori a 500€, quelli inferiori avranno la data di scadenza presa dalla bollettazione ed eventualmente impostata da questo paraametro )
 
 -   Ignora subentri
 
@@ -80,8 +93,15 @@ dove sarà chiesto di immettere i valori relativi a
 
 -   Richiesta Fattura
 
-    Impostazione per quei connettori che implementano la generazione della fattura (al momento non utilizzato
-    )
+    Impostazione per quei connettori che implementano la generazione della fattura (al momento non utilizzato)
+
+##### Rateizzazione
+E' possibile indicare un range di rateizzazione che sarà applicato automaticamente, in fase di invio al nodo dei pagamenti, 
+sugli importi ( ad esempio tutti gli importi sopra i 500€ saranno soggetti a rateizzazione ). 
+La configurazione delle rate ( quante rate, con che frequenza, ... ) viene effettuata attraverso la voce di menu Archivi --> Archivi < modulo software > --> Gestione oneri --> Tipi rateizzazioni;
+una volta configurate è possibile richiamarle all'interno della configurazione della bollettazione
+
+![Configurazione della rateizzazione](./immagini/configurazione_rateizzazione.png )
 
 ##### Ruoli e Permessi
 È possibile associare delle tipologie di bollettazione a dei ruoli utente per restringere l'accesso a determinati operatori configurati con quei ruoli.
@@ -386,9 +406,6 @@ Mediante il pulsante *Posteggi* è possibile accedere alla verifica e confgurazi
 Il pulsante ***\+*** consente di assegnare un livello di servizio al posteggio indicandone le date di validità ed eventualmente le quantità che 
 possono essere espresse mediante un valore unitario "Fattore moltiplicativo", ad esempio numero dei carrelli utilizzati o utilizzando il valore in MQ della supeficie indicata nel posteggio.
 
-![](./immagini/configurazione_posteggi_2.png )
-
-
 
 ## Gestione della Bollettazione
 La funzionalità è raggiungibile dal menù **Utilità** --> **< modulo software >** --> **Bollettazione**, verrà presentata una maschera del genere.
@@ -472,6 +489,9 @@ Spuntando il flag "validata", la riga viene congelata ed è pronta per essere in
 Questa funzionalità si attiva solamente se è presente un'integrazione con un sistema di pagamenti e compare solamente quando tutte le righe di ogni anagrafica sono validate.
 Apparirà, in fondo alla pagina, un bottone "INVIA A SISTEMA DI PAGAMENTI" per inviare le posizioni debitorie al nodo di pagamenti.
 
+Se è stata configurata una rateizzazione, in questa fase verrà automaticamente applicata e passata al nodo dei pagamenti il quale provvederà a creare la posizione debitoria 
+e le rate secondo le modalità previste dallo specifico connettore ( aluni connettori supportano la generazione dell'avviso unico PagoPA comprensiov di rate mentre altri connettori non lo supportano e generano tante posizioni debitorie distinte )
+
 ![](./immagini/gestione_bollettazione_invia_sistemi_pagamenti.png )
 
 Dopo l'invio delle posizioni debotorie, la bollettazione non può esser più modificata/eliminata e comparirà  un'icona di stato accanto all'anagrafe
@@ -488,3 +508,12 @@ che mostrerà i seguenti stati:
     Se la posizione debitoria è in attesa di pagamento o annullamento da parte del soggetto a cui è stata addebitata, viene mostrata un'icona gialla ![](./immagini/gestione_bollettazione_stato_in_corso.png )
 
 Cliccando su tali icone sarà possibile vedere un dettaglio con l'effettivo stato dell'operazione nel sistema dei pagamenti
+
+## Comunicazioni della Bollettazione
+La funzionalità della bollettazione prevede anche la possibilità di gestire delle comunicazioni digitali alle anagrafiche coinvolte nella bollettazione.
+
+La funzionalità è raggiungibile dal seguente link 
+![](./immagini/comunicazioni/massive_001.png )
+
+La funzionalità è descritta nel seguente documento
+[comunicazioni massive](./comunicazioni-massive.md)

@@ -67,7 +67,7 @@ handlerURL = “https://tst-webgeconc.cittametropolitana.torino.it/TSTWEBGECONC_
 
 entityID = "IDENTITY_PROVIDER_2_PA_SECURE.RUPARPIEMONTE.IT" **--> è l'entityID dell'EntityDescriptor indicato nel file xml del MetadataProvider** 
 
-<Errors localLogout="localLogout_WRUP.html" redirectErrors=“https://www.spid.piemonte.it/spid/errorSPID.php"/> **-—> Pagina di logout**
+    <Errors localLogout="localLogout_WRUP.html" redirectErrors=“https://www.spid.piemonte.it/spid/errorSPID.php"/> **-—> Pagina di logout**
 
 Nel file di logout deve essere aggiornata questa sezione
 
@@ -78,12 +78,13 @@ Nel file di logout deve essere aggiornata questa sezione
 	   location.replace('https://servizi.torinofacile.it/');
     }
 
-<AttributeExtractor type="XML" path=“C:/opt/shibboleth-sp/etc/shibboleth/conf/attribute-map-gasp.xml"/> **-—> Questo xml ci deve essere forniti**
 
-<AttributeFilter type="XML" path="C:/opt/shibboleth-sp/etc/shibboleth/conf/attribute-policy-gasp.xml"/>	**-—> Questo xml ci deve essere forniti**
+    <AttributeExtractor type="XML" path=“C:/opt/shibboleth-sp/etc/shibboleth/conf/attribute-map-gasp.xml"/> **-—> Questo xml ci deve essere fornito**
+
+    <AttributeFilter type="XML" path="C:/opt/shibboleth-sp/etc/shibboleth/conf/attribute-policy-gasp.xml"/>	**-—> Questo xml ci deve essere fornito**
 
 ## Messa in COT dei metadati
 
-Da handlerUrl/Shibboleth.sso/Metadata (nel caso dell’esempio https://tst-webgeconc.cittametropolitana.torino.it/TSTWEBGECONC_LIV1_WRUP/Shibboleth.sso/Metadata) è possibile scaricare il file dei metadata da inviare per la messa in COT.
+Da handlerUrl/Shibboleth.sso/Metadata (nel caso dell' esempio https://tst-webgeconc.cittametropolitana.torino.it/TSTWEBGECONC_LIV1_WRUP/Shibboleth.sso/Metadata) è possibile scaricare il file dei metadata da inviare per la messa in COT.
 
 Una volta confermata la messa in COT dei metadata è possibile testare il sistema.

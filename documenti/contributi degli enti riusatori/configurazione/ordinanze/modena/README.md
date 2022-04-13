@@ -66,12 +66,12 @@ es. del valore
 
 Descrizione html:
 ```html
-<h2 class="warning_header">Attenzione!</h2>
-È necessario ricordarsi di allegare due documenti:<br/>
+<h2 class="warning_header">Attenzione</h2>
+È necessario ricordarsi di allegare i seguenti documenti:<br/>
 <b>
 <ul>
-<li>lettera di trasmissione della richiesta;</li>
-<li>documento di richiesta di occupazione completo dei relativi allegati, ovvero la concatenazione in un unico file PDF di tutti gli allegati, il file viene scaricato dal leggi protocollo ed allegato ai documenti della pratica</li>
+<li>Lettera di trasmissione della richiesta. Il documento qualificato come "Lettera trasmissione" può essere solamente uno.</li>
+<li>Uno o più allegati aggiuntivi, dei quali uno deve essere la concatenazione in un unico file PDF di tutti gli allegati, file che viene scaricato dal leggi protocollo ed allegato ai documenti della pratica. Devono essere qualificati come "Documento di richiesta occupazione"</li>
 </ul>
 </b>
 ```

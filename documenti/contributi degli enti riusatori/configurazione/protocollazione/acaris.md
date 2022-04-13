@@ -66,6 +66,7 @@ Nelle amministrazioni che verrano utilizzate come mittenti/destinatari della pro
 ![](./immagini/acaris/amministrazioni.png)
 
 Nell'integrazione con Città Metropolitana di Torino sono attualmente previste 2 amministrazioni ( ma potrebbero sorgerne ulteriori in fase di utilizzo) così configurate
+
 | Amministrazione | Codice Struttura | Codice Nodo |
 | ------ | ------ | ------ |
 | Città Metropolitana di Torino - Sportello Concessioni | 1130 | 1245 |

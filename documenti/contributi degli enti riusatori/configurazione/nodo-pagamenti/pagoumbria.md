@@ -44,9 +44,20 @@ Per i connettori che non hanno servizi sincroni di verifica stato vanno impostat
 |AUA|3|SECURITY_PWD|PPAY|password da impostare|
 |AUA|4|SECURITY_URL|PPAY|http://x.x.x.x:8080/ibcsecurity/services/sigeproSecurity.wsdl|
 |AUA|5|SECURITY_USER|PPAY|NODO_PAGAMENTI|
+|AUA|6|OFFLINE_PAYMENT_METHODS|PPAY|true
 
 p.s. Sulla security va verificato che esistano le credenziali impostati in
 **SECURITY_ALIAS**, **SECURITY_PWD**, **SECURITY_USER**
+
+
+Il parametro **OFFLINE_PAYMENT_METHODS** è opzionale e serve per attivare la funzionalità di PAGOUMBRIA **Paga più tardi**.
+Il parametro accetta valori **true** / **false** ed il valore predefinito se non impostato è **false**.
+
+> ![](./immagini/pago_umbria_paga_piu_tardi.png)
+
+Con questo pagamento è possibile scaricare un pdf pagabile in modalità differita, ad esempio in banca, posta, ecc...
+
+
 
 ## pay_connector_ws_endpoint
 Rappresentano le due URL per la gestione del caricamento delle posizioni debitorie ed il verifica stato, più  la URL per il recupero del Token di autenticazione all'Api Store WSO2
