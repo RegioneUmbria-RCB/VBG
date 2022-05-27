@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div class="container">
+	<div class="row">
+		<div class="col-sm-6">
+			<div class="card">
+				<h3 class="card-header">REQUEST</h3>
+				<div class="card-body">
+					<h5 class="card-title">Informazioni del messaggio</h5>
+					<p class="card-text">Consente di inviare un messaggio al servizio <span>/messages</span> con metodo POST</p>
+					<form th:action="@{/udhome/post_message}" th:object="${messaggio}" method="post"> 
+						<div class="form-group">
+							<label for="timeToLiveField">Time to live</label>
+							<input name="timeToLiveField" type="number" th:field="*{timeToLive}"/>
+						</div>
+						<div class="form-group">
+							<label for="subjectField">Subject</label>
+							<input name="subjectField" type="text" th:field="*{subject}"/>
+						</div>
+						<div class="form-group">
+							<label for="markdownField">Markdown</label>
+							<textarea name="markdownField" th:field="*{markdown}" rows="" cols=""></textarea>
+						</div>
+						<div class="form-group">
+							<label for="dueDateField">Due Date</label>
+							<input name="dueDateField" type="date" th:field="*{dueDate}" min="1900-01-01" max="2999-12-31"/>
+						</div>
+						<div class="form-group">
+							<label for="emailField">Email <span>(indirizzo email di default del destinatario nel caso in cui non &eacute; impostato l'indirizzo email nel profilo di IO Italia)</span></label>
+							<input name="emailField" type="email" th:field="*{email}" placeholder="name@example.com"/>
+						</div>
+						<div class="form-group">
+							<label for="fiscalCodeField">Fiscal Code</label>
+							<input name="fiscalCodeField" type="text" th:field="*{fiscalCode}" min="16" maxLength="16" size="16"/>
+						</div>
+						<hr>
+						<div class="card">
+							<h5 class="card-tile">PaymentData (metadato opzionale)</h5>
+							<p class="card-text">Informazioni del pagamento.</p>
+							<div class="form-group">
+								<label for="amountField">Amount <span>(richiesto)</span></label>
+								<input name="subjectField" type="number" th:field="*{amount}"/>
+							</div>
+							<div class="form-group">
+								<label for="noticeNumberField">Notice Number <span>(richiesto)</span></label>
+								<input name="noticeNumberField" type="text" th:field="*{noticeNumber}" min="17" maxLength="17" size="17"/>
+							</div>
+							<div class="form-check">
+								<label for="invalidAfterDueDateField" class="form-check-label">Invalid After Due Date</label>
+								<input name="invalidAfterDueDateField" type="checkbox" class="form-check-input" th:field="*{invalidAfterDueDate}"/>
+							</div>
+						</div>
+						<hr>
+						<div class="card">
+							<h5 class="card-tile">PrescriptionData (metadato opzionale)</h5>
+							<p class="card-text">Informazioni sulla prescrizione medica.</p>
+							<div class="form-group">
+								<label for="nreField">NRE <i>(Numero Ricetta Elettronica)</i> <span>(richiesto)</span></label>
+								<input name="nreField" type="text" th:field="*{nre}" min="16" maxLength="16" size="16"/>
+							</div>
+							<div class="form-group">
+								<label for="iupField">IUP <i>(Identificativo Univoco di Prescrizione - a livello regionale)</i></label>
+								<input name="iupField" type="text" th:field="*{iup}" min="1" maxLength="16" size="16"/>
+							</div>
+							<div class="form-group">
+								<label for="prescriberFiscalCodeField">Prescriber Fiscal Code</label>
+								<input name="prescriberFiscalCodeField" type="text" th:field="*{prescriberFiscalCode}" min="16" maxLength="16" size="16"/>
+							</div>
+						</div>
+						<button type="submit" class="btn btn-primary">Invia</button>
+					</form>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-6">
+			<div class="card">
+				<h3 class="card-header">RESPONSE</h3>
+				<div class="card-body">
+					<textarea id="responseBodyArea" readonly></textarea>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</html>

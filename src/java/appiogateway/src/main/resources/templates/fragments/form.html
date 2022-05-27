@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+</head>
+<body>
+
+	<header>
+		<h1 style="text-align: center;">Test Invio Messaggio</h1>
+	</header>
+
+		<!-- TODO: COMPLETARE  -->
+		<!-- MESSAGGIO INVIATO O SEZIONE MESSAGGI DI ERRORE LATO SERVER -->
+	<div class="container mt-5">
+	
+		<div class="row col-mt-4">
+			<div class="col-sm">
+				<form class="row g-3 needs-validation" method="post" th:action="@{/connector}" th:object="${message}" novalidate>
+					<div class="col-md-6">
+						<label for="idComune" class="form-label">ID Comune</label>
+						<!-- <div th:classappend="${#fields.hasErrors('idcomune')} ? 'input-right' : ''">
+							<i th:if="${#fields.hasErrors('idcomune')}" class="fa fa-exclamation tooltips" data-original-title="inserire un idcomune corretto" data-container="body"></i>
+							<input type="text" th:field="*{idcomune}" class="form-control" id="idComune" size="5" placeholder="es. E256" required="required"/>
+							<span th:if="${#fields.hasErrors('idcomune')}" class="help-block" th:errors="*{idcomune}"></span>
+						</div> -->
+						<input type="text" th:field="*{idcomune}" class="form-control" id="idComune" size="5" placeholder="es. E256" required/>
+						<div class="invalid-feedback">
+							Obbligatorio!
+						</div>
+					</div>
+					<div class="col-md-6">
+						<label for="codiceComune" class="form-label">Codice Comune</label>
+						<input type="text" th:field="*{codicecomune}" class="form-control" id="codiceComune" size="5" placeholder="es. E256" required/>
+						<div class="invalid-feedback">
+							Obbligatorio!
+						</div>
+					</div>
+					<div class="col-md-6">
+						<label for="software" class="form-label">Software</label>
+						<input type="text" th:field="*{software}" class="form-control" id="software" size="3" placeholder="es. SS, CO" required/>
+						<div class="invalid-feedback">
+							Obbligatorio!
+						</div>
+					</div>
+					<div class="col-md-6">
+						<label for="timeToLive" class="form-label">Time to live</label>
+						<input type="number" th:field="*{timeToLive}" class="form-control" id="timeToLive"/>
+					</div>
+					<div class="col-12">
+						<label for="subject" class="form-label">Subject</label>
+						<input type="text" th:field="*{subject}" class="form-control" id="subject" required/>
+						<div class="invalid-feedback">
+							Obbligatorio!
+						</div>
+					</div>
+					<div class="col-12">
+						<label for="markdown" class="form-label">Markdown</label>
+						<textarea class="form-control" th:field="*{markdown}" id="markdown" rows="" cols="" required></textarea>
+						<div class="invalid-feedback">
+							Obbligatorio!
+						</div>
+					</div>
+					<div class="col-md-6">
+						<label for="fiscalCode" class="form-label">Codice Fiscale</label>
+						<input type="text" th:field="*{fiscalCode}" class="form-control" id="fiscalCode"  min="16" maxLength="16" size="16" required/>
+						<div class="invalid-feedback">
+							Obbligatorio!
+						</div>
+					</div>
+					<div class="col-md-6">
+						<label for="email" class="form-label">Email</label>
+						<input type="email" th:field="*{email}" class="form-control" id="email" placeholder="example@example.com"/>
+					</div>
+					<div class="col-md-6">
+						<label for="duedatepicker" class="form-label">Due Date</label>
+						<div class="input-group date" id="duedatepicker" data-target-input="nearest">
+	                        <input type="text" class="form-control datetimepicker-input" data-target="#duedatepicker"
+	                               th:field="*{dueDate}" id="dueDate" placeholder="Date"/>
+	                        <div class="input-group-append" data-target="#duedatepicker" data-toggle="datetimepicker">
+	                            <div class="input-group-text"><i class="fa fa-calendar-alt"></i></div>
+	                        </div>
+	                    </div>
+					</div>
+					<div class="col-md-6">
+						<label for="messageId" class="form-label">Message ID</label>
+						<input type="text" id="messageId" th:field="*{messageId}" class="form-control" placeholder="UUID" required/>
+						<div class="invalid-feedback">
+							Obbligatorio!
+						</div>
+					</div>
+					<div class="col-md-6">
+						<button type="submit" class="btn btn-primary">POST</button>
+					</div>
+					<div class="col-md-6">
+						<button id="uuidBtn" type="button" class="btn btn-primary">GENERA MESSAGE ID</button>
+					</div>
+					<!-- <div class="col-md-6">
+						<select class="form-select" th:field="*{connettore}">
+							<option selected value="" disabled>Seleziona il tipo di connettore al quale inoltrare il messaggio</option>
+							<option th:value="IOITALIA" value="" selected>IO (diretto)</option>
+							<option th:value="UD" value="">Umbria Digitale (proxy)</option>
+						</select>					
+					</div> -->
+				</form>
+			</div>
+		</div>
+		
+	</div>
+	
+	<script type="text/javascript" th:src="@{/script/main.js}"></script>
+
+</body>
+</html>

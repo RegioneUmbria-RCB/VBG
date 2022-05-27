@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div class="container-fluid">
+	<div class="row">
+		<div class="mt-5 mb-5">
+			<table id="table" class="table table-bordered table-responsive" style="width: 100%">
+				<thead>
+					<tr>
+						<th>idcomune</th>
+						<th>codicecomune</th>
+						<th>software</th>
+						<th>timeToLive</th>
+						<th>subject</th>
+						<th>markdown</th>
+						<th>connettore</th>
+						<th>stato messaggio</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+				<tfoot>
+				</tfoot>
+			</table>
+		</div>
+	</div>
+</div>
+
+<script>
+	$(document).ready(function () {
+
+		// Setup - add a text input to each footer cell
+		$('#table thead tr').clone(true).appendTo('#table thead');
+		$('#table thead tr:eq(1) th').each(function (i) {
+			var title = $(this).text();
+			$(this).html('<input type="text" placeholder="Search ' + title + '" />');
+
+			$('input', this).on('keyup change', function () {
+				if (table.column(i).search() !== this.value) {
+					table
+						.column(i)
+						.search(this.value)
+						.draw();
+				}
+			});
+		});
+		
+		let table = $('#table').DataTable({
+			responsive: true,
+			"scrollX": true,
+			orderCellsTop: true,
+        	fixedHeader: true,
+			"ajax": {
+				"processing": true,
+				"serverSide": true,
+				"url": "/appiogateway/admin/messaggi/findAll",
+				"dataSrc": "",
+				"headers": {
+					Authorization: "Basic VkJHOlZCRw=="
+				},
+				"cache": false,
+				"type": "GET",
+				"dataType": "json",
+				"contentType": "application/json"
+			},
+			"columns": [
+				{"data": "idcomune"},
+				{"data": "codicecomune"},
+				{"data": "software"},
+				{"data": "timeToLive"},
+				{"data": "subject"},
+				{"data": "markdown"},
+				{"data": "connettore"},
+				{"data": "statoMessaggio"}
+			]
+		});
+	});
+</script>

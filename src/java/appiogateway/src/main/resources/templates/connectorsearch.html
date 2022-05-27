@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head">
+
+<meta charset="UTF-8">
+</head>
+<body>
+
+	<div th:replace="fragments/header"></div>
+	
+	<div class="container mt-5">
+		<div class="row col-mt-4">
+			<div id="response-section"></div>
+		</div>
+		<div class="row col-mt-5">
+			<div class="col-sm">
+				<form class="row g-3" id="search-form">
+					<div class="col-md-2">
+						<label for="message-id" class="form-label">Message ID</label>
+					</div>
+					<div class="col-md-10">
+						<input type="text" class="form-control" id="message-id" placeholder="uuid che identifica il messaggio" required/>
+						<div class="invalid-feedback">
+							Obbligatorio!
+						</div>
+					</div>
+					<div class="col-12">
+						<button id="btn-search" type="submit" class="btn btn-primary btn-lg">CERCA</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+	<script type="text/javascript">
+	
+		$(document).ready(function() {
+			
+			$("#search-form").submit(function(event) {
+			
+				event.preventDefault();
+				
+				fireAjaxSearchMessage_submit();
+				
+			});
+		});
+
+		function fireAjaxSearchMessage_submit() {
+			
+			var search = {};
+			
+			search["message-id"] = $("#message-id").val();
+			
+			$("#btn-search").prop("disabled", true);
+			
+			$.ajax({
+				type: "GET",
+				contentType: "application/json",
+				url: "/appiogateway/messages/" + search["message-id"],
+				cache: false,
+				timeout: 600000,
+				success: function(data) {
+					
+					var jsonResponse = "<h4>Stato Messaggio</h4><pre>"
+						+ JSON.stringify(data, null, 4) + "</pre>";
+					
+					$('#response-section').html(jsonResponse);
+					
+					console.log("fireAjaxSearchMessage# SUCCESS: ", data);
+					
+					$("#btn-search").prop("disabled", false);
+					
+				}, error: function(e) {
+					
+					var json = "<h4>Errore</h4><pre>"
+		                + e.responseText + "</pre>";
+		            $('#response-section').html(json);
+	
+		            console.log("ERROR : ", e);
+		            $("#btn-search").prop("disabled", false);
+				} 
+			});
+		}
+
+	</script>
+	
+	
+</body>
+</html>
