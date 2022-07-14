@@ -47,7 +47,7 @@ Folder   |  Descrizione
 [bin](./bin)|Questo folder contiente i file compilati o binari delle web app java. Negli war sono inclusi i sorgenti applicativi. 
 [documenti](./documenti)|Questo folder contiene la parte documentale del progetto. Il folder è suddiviso in sub folders per contenere documenti tra loro omogenei. 
 [src](./src)|Questo folder contiente la parte del codice sorgente delle componenti .NET. I sorgenti degli applicativi java sono inclusi negli archivi war presenti nella directory [bin] 
-[tools](./tools)|Questo folder contiene tutti gli eseguibili dei prodotti necessari al corretto funzionamento dell'applicativo e alla sua compilazione (es. maven, ant, ecc.)
+[vm-image](./vm-image)|Questo folder contiene le immagini virtuali di VBG Community installate su una singola macchina server
 
 
 ## Ambiente di esercizio e di sviluppo ##
