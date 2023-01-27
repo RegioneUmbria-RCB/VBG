@@ -37,7 +37,7 @@ Nel caso di modifica invece comparirà anche il pulsante di azione **ELIMINA**
 
 ## Gestione delle presenze tramite Backoffice
 
-La gestione delle presenze viene normalmente registrata nel Backoffice dopo la giornata di maercato.
+La gestione delle presenze viene normalmente registrata nel Backoffice dopo la giornata di mercato.
 
 Gli operatori della polizia municipale tornando in ufficio dopo le operazioni di spunta registrano nel backoffice le presenze / assenze dei vari concessionari/spuntisti.
 

@@ -17,17 +17,25 @@ Le ultime integrazioni sviluppate sono state documentate e di seguito vengono ri
 
 ## Secondo passo: configurare la specifica integrazione
 
-#### Integrazione con protocollo DoQui - Acta tramite i servizi ACARIS 
-E' possibile integrarsi con il protocollo DoQui - Acta tramite i servizi ACARIS messi a disposizione da Città Metropolitana di Torino. Per altri fornitori di servizi bisogna verificarne prima la compatibilità
-[Visualizza la configurazione dell'integrazione](./acaris.md)
-
 #### Integrazione con protocollo CiviliaNext 
 E' possibile integrarsi con il protocollo CiviliaNext di Dedagroup. 
 [Visualizza la configurazione dell'integrazione](./civilianext.md)
 
+#### Integrazione con protocollo DoQui - Acta tramite i servizi ACARIS 
+E' possibile integrarsi con il protocollo DoQui - Acta tramite i servizi ACARIS messi a disposizione da Città Metropolitana di Torino. Per altri fornitori di servizi bisogna verificarne prima la compatibilità
+[Visualizza la configurazione dell'integrazione](./acaris.md)
+
+#### Integrazione con protocollo E-Lios
+E' possibile integrarsi con il protocollo ELios. 
+[Visualizza la configurazione dell'integrazione](./elios.md)
+
 #### Integrazione con protocollo JIride
 E' possibile integrarsi con il protocollo JIride del Gruppo Maggioli. 
 [Visualizza la configurazione dell'integrazione](./jiride.md)
+
+#### Integrazione con protocollo Kibernetes
+E' possibile integrarsi con il protocollo di Kibernetes
+[Visualizza la configurazione dell'integrazione](./kibernetes.md)
 
 ## Approfondimenti
 Di seguito verranno illustrate più dettagliatamente alcune delle ultime funzionalità sviluppate

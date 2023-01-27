@@ -132,8 +132,8 @@ Tale valore deve essere configurato nella apposita verticalizzazione del BackOff
 | CODICE_CONNETTORE | EntraNext | Identificativo del connettore EntraNext già configurato |
 | FK_CUSALE_REG_DEFAULT |  | FK verso pay_registrazioni_causali che definisce la causale di registrazione del debito da usare nel caso in cui non venga specificata in fase di caricamento. Di default si usa la causale TOSAP associata alla generazione dell'avviso di pagamento |
 | ID_APP_PSP | EntraNext_CSV | Identificativo dell'applicazione nel sistema EntraNext |
-| CF_CODICE_PROFILO_PSP | 00221940364 | Ientificativo dell’ente nel sistema EntraNext |
-|CF_ENTE_QRCODE_PAGOPA|Il codice fiscale/partitaiva dell'ente che serve per generare la sezione Identificativo Ente/codice fiscale dell’Ente Creditore dell'algoritmo di generazione qrcode|
+| CF_CODICE_PROFILO_PSP | 00221940364 | Ientificativo dell'ente nel sistema EntraNext |
+|CF_ENTE_QRCODE_PAGOPA|Il codice fiscale/partitaiva dell'ente che serve per generare la sezione Identificativo Ente/codice fiscale dell'Ente Creditore dell'algoritmo di generazione qrcode|
 Le colonne della tabella PAY_PROFILI_ENTI_CREDITORI che non sono mostrate non devono essere valorizzate.
 
 # Configurazione del backend

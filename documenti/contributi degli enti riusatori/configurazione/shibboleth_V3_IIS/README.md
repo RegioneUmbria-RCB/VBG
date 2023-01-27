@@ -4,7 +4,7 @@
 
 - Attivare https sul virtual host da proteggere
 - Scaricare il file di installazione di shibboleth da http://shibboleth.net/downloads/service-provider/latest/
-- Eseguire l’installazione con i parametri di default
+- Eseguire l'installazione con i parametri di default
 - Verificare che il servizio Shibboleth sia avviato
 
 ## Configurazione IIS
@@ -20,7 +20,7 @@
 - Handler = IsapiModule
 - Entry Type = Local
 
-Nell’Application Pool utilizzato dal virtual host settare "Enable 32-bit Applications" a false
+Nell'Application Pool utilizzato dal virtual host settare "Enable 32-bit Applications" a false
 
 ![Lista Application Pools](./immagini/applicationPool_1.png)
 
@@ -45,7 +45,7 @@ Il site id viene recuperato con il comando
 
 ![Comando openssl](./immagini/appcmd.png)
 
-l’appicationId è composto da una parte scelta da noi, ma secondo gli standard stabiliti (in questo caso APPLICATION_TSTWEBGECONC.CITTAMETROPOLITANA.TORINO.IT_443) e da una parte che ci viene comunicata (in questo caso LIV1_WRUP).
+l'appicationId è composto da una parte scelta da noi, ma secondo gli standard stabiliti (in questo caso APPLICATION_TSTWEBGECONC.CITTAMETROPOLITANA.TORINO.IT_443) e da una parte che ci viene comunicata (in questo caso LIV1_WRUP).
 
 Il Path deve essere impostato in base a ciò che deve essere protetto (inserire ibcauthenticationgateway/shibbolethlogin in modo da poter accedere anche con altre modalità, se impostato / vuol dire che è tutto protetto da shibboleth)
 
@@ -55,19 +55,19 @@ Il file xml del MetadataProvider ci deve essere fornito
 
 ![Comando openssl](./immagini/metadataProvider.png)
 
-Deve essere specificato il path dei certificati creati allo step “Creazione dei certificati” e nel tag Key inserire la password utilizzata in fase di creazione del certificato.
+Deve essere specificato il path dei certificati creati allo step "Creazione dei certificati" e nel tag Key inserire la password utilizzata in fase di creazione del certificato.
 
 ![Comando openssl](./immagini/credentialResolver.png)
 
-Nella sezione ApplicationOverride ci sono configurazioni specifiche dell’applicazione
+Nella sezione ApplicationOverride ci sono configurazioni specifiche dell'applicazione
 
 ![Comando openssl](./immagini/applicationOverride.png)
 
-handlerURL = “https://tst-webgeconc.cittametropolitana.torino.it/TSTWEBGECONC_LIV1_WRUP/Shibboleth.sso” **—-> url per contattare il servizio**
+handlerURL = "https://tst-webgeconc.cittametropolitana.torino.it/TSTWEBGECONC_LIV1_WRUP/Shibboleth.sso" **—-> url per contattare il servizio**
 
 entityID = "IDENTITY_PROVIDER_2_PA_SECURE.RUPARPIEMONTE.IT" **--> è l'entityID dell'EntityDescriptor indicato nel file xml del MetadataProvider** 
 
-    <Errors localLogout="localLogout_WRUP.html" redirectErrors=“https://www.spid.piemonte.it/spid/errorSPID.php"/> **-—> Pagina di logout**
+    <Errors localLogout="localLogout_WRUP.html" redirectErrors="https://www.spid.piemonte.it/spid/errorSPID.php"/> **-—> Pagina di logout**
 
 Nel file di logout deve essere aggiornata questa sezione
 
@@ -79,7 +79,7 @@ Nel file di logout deve essere aggiornata questa sezione
     }
 
 
-    <AttributeExtractor type="XML" path=“C:/opt/shibboleth-sp/etc/shibboleth/conf/attribute-map-gasp.xml"/> **-—> Questo xml ci deve essere fornito**
+    <AttributeExtractor type="XML" path="C:/opt/shibboleth-sp/etc/shibboleth/conf/attribute-map-gasp.xml"/> **-—> Questo xml ci deve essere fornito**
 
     <AttributeFilter type="XML" path="C:/opt/shibboleth-sp/etc/shibboleth/conf/attribute-policy-gasp.xml"/>	**-—> Questo xml ci deve essere fornito**
 

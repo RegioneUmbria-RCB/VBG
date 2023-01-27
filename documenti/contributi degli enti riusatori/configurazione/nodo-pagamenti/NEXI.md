@@ -103,8 +103,8 @@ Tale valore deve essere configurato nella apposita verticalizzazione del BackOff
 | CODICE_CONNETTORE | NEXIGE | Identificativo del connettore NEXI già configurato |
 | FK_CUSALE_REG_DEFAULT |  | FK verso pay_registrazioni_causali che definisce la causale di registrazione del debito da usare nel caso in cui vengano caricate posizioni per cui non è specificata nessuna causale di versamento. Impostare il riferimento alla PK della causale configurata in precedenza |
 | ID_APP_PSP |  | Non utilizzato |
-| CF_CODICE_PROFILO_PSP | D969 | ID dell’ente in NEXI |
-|CF_ENTE_QRCODE_PAGOPA|Il codice fiscale/partitaiva dell'ente che serve per generare la sezione Identificativo Ente/codice fiscale dell’Ente Creditore dell'algoritmo di generazione qrcode|
+| CF_CODICE_PROFILO_PSP | D969 | ID dell'ente in NEXI |
+|CF_ENTE_QRCODE_PAGOPA|Il codice fiscale/partitaiva dell'ente che serve per generare la sezione Identificativo Ente/codice fiscale dell'Ente Creditore dell'algoritmo di generazione qrcode|
 Le colonne della tabella PAY_PROFILI_ENTI_CREDITORI che non sono mostrate non devono essere valorizzate.
 
 # Configurazione dei parametri specifici del connettore NEXI

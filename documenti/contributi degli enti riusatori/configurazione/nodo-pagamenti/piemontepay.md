@@ -110,7 +110,7 @@ Nella modalità sincrona, i valori dei campi **FK_WS_CARICAMENTO**,**FK_WS_ANNUL
 | **ID_APP_PSP** | APP_MERCATO |  |
 | **CF_CODICE_PROFILO_PSP** | 00514490010 | Codice fiscale dell'ente ( o dello sportello ) che si stà integrando con il nodo dei pagamenti di Piemonte Pay |
 | **URL_ESITO_PAGAMENTO** | http://devel3.init.gruppoinit.it/nodo-pagamenti/esitoSessionePagamento/toppay | Url noto a Piemonte Pay sulla quale arriveranno le notifiche, da parte di Piemonte Pay, ad ogni cambio di stato della posizione debitoria creata |
-| **CF_ENTE_QRCODE_PAGOPA** | 00514490010 | Il codice fiscale/partitaiva dell'ente che serve per generare la sezione Identificativo Ente/codice fiscale dell’Ente Creditore dell'algoritmo di generazione qrcodE |
+| **CF_ENTE_QRCODE_PAGOPA** | 00514490010 | Il codice fiscale/partitaiva dell'ente che serve per generare la sezione Identificativo Ente/codice fiscale dell'Ente Creditore dell'algoritmo di generazione qrcodE |
 
 ## ( Step 6 ) configurazione della verticalizzazione NODO_PAGAMENTI su VBG
 Per integrarsi con qualsiasi sistema di pagamenti, la verticalizzazione **NODO_PAGAMENTI** deve essere attiva

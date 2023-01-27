@@ -3,9 +3,9 @@
 ## Prerequisiti
 1. VBG 2.81 o superiore
 
-## Note architetturali e sistemistiche per l’installazione
-Dal punto di vista sistemistico l’installazione dei servizi di ProcediMarche non comporta l’aggiunta di nuove componenti all’architettura generale del sistema VBG.
-I servizi JSON di ProcediMarche vengono invocati direttamente dalla web-application del backoffice su protocollo http o HTTPS. L’invocazione dei servizi è protetta da basic authentication.
+## Note architetturali e sistemistiche per l'installazione
+Dal punto di vista sistemistico l'installazione dei servizi di ProcediMarche non comporta l'aggiunta di nuove componenti all'architettura generale del sistema VBG.
+I servizi JSON di ProcediMarche vengono invocati direttamente dalla web-application del backoffice su protocollo http o HTTPS. L'invocazione dei servizi è protetta da basic authentication.
 
 ## Configurazione backoffice
 
@@ -16,15 +16,15 @@ Configurazione --> Tutti i backoffice --> Configurazione Regole ed entrando nel 
 
 ![language](/configurazione/procedimarche/immagini/cfgpm1.png)
 
-I dati visualizzati sono quelli effettivi per il Comune di Jesi. L’URL visualizzato è relativo all’ambiente di produzione di ProcediMarche.
-Prima di mettere in produzione il servizio occorre assicurarsi che la tabella STP_ENDO_TIPO2  sia vuota o cancellare tutti i record dalla tabella per l’idcomune corrente.
+I dati visualizzati sono quelli effettivi per il Comune di Jesi. L'URL visualizzato è relativo all'ambiente di produzione di ProcediMarche.
+Prima di mettere in produzione il servizio occorre assicurarsi che la tabella STP_ENDO_TIPO2  sia vuota o cancellare tutti i record dalla tabella per l'idcomune corrente.
 
 |Nome Parametro|Valori|Descrizione|
 | ------ | ------ | ------ |
-| PROCEDI_MARCHE_URL | 	http://testwsprocedimenti.regione.marche.it/api (test) o http://wsprocedimenti.regione.marche.it/api (produzione) | URL dell’endpoint dei servizi di ProcediMarche |
-| PROCEDI_MARCHE_CF_ENTE | 00135880425 (es. comune di Jesi) | Codice fiscale dell’ente così come censito in ProcediMarche  |
-| PROCEDI_MARCHE_USR | jesi | Utente per autenticazione nella chiamata ai servizi tramite basic authentication. Se omesso non viene utilizzata l’autenticazione |
-| PROCEDI_MARCHE_PWD | ******* | Password per autenticazione nella chiamata ai servizi tramite basic authentication. Se omesso non viene utilizzata l’autenticazione |
+| PROCEDI_MARCHE_URL | 	http://testwsprocedimenti.regione.marche.it/api (test) o http://wsprocedimenti.regione.marche.it/api (produzione) | URL dell'endpoint dei servizi di ProcediMarche |
+| PROCEDI_MARCHE_CF_ENTE | 00135880425 (es. comune di Jesi) | Codice fiscale dell'ente così come censito in ProcediMarche  |
+| PROCEDI_MARCHE_USR | jesi | Utente per autenticazione nella chiamata ai servizi tramite basic authentication. Se omesso non viene utilizzata l'autenticazione |
+| PROCEDI_MARCHE_PWD | ******* | Password per autenticazione nella chiamata ai servizi tramite basic authentication. Se omesso non viene utilizzata l'autenticazione |
 
 ### Verticalizzazione AREA_RISERVATA
 Nella scheda di dettaglio di ProcediMarche la funzionalità di compilazione automatica dell'URL per l'avvio su front office del procedimento è basata sul valore del parametro URL_AVVIO_PROCEDIMENTO della verticalizzazione AREA_RISERVATA. 

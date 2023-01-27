@@ -1,11 +1,12 @@
 # Configurazione connettore Plug And Pay
 
 
-In questa documentazione verrà trattata la configurazione che è necessaria per attivare il connettore **Plug And Pay** nel nodo pagamenti.
+In questa documentazione verrà trattata la configurazione che è necessaria per attivare il connettore **Plug And Pay** di E-Fil nel nodo pagamenti.
 Per quanto riguarda l'installazione del nodo pagamenti in generale e la configurazione delle verticalizzazioni sul backoffice fare riferimento al documento 
 
 [Configurazione del nodo dei pagamenti](./configurazione-nodo-pagamenti.md)
 
+*Nota: E-fil trametterà le schede di configurazione tramite FTP reperibile nel filetto Efil.txt*
 
 # Prerequisiti
   - backend ( VBG ) alla versione 2.85 o successiva
@@ -14,6 +15,7 @@ Per quanto riguarda l'installazione del nodo pagamenti in generale e la configur
 
 # Servizi usati dal connettore 
 Il connettore Plug And Pay implementa i servizi di:
+
 - caricamento delle posizioni debitorie
 - caricamento delle posizioni debitorie OTF
 - annullamento delle posizioni
@@ -26,7 +28,8 @@ Il sistema di pagamenti Plug And Pay espone tutti i servizi utilizzati dal conne
 Perciò sarà necessario configurare 4 record nella tabella *pay_connector_ws_endpoint* e impostare i riferimenti a questi 4 endpoint nei campi di *pay_connector_config* così come illustrato nei due paragrafi seguenti.
 
 
-#### PAY_CONNECTOR_WS_ENDPOINT 
+### PAY_CONNECTOR_WS_ENDPOINT 
+
 | CODICE_CONNETTORE | ID | ENDPOINT_URL | UTENTE | PASSWORD | TIMEOUT | DESCRIZIONE | QUARTZ_SCHEDULE | FLAG_SOLO_SCHEDULATO | MAX_CHIAMATE | FLAG_SPEGNI_SCHEDULER |
 | ------ | ------ |------ | ------ |------ | ------ |------ | ------ |------ | ------ |------ |
 | *Codice del connettore nel nodo pagamenti come definito in PAY_CONNECTOR_CONFIG.CODICE, si può impostare qualunque codice. Il codice deve essere valorizzato in FK nel campo PAY_PROFILI_ENTI_CREDITORI.CODICE_CONNETTORE* | *Numero progressivo* | *URL dell'endpoint SOAP* | *credenziali utente* | *password utente* | *numero di millisecondi da impostare come timeout per la connessione al servizio* | *descrizione facoltativa del servizio* | *Espressione chron che configura lo scheduling del servizio, se lasciato vuoto il servizio non è schedulato* | *impostare a 1 per i servizi che devono essere invocati SOLO sulla base dello scheduler* | *numero massimo di tentativi di invocazione del servizio eseguiti dallo scheduler in caso di errore* | *flag per spegnere temporaneamente lo scheduling del servizio* |
@@ -40,7 +43,8 @@ PNP | 4 | https://generatorpdf.integrazione.plugandpay.it/GeneratorPdf.svc |  | 
 # Configurazione del connettore
 Il connettore Plug And Pay è deployato già col nodo pagamenti e per poter essere utilizzato deve essere configurato inserendo un record nella tabella PAY_CONNECTOR_CONFIG
 
-#### PAY_CONNECTOR_CONFIG
+### PAY_CONNECTOR_CONFIG
+
 | Colonna | Valore | Note |
 | ------ | ------ | ------------ |
 | **CODICE** |  | Identificativo del connettore che deve essere poi associato al profilo dell'ente creditore in PAY_PROFILI_ENTI_CREDITORI.CODICE_CONNETTORE |
@@ -57,12 +61,11 @@ Il connettore Plug And Pay è deployato già col nodo pagamenti e per poter esse
 
 gli altri campi devono essere lasciati vuoti
 
-
-
 # Configurazione dell'amministrazione
 Deve essere inserito un record in AMMINISTRAZIONI per popolare gli attributi dell'anagrafica dell'ente per cui si effettua la configurazione.
-Nel caso di Plug And Pay le informazioni che vengono utilizzate dal connettore sono indicate nella tabella seguente.
+Nel caso di Plug And Pay le informazioni che vengono utilizzate dal connettore sono indicate nella tabella seguente.   
 Nella tabella sottostante viene mostrato un esempio di configurazione per la Provincia di Pisa.
+
 | Colonna | Valore | Descrizione |
 | ------ | ------- | ------ |
 | **IDCOMUNE** | G702 | Identificativo dell'installazione  |
@@ -75,7 +78,8 @@ Nella tabella sottostante viene mostrato un esempio di configurazione per la Pro
 # Configurazione delle causali di registrazione 
 Tutti i debiti che vengono caricati nel nodo pagamenti devono essere associati ad una causale di registrazione. 
 
-#### pay_registrazioni_causali 
+### pay_registrazioni_causali 
+
 | Colonna | Valore | Note |
 | ------  | ------ | ------ |
 | **ID** | 1 | Numero progressivo |
@@ -94,7 +98,8 @@ Il record inserito associerà l'amministrazione che si è appena configurata nel
 Il CF_CODICE_PROFILO usato per ??? è '???'. 
 Tale valore deve essere configurato nella apposita verticalizzazione del BackOffice per assicurarsi che il nodo pagamenti sia invocato con il parametro corretto.
 
-#### pay_profili_enti_creditori
+### pay_profili_enti_creditori
+
 | Colonna | Valore | Note |
 | ------ | ------ | ------ |
 | **IDCOMUNE** | G702 | Identificativo dell'installazione |
@@ -104,12 +109,12 @@ Tale valore deve essere configurato nella apposita verticalizzazione del BackOff
 | CODICE_CONNETTORE | PNP | Identificativo del connettore PlugAndPay già configurato |
 | FK_CUSALE_REG_DEFAULT | 1 | FK verso pay_registrazioni_causali che definisce la causale di registrazione del debito da usare nel caso in cui non venga specificata in fase di caricamento. |
 | ID_APP_PSP | 9637CBAE-207C-4B24-8076-84838DC225E1 | Identificativo dell'applicazione nel sistema PlugAndPay |
-| CF_CODICE_PROFILO_PSP | 0000110 | Ientificativo dell’ente nel sistema PlugAndPay |
+| CF_CODICE_PROFILO_PSP | 0000110 | Ientificativo dell'ente nel sistema PlugAndPay |
 | URL_ESITO_PAGAMENTO | http://[host]:[port]/nodo-pagamenti/esitoSessionePagamento/pi?esito=1 | URL di ritorno delle sessioni di pagamento andate a buon fine |
 | URL_ANNULLAMENTO_PAGAMENTO | http://[host]:[port]/nodo-pagamenti/esitoSessionePagamento/pi?esito=1 | URL di ritorno delle sessioni di pagamento andate a buon fine |
 | CODICE_SEGREGAZIONE | 2 | codice segregazione per la generazione dello IUV |
 | APPLICATION_CODE | 16 | application code usato per la generazione dello IUV |
-| CF_ENTE_QRCODE_PAGOPA | 00184280360 | Il codice fiscale/partitaiva dell'ente che serve per generare la sezione Identificativo Ente/codice fiscale dell’Ente Creditore dell'algoritmo di generazione qrcode|
+| CF_ENTE_QRCODE_PAGOPA | 00184280360 | Il codice fiscale/partitaiva dell'ente che serve per generare la sezione Identificativo Ente/codice fiscale dell'Ente Creditore dell'algoritmo di generazione qrcode|
 
 Le colonne della tabella PAY_PROFILI_ENTI_CREDITORI che non sono mostrate non devono essere valorizzate.
 

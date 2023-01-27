@@ -119,9 +119,9 @@ Tale valore deve essere configurato nella apposita verticalizzazione del BackOff
 | CODICE_CONNETTORE | SILFI | Identificativo del connettore Silfi già configurato |
 | FK_CUSALE_REG_DEFAULT |  | FK verso pay_registrazioni_causali che definisce la causale di registrazione del debito da usare nel caso in cui non venga specificata in fase di caricamento. |
 | ID_APP_PSP | SAN_ATTECO | Identificativo dell'applicazione nel sistema Silfi |
-| CF_CODICE_PROFILO_PSP | FIRENZE | Ientificativo dell’ente nel sistema Silfi |
+| CF_CODICE_PROFILO_PSP | FIRENZE | Ientificativo dell'ente nel sistema Silfi |
 | URL_ESITO_PAGAMENTO | `http://[host]:[port]/nodo-pagamenti-silfi/esitoSessionePagamento/silfi` |  |
-| CF_ENTE_QRCODE_PAGOPA | |Il codice fiscale/partitaiva dell'ente che serve per generare la sezione Identificativo Ente/codice fiscale dell’Ente Creditore dell'algoritmo di generazione qrcode|
+| CF_ENTE_QRCODE_PAGOPA | |Il codice fiscale/partitaiva dell'ente che serve per generare la sezione Identificativo Ente/codice fiscale dell'Ente Creditore dell'algoritmo di generazione qrcode|
 
 Le colonne della tabella PAY_PROFILI_ENTI_CREDITORI che non sono mostrate non devono essere valorizzate.
 

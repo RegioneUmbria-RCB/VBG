@@ -1,18 +1,18 @@
 # Bollettazione
 
 ## Introduzione
-Il presente documento descrive le modifiche per gestire la bollettazione nell’applicativo di backoffice.
+Il presente documento descrive le modifiche per gestire la bollettazione nell'applicativo di backoffice.
 L'esigenza della bollettazione nasce da diverse realtà, ad esempio pagamento su occupazione di posteggi di mercato, canoni demaniali, sanzioni amministrative, occupazione suolo pubblico, ecc.… e quella che si va a descrivere è una funzionalità che dovrebbe servire a gestire svariate esigenze.
 
-La bollettazione di solito esita nell’invio di informazioni strutturate a sottosistemi di pagamento che poi sono delegati a produrre avvisi e file e notifiche tramite diversi canali.
-Al momento gli oggetti principali oggetto di bollettazione sono gli oneri delle istanze, e le occupazioni dei posteggi da parte dei concessionari. In futuro potrebbero essere altri oggetti da modellare (es. autorizzazioni, concessioni demaniali). Gran parte comunque delle informazioni presenti nell’applicativo sono rappresentate dagli oneri delle istanze.
+La bollettazione di solito esita nell'invio di informazioni strutturate a sottosistemi di pagamento che poi sono delegati a produrre avvisi e file e notifiche tramite diversi canali.
+Al momento gli oggetti principali oggetto di bollettazione sono gli oneri delle istanze, e le occupazioni dei posteggi da parte dei concessionari. In futuro potrebbero essere altri oggetti da modellare (es. autorizzazioni, concessioni demaniali). Gran parte comunque delle informazioni presenti nell'applicativo sono rappresentate dagli oneri delle istanze.
 
-Gli oggetti degli oneri istanza copriranno i casi d’uso di:
+Gli oggetti degli oneri istanza copriranno i casi d'uso di:
 -	Provincia di Pisa COSAP
 -	Città metropolitana di Torino COSAP
 -	Firenze Sanzioni
 
-Gli oggetti dei posteggi/mercati il caso d’uso
+Gli oggetti dei posteggi/mercati il caso d'uso
 -	Comune di Genova
 
 La funzionalità Bollettazione è composta da una sezione di configurazione e dalla sezione operativa.
@@ -32,7 +32,8 @@ Ogni algoritmo ha delle logiche particolari, che verranno descritte più avanti,
 
 ### Tipi di bollettazione
 La funzionalità è raggiungibile dal menù
-Archivi --> Archivi < modulo software > --> Bollettazione
+_Archivi --> Archivi < modulo software > --> Bollettazione._
+
 Alla creazione di una nuova tipologia di bollettazione verrà presentata una maschera di questo tipo 
 
 
@@ -50,6 +51,9 @@ dove sarà chiesto di immettere i valori relativi a
 -   Raggruppa pagamenti per l'utenza
 
     Le posizioni debitorie vengono inviate uno per anagrafe individuata (al momento è l'unica implementazione)
+
+-  Arrotondamento
+    Quando viene selezionato il tipo di arrotondamento, questo viene applicato alle posioni debitorie all'invio al nodo pagamenti.
 
 - Implementazione di calcolo **Istanze** o **Mercati**
 
@@ -124,16 +128,16 @@ La funzionalità verrà spiegata attraverso:
 
 > **Nota**
 >
-> Quando nel documento parleremo di mercato faremo sempre riferimento all’informazione Mercato – Giorno.  Es. Se il mercato del pesce si svolge nelle giornate del martedì e del venerdì, > <br>la parola mercato starà ad indicare <br> 1.	Mercato del pesce del martedì <br> 2.	Mercato del pesce del venerdì
+> Quando nel documento parleremo di mercato faremo sempre riferimento all'informazione Mercato – Giorno.  Es. Se il mercato del pesce si svolge nelle giornate del martedì e del venerdì, > <br>la parola mercato starà ad indicare <br> 1.	Mercato del pesce del martedì <br> 2.	Mercato del pesce del venerdì
 
 #### Livello dei servizi
-È un’entità fisica o astratta che appartiene al mercato e che può essere applicata a tutti o ad un sottoinsieme dei posteggi dello stesso e può o non può avere una durata temporale predefinita. La presenza di uno o più livelli di servizio associati ad un posteggio ne determina il suo costo giornaliero. Per la determinazione del valore di un livello di servizio avremo due parametri:
+È un'entità fisica o astratta che appartiene al mercato e che può essere applicata a tutti o ad un sottoinsieme dei posteggi dello stesso e può o non può avere una durata temporale predefinita. La presenza di uno o più livelli di servizio associati ad un posteggio ne determina il suo costo giornaliero. Per la determinazione del valore di un livello di servizio avremo due parametri:
 
 1.	Tariffa giornaliera del livello di servizio  Definito a livello di **Mercato**
 2.	Fattore moltiplicativo della tariffa Definito a livello di **Posteggio**
 
 >  **nota**
->  Nel documento la dicitura di “Livello di servizio” può essere abbreviato con la parola “servizio”
+>  Nel documento la dicitura di "Livello di servizio" può essere abbreviato con la parola "servizio"
 
 La moltiplicazione tra Tariffa e Fattore Moltiplicativo definisce il Costo
 
@@ -258,7 +262,7 @@ In questo paragrafo, tralasciando ancora le modalità di configurazione,
 andremo a spiegare con casi reali come si combinano "Livello di servizio" e "Formule" per definire il costo di un posteggio.
 
 **COSAP MERCATI MERCI VARIE GENOVA**
-Supponiamo di avere un mercato con sei posteggi, l’unico "Livello di servizio" attivo è la Cosap che nel caso specifico varia a seconda della posizione del posteggio;
+Supponiamo di avere un mercato con sei posteggi, l'unico "Livello di servizio" attivo è la Cosap che nel caso specifico varia a seconda della posizione del posteggio;
 il costo in un certo intervallo di tempo di un posteggio sarà dato da:
 
 > **Costo = Giorni mercato x Tariffa cosap x mq**
@@ -276,8 +280,8 @@ Vediamo come dovrà essere scritta la formula nella configurazione del mercato:
  > Costo = GG x COSAP
 
 Dove:
-1.	**GG**: il segna posto che rappresenta il numero dei giorni in cui si è svolto il mercato nell’intervallo di tempo scelto 
-2.	**COSAP**: rappresenta il segna posto del “Livello di servizio” che indica il costo del singolo servizio giornaliero (Tariffa servizio x fattore moltiplicativo)
+1.	**GG**: il segna posto che rappresenta il numero dei giorni in cui si è svolto il mercato nell'intervallo di tempo scelto 
+2.	**COSAP**: rappresenta il segna posto del "Livello di servizio" che indica il costo del singolo servizio giornaliero (Tariffa servizio x fattore moltiplicativo)
 
 
 Esempio di calcolo del sistema 
@@ -293,7 +297,7 @@ Costo posteggio 5 = 10 x (1 x 10) = 100
 
 **COSAP MERCATI MERCI VARIE GENOVA**
 
-Il caso d’uso dei mercati coperti, più complesso ci permette di capire meglio oltre che il concetto di formula anche il collegamento 
+Il caso d'uso dei mercati coperti, più complesso ci permette di capire meglio oltre che il concetto di formula anche il collegamento 
 con i sottoconti/accertamenti. In questo caso il costo del posteggio sarà dato da due tipi di tariffe (due formule) la cui somma definirà il costo totale.
 
 > Costo tariffa posto = (Giorni Mercato x Tariffa Tipo Posto x MQ) X IVA
@@ -333,7 +337,7 @@ Vediamo come dovrà essere scritta la formula nella configurazione del mercato:
 > Costo tariffa servizio = (GG x TIPO_VENDITA x fattore moltiplicativo x 10) x 2/6)
 
 
-Per semplicità abbiamo configurato due tipologie di posti, vediamo come l’algoritmo calcolerà i costi nel primo bimestre dell’anno dal 01/01 al 28/02 (58 giorni)
+Per semplicità abbiamo configurato due tipologie di posti, vediamo come l'algoritmo calcolerà i costi nel primo bimestre dell'anno dal 01/01 al 28/02 (58 giorni)
 
 **POSTEGGIO 1**
 
@@ -354,7 +358,7 @@ Il fatto di aver associato le formule a diversi sottoconti ci permetterà in fas
 
 I due casi esposti rispondono a due delle esigenze espresse dal comune di Genova, 
 il primo riguarda una configurazione semplice di un servizio astratto (una tassa da pagare proporzionale ai mq del posteggio
-) ed una seconda più complessa dove sono presenti sia servizi astratti (tassa sull’acqua) e servizi fisici (magazzino, bancone). 
+) ed una seconda più complessa dove sono presenti sia servizi astratti (tassa sull'acqua) e servizi fisici (magazzino, bancone). 
 Come vedremo nei paragrafi successivi la configurazione permetterà di configurare posteggio per posteggio e questo ci permetterà 
 di aumentare la flessibilità per rispondere a diverse esigenze. Naturalmente più sarà puntuale la configurazione più il sistema perderà in manutenibilità. 
 

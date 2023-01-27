@@ -2,6 +2,10 @@
 
 In questa sezione è possibile trovare informazioni sulla configurazione dell'area riservata
 
+## Guida all'aggiornamento dell'area riservata
+
+[Consultare la guida all'indirizzo](guida-aggiornamento/README.md)
+
 ## Le sezioni che compongono questo repository sono
 
 - [Presentazione domanda](./presentazione-domanda/): Informazioni sulla configurazione degli step che compongono la presentazione della domanda

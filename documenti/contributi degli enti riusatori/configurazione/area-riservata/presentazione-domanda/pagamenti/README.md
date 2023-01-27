@@ -14,7 +14,7 @@ Vedi ad esempio Pagamenti Siena o [Pagamenti tramite Nodo Pagamenti Generico](no
 Aggiungere nel web.config nella sezione &lt;log4net&gt; il seguente appender e logger
 Per poter tracciare tutte le operazioni di pagamento.
 
-**!!!QUESTO PASSAGGIO E'FONDAMENTALE ALTRIMENTI NON SI POSSONO TRACCIARE EVENTUALI ERRORI AVVENUTI IN FASE DI PAGAMENTO!!!**
+**!!!QUESTO PASSAGGIO E' FONDAMENTALE ALTRIMENTI NON SI POSSONO TRACCIARE EVENTUALI ERRORI AVVENUTI IN FASE DI PAGAMENTO!!!**
 
 ```xml
 <appender name="pagamentiLog" type="log4net.Appender.RollingFileAppender">
@@ -43,13 +43,13 @@ Per poter tracciare tutte le operazioni di pagamento.
 
 ### VerificaStatoPagamenti*.aspx
 
-Lo step ha la responsabilità di verificare seper la pratica che si sta compilando sono già state avviate delle operazioni di pagamento.
+Lo step ha la responsabilità di verificare se per la pratica che si sta compilando sono già state avviate delle operazioni di pagamento.
 Qualora queste venissero trovate si cercherà di verificarne l'esito.
 
 - in caso di esito positivo il pagamento viene completato e il controllo viene passato allo step successivo
-- in caso di esito negativo o nel caso in cui non sia possibile verificare l'esito all'utente viene mostrato un messaggio e gli viene offerta la possibilità di annullare il pagamento in corso e riavviare l'operazione (verificare nella specifica integrazione quali sono le step properties che permettono di personalizzare il messaggio per l'utente)
+- in caso di esito negativo o nel caso in cui non sia possibile verificare l'esito, all'utente viene mostrato un messaggio e gli viene offerta la possibilità di annullare il pagamento in corso e riavviare l'operazione (verificare nella specifica integrazione quali sono le step properties che permettono di personalizzare il messaggio per l'utente)
 
-Lo step transiterà direttamente allo ste successivo qualora non venissero trovate operazioni di pagamento in sospeso.
+Lo step transiterà direttamente allo step successivo qualora non venissero trovate operazioni di pagamento in sospeso.
 
 ### GestionePagamenti*.aspx
 

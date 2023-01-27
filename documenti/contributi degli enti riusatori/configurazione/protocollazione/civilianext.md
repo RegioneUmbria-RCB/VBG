@@ -6,12 +6,12 @@ sviluppato da Dedagroup.
   - Backend ( VBG ) alla versione 2.96 o successiva
   - OPZIONALE: Area Riservata alla versione 2.96 o successiva
 
-  # Servizi usati dal connettore
+# Servizi usati dal connettore
   
 Allo stato attuale, è possibile:
-- protocollare in arrivo/partenza una pratica
-- protocollare in arrivo/partenza un movimento
-- lettura di un protocollo esistente
+  - protocollare in arrivo/partenza una pratica
+  - protocollare in arrivo/partenza un movimento
+  - lettura di un protocollo esistente
 
 I servizi sviluppati da Dedagroup mettono a disposizione altre funzionalità ( assegnazione, smistamento, ... ), che ad oggi non sono state richieste e quindi non implementate
 

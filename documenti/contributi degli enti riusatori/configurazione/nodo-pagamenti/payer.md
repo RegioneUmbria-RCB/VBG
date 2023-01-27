@@ -1,6 +1,11 @@
 # Payer 
 In questa documentazione verrà trattata la configurazione che è necessaria per attivare il connettore PayER nel nodo pagamenti.
-Il connettore PayER al momento è stato integrato solamente per il caso d'uso modello 1 e quindi il pagamento OTF dal front (Area riservata o Consolle)
+Il connettore PayER al momento è stato integrato solamente per il caso d'uso modello 1 e modello3 e quindi:
+- il pagamento OTF dal front (Area riservata o Consolle)
+- Caricamento posizione debitoria
+- verifica stato posizione debitoria
+- annullamento posizione debitoria
+- modifica data di scadenza
 
 Per quanto riguarda l'installazione del nodo pagamenti in generale e la configurazione delle verticalizzazioni sul backoffice fare riferimento al documento 
 
@@ -62,6 +67,8 @@ IDCOMUNE|ID|CONFIG_PARAM|CODICE_CONNETTORE|VALORE
 *IDCOMUNE*|*PROGRESSIVO*|URL_RICEZIONE_NOTIFICHE	|**CODICE_CONNETTORE**|http://server_ente/nodo-pagamenti/payer/notificaPagamento.htm?idProfilo=**PAY_PROFILI_ENTI_CREDITORI.CF_CODICE_PROFILO**
 *IDCOMUNE*|*PROGRESSIVO*|PAYER_CODICE_UFFICIO		|**CODICE_CONNETTORE**|
 *IDCOMUNE*|*PROGRESSIVO*|PAYER_TIPO_UFFICIO			|**CODICE_CONNETTORE**|
+*IDCOMUNE*|*PROGRESSIVO*|PAYER_CLIENT_SECRET			|**CODICE_CONNETTORE**|
+*IDCOMUNE*|*PROGRESSIVO*|PAYER_CLIENT_KEY			|**CODICE_CONNETTORE**|
 
 
 

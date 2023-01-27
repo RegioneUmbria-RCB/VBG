@@ -18,7 +18,7 @@ Per poter gestire le commissioni è necessario configurare prima alcuni aspetti:
 - Tipologie di pareri
 - Cariche dei soggetti partecipanti
 
-Tutte le configurazioni vengono fatte all'interno del backoffice nella sezione Archivi -> Archivi (modulo) -> Commissioni e conferenze
+Tutte le configurazioni vengono fatte all'interno del backoffice nella sezione Archivi -> Archivi di Base -> Commissioni e conferenze
 in cui è previsto un menù per ogni singola configurazione
 
 ![menu configurazione](./immagini/menu-configurazione.png)
@@ -53,6 +53,7 @@ Le informazioni richieste nella configurazione ( nuova tipologia o modifica di u
 | Amministrazione                             | Identifica l'amministrazione con cui verrà fatto il movimento di rilascio parere nelle pratiche discusse in commissione                                                   |
 | Caricamento di un file firmato obbligatorio | Nelle commissioni asincrone, obbliga i partecipanti a caricare un file firmato digitalmente quando indicano il loro parere                                                |
 | Movimenti di richiesta                      | Indica i movimenti che dovranno essere presenti nelle istanze per permetterne l'associazione a quelle tipologie di commissioni. E' possibile indicare uno o più movimenti |
+| Ruoli da associare alle tipologie                      | È possibile specificare i ruoli da associare alle tipologie. Serve, ad esempio, nel caso si voglia tener separata la visualizzazione/gestione delle tipologie per un ambito specifico. Es CDS ambito Operatori SUAP, Commissioni edilizie ambito Ufficio Edilizia |
 
 ![configurazione-tipologia-commissione](./immagini/configurazione-tipologia-commissione.png)
 
@@ -71,8 +72,8 @@ Le informazioni richieste in fase di configurazione ( nuova tipologia di parere 
 | Parametro      | Descrizione                                                                                                                                                                                                                                                                                               |
 | -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Descrizione    | Nome della tipologia che viene mostrata in fase di assegnazione parere alla pratica discussa                                                                                                                                                                                                              |
-| Tipo movimento | Movimento che verrà fatto in automatico dal sistema una volta espresso il parere                                                                                                                                                                                                                          |
 | Esito          | Positivo / Negativo è l'esito che verrà assegnato al movimento sopra specificato. Ad esempio possiamo avere il parere "FAVOREVOLE" che effettua il movimento "Rientro parere da commissione edilizia" con esito favorevole e il parere "CONTRARIO" che effettua lo stesso movimento ma con esito negativo |
+| Tipo movimento | È possibile specificare un tipo per ogni modulo software. Può essere specificata anche una configurazione valida per tutti gli ambiti (Tutti TT). il movimento che verrà eseguito in automatico dal sistema una volta espresso il parere.                                                                                                                                                                                                                          |
 
 ![configurazione-tipologie-pareri](./immagini/configurazione-tipologie-pareri.png)
 
@@ -240,3 +241,42 @@ La cancellazione di una commissione verrà riportata nei logs di auditing del si
 
 Per le configurazioni e spiegazioni della funzionalità nell'area riservata far riferimento alla [documentazione](../../configurazione/area-riservata/commissioni-conferenze/README.md).
 
+### Conferenza di servizi (CDS)
+
+La CDS utilizza tutta l'infrastruttura e le funzionalità già discusse nelle sezioni precedenti.
+Vi sono delle particolarità specifiche del tematismo.
+La conferenza di servizi viene attivata per una singola pratica e le modalità per attivarle restano le solite già in uso nel VBG.
+
+Per configurare la CDS sono presenti due sezioni:
+
+#### Tipiprocedure
+
+In ogni procedura è presente la sezione per i parametri della CDS
+![Parametri CDS Procedure](./immagini/cds-tipiprocedure.png).
+
+#### Tipi Movimento
+
+Per ogni tipo movimento è possibile specificare se alla sua esecuzione creare una cds. La configurazione viene attivata spuntando il flag **Conferenza di servizi**: **Selezionare se è un movimento abilitato alla creazione di una conferenza di servizi**.
+
+![Parametri CDS Tipimovimento](./immagini/cds-tipi-movimento.png)
+
+#### Gestione istanza
+
+Durante il flusso di worlkflow della istanza se viene eseguito un movimento configurato o nella procedura o in tipimovimento allora l'operatore viene contestualmente rediretto alla funzionalità di creazione  della CDS per la pratica.
+
+![Istanze esecuzione movimento](./immagini/cds-istanza-esecuzione-mov.png)
+
+L'operatore deve salvare le informazioni per salvare la CDS legata alla pratica.
+
+![Istanze primo salvataggio](./immagini/cds-istanza-primo-salvataggio.png)
+
+La funzionalità in automatico salva le informazioni legate all'istanza.
+
+Per le CDS, rispetto alle Commissioni, viene attivata la sezione **Oggetto** ed associata la pratica nella sezione dettaglio. Una volta salvati i dati l'operatore dovrà completare le sezioni degli invitati e proseguire a gestire la CDS con le convocazioni e quanto necessita al completamento dell'attività.
+
+Se un movimento ha generato una CDS e la pratica la ha attivata sono presenti nel movimento o nella sezione **Altre funzioni** della pratica il bottone **CDS** che permettono di accedere alla funzionalità.
+
+È possibile accedere alla lista delle commissioni/conferenze anche mediante i menù:
+
+- Istanze --> Modulo software --> Commissioni conferenze
+- Istanze --> Modulo software --> Conferenza di servizi

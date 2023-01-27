@@ -73,7 +73,7 @@ Rappresentano le due URL per la gestione del caricamento delle posizioni debitor
 per ogni ente che si intende avviare va configurata una riga su questa tabella.
 
 **CF_ENTE_QRCODE_PAGOPA** 
-Il codice fiscale/partitaiva dell'ente che serve per generare la sezione Identificativo Ente/codice fiscale dell’Ente Creditore dell'algoritmo di generazione qrcode|
+Il codice fiscale/partitaiva dell'ente che serve per generare la sezione Identificativo Ente/codice fiscale dell'Ente Creditore dell'algoritmo di generazione qrcode|
 
 |IDCOMUNE|ID|CODICECOMUNE|CODICEAMMINISTRAZIONE |SOFTWARE|CBILL |CC_POSTALE|CF_CODICE_PROFILO |CODICE_CONNETTORE |FK_CUSALE_REG_DEFAULT |ID_APP_PSP|CF_CODICE_PROFILO_PSP |URL_ESITO_PAGAMENTO |URL_ANNULLAMENTO_PAGAMENTO|CODICE_SEGREGAZIONE |APPLICATION_CODE|CF_ENTE_QRCODE_PAGOPA|
 |----|----|----|---- |----|---- |----|---- |---- |---- |----|---- |---- |----|---- |----|----|

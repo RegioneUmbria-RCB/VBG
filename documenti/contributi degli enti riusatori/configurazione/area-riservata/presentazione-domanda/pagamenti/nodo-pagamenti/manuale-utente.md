@@ -47,5 +47,5 @@ Conferma su pagoumbria
 e la conferma nella pratica in compilazione 
 >![Riepilogo oneri](./immagini/step-oneri-da-pagare_011.png)
 
-Se il pagamento è effettuato con successo l’utente potrà proseguire con la compilazione della pratica. L’attestazione di pagamento sarà acquisita dal sistema e non sarà necessario inviare ulteriori informazioni – ad esempio le ricevute acquisite via mail - sul pagamento effettuato.
+Se il pagamento è effettuato con successo l'utente potrà proseguire con la compilazione della pratica. L'attestazione di pagamento sarà acquisita dal sistema e non sarà necessario inviare ulteriori informazioni – ad esempio le ricevute acquisite via mail - sul pagamento effettuato.
 Si consiglia di conservare le email del pagamento effettuato.

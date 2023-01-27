@@ -49,7 +49,7 @@ I parametri utilizzati sono:
 - URL_WS: Url dei servizi del nodo pagamenti
 - AR_COD_FISC_ENTE_CREDITORE: Codice fiscale ente creditore da utilizzare per l'area riservata
 - AR_URL_BACK: Url a cui ritornare quando si annulla un pagamento o quando si fa click su "indietro nel sistema di pagamento"
-- AR_URL_RITORNO: Url di ritorno al termie della procedura di pagamento
+- AR_URL_RITORNO: Url di ritorno al termine della procedura di pagamento
 - ID_MODALITA_PAGAMENTO: fk su TIPIMODALITAPAGAMENTO, id della modalità di pagamento da impostare a pagamento completato
 
 ## "Paga dopo"
@@ -64,16 +64,16 @@ E'anche possibile configurare il parametro **AR_PAGO_DOPO_GG_SCADENZA** per impo
 
 ### Steps paga dopo
 
-Se il pago dopo è attivo allora l’utente potrà scegliere se pagare con modello 3 o modello 1. Nel caso non sia attivo rimarrà il comportamento corrente
+Se il pago dopo è attivo allora l'utente potrà scegliere se pagare con modello 3 o modello 1. Nel caso non sia attivo rimarrà il comportamento corrente
 
 ![Step 1](./immagini/pd1.png)
 
-Al click su “Paga dopo” verrà mostrato un messaggio di conferma in cui verrà spiegato che stanno per essere aperte delle posizioni debitorie e che non sarà possibile proseguire con la compilazione della domanda fino a quando le posizioni non verranno saldate
+Al click su "Paga dopo" verrà mostrato un messaggio di conferma in cui verrà spiegato che stanno per essere aperte delle posizioni debitorie e che non sarà possibile proseguire con la compilazione della domanda fino a quando le posizioni non verranno saldate
 
 ![Step 2](./immagini/pd2.png)
 
-Una volta che le posizioni debitorie sono state aperte con successo all’utente verrà mostrata una schermata di riepilogo con i riferimenti utili per effettuare i pagamenti. Sempre dal riepilogo sarà possibile scaricare gli avvisi di pagamento utilizzabili per pagare presso tabaccai, poste, etc…
+Una volta che le posizioni debitorie sono state aperte con successo all'utente verrà mostrata una schermata di riepilogo con i riferimenti utili per effettuare i pagamenti. Sempre dal riepilogo sarà possibile scaricare gli avvisi di pagamento utilizzabili per pagare presso tabaccai, poste, etc…
 
-La presentazione della domanda sarà bloccata fino al completamento del pagamento di tutte le posizioni debitorie aperte. L’utente potrà in seguito annullare una o tutte le posizioni che non siano già state saldate e non potrà eliminare la pratica dalle istanze in sospeso
+La presentazione della domanda sarà bloccata fino al completamento del pagamento di tutte le posizioni debitorie aperte. L'utente potrà in seguito annullare una o tutte le posizioni che non siano già state saldate e non potrà eliminare la pratica dalle istanze in sospeso
 
 ![Step 3](./immagini/pd3.png)

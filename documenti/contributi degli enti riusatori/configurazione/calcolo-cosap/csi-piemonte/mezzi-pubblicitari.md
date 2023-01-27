@@ -20,7 +20,7 @@ Il **Corrispettivo per i mezzi pubblicitari permanenti** è stato calcolato seco
 
 Il **Corrispettivo per le preinsegne** non tiene conto delle dimensioni per stabilire la tariffa, per il resto è identico (Tariffa derivante dal tipo di impianto, occupazione stradale o meno e categoria di strada) x ( numero di impianti ) x ( Coefficiente maggiorativo illuminazione ) x ( Coefficiente maggiorativo impianto in area di servizio )
 
-Il **Corrispettivo per i mezzi pubblicitari temporanei** dipende anche dalla durata dell’autorizzazione pertanto l'algoritmo è lo stesso dei permanenti moltiplicato per i giorni di occupazione
+Il **Corrispettivo per i mezzi pubblicitari temporanei** dipende anche dalla durata dell'autorizzazione pertanto l'algoritmo è lo stesso dei permanenti moltiplicato per i giorni di occupazione
 
 ## Calcolo della scadenza
 I corrispettivi per i mezzi permanenti e le preinsegne hanno come scadenza il 30/06 mentre per quelli temporanei la scadenza è prima del rilascio dell'autorizzazione

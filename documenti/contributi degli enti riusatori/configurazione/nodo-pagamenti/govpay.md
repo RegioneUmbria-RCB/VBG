@@ -80,6 +80,7 @@ I campi nell'elenco sottostante, se presenti, vengono riportati nei dati (facolt
 ### pay_connector_config_params
 
 ![Parametri](./immagini/PAY_CONNECTOR_CONFIG_PARAMS.png )
+
 | Colonna | Descrizione |
 | ------ | ------ |
 | **CONFIG_PARAM** | Nome del parametro |
@@ -89,6 +90,7 @@ I campi nell'elenco sottostante, se presenti, vengono riportati nei dati (facolt
 ### pay_connector_config_values
 
 ![valori](./immagini/PAY_CONNECTOR_CONFIG_VALUES.png )
+
 | Colonna | Descrizione |
 | ------ | ------ |
 | **IDCOMUNE** | Identificativo dell'installazione |
@@ -119,6 +121,7 @@ IDCOMUNE|PROGRESSIVO|SECURITY_PWD|GOVPAY|.....
 ### pay_registrazioni_causali
 
 ![causali](./immagini/PAY_REGISTRAZIONI_CAUSALI.png )
+
 | Colonna | Descrizione |
 | ------ | ------ |
 | **ID** | Numero progressivo |
@@ -159,7 +162,8 @@ idcomune|progressivo|__codicecausaleriferimento__|**ID_UNITA_OPERATIVA**|valore 
 
 ### pay_profili_enti_creditori
 
-!cf_enti_creditori[](./immagini/PAY_PROFILI_ENTI_CREDITORI.png )
+![cf_enti_creditori](./immagini/PAY_PROFILI_ENTI_CREDITORI.png )
+
 | Colonna | Descrizione |
 | ------ | ------ |
 | **IDCOMUNE** | Identificativo dell'ente |
@@ -178,7 +182,7 @@ idcomune|progressivo|__codicecausaleriferimento__|**ID_UNITA_OPERATIVA**|valore 
 | URL_ANNULLAMENTO_PAGAMENTO | Url assoluto che gestisce il ritorno all'app chiamante dopo l'annullamento del pagamento online |
 | CODICE_SEGREGAZIONE | Identificativo numerico del punto di emissione degli iuv di un ente creditore |
 | APPLICATION_CODE | Identificativo numerico dell'archivo di pagamenti associato a questo servizio dell'ente creditore in pagopa, utilizzato per la generazione del codice avviso con aux digit = 0 |
-|CF_ENTE_QRCODE_PAGOPA|Il codice fiscale/partitaiva dell'ente che serve per generare la sezione Identificativo Ente/codice fiscale dell’Ente Creditore dell'algoritmo di generazione qrcode|
+|CF_ENTE_QRCODE_PAGOPA|Il codice fiscale/partitaiva dell'ente che serve per generare la sezione Identificativo Ente/codice fiscale dell'Ente Creditore dell'algoritmo di generazione qrcode|
 
 Ad esempio:
 IDCOMUNE|ID|CODICECOMUNE|CODICEAMMINISTRAZIONE|SOFTWARE|CBILL|CC_POSTALE|CF_CODICE_PROFILO|CODICE_CONNETTORE|FK_CUSALE_REG_DEFAULT|ID_APP_PSP|CF_CODICE_PROFILO_PSP|URL_ESITO_PAGAMENTO|URL_ANNULLAMENTO_PAGAMENTO|CODICE_SEGREGAZIONE|APPLICATION_CODE|CF_ENTE_QRCODE_PAGOPA

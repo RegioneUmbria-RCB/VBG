@@ -3,9 +3,9 @@
 Le caratteristiche hardware dipendono molto dal tipo di utilizzo di VBG in quanto potrebbe gestire, ad esempio, bandi che richiedono risorse maggiormente indirizzate verso la parte
 di frontend dei cittadini piuttosto che di backend. 
 
-Nella scelta dell’hardware si devono considerare:
+Nella scelta dell'hardware si devono considerare:
  - gli accessi stimati
- - le quantità di dati previsti (tenendo in considerazione che l’applicativo memorizza i file delle pratiche con possibilità di memorizzazione su oggetti blob nel database o su Filesystem), 
+ - le quantità di dati previsti (tenendo in considerazione che l'applicativo memorizza i file delle pratiche con possibilità di memorizzazione su oggetti blob nel database o su Filesystem), 
  - le politiche di sicurezza dei dati a livello di raid e backup delle informazioni.
 A seconda che la configurazione sia più o meno estesa e del numero di accessi e utilizzo degli applicativi, è necessario prevedere macchine più o meno performanti.
 Nelle tabelle riportate di seguito sono indicati i requisiti hardware da soddisfare in relazione ai server.

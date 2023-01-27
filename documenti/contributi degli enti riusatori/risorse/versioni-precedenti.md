@@ -1,6 +1,6 @@
 
 # **Premessa**
-La documentazione sugli aggiornamenti non intende essere una documentazione in grado di formare gli operatori all’utilizzo delle nuove funzionalità dell’applicativo, ma intende essere uno strumento che permetta agli operatori di capire se una nuova funzionalità può portare benefici alle gestione delle loro pratiche e se l’unità organizzativa intende usufruirne.
+La documentazione sugli aggiornamenti non intende essere una documentazione in grado di formare gli operatori all'utilizzo delle nuove funzionalità dell'applicativo, ma intende essere uno strumento che permetta agli operatori di capire se una nuova funzionalità può portare benefici alle gestione delle loro pratiche e se l'unità organizzativa intende usufruirne.
 
 Nel caso in cui una nuova funzionalità risulti interessante, sarà possibile chiedere maggiori delucidazioni al personale addetto alla formazione  che fornirà ulteriori dettagli e gli strumenti necessari alla configurazione della stessa.
 
@@ -11,7 +11,7 @@ I bug e le nuove funzionalità sono state riportate con i testi scritti al momen
 Nei testi potrebbero essere presenti dettagli tecnici che hanno permesso agli sviluppatori di individuare il campo di intervento.
 
 # **Premessa**
-La documentazione sugli aggiornamenti non intende essere una documentazione in grado di formare gli operatori all’utilizzo delle nuove funzionalità dell’applicativo, ma intende essere uno strumento che permetta agli operatori di capire se una nuova funzionalità può portare benefici alle gestione delle loro pratiche e se l’unità organizzativa intende usufruirne.
+La documentazione sugli aggiornamenti non intende essere una documentazione in grado di formare gli operatori all'utilizzo delle nuove funzionalità dell'applicativo, ma intende essere uno strumento che permetta agli operatori di capire se una nuova funzionalità può portare benefici alle gestione delle loro pratiche e se l'unità organizzativa intende usufruirne.
 
 Nel caso in cui una nuova funzionalità risulti interessante, sarà possibile chiedere maggiori delucidazioni al personale addetto alla formazione  che fornirà ulteriori dettagli e gli strumenti necessari alla configurazione della stessa.
 
@@ -26,60 +26,60 @@ Il numero riportato sotto ogni bug/nuova funzionalità è riferito al sistema di
 La data di versione è riferita al primo rilascio della versione che però successivamente potrebbe avere avuto delle patch, nella lista dei bug sono riportati anche quelli riferiti alle patch.
 # **Definizioni, riferimenti, convenzioni**
 - **ATTIVA**
-  Il temine attiva indica una catena di collegamenti che è composta di istanze la cui “somma” di azioni (vedi AZIONE) finisce con un “+”.
-  Nell’esempio mostrato nella descrizione del termine AZIONE possiamo dire che l’attività è ATTIVA e quindi contata come 1 fino alla presentazione dell’istanza 30.
-- **ATTIVITA’**
-  Un’attività commerciale può essere rappresentata da una lista di collegamenti.
-  L’attività può essere:
+  Il temine attiva indica una catena di collegamenti che è composta di istanze la cui "somma" di azioni (vedi AZIONE) finisce con un "+".
+  Nell'esempio mostrato nella descrizione del termine AZIONE possiamo dire che l'attività è ATTIVA e quindi contata come 1 fino alla presentazione dell'istanza 30.
+- **ATTIVITA'**
+  Un'attività commerciale può essere rappresentata da una lista di collegamenti.
+  L'attività può essere:
   - ATTIVA – OPERANTE
   - ATTIVA – NON OPERANTE
   - NON ATTIVA
 - **AUTORIZZAZIONE**
-  Al provvedimento finale può essere legata un’autorizzazione che ad esempio nell’edilizia potrebbe essere un “Permesso di costruire” oppure una “Autorizzazione ambientale”.
+  Al provvedimento finale può essere legata un'autorizzazione che ad esempio nell'edilizia potrebbe essere un "Permesso di costruire" oppure una "Autorizzazione ambientale".
 - **AZIONE**	
-  L’azione è il comportamento di un’istanza e può assumere i seguenti valori “+”, “-“, “=”.
-  In genere l’azione è molto utilizzata nei software in cui più istanze collegate costituiscono un’unica “pratica” o “fascicolo” come ad esempio nel commercio dove più istanze collegate formano un’attività.
-  Nell’esempio vengono mostrate una lista di istanze con le rispettive “azioni”
+  L'azione è il comportamento di un'istanza e può assumere i seguenti valori "+", "-", "=".
+  In genere l'azione è molto utilizzata nei software in cui più istanze collegate costituiscono un'unica "pratica" o "fascicolo" come ad esempio nel commercio dove più istanze collegate formano un'attività.
+  Nell'esempio vengono mostrate una lista di istanze con le rispettive "azioni"
   - Istanza  1 - Nuova apertura esercizio di vicinato (+)
   - Istanza 10 - Sub ingresso (=)
   - Istanza 18 - Trasferimento (=)
   - Istanza 24 - Aumento di superficie (=)
   - Istanza 30 - Cessazione (-)
 
-La lista mostra che dopo l’istanza 1 è presente un’attività (Es. un negozio) in una determinata localizzazione.
-Dopo l’istanza 24 il negozio è sempre 1 anche se è un’altra localizzazione, ha un altro proprietario ed ha cambiato la superficie di vendita.
-Dopo l’istanza 30 il negozio non è più presente nel territorio comunale.
+La lista mostra che dopo l'istanza 1 è presente un'attività (Es. un negozio) in una determinata localizzazione.
+Dopo l'istanza 24 il negozio è sempre 1 anche se è un'altra localizzazione, ha un altro proprietario ed ha cambiato la superficie di vendita.
+Dopo l'istanza 30 il negozio non è più presente nel territorio comunale.
 
 - **BASE.DOC**
   Vedi DOCUMENTI TIPO
 - **CATENA COLLEGAMENTI**
-  Sono istanze collegate tra loro in maniera che una è il seguito di un’altra e insieme formano un fascicolo che le raggruppa.
-- **DATA VALIDITA’**
-  Un’istanza ha validità a seconda del tipo di procedura con la quale è stata gestita.
+  Sono istanze collegate tra loro in maniera che una è il seguito di un'altra e insieme formano un fascicolo che le raggruppa.
+- **DATA VALIDITA'**
+  Un'istanza ha validità a seconda del tipo di procedura con la quale è stata gestita.
   Una DIA è valida dalla data di presentazione della domanda, un permesso di costruire è valido dalla data del rilascio del permesso.
-  Per ogni procedura è possibile impostare quale è l’evento che lo rende valido.
+  Per ogni procedura è possibile impostare quale è l'evento che lo rende valido.
 - **DOCUMENTI TIPO**
-  Sono documenti scritti in word a partire dal modello base “Base.doc”.
-  I documenti tipo sono l’unione di un normale documento word e una serie di “campi web” che fungono da segnaposto.
-  Il formato finale è un documento con estensione “.rtf” rich text format generato dal menù “Salva con nome” di word.
-  Durante la produzione di un documento tipo, un componente sostituisce i segnaposto con i dati reali presenti nell’istanza dalla quale si sta stampando.
+  Sono documenti scritti in word a partire dal modello base "Base.doc".
+  I documenti tipo sono l'unione di un normale documento word e una serie di "campi web" che fungono da segnaposto.
+  Il formato finale è un documento con estensione ".rtf" rich text format generato dal menù "Salva con nome" di word.
+  Durante la produzione di un documento tipo, un componente sostituisce i segnaposto con i dati reali presenti nell'istanza dalla quale si sta stampando.
   - Esempio:
     se si scrive il seguente testo in un documento di word
-    “Il numero [-NUMEROPROTOCOLLO-] è il numero protocollo dell’istanza [-CODICEISTANZA-].”
-    Poi lo si salva in formato rtf e lo si associa ad un documento tipo, al momento della stampa dall’istanza 1 con numero protocollo 100 si avrà come risultato un documento rtf son scritto all’interno:
-    “Il numero 100 è il numero protocollo dell’istanza 1.”
+    "Il numero [-NUMEROPROTOCOLLO-] è il numero protocollo dell'istanza [-CODICEISTANZA-]."
+    Poi lo si salva in formato rtf e lo si associa ad un documento tipo, al momento della stampa dall'istanza 1 con numero protocollo 100 si avrà come risultato un documento rtf son scritto all'interno:
+    "Il numero 100 è il numero protocollo dell'istanza 1."
 
-I nomi assegnati ai segnaposto sono visibili con il tasto “Inserisci campi web” presente nel documento “Base.doc” scaricabile da “Configurazione” / “Back Office” / “Configurazione Back Office” / “Dati generali” alla voce
+I nomi assegnati ai segnaposto sono visibili con il tasto "Inserisci campi web" presente nel documento "Base.doc" scaricabile da "Configurazione" / "Back Office" / "Configurazione Back Office" / "Dati generali" alla voce
 Modello Documenti tipo	Scarica l'ultima versione del documento base.doc 
 
 - **MODELLO DATI DINAMICI**
-  E’ l’insieme di informazioni che possono essere personalizzate dagli operatori e possono essere associate ad un’istanza o ad un’anagrafica.
+  E' l'insieme di informazioni che possono essere personalizzate dagli operatori e possono essere associate ad un'istanza o ad un'anagrafica.
 - **OPERANTE**
-  Un’attività non operante è un’attività che è attiva sul territorio ma che ha comunicato la sua inoperatività per un determinato periodo.
-  In genere è un movimento dell’iter dell’istanza che rende un’attività non operante.
+  Un'attività non operante è un'attività che è attiva sul territorio ma che ha comunicato la sua inoperatività per un determinato periodo.
+  In genere è un movimento dell'iter dell'istanza che rende un'attività non operante.
 - **SOFTWARE**
-  Indica un modulo dell’installazione, in genere all’interno del comune rappresenta una unità organizzativa.
-  Di seguito l’elenco di alcuni dei software installabili:
+  Indica un modulo dell'installazione, in genere all'interno del comune rappresenta una unità organizzativa.
+  Di seguito l'elenco di alcuni dei software installabili:
   - Attività Produttive
   - Commercio su area privata
   - Commercio su area pubblica
@@ -92,49 +92,49 @@ Modello Documenti tipo	Scarica l'ultima versione del documento base.doc
   Piattaforma di Accesso al Registro Imprese in formato XML.
   Realizzata da InfoCamere, è la piattaforma di accesso ai dati del Registro delle Imprese, tenuto dalle Camere di Commercio italiane, che mette a disposizione dei servizi applicativi delle Pubbliche Amministrazioni le informazioni aggiornate sulle imprese. 
 - **PARIX GATE**
-  è la componente che realizza la funzionalità di cooperazione applicativa tra le Pubbliche Amministrazioni ed è formato dal “gateway” e dalla “porta applicativa” dell’ente (prerequisiti PARIX Dati e PARIX Data Base) e consente ad altri enti locali di interrogare,tramite le proprie applicazioni, l’archivio di sintesi integrato con gli altri data base.
+  è la componente che realizza la funzionalità di cooperazione applicativa tra le Pubbliche Amministrazioni ed è formato dal "gateway" e dalla "porta applicativa" dell'ente (prerequisiti PARIX Dati e PARIX Data Base) e consente ad altri enti locali di interrogare,tramite le proprie applicazioni, l'archivio di sintesi integrato con gli altri data base.
   In genere sono le regioni che mettono a disposizione il servizio.
 #
 #
 # **Versione 2.11**
 29/12/2011
 ## **Albo pretorio**
-E’ stata aggiunta la possibilità di pubblicare atti sull’albo pretorio, è un modulo trasversale agli altri che può essere richiamato con una voce di menù o attraverso un link.
+E' stata aggiunta la possibilità di pubblicare atti sull'albo pretorio, è un modulo trasversale agli altri che può essere richiamato con una voce di menù o attraverso un link.
 ## **Gestione mercati - miglioria rilascio concessioni**
 
 
-Oggetto della modifica: svincolare il rilascio di una concessione in una pratica dalla configurazione sulla voce dell’albero dei procedimenti del mercato e dell’uso.
+Oggetto della modifica: svincolare il rilascio di una concessione in una pratica dalla configurazione sulla voce dell'albero dei procedimenti del mercato e dell'uso.
 
-1. Nell’inserimento dell’istanza Il bottone "nuova concessione"  compare se per il software è presente almeno un mercato/una fiera.
+1. Nell'inserimento dell'istanza Il bottone "nuova concessione"  compare se per il software è presente almeno un mercato/una fiera.
 
 2. In fase di rilascio della concessione, se la voce dell'albero dell'istanza è legata ad una manifestazione e ad un giorno allora non è possibile scegliere diversamente; se la voce dell'albero dell'istanza non è legata a nessuna manifestazione allora l'operatore è obbligato a sceglierne una tra quelle configurate
 
-` `3. In fase di rilascio della concessione, l’utente ha la possibilità di selezionare un registro diverso da quello proposto
+` `3. In fase di rilascio della concessione, l'utente ha la possibilità di selezionare un registro diverso da quello proposto
 
 ` `Le istanze che hanno delle concessioni nelle quali il procedimento scelto non  ha configurata nessuna manifestazione, non vengono prese in considerazione nella creazione delle graduatorie.
 ## **Stradario - Comuni Associati**
 
 
-Nel caso di comuni associati nella pagina di inserimento istanze lo stradario  filtra per codice comune mettendo a disposizione solo le vie relative al comune scelto e quelle a cui non è associato un comune specifico. In fase di modifica di un’istanza è stata tolta la possibilità di cambiare il comune. 
+Nel caso di comuni associati nella pagina di inserimento istanze lo stradario  filtra per codice comune mettendo a disposizione solo le vie relative al comune scelto e quelle a cui non è associato un comune specifico. In fase di modifica di un'istanza è stata tolta la possibilità di cambiare il comune. 
 
-Sempre nel caso di un’istallazione multi comune,  nella fase della ricerca dell’istanza è stata inserita la possibilità di scegliere il comune di riferimento. 
+Sempre nel caso di un'istallazione multi comune,  nella fase della ricerca dell'istanza è stata inserita la possibilità di scegliere il comune di riferimento. 
 
-Inoltre nella lista delle istanze è stata inserita una colonna opzionale che riporta il comune in caso si tratti di un’installazione multi comune.
+Inoltre nella lista delle istanze è stata inserita una colonna opzionale che riporta il comune in caso si tratti di un'installazione multi comune.
 ## **Cancellazione documenti provenienti da Chiamate STC**
 
 
-Adesso è possibile cancellare i documenti provenienti da STC come  documenti dell'istanza, allegati del movimento, allegati di un endoprocedimento dell'istanza. E’ previsto un messaggio  di conferma cancellazione che notifica all'utente che si sta per cancellare un documento proveniente da un sistema esterno. L'operatore può decidere se proseguire o annullare l'operazione.
-## **Ripristino della ”S” che mostra lo storico del posteggio**
+Adesso è possibile cancellare i documenti provenienti da STC come  documenti dell'istanza, allegati del movimento, allegati di un endoprocedimento dell'istanza. E' previsto un messaggio  di conferma cancellazione che notifica all'utente che si sta per cancellare un documento proveniente da un sistema esterno. L'operatore può decidere se proseguire o annullare l'operazione.
+## **Ripristino della "S" che mostra lo storico del posteggio**
 
-Nella lista dei posteggi di un mercato è stata ripristinata la “S” che mostra la lista dei subentri. La lista viene mostrata se l'operatore clicca la “S”.  Lo storico potrà essere recuperato non solo per singolo posteggio , ma anche per ogni uso di quel posteggio.
+Nella lista dei posteggi di un mercato è stata ripristinata la "S" che mostra la lista dei subentri. La lista viene mostrata se l'operatore clicca la "S".  Lo storico potrà essere recuperato non solo per singolo posteggio , ma anche per ogni uso di quel posteggio.
 ## **Gestione della ricerca sugli archivi di base delle causali oneri da associare a una voce dell'albero**
 
 
-Aggiunto il check box accanto al campo di ricerca delle causali oneri che permette di scegliere se filtrare per in base all’archivio corrente (non selezionato) o all’archivio di base (selezionato).
-## **Ripristinare l'icona salva note per un’istanza chiusa**
+Aggiunto il check box accanto al campo di ricerca delle causali oneri che permette di scegliere se filtrare per in base all'archivio corrente (non selezionato) o all'archivio di base (selezionato).
+## **Ripristinare l'icona salva note per un'istanza chiusa**
 
 
-E’ stato  ripristinato il funzionamento precedente, che permette di salvare le note anche se un’istanza è chiusa.
+E' stato  ripristinato il funzionamento precedente, che permette di salvare le note anche se un'istanza è chiusa.
 ## **Ordinare i dati secondo un criterio in Istanze/ricerca autorizzazioni e Istanze/ricerca concessioni** 
 
 
@@ -165,7 +165,7 @@ Le impostazioni di ordinamento selezionate durante una ricerca verranno salvate 
 ## **Aggiunta di modelli dinamici a livello di procedura**
 
 
-E’  possibile legare dei modelli dinamici anche alla procedura in maniera analoga a quanto accade nell’albero degli interventi o negli endoprocedimenti.
+E'  possibile legare dei modelli dinamici anche alla procedura in maniera analoga a quanto accade nell'albero degli interventi o negli endoprocedimenti.
 
 # **Versione 2.11 – Area Riservata**
 ## **Modifiche area riservata**
@@ -201,13 +201,13 @@ Step creato, dal file xml di workflow sono gestibili:
 ## **Firma pdf a blocchi**
 
 
-E’ possibile firmare una form dinamica (scheda dinamica), compilata e trasformata in pdf, sia nella sua interezza che a blocchi. La distinzione avviene quando si associa una form dinamica all’albero degli interventi, ad un procedimento o ad una procedura.
-## **Configurazione dei testi dopo il click su “procedi“ nell’ultimo step.**
+E' possibile firmare una form dinamica (scheda dinamica), compilata e trasformata in pdf, sia nella sua interezza che a blocchi. La distinzione avviene quando si associa una form dinamica all'albero degli interventi, ad un procedimento o ad una procedura.
+## **Configurazione dei testi dopo il click su "procedi" nell'ultimo step.**
 
 
-Vanno parametrizzati il titolo della pagina e il testo informativo che vengono mostrati dopo il click sul bottone “procedi” dell’ultimo step 
+Vanno parametrizzati il titolo della pagina e il testo informativo che vengono mostrati dopo il click sul bottone "procedi" dell'ultimo step 
 
-Vanno resi parametrizzati anche il nome del documento da scaricare (il testo a fianco dell’icona del pdf), il testo del bottone “Trasferisci l’istanza al comune” e il testo che sta sopra alla griglia dei soggetti sottoscrittori
+Vanno resi parametrizzati anche il nome del documento da scaricare (il testo a fianco dell'icona del pdf), il testo del bottone "Trasferisci l'istanza al comune" e il testo che sta sopra alla griglia dei soggetti sottoscrittori
 
 **Estremi atti/autorizzazioni**
 
@@ -254,7 +254,7 @@ Modificare lo step con controllo "GestioneDelegaaTrasmettere":
 ## **Modifiche alla visura archivio istanze**
 211
 
-La visura relativa all’archivio istanze, quella relativa ai soggetti portatori di interesse, è ridotta rispetto alla visura di una pratica alla quale si ha accesso. Vengono rispettati i criteri di privacy.
+La visura relativa all'archivio istanze, quella relativa ai soggetti portatori di interesse, è ridotta rispetto alla visura di una pratica alla quale si ha accesso. Vengono rispettati i criteri di privacy.
 # **Versione 2.12**
 05/03/2012
 ## **Famiglie, categorie endoprocedimenti: visualizzare le informazioni collegate**
@@ -421,7 +421,7 @@ Come utente tester
 Voglio poter visualizzare l'intero albero degli interventi nello step corrispondente
 
 In modo da poter testare il funzionamento di voci non ancora pubblicate.
-## **Mostrare la lista di “endo eventuali” già aperta**
+## **Mostrare la lista di "endo eventuali" già aperta**
 
 
 Scenario:
@@ -460,24 +460,24 @@ Durante la presentazione della domanda quando mostra le schede dinamiche deve vi
 ## **Modifiche allo step degli oneri**
 
 
-Nello step dell’area riservata riferito alla tabellina degli oneri bisogna visualizzare le note, poi in caso di un totale oneri pari a 0 non deve essere obbligatorio l’allegato della prova di pagamento.
+Nello step dell'area riservata riferito alla tabellina degli oneri bisogna visualizzare le note, poi in caso di un totale oneri pari a 0 non deve essere obbligatorio l'allegato della prova di pagamento.
 # **Versione 2.13**
 04/06/2012
 ## **Funzionalità in evidenza**
 ### ***Possibilità di salvare i documenti senza doverli scaricare in locale per poi ricaricarli in upload***
-E’ stata aggiunta la possibilità di modificare un documento utilizzando il tasto salva dell’edito che ha aperto il documento (Es. Ms-Word per i file con estensione .doc) e di ricaricarlo velocemente sul server senza dover fare le macchinose operazioni di salva sul desktop e “upload” sul server.
+E' stata aggiunta la possibilità di modificare un documento utilizzando il tasto salva dell'edito che ha aperto il documento (Es. Ms-Word per i file con estensione .doc) e di ricaricarlo velocemente sul server senza dover fare le macchinose operazioni di salva sul desktop e "upload" sul server.
 
-La funzionalità è accedibile dal tasto “MODIFICA” presente nel dettaglio di qualsiasi tipo di allegato.
+La funzionalità è accedibile dal tasto "MODIFICA" presente nel dettaglio di qualsiasi tipo di allegato.
 
 ![](./immagini/Aspose.Words.75b679ed-c90e-4de6-b110-c04d65d511eb.001.png)
 
-Al modifica il documento viene aperto e dopo le modifiche sarà sufficiente pigiare il tasto “RICARICA IL DOCUMENTO MODIFICATO SUL SERVER” per aggiornare il documento.
+Al modifica il documento viene aperto e dopo le modifiche sarà sufficiente pigiare il tasto "RICARICA IL DOCUMENTO MODIFICATO SUL SERVER" per aggiornare il documento.
 
 ![](./immagini/Aspose.Words.75b679ed-c90e-4de6-b110-c04d65d511eb.002.png)
 ### ***Possibilità di firma digitale senza uscire dal back office***
-E’ stata integrata la firma digitale da back office, l’utente può firmare utilizzando il pulsante “FIRMA DIGITALE” presente nel dettaglio di qualsiasi allegato o dalla lista degli allegati attraverso l’icona a forma di “chiave”.
+E' stata integrata la firma digitale da back office, l'utente può firmare utilizzando il pulsante "FIRMA DIGITALE" presente nel dettaglio di qualsiasi allegato o dalla lista degli allegati attraverso l'icona a forma di "chiave".
 
-Viene visualizzata l’anteprima del documento da firmare e pigiando firma viene richiesto il pin della smart card inserita, il processo si conclude ed il file nel back office risulterà firmato.
+Viene visualizzata l'anteprima del documento da firmare e pigiando firma viene richiesto il pin della smart card inserita, il processo si conclude ed il file nel back office risulterà firmato.
 
 ![](./immagini/Aspose.Words.75b679ed-c90e-4de6-b110-c04d65d511eb.003.png)
 
@@ -487,7 +487,7 @@ La firma è presente su tutti i documenti caricati anche se non sarebbe necessar
 
 In fase di presentazione domanda on-line, allo step di selezione degli endo-procedimenti da attivare, viene data la possibilità di aggiungere altri endoprocedimenti oltre a quelli indicati come necessari e a quelli indicati come proposti (o ricorrenti).
 
-La possibilità viene visualizzata nell’area riservata come pulsante “Altri Endo” e la lista che viene visualizzata dipende dalla configurazione specificata per quella voce dell’albero selezionata e dipende dalle famiglie e/o tipologie endo indicate nella sezione “Area Riservata – aggiunta di endo/procedimenti durante la domanda on-line”.
+La possibilità viene visualizzata nell'area riservata come pulsante "Altri Endo" e la lista che viene visualizzata dipende dalla configurazione specificata per quella voce dell'albero selezionata e dipende dalle famiglie e/o tipologie endo indicate nella sezione "Area Riservata – aggiunta di endo/procedimenti durante la domanda on-line".
 
 Dettagli:
 
@@ -504,8 +504,8 @@ creare la tabella ALBEROPROC\_ARENDO:
 PAGINA JSP:
 
 - Aggiungere le sezioni "Area Riservata – aggiunta di endo/procedimenti durante la domanda on-line" (ereditate e non)
-- la sezione “Area Riservata – aggiunta di endo/procedimenti durante la domanda [ereditati]” deve essere visibile solo se non ci sono record nella tabella ALBEROPROC\_ARENDO (vd documento allegato)
-- la sezione “Area Riservata – aggiunta di endo/procedimenti durante la domanda” deve essere visibile solo se ci sono record nella tabella ALBEROPROC\_ARENDO (vd documento allegato)
+- la sezione "Area Riservata – aggiunta di endo/procedimenti durante la domanda [ereditati]" deve essere visibile solo se non ci sono record nella tabella ALBEROPROC\_ARENDO (vd documento allegato)
+- la sezione "Area Riservata – aggiunta di endo/procedimenti durante la domanda" deve essere visibile solo se ci sono record nella tabella ALBEROPROC\_ARENDO (vd documento allegato)
 
 AREA RISERVATA:
 
@@ -531,7 +531,7 @@ La situazione ideale sarebbe:
 - In documentiistanza/view.htm?codice=XXX non mostrare il bottone che permette di eliminare il documento se questo in base alla regola sopra descritta non può essere cancellato
 
 E' stato creato il flag "FLG\_DA\_MODELLO\_DINAMICO" in documentiistanza, tale flag deve essere settato a 1 se il documento è stato caricato da un modello dinamico. Tale modifica è stata effettuata per semplificare l'implementazione della logica di individuazione dei documenti caricati da un modello dinamico.
-### ***Modifica dello stato dell’istanza da un movimento: TIPIMOVIMENTO.FKSTATOISTANZA***
+### ***Modifica dello stato dell'istanza da un movimento: TIPIMOVIMENTO.FKSTATOISTANZA***
 
 
 Bisogna poter creare un tipomovimento che possa essere configurato in maniera da spostare lo stato di un'istanza ISTANZE.CHIUSURA.
@@ -636,19 +636,19 @@ Prevedere sempre un jdialog per la cancellazione di una mail.
 
 Tutti i controlli non devono essere fatti nel layer service ma nel layer web in modo da non coinvolgere funzionalità di cancellazione business. È solamente una modifica per la visualizzazione utente.
 ### ***Integrazione con Parix***
-E’ stata messa a punto l’integrazione con Parix Gate, funzionalità già presente nelle versioni rpecedenti.
+E' stata messa a punto l'integrazione con Parix Gate, funzionalità già presente nelle versioni rpecedenti.
 
-La funzionalità permette di estrarre dal Registro Imprese i dati relativi ad un’impresa.
+La funzionalità permette di estrarre dal Registro Imprese i dati relativi ad un'impresa.
 
 A partire da codice fiscale impresa o partita iva si hanno le seguenti funzionalità:
 
 - Nel back-office
-  - durante l’inserimento di una nuova anagrafica vengono recuperati i dati dal Registro Imprese che poi possono essere integrati prima del salvataggio;
-  - in modifica di una anagrafica è possibile utilizzare il tasto “Controlla aggiornamenti”, posto in relazione al codice fiscale impresa e alla partita iva, che permette di evidenziale le differenze tra l’anagrafica presente nel back-office e quella recuperata dal Registro Imprese.
-- Nell’area riservata
-  - durante la presentazione della domanda on-line allo step dell’inserimento anagrafiche vengono recuperati i dati dal Registro Imprese che poi possono essere integrati prima del salvataggio;
+  - durante l'inserimento di una nuova anagrafica vengono recuperati i dati dal Registro Imprese che poi possono essere integrati prima del salvataggio;
+  - in modifica di una anagrafica è possibile utilizzare il tasto "Controlla aggiornamenti", posto in relazione al codice fiscale impresa e alla partita iva, che permette di evidenziale le differenze tra l'anagrafica presente nel back-office e quella recuperata dal Registro Imprese.
+- Nell'area riservata
+  - durante la presentazione della domanda on-line allo step dell'inserimento anagrafiche vengono recuperati i dati dal Registro Imprese che poi possono essere integrati prima del salvataggio;
 
-Per maggiori dettagli richiedere l’allegato “AnagrafePARIX.doc” (o pdf) e 
+Per maggiori dettagli richiedere l'allegato "AnagrafePARIX.doc" (o pdf) e 
 ### ***Gestione dei nuovi campi per scheda dinamica cittadino extracomunitario nella configurazione dell'area riservata***
 
 
@@ -659,7 +659,7 @@ Per maggiori dettagli richiedere l’allegato “AnagrafePARIX.doc” (o pdf) e
 ### ***Gestione della colonna CODICEOGGETTO\_WORKFLOW della tabella alberoproc***
 
 
-L’utilizzo serve per cambiare la definizione degli step della domanda on-line in base alla selezione dell’intervento (albero). Lo step relativo alla selezione dell’intervento può essere anche il primo nel workflow della presentazione domanda, il seguente è quello presente nella configurazione della voce dell’albero selezionata (se presente).
+L'utilizzo serve per cambiare la definizione degli step della domanda on-line in base alla selezione dell'intervento (albero). Lo step relativo alla selezione dell'intervento può essere anche il primo nel workflow della presentazione domanda, il seguente è quello presente nella configurazione della voce dell'albero selezionata (se presente).
 
 Nella tabella ALBEROPROC è stata aggiunta la colonna CODICEOGGETTO\_WORKFLOW (vd bug555 ), la nuova colonna va gestita nella pagina di dettaglio degli interventi.
 
@@ -704,7 +704,7 @@ Note
 ### ***COPPARO: scadenzario oneri***
 
 
-Sono un’associazione di comuni ed hanno la necessità di effettuare statistiche sugli oneri divise per comuni ma la pagina Interrogazioni >> Pratiche Edilizie >> Scadenziario non presenta la combo in alto per la scelta.
+Sono un'associazione di comuni ed hanno la necessità di effettuare statistiche sugli oneri divise per comuni ma la pagina Interrogazioni >> Pratiche Edilizie >> Scadenziario non presenta la combo in alto per la scelta.
 ### ***INVIOMAIL: Modifiche visualizzazione allegati***
 
 
@@ -774,11 +774,11 @@ Bisogna aggiungere un help (?) con indicato: "le note verranno visualizzate dura
 ### ***UPDATE: Inserire link a istanze da ricerca ajax altre istanze stradario***
 
 
-La funzoinalità altre istanze stradario presente in Dettaglio Istanze e Dettaglio istanze stradario deve far vedere il link all'istanza presente nella lista (con history), l’operatore potrà accedere direttamente all’istanza se ne ha i permessi.
+La funzoinalità altre istanze stradario presente in Dettaglio Istanze e Dettaglio istanze stradario deve far vedere il link all'istanza presente nella lista (con history), l'operatore potrà accedere direttamente all'istanza se ne ha i permessi.
 ### ***ADD: Nuova funzionalità export SI-VBG***
 
 
-La funzionalità SI-VBG serve per esportare e reimportare le configurazioni di back office nel rispetto delle specifiche definite dal progetto RI-Umbria “Sottoattività A4.1 – Ampliamento con  nuove funzioni di amministrazione” .
+La funzionalità SI-VBG serve per esportare e reimportare le configurazioni di back office nel rispetto delle specifiche definite dal progetto RI-Umbria "Sottoattività A4.1 – Ampliamento con  nuove funzioni di amministrazione" .
 
 - Aggiungere due voci di menù negli archivi <software> - Utilità
   - EXPORT SI-VBG
@@ -831,7 +831,7 @@ Nel metodo del service di tipicausalioneri prevedere un metodo che torna a secon
 
 
 Aggiornare alla versione 1\_3 stc le applicazioni nla-aida, nla-enti, AreaRiservata
-### ***Introduzione di un nuovo tipo di mappatura "Espressione regolare”***
+### ***Introduzione di un nuovo tipo di mappatura "Espressione regolare"***
 
 
 Pagina di configurazione delle mappature (People, Aida…)
@@ -873,7 +873,7 @@ FUNZIONALITA' GESTIONE COMMISSIONI E CONFERENZE
    Quando si discute una nuova pratica "commissioniediliziet/createEsitoCommissioniedilizieR.htm?codiceCommissioneR=" si devono riprendere le configurazioni delle presenze (flag presente) dei commissari dalla pratica discussa in precedenza.
 1. voto unanime
    Mettere una combo che setta via javascript per tutti i presenti il voto selezionato.
-1. filtro per data nella creazione dell’ordine del giorno
+1. filtro per data nella creazione dell'ordine del giorno
    eliminare il filtro obbligatorio per data. (se non causa OOM) tentare con una GenerateTable.
 ### ***Visualizzazione della sezione parametri del protocollo nella scheda delle amministrazioni***
 
@@ -894,7 +894,7 @@ Soluzione:
 Errori
 
 - jdialog rimane appeso dopo validazione (non funziona ESC)
-- Al posto del messaggio “Nei risultati non è stato trovato il valore ricercato” bisogna indicare “In base ai filtri specificati {lentina} non è stato trovato il valore ricercato{?}” la {lentina} visualizza la lista dei filtri usati, il tasto {?} indica “Se si ritiene corretto il dato inserito è possibile ripetere la ricerca rimuovendo i filtri superflui oppure confermare il dato inserito che verrà salvato come non valido. ”.
+- Al posto del messaggio "Nei risultati non è stato trovato il valore ricercato" bisogna indicare "In base ai filtri specificati {lentina} non è stato trovato il valore ricercato{?}" la {lentina} visualizza la lista dei filtri usati, il tasto {?} indica "Se si ritiene corretto il dato inserito è possibile ripetere la ricerca rimuovendo i filtri superflui oppure confermare il dato inserito che verrà salvato come non valido. ".
 
 Nuova funzionalità
 
@@ -907,21 +907,21 @@ implementare su dataIntegration default 0.
 
 Soluzione:
 
-- All’evento on\_change effettuare la validazione anche se il valore del campo è vuoto
+- All'evento on\_change effettuare la validazione anche se il valore del campo è vuoto
 - Nella pagina di gestione dello stradario istanza: istanzestradario/create.htm?codiceIstanza=1634
-  aggiungere in sola lettura il campo CODICECIVICO con title “Identificativo univoco del SIT, la sua nomenclatura dipende dal sit in uso (id, codicecivico…)”
+  aggiungere in sola lettura il campo CODICECIVICO con title "Identificativo univoco del SIT, la sua nomenclatura dipende dal sit in uso (id, codicecivico…)"
 - Campi gestiti
-  Componente SIT: esporre un metodo “getCampiGestiti” che ritorna la lista dei campi che il SIT è in grado di gestire.
-  Pagina Web: mostrare il simbolo di ricerca (mondino) e fare la validazione solo per i campi presenti nella lista tornata da “getCampiGestiti”. Non mostrare il CODICECIVICO se non è presente nella lista “getCampiGestiti”.
+  Componente SIT: esporre un metodo "getCampiGestiti" che ritorna la lista dei campi che il SIT è in grado di gestire.
+  Pagina Web: mostrare il simbolo di ricerca (mondino) e fare la validazione solo per i campi presenti nella lista tornata da "getCampiGestiti". Non mostrare il CODICECIVICO se non è presente nella lista "getCampiGestiti".
 - Validazione formale
-  Componente SIT: esporre un metodo “validazioneFormale” che fa la validazione formale dei dati inseriti e cioè controlla la presenza dei campi che poi verranno utilizzati dalla cartografica per disegnare un punto in mappa, tornerà true/false. Es. per tutti i SIT sarà la presenza del campo CODICECIVICO  mentre per il SIT Nautilus sarà la presenza di VIA+CIVICO oppure FOGLIO+PARTICELLA+SUB
-  Pagina Web: al salvataggio, se il campo ISTANZESTRADARIO.VALIDO =1 (valido), invocare il metodo “validazioneFormale” e se torna false allora impostare ISTANZESTRADARIO.VALIDO =0. A video si vedrà il messaggio di stradario non validato. 
-- Aggiungere la visualizzazione della colonna ISTANZESTRADARIO.KM sotto all’attuale campo “fabbricato”.
-- In  presenza di SIT non è possibile mettere più mappali legati ad uno stradario, ci sarebbero problemi per indicare l’id univoco del SIT legato ad un singolo mappale e problemi di validazione della riga (sorgerebbe il dubbio di validare i dati del SIT a livello di stradario o a livello di mappale?).
-  Pagina Web: in presenza di SIT dare la possibilità di gestire un solo mappale (il primario), se dovessero essere presenti più mappali collegati ad uno stradario (situazione precedente all’attivazione del SIT) allora i mappali non primari dovranno essere visibili in sola lettura ed in corrispondenza  dovrà essere presente un pulsantino che permette di “separare” il mappale dallo stradario originale ricollegando ad una nuova riga di ISTANZESTRADARIO con gli stessi dati della precedente (non validata).
+  Componente SIT: esporre un metodo "validazioneFormale" che fa la validazione formale dei dati inseriti e cioè controlla la presenza dei campi che poi verranno utilizzati dalla cartografica per disegnare un punto in mappa, tornerà true/false. Es. per tutti i SIT sarà la presenza del campo CODICECIVICO  mentre per il SIT Nautilus sarà la presenza di VIA+CIVICO oppure FOGLIO+PARTICELLA+SUB
+  Pagina Web: al salvataggio, se il campo ISTANZESTRADARIO.VALIDO =1 (valido), invocare il metodo "validazioneFormale" e se torna false allora impostare ISTANZESTRADARIO.VALIDO =0. A video si vedrà il messaggio di stradario non validato. 
+- Aggiungere la visualizzazione della colonna ISTANZESTRADARIO.KM sotto all'attuale campo "fabbricato".
+- In  presenza di SIT non è possibile mettere più mappali legati ad uno stradario, ci sarebbero problemi per indicare l'id univoco del SIT legato ad un singolo mappale e problemi di validazione della riga (sorgerebbe il dubbio di validare i dati del SIT a livello di stradario o a livello di mappale?).
+  Pagina Web: in presenza di SIT dare la possibilità di gestire un solo mappale (il primario), se dovessero essere presenti più mappali collegati ad uno stradario (situazione precedente all'attivazione del SIT) allora i mappali non primari dovranno essere visibili in sola lettura ed in corrispondenza  dovrà essere presente un pulsantino che permette di "separare" il mappale dallo stradario originale ricollegando ad una nuova riga di ISTANZESTRADARIO con gli stessi dati della precedente (non validata).
 - Mettere i titoli nelle finestre dei risultati di ricerca e/o validazione del SIT:
-  Es. “Lista risultati per il campo PARTICELLA” oppure “Errore di validazione”
-- Nella pagina istanze stradario “istanzestradario/view.htm?codice=1992”  mettere il pulsante “duplica” che copia i dati su un nuovo stradario e mappale. Il “duplica” salva prima le modifiche poi duplica e quindi visualizza la nuova riga.
+  Es. "Lista risultati per il campo PARTICELLA" oppure "Errore di validazione"
+- Nella pagina istanze stradario "istanzestradario/view.htm?codice=1992"  mettere il pulsante "duplica" che copia i dati su un nuovo stradario e mappale. Il "duplica" salva prima le modifiche poi duplica e quindi visualizza la nuova riga.
 ### ***Gestione del campo I\_ATTIVITAORDINE sull ' Istanze***
 
 
@@ -979,9 +979,9 @@ dove 962292 sarà il segnaposto [MOVIMENTI.FKIDPROTOCOLLO] e 2012/24871 saranno 
 
 
 - implementare il metodo su istanzestradariocontroller.separaMappale:
-  permette di “separare” il mappale dallo stradario originale ricollegando ad una nuova riga di ISTANZESTRADARIO con gli stessi dati della precedente (non validata) ISTANZESTRADARIO.VALIDO=0 (FALSE).
+  permette di "separare" il mappale dallo stradario originale ricollegando ad una nuova riga di ISTANZESTRADARIO con gli stessi dati della precedente (non validata) ISTANZESTRADARIO.VALIDO=0 (FALSE).
 - implementare il metodo su istanzestradariocontroller.duplicaMappale:
-  copia i dati su un nuovo stradario e mappale. Il “duplica” salva prima le modifiche poi duplica e quindi visualizza la nuova riga.
+  copia i dati su un nuovo stradario e mappale. Il "duplica" salva prima le modifiche poi duplica e quindi visualizza la nuova riga.
 
 Soluzione:
 
@@ -1070,13 +1070,13 @@ Se nella riga di ISTANZEMAPPALI non sono presenti i dati FOGLIO, PARTICELLA e TI
 # **Versione 2.13 – Area Riservata**
 ## **Funzionalità in evidenza**
 ### ***Integrazione documentale on-line***
-E’ stata messa a punto la possibilità di integrare una pratica utilizzando i servizi on-line.
+E' stata messa a punto la possibilità di integrare una pratica utilizzando i servizi on-line.
 
 In generale è possibile che alcuni passaggi del workflow (flusso) di back-office possano essere configurati in modo tale che possano essere effettuati dal cittadino e/o intermediario da on-line.
 
-Il caso più esplicito è quello di richiedere una integrazione documentale per una pratica, il cittadino e/o intermediario può vedere la scadenza nella sezione “le mie scadenze” o in fondo alla visura stato avanzamento pratica e può integrare la pratica da on-line allegando gli opportuni file e/o informazioni, l’inoltro della documentazione viene protocollato nel caso di protocollo integrato al back-office.
+Il caso più esplicito è quello di richiedere una integrazione documentale per una pratica, il cittadino e/o intermediario può vedere la scadenza nella sezione "le mie scadenze" o in fondo alla visura stato avanzamento pratica e può integrare la pratica da on-line allegando gli opportuni file e/o informazioni, l'inoltro della documentazione viene protocollato nel caso di protocollo integrato al back-office.
 
-La ricevuta dell’avvenuta integrazione può essere prodotta e scaricata da on-line come tutti i documenti presentati e tutti i documenti prodotti dal back-office e pubblicati.
+La ricevuta dell'avvenuta integrazione può essere prodotta e scaricata da on-line come tutti i documenti presentati e tutti i documenti prodotti dal back-office e pubblicati.
 ### ***Separare codice fiscale e partita iva nelle anagrafiche di tipo PG***
 
 
@@ -1163,11 +1163,11 @@ Occorre evidenziare all'utente se un allegato richiede la presenza della firma d
 
 
 Durante l'invio STC da Area Riservata a STC e Backoffice sembra che non vengano inviate le informazioni dell'anagrafica relative alla corrispondenza
-### ***Visualizzazione immediata dello Step di selezione endo “Altri endo-procedimenti”***
+### ***Visualizzazione immediata dello Step di selezione endo "Altri endo-procedimenti"***
 
 
 se non sono presenti endo configurati ma sono presenti altri endo mostrare direttamente la lista degli altri endo
-### ***Possibilità di configurare il numero di righe visibili nei campi dinamici di tipo "multi lista valori”***
+### ***Possibilità di configurare il numero di righe visibili nei campi dinamici di tipo "multi lista valori"***
 
 
 La modifica riguarda anche i campi dinamici utilizzati dall'area riservata
@@ -1182,7 +1182,7 @@ Per le tabelle in oggetto è stata aggiunta la possibilità di disabilitarle qua
 ## **Segnaposto MAIL / TESTI TIPO**
 Nella funzionalità di configurazione Mail/testi tipo è stata aggiunta una voce chiamata [loc\_estesa] descrizione "localizzazione estesa" con le seguenti caratteristiche:
 
-- Indirizzo, civico / esponente colore (Esponente e colore potrebbero non esserci), se c‘è il km: “km xx“ al posto di civico
+- Indirizzo, civico / esponente colore (Esponente e colore potrebbero non esserci), se c‘è il km: "km xx" al posto di civico
 
 Sono stati aggiunti gli altri campi di istanzestradario:
 
@@ -1203,10 +1203,10 @@ Sono stati aggiunti gli altri campi di istanzestradario:
 Nella configurazione degli allegati necessari o ricorrenti per la domanda on-line è stato aggiunta la possibilità di dettagliare meglio, attraverso delle note, le indicazioni per il richiedente:
 
 - Allegati specificati negli endo-procedimenti;
-- Allegati specificati nell’alberatura degli interventi;
+- Allegati specificati nell'alberatura degli interventi;
 - Allegati specificati nelle procedure;
 ## **Scadenzario**
-Ogni operatore ha la possibilità di configurare lo scadenzario all’avvio e di impostare i filtri che ritiene più appropriati per avere una lista di scadenze adeguata a se stesso.
+Ogni operatore ha la possibilità di configurare lo scadenzario all'avvio e di impostare i filtri che ritiene più appropriati per avere una lista di scadenze adeguata a se stesso.
 Dalla funzionalità di scadenzario
 
 ![](./immagini/Aspose.Words.75b679ed-c90e-4de6-b110-c04d65d511eb.004.png)
@@ -1215,87 +1215,87 @@ Dopo la visualizzazione della lista
 
 ![](./immagini/Aspose.Words.75b679ed-c90e-4de6-b110-c04d65d511eb.005.png)
 
-Può essere utilizzato il pulsante riquadrato in rosso nella figura precedente per impostare i parametri di scadenzario legati all’utente connesso.
+Può essere utilizzato il pulsante riquadrato in rosso nella figura precedente per impostare i parametri di scadenzario legati all'utente connesso.
 ## **Cooperazione con il protocollo**
-E’ stata aggiunta la possibilità di selezionare “Mezzi” e “Modalità invio” per i protocolli che gestiscono queste funzionalità.
+E' stata aggiunta la possibilità di selezionare "Mezzi" e "Modalità invio" per i protocolli che gestiscono queste funzionalità.
 ## **Integrazione Back-Office REA (come da specifiche DPR n. 160/2010)**
-In base al DPR n. 160/2010 il SUAP ha l’obbligo di aggiornare il registro imprese in caso di avvii, sub-ingressi, trasferimenti ed altre tipologie di pratiche, l’aggiornamento avviene in cooperazione applicativa secondo le specifiche pubblicate sul portale <http://www.impresainungiorno.gov.it> , per i dettagli richiedere la documentazione ad In.I.T.
+In base al DPR n. 160/2010 il SUAP ha l'obbligo di aggiornare il registro imprese in caso di avvii, sub-ingressi, trasferimenti ed altre tipologie di pratiche, l'aggiornamento avviene in cooperazione applicativa secondo le specifiche pubblicate sul portale <http://www.impresainungiorno.gov.it> , per i dettagli richiedere la documentazione ad In.I.T.
 ## **NLA\_RICEZIONE\_PEC**
-E’ stata introdotta una componente che permette di interpretare una PEC pervenuta alla casella postale dell’ente per crearne un automatismo nel back-office:
+E' stata introdotta una componente che permette di interpretare una PEC pervenuta alla casella postale dell'ente per crearne un automatismo nel back-office:
 
-- Pec ComUnica pervenuta dalla camera di commercio (telemaco)à genera automaticamente un’istanza
-- Pec di presentazione domanda strutturate come da DPR n. 160 à genera automaticamente un’istanza
-- Pec di presentazione domanda non strutturate à genera automaticamente un’istanza
+- Pec ComUnica pervenuta dalla camera di commercio (telemaco)à genera automaticamente un'istanza
+- Pec di presentazione domanda strutturate come da DPR n. 160 à genera automaticamente un'istanza
+- Pec di presentazione domanda non strutturate à genera automaticamente un'istanza
 - Pec di rientro parere enti terzi strutturate come da DPR n. 160 à genera automaticamente il movimento di rientro parere
-- Pec di consegna e accettazione à riconcilia le ricevute di accettazione e consegna nell’archivio mail del back-office dal quale sono state inviate le PEC
+- Pec di consegna e accettazione à riconcilia le ricevute di accettazione e consegna nell'archivio mail del back-office dal quale sono state inviate le PEC
 
-(vedi allegato “Le-comunicazioni-PEC.pdf”)
+(vedi allegato "Le-comunicazioni-PEC.pdf")
 ## **CART - Cooperazione Applicativa Regione Toscana**
 Implementazione completa delle specifiche RFC riferite ai SUAP per la cooperazione CART e relative comunicazioni ASL.
 ## **Nodo NLA People – Integrazione con MyPage**
-E’ stata sviluppata l’integrazione con MyPage di People come da specifiche di qualificazione di Regione Emilia Romagna.
+E' stata sviluppata l'integrazione con MyPage di People come da specifiche di qualificazione di Regione Emilia Romagna.
 ## **People – Configurazione regole**
-- E’ stata introdotta la possibilità di non aggiornare automaticamente le anagrafiche pervenute da SUAP-ER;
-- E’ stata introdotta la possibilità di mappare i dati relativi alla localizzazione delle domande;
-- E’ stata introdotta la possibilità di mappare tutte le anagrafiche collegate alle domande;
+- E' stata introdotta la possibilità di non aggiornare automaticamente le anagrafiche pervenute da SUAP-ER;
+- E' stata introdotta la possibilità di mappare i dati relativi alla localizzazione delle domande;
+- E' stata introdotta la possibilità di mappare tutte le anagrafiche collegate alle domande;
 ## **Statistiche**
-Sono state introdotte migliorie per la configurazione delle esportazioni ad uso statistico e per le esportazioni utilizzate dagli osservatori regionali o per l’anagrafe tributaria.
+Sono state introdotte migliorie per la configurazione delle esportazioni ad uso statistico e per le esportazioni utilizzate dagli osservatori regionali o per l'anagrafe tributaria.
 
 Contattare In.I.T. per i dettagli.
 # **Versione 2.14 – Area Riservata**
-## **Migliorie sui “movimenti” da effettuare on-line (Es. integrazioni)**
-E’ stata migliorata l’interfaccia utente per le integrazioni da presentare on-line;
+## **Migliorie sui "movimenti" da effettuare on-line (Es. integrazioni)**
+E' stata migliorata l'interfaccia utente per le integrazioni da presentare on-line;
 ## **Presentazione domanda nel rispetto delle regole CART - Cooperazione Applicativa Regione Toscana**
 Implementazione completa delle specifiche RFC riferite alla presentazione della domanda on-line.
 ## **Firma digitale integrata**
-E’ stata integrata l’apposizione della firma digitale sull’area riservata e sulla presentazione della domanda CART.
+E' stata integrata l'apposizione della firma digitale sull'area riservata e sulla presentazione della domanda CART.
 # **Versione 2.15**
 ## **Scadenzario**
 Sono state introdotte due nuove sezioni:
 
-- “Nuove domande STC” 
+- "Nuove domande STC" 
   che mostra la lista delle domande pervenute da on-line o da un sistema esterno (Es. altro modulo)
-- “Eventi di sistema”
+- "Eventi di sistema"
   che mostra la lista degli eventi che rappresentano errori e/o avvertimenti verificatisi durante le operazioni batch (non supervisionate da un operatore).
 ## **Elaborazione: visualizzazione allegati**
-Nell’elaborazione è ora visibile la lista degli allegati per ogni movimento senza dover entrare nella sezione allegati del dettaglio del movimento.
+Nell'elaborazione è ora visibile la lista degli allegati per ogni movimento senza dover entrare nella sezione allegati del dettaglio del movimento.
 ## **Contabilità mercati**
 Gestione posteggi assegnati ai consorzi.
 ## **Pagina centrale personalizzata per utente**
-Dalla gestione degli utenti (funzionalità amministrativa) è possibile personalizzare la prima pagina dopo l’accesso al back-office, tale pagina non sarà visibile se è attivo lo scadenzario all’avvio.
+Dalla gestione degli utenti (funzionalità amministrativa) è possibile personalizzare la prima pagina dopo l'accesso al back-office, tale pagina non sarà visibile se è attivo lo scadenzario all'avvio.
 ## **Contabilità mercati: funzionalità di adeguamento iva**
 Funzionalità per aggiornare tutti gli importi contabili relativi a registrazioni non incassate.
 # Protocollazione: documento principale
-E’ stata introdotta la possibilità di selezionare quale è il documento principale tra i documenti inviati al protocollo, la funzionalità è attiva per i protocolli che utilizzano questa informazione.
+E' stata introdotta la possibilità di selezionare quale è il documento principale tra i documenti inviati al protocollo, la funzionalità è attiva per i protocolli che utilizzano questa informazione.
 # **Versione 2.16**
-## **ATTIVITA’ - Schede dinamiche collegate all’attività**
-Sono state introdotte le schede dinamiche collegate all’attività, la gestione della scheda avviene sempre dagli archivi dove sono attualmente gestite le schede delle istanze e delle anagrafiche.
+## **ATTIVITA' - Schede dinamiche collegate all'attività**
+Sono state introdotte le schede dinamiche collegate all'attività, la gestione della scheda avviene sempre dagli archivi dove sono attualmente gestite le schede delle istanze e delle anagrafiche.
 
-Se nelle schede con contesto=”ATTIVITA’” viene utilizzato lo stesso campo utilizzato in una scheda istanza questo viene automaticamente popolato nelle operazioni di collegamento dell’istanza ad una attività.
+Se nelle schede con contesto="ATTIVITA'" viene utilizzato lo stesso campo utilizzato in una scheda istanza questo viene automaticamente popolato nelle operazioni di collegamento dell'istanza ad una attività.
 
 La funzionalità ha due scopi:
 
-1. Agganciare all’attività un numero illimitato di informazioni;
-1. I campi condivisi con le schede dinamiche delle istanze collegate all’attività vengono variati dinamicamente attualizzando di fatto le informazioni a corredo dell’attività. Ad esempio la dimensione della superficie alimentare iniziale di un attività (es. 120Mq) può diminuire in caso di aumento/diminuzione superficie di vendita (100Mq) o può variare in caso di trasferimento, se il dato Superficie Mq è un campo dinamico condiviso tra una scheda dinamica dell’istanza e una scheda dinamica dell’attività allora l’attività cambia nel corso del tempo in base alle istanze ad essa collegate.
-## **ATTIVITA’ – Possibilità di estrarre la situazione attività ad una determinata data**
-Nella gestione dell’attività, in relazione alla modifica delle schede dinamiche legate all’attività, è possibile vedere in che modo l’attività cambia nel tempo e in una determinata data quali erano le sue caratteristiche.
+1. Agganciare all'attività un numero illimitato di informazioni;
+1. I campi condivisi con le schede dinamiche delle istanze collegate all'attività vengono variati dinamicamente attualizzando di fatto le informazioni a corredo dell'attività. Ad esempio la dimensione della superficie alimentare iniziale di un attività (es. 120Mq) può diminuire in caso di aumento/diminuzione superficie di vendita (100Mq) o può variare in caso di trasferimento, se il dato Superficie Mq è un campo dinamico condiviso tra una scheda dinamica dell'istanza e una scheda dinamica dell'attività allora l'attività cambia nel corso del tempo in base alle istanze ad essa collegate.
+## **ATTIVITA' – Possibilità di estrarre la situazione attività ad una determinata data**
+Nella gestione dell'attività, in relazione alla modifica delle schede dinamiche legate all'attività, è possibile vedere in che modo l'attività cambia nel tempo e in una determinata data quali erano le sue caratteristiche.
 ![](./immagini/Aspose.Words.75b679ed-c90e-4de6-b110-c04d65d511eb.006.png)
-## **Integrazione Protocollo “Tipo smistamento”**
-Per i protocolli che gestiscono il “Tipo smistamento” (Per conoscenza, per competenza) è possibile configurare la funzionalità.
+## **Integrazione Protocollo "Tipo smistamento"**
+Per i protocolli che gestiscono il "Tipo smistamento" (Per conoscenza, per competenza) è possibile configurare la funzionalità.
 ## **Mail - Rubrica amministrazioni**
-Nell’invio della mail è stata gestita la rubrica delle amministrazioni per ricercare l’indirizzo a cui inviare la mail.
+Nell'invio della mail è stata gestita la rubrica delle amministrazioni per ricercare l'indirizzo a cui inviare la mail.
 ## **AIDA-Aggiornamento sul portale  del numero protocollo assegnato alla pratica dal VBG**
-E’ possibile configurare un movimento del workflow del back-office in modo che aggiorni sul portale AIDA il numero protocollo assegnato alla pratica così diventerà visibile agli utenti del portale che hanno presentato una domanda.
+E' possibile configurare un movimento del workflow del back-office in modo che aggiorni sul portale AIDA il numero protocollo assegnato alla pratica così diventerà visibile agli utenti del portale che hanno presentato una domanda.
 ## **AIDA-Aggiornamento sul portale  dello stato avanzamento della pratica**
-E’ possibile configurare dei movimenti del workflow del back-office in modo che aggiornino sul portale AIDA lo stato avanzamento della pratica così diventerà visibile agli utenti del portale che hanno presentato una domanda.
+E' possibile configurare dei movimenti del workflow del back-office in modo che aggiornino sul portale AIDA lo stato avanzamento della pratica così diventerà visibile agli utenti del portale che hanno presentato una domanda.
 ## **Nuove variabili segnaposto**
 - [-TITOLORERESPONSABILEPROC-]
-  stampa il titolo (dott., ing…) del responsabile del procedimento censito nell’istanza.
+  stampa il titolo (dott., ing…) del responsabile del procedimento censito nell'istanza.
 - DATA SCADENZA DEL MOVIMENTO: [-MOV\_DATASCADENZA-] riporta la data di scadenza del movimento da cui si sta facendo la stampa
 - DATA SCADENZA DEL MOVIMENTO ESEGUITO (CodMovimento): [-MOV\_DATASCADENZA\_FATTO(InsCod)-] riporta la data di scadenza del tipomovimento specificato dentro le parentesi, cercandolo solamente tra i movimenti fatti ( quelli in verde )
 - DATA SCADENZA DEL MOVIMENTO DA ESEGUIRE (CodMovimento): [-MOV\_DATASCADENZA\_DAFARE(InsCod)-] riporta la data di scadenza del tipomovimento specificato dentro le parentesi, cercandolo solamente tra i movimenti da fare ( quelli in blu )
 ## **Aggiornamento ISTAT su canoni posteggio**
-E’ stata introdotta la funzionalità in oggetto per adeguare i canoni dei posteggi.
+E' stata introdotta la funzionalità in oggetto per adeguare i canoni dei posteggi.
 ## **Commercio su aree pubbliche – registrazioni per consorzio**
 Durante la creazione delle registrazioni contabili se il mercato è gestito dai consorzi allora deve essere chiesto all'operatore se le registrazioni contabili devono essere individuali per concessionari o singola per l'anagrafe del consorzio.
 
@@ -1309,7 +1309,7 @@ L'operatore deve indicare il mese dal quale deve partire il pagamento (dipende d
 ## **Commercio su aree pubbliche – Concessioni revocate**
 Nella pagina di ricerca registrazioni contabili è stato inserito un pannellino che permette di visualizzare la lista delle concessioni cessate negli ultimi 30 gg dalla data odierna.
 ## **Gestione ruoli**
-E’ stata revisionata la gestione dei ruoli legata agli operatori di back-office, ad esempio l’operatore appartenente ad un ruolo che può gestire l’istanza ma non può gestire l’istruttoria della pratica vedrà i movimento del workflow di back office relativi all’istruttoria in grigio e non potrà gestirli. Per i dettagli sulla configurazione dei ruoli chiedere ad In.I.T.
+E' stata revisionata la gestione dei ruoli legata agli operatori di back-office, ad esempio l'operatore appartenente ad un ruolo che può gestire l'istanza ma non può gestire l'istruttoria della pratica vedrà i movimento del workflow di back office relativi all'istruttoria in grigio e non potrà gestirli. Per i dettagli sulla configurazione dei ruoli chiedere ad In.I.T.
 ## **Funzionalità link preferiti**
 Per poter accedere direttamente alle funzionalità più utilizzate ogni operatore ha la possibilità di configurare i suoi link preferiti attraverso il pulsante (stellina)posto in alto a destra del back-office:
 
@@ -1319,26 +1319,26 @@ I link su preferiti può essere anche una funzionalità esterna al back-office.
 
 **Protocollazione da movimento, visualizzazione degli allegati di altri movimenti**
 
-Durante la protocollazione di un movimento è possibile selezionare ed inviare anche gli allegati di altri movimenti oltre a quelli dell’istanza e degli endo-procedimenti.
+Durante la protocollazione di un movimento è possibile selezionare ed inviare anche gli allegati di altri movimenti oltre a quelli dell'istanza e degli endo-procedimenti.
 # **Versione 2.17**
 ## **Endo-procedimenti legati a più amministrazioni**
-Negli endo-procedimenti gestiti dagli archivi di base (TT) è possibile gestire che siano legati a più amministrazioni, pulsante “ATTIVA IN”.
+Negli endo-procedimenti gestiti dagli archivi di base (TT) è possibile gestire che siano legati a più amministrazioni, pulsante "ATTIVA IN".
 
-La funzionalità può essere utilizzata per generare, nell’elaborazione, più movimenti di notifica verso diverse amministrazioni legati allo stesso endo-procedimento (notifica per competenza, per conoscenza…).
+La funzionalità può essere utilizzata per generare, nell'elaborazione, più movimenti di notifica verso diverse amministrazioni legati allo stesso endo-procedimento (notifica per competenza, per conoscenza…).
 ## **Integrazione Protocollo**
-Durante il “Leggi” protocollo, per i protocolli che permettono tale funzionalità, è possibile selezionare i documenti che devono essere scaricati nella sezione documenti del back-office, tornando nella lista dei documenti è possibile vedere quali documenti sono già scaricati e quali possono essere ancora scaricati.
-## **Gestione attività: aggiunta la tipologia dell’attività**
-Nella gestione dell’attività è possibile fare una ulteriore suddivisione per tipologia, ad esempio all’interno del modulo commercio è possibile gestire tipologie quali “Esercizi di vicinato”, “Medie strutture”…
+Durante il "Leggi" protocollo, per i protocolli che permettono tale funzionalità, è possibile selezionare i documenti che devono essere scaricati nella sezione documenti del back-office, tornando nella lista dei documenti è possibile vedere quali documenti sono già scaricati e quali possono essere ancora scaricati.
+## **Gestione attività: aggiunta la tipologia dell'attività**
+Nella gestione dell'attività è possibile fare una ulteriore suddivisione per tipologia, ad esempio all'interno del modulo commercio è possibile gestire tipologie quali "Esercizi di vicinato", "Medie strutture"…
 ## **Ricerca attività: aggiunti filtri**
 Aggiunta la possibilità di ricercare le attività per endo-procedimento e per campi dinamici.
 ## **Integrazione pagamenti PAYER**
-E’ stato integrato il sistema di pagamenti di Regione Emilia Romagna PAY-ER.
+E' stato integrato il sistema di pagamenti di Regione Emilia Romagna PAY-ER.
 
-E’ ancora in fase di collaudo.
+E' ancora in fase di collaudo.
 ## **Commercio su aree pubbliche: assegnazione automatica concessioni**
-In base alla graduatoria è possibile assegnare automaticamente le concessioni sui posteggi ordinati in base a criteri di “importanza”.
+In base alla graduatoria è possibile assegnare automaticamente le concessioni sui posteggi ordinati in base a criteri di "importanza".
 ## **Inserimento rapido istanza**
-Per la funzionalità in oggetto è possibile stabilire se far vedere tutti i campi dell’istanza o solo un sottoinsieme.
+Per la funzionalità in oggetto è possibile stabilire se far vedere tutti i campi dell'istanza o solo un sottoinsieme.
 ## **Nuovi segnaposto per le stampe**
 - Richiedente
   [-COMUNEDINASCITA-]: COMUNE DI NASCITA, descrizione del comune di nascita
@@ -1356,36 +1356,36 @@ Per la funzionalità in oggetto è possibile stabilire se far vedere tutti i cam
 # **Versione 2.18**
 Gennaio 2014
 ## **Visualizzazione estremi atto e riferimenti protocollo mittente**
-Nel dettaglio di un movimento dell’elaborazione, nel caso in cui il movimento sia legato ad un endo-procedimento, sarà possibile gestire gli estremi del parere/atto rilasciato dall’ente e/o visualizzare gli estremi dell’atto già in possesso del richiedente e dichiarato in fase di presentazione domanda.
+Nel dettaglio di un movimento dell'elaborazione, nel caso in cui il movimento sia legato ad un endo-procedimento, sarà possibile gestire gli estremi del parere/atto rilasciato dall'ente e/o visualizzare gli estremi dell'atto già in possesso del richiedente e dichiarato in fase di presentazione domanda.
 
-Vedi pulsante “ESTREMI ATTO” della figura sotto.
+Vedi pulsante "ESTREMI ATTO" della figura sotto.
 
-Nei movimenti legati ad un endo è possibile specificare i riferimenti del protocollo mittente, vedi sezione “Riferimenti protocollo del mittente” della figura sotto.
+Nei movimenti legati ad un endo è possibile specificare i riferimenti del protocollo mittente, vedi sezione "Riferimenti protocollo del mittente" della figura sotto.
 
 ![](./immagini/Aspose.Words.75b679ed-c90e-4de6-b110-c04d65d511eb.008.png)
 
-E’ stato aggiunto un segnaposto nelle **mail tipo** riferito agli estremi atto.
+E' stato aggiunto un segnaposto nelle **mail tipo** riferito agli estremi atto.
 
-Casi d’uso:
+Casi d'uso:
 
-- Quando è il richiedente che comunica di possedere un atto/autorizzazione gli estremi dello stesso vengono memorizzati nella sezione degli endo-procedimenti spuntando la spunta della colonna “acquisito” e compilando la colonna “Dettaglio”
+- Quando è il richiedente che comunica di possedere un atto/autorizzazione gli estremi dello stesso vengono memorizzati nella sezione degli endo-procedimenti spuntando la spunta della colonna "acquisito" e compilando la colonna "Dettaglio"
   ![](./immagini/Aspose.Words.75b679ed-c90e-4de6-b110-c04d65d511eb.009.png)
-  ora tali informazioni possono essere viste e/o gestite, tramite il pulsante “ESTREMI ATTO”, anche dal movimento di “trasmissione” all’ente/ufficio interessato dall’endo;
-- Quando l’atto/autorizzazione/parere è rilasciato dall’ente/ufficio interessato dall’endo è possibile registrare l’informazione utilizzando il pulsante “ESTREMI ATTO” nel movimento di rientro legato all’endo e/o è possibile specificare gli estremi del protocollo del mittente.
-## **Selezione tecnico/intermediario dall’archivio anagrafiche**
-Nella ricerca di un tecnico da associare ad un’istanza è possibile indicare che la ricerca venga fatta anche sulle anagrafiche che non sono censite come tecnico, vedi spunta aggiunta di fianco all’intermediario.
+  ora tali informazioni possono essere viste e/o gestite, tramite il pulsante "ESTREMI ATTO", anche dal movimento di "trasmissione" all'ente/ufficio interessato dall'endo;
+- Quando l'atto/autorizzazione/parere è rilasciato dall'ente/ufficio interessato dall'endo è possibile registrare l'informazione utilizzando il pulsante "ESTREMI ATTO" nel movimento di rientro legato all'endo e/o è possibile specificare gli estremi del protocollo del mittente.
+## **Selezione tecnico/intermediario dall'archivio anagrafiche**
+Nella ricerca di un tecnico da associare ad un'istanza è possibile indicare che la ricerca venga fatta anche sulle anagrafiche che non sono censite come tecnico, vedi spunta aggiunta di fianco all'intermediario.
 
 ![](./immagini/Aspose.Words.75b679ed-c90e-4de6-b110-c04d65d511eb.010.png)
 ## **Stato istanza, chiusura istanza**
 Per evitare problemi nel fare statistiche sono stati messi dei vincoli alla chiusura delle istanze: una chiusura istanza può essere fatta solo in presenza di una data di chiusura.
 
-Nei movimenti dell’elaborazione, nella tendina relativo allo stato attuale dell’istanza, non sono più visibili gli stati che indicano l’istanza chiusa, tale chiusura deve essere fatta con il movimento di chiusura specificato nella sezione “Registro provvedimento autorizzativo” della procedura 
+Nei movimenti dell'elaborazione, nella tendina relativo allo stato attuale dell'istanza, non sono più visibili gli stati che indicano l'istanza chiusa, tale chiusura deve essere fatta con il movimento di chiusura specificato nella sezione "Registro provvedimento autorizzativo" della procedura 
 
 ![](./immagini/Aspose.Words.75b679ed-c90e-4de6-b110-c04d65d511eb.011.png)
 
 `   `Se il movimento di chiusura prevede un atto allora si configureranno gli altri parametri necessari.
 
-E’ possibile chiudere l’istanza utilizzando il pulsante “INFO” presente nella scheda “ALTRE FUNZIONI” dell’istanza, in questo caso dopo aver selezionato uno stato di chiuso nella tendina e salvato l’informazione vengono chiesti i dati necessari per generare il movimento di chiusura (che risulterà nell’elaborazione) e verranno chiesti eventuali estremi dell’atto rilasciato.
+E' possibile chiudere l'istanza utilizzando il pulsante "INFO" presente nella scheda "ALTRE FUNZIONI" dell'istanza, in questo caso dopo aver selezionato uno stato di chiuso nella tendina e salvato l'informazione vengono chiesti i dati necessari per generare il movimento di chiusura (che risulterà nell'elaborazione) e verranno chiesti eventuali estremi dell'atto rilasciato.
 ## **Salvataggio ricerche**
 Nelle pagine dove è possibile salvare delle ricerche (ricerca istanze, ricerca attività e scadenzario) ora è possibile per ogni operatore salvare i criteri di ricerca che più utilizza:
 
@@ -1394,81 +1394,81 @@ Nelle pagine dove è possibile salvare delle ricerche (ricerca istanze, ricerca 
 Una volta inseriti i criteri di ricerca, prima di selezionare il cerca, è possibile dare un nome al criterio e salvarlo, in questo modo è possibile utilizzare tali criteri per future ricerche.
 
 Nelle versioni precedenti questi criteri potevano essere salvati solo da un amministratore.
-## **Parametri di protocollazione e fascicolazione specificati in base all’albero degli interventi**
-La sezione è ora raggiungibile tramite i nuovi bottoni “PARAMETRI PROTOCOLLAZIONE”, “PARAMETRI FASCICOLAZIONE”.
-## **Spostamento di un’istanza da un modulo all’altro**
-E’ stata aggiunta questa utilità dal pannello amministrativo in uso agli operatori In.I.T..
+## **Parametri di protocollazione e fascicolazione specificati in base all'albero degli interventi**
+La sezione è ora raggiungibile tramite i nuovi bottoni "PARAMETRI PROTOCOLLAZIONE", "PARAMETRI FASCICOLAZIONE".
+## **Spostamento di un'istanza da un modulo all'altro**
+E' stata aggiunta questa utilità dal pannello amministrativo in uso agli operatori In.I.T..
 ## **Gestione domande STC con errore**
-Nel pannello di gestione delle domande con errore è possibile visualizzare l’XML della domanda, ritentare l’inserimento (dopo aver apportato alla configurazione le modifiche necessarie per caricare la domanda) e modificare l’xml arrivato da parte di un utente amministratore.
-## **Gestione attività / esercizi (nell’edilizia edifici / fascicolo)**
-Nella lista delle attività sono state apportate migliorie alla funzionalità “ESPORTA IN DATA”, il tipo di report che è possibile selezionare come output sono quelli di DEFAULT, per esportare i dati secondo uno specifico tracciato deve essere richiesto ad In.I.T. e quindi costruito ad-hoc.
+Nel pannello di gestione delle domande con errore è possibile visualizzare l'XML della domanda, ritentare l'inserimento (dopo aver apportato alla configurazione le modifiche necessarie per caricare la domanda) e modificare l'xml arrivato da parte di un utente amministratore.
+## **Gestione attività / esercizi (nell'edilizia edifici / fascicolo)**
+Nella lista delle attività sono state apportate migliorie alla funzionalità "ESPORTA IN DATA", il tipo di report che è possibile selezionare come output sono quelli di DEFAULT, per esportare i dati secondo uno specifico tracciato deve essere richiesto ad In.I.T. e quindi costruito ad-hoc.
 ## **Visura camerale Parix Gate**
-In presenza dell’integrazione con PArix Gate ora è possibile richiedere una visura camerale aggiornata. E’ possibile richiedere la visura del pulsante “VISURA CAMERALE” presente nella sezione “Soggetti collegati” dell’istanza (in questa sezione è possibile gestire i documenti legati ad ogni anagrafica dell’istanza compresi quelli presenti in prima pagina) o dal pulsante documenti della scheda anagrafica (Archivi/Archivi di base/Richiedenti e tecnici).
+In presenza dell'integrazione con PArix Gate ora è possibile richiedere una visura camerale aggiornata. E' possibile richiedere la visura del pulsante "VISURA CAMERALE" presente nella sezione "Soggetti collegati" dell'istanza (in questa sezione è possibile gestire i documenti legati ad ogni anagrafica dell'istanza compresi quelli presenti in prima pagina) o dal pulsante documenti della scheda anagrafica (Archivi/Archivi di base/Richiedenti e tecnici).
 ## **Scadenzario: domande STC con errore**
 Nello scadenzario è stata aggiunta la scheda relativa alle domande STC arrivate con errore.
 ## **Generazione del Codice Pratica Telematica**
-In ogni singolo modulo è possibile attivare la generazione automatica del Codice Pratica Telematica in fase di inserimento istanza (anche tramite STC), l’attivazione della funzionalità può avvenire da “Configurazione / Tutti i back-office / Configurazione regole” e la regola da attivare per lo specifico modulo è GENERA\_COD\_PRATICA\_TELEMATICA
+In ogni singolo modulo è possibile attivare la generazione automatica del Codice Pratica Telematica in fase di inserimento istanza (anche tramite STC), l'attivazione della funzionalità può avvenire da "Configurazione / Tutti i back-office / Configurazione regole" e la regola da attivare per lo specifico modulo è GENERA\_COD\_PRATICA\_TELEMATICA
 
 ![](./immagini/Aspose.Words.75b679ed-c90e-4de6-b110-c04d65d511eb.013.png)
 
-Il codice viene generato se non presente e con le specifiche SUAP indicate nell’allegato tecnico del DPR n. 160/2010: <codice-fiscale>-<GGMMAAAA-HHMM>.
+Il codice viene generato se non presente e con le specifiche SUAP indicate nell'allegato tecnico del DPR n. 160/2010: <codice-fiscale>-<GGMMAAAA-HHMM>.
 ## **Tipi Titolo**
-Quando è presente almeno una riga nella lista dei Tipi Titolo collegati ad un endo-procedimento significa che durante la presentazione della domanda on-line è possibile indicare che si è già in possesso di uno dei titoli autorizzativi presenti sulla lista e che non è necessario compilare e allegare la modulistica legata all’endo.
+Quando è presente almeno una riga nella lista dei Tipi Titolo collegati ad un endo-procedimento significa che durante la presentazione della domanda on-line è possibile indicare che si è già in possesso di uno dei titoli autorizzativi presenti sulla lista e che non è necessario compilare e allegare la modulistica legata all'endo.
 Nei tipi titolo è possibile indicare quale dati chiedere per ogni titolo, la figura che segue è il dettaglio di un tipo titolo configurato per richiedere obbligatoriamente:
 
 - La data
 - Il numero
-- L’ente che l’ha rilasciato
+- L'ente che l'ha rilasciato
 
 ![](./immagini/Aspose.Words.75b679ed-c90e-4de6-b110-c04d65d511eb.014.png)
 
-E’ possibile richiedere un allegato da caricare contestualmente alla dichiarazione di possedere il titolo.
+E' possibile richiedere un allegato da caricare contestualmente alla dichiarazione di possedere il titolo.
 
-Le informazioni inserite on-line le ritroviamo collegato alla sezione endo-procedimenti attivati del back-office, vedi paragrafo “Visualizzazione estremi atto e riferimenti protocollo mittente”.
+Le informazioni inserite on-line le ritroviamo collegato alla sezione endo-procedimenti attivati del back-office, vedi paragrafo "Visualizzazione estremi atto e riferimenti protocollo mittente".
 ## **Invio mail dopo la protocollazione**
-Dopo aver protocollato è possibile utilizzare il bottone “INVIA MAIL” per preparare una mail che utilizza gli stessi dati che sono serviti a fare il protocollo.
-## **Filtri per la ricerca delle attività / esercizi (Nell’edilizia: Edificio e/o Fascicolo edilizio)**
-E’ stata aggiunta la possibilità di filtrare le attività aggiungendo condizioni relative ai campi dinamici.
+Dopo aver protocollato è possibile utilizzare il bottone "INVIA MAIL" per preparare una mail che utilizza gli stessi dati che sono serviti a fare il protocollo.
+## **Filtri per la ricerca delle attività / esercizi (Nell'edilizia: Edificio e/o Fascicolo edilizio)**
+E' stata aggiunta la possibilità di filtrare le attività aggiungendo condizioni relative ai campi dinamici.
 
 ![](./immagini/Aspose.Words.75b679ed-c90e-4de6-b110-c04d65d511eb.015.png)
 
 La scheda non fa filtro, è utilizzata per ricercare più velocemente i campi.
-## **Tipi soggetto collegati all’albero degli interventi**
-E’ ora possibile collegare i tipi soggetto (Richiedente, Proprietario, Direttore lavori, Responsabile sicurezza…) all’albero degli interventi così nella domanda online chi sta presentando vedrà solo i tipi soggetto pertinenti al tipo di intervento selezionato.
+## **Tipi soggetto collegati all'albero degli interventi**
+E' ora possibile collegare i tipi soggetto (Richiedente, Proprietario, Direttore lavori, Responsabile sicurezza…) all'albero degli interventi così nella domanda online chi sta presentando vedrà solo i tipi soggetto pertinenti al tipo di intervento selezionato.
 ## **Gestione delle comunicazioni legate ad una graduatoria**
 Una volta generata la graduatoria relativa ad una manifestazione (fiera/mercato) è possibile gestire le comunicazioni verso chi ha preso parte alla graduatoria (assegnatario o meno), tali comunicazioni prevedono:
 
-- La registrazione di un movimento nell’istanza riferita alla domanda di partecipazione alla manifestazione;
+- La registrazione di un movimento nell'istanza riferita alla domanda di partecipazione alla manifestazione;
 - La protocollazione del movimento creato (opzionale)
 - La creazione di una lettera (opzionale)
 - Il metti alla firma della lettera creata (opzionale)
-- L’ invio della PEC/mail al domicilio elettronico dell’istanza comprensivo di lettera allegata (opzionale)
+- L' invio della PEC/mail al domicilio elettronico dell'istanza comprensivo di lettera allegata (opzionale)
 
 Per i dettagli richiedere ad In.I.T..
 
 ![](./immagini/Aspose.Words.75b679ed-c90e-4de6-b110-c04d65d511eb.016.png)
 ## **Pannello Gestione Protocollazione PEC**
-E’ stata aggiunta una funzionalità che permette di leggere le PEC da una casella di posta, visualizzarle e decidere come gestirle:
+E' stata aggiunta una funzionalità che permette di leggere le PEC da una casella di posta, visualizzarle e decidere come gestirle:
 
 - Generando dalla PEC una nuova istanza;
-- Generando dalla PEC un nuovo movimento di un’istanza presente;
+- Generando dalla PEC un nuovo movimento di un'istanza presente;
 - Generando dalla PEC un protocollo;
 
 Per i dettagli della funzionalità richiedere il manuale specifico.
 ## **Accesso alle funzionalità istanze e movimenti**
-E’ stata rivista e potenziata la funzionalità che permette di gestire Ruoli legati agli operatori che permettono di gestire o meno i dati dell’istanza o i passaggi (movimenti) del flusso di back-office.
-## **Modifica dell’intervento  dell’istanza**
-E’ stato aggiunto un bottone che permette la modifica dell’intervento dell’istanza, vengono mostrate due colonne che visualizzano le configurazioni relative all’intervento attuale e le configurazioni relative all’intervento nuovo. Le configurazioni sono relative a:
+E' stata rivista e potenziata la funzionalità che permette di gestire Ruoli legati agli operatori che permettono di gestire o meno i dati dell'istanza o i passaggi (movimenti) del flusso di back-office.
+## **Modifica dell'intervento  dell'istanza**
+E' stato aggiunto un bottone che permette la modifica dell'intervento dell'istanza, vengono mostrate due colonne che visualizzano le configurazioni relative all'intervento attuale e le configurazioni relative all'intervento nuovo. Le configurazioni sono relative a:
 
 - Documenti
 - Endoprocedimenti
 - Schede dinamiche
-- Ruoli e operatori che hanno accesso all’istanza
+- Ruoli e operatori che hanno accesso all'istanza
 - Procedura e movimento di avvio
 
 ![](./immagini/Aspose.Words.75b679ed-c90e-4de6-b110-c04d65d511eb.017.png)
 
-Sarà possibile selezionare quali di queste configurazioni lasciare e quali modificare in base al vecchio o al nuovo intervento, alcune configurazioni non potranno essere modificate, saranno gestite nell’istanza dopo la modificazione dell’intervento.
+Sarà possibile selezionare quali di queste configurazioni lasciare e quali modificare in base al vecchio o al nuovo intervento, alcune configurazioni non potranno essere modificate, saranno gestite nell'istanza dopo la modificazione dell'intervento.
 
 #
 # **Versione 2.19**
@@ -1478,8 +1478,8 @@ In alcuni territori, ove è presente una comunità di pratica o un tavolo tecnic
 ## **Domanda OnLine – PDF compilabili**
 Tra gli allegati da presentare è possibile mettere PDF compilabili, con la nuova funzionalità il flusso logico risulta il seguente:
 
-1. Durante la compilazione della domanda OnLine, in caso di PDF compilabili, sarà possibile scaricare il PDF precompilato con i dati della domanda già inseriti nelle pagine (form) precedenti, ad esempio il PDF compilabile verrà scaricato con il nominativo, l’eventuale azienda, la localizzazione ed il tipo di intervento già copilati;
-1. Il richiedente finisce di compilare il PDF, lo salva e lo rimanda al server attraverso l’apposito pulsante;
+1. Durante la compilazione della domanda OnLine, in caso di PDF compilabili, sarà possibile scaricare il PDF precompilato con i dati della domanda già inseriti nelle pagine (form) precedenti, ad esempio il PDF compilabile verrà scaricato con il nominativo, l'eventuale azienda, la localizzazione ed il tipo di intervento già copilati;
+1. Il richiedente finisce di compilare il PDF, lo salva e lo rimanda al server attraverso l'apposito pulsante;
 1. Il PDF compilato può essere firmato digitalmente;
 1. Il PDF viene inoltrato assieme agli altri della domanda al back-office;
 1. Nel back-office possono essere definite delle mappature che permetteranno di recuperare una qualsiasi informazione presente nel PDF compilabile e di metterla in una scheda dinamica;
@@ -1490,7 +1490,7 @@ La funzionalità al momento non è presente nella modalità di compilazione di R
 ## **Calcolo interessi legali**
 Sono state apportate delle correzione al calcolo.
 ## **Metti alla firma**
-E’ stata introdotta la funzionalità che permette di mettere alla firma un documento presente negli allegati dei movimenti, la logica è la seguente:
+E' stata introdotta la funzionalità che permette di mettere alla firma un documento presente negli allegati dei movimenti, la logica è la seguente:
 
 1. Viene preparato il documento / atto;
 1. Viene indicato che viene messo alla firma del responsabile (deve essere un operatore di back-office)
@@ -1503,13 +1503,13 @@ Aprile 2014
 ## **Integrazioni documentali provenienti da AIDA**
 Ad oggi quando il nodo NLA-AIDA processa un'integrazione documentale la gestisce come notifica attività verso il backoffice, il backoffice cerca di individuare tra i movimenti della pratica se ne esiste uno da eseguire con  flag "Front Office Richiedenti" e se non lo trova rilancia un errore.
 
-Nella “Configurazione Regole” è stato aggiunto il parametro **TIPOMOV\_DEFAULT\_SOGG\_ESTERNI** alla regola “**STC**” dove può essere inserito il codice del tipo movimento da utilizzare nelle integrazioni nel caso in cui il controllo precedente fallisca.
+Nella "Configurazione Regole" è stato aggiunto il parametro **TIPOMOV\_DEFAULT\_SOGG\_ESTERNI** alla regola "**STC**" dove può essere inserito il codice del tipo movimento da utilizzare nelle integrazioni nel caso in cui il controllo precedente fallisca.
 ## **Gestione fiere**
-Nelle  fiere della durata di più giorni c’è ora la possibilità di decidere se i concessionari ottengono una sola presenza per l’intera fiera o se ottengono una presenza per ogni giornata in cui sono presenti.
+Nelle  fiere della durata di più giorni c'è ora la possibilità di decidere se i concessionari ottengono una sola presenza per l'intera fiera o se ottengono una presenza per ogni giornata in cui sono presenti.
 ## **Pannello gestione PEC**
 Ora il pannello può essere attivato trasversalmente in modo da leggere le PEC da una casella per creare istanze e movimenti su più moduli.
 ## **STC – aggiunte info alla visura interna**
-Nelle comunicazioni tra backoffice dopo aver notificato una pratica attraverso STC, se il destinatario ha attivo il servizio di visura, è possibile vedere (“computerini”) lo stato avanzamento pratica in modo più completo rispetto a prima:
+Nelle comunicazioni tra backoffice dopo aver notificato una pratica attraverso STC, se il destinatario ha attivo il servizio di visura, è possibile vedere ("computerini") lo stato avanzamento pratica in modo più completo rispetto a prima:
 
 - Richiedente, azienda, responsabile del procedimento, nuova numerazione
 - Movimenti effettuati
@@ -1519,93 +1519,93 @@ Il servizio di visura per default è attivo per tutti i moduli dei backoffice di
 
 Ad esempio la funzionalità permette ad un SUAP di vedere la visura dello stato di avanzamento della pratica edilizia generata con la notifica di un procedimento e viceversa.
 ## **STC – possibilità di inviare una pratica intera**
-Nelle notifiche con STC è ora possibile configurare l’invio per mandare al destinatario l’intera pratica. Nelle versioni precedenti era possibile inviare un solo procedimento.
+Nelle notifiche con STC è ora possibile configurare l'invio per mandare al destinatario l'intera pratica. Nelle versioni precedenti era possibile inviare un solo procedimento.
 ## **Localizzazioni nella domanda online**
-Nella costruzione della presentazione della domanda online è possibile aggiungere più STEP indicanti la localizzazione. Il caso d’uso è stato la configurazione dell’ Autorizzazione Unica Ambientale dove vengono imputati:
+Nella costruzione della presentazione della domanda online è possibile aggiungere più STEP indicanti la localizzazione. Il caso d'uso è stato la configurazione dell' Autorizzazione Unica Ambientale dove vengono imputati:
 
-- La localizzazione dell’impianto produttivo
+- La localizzazione dell'impianto produttivo
 - La localizzazione degli eventuali impianti di depurazione (con coordinate XY)
 - La localizzazione degli eventuali scarichi (con coordinate XY)
 
-Ogni step di localizzazione è associato tramite TAG nell’xml della domanda online ad una tipologia di localizzazione (gestita dalla tabella negli archivi). Nella prima pagina dell’istanza è possibile vedere tutte le localizzazioni inserite in fase di presentazione.
+Ogni step di localizzazione è associato tramite TAG nell'xml della domanda online ad una tipologia di localizzazione (gestita dalla tabella negli archivi). Nella prima pagina dell'istanza è possibile vedere tutte le localizzazioni inserite in fase di presentazione.
 ## **Interfaccia utente delle istanze** 
-Nella pagina di dettaglio dell’istanza viene evidenziata in verde la sezione "ISTANZE COLLEGATE" nel caso in cui ci siano istanze collegate.
+Nella pagina di dettaglio dell'istanza viene evidenziata in verde la sezione "ISTANZE COLLEGATE" nel caso in cui ci siano istanze collegate.
 ## **Endo-procedimento – Attiva-In**
-Il pulsante “ATTIVA IN” presente negli endo-procedimenti di base serve per poter indicare in quali moduli di backoffice l’endo-procedimento è attivabile. Una volta attivato un endo viene proposto in elaborazione il rispettivo movimento,  in questa versione è stata aggiunta la possibilità di rendere facoltativo il movimento.
+Il pulsante "ATTIVA IN" presente negli endo-procedimenti di base serve per poter indicare in quali moduli di backoffice l'endo-procedimento è attivabile. Una volta attivato un endo viene proposto in elaborazione il rispettivo movimento,  in questa versione è stata aggiunta la possibilità di rendere facoltativo il movimento.
 ## **Verifica qualitativa dei documenti**
-Nella sezione dei documenti dell’istanza e degli endo-procedimenti è stata potenziata per tenere traccia delle verifiche documentali, per ogni documento è possibile verificare se era richiesto (in base al tipo di intervento”) se è presente e se è valido (da verificare, valido, non valido).
+Nella sezione dei documenti dell'istanza e degli endo-procedimenti è stata potenziata per tenere traccia delle verifiche documentali, per ogni documento è possibile verificare se era richiesto (in base al tipo di intervento") se è presente e se è valido (da verificare, valido, non valido).
 
-Nei documenti tipo la variabile segnaposto “lista dei documenti presenti e non validi” (e le altre variabili relative al controllo documentale) tengono conto delle nuove modifiche.
+Nei documenti tipo la variabile segnaposto "lista dei documenti presenti e non validi" (e le altre variabili relative al controllo documentale) tengono conto delle nuove modifiche.
 #
 # **Versione 2.21**
 Settembre 2014
 
 ## **Front end - visualizzazione schede dinamiche in base alla tipologia di localizzazione**
-Durante la compilazione della domanda online è stata introdotta la possibilità di associare, a ciascuna localizzazione della pratica, una tipologia (es.”Centro storico”, “Periferia”), scegliendola da una lista predefinita e modificabile a livello di configurazione. 
+Durante la compilazione della domanda online è stata introdotta la possibilità di associare, a ciascuna localizzazione della pratica, una tipologia (es."Centro storico", "Periferia"), scegliendola da una lista predefinita e modificabile a livello di configurazione. 
 
-E’ possibile subordinare la visualizzazione di una scheda dinamica collegata ad un endoprocedimento alla presenza di un localizzazione di un certo tipo. 
+E' possibile subordinare la visualizzazione di una scheda dinamica collegata ad un endoprocedimento alla presenza di un localizzazione di un certo tipo. 
 
 ## **Master - Permettere la cancellazione dei record MASTER nei comuni SLAVE**
-Dal pannello di controllo da amministratore di un’installazione SLAVE è ora possibile attivare una sessione durante la quale è abilitata  la cancellazione di record provenienti dall’installazione MASTER.
+Dal pannello di controllo da amministratore di un'installazione SLAVE è ora possibile attivare una sessione durante la quale è abilitata  la cancellazione di record provenienti dall'installazione MASTER.
 
-Durante la sessione è attivo e chiaramente visibile un messaggio che avvisa l'utente dell’attivazione della modalità e un bottone per disattivarla.
+Durante la sessione è attivo e chiaramente visibile un messaggio che avvisa l'utente dell'attivazione della modalità e un bottone per disattivarla.
 
 ## **Master - Permettere la cancellazione dei record MASTER**
-Dal pannello di controllo da amministratore di un’installazione MASTER è ora possibile attivare una sessione durante la quale è abilitata  la cancellazione di record MASTER.
+Dal pannello di controllo da amministratore di un'installazione MASTER è ora possibile attivare una sessione durante la quale è abilitata  la cancellazione di record MASTER.
 
-Durante la sessione è attivo e chiaramente visibile un messaggio che avvisa l'utente dell’attivazione della modalità e un bottone per disattivarla.
+Durante la sessione è attivo e chiaramente visibile un messaggio che avvisa l'utente dell'attivazione della modalità e un bottone per disattivarla.
 
 ## **Pannello di protocollazione PEC - Ricerca delle istanze**
-All’interno del pannello di protocollazione di una PEC è ora possibile aprire un pop-up per ricercare una determinata pratica e visualizzarne i dati principali. 
+All'interno del pannello di protocollazione di una PEC è ora possibile aprire un pop-up per ricercare una determinata pratica e visualizzarne i dati principali. 
 
 La modifica è stata introdotta per venire incontro alle esigenze degli operatori che, ad esempio, hanno necessità di protocollare una integrazione pervenuta per mezzo PEC ma che, dalla PEC stessa, non riescono a estrapolare tutti i dati necessari: ora è possibile effettuare tutte le ricerche senza uscire dal pannello.
 
 
 ## **CART (Regione Toscana) - Possibilità di pubblicare un intervento in modalità CART non proveniente dal catalogo regionale**
-Nelle installazioni dove è attiva la verticalizzazione CART è possibile ampliare il set degli interventi (i.e. aggiungere cartelle/foglie all’albero dei procedimenti) e pubblicarli secondo le logiche del CART.
+Nelle installazioni dove è attiva la verticalizzazione CART è possibile ampliare il set degli interventi (i.e. aggiungere cartelle/foglie all'albero dei procedimenti) e pubblicarli secondo le logiche del CART.
 
 ## **Gestione attività - Migliorata la gestione delle attività create con localizzazione/denominazione uguale ad una esistente**
-Fino ad oggi, in fase di creazione di un’attività, il sistema effettuava il controllo se esisteva già una o più attività nel medesimo indirizzo o con la stessa denominazione, permettendone l’eventuale forzatura nella creazione.
+Fino ad oggi, in fase di creazione di un'attività, il sistema effettuava il controllo se esisteva già una o più attività nel medesimo indirizzo o con la stessa denominazione, permettendone l'eventuale forzatura nella creazione.
 
 Ora viene visualizzato un pannello molto più completo che visualizza, in forma di lista, il dettaglio della attività presenti nella stessa localizzazione o con uguale denominazione permettendo:
 
-- Di forzare la creazione dell’attività
-- Di collegare l’istanza in esame ad una della attività presenti in lista
+- Di forzare la creazione dell'attività
+- Di collegare l'istanza in esame ad una della attività presenti in lista
 
 ## **Azioni protocollo**
-E’ stata sviluppata una nuova funzionalità, disponibile in tutte le installazioni nelle quali è stato integrato un protocollo informatico, presente a menu (se attivato per l’operatore) sotto la voce “Azioni protocollo” (attivabile sia in un modulo software specifico che negli archivi di base).
+E' stata sviluppata una nuova funzionalità, disponibile in tutte le installazioni nelle quali è stato integrato un protocollo informatico, presente a menu (se attivato per l'operatore) sotto la voce "Azioni protocollo" (attivabile sia in un modulo software specifico che negli archivi di base).
 
-La nuova funzionalità permette di ricercare un protocollo, per numero e anno, e di visualizzarne i dettagli messi a disposizione del protocollo informatico in uso nell’ente. Per ciascun protocollo sarà inoltre possibile generare una nuova istanza o un movimento, in maniera del tutto analoga a quanto avviene nel “Pannello PEC”, ma con origine dei dati (allegati, anagrafiche, etc.) proveniente dal protocollo invece che dalla PEC. E’ lasciata all’operatore la scelta se copiare o meno gli allegati del protocollo nell’istanza/movimento e, in caso di copia, se scompattarli nel caso siano compressi.
+La nuova funzionalità permette di ricercare un protocollo, per numero e anno, e di visualizzarne i dettagli messi a disposizione del protocollo informatico in uso nell'ente. Per ciascun protocollo sarà inoltre possibile generare una nuova istanza o un movimento, in maniera del tutto analoga a quanto avviene nel "Pannello PEC", ma con origine dei dati (allegati, anagrafiche, etc.) proveniente dal protocollo invece che dalla PEC. E' lasciata all'operatore la scelta se copiare o meno gli allegati del protocollo nell'istanza/movimento e, in caso di copia, se scompattarli nel caso siano compressi.
 
 ## **Modifica del comune di una pratica in installazione multi-comune**
-In caso di installazione multi-comune (es. unioni di comuni) è ora possibile, dal pannello di amministrazione, modificare il comune dell’istanza nel caso la localizzazione sia stata effettuata in maniera errata.
+In caso di installazione multi-comune (es. unioni di comuni) è ora possibile, dal pannello di amministrazione, modificare il comune dell'istanza nel caso la localizzazione sia stata effettuata in maniera errata.
 
 ## **Allinea documenti**
-Nella sezione “DOCUMENTI” di un’istanza è ora presente il pulsante "ALLINEA I DOCUMENTI" (che sostituisce il precedente “AGGIORNA I DOCUMENTI”) che permette di aggiornare i documenti presenti nella pratica in esame rispetto a quelli previsti dalla configurazione dell’albero degli interventi.
+Nella sezione "DOCUMENTI" di un'istanza è ora presente il pulsante "ALLINEA I DOCUMENTI" (che sostituisce il precedente "AGGIORNA I DOCUMENTI") che permette di aggiornare i documenti presenti nella pratica in esame rispetto a quelli previsti dalla configurazione dell'albero degli interventi.
 
-La pressione del pulsante “ALLINEA I DOCUMENTI" apre una schermata riepilogativa che mostra all’operatore la situazione attuale dei documenti e quella prevista dalla configurazione, guidandolo nella scelta delle modifiche da effettuare.
+La pressione del pulsante "ALLINEA I DOCUMENTI" apre una schermata riepilogativa che mostra all'operatore la situazione attuale dei documenti e quella prevista dalla configurazione, guidandolo nella scelta delle modifiche da effettuare.
 
 ## **Gestione attività - Ricerca per campo dinamico** 
-E’ stata potenziata la ricerca di un’attività in base a filtri sui dati dinamici: è ora possibile ricercare quelle per le quali un determinato campo dinamico non è valorizzato (è ora presente il criterio di confronto “è vuoto”)
+E' stata potenziata la ricerca di un'attività in base a filtri sui dati dinamici: è ora possibile ricercare quelle per le quali un determinato campo dinamico non è valorizzato (è ora presente il criterio di confronto "è vuoto")
 
 ## **Scadenzario - Visualizzazione azienda nella lista dei movimenti da fare**
-Nello scadenzario utente, nel pannello “Movimenti da effettuare”, è ora mostrata anche l'azienda ed “in qualità di”.
+Nello scadenzario utente, nel pannello "Movimenti da effettuare", è ora mostrata anche l'azienda ed "in qualità di".
 
 
-## **Pannello Gestione PEC - Funzionalità “Sblocca PEC”**
+## **Pannello Gestione PEC - Funzionalità "Sblocca PEC"**
 Viene data la possibilità di sbloccare una PEC in uso da un utente mediante l'apposizione di una password.
 
 ## **Pannello Gestione PEC - Verifiche e controlli**
-Sono stati implementati controlli più stringenti per evitare l’apertura contemporanea di una PEC da parte di operatori differenti.
+Sono stati implementati controlli più stringenti per evitare l'apertura contemporanea di una PEC da parte di operatori differenti.
 
-## **Pannello Gestione PEC - Visualizzazione colonna “Copia conoscenza”**
+## **Pannello Gestione PEC - Visualizzazione colonna "Copia conoscenza"**
 Nel pannello di gestione PEC viene ora visualizzata anche la colonna con i richiedenti in copia conoscenza. 
 
-## **Pannello Gestione PEC - Funzionalità “Metti in evidenza”**
-Nel pannello di gestione PEC è stata aggiunta la colonna “Evid.” che permette di evidenziare le PEC di particolare interesse. 
+## **Pannello Gestione PEC - Funzionalità "Metti in evidenza"**
+Nel pannello di gestione PEC è stata aggiunta la colonna "Evid." che permette di evidenziare le PEC di particolare interesse. 
 
-## **Lista istanze - visualizzazione dell’intermediario**
-Nella lista delle istanze è possibile visualizzare anche la colonna “Intermediario”
+## **Lista istanze - visualizzazione dell'intermediario**
+Nella lista delle istanze è possibile visualizzare anche la colonna "Intermediario"
 
 #
 #
@@ -1615,26 +1615,26 @@ Ottobre 2014
 ## **Portocollazione multiente e multisportello**
 Fino alla versione 2.21 era possibile integrare un solo protocollo per installazione, sia nel caso di comuni singoli che di installazione multi-ente.
 
-Ora è possibile integrare protocolli differenti per software differenti (SUAP, Commercio, Edilizia, etc..) e, nel caso di installazioni multi-ente, anche per differenti comuni dell’unione.
+Ora è possibile integrare protocolli differenti per software differenti (SUAP, Commercio, Edilizia, etc..) e, nel caso di installazioni multi-ente, anche per differenti comuni dell'unione.
 
-## **Modifiche alla funzionalità “Metti alla firma”**
-E’ stata completata la funzionalità di “Metti alla firma” con alcune pagine complementari che ne rendono più semplice e chiaro l’utilizzo:
+## **Modifiche alla funzionalità "Metti alla firma"**
+E' stata completata la funzionalità di "Metti alla firma" con alcune pagine complementari che ne rendono più semplice e chiaro l'utilizzo:
 
 - Istanze >> [UFFICIO] >> Documenti da firmare: la pagina, analoga a quella presente nello scadenzario, mostra la lista dei documenti da firmare da parte del responsabile del procedimento che ha acceduto al sistema.
-- Istanze >> [UFFICIO] >> Documenti messi alla firma: mostra i documenti messi alla firma dall’operatore che ha acceduto al sistema ed il loro stato (stati possibili: da firmare, firmati, firma negata)
+- Istanze >> [UFFICIO] >> Documenti messi alla firma: mostra i documenti messi alla firma dall'operatore che ha acceduto al sistema ed il loro stato (stati possibili: da firmare, firmati, firma negata)
 
-Inoltre, quando un documento viene firmato, viene visualizzato un “Evento” (sezione “Eventi non letti”) legato al movimento.
+Inoltre, quando un documento viene firmato, viene visualizzato un "Evento" (sezione "Eventi non letti") legato al movimento.
 
-## **Nuova “Informazione aggiuntiva” nella sezione “Elaborazione”**
-A fianco di ogni movimento viene ora visualizzato il simbolo ![](./immagini/Aspose.Words.75b679ed-c90e-4de6-b110-c04d65d511eb.018.png) se presenti “Eventi non letti”. La selezione del link permette di settare l’evento come “letto” senza necessità di accedere al dettaglio del movimento stesso.
+## **Nuova "Informazione aggiuntiva" nella sezione "Elaborazione"**
+A fianco di ogni movimento viene ora visualizzato il simbolo ![](./immagini/Aspose.Words.75b679ed-c90e-4de6-b110-c04d65d511eb.018.png) se presenti "Eventi non letti". La selezione del link permette di settare l'evento come "letto" senza necessità di accedere al dettaglio del movimento stesso.
 
-## **Ereditarietà gerarchica della “Tipologia Registro Autorizzativo” associato all’albero degli interventi**
-Fino ad ora, quando si registrava una nuova autorizzazione in un’istanza, se la foglia dell'albero degli interventi scelta non aveva una Tipologia di Registro configurata, il campo “Tipologia registro” veniva presentato vuoto.
+## **Ereditarietà gerarchica della "Tipologia Registro Autorizzativo" associato all'albero degli interventi**
+Fino ad ora, quando si registrava una nuova autorizzazione in un'istanza, se la foglia dell'albero degli interventi scelta non aveva una Tipologia di Registro configurata, il campo "Tipologia registro" veniva presentato vuoto.
 
-Ora, per individuare l’eventuale registro da pre-impostare, il sistema risalire la gerarchia dell'albero per verificare che una delle cartelle superiori abbia tale voce configurata. 
+Ora, per individuare l'eventuale registro da pre-impostare, il sistema risalire la gerarchia dell'albero per verificare che una delle cartelle superiori abbia tale voce configurata. 
 
-## **Modifica alla funzionalità “Servizi di messaggistica”**
-Nella sezione “SERVIZIO DI MESSAGGISTICA” della pagina Configurazione >> Frontoffice [UFFICIO] >> Area riservata è possibile impostare l’invio di comunicazioni a determinati soggetti, contestuale al verificarsi di determinati eventi (es. ricevimento di una pratica da Front Office, registrazione di un nuovo utente nell’Area Riservata, etc..).
+## **Modifica alla funzionalità "Servizi di messaggistica"**
+Nella sezione "SERVIZIO DI MESSAGGISTICA" della pagina Configurazione >> Frontoffice [UFFICIO] >> Area riservata è possibile impostare l'invio di comunicazioni a determinati soggetti, contestuale al verificarsi di determinati eventi (es. ricevimento di una pratica da Front Office, registrazione di un nuovo utente nell'Area Riservata, etc..).
 
 Sono stati aggiunti i seguenti soggetti ai quali poter inviare le comunicazioni:
 
@@ -1706,33 +1706,33 @@ B) se non è stata trovata la cerca tra le verticalizzazioni.
 ### ***ALLEGATI PEC***
 Funzionalità di base:
 
-1. Durante l’invio di una PEC da VBG potrà essere indicato se gli allegati dovranno essere mandati in attach o come riferimento (link).’La scelta (flag) potrà essere pre-impostata in base alla configurazione del movimento di VBG (o meglio in base all’amministrazione coinvolta nel movimento);
+1. Durante l'invio di una PEC da VBG potrà essere indicato se gli allegati dovranno essere mandati in attach o come riferimento (link).'La scelta (flag) potrà essere pre-impostata in base alla configurazione del movimento di VBG (o meglio in base all'amministrazione coinvolta nel movimento);
 
-2. Se verrà configurato l’invio dei riferimenti (link) sarà presente nel corpo della mail tipo un segnaposto che verrà sostituito, prima dell’invio, dalla lista dei documenti selezionati come da inviare.
+2. Se verrà configurato l'invio dei riferimenti (link) sarà presente nel corpo della mail tipo un segnaposto che verrà sostituito, prima dell'invio, dalla lista dei documenti selezionati come da inviare.
 
 Sarà possibile anche generare un documento contenente i link dei documenti selezionati come da mandare (andrà configurata la lettera tipo con il template del documento contenente il segnaposto per la lista dei link);
 
-3. I link della mail (o del documento allegato), una volta ricevuta la mail, saranno cliccabili (o visualizzabili facendo copia incolla in un browser), all’interno del link MD5 del file in modo che sia univoco e che sia praticamente impossibile generarne uno a caso;
+3. I link della mail (o del documento allegato), una volta ricevuta la mail, saranno cliccabili (o visualizzabili facendo copia incolla in un browser), all'interno del link MD5 del file in modo che sia univoco e che sia praticamente impossibile generarne uno a caso;
 
 4. Prima di visualizzare il file verrà richiesto un PIN anche esso riportato nella mail di fianco al nome file ed al link;
 
-5. L’MD5 del file verrà calcolato al momento dell’inserimento del file in VBG e/o al momento dell’invio della mail per i file caricati precedentemente al dispiegamento della nuova funzionalità
+5. L'MD5 del file verrà calcolato al momento dell'inserimento del file in VBG e/o al momento dell'invio della mail per i file caricati precedentemente al dispiegamento della nuova funzionalità
 
 Funzionalità estensive:
 
-6. Ove le installazioni prevedano che l’invio della PEC venga fatta dal protocollo occorre che durante la fase di protocollazione si possa generare un documento contenente i link dei documenti che devono essere inviati e che questo documento sia allegato al protocollo. In configurazione di un movimento (o nell’amministrazione) deve essere possibile indicare il template del documento che conterrà il segnaposto da sostituire con i link.
+6. Ove le installazioni prevedano che l'invio della PEC venga fatta dal protocollo occorre che durante la fase di protocollazione si possa generare un documento contenente i link dei documenti che devono essere inviati e che questo documento sia allegato al protocollo. In configurazione di un movimento (o nell'amministrazione) deve essere possibile indicare il template del documento che conterrà il segnaposto da sostituire con i link.
 
-7. L’interfaccia html di protocollazione può prevedere la creazione del documento con i link anche in mancanza di una configurazione a monte.
+7. L'interfaccia html di protocollazione può prevedere la creazione del documento con i link anche in mancanza di una configurazione a monte.
 
 
 ### ***Gestione Endoprocedimenti legati all'albero degli interventi***
 Occorre prevedere un check che permetterà di inserire un endoprocedimento nell'istanza in fase di presentazione domanda anche se non è tra quelli pervenuti da on-line.
 
-Il nuovo check deve valere sempre anche se l’istanza viene inserita tramite PEC o a mano.
+Il nuovo check deve valere sempre anche se l'istanza viene inserita tramite PEC o a mano.
 
-Il check è già spuntato e non modificabile se l’endoprocedimento è principale o proposto.
+Il check è già spuntato e non modificabile se l'endoprocedimento è principale o proposto.
 
-Il nome sulla colonna può essere Usa nel back (?)="se spuntato l’endo-procedimento verrà automaticamente inserito durante la creazione della pratica nel back-office qualsiasi sia la sua provenienza (on-line, PEC, cartaceo)"
+Il nome sulla colonna può essere Usa nel back (?)="se spuntato l'endo-procedimento verrà automaticamente inserito durante la creazione della pratica nel back-office qualsiasi sia la sua provenienza (on-line, PEC, cartaceo)"
 
 Oltre alla gestione del nuovo flag è necessario:
 
@@ -1758,13 +1758,13 @@ Funzionalità
 ### ***Gestione delle attività: Integrazione di informazioni su pagina di lista***
 Nella pagina dei risultati di una ricerca delle attività vanno mostrate le seguenti informazioni:
 
-- la colonna posizione archivio presente nell’istanza principale dell’attività
+- la colonna posizione archivio presente nell'istanza principale dell'attività
 
 - delle icone che permettano di visualizzare
 
 àla lista degli stradari (vedi figura 1)
 
-à il contenuto delle schede dinamiche dell’attività (vedi figura 2)
+à il contenuto delle schede dinamiche dell'attività (vedi figura 2)
 
 ### ***Aumentare dimensione del campo INVENTARIOPROCEDIMENTI.PROCEDIMENTO***
 La dimensione deve essere portata a 500 caratteri
@@ -1787,7 +1787,7 @@ Gestirlo come nella maschera movimenti da effettuare ossia "Richiedente in quali
 
 - gestire la chiamata per il nuovo metodo in protocolla se provenienza <> istanza e movimento
 
-### ***Estrapolare l’elenco dei dati relativi alle ATTIVITA’***
+### ***Estrapolare l'elenco dei dati relativi alle ATTIVITA'***
 
 La query che estrae le informazioni delle attività deve estrarre anche le mail/pec di 
 
@@ -1802,7 +1802,7 @@ Mettere su una preferenza la scelta dei filtri o implementare una ricerca minima
 
 La soluzione di ricordare il filtro non è buono in quanto a loro serve di verificare anche le firme appena fatte o negate.
 
-Per ora sarebbe già sufficiente invertire l’ordine: prima la data più prossima e poi a scendere.
+Per ora sarebbe già sufficiente invertire l'ordine: prima la data più prossima e poi a scendere.
 
 ### ***Interfaccia di protocollazione: FLUSSO DI DEFAULT in caso di protocollazione da movimento***
 Nel metodo create se provenienza = movimento e l'operatore ha tra i suoi flussi attivi PARTENZA allora sarà quello impostato come default.
@@ -1944,7 +1944,7 @@ Questi passaggi vanno semplificati unificando i passaggi 2,3,4,5
 
 
 ### ***SALVATAGGIO INFORMAZIONI OPERATORE CHE HA MODIFICATO LE ANAGRAFICHE***
-Inserire l’operatore operatore ha creato la riga di storico
+Inserire l'operatore operatore ha creato la riga di storico
 ##
 ## **Versione 2.30**
 ### ***PRATICHE COLLEGATE: Possibilità di copiare dati localizzazione dalle istanze collegate***
@@ -2095,13 +2095,13 @@ Aggiungere FlagPubblica:
 
 ### ***METTI ALLA FIRMA: possibilità di inserire in automatico un movimento a seguito dell'evento firma***
 
-L’esigenza di inviare in automatico la mail/pec al domicilio elettronico della pratica – se presente - dopo l’evento di firma del documento.
+L'esigenza di inviare in automatico la mail/pec al domicilio elettronico della pratica – se presente - dopo l'evento di firma del documento.
 
 La mail inviata viene legata al movimento che ha generato dove è salvato il movimento firmato.
 
 La configurazione va fatta per singolo movimento.
 
-C’è un bottone ![](./immagini/Aspose.Words.75b679ed-c90e-4de6-b110-c04d65d511eb.019.png) che permette di accedere alla pagina di configurazione di questa attività
+C'è un bottone ![](./immagini/Aspose.Words.75b679ed-c90e-4de6-b110-c04d65d511eb.019.png) che permette di accedere alla pagina di configurazione di questa attività
 
 ![](./immagini/Aspose.Words.75b679ed-c90e-4de6-b110-c04d65d511eb.020.png)
 
@@ -2156,7 +2156,7 @@ Nella pagina di visualizzazione dei documenti dell'istanza va mostrato il numero
 Va mostrato anche il numero protocollo/data dell'istanza (se presente)
 
 ### ***METTI ALLA FIRMA***
-Nella funzionalità ‘metti alla firma’ come destinatari della richiesta non vengono visualizzati solo i responsabili del procedimento ma tutti gli operatori configurati in SIGePro.
+Nella funzionalità ‘metti alla firma' come destinatari della richiesta non vengono visualizzati solo i responsabili del procedimento ma tutti gli operatori configurati in SIGePro.
 
 La ricerca dei responsabili presente nella pagina con la label "Responsabile firmatario" sarà filtrata inizialmente per quelli configurati come tipologia di operatore "Responsabile del procedimento". 
 
@@ -2247,17 +2247,17 @@ Dalla pagina dei documenti dell'istanza aggiungere una nuova funzionalità che p
 ### ***MODIFICA DOCUMENTI E FIRMA SOSTITUZIONE APPLETS CON TECNOLOGIA JWS***
 A causa del mancato supporto dei maggiori browser alla tecnologia applet si è reso necessario modificare i componenti di firma / modifica documenti sostituendo le applets con applicazioni JWS.
 
-Per le modalità d’uso si veda i documenti allegati
+Per le modalità d'uso si veda i documenti allegati
 
 ## **Versione 2.38**
 ### ***SOSTITUZIONE DOCUMENTALE DA FRONTOFFICE***
-Serve per inoltrare al back una serie di documenti che vanno in sostituzione di altri già presentati e che l’utente intende sostituire.
+Serve per inoltrare al back una serie di documenti che vanno in sostituzione di altri già presentati e che l'utente intende sostituire.
 
 "In fase di integrazione delle pratiche gli utenti di front-office dovranno avere la possibilità di specificare per ciascun allegato se sia possibile definire se esso costituisce l'integrazione di allegati della pratica già presentata".
 
-Possono essere sostituiti solamente i documenti dell’istanza ( tabella DOCUMENTIISTANZA ) o degli endo ( tabella ISTANZEALLEGATI) e NON gli allegati dei movimenti (MOVIMENTIALLEGATI).
+Possono essere sostituiti solamente i documenti dell'istanza ( tabella DOCUMENTIISTANZA ) o degli endo ( tabella ISTANZEALLEGATI) e NON gli allegati dei movimenti (MOVIMENTIALLEGATI).
 
-La funzionalità è simile a quella dell'integrazione documentale ma con un passaggio in più dove l’utente indica quali documenti sostituire. La funzionalità viene attivata dalla configurazione del tipo movimento in modo tale da poterla attivare per ogni flusso e non sempre
+La funzionalità è simile a quella dell'integrazione documentale ma con un passaggio in più dove l'utente indica quali documenti sostituire. La funzionalità viene attivata dalla configurazione del tipo movimento in modo tale da poterla attivare per ogni flusso e non sempre
 
 ## **Versione 2.40**
 ### ***MAILTIPO, DOCUMENTI TIPO: nuovi segnaposto per amministrazione***
@@ -2324,13 +2324,13 @@ Il valore del segnaposto DEVE essere impostato a **S** per poter funzionare.
 ### ***INTEGRAZIONE PROTOCOLLO DOCER: Modalità Multiente***
 Il backoffice è in grado, in questo momento, di integrarsi solamente con un solo ente di DocEr.
 
-La problematica dell’ente è principalmente quella di poter protocollare su più enti di DocEr, oltre tutto questo dovrebbe avvenire in situazioni di Backoffice differenti, ossia, le comunicazioni in arrivo, quindi la creazione
+La problematica dell'ente è principalmente quella di poter protocollare su più enti di DocEr, oltre tutto questo dovrebbe avvenire in situazioni di Backoffice differenti, ossia, le comunicazioni in arrivo, quindi la creazione
 
-delle istanze devono essere protocollate sull’ambiente dell’Unione di DocEr / Protocollo, mentre le comunicazioni in partenza, quindi le protocollazioni dei movimenti, devono essere protocollate sui singoli ambienti DocEr
+delle istanze devono essere protocollate sull'ambiente dell'Unione di DocEr / Protocollo, mentre le comunicazioni in partenza, quindi le protocollazioni dei movimenti, devono essere protocollate sui singoli ambienti DocEr
 
 / Protocollo dei comuni.
 ### ***Conversione in pdf dei file generati durante la notifica automatica***
-E 'stata configurata la creazione automatica della ricevuta di presentazione di una pratica online ed il successivo invio per PEC. La ricevuta è però in formato .rtf mentre la vorrebbero in .pdf. Bisognerebbe quindi aggiungere la conversione in pdf al processo automatico di invio della ricevuta. Il pdf dovrebbe essere l’unico file pubblicato sul portale, non l’rtf.
+E 'stata configurata la creazione automatica della ricevuta di presentazione di una pratica online ed il successivo invio per PEC. La ricevuta è però in formato .rtf mentre la vorrebbero in .pdf. Bisognerebbe quindi aggiungere la conversione in pdf al processo automatico di invio della ricevuta. Il pdf dovrebbe essere l'unico file pubblicato sul portale, non l'rtf.
 
 1.Creazione e Gestione di un nuovo flag DB tipimov\_stc\_mapping.flag\_convertipdf (in caso di notifica automatica i documenti generati in automatico verranno convertiti in PDF)
 
@@ -2381,7 +2381,7 @@ In caso di assegnazione dell'istruttore con la funzionalità anti corruzione la 
 ### ***MODIFICA AI MOVIMENTI: possibilità di accedere direttamente alla scheda dinamica da un movimento da effettuare***
 Dare la possibilità dalla elaborazione istanza di accedere alla sezione schede dinamiche del movimento.
 ### ***NOTIFICA STC: NUOVO FLAG CHE IN CASO DI MOVIMENTO CHE CREA LA PRATICA SPOSTA I DOCUMENTI DELLA NOTIFICA NEL MESSAGGIO DI PRESENTAZIONE PRATICA***
-La modifica serve per protocollare i documenti che vengono da una notifica attività, e che attualmente vengono inseriti nel movimento di destinazione, direttamente nell’istanza. 
+La modifica serve per protocollare i documenti che vengono da una notifica attività, e che attualmente vengono inseriti nel movimento di destinazione, direttamente nell'istanza. 
 
 ## **Versione 2.46**
 ### ***Modifiche varie***
@@ -2395,13 +2395,13 @@ Statistiche: sostituire la colonna Archivio (pratiche) con COMUNE
 
 - Ingrandire finestra per stampare PEC
 
-- Mail tipo inserire i campi automatici di: responsabile dell’istruttoria, telefono del responsabile dell’ istruttoria, posizione in archivio
+- Mail tipo inserire i campi automatici di: responsabile dell'istruttoria, telefono del responsabile dell' istruttoria, posizione in archivio
 
 - ISTANZE/COMMERCIO/GESTIONE ATTIVITÀ, possibilità di cercare una certa attività inserendone il numero AZIONE e visualizzarne subito il numero
 
 - Nei DOCUMENTI delle singole pratiche, riguardo alla procura: come per qualsiasi documento allegato alla pratica, inserire i campi VALIDO/NON VALIDO E NOTE, ECC.
 
-- Nello scadenzario, sotto “EVENTI NON LETTI” fare comparire anche richiedente e ditta, come nelle altre pagine dello scadenzario
+- Nello scadenzario, sotto "EVENTI NON LETTI" fare comparire anche richiedente e ditta, come nelle altre pagine dello scadenzario
 
 ### ***COLLEGAMENTO PRATICHE: possibilità di collegare più pratiche contemporaneamente***
 Sulla pagina di collegamento pratiche dare la possibilità di collegare più pratiche contemporaneamente (con checkbox di scelta).
@@ -2412,7 +2412,7 @@ ES.
 
 Quando si fa la notifica STC da Suap ad Edilizia non inviare gli oneri Suap.
 
-Il problema si verifica perché viene notificato l’endo e per configurazione di default all'inserimento di un endo vengono inseriti nell'istanza tutti gli oneri associati all'endo stesso.
+Il problema si verifica perché viene notificato l'endo e per configurazione di default all'inserimento di un endo vengono inseriti nell'istanza tutti gli oneri associati all'endo stesso.
 
 Si prevede di mettere un nuovo parametro sulla veriticalizzazione STC che, contenga una lista di nodi mittenti, separati da virgole, per i quali le righe degli oneri non devono essere create in automatico in caso di pratica
 
@@ -2426,7 +2426,7 @@ Gestione del FLAG area riservata redirect che permette sulla nostra area riserva
 
 ## **Versione 2.52**
 ### ***RICERCA CONCESSIONI*** 
-L’esigenza è di poter ricercare le concessioni e verificare se erano attive ad una certa data.
+L'esigenza è di poter ricercare le concessioni e verificare se erano attive ad una certa data.
 
 Al subentro devono essere storicizzati anche i seguenti campi:
 
@@ -2537,7 +2537,7 @@ La modifica prevede:
 
 1. siano presenti le nuove colonne previste nella sviluppo di ricerca delle concessioni per data (#1471).
 
-2. Un interfaccia nel dettaglio delle concessioni “scambio posteggio”,
+2. Un interfaccia nel dettaglio delle concessioni "scambio posteggio",
 
 3. Allo scambio di un posteggio i dati verranno salvati nella solita struttura tabellare aut, aut\_sub, aut\_conc.
 
@@ -2545,7 +2545,7 @@ Particolarità: Se scambio due posteggi occupati allora scrivo i subentri di ent
 ### ***FUNZIONALITA' SUBENTRO CONCESSIONI : Aggiungere flag che sovrascrive la l'impostazione di far ricalcolare il numero dalla configurazione***
 Sviluppo da fare sulla gestione dei subentri
 
-Nella schermata che gestisce i subentri di una concessione va aggiunto un FLAG che permette all’ operatore di sovrascrivere l’impostazione di generare un altro numero (vedi immagine). Il flag sarà attivo solamente sulle
+Nella schermata che gestisce i subentri di una concessione va aggiunto un FLAG che permette all' operatore di sovrascrivere l'impostazione di generare un altro numero (vedi immagine). Il flag sarà attivo solamente sulle
 
 concessioni e sarà visibile solo nel caso in cui il registro preveda la assegnazione automatica da registro o protocollazione.
 
@@ -2562,8 +2562,8 @@ Aggiungere modifica sulla funzionalità rateizzazione. Si deve tenere separata l
 Nuovo bottone nella sezione documenti che permette di creare un file csv in formato excel.
 ### ***C-5775-2017 - UTI DEL NONCELLO : modifiche sezione allegati del movimento***
 1. fare un tasto cumulativo di messa alla firma (seleziona/deseleziona tutti) nella sezione allegati del movimento sarà aggiunta una colonna per selezionare e mettere alla firma più file. 
-1. Nella sezione “allegati” di un movimento fare comparire anche la colonna con il nome del file 
-1. nella sezione “invio mail” fare comparire anche la colonna con le note del file a disposizione per essere allegati
+1. Nella sezione "allegati" di un movimento fare comparire anche la colonna con il nome del file 
+1. nella sezione "invio mail" fare comparire anche la colonna con le note del file a disposizione per essere allegati
 ### ***Introduzione configurazione rateizzazioni con ammortamento alla francese***
 1. Configurazione rateizzazioni con ammortamento alla francese
 1. Algoritmo per eseguire la nuova logica
@@ -2615,30 +2615,30 @@ Il file non deve essere creato dal backoffice, ma recuperato da un servizio mess
 ### ***NUOVO WEBSERVICE SCHEDEDINAMICHE WS***
 Gestione schede dinamiche FVG
 ### ***C-4729-2015 - Modifiche per la configurazione della gestione allegati pesanti***
-Per frontoffice, serve per gestire la dimensione massima degli allegati che l’utente può caricare nell’area riservata.
+Per frontoffice, serve per gestire la dimensione massima degli allegati che l'utente può caricare nell'area riservata.
 
 ## **Versione 2.57**
 ### ***Aggiornamento SUPERFISH Menù***
 Aggiornato il menù di backend per risolvere alcuni problemi di usabilità
 ### ***Auditing della cancellazione dei documenti della pratica***
 Alla cancellazione di un documento dell'istanza, movimenti allegati, istanzeprocure, ecc... viene riportata una riga di log sui file di auditing
-### ***Storico dei passaggi di stato dell’istanza***
-Salva lo storico dei passaggi di stato dell’istanza con i dati della modifica/passaggio di stato e di chi ha effettuato l’operazione.
+### ***Storico dei passaggi di stato dell'istanza***
+Salva lo storico dei passaggi di stato dell'istanza con i dati della modifica/passaggio di stato e di chi ha effettuato l'operazione.
 ### ***Funzionalità di presa in carico della pratica***
-La funzionalità permette di settare un attributo dell’operatore che ha in carico la pratica. La presa in carico sarà fatta mediante una operazione manuale intervenendo su un bottone SEGNA COME PRESA IN CARICO.
+La funzionalità permette di settare un attributo dell'operatore che ha in carico la pratica. La presa in carico sarà fatta mediante una operazione manuale intervenendo su un bottone SEGNA COME PRESA IN CARICO.
 
-La presa in carico non escluderà l’accesso di altri operatori alla pratica ma servirà a far capire a chi accede la pratica che la sta lavorando un operatore specifico.
+La presa in carico non escluderà l'accesso di altri operatori alla pratica ma servirà a far capire a chi accede la pratica che la sta lavorando un operatore specifico.
 
 ## **Versione 2.58**
 ### ***PROTOCOLLAZIONE DELLA DOMANDA ONLINE PRIMA DELL'ARRIVO NEL BACK***
 La modifica deve implementare una nuova logica del flusso di invio della domanda da frontoffice andando ad applicare un controllo che permetta di garantire la ricezione, nel backoffice, di sole domande correttamente protocollate. La domanda, in caso di mancata protocollazione dovrà essere rigettata e rimanere memorizzata nella scrivania virtuale del tecnico con la possibilità di tentare il rinvio in una fase successiva.
 
-Questo comportamento sarà attivato solamente se il frontend è l’area riservata nodo interno.
+Questo comportamento sarà attivato solamente se il frontend è l'area riservata nodo interno.
 ## **Versione 2.59**
 ### ***SVILUPPI PER INTEGRAZIONE SUAPER: LOGICA DI INSTRADAMENTO INTERVENTI***
-Una pratica SUAP che nell’Ente acquisirà un unico n.ro di PG ma contenente più richieste è detta “procedimento unico”.
+Una pratica SUAP che nell'Ente acquisirà un unico n.ro di PG ma contenente più richieste è detta "procedimento unico".
 
-Lo smistamento nell’albero dei procedimenti di VBG di un “procedimento unico”, risulta critico.
+Lo smistamento nell'albero dei procedimenti di VBG di un "procedimento unico", risulta critico.
 
 A seguito della richiesta di adeguamento VBG per smistare agilmente qualsiasi pratica proveniente dal nuovo SUAPER, si propongono i seguenti sviluppi:
 
@@ -2647,15 +2647,15 @@ A seguito della richiesta di adeguamento VBG per smistare agilmente qualsiasi pr
   - Associazione dei gruppi agli interventi,
 - Realizzazione di una componente di business che effettua lo smistamento utilizzando le configurazioni applicative.
 
-L’idea alla base di questo sviluppo è di ridurre la complessità delle esigenze selezionabili dall’utente, categorizzandole in gruppi. Ciascun gruppo conterrà 1 o più esigenze; ciascuna esigenza appartiene a un solo gruppo. Per esempio il gruppo “interni” potrebbe contenere tutte le esigenze gestite tramite procedimenti dell’Ente, mentre “esterni” contenere tutte le esigenze gestite da Enti terzi.
+L'idea alla base di questo sviluppo è di ridurre la complessità delle esigenze selezionabili dall'utente, categorizzandole in gruppi. Ciascun gruppo conterrà 1 o più esigenze; ciascuna esigenza appartiene a un solo gruppo. Per esempio il gruppo "interni" potrebbe contenere tutte le esigenze gestite tramite procedimenti dell'Ente, mentre "esterni" contenere tutte le esigenze gestite da Enti terzi.
 
-Così una pratica “procedimento unico” contenente 10 esigenze, nel caso migliore potrebbero appartenere tutti ad unico gruppo e lo smistamento avverrebbe agevolmente nella cartella di VBG assegnata al medesimo gruppo.
+Così una pratica "procedimento unico" contenente 10 esigenze, nel caso migliore potrebbero appartenere tutti ad unico gruppo e lo smistamento avverrebbe agevolmente nella cartella di VBG assegnata al medesimo gruppo.
 
-Nel caso peggiore cioè VBG non riesce a determinare dove smistare la pratica, essa verrà smistata in una cartella (bidone) che ne implica la protocollazione automatica, invio pec di ricevuta e segnalazione all’operatore SUAP.
+Nel caso peggiore cioè VBG non riesce a determinare dove smistare la pratica, essa verrà smistata in una cartella (bidone) che ne implica la protocollazione automatica, invio pec di ricevuta e segnalazione all'operatore SUAP.
 ### ***PROTOCOLLAZIONE DELLA INTEGRAZIONE ONLINE PRIMA DELL'ARRIVO NEL BACK***
 La modifica deve implementare una nuova logica del flusso di invio della integrazionr da frontoffice andando ad applicare un controllo che permetta di garantire la ricezione, nel backoffice, di sole integrazioni/comunicazioni correttamente protocollate. La domanda, in caso di mancata protocollazione dovrà essere rigettata e rimanere memorizzata nella scrivania virtuale del tecnico con la possibilità di tentare il rinvio in una fase successiva.
 
-Questo comportamento sarà attivato solamente se il frontend è l’area riservata nodo interno
+Questo comportamento sarà attivato solamente se il frontend è l'area riservata nodo interno
 ### ***INTEGRAZIONE VBG - FIRMA REMOTA ARUBA***
 Introdurre possibilità di firmare documenti in modalità CAdES e PAdES (solo PDF) utilizzando il servizio del provider di firma Aruba Remote Sign.
 
@@ -2671,7 +2671,7 @@ Possibilità di gestire più account mail per modulo applicativo
 
 ## **Versione 2.63**
 ### ***Funzionalità accesso agli atti***
-Modifiche per permettere di gestire mediante pratica l’accesso a pratiche documenti – atti.
+Modifiche per permettere di gestire mediante pratica l'accesso a pratiche documenti – atti.
 ## **Versione 2.64**
 ### ***INTEGRAZIONE VBG - FIRMA REMOTA ARUBA*** 
 Aggiunta possibilità di richiedere OTP tramite token virtuale
@@ -2695,11 +2695,11 @@ Nell'ottica della gestione del servizio di procedimento unico è stata aggiunta 
 All'interno della gestione dei procedimenti è stata aggiunta la funzionalità GESTIONE SUB-ENDO che permette di collegare tra loro endoprocedimenti.
 ## **Versione 2.67**
 ### ***Documenti messi alla firma***
-Nella funzionalità “documenti messi alla firma” visualizzare la colonna "**messo alla firma da**"
+Nella funzionalità "documenti messi alla firma" visualizzare la colonna "**messo alla firma da**"
 ### ***Documenti Istanza movimenti allegati***
 Possibilità di nascondere i file con estensione xml dalla lista dei documenti dell'istanza. Una impostazione utente gestisce questa visualizzazione.
 ### ***Istanze***
-In caso di associazione comuni nelle info della istanza viene visualizzata l’informazione del comune
+In caso di associazione comuni nelle info della istanza viene visualizzata l'informazione del comune
 ### ***Gestione subentri***
 Visualizzate le informazioni della localizzazione
 
@@ -2730,29 +2730,29 @@ Possibilità di inviare una pratica da uno zip. Lo zip viene generato dal fronte
 
 ## **Versione 2.74**
 ### ***COLLEGA DOCUMENTI ALL'AUTORIZZAZIONE***
-Possibilità di collegare all’autorizzazione creata tutti gli allegati afferenti all’autorizzazione e permette di recuperarli in modo veloce e da un unico punto. I documenti da poter collegare all’autorizzazione sono:
+Possibilità di collegare all'autorizzazione creata tutti gli allegati afferenti all'autorizzazione e permette di recuperarli in modo veloce e da un unico punto. I documenti da poter collegare all'autorizzazione sono:
 
-1. Documenti dell’istanza
+1. Documenti dell'istanza
 
 2. Documenti dei movimenti
 
-3. Nuovi documenti afferenti solo all’autorizzazione e non alla pratica
+3. Nuovi documenti afferenti solo all'autorizzazione e non alla pratica
 
 4. Altri documenti (endoprocedimenti, procure, anagrafe)
 
-I documenti non devono essere duplicati, ma deve essere creato un legame logico, tranne per i documenti dell’autorizzazione per i quali dovrà essere inserito il file fisico
+I documenti non devono essere duplicati, ma deve essere creato un legame logico, tranne per i documenti dell'autorizzazione per i quali dovrà essere inserito il file fisico
 ### ***Modifiche alla sezione trasparenza del portale pubblico***
-Implementare una serie di modifiche per migliorare l’applicazione “trasparenza”. Tra queste: la possibilità di visualizzare o meno alcuni campi, la paginazione dei risultati, l’introduzione di nuovi campi di ricerca.
+Implementare una serie di modifiche per migliorare l'applicazione "trasparenza". Tra queste: la possibilità di visualizzare o meno alcuni campi, la paginazione dei risultati, l'introduzione di nuovi campi di ricerca.
 ### ***GESTIONE DEGLI ACCESSI PORTUALI***
 Modifiche alle autorizzazioni per gestire le pratiche di richiesta accesso ai porti e le richieste di transiti ai varchi portuali
 ### ***Possibilità di inserire un logo personalizzato nell'interfaccia di backoffice***
-Sarà possibile fa comparire un logo sull’intestazione delle pagine del backoffice
+Sarà possibile fa comparire un logo sull'intestazione delle pagine del backoffice
 ### ***NUOVO STEP AREA RISERVATA GESTIONE ANAGRAFICHE SEMPLIFICATA***
-Lo step permette di inserire i soggetti della domanda secondo un workflow, non modificabile, basato sul “ruolo” dell’utente loggato rispetto alla domanda che sta compilando. Punto iniziale obbligatorio è l’inserimento dell’utente loggato persona fisica e poi, in base alla qualifica indicata procede chiedendo altri soggetti se richiesto. Le scelte automatiche vengono gestite attraverso la configurazione delle tipologie di soggetto previste a livello di backoffice. Generalizzando potrebbero essere previsti al massimo 4 soggetti:
+Lo step permette di inserire i soggetti della domanda secondo un workflow, non modificabile, basato sul "ruolo" dell'utente loggato rispetto alla domanda che sta compilando. Punto iniziale obbligatorio è l'inserimento dell'utente loggato persona fisica e poi, in base alla qualifica indicata procede chiedendo altri soggetti se richiesto. Le scelte automatiche vengono gestite attraverso la configurazione delle tipologie di soggetto previste a livello di backoffice. Generalizzando potrebbero essere previsti al massimo 4 soggetti:
 
 Intermediario
 
-Azienda dell’intermediario
+Azienda dell'intermediario
 
 Richiedente
 
@@ -2772,7 +2772,7 @@ Introdotto un parametro di configurazione che permette di bypassare il recupero 
 
 Il metodo verifica se la verticalizzazione VERTICALIZZAZIONE\_SUAPER\_VECCHIA\_LOGICA\_SE\_UN\_ENDO sia a 1 o S e nel caso controlla se la domanda contiene un solo endo allora va applicata la vecchia logica di recupero intervento per endo principale. In questo modo viene sovrascritta la modalità prevista dai gruppi\_intervento
 ### ***Possibilità di riprotocollare mediante job le pratiche pervenute da online che hanno avuto errori in protocollazione***
-La funzionalità permette di attraverso il job schedulato di recuperare le pratiche marcate come “non protocollate – protocollazione fallita” e tentare una nuova protocollazione. Contestualmente verrà ricreata la ricevuta in modo che il richiedente potrà visionare la nuova ricevuta con numero e data protocollo.
+La funzionalità permette di attraverso il job schedulato di recuperare le pratiche marcate come "non protocollate – protocollazione fallita" e tentare una nuova protocollazione. Contestualmente verrà ricreata la ricevuta in modo che il richiedente potrà visionare la nuova ricevuta con numero e data protocollo.
 ### ***SPUNTISTI: NUOVO CALCOLO COEFFICIENTI PER PAGAMENTI SPUNTA DIGITALE***
 Introdotto il nuovo calcolo per coefficienti come da documenti di specifiche. Introdotta la categoria di mercato e il settore del posteggio nel calcolo.
 
@@ -2780,21 +2780,21 @@ Introdotto il nuovo calcolo per coefficienti come da documenti di specifiche. In
 ### ***NOTIFICA STC: Possibilità di creare la pratica destinataria con i soli endoprocedimenti collegati a quello del movimento***
 Aggiunto flag in configurazione notifiche che permette di indicare di inviare gli endo collegati (tabella INVENTARIOPROC\_ENDO) per la creazione della pratica destinataria.
 ### ***RICERCHE PRATICHE SU SISTEMI PUBBLICI***
-Da alcuni enti è venuta l’esigenza di non mostrare dai risultati delle ricerche pubbliche, es. Area Riservata o Portale della Trasparenza, alcune pratiche di determinati interventi.
+Da alcuni enti è venuta l'esigenza di non mostrare dai risultati delle ricerche pubbliche, es. Area Riservata o Portale della Trasparenza, alcune pratiche di determinati interventi.
 ### ***Creazione ZIP logico nei movimenti***
 Lo scopo della modifica è quello di semplificare la procedura per scegliere i documenti della pratica da mandare in protocollazione ed evitare la duplicazione degli stessi andando ad occupare memoria. Il flusso del lavoro sarà così diviso: 
 
-1. Possibilità da parte di un operatore, all’interno di un movimento, di scegliere tra i documenti della pratica un sotto set il cui riferimento sarà salvato in una nuova tabella (zip logico). I documenti scelti saranno visionabili da chi accederà al movimento 
+1. Possibilità da parte di un operatore, all'interno di un movimento, di scegliere tra i documenti della pratica un sotto set il cui riferimento sarà salvato in una nuova tabella (zip logico). I documenti scelti saranno visionabili da chi accederà al movimento 
 
 2. In fase di protocollazione sarà possibile protocollare questo set di documenti, andando a selezionare un flag (protocolla zip logico)
 
-3. Verrà creato un nuovo tag che creerà un link, da stampare su documento, per permetterà tramite l’app “download app” di scaricare fisicamente gli alleati come accade oggi.
+3. Verrà creato un nuovo tag che creerà un link, da stampare su documento, per permetterà tramite l'app "download app" di scaricare fisicamente gli alleati come accade oggi.
 
 ## **Versione 2.76**
 ### ***Gestione bollettazione mercati / istanze***
 L'esigenza della bollettazione nasce da diverse realtà, ad esempio pagamento su occupazione di posteggi di mercato, canoni demaniali, sanzioni amministrative, occupazione suolo pubblico, ecc.… e quella che si va a descrivere è una funzionalità che dovrebbe servire a gestire svariate esigenze.
 
-La bollettazione di solito esita nell’invio di informazioni strutturate a sottosistemi di pagamento che poi sono delegati a produrre avvisi e file e notifiche tramite diversi canali. Al momento gli oggetti principali oggetto di bollettazione sono gli oneri delle istanze, e le occupazioni dei posteggi da parte dei concessionari. In futuro potrebbero essere altri oggetti da modellare (es. autorizzazioni, concessioni demaniali). Gran parte comunque delle informazioni presenti nell’applicativo sono rappresentate dagli oneri delle istanze
+La bollettazione di solito esita nell'invio di informazioni strutturate a sottosistemi di pagamento che poi sono delegati a produrre avvisi e file e notifiche tramite diversi canali. Al momento gli oggetti principali oggetto di bollettazione sono gli oneri delle istanze, e le occupazioni dei posteggi da parte dei concessionari. In futuro potrebbero essere altri oggetti da modellare (es. autorizzazioni, concessioni demaniali). Gran parte comunque delle informazioni presenti nell'applicativo sono rappresentate dagli oneri delle istanze
 ## **Versione 2.77**
 ### ***Modifica allo zip logico***
 Possibilità di condividere la funzionalità zip logico tra moduli
@@ -2802,7 +2802,7 @@ Possibilità di condividere la funzionalità zip logico tra moduli
 ### ***Condivisione documentale***
 La funzionalità, a fronte della protocollazione di una istanza o di un movimento, permette di copiare in un percorso condiviso ( ad oggi FTP ) i documenti inviati al protocollo
 ### ***Pratiche con errore distinte per comune***
-Nel caso di installazione multicomune Il pannello delle pratiche con errore presenta le pratiche per i comuni configurati per l’operatore.
+Nel caso di installazione multicomune Il pannello delle pratiche con errore presenta le pratiche per i comuni configurati per l'operatore.
 ### ***Gestione dei mercati domenicali***
 Modifica nella gestione delle presenze dei mercati
 
@@ -2814,7 +2814,7 @@ dato un nominativo, conoscere a quali Pratiche Edilizie ha avuto accesso (e quan
 
 dato un numero di Pratica Edilizia, da chi e quando è stata visionata e con quale pratica di accesso agli atti è stata effettuata (numero/anno/VIS).
 
-Per poter accedere a questa funzionalità bisognerà seguire il percorso “Statistiche->Pratiche Edilizie->Accesso agli atti”, si aprirà allora una maschera di ricerca 
+Per poter accedere a questa funzionalità bisognerà seguire il percorso "Statistiche->Pratiche Edilizie->Accesso agli atti", si aprirà allora una maschera di ricerca 
 
 Per poter effettuare la ricerca sarà sufficiente selezionare almeno un'anagrafica che ha acceduto alla pratica oppure un numero istanza. Inoltre è possibile filtrare anche per un dato intervallo temporale impostando le date nel campo Periodo.
 
@@ -2825,7 +2825,7 @@ La lista ottenuta si potrà esportare nei formati csv, xml o PDF selezionando le
 Nelle installazioni multicomune sarà possibile impostare un account specifico per ente. 
 
 ## **Versione 2.79**
-### ***Impostazione dell’account sulle comunicazioni dei movimenti***
+### ***Impostazione dell'account sulle comunicazioni dei movimenti***
 Nelle comunicazioni dei movimenti sarà possibile specificare un account mail con il quale inviare le comunicazioni
 ### ***Domande online***
 Nelle domande online di un determinato modulo software, nel caso di comuni associati sarà possibile escludere determinati comuni nello step di benvenuto.
