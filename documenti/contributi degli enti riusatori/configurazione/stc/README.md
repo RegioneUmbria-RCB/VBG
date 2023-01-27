@@ -663,17 +663,21 @@ Il metodo serve a tornare la visura di una pratica è lo stesso utilizzato da ST
 
 La richiesta allegato è implementata per evitare di passare gli allegati in-line, nello schema "Notifica Attività" gli allegati possono essere scaricati dal destinatario in modo asincrono rispetto alla richiesta di inserimento pratica o inserimento attività.
 
-## WSDL STC
+## Modellazione
+
+### WSDL STC
 
 Visualizzabile al seguente URL:
 
-ultima versione sviluppo: [http://devel3.init.gruppoinit.it/stc/services/stc?wsdl](modellazione STC)
+- ultima versione sviluppo: `http://devel3.init.gruppoinit.it/ibcstc/services/stc?wsdl`
+- ultima versione rilasciata: `http://vbg.gruppoinit.it/ibcstc/services/stc?wsdl`
 
-## WSDL NLA
+### WSDL NLA
 
 Visualizzabile al seguente URL:
 
-ultima versione sviluppo: [http://devel3.init.gruppoinit.it/stc/services/nla?wsdl](modellazione NLA)
+- ultima versione sviluppo: `http://devel3.init.gruppoinit.it/ibcstc/services/nla?wsdl`
+- ultima versione rilasciata: `http://vbg.gruppoinit.it/ibcstc/services/nla?wsdl`
 
 ## Nodi NLA
 
