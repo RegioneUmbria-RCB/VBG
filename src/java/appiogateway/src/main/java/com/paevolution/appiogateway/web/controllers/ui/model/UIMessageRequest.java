@@ -23,10 +23,10 @@ public class UIMessageRequest {
 
     @NotBlank(message = "Il campo idcomune è obbligatorio")
     private String idcomune;
-    @NotBlank(message = "Il campo codicecomune è obbligatorio")
-    private String codicecomune;
-    @NotBlank(message = "Il campo software è obbligatorio")
-    private String software;
+//    @NotBlank(message = "Il campo codicecomune è obbligatorio")
+//    private String codicecomune;
+//    @NotBlank(message = "Il campo software è obbligatorio")
+//    private String software;
     @Schema(description = "This parameter specifies for how long (in seconds) the system will try to deliver the message to the channels configured by the user.", example = "3600", defaultValue = "3600", minimum = "3600", maximum = "6044800")
     private Integer timeToLive = 3600;
     @Schema(description = "The subject of the message - note that only some notification\r\n"

@@ -13,7 +13,7 @@ public interface ServiziRepository extends CrudRepository<Servizi, Long> {
 
     Iterable<Servizi> findAll();
 
-    Optional<Servizi> findByIdcomuneAndCodicecomuneAndSoftware(String idcomune, String codicecomune, String software);
+    // Optional<Servizi> findByIdcomuneAndCodicecomuneAndSoftware(String idcomune, String codicecomune, String software);
 
     Optional<Servizi> findByIdServizio(String idServizio);
 

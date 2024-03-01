@@ -21,10 +21,8 @@ import io.swagger.annotations.ApiModelProperty;
 /**
  * StatusMessageResponse
  */
-@JsonPropertyOrder({ StatusMessageResponse.JSON_PROPERTY_IDCOMUNE, StatusMessageResponse.JSON_PROPERTY_CODICECOMUNE,
-	StatusMessageResponse.JSON_PROPERTY_SOFTWARE, StatusMessageResponse.JSON_PROPERTY_TIME_TO_LIVE, StatusMessageResponse.JSON_PROPERTY_SUBJECT,
-	StatusMessageResponse.JSON_PROPERTY_MARKDOWN, StatusMessageResponse.JSON_PROPERTY_EMAIL_NOTIFICATION,
-	StatusMessageResponse.JSON_PROPERTY_WEBHOOK_NOTIFICATION, StatusMessageResponse.JSON_PROPERTY_STATUS,
+@JsonPropertyOrder({ StatusMessageResponse.JSON_PROPERTY_IDCOMUNE, StatusMessageResponse.JSON_PROPERTY_TIME_TO_LIVE, StatusMessageResponse.JSON_PROPERTY_SUBJECT,
+	StatusMessageResponse.JSON_PROPERTY_MARKDOWN, StatusMessageResponse.JSON_PROPERTY_STATUS,
 	StatusMessageResponse.JSON_PROPERTY_MESSAGE_ID, StatusMessageResponse.JSON_PROPERTY_FISCAL_CODE,
 	StatusMessageResponse.JSON_PROPERTY_CREATED_AT, StatusMessageResponse.JSON_PROPERTY_DUE_DATE,
 	StatusMessageResponse.JSON_PROPERTY_SENDER_SERVICE_ID, StatusMessageResponse.JSON_PROPERTY_SENDER_ALLOWED,
@@ -34,20 +32,12 @@ public class StatusMessageResponse {
 
     public static final String JSON_PROPERTY_IDCOMUNE = "idcomune";
     private String idcomune;
-    public static final String JSON_PROPERTY_CODICECOMUNE = "codicecomune";
-    private String codicecomune;
-    public static final String JSON_PROPERTY_SOFTWARE = "software";
-    private String software;
     public static final String JSON_PROPERTY_TIME_TO_LIVE = "timeToLive";
     private Integer timeToLive;
     public static final String JSON_PROPERTY_SUBJECT = "subject";
     private String subject;
     public static final String JSON_PROPERTY_MARKDOWN = "markdown";
     private String markdown;
-    public static final String JSON_PROPERTY_EMAIL_NOTIFICATION = "emailNotification";
-    private String emailNotification;
-    public static final String JSON_PROPERTY_WEBHOOK_NOTIFICATION = "webhookNotification";
-    private String webhookNotification;
     public static final String JSON_PROPERTY_STATUS = "status";
     private String status;
     public static final String JSON_PROPERTY_MESSAGE_ID = "message_id";
@@ -89,54 +79,6 @@ public class StatusMessageResponse {
     public void setIdcomune(String idcomune) {
 
 	this.idcomune = idcomune;
-    }
-
-    public StatusMessageResponse codicecomune(String codicecomune) {
-
-	this.codicecomune = codicecomune;
-	return this;
-    }
-
-    /**
-     * Get codicecomune
-     * 
-     * @return codicecomune
-     **/
-    @ApiModelProperty(value = "")
-    @JsonProperty(JSON_PROPERTY_CODICECOMUNE)
-    @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-    public String getCodicecomune() {
-
-	return codicecomune;
-    }
-
-    public void setCodicecomune(String codicecomune) {
-
-	this.codicecomune = codicecomune;
-    }
-
-    public StatusMessageResponse software(String software) {
-
-	this.software = software;
-	return this;
-    }
-
-    /**
-     * Get software
-     * 
-     * @return software
-     **/
-    @ApiModelProperty(value = "")
-    @JsonProperty(JSON_PROPERTY_SOFTWARE)
-    @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-    public String getSoftware() {
-
-	return software;
-    }
-
-    public void setSoftware(String software) {
-
-	this.software = software;
     }
 
     public StatusMessageResponse timeToLive(Integer timeToLive) {
@@ -211,66 +153,6 @@ public class StatusMessageResponse {
     public void setMarkdown(String markdown) {
 
 	this.markdown = markdown;
-    }
-
-    public StatusMessageResponse emailNotification(String emailNotification) {
-
-	this.emailNotification = emailNotification;
-	return this;
-    }
-
-    /**
-     * The status of a notification (one for each channel). \&quot;SENT\&quot;: the notification was succesfully sent to
-     * the channel (ie. email or push notification) \&quot;THROTTLED\&quot;: a temporary failure caused a retry during
-     * the notification processing; the notification associated with this channel will be delayed for a maximum of 7
-     * days or until the message expires \&quot;EXPIRED\&quot;: the message expired before the notification could be
-     * sent; this means that the maximum message time to live was reached; no notification will be sent to this channel
-     * \&quot;FAILED\&quot;: a permanent failure caused the process to exit with an error, no notification will be sent
-     * to this channel
-     * 
-     * @return emailNotification
-     **/
-    @ApiModelProperty(value = "The status of a notification (one for each channel). \"SENT\": the notification was succesfully sent to the channel (ie. email or push notification) \"THROTTLED\": a temporary failure caused a retry during the notification processing; the notification associated with this channel will be delayed for a maximum of 7 days or until the message expires \"EXPIRED\": the message expired before the notification could be sent; this means that the maximum message time to live was reached; no notification will be sent to this channel \"FAILED\": a permanent failure caused the process to exit with an error, no notification will be sent to this channel")
-    @JsonProperty(JSON_PROPERTY_EMAIL_NOTIFICATION)
-    @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-    public String getEmailNotification() {
-
-	return emailNotification;
-    }
-
-    public void setEmailNotification(String emailNotification) {
-
-	this.emailNotification = emailNotification;
-    }
-
-    public StatusMessageResponse webhookNotification(String webhookNotification) {
-
-	this.webhookNotification = webhookNotification;
-	return this;
-    }
-
-    /**
-     * The status of a notification (one for each channel). \&quot;SENT\&quot;: the notification was succesfully sent to
-     * the channel (ie. email or push notification) \&quot;THROTTLED\&quot;: a temporary failure caused a retry during
-     * the notification processing; the notification associated with this channel will be delayed for a maximum of 7
-     * days or until the message expires \&quot;EXPIRED\&quot;: the message expired before the notification could be
-     * sent; this means that the maximum message time to live was reached; no notification will be sent to this channel
-     * \&quot;FAILED\&quot;: a permanent failure caused the process to exit with an error, no notification will be sent
-     * to this channel
-     * 
-     * @return webhookNotification
-     **/
-    @ApiModelProperty(value = "The status of a notification (one for each channel). \"SENT\": the notification was succesfully sent to the channel (ie. email or push notification) \"THROTTLED\": a temporary failure caused a retry during the notification processing; the notification associated with this channel will be delayed for a maximum of 7 days or until the message expires \"EXPIRED\": the message expired before the notification could be sent; this means that the maximum message time to live was reached; no notification will be sent to this channel \"FAILED\": a permanent failure caused the process to exit with an error, no notification will be sent to this channel")
-    @JsonProperty(JSON_PROPERTY_WEBHOOK_NOTIFICATION)
-    @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-    public String getWebhookNotification() {
-
-	return webhookNotification;
-    }
-
-    public void setWebhookNotification(String webhookNotification) {
-
-	this.webhookNotification = webhookNotification;
     }
 
     public StatusMessageResponse status(String status) {
@@ -510,11 +392,8 @@ public class StatusMessageResponse {
 	    return false;
 	}
 	StatusMessageResponse statusMessageResponse = (StatusMessageResponse) o;
-	return Objects.equals(this.idcomune, statusMessageResponse.idcomune) && Objects.equals(this.codicecomune, statusMessageResponse.codicecomune)
-		&& Objects.equals(this.software, statusMessageResponse.software) && Objects.equals(this.timeToLive, statusMessageResponse.timeToLive)
+	return Objects.equals(this.idcomune, statusMessageResponse.idcomune) && Objects.equals(this.timeToLive, statusMessageResponse.timeToLive)
 		&& Objects.equals(this.subject, statusMessageResponse.subject) && Objects.equals(this.markdown, statusMessageResponse.markdown)
-		&& Objects.equals(this.emailNotification, statusMessageResponse.emailNotification)
-		&& Objects.equals(this.webhookNotification, statusMessageResponse.webhookNotification)
 		&& Objects.equals(this.status, statusMessageResponse.status) && Objects.equals(this.messageId, statusMessageResponse.messageId)
 		&& Objects.equals(this.fiscalCode, statusMessageResponse.fiscalCode)
 		&& Objects.equals(this.createdAt, statusMessageResponse.createdAt) && Objects.equals(this.dueDate, statusMessageResponse.dueDate)
@@ -527,7 +406,7 @@ public class StatusMessageResponse {
     @Override
     public int hashCode() {
 
-	return Objects.hash(idcomune, codicecomune, software, timeToLive, subject, markdown, emailNotification, webhookNotification, status,
+	return Objects.hash(idcomune, timeToLive, subject, markdown, status,
 		messageId, fiscalCode, createdAt, dueDate, senderServiceId, senderAllowed, preferredLanguage, idTransazione);
     }
 
@@ -537,13 +416,9 @@ public class StatusMessageResponse {
 	StringBuilder sb = new StringBuilder();
 	sb.append("class StatusMessageResponse {\n");
 	sb.append("    idcomune: ").append(toIndentedString(idcomune)).append("\n");
-	sb.append("    codicecomune: ").append(toIndentedString(codicecomune)).append("\n");
-	sb.append("    software: ").append(toIndentedString(software)).append("\n");
 	sb.append("    timeToLive: ").append(toIndentedString(timeToLive)).append("\n");
 	sb.append("    subject: ").append(toIndentedString(subject)).append("\n");
 	sb.append("    markdown: ").append(toIndentedString(markdown)).append("\n");
-	sb.append("    emailNotification: ").append(toIndentedString(emailNotification)).append("\n");
-	sb.append("    webhookNotification: ").append(toIndentedString(webhookNotification)).append("\n");
 	sb.append("    status: ").append(toIndentedString(status)).append("\n");
 	sb.append("    messageId: ").append(toIndentedString(messageId)).append("\n");
 	sb.append("    fiscalCode: ").append(toIndentedString(fiscalCode)).append("\n");

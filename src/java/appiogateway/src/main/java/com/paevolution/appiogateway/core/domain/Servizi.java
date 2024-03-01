@@ -33,7 +33,8 @@ import lombok.ToString;
 @AllArgsConstructor
 @JsonIgnoreProperties(value = { "messaggi", "tipoConnettore" })
 @Entity
-@Table(name = "SERVIZI", uniqueConstraints = { @UniqueConstraint(columnNames = { "IDCOMUNE", "CODICECOMUNE", "SOFTWARE" }) })
+// @Table(name = "SERVIZI", uniqueConstraints = { @UniqueConstraint(columnNames = { "IDCOMUNE", "CODICECOMUNE", "SOFTWARE" }) })
+@Table(name = "SERVIZI")
 public class Servizi implements Serializable {
 
     private static final long serialVersionUID = 4154860125766172609L;
@@ -46,12 +47,12 @@ public class Servizi implements Serializable {
     @Column(name = "IDCOMUNE", nullable = false, length = 6)
     @Size(max = 6, message = "IdComune deve avere al massimo 6 caratteri")
     private String idcomune;
-    @Column(name = "CODICECOMUNE", nullable = false, length = 6)
-    @Size(max = 6, message = "codiceComune deve avere al massimo 6 caratteri")
-    private String codicecomune;
-    @Column(name = "SOFTWARE", nullable = false, length = 6)
-    @Size(max = 2, message = "software deve avere al massimo 6 caratteri")
-    private String software;
+//    @Column(name = "CODICECOMUNE", nullable = false, length = 6)
+//    @Size(max = 6, message = "codiceComune deve avere al massimo 6 caratteri")
+//    private String codicecomune;
+//    @Column(name = "SOFTWARE", nullable = false, length = 6)
+//    @Size(max = 2, message = "software deve avere al massimo 6 caratteri")
+//    private String software;
     @Column(name = "NOME_SERVIZIO", length = 50)
     private String nomeServizio;
     @Column(name = "DIPARTIMENTO", length = 50)
@@ -100,8 +101,8 @@ public class Servizi implements Serializable {
 	    return false;
 	if (this.getId() == null ? other.getId() != null : !this.getId().equals(other.getId()))
 	    return false;
-	if (areNotEqualsIdComuneAndCodiceComuneAndSoftware(other))
-	    return false;
+//	if (areNotEqualsIdComuneAndCodiceComuneAndSoftware(other))
+//	    return false;
 	return true;
     }
 
@@ -112,18 +113,18 @@ public class Servizi implements Serializable {
 	int result = 1;
 	result = (result * PRIME) + (this.getId() == null ? 43 : this.getId().hashCode());
 	result = (result * PRIME) + (this.getIdcomune() == null ? 0 : this.getIdcomune().hashCode());
-	result = (result * PRIME) + (this.getCodicecomune() == null ? 0 : this.getCodicecomune().hashCode());
-	result = (result * PRIME) + (this.getSoftware() == null ? 0 : this.getSoftware().hashCode());
+	// result = (result * PRIME) + (this.getCodicecomune() == null ? 0 : this.getCodicecomune().hashCode());
+	// result = (result * PRIME) + (this.getSoftware() == null ? 0 : this.getSoftware().hashCode());
 	return result;
     }
 
-    private boolean areNotEqualsIdComuneAndCodiceComuneAndSoftware(Servizi other) {
-
-	return (this.getIdcomune() == null && this.getCodicecomune() == null && this.getSoftware() == null)
-		? (other.getIdcomune() != null && other.getCodicecomune() != null && other.getSoftware() != null)
-		: (!this.getIdcomune().equals(other.getIdcomune()) && !this.getCodicecomune().equals(other.getCodicecomune())
-			&& !this.getSoftware().equals(other.getSoftware()));
-    }
+//    private boolean areNotEqualsIdComuneAndCodiceComuneAndSoftware(Servizi other) {
+//
+//	return (this.getIdcomune() == null && this.getCodicecomune() == null && this.getSoftware() == null)
+//		? (other.getIdcomune() != null && other.getCodicecomune() != null && other.getSoftware() != null)
+//		: (!this.getIdcomune().equals(other.getIdcomune()) && !this.getCodicecomune().equals(other.getCodicecomune())
+//			&& !this.getSoftware().equals(other.getSoftware()));
+//    }
 
     protected boolean canEqual(Object other) {
 

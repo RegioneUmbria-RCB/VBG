@@ -100,15 +100,23 @@ Da popolare con i seguenti valori:
 IDCOMUNE|ID|CONFIG_PARAM|CODICE_CONNETTORE|VALORE
 ---|---|---|---|---
 IDCOMUNE|PROGRESSIVO|SSL_TRUST_STORE_LOCATION|MIPGE|...
-IDCOMUNE|PROGRESSIVO|SSL_TRUST_STORE_PASSWORD|MIPGE|...
 IDCOMUNE|PROGRESSIVO|SSL_KEY_STORE_LOCATION|GOVPAY|...
-IDCOMUNE|PROGRESSIVO|SSL_KEY_STORE_PASSWORD|MIPGE|...
-IDCOMUNE|PROGRESSIVO|SSL_KEY_STORE_CERT_ALIAS|MIPGE|...
 IDCOMUNE|PROGRESSIVO|MIPGE_GENOVA_APP_CODE|MIPGE|APPMERCATI_PROCEDURA
 IDCOMUNE|PROGRESSIVO|MIPGE_GENOVA_CLIENT_ID|MIPGE|APPMERCATI_TEST
 IDCOMUNE|PROGRESSIVO|MIPGE_GENOVA_SUBJECT|MIPGE|APPMERCATI_PROCEDURA
 IDCOMUNE|PROGRESSIVO|MIPGE_GENOVA_AUD|MIPGE|`https://apitest.comune.genova.it:28243/manageToken/getToken`
 IDCOMUNE|PROGRESSIVO|MIPGE_GENOVA_IIS|MIPGE|APPMERCATI.comune.genova.it
+
+la truststore location **SSL_TRUST_STORE_LOCATION** si riferisce al certificato ( **nomefilecertificato.crt** ) mentre 
+la keystore location **SSL_KEY_STORE_LOCATION** si riferisce al certificato ( **nomefilecertificato.key** ) generati con questo comando 
+
+```
+ openssl req -x509 -nodes -sha256 -days 3650 -newkey rsa:2048 -keyout <nome-file-certificato>.key -out <nome-file-certificato>.crt
+
+```
+
+- **ATTENZIONE!!** Una volta generati i file vanno rimossi al loro interno ritorni a capo per entrambe i file mentre per la **.KEY** va eliminata anche l'intestazione ---BEGIN PRIVATE CERTIFICATE --- e ---END PRIVATE CERTIFICATE ---
+
 
 ### pay_registrazioni_causali
 

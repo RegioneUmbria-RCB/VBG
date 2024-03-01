@@ -29,16 +29,16 @@ public class ServiziServiceImpl implements ServiziService {
 	this.serviziRepository = serviziRepository;
     }
 
-    @Override
-    public Servizi findByIdcomuneCodicecomuneSoftware(String idcomune, String codicecomune, String software) {
-
-	Optional<Servizi> optServizi = serviziRepository.findByIdcomuneAndCodicecomuneAndSoftware(idcomune, codicecomune, software);
-	if (optServizi.isPresent()) {
-	    log.info("il servizio è presente");
-	    return optServizi.get();
-	}
-	return null;
-    }
+//    @Override
+//    public Servizi findByIdcomuneCodicecomuneSoftware(String idcomune, String codicecomune, String software) {
+//
+//	Optional<Servizi> optServizi = serviziRepository.findByIdcomuneAndCodicecomuneAndSoftware(idcomune, codicecomune, software);
+//	if (optServizi.isPresent()) {
+//	    log.info("il servizio è presente");
+//	    return optServizi.get();
+//	}
+//	return null;
+//    }
 
     @Override
     public List<ServiziDTO> findAllServizi() {

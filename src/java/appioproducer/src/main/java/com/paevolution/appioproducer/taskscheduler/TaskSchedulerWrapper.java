@@ -1,13 +1,16 @@
 package com.paevolution.appioproducer.taskscheduler;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import com.paevolution.appioproducer.core.domain.AppIoCoda;
 import com.paevolution.appioproducer.core.domain.MovimentiIoComunicazioni;
 import com.paevolution.appioproducer.core.domain.helper.MessageToSendHelper;
+import com.paevolution.appioproducer.core.repository.AppIoCodaRepository;
 import com.paevolution.appioproducer.core.repository.MessageToSendRepository;
 import com.paevolution.appioproducer.core.repository.MovimentiIoComunicazioniRepository;
 import com.paevolution.appioproducer.core.service.ISenderService;
@@ -24,16 +27,18 @@ public class TaskSchedulerWrapper {
     private MovimentiIoComunicazioniRepository movimentiIoComunicazioniRepository;
     @Autowired
     private ISenderService senderService;
+    @Autowired
+    private AppIoCodaRepository appIoCodaRepository;
 
     @Scheduled(fixedDelay = 1000)
     // @Scheduled(cron = "${cron.expression}")
     public void scheduleSendMessageTask() {
 
 	log.debug("scheduledTask: Start POST");
-	List<MessageToSendHelper> messageToSendHelpers = messageToSendRepository.findMessageToSend();
-	if (!messageToSendHelpers.isEmpty()) {
-	    for (MessageToSendHelper messageToSendHelper : messageToSendHelpers) {
-		senderService.sendMessage(messageToSendHelper);
+	List<AppIoCoda> appIoCodas = appIoCodaRepository.findAllMessageToSend(new Date());
+	if (!appIoCodas.isEmpty()) {
+	    for (AppIoCoda appIoCoda : appIoCodas) {
+		senderService.sendMessage(appIoCoda);
 	    }
 	} else {
 	    log.debug("scheduledTask: Non ci sono messaggi da inviare.");
@@ -51,11 +56,10 @@ public class TaskSchedulerWrapper {
 	    e.printStackTrace();
 	}
 	log.debug("scheduledTask: Start GET");
-	List<MovimentiIoComunicazioni> movimentiIoComunicazionis = (List<MovimentiIoComunicazioni>) movimentiIoComunicazioniRepository
-		.findAllMessageToGetNotification();
-	if (!movimentiIoComunicazionis.isEmpty()) {
-	    for (MovimentiIoComunicazioni movimentiIoComunicazioni : movimentiIoComunicazionis) {
-		senderService.getMessage(movimentiIoComunicazioni);
+	List<AppIoCoda> lisAppIoCodaToNotify = appIoCodaRepository.findAllMessageToNotify();
+	if (!lisAppIoCodaToNotify.isEmpty()) {
+	    for (AppIoCoda appIoCodaToNotify : lisAppIoCodaToNotify) {
+		senderService.getMessage(appIoCodaToNotify);
 	    }
 	} else {
 	    log.debug("scheduledTask: Non ci sono notifiche da richiedere.");

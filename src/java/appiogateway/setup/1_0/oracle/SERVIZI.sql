@@ -1,0 +1,57 @@
+CREATE TABLE "APPIO_GW"."SERVIZI" 
+   (	"ID" NUMBER(10,0), 
+	"ID_SERVIZIO" VARCHAR2(50 BYTE), 
+	"IDCOMUNE" VARCHAR2(6 BYTE), 
+	"CODICECOMUNE" VARCHAR2(6 BYTE), 
+	"SOFTWARE" VARCHAR2(2 BYTE), 
+	"NOME_SERVIZIO" VARCHAR2(50 BYTE), 
+	"DIPARTIMENTO" VARCHAR2(50 BYTE), 
+	"ENTE" VARCHAR2(50 BYTE), 
+	"CODICE_FISCALE_ENTE" VARCHAR2(25 BYTE), 
+	"CHIAVE_PRIMARIA" VARCHAR2(32 BYTE), 
+	"CHIAVE_SECONDARIA" VARCHAR2(32 BYTE), 
+	"FK_TIPO_CONNETTORE" NUMBER(10,0), 
+	"CLIENT_ID" VARCHAR2(32 BYTE), 
+	"CLIENT_SECRET" VARCHAR2(32 BYTE), 
+	"CLIENT_REGISTRATION_ID" VARCHAR2(32 BYTE)
+   );
+
+--------------------------------------------------------
+--  DDL for Index UKDOA63WLB8QPNVK6YUCGOSQIWS
+--------------------------------------------------------
+
+  CREATE UNIQUE INDEX "APPIO_GW"."UKDOA63WLB8QPNVK6YUCGOSQIWS" ON "APPIO_GW"."SERVIZI" ("ID_SERVIZIO", "IDCOMUNE", "CODICECOMUNE", "SOFTWARE");
+--------------------------------------------------------
+--  DDL for Index CLIENT_REGISTRATION_IDX
+--------------------------------------------------------
+
+  CREATE UNIQUE INDEX "APPIO_GW"."CLIENT_REGISTRATION_IDX" ON "APPIO_GW"."SERVIZI" ("CLIENT_REGISTRATION_ID");
+--------------------------------------------------------
+--  DDL for Index SERVIZI_PK
+--------------------------------------------------------
+
+  CREATE UNIQUE INDEX "APPIO_GW"."SERVIZI_PK" ON "APPIO_GW"."SERVIZI" ("ID");
+--------------------------------------------------------
+--  DDL for Index IDX_SERVIZI_01
+--------------------------------------------------------
+
+  CREATE UNIQUE INDEX "APPIO_GW"."IDX_SERVIZI_01" ON "APPIO_GW"."SERVIZI" ("IDCOMUNE", "CODICECOMUNE", "SOFTWARE");
+--------------------------------------------------------
+--  DDL for Index IDX_SERVIZI_02
+--------------------------------------------------------
+
+  CREATE UNIQUE INDEX "APPIO_GW"."IDX_SERVIZI_02" ON "APPIO_GW"."SERVIZI" ("ID_SERVIZIO");
+--------------------------------------------------------
+--  Constraints for Table SERVIZI
+--------------------------------------------------------
+
+  ALTER TABLE "APPIO_GW"."SERVIZI" ADD CONSTRAINT "CLIENT_REGISTRATION_IDX" UNIQUE ("CLIENT_REGISTRATION_ID");
+  
+  ALTER TABLE "APPIO_GW"."SERVIZI" MODIFY ("ID_SERVIZIO" NOT NULL ENABLE);
+  ALTER TABLE "APPIO_GW"."SERVIZI" MODIFY ("SOFTWARE" NOT NULL ENABLE);
+  ALTER TABLE "APPIO_GW"."SERVIZI" MODIFY ("CODICECOMUNE" NOT NULL ENABLE);
+  ALTER TABLE "APPIO_GW"."SERVIZI" MODIFY ("IDCOMUNE" NOT NULL ENABLE);
+  
+  ALTER TABLE "APPIO_GW"."SERVIZI" ADD CONSTRAINT "UKDOA63WLB8QPNVK6YUCGOSQIWS" UNIQUE ("ID_SERVIZIO", "IDCOMUNE", "CODICECOMUNE", "SOFTWARE");
+  
+  ALTER TABLE "APPIO_GW"."SERVIZI" ADD CONSTRAINT "SERVIZI_PK" PRIMARY KEY ("ID");

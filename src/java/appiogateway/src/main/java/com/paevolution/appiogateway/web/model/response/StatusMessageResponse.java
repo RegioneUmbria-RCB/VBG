@@ -21,8 +21,8 @@ public class StatusMessageResponse implements Serializable {
     */
     private static final long serialVersionUID = 958746514587035816L;
     private String idcomune;
-    private String codicecomune;
-    private String software;
+//    private String codicecomune;
+//    private String software;
     @Schema(description = "Identificativo univoco del messaggio fornito dal sistema mittente.")
     @JsonProperty("message_id")
     private String messageId;

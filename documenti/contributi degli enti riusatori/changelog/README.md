@@ -4,26 +4,161 @@
 
 ### Backoffice
 
+- Nuova procedura (con calcolo) per l'assegnazione delle pratiche ai gruppi di operatori
+
 ### Area riservata
+
+### Console
 
 ### Nodo pagamenti
 
-- Integrazione con Easy Bridge (Progetti e Soluzioni)
+### Authenticationgateway
 
------
+### Portale frontoffice
+
+- Sezione trasparenza: modifiche alla localizzazione
+  - nascondere la sezione localizzazione presente nel dettaglio di una ricerca effettuata nella sezione trasparenza del portale online SUAP.
+  - aumentare il numero dei record visualizzabili a 750 nella lista uscita dalla ricerca
+  - inserimento della descrizione estesa nel campo Intervento in fase di ricerca
+
+---
+
+## 2.117
+
+### 2.117 Backoffice
+
+- Modifica scarica pratica ZIP. Nomi dei file impostati da metadati.
+ [(documentazione)](../configurazione/albero-interventi/metadati/README.md#DOWNLOAD_PRATICA_ZIP_NOMEFILE)
+- Modifica a gestione attività su lista istanze dell'attività:
+  - posizione archivio editabile;
+  - aggiunta colonna con possibilità di assegnare operatore differente;
+  - colonna che permette di visualizzare i dettagli di una pratica senza dovervi accedere.
+- Lista dei pagamenti delle autorizzazioni tramite menu **istanze --> software --> manifestazioni --> Pagamenti aut/conc**  
+
+### 2.117 Console
+
+- Funzionalità di ricerca/collegamento pratiche presentate [(documentazione)](../configurazione/console/domanda-on-line/configurazione-step/ricerca-pratiche/)
+
+### 2.117 Authenticationgateway
+
+- Implementazione connettore CIE del Connettore di autenticazione di **Progetti e Soluzioni**
+
+### 2.117 Portale frontoffice
+
+- Modifiche alla **Sezione trasparenza**
+  - ricerca per dati catastali;
+  - Possibilità di indicare gli stati filtrabili nel front. Nella gestione degli stati istanza del back è stato aggiunto un flag "filtrabile da front". Vengono riportati sempre gli stati legati al comportamento (Tutte, Attive, Chiuse positivamente, Chiuse negativamente) e se configurati anche gli stati filtrabili da front;
+  - nella visura viene riportato lo stato effettivo della pratica e non il comportamento.
+
+## 2.116
+
+### 2.116 Backoffice
+
+- Fix protocollo
+- Fix e aggiornamenti su gestione presenze
+- Protocollazione attivazione Layer e QRCOde su PDF
+
+  [(documentazione protocollo)](../configurazione/protocollazione/protocollo_attivo.md)
+  
+  [(documentazione layer)](../configurazione/protocollazione/applica_layer_ai_PDF.md)
+
+  [(documentazione qrcode)](../configurazione/protocollazione/qrcode.md)
+
+## 2.115
+
+### 2.115 Backoffice
+
+- Ricevuta integrazioni da Frontoffice
+  [(documentazione)](../configurazione/tipimovimento/documenti-tipo/README.md)
+  
+- Mercati gestione presenze: invio email alla creazione di una posizione debitoria in caso di credito insufficiente su borsellino
+- Integrazione con Firma Remota INFOCERT
+
+### 2.115 Nodo pagamenti
+
+- Piemonte Pay: integrazione con servizi REST di verifica stato, invia avviso pagamento, dettaglio posizione
+- MIP connettore che gestisce l'inserimento dei tracciati in sostituzione di NexiPayConnector
+
+### 2.115 App-vigili
+
+- Funzionalità chiusura giornata da app
+
+### 2.115 App-ambulanti
+
+- Gestione del borsellino/abbonamento
+
+## 2.114
+
+### 2.114 Backoffice
+
+- Aree pubbliche/Autorizzazioni-Concessioni: configurazione delle manifestazioni possibilità di scegliere se attivare la graduatoria spuntisti per tipologia manifestazioni (NON ATTIVA - FIERE/MERCATI - FIERE - MERCATI)
+
+### 2.114 nodo pagamenti
+
+- Caricamento massivo posizioni debitorie. Nuovo metodo esposto che permette di gestire il caricamento delle posizioni su tracciati o altro meccanismo massivo dal caricamento delle posizioni in cooperazione applicativa
+- Connettore MIP innestata la logica del tracciato NEXI
+
+### 2.114 ibcsecurity
+
+- nuovo web service per gestire contesto **AREA_PERSONALE**
+
+## 2.113
+
+### 2.113 Backoffice
+
+- Aree pubbliche/Autorizzazioni-Concessioni
+  - Gestione del campo occupante che viene salvato direttamente nell'autorizzazione e non deve essere più calcolato a partire dall'istanza
+  - Cessazione automatica delle autorizzazioni/concessioni alla data scadenza/cessazione
+  - Subentro automatico in caso di fine affitto. Gestione nella configurazione dei mercati delle causali per la chiusura automatica/fine affitto/riottenimento
+  - Tipologia registri: aggiunta del flag manifestazioni per indicare che è un registro che permette il recupero delle autorizzazioni nelle aree pubbliche
+    - Possibilità di indicare un posteggio come "NON ASSEGNABILE"
+
+- Bollettazione
+  - Filtro Interfaccia Grafica per ricerca concessionari su Bollettazione. Nella schermata di backoffice in cui è presente il dettaglio/riepilogo di tutte le informazioni del bimestre bollettato, si deve rendere possibile all’operatore la ricerca di uno specifico concessionario (ricercandolo per nominativo, partita iva, concessione)
+    - Adeguamento tracciato bollettazione. In fase di creazione della bollettazione, nel caso fossero presenti degli indirizzi mail non corretti dal punto di vista sintattico, ometterne l'invio di tale campo
+
+### 2.113 App-Vigili
+
+- Modifica funzionalità per il pulsante "Termina Appello" per chiudere la giornata e non consentire ulteriori modifiche dalla web app (da backoffice saranno sempre possibili previa riapertura della giornata) e alert bloccante se ci sono posteggi liberi non assegnati e spuntisti presenti per i quali non gli è stato assegnato il posteggio.
+- Visualizzare la lista degli spuntisti in ordine di graduatoria. La visualizzazione sulla web app, della lista degli spuntisti in ordine decrescente sulla base del numero presenze in graduatoria avvenga di default.
+
+### 2.113 Autenticazione
+
+- Adeguamento autenticazione ARPA con nuove specifiche Regione Toscana
+
+## 2.112
+
+### 2.112 Backoffice
+
+- Abbonamento/Borsellino dei pagamenti per mercati/ambulanti
+
+- App IO
+  [(documentazione)](../configurazione/app-io/README.md)
+
+## 2.111
+
+### 2.111 Backoffice
+
+- Modifica integrazione gestionale atti esterni per poter indicare i firmatari
+  [(documentazione)](../configurazione/integrazione-gestionale-atti/README.md)
+
+### 2.111 Nodo pagamenti
+
+- Integrazione con Connettore Easy Bridge (Fornitore Progetti e Soluzioni)
+  [(documentazione)](../configurazione/nodo-pagamenti/easy-bridge-progetti-soluzioni.md)
 
 ## 2.110
 
 ### 2.110 Backoffice
 
 - Adeguamenti CDS su funzionalità Commissioni Conferenze
-   [(documentazione)](../configurazione/commissioni-conferenze/README.md)
+  [(documentazione)](../configurazione/commissioni-conferenze/README.md)
 
 - Ottimizzazioni Bollettazione. La funzionalità Bollettazione è stata rivista per ottimizzare le fasi di visualizzazione interfaccia inserimento dati.
 
 - Aggiunto manuale installazione / utilizzo del Configuratore Calcoli
-   [(Installazione)](../configurazione/configuratore-calcoli/guida-aggiornamento/2.110/README.md)
-   [(Manuale d'uso)](../configurazione/configuratore-calcoli/README.md)
+  [(Installazione)](../configurazione/configuratore-calcoli/guida-aggiornamento/2.110/README.md)
+  [(Manuale d'uso)](../configurazione/configuratore-calcoli/README.md)
 
 ### 2.110 .net
 
@@ -42,7 +177,7 @@
 ### 2.109 Backoffice
 
 - Integrazione con gestionale esterno per la gestione delle determine
-   [(documentazione)](../configurazione/integrazione-gestionale-atti/README.md)
+  [(documentazione)](../configurazione/integrazione-gestionale-atti/README.md)
 - Causali oneri - Integrazione nodo pagamenti gestione del parametro **codice tassonomia**
 
 ### 2.109 Nodo pagamenti
@@ -66,10 +201,10 @@
 
 ### 2.107 Backoffice
 
-- **SCADENZARIO OPERATORI**: nuova sezione *"ONERI"*
+- **SCADENZARIO OPERATORI**: nuova sezione _"ONERI"_
 
 - Protocollo URBI: implementazione metodo fascicolazione
-     [(documentazione)](../configurazione/protocollazione/urbi.md)
+  [(documentazione)](../configurazione/protocollazione/urbi.md)
 
 ## 2.106
 
@@ -77,7 +212,7 @@
 
 - Accesso agli atti: possibilità di associare pratiche di altri moduli software
 - Integrazione protocollo **IT@LSOFT**
-     [(documentazione)](../configurazione/protocollazione/italsoft.md)
+  [(documentazione)](../configurazione/protocollazione/italsoft.md)
 
 ### Area riservata/Backend ASP.NET
 
@@ -88,7 +223,7 @@
 ### 2.105 Backoffice
 
 - Integrazione con i servizi di protocollazione sviluppati da Kibernetes
-     [(documentazione)](../configurazione/protocollazione/kibernetes.md)
+  [(documentazione)](../configurazione/protocollazione/kibernetes.md)
 
 ### 2.105 Area riservata
 
@@ -99,7 +234,7 @@
 ### 2.104 Backoffice
 
 - Integrazione con i servizi di protocollazione sviluppati da E-Lios
-     [(documentazione)](../configurazione/protocollazione/elios.md)
+  [(documentazione)](../configurazione/protocollazione/elios.md)
 - Aggiunta la possibilità di trasformare in PDF gli allegati passati al protocollo tramite il parametro [(TRASFORMA_IN_PDF)](../configurazione/protocollazione/protocollo_attivo.md)
 - Aggiunta la possibilità di indicare quali tipologie di file vanno protocollate in base all'estensione tramite il parametro [(ESTENSIONI_AMMESSE)](../configurazione/protocollazione/protocollo_attivo.md)
 
@@ -109,14 +244,14 @@
 
 - Funzionalità per gestione calcolo coefficienti concorsi
 - Accesso agli atti: gestione dei documenti con dati sensibili
- [(documentazione)](../configurazione/accesso-agli-atti/README.md)
+  [(documentazione)](../configurazione/accesso-agli-atti/README.md)
 
 ### 2.103 Area riservata
 
 - Accesso agli atti: gestione dei documenti con dati sensibili. Non saranno visualizzabili i documenti contrassegnati nel back cone "Dato sensibile"
- [(documentazione)](../configurazione/accesso-agli-atti/README.md)
+  [(documentazione)](../configurazione/accesso-agli-atti/README.md)
 - Accesso agli atti: visualizzazione dei movimenti e dei relativi files
- [(documentazione)](../configurazione/accesso-agli-atti/README.md)
+  [(documentazione)](../configurazione/accesso-agli-atti/README.md)
 
 ## 2.102
 
@@ -172,7 +307,7 @@
 ### 2.97 Backoffice
 
 - Evolutiva nell'integrazione col protocollo JIride: è possibile attivare tale protocollo anche come protocollo storico
-     [(documentazione)](../configurazione/protocollazione/jiride.md)
+  [(documentazione)](../configurazione/protocollazione/jiride.md)
 
 ### 2.97 Area riservata
 
@@ -191,32 +326,32 @@
 - Integrazione con FVGPAY
   [(documentazione)](../configurazione/nodo-pagamenti/fvgpay.md)
 
------
+---
 
 ## 2.96
 
 ### 2.96 Backoffice
 
 - Evolutiva backoffice sul campo oggetto del protocollo
-    [(documentazione)](../configurazione/segnaposti/segnaposto-dati-dinamici.md)
+  [(documentazione)](../configurazione/segnaposti/segnaposto-dati-dinamici.md)
 - Evoluzione Integrazione Protocollo Civilia Next
-    [(documentazione)](../configurazione/protocollazione/civilianext.md)
+  [(documentazione)](../configurazione/protocollazione/civilianext.md)
 
 ### 2.96 Area riservata
 
 - Evolutiva Area Riservata: step gradimento del servizio
-   [(documentazione)](../configurazione/area-riservata/questionario-gradimento/)
+  [(documentazione)](../configurazione/area-riservata/questionario-gradimento/)
 
 ### 2.96 Nodo pagamenti
 
 - GOVPAY Modifica interfaccia con PagoPa per la gestione del campo "Unità operativa"
-   [(documentazione)](../configurazione/nodo-pagamenti/govpay.md)
+  [(documentazione)](../configurazione/nodo-pagamenti/govpay.md)
 
 ### App Ambulanti
 
 - Evolutiva software per rendere fruibile la mappa in maniera statica all'interno della webapp dei vigili e degli spuntisti
 
------
+---
 
 ## 2.95
 
@@ -299,7 +434,7 @@
   [(documentazione)](../configurazione/people/README.md)
 - Visura: possibilità di specificare il livello visura in base al tipo soggetto
 - Possibilità di spostare voci dell'albero degli interventi da una cartella ad un altra
-  [(documentazione)](../configurazione/modifica-albero-interventi/README.md)
+  [(documentazione)](../configurazione/albero-interventi/modifica-albero-interventi/README.md)
 
 ### 2.88 Area riservata
 

@@ -29,6 +29,19 @@ A livello applicativo (nla-proxy.war) vanno configurati i file **deploy.properti
 
 ### deploy.properties
 
+**Proprietà generiche**
+
+- **ws.token.url**: non dovrebbe essere necessario cambiare quanto specificato, verificare che la macchina su cui è installato conosca l'alias vbg.security e che sia raggiungibile sulla porta indicata ( eventualmente cambiare la porta ).
+Per testare la raggiungbilità è possibile effettuare un **telnet vbg.security 8080** o eventualmente sulla porta configurata per la security.
+- **ws.token.user**: verificare che all'interno della security sia censita un'applicazione chiamata **NLA-PROXY**
+- **ws.token.user**: verificare che all'interno della security sia censita un'applicazione chiamata **NLA-PROXY** la cui password MD5 corrisponda, eventualmente cambiare il valore con quello indicato sulla security
+- **stc.url**: non dovrebbe essere necessario cambiare quanto specificato, verificare che la macchina su cui è installato conosca l'alias vbg.stc e che sia raggiungibile sulla porta indicata ( eventualmente cambiare la porta ).
+Per testare la raggiungbilità è possibile effettuare un **telnet vbg.stc 8080** o eventualmente sulla porta configurata per STC.
+- **ws.backend.url**: non dovrebbe essere necessario cambiare quanto specificato, verificare che la macchina su cui è installato conosca l'alias vbg.backend e che sia raggiungibile sulla porta indicata ( eventualmente cambiare la porta ).
+Per testare la raggiungbilità è possibile effettuare un **telnet vbg.stc 8080** o eventualmente sulla porta configurata per STC.
+
+
+
 ### nla-proxy-security.properties
 
 **Proprietà generiche**

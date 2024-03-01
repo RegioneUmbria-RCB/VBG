@@ -21,7 +21,7 @@ public interface MessaggiRepository extends PagingAndSortingRepository<Messaggi,
 
     Optional<Messaggi> findByFiscalCodeAndId(String fiscalCode, Long id);
 
-    Optional<Messaggi> findByIdcomuneAndCodicecomuneAndSoftware(String idcomune, String codicecomune, String software);
+    // Optional<Messaggi> findByIdcomuneAndCodicecomuneAndSoftware(String idcomune, String codicecomune, String software);
 
     Optional<Messaggi> findByMessageId(String messageId);
 

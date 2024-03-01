@@ -120,8 +120,9 @@ public class IOConnectorServiceImpl extends IOConnectorServiceImplBase implement
 	    if (!profile.getSenderAllowed()) {
 		msgDTO.setStatoMessaggio(StatiMessaggioEnum.SENDER_NOT_ALLOWED.name());
 		updateMessage(msgDTO, new FieldEnum[] { FieldEnum.STATO_MESSAGGIO });
-	    }
-	    updateMessage(msgDTO, new FieldEnum[] { FieldEnum.SENDER_ALLOWED, FieldEnum.PREFERRED_LANGUAGES });
+	    }else {
+		updateMessage(msgDTO, new FieldEnum[] { FieldEnum.SENDER_ALLOWED, FieldEnum.PREFERRED_LANGUAGES });
+	    }	    
 	    result = profile.getSenderAllowed();
 	} catch (Throwable ex) {
 	    if (ex instanceof MessageNotFoundException) {

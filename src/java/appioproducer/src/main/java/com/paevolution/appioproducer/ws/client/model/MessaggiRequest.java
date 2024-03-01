@@ -20,20 +20,16 @@ import io.swagger.annotations.ApiModelProperty;
 /**
  * MessaggiRequest
  */
-@JsonPropertyOrder({ MessaggiRequest.JSON_PROPERTY_IDCOMUNE, MessaggiRequest.JSON_PROPERTY_CODICECOMUNE, MessaggiRequest.JSON_PROPERTY_SOFTWARE,
+@JsonPropertyOrder({ MessaggiRequest.JSON_PROPERTY_IDCOMUNE, 
 	MessaggiRequest.JSON_PROPERTY_TIME_TO_LIVE, MessaggiRequest.JSON_PROPERTY_SUBJECT, MessaggiRequest.JSON_PROPERTY_MARKDOWN,
 	MessaggiRequest.JSON_PROPERTY_EMAIL, MessaggiRequest.JSON_PROPERTY_DUE_DATE, MessaggiRequest.JSON_PROPERTY_FISCAL_CODE,
-	MessaggiRequest.JSON_PROPERTY_MESSAGE_ID })
+	MessaggiRequest.JSON_PROPERTY_MESSAGE_ID, MessaggiRequest.JSON_PROPERTY_IDENTIFICATIVO_SERVIZIO })
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-03-18T11:12:23.623+01:00[Europe/Berlin]")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class MessaggiRequest {
 
     public static final String JSON_PROPERTY_IDCOMUNE = "idcomune";
     private String idcomune;
-    public static final String JSON_PROPERTY_CODICECOMUNE = "codicecomune";
-    private String codicecomune;
-    public static final String JSON_PROPERTY_SOFTWARE = "software";
-    private String software;
     public static final String JSON_PROPERTY_TIME_TO_LIVE = "timeToLive";
     private Integer timeToLive = 3600;
     public static final String JSON_PROPERTY_SUBJECT = "subject";
@@ -48,6 +44,9 @@ public class MessaggiRequest {
     private String fiscalCode;
     public static final String JSON_PROPERTY_MESSAGE_ID = "message_id";
     private String messageId;
+    public static final String JSON_PROPERTY_IDENTIFICATIVO_SERVIZIO = "identificativo_servizio";
+    private String identificativoServizio;
+
 
     public MessaggiRequest idcomune(String idcomune) {
 
@@ -73,53 +72,9 @@ public class MessaggiRequest {
 	this.idcomune = idcomune;
     }
 
-    public MessaggiRequest codicecomune(String codicecomune) {
 
-	this.codicecomune = codicecomune;
-	return this;
-    }
 
-    /**
-     * Get codicecomune
-     * 
-     * @return codicecomune
-     **/
-    @ApiModelProperty(required = true, value = "")
-    @JsonProperty(JSON_PROPERTY_CODICECOMUNE)
-    @JsonInclude(value = JsonInclude.Include.ALWAYS)
-    public String getCodicecomune() {
 
-	return codicecomune;
-    }
-
-    public void setCodicecomune(String codicecomune) {
-
-	this.codicecomune = codicecomune;
-    }
-
-    public MessaggiRequest software(String software) {
-
-	this.software = software;
-	return this;
-    }
-
-    /**
-     * Get software
-     * 
-     * @return software
-     **/
-    @ApiModelProperty(required = true, value = "")
-    @JsonProperty(JSON_PROPERTY_SOFTWARE)
-    @JsonInclude(value = JsonInclude.Include.ALWAYS)
-    public String getSoftware() {
-
-	return software;
-    }
-
-    public void setSoftware(String software) {
-
-	this.software = software;
-    }
 
     public MessaggiRequest timeToLive(Integer timeToLive) {
 
@@ -291,6 +246,31 @@ public class MessaggiRequest {
 
 	this.messageId = messageId;
     }
+    
+    public MessaggiRequest identificativoServizio(String identificativoServizio) {
+
+	this.identificativoServizio = identificativoServizio;
+	return this;
+    }
+
+    /**
+     * Identificativo univoco del servizio.
+     * 
+     * @return identificativoServizio
+     **/
+    @ApiModelProperty(required = true, value = "Identificativo univoco del servizio.")
+    @JsonProperty(JSON_PROPERTY_IDENTIFICATIVO_SERVIZIO)
+    @JsonInclude(value = JsonInclude.Include.ALWAYS)
+    public String getIdentificativoServizio() {
+    
+        return identificativoServizio;
+    }
+
+    
+    public void setIdentificativoServizio(String identificativoServizio) {
+    
+        this.identificativoServizio = identificativoServizio;
+    }
 
     @Override
     public boolean equals(java.lang.Object o) {
@@ -302,17 +282,17 @@ public class MessaggiRequest {
 	    return false;
 	}
 	MessaggiRequest messaggiRequest = (MessaggiRequest) o;
-	return Objects.equals(this.idcomune, messaggiRequest.idcomune) && Objects.equals(this.codicecomune, messaggiRequest.codicecomune)
-		&& Objects.equals(this.software, messaggiRequest.software) && Objects.equals(this.timeToLive, messaggiRequest.timeToLive)
+	return Objects.equals(this.idcomune, messaggiRequest.idcomune) 
+		&& Objects.equals(this.timeToLive, messaggiRequest.timeToLive)
 		&& Objects.equals(this.subject, messaggiRequest.subject) && Objects.equals(this.markdown, messaggiRequest.markdown)
 		&& Objects.equals(this.email, messaggiRequest.email) && Objects.equals(this.dueDate, messaggiRequest.dueDate)
-		&& Objects.equals(this.fiscalCode, messaggiRequest.fiscalCode) && Objects.equals(this.messageId, messaggiRequest.messageId);
+		&& Objects.equals(this.fiscalCode, messaggiRequest.fiscalCode) && Objects.equals(this.messageId, messaggiRequest.messageId) && Objects.equals(this.identificativoServizio, messaggiRequest.identificativoServizio);
     }
 
     @Override
     public int hashCode() {
 
-	return Objects.hash(idcomune, codicecomune, software, timeToLive, subject, markdown, email, dueDate, fiscalCode, messageId);
+	return Objects.hash(idcomune, timeToLive, subject, markdown, email, dueDate, fiscalCode, messageId, identificativoServizio);
     }
 
     @Override
@@ -321,8 +301,6 @@ public class MessaggiRequest {
 	StringBuilder sb = new StringBuilder();
 	sb.append("class MessaggiRequest {\n");
 	sb.append("    idcomune: ").append(toIndentedString(idcomune)).append("\n");
-	sb.append("    codicecomune: ").append(toIndentedString(codicecomune)).append("\n");
-	sb.append("    software: ").append(toIndentedString(software)).append("\n");
 	sb.append("    timeToLive: ").append(toIndentedString(timeToLive)).append("\n");
 	sb.append("    subject: ").append(toIndentedString(subject)).append("\n");
 	sb.append("    markdown: ").append(toIndentedString(markdown)).append("\n");
@@ -330,6 +308,7 @@ public class MessaggiRequest {
 	sb.append("    dueDate: ").append(toIndentedString(dueDate)).append("\n");
 	sb.append("    fiscalCode: ").append(toIndentedString(fiscalCode)).append("\n");
 	sb.append("    messageId: ").append(toIndentedString(messageId)).append("\n");
+	sb.append("    identificativoServizio: ").append(toIndentedString(identificativoServizio)).append("\n");
 	sb.append("}");
 	return sb.toString();
     }

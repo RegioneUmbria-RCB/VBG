@@ -157,12 +157,12 @@ Alcuni esempi per definire operativamente il "Livello di servizio2":
 Un esempio di livello di servizio astratto può essere una tassa da pagare perché si possiede una specifica concessione su un particolare posteggio, ad esempio, la COSAP.
 Il sistema avrà configurato:
 
-|Livello configurazione	|	Valore|	Unità misura|	Descrizione|
-|---------|---------|---------|---------|
-|Mercato	|	2,5 |	euro            |Tariffa giornaliera in euro|
-|Posteggio	|	20  |	mq              |	Fattore moltiplicativo sono i mq del posteggio|
-|		    |       |Costo servizio/gg	|50 euro|
-|		    |       |	Segnaposto	    |COSAP|
+| Livello configurazione | Valore | Unità misura      | Descrizione                                    |
+| ---------------------- | ------ | ----------------- | ---------------------------------------------- |
+| Mercato                | 2,5    | euro              | Tariffa giornaliera in euro                    |
+| Posteggio              | 20     | mq                | Fattore moltiplicativo sono i mq del posteggio |
+|                        |        | Costo servizio/gg | 50 euro                                        |
+|                        |        | Segnaposto        | COSAP                                          |
 
 
 ##### Livello Servizio FISICO
@@ -183,41 +183,41 @@ Vediamo un esempio di configurazione di un posteggio di 20 mq che vende fiori:
 
 _**Servizio magazzino**_
 
-|Livello configurazione| Servizio	|	Valore|	Unità misura|	Descrizione|
-|---------|------------------|---------|---------|---------|
-|Mercato    | magazzino	|	2 |	euro            |Tariffa giornaliera in euro|
-|Posteggio	| magazzino     |	5 |	mq              |	Fattore moltiplicativo sono i mq del posteggio|
-|		    |               |     |Costo servizio/gg	|10 euro|
-|		    |               |     |	Segnaposto	    |TIPOLOGIA_SPAZIO|
+| Livello configurazione | Servizio  | Valore | Unità misura      | Descrizione                                    |
+| ---------------------- | --------- | ------ | ----------------- | ---------------------------------------------- |
+| Mercato                | magazzino | 2      | euro              | Tariffa giornaliera in euro                    |
+| Posteggio              | magazzino | 5      | mq                | Fattore moltiplicativo sono i mq del posteggio |
+|                        |           |        | Costo servizio/gg | 10 euro                                        |
+|                        |           |        | Segnaposto        | TIPOLOGIA_SPAZIO                               |
 
 _**Servizio Banco vendita**_
 
-|Livello configurazione| Servizio	|	Valore|	Unità misura|	Descrizione|
-|---------|------------------|---------|---------|---------|
-|Mercato    | Banco vendita	|	1   |	euro            |Tariffa giornaliera in euro|
-|Posteggio	| Banco vendita |	15  |	mq              |	Fattore moltiplicativo sono i mq del posteggio|
-|		    |               |       |Costo servizio/gg	|15 euro|
-|		    |               |       |	Segnaposto	    |TIPOLOGIA_SPAZIO|
+| Livello configurazione | Servizio      | Valore | Unità misura      | Descrizione                                    |
+| ---------------------- | ------------- | ------ | ----------------- | ---------------------------------------------- |
+| Mercato                | Banco vendita | 1      | euro              | Tariffa giornaliera in euro                    |
+| Posteggio              | Banco vendita | 15     | mq                | Fattore moltiplicativo sono i mq del posteggio |
+|                        |               |        | Costo servizio/gg | 15 euro                                        |
+|                        |               |        | Segnaposto        | TIPOLOGIA_SPAZIO                               |
 
 
 _**Servizio Vendita fiori**_
 
-|Livello configurazione| Servizio	|	Valore|	Unità misura|	Descrizione|
-|---------|------------------|---------|---------|---------|
-|Mercato    | Vendita fiori	|	20   |	euro            |Tariffa giornaliera in euro|
-|Posteggio	| Vendita fiori |	1  |	Valore assoluto              |	Valore assoluto il costo del banco fiori è 20 euro al giorno quindi moltiplico |
-|		    |               |       |Costo servizio/gg	|20 euro|
-|		    |               |       |	Segnaposto	    |MERCE_VENDUTA|
+| Livello configurazione | Servizio      | Valore | Unità misura      | Descrizione                                                                    |
+| ---------------------- | ------------- | ------ | ----------------- | ------------------------------------------------------------------------------ |
+| Mercato                | Vendita fiori | 20     | euro              | Tariffa giornaliera in euro                                                    |
+| Posteggio              | Vendita fiori | 1      | Valore assoluto   | Valore assoluto il costo del banco fiori è 20 euro al giorno quindi moltiplico |
+|                        |               |        | Costo servizio/gg | 20 euro                                                                        |
+|                        |               |        | Segnaposto        | MERCE_VENDUTA                                                                  |
 
 
 _**Servizio Carrelli**_
 
-|Livello configurazione| Servizio	|	Valore|	Unità misura|	Descrizione|
-|---------|------------------|---------|---------|---------|
-|Mercato    | Carrelli	|	0,5   |	euro            |Tariffa per ogni carrello|
-|Posteggio	| Carrelli |	10  |	Num carrelli              |	|
-|		    |               |       |Costo servizio/gg	|5 euro|
-|		    |               |       |	Segnaposto	    |CARRELLI|
+| Livello configurazione | Servizio | Valore | Unità misura      | Descrizione               |
+| ---------------------- | -------- | ------ | ----------------- | ------------------------- |
+| Mercato                | Carrelli | 0,5    | euro              | Tariffa per ogni carrello |
+| Posteggio              | Carrelli | 10     | Num carrelli      |                           |
+|                        |          |        | Costo servizio/gg | 5 euro                    |
+|                        |          |        | Segnaposto        | CARRELLI                  |
 
 Il costo del posteggio giornaliero sarà dato dalla combinazione dei costi dei singoli servizi attivi, nel caso più semplice potrebbe essere dato dalla sommatoria dei costi.
 
@@ -242,11 +242,11 @@ Questo tipo di configurazione ci permetterà di poter emettere o due bollette se
 
 Nella sezione di configurazione delle formule, oltre ai segnaposto definiti per i singoli servizi saranno presenti 3 segna posto comuni a tutti i mercati
 
-|Segnaposto|Descrizione|
-|---------|---------|
-|**GG**                     | Giorni in cui la concessione ha diritto al posteggio |
-|**GG_PRES**                |Giorni in cui il concessionario è presente|
-|**GG_PRES_OR_NON_GIUS**    |Giorni in cui il concessionario è presente o assente non giustific|
+| Segnaposto              | Descrizione                                                        |
+| ----------------------- | ------------------------------------------------------------------ |
+| **GG**                  | Giorni in cui la concessione ha diritto al posteggio               |
+| **GG_PRES**             | Giorni in cui il concessionario è presente                         |
+| **GG_PRES_OR_NON_GIUS** | Giorni in cui il concessionario è presente o assente non giustific |
 
 Questi segna posto saranno utilizzati nelle formule per specificare i giorni per cui il concessionario deve pagare in un arco di tempo (esempio in un bimestre, trimestre, etc) 
 
@@ -315,17 +315,17 @@ Tradotto nel linguaggio generico avremo
 
 Composizione mercato
 
-|Descrizione| valore|
-|----|----|
-|Tipo mercato                   | giornaliero|
-|Iva (costante)			        |0,22|
-|Tariffa acqua (costante_1)	    | 10 euro|
-|Quota fissa (costante_2)	    |2 euro|
-|Numero operatori (costante_3)	| 6 |
-|TIPO_VENDITA - Fiori 		    | 1 euro|
-|TIPO_VENDITA - Bar 		    | 5 euro|
-|TIPO_POSTO – Magazzino	        | 1 euro|
-|TIPO_POSTO – Bancone         	| 2 euro|
+| Descrizione                   | valore      |
+| ----------------------------- | ----------- |
+| Tipo mercato                  | giornaliero |
+| Iva (costante)                | 0,22        |
+| Tariffa acqua (costante_1)    | 10 euro     |
+| Quota fissa (costante_2)      | 2 euro      |
+| Numero operatori (costante_3) | 6           |
+| TIPO_VENDITA - Fiori          | 1 euro      |
+| TIPO_VENDITA - Bar            | 5 euro      |
+| TIPO_POSTO – Magazzino        | 1 euro      |
+| TIPO_POSTO – Bancone          | 2 euro      |
 
 ![](./immagini/calcolo_cu_tabella2.png )
 

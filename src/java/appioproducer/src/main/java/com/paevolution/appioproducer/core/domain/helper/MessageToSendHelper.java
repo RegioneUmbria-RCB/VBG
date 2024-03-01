@@ -28,5 +28,6 @@ public class MessageToSendHelper implements Serializable {
     private String destinatarioCodicefiscale;
     private Integer codicemovimento;
     private String movimento;
+    private String intervento;
     ////private String messageId;
 }

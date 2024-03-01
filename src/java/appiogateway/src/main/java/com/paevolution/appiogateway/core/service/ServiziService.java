@@ -9,7 +9,7 @@ import com.paevolution.appiogateway.core.dto.ServiziDTO;
 
 public interface ServiziService {
 
-    Servizi findByIdcomuneCodicecomuneSoftware(String idcomune, String codicecomune, String software);
+    // Servizi findByIdcomuneCodicecomuneSoftware(String idcomune, String codicecomune, String software);
 
     Optional<Servizi> findByIdServizio(String idServizio);
 

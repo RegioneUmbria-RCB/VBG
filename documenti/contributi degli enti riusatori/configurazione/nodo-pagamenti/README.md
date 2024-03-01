@@ -65,3 +65,7 @@ Le ultime integrazioni sviluppate sono state documentate e di seguito vengono ri
 ### Integrazione con sistema dei pagamenti J-City.Gov PagoPA
 
 [Visualizza la configurazione dell'integrazione](./J-cityGov.md)
+
+### Integrazione con sistema dei pagamenti Connettore Easy Bridge di Progetti e Soluzioni
+
+[Visualizza la configurazione dell'integrazione](./easy-bridge-progetti-soluzioni.md)

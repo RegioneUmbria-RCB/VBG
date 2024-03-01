@@ -77,7 +77,7 @@ public class ProblemServiceImpl implements ProblemService {
 	Optional<Messaggi> messageOpt = messaggiRepository.findById(entity.getId());
 	if (!messageOpt.isPresent()) {
 	    throw new MessageNotFoundException(
-		    "Impossibile impostare la property message per l'entity problem: Messaggio non con id=[ " + entity.getId() + "] non trovato!");
+		    "Impossibile impostare la property message per l'entity problem: Messaggio con id=[ " + entity.getId() + "] non trovato!");
 	}
 	entity.setMessaggi(messageOpt.get());
     }

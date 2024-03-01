@@ -43,12 +43,23 @@ public class MessageToSendRepository {
 
     private MessageToSendHelper buildMsgHelperFromQueryResult(Object[] obj) {
 
-	return MessageToSendHelper.builder().idcomune((String) obj[0]).codicecomune((String) obj[1]).software((String) obj[2])
-		.codiceistanza(obj[3] != null ? ((BigDecimal) obj[3]).intValue() : null)
-		.codicestato(obj[4] != null ? ((BigDecimal) obj[4]).intValue() : null).numeroprotocollo((String) obj[5]).dataprotocollo((Date) obj[6])
-		.numeroistanza((String) obj[7]).data((Date) obj[8]).lavori((String) obj[9]).denominazioneServizio((String) obj[10])
-		.urlPortaleServizi((String) obj[11]).destinatario((String) obj[12])
-		.destinatarioCodiceanagrafe(obj[13] != null ? ((BigDecimal) obj[13]).intValue() : null).destinatarioCodicefiscale((String) obj[14])
-		.codicemovimento(obj[15] != null ? ((BigDecimal) obj[15]).intValue() : null).movimento((String) obj[16]).build();
+	return MessageToSendHelper.builder().idcomune((String) obj[0]) //
+		.codicecomune((String) obj[1]).software((String) obj[2])//
+		.codiceistanza(obj[3] != null ? ((BigDecimal) obj[3]).intValue() : null)//
+		.codicestato(obj[4] != null ? ((BigDecimal) obj[4]).intValue() : null)//
+		.numeroprotocollo((String) obj[5])//
+		.dataprotocollo((Date) obj[6])//
+		.numeroistanza((String) obj[7])//
+		.data((Date) obj[8])//
+		.lavori((String) obj[9])//
+		.denominazioneServizio((String) obj[10])//
+		.urlPortaleServizi((String) obj[11])//
+		.destinatario((String) obj[12])//
+		.destinatarioCodiceanagrafe(obj[13] != null ? ((BigDecimal) obj[13]).intValue() : null)//
+		.destinatarioCodicefiscale((String) obj[14])//
+		.codicemovimento(obj[15] != null ? ((BigDecimal) obj[15]).intValue() : null)//
+		.movimento((String) obj[16])//
+		.intervento((String) obj[17])//
+		.build();
     }
 }

@@ -153,17 +153,17 @@ public class UDConnectorServiceImpl extends IOConnectorServiceImplBase implement
 	    if (ex instanceof WebClientResponseException) {
 		if (((WebClientResponseException) ex).getStatusCode().equals(HttpStatus.NOT_FOUND)) {
 		    // Non salvare Errore in Messaggi
-		    log.info("Non viene salvato Errore - status code: " + ((WebClientResponseException) ex).getStatusCode().toString());
+		    log.warn("Non viene salvato Errore - status code: " + ((WebClientResponseException) ex).getStatusCode().toString());
 		    msgDTO.setStatoMessaggio(StatiMessaggioEnum.RITENTA_INVIO.name());
 		    updateMessage(msgDTO, new FieldEnum[] { FieldEnum.STATO_MESSAGGIO });
 		} else {
-		    log.info("Salvataggio Errore - status code: " + ((WebClientResponseException) ex).getStatusCode().toString());
+		    log.error("Salvataggio Errore - status code: " + ((WebClientResponseException) ex).getStatusCode().toString());
 		    throwsWebClientExceptionsWrapper(ex);
 		}
 		return result;
 	    }
 	    if (ex instanceof WebClientRequestException) {
-		log.info("Non viene salvato Errore - Exception message: " + ((WebClientRequestException) ex).getMessage());
+		log.warn("Non viene salvato Errore - Exception message: " + ((WebClientRequestException) ex).getMessage());
 		// API U.D. Non Raggiungibile
 		// Failed To Resolve (api2)	
 		// Non salvare Errore in Messaggi
@@ -224,8 +224,9 @@ public class UDConnectorServiceImpl extends IOConnectorServiceImplBase implement
 
     private Servizi getServizio(MessaggiDTO msgDTO) {
 
-	Optional<Servizi> serviziOpt = this.serviziRepository.findByIdcomuneAndCodicecomuneAndSoftware(msgDTO.getIdcomune(), msgDTO.getCodicecomune(),
-		msgDTO.getSoftware());
+//	Optional<Servizi> serviziOpt = this.serviziRepository.findByIdcomuneAndCodicecomuneAndSoftware(msgDTO.getIdcomune(), msgDTO.getCodicecomune(),
+//		msgDTO.getSoftware());
+	Optional<Servizi> serviziOpt = this.serviziRepository.findByIdServizio(msgDTO.getIdServizio());
 	return serviziOpt.get();
     }
 
@@ -239,14 +240,14 @@ public class UDConnectorServiceImpl extends IOConnectorServiceImplBase implement
 
     private void logClientRegistrationInfo(Servizi servizio, MessaggiDTO msgDTO) {
 
-	log.info("logClientRegistrationInfo# Messaggio da processare [id={}, idcomune={}, codicecomune={}, software={}]",
-		new Object[] { msgDTO.getId(), msgDTO.getIdcomune(), msgDTO.getCodicecomune(), msgDTO.getSoftware() });
-	log.info(
-		"logClientRegistrationInfo# Servizio recuperato [id={}, idcomune={}, codicecomune={}, software={}, nome_servizio={}, connettore={}, clientRegistrationId={}]",
-		new Object[] { servizio.getId(), servizio.getIdcomune(), servizio.getCodicecomune(), servizio.getSoftware(),
+	log.info("logClientRegistrationInfo# Messaggio da processare [id={}, idcomune={}]",
+		new Object[] { msgDTO.getId(), msgDTO.getIdcomune()});
+	log.debug(
+		"logClientRegistrationInfo# Servizio recuperato [id={}, idcomune={}, nome_servizio={}, connettore={}, clientRegistrationId={}]",
+		new Object[] { servizio.getId(), servizio.getIdcomune(), 
 			servizio.getNomeServizio(), servizio.getTipoConnettore().getNome(), servizio.getClientRegistrationId() });
 	ClientRegistration cr = this.clientRegistrationRepository.findByRegistrationId(servizio.getClientRegistrationId());
-	log.info("logClientRegistrationInfo# Client Oauth2 recuperato [clientName={}] per il servizio con [clientRegistrationId={}]",
+	log.debug("logClientRegistrationInfo# Client Oauth2 recuperato [clientName={}] per il servizio con [clientRegistrationId={}]",
 		new Object[] { cr.getClientName(), servizio.getClientRegistrationId() });
     }
 }

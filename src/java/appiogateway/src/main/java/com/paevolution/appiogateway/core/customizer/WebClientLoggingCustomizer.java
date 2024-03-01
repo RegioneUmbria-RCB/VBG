@@ -30,13 +30,13 @@ public class WebClientLoggingCustomizer implements WebClientCustomizer {
     private ExchangeFilterFunction logRequest() {
 
 	return (clientRequest, next) -> {
-	    log.info("Request: <method='{}', url='{}'>", new Object[] { clientRequest.method(), clientRequest.url() });
-	    log.info("--- HTTP Headers of Request ---");
+	    log.debug("Request: <method='{}', url='{}'>", new Object[] { clientRequest.method(), clientRequest.url() });
+	    log.debug("--- HTTP Headers of Request ---");
 	    clientRequest.headers().forEach(this::logHeader);
-	    log.info("-------------------------------");
-	    log.info("--- HTTP Request Attributes ---");
-	    clientRequest.attributes().forEach((k, v) -> log.info("{}={}", new Object[] { k, v }));
-	    log.info("-------------------------------");
+	    log.debug("-------------------------------");
+	    log.debug("--- HTTP Request Attributes ---");
+	    clientRequest.attributes().forEach((k, v) -> log.debug("{}={}", new Object[] { k, v }));
+	    log.debug("-------------------------------");
 	    return next.exchange(clientRequest);
 	};
     }
@@ -44,16 +44,16 @@ public class WebClientLoggingCustomizer implements WebClientCustomizer {
     private ExchangeFilterFunction logResponse() {
 
 	return ExchangeFilterFunction.ofResponseProcessor(clientResponse -> {
-	    log.info("Response: <status_code={}>", clientResponse.statusCode());
-	    log.info("--- HTTP Headers of Response ---");
-	    clientResponse.headers().asHttpHeaders().forEach((name, values) -> values.forEach(value -> log.info("{}={}", name, value)));
-	    log.info("--------------------------------");
+	    log.debug("Response: <status_code={}>", clientResponse.statusCode());
+	    log.debug("--- HTTP Headers of Response ---");
+	    clientResponse.headers().asHttpHeaders().forEach((name, values) -> values.forEach(value -> log.debug("{}={}", name, value)));
+	    log.debug("--------------------------------");
 	    return Mono.just(clientResponse);
 	});
     }
 
     private void logHeader(String name, List<String> values) {
 
-	values.forEach(value -> log.info("{}={}", name, value));
+	values.forEach(value -> log.debug("{}={}", name, value));
     }
 }

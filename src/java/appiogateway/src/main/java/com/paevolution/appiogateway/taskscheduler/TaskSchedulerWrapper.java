@@ -39,7 +39,7 @@ public class TaskSchedulerWrapper {
 
 	log.info("schedulePresoInCaricoTask: Start");
 	List<MessaggiDTO> messaggiDTOs = messaggiService.findAllByStatoMessaggio(StatiMessaggioEnum.RITENTA_INVIO);
-	if (!messaggiDTOs.isEmpty()) {
+	if (messaggiDTOs != null && !messaggiDTOs.isEmpty()) {
 	    for (MessaggiDTO messaggiDTO : messaggiDTOs) {
 		publisher.publish(new ReceivedMessageEvent(messaggiDTO));
 		log.info("schedulePresoInCaricoTask: inviato messaggio con messageId: {}", messaggiDTO.getMessageId());

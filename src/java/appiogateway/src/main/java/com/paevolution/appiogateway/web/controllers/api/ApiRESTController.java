@@ -149,21 +149,30 @@ public class ApiRESTController {
 	    throw new DataIntegrationException("Messaggio con message_id=[" + messageId + "] non trovato.");
 	}
 	Optional<ProblemDTO> problemOpt = problemService.findById(msgDTOOptional.get().getId());
+	StringBuilder stringBuilder = new StringBuilder();
 	if (problemOpt.isPresent()) {
 	    ModelMapperUtils.updateMessaggiDTO(msgDTOOptional.get(), problemOpt.get());
-	    StringBuilder stringBuilder = new StringBuilder();
-	    stringBuilder = stringBuilder.append("Tentativo di invio del messaggio con [id=").append(messageId)
-		    .append("] fallito, per l'utente [fiscalCode= ").append(msgDTOOptional.get().getFiscalCode()).append("]. Causa: ")
-		    .append(msgDTOOptional.get().getDetail());
+	    if (problemOpt.get().getStatusCode().equals(404)) {
+		stringBuilder = stringBuilder.append("Tentativo di invio del messaggio con [id=").append(messageId)
+			.append("] fallito, per l'utente [fiscalCode= ").append(msgDTOOptional.get().getFiscalCode())
+			.append("]. Causa: Il cittadino non risulta iscritto ad IO o ha disattivato le comunicazioni del servizio");
+	    } else {
+		stringBuilder = stringBuilder.append("Tentativo di invio del messaggio con [id=").append(messageId)
+			.append("] fallito, per l'utente [fiscalCode= ").append(msgDTOOptional.get().getFiscalCode()).append("]. Causa: ")
+			.append(msgDTOOptional.get().getDetail());
+	    }
 	    log.error(stringBuilder.toString());
 	    throw new DataIntegrationException(stringBuilder.toString());
 	}
 	ModelMapper mapper = new ModelMapper();
-	// Verifica se SENDER_ALLOWED
-	// Se Si Restituisce StatusMessageResponse (SENDER_ALLOWED=false) e non si
-	// esegue la chiamata al getMessageStatus
+	// Se SENDER_ALLOWED=false restituisco un messaggio di errore in conformità a come è stato fatto sopra
 	if (!msgDTOOptional.get().getSenderAllowed()) {
-	    return mapper.map(msgDTOOptional.get(), StatusMessageResponse.class);
+	    stringBuilder = stringBuilder.append("Tentativo di invio del messaggio con [id=").append(messageId)
+		    .append("] fallito, per l'utente [fiscalCode= ").append(msgDTOOptional.get().getFiscalCode())
+		    .append("]. Causa: Il cittadino non risulta iscritto ad IO o ha disattivato le comunicazioni del servizio");
+	    log.error(stringBuilder.toString());
+	    throw new DataIntegrationException(stringBuilder.toString());
+	    // return mapper.map(msgDTOOptional.get(), StatusMessageResponse.class);
 	}
 	MessaggiDTO msgDTO = getMessageStatusFromConnector(msgDTOOptional.get());
 	return mapper.map(msgDTO, StatusMessageResponse.class);

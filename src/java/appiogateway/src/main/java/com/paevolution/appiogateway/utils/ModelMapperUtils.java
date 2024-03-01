@@ -1,5 +1,6 @@
 package com.paevolution.appiogateway.utils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -71,12 +72,12 @@ public class ModelMapperUtils {
 	if (StringUtils.isNotBlank(request.getIdcomune())) {
 	    messaggiDTO.setIdcomune(request.getIdcomune());
 	}
-	if (StringUtils.isNotBlank(request.getCodicecomune())) {
-	    messaggiDTO.setCodicecomune(request.getCodicecomune());
-	}
-	if (StringUtils.isNotBlank(request.getSoftware())) {
-	    messaggiDTO.setSoftware(request.getSoftware());
-	}
+//	if (StringUtils.isNotBlank(request.getCodicecomune())) {
+//	    messaggiDTO.setCodicecomune(request.getCodicecomune());
+//	}
+//	if (StringUtils.isNotBlank(request.getSoftware())) {
+//	    messaggiDTO.setSoftware(request.getSoftware());
+//	}
 	if (request.getTimeToLive() != null) {
 	    messaggiDTO.setTimeToLive(request.getTimeToLive());
 	}
@@ -93,6 +94,9 @@ public class ModelMapperUtils {
 	}
 	if (StringUtils.isNotBlank(request.getMessageId())) {
 	    messaggiDTO.setMessageId(request.getMessageId());
+	}
+	if (StringUtils.isNotBlank(request.getIdentificativoServizio())) {
+	    messaggiDTO.setIdentificativoServizio(request.getIdentificativoServizio());
 	}
 	return messaggiDTO;
     }
@@ -165,6 +169,9 @@ public class ModelMapperUtils {
      */
     public static List<MessaggiDTO> mapListMessaggiToListMessaggiDTO(List<Messaggi> messaggis) {
 
+	if (messaggis == null || messaggis.isEmpty()) {
+	    return new ArrayList<MessaggiDTO>();
+	}
 	ModelMapper modelMapper = new ModelMapper();
 	modelMapper.addMappings(new PropertyMap<Messaggi, MessaggiDTO>() {
 

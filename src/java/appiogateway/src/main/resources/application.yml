@@ -1,15 +1,24 @@
 server:
   servlet:
-    application-display-name:  AppIo Gateway v2.102 18 Marzo 2022 
+    application-display-name:  AppIo Gateway v2.117 02 Febbraio 2024 
   error:
     include-message: always
 spring:
   datasource:
+    #url:
+    #driver-class-name: oracle.jdbc.driver.OracleDriver
+    #username: 
+    #password: 
     url: 
-    driver-class-name: oracle.jdbc.driver.OracleDriver
+    driver-class-name: com.mysql.jdbc.Driver
     username: 
     password: 
-      
+  mvc:
+    pathmatch:
+       matching-strategy: ant_path_matcher   
+  jpa:
+    hibernate:
+      use-new-id-generator-mappings: false   
 ioproxy:
   scope: am_application_scope, default
   authorization-uri: 
@@ -21,19 +30,20 @@ user-services:
     password: 
 
 developers-italia:
-  server-endpoint-url: https://api.io.italia.it/api/v1
+  server-endpoint-url:
   
 logging:
   file.name: ${catalina.base}/logs/appiogateway.log
   pattern:
-    console: "%d [%t] %-5level %logger{36} - %msg{nolookups}%n"
+#    console: "%d [%t] %-5level %logger{36} - %msg{nolookups}%n"
     file: "%d [%t] %-5level %logger{36} - %msg{nolookups}%n"
   level:
-    com.m2evorah: INFO
-    org.springframework: INFO
-    org.springframework.jdbc.core.JdbcTemplate: INFO
-    org.springframework.jdbc.core.StatementCreatorUtils: TRACE
-    org.hibernate: INFO
+    com.paevolution: INFO
+    com.m2evorah: WARN
+    org.springframework: WARN
+    org.springframework.jdbc.core.JdbcTemplate: WARN
+    org.springframework.jdbc.core.StatementCreatorUtils: WARN
+    org.hibernate: WARN
 
 ud-connector:
   sandbox-endpoint-url: 

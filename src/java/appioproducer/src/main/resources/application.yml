@@ -1,27 +1,38 @@
 server:
   servlet:
-    application-display-name:  AppIo Producer v2.102 18 Marzo 2022
+    application-display-name:  AppIo Producer v2.117 02 Febbraio 2024
   error:
     include-message: always
 spring:
   datasource:
-    url: 
-    driver-class-name: oracle.jdbc.driver.OracleDriver
+    #url: j
+    #driver-class-name: oracle.jdbc.driver.OracleDriver
+    #username:
+    #password: 
+    url: j
+    driver-class-name: com.mysql.jdbc.Driver
     username: 
     password: 
+  mvc:
+    pathmatch:
+       matching-strategy: ant_path_matcher
+  jpa:
+    hibernate:
+      use-new-id-generator-mappings: false 
 
 logging:
   file.name: ${catalina.base}/logs/appioproducer.log
   pattern:
-    console: "%d [%t] %-5level %logger{36} - %msg{nolookups}%n"
-    file: "%d [%t] %-5level %logger{36} - %msg{nolookups}%n"
+    # console: "%d [%t] %-5level %logger{36} - %msg{nolookups} %n"
+    file: "%d [%t] %-5level %logger{36} - %msg{nolookups} %n"
   level:
-    com.m2evorah: INFO
-    org.springframework: INFO
-    org.hibernate: INFO
+    com.paevolution: DEBUG
+    com.m2evorah: WARN
+    org.springframework: WARN
+    org.hibernate: WARN
 
 appiogateway:
-  url-base: http://localhost:8080/appiogateway
+  url-base: http://devel3:8080/appiogateway
 user-services:
   vbg:
     username: 

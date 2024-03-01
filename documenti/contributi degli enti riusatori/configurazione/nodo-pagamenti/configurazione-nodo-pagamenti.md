@@ -8,8 +8,8 @@ In questa documentazione verrà trattata la configurazione che permette di inter
 
 - backend ( VBG ) alla versione 2.77 o successiva
 - applicativo nodo-pagamenti
-- comunicazione tra l'applicativo nodo-pagamenti e vbg ( solitamtente tramite http sulla porta 8080 )
-- comunicazione tra l'applicativo nodo-pagamenti e ibcsecurity ( solitamtente tramite http sulla porta 8080 )
+- comunicazione tra l'applicativo nodo-pagamenti e vbg (solitamente tramite http sulla porta 8080 )
+- comunicazione tra l'applicativo nodo-pagamenti e ibcsecurity (solitamente tramite http sulla porta 8080 )
 
 ## Configurazioni preliminari
 
@@ -118,7 +118,7 @@ Tabella che censisce i connettori installati nel nodo e ne definisce i servizi a
 | IN_WS_PWD | Deprecata |
 | IN_WS_USR | Deprecata |
 | FK_WS_CARICAMENTO | FK ai parametri di configurazione del servizio per il caricamento delle posizioni debitorie |
-| FK_WS_ANNULLAMENTO | FK ai parametri di configurazione del servizio di annulklamento delle posizioni debitorie |
+| FK_WS_ANNULLAMENTO | FK ai parametri di configurazione del servizio di annullamento delle posizioni debitorie |
 | FK_WS_VERIFICA | FK ai parametri di configurazione del servizio di verifica dello stato di una posizione debitoria |
 | FK_WS_ATTIVA_SESSIONE | FK ai parametri di configurazione del servizio di attivazione di una sessione di pagamento |
 | FK_WS_AVVISO | FK ai parametri di configurazione del servizio di generazione/invio dell'avviso di pagamento |

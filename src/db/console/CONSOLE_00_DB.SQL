@@ -1,8 +1,8 @@
 /*
-SQLyog Community v12.09 (64 bit)
-MySQL - 5.1.73 : Database - aida_smart_console
+SQLyog Community v13.2.0 (64 bit)
+MySQL - 5.7.35 : Database - console
 *********************************************************************
-*/
+*/
 
 /*!40101 SET NAMES utf8 */;
 
@@ -583,6 +583,7 @@ CREATE TABLE `anagrafe` (
   `FLAG_IDENTIFICATO` decimal(1,0) DEFAULT NULL,
   `OPER_IDENTIFICAZIONE` decimal(8,0) DEFAULT NULL,
   `DATA_IDENTIFICAZIONE` datetime DEFAULT NULL,
+  `DATA_INIZIO_ATTIVITA` datetime DEFAULT NULL,
   PRIMARY KEY (`IDCOMUNE`,`CODICEANAGRAFE`),
   UNIQUE KEY `ANAGRAFE_PK` (`IDCOMUNE`,`CODICEANAGRAFE`),
   KEY `IDX_ANAGRAFE_001` (`IDCOMUNE`,`CODICEFISCALE`),
@@ -619,6 +620,21 @@ CREATE TABLE `anagrafe` (
   CONSTRAINT `FK_ANAG_ELENCOINPS` FOREIGN KEY (`INPS_CODICESEDE`) REFERENCES `elencoinpsbase` (`CODICE`),
   CONSTRAINT `FK_ANGRAFE_ALBO_PROFESS` FOREIGN KEY (`CODICEELENCOPRO`) REFERENCES `elenchiprofessionalibase` (`EP_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Table structure for table `anagrafedyn2dati_storico` */
+
+DROP TABLE IF EXISTS `anagrafedyn2dati_storico`;
+
+CREATE TABLE `anagrafedyn2dati_storico` (
+  `IDCOMUNE` varchar(6) NOT NULL,
+  `IDVERSIONE` decimal(3,0) NOT NULL,
+  `CODICEANAGRAFE` decimal(6,0) NOT NULL,
+  `FK_D2MT_ID` decimal(10,0) NOT NULL,
+  `FK_D2C_ID` decimal(10,0) NOT NULL,
+  `INDICE` decimal(2,0) NOT NULL,
+  `INDICE_MOLTEPLICITA` decimal(2,0) NOT NULL,
+  `VALORE` longtext
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 /*Table structure for table `anagrafestorico` */
 
@@ -697,6 +713,7 @@ CREATE TABLE `anagrafestorico` (
   `FLAG_IDENTIFICATO` decimal(1,0) DEFAULT NULL,
   `OPER_IDENTIFICAZIONE` decimal(8,0) DEFAULT NULL,
   `DATA_IDENTIFICAZIONE` datetime DEFAULT NULL,
+  `DATA_INIZIO_ATTIVITA` datetime DEFAULT NULL,
   PRIMARY KEY (`IDCOMUNE`,`ID`),
   UNIQUE KEY `ANAGRAFESTORICO_PK` (`IDCOMUNE`,`ID`),
   KEY `IDX_ANAGRAFESTORICO_001` (`IDCOMUNE`,`CODICEANAGRAFE`,`DATAINIZIOVALIDITA`),
@@ -912,7 +929,7 @@ CREATE TABLE `comuni` (
   `CODICECOMUNE` varchar(5) NOT NULL DEFAULT '',
   `COMUNE` varchar(128) DEFAULT NULL,
   `SIGLAPROVINCIA` varchar(2) DEFAULT NULL,
-  `PROVINCIA` varchar(20) DEFAULT NULL,
+  `PROVINCIA` varchar(70) DEFAULT NULL,
   `REGIONE` varchar(25) DEFAULT NULL,
   `CAP` varchar(5) DEFAULT NULL,
   `CF` varchar(5) DEFAULT NULL,
@@ -920,8 +937,8 @@ CREATE TABLE `comuni` (
   `CODICEISTATREGIONE` varchar(2) DEFAULT NULL,
   `CODICESTATOESTERO` varchar(3) DEFAULT NULL,
   PRIMARY KEY (`CODICECOMUNE`),
-  UNIQUE KEY `IDX_COMUNI_001` (`CF`),
   UNIQUE KEY `COMUNI_PK` (`CODICECOMUNE`),
+  UNIQUE KEY `IDX_COMUNI_001` (`CF`),
   KEY `IDX_COMUNI_PROVINCE` (`SIGLAPROVINCIA`),
   KEY `IDX_COMUNI_002` (`SIGLAPROVINCIA`,`PROVINCIA`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -1113,9 +1130,9 @@ CREATE TABLE `configurazione` (
   `CODICE_ACCREDITAMENTO` varchar(30) DEFAULT NULL,
   `CODICEAMMINISTRAZIONE_IPA` varchar(20) DEFAULT NULL,
   `CODICE_AOO` varchar(20) DEFAULT NULL,
-	`RESPONSABILE_TRATTAMENTO` VARCHAR(4000) DEFAULT NULL,
-	`DATA_PROTECTION_OFFICER` VARCHAR(4000) DEFAULT NULL,
-	`PROGRESSIVO_REGISTRI_AUT` VARCHAR(35) DEFAULT NULL,
+  `RESPONSABILE_TRATTAMENTO` varchar(4000) DEFAULT NULL,
+  `DATA_PROTECTION_OFFICER` varchar(4000) DEFAULT NULL,
+  `PROGRESSIVO_REGISTRI_AUT` varchar(35) DEFAULT NULL,
   PRIMARY KEY (`IDCOMUNE`,`SOFTWARE`),
   UNIQUE KEY `CONFIGURAZIONE_PK` (`IDCOMUNE`,`SOFTWARE`),
   KEY `FK_CONFIGDOCTIPO_OGGETTI` (`IDCOMUNE`,`CODICEOGGETTOMODDOCTIPO`),
@@ -1292,6 +1309,7 @@ CREATE TABLE `dyn2_modellid` (
   `FLG_MULTIPLO` decimal(1,0) DEFAULT NULL,
   `FK_REGOLA_ATTIVO` decimal(10,0) DEFAULT NULL,
   `FLG_OBBLIGATORIO` decimal(1,0) DEFAULT '0',
+  `FLG_SPEZZA_TABELLA` decimal(1,0) DEFAULT NULL,
   PRIMARY KEY (`IDCOMUNE`,`ID`),
   UNIQUE KEY `DYN2_MODELLID_PK` (`IDCOMUNE`,`ID`),
   KEY `IDX_DYN2MODELLID_001` (`IDCOMUNE`,`FK_D2MT_ID`,`FK_D2C_ID`),
@@ -2148,8 +2166,9 @@ CREATE TABLE `inventarioprocedimentioneri` (
   `FLAG_DISATTIVO` decimal(1,0) DEFAULT NULL,
   `FK_INVPROC_IDCOMUNE` varchar(6) DEFAULT NULL,
   `CODICECOMUNE` varchar(6) DEFAULT NULL,
-  DYN2CAMPI_ONERI_FRONT decimal(10,0),
-  FK_DYN2CAMPI_IDCOMUNE varchar(6),
+  `FLAG_PAGATO` decimal(1,0) DEFAULT NULL,
+  `FK_DYN2CAMPI_IDCOMUNE` varchar(6) DEFAULT NULL,
+  `DYN2CAMPI_ONERI_FRONT` decimal(10,0) DEFAULT NULL,
   PRIMARY KEY (`IDCOMUNE`,`ID`),
   UNIQUE KEY `INVENTARIOPROCEDIMENTIONERI_PK` (`IDCOMUNE`,`ID`),
   KEY `FK_INV_PROC_MOD_PAGAM` (`IDCOMUNE`,`FKMODALITAPAGAMENTO`),
@@ -2157,12 +2176,28 @@ CREATE TABLE `inventarioprocedimentioneri` (
   KEY `FK_INVPROCONERI_COMUNI` (`CODICECOMUNE`),
   KEY `FK_INVENT_PROCONER_TIPI_CAUS` (`FK_COIDCOMUNE`,`FK_COID`),
   KEY `FK_INV_PROC_ONERI_INV_PROC` (`FK_INVPROC_IDCOMUNE`,`CODICEINVENTARIO`),
+  KEY `FK_INVPROCON_DYN2C` (`FK_DYN2CAMPI_IDCOMUNE`,`DYN2CAMPI_ONERI_FRONT`),
   CONSTRAINT `FK_INVENT_PROCONER_TIPI_CAUS` FOREIGN KEY (`FK_COIDCOMUNE`, `FK_COID`) REFERENCES `tipicausalioneri` (`IDCOMUNE`, `CO_ID`),
   CONSTRAINT `FK_INVPROCONERI_COMUNI` FOREIGN KEY (`CODICECOMUNE`) REFERENCES `comuni` (`CODICECOMUNE`),
+  CONSTRAINT `FK_INVPROCON_DYN2C` FOREIGN KEY (`FK_DYN2CAMPI_IDCOMUNE`, `DYN2CAMPI_ONERI_FRONT`) REFERENCES `dyn2_campi` (`IDCOMUNE`, `ID`),
   CONSTRAINT `FK_INV_PROC_MOD_PAGAM` FOREIGN KEY (`IDCOMUNE`, `FKMODALITAPAGAMENTO`) REFERENCES `tipimodalitapagamento` (`IDCOMUNE`, `MP_ID`),
   CONSTRAINT `FK_INV_PROC_ONERI_INV_PROC` FOREIGN KEY (`FK_INVPROC_IDCOMUNE`, `CODICEINVENTARIO`) REFERENCES `inventarioprocedimenti` (`IDCOMUNE`, `CODICEINVENTARIO`),
-  CONSTRAINT `FK_SOFTWARE_10` FOREIGN KEY (`SOFTWARE`) REFERENCES `software` (`CODICE`),
-  CONSTRAINT `FK_INVPROCON_DYN2C` FOREIGN KEY (`FK_DYN2CAMPI_IDCOMUNE`,`DYN2CAMPI_ONERI_FRONT`) REFERENCES `dyn2_campi`(`IDCOMUNE`,`ID)
+  CONSTRAINT `FK_SOFTWARE_10` FOREIGN KEY (`SOFTWARE`) REFERENCES `software` (`CODICE`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Table structure for table `inventarioprocedimentipeople` */
+
+DROP TABLE IF EXISTS `inventarioprocedimentipeople`;
+
+CREATE TABLE `inventarioprocedimentipeople` (
+  `IDCOMUNE` varchar(6) NOT NULL,
+  `CODICEINVENTARIO` decimal(10,0) NOT NULL,
+  `COD_PROC_PEOPLE` varchar(50) DEFAULT NULL,
+  `ID` decimal(10,0) NOT NULL,
+  PRIMARY KEY (`IDCOMUNE`,`ID`),
+  UNIQUE KEY `INVENTARIOPROCEDIMENTIPEOPL_PK` (`IDCOMUNE`,`ID`),
+  KEY `FK_INV_PROC_PEOP_INV_PROC` (`IDCOMUNE`,`CODICEINVENTARIO`),
+  CONSTRAINT `FK_INV_PROC_PEOP_INV_PROC` FOREIGN KEY (`IDCOMUNE`, `CODICEINVENTARIO`) REFERENCES `inventarioprocedimenti` (`IDCOMUNE`, `CODICEINVENTARIO`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `inventarioprocedimentisoftware` */
@@ -2186,6 +2221,21 @@ CREATE TABLE `inventarioprocedimentisoftware` (
   CONSTRAINT `FK_INV_PROC_SOFT_INV_PROC` FOREIGN KEY (`IDCOMUNE`, `CODICEINVENTARIO`) REFERENCES `inventarioprocedimenti` (`IDCOMUNE`, `CODICEINVENTARIO`),
   CONSTRAINT `FK_SOFTWARE_11` FOREIGN KEY (`MODULOSOFTWARE`) REFERENCES `software` (`CODICE`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Table structure for table `istanzedyn2dati_storico` */
+
+DROP TABLE IF EXISTS `istanzedyn2dati_storico`;
+
+CREATE TABLE `istanzedyn2dati_storico` (
+  `IDCOMUNE` varchar(6) DEFAULT NULL,
+  `IDVERSIONE` decimal(3,0) DEFAULT NULL,
+  `codiceistanza` decimal(6,0) DEFAULT NULL,
+  `fk_d2mt_id` decimal(10,0) DEFAULT NULL,
+  `fk_d2c_id` decimal(10,0) DEFAULT NULL,
+  `indice` decimal(2,0) DEFAULT NULL,
+  `indice_molteplicita` decimal(2,0) DEFAULT NULL,
+  `valore` longtext
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 /*Table structure for table `layoutpagine` */
 
@@ -2368,27 +2418,27 @@ CREATE TABLE `linkutili` (
   UNIQUE KEY `LINKUTILI_PK` (`IDCOMUNE`,`CODICE`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+/*Table structure for table `logsuap` */
 
-CREATE TABLE logsuap (
-  ID numeric(9,0) NOT NULL,
-  DATA VARCHAR(8) DEFAULT NULL,
-  ORA VARCHAR(5) DEFAULT NULL,
-  IP VARCHAR(15) DEFAULT NULL,
-  OPERATORE VARCHAR(80) DEFAULT NULL,
-  CODICERICHIESTA VARCHAR(20) DEFAULT NULL,
-  CODICEERRORE VARCHAR(20) DEFAULT NULL,
-  IDCOMUNE VARCHAR(6) NOT NULL,
-  MESSAGGIO VARCHAR(4000) DEFAULT NULL,
-  PRIMARY KEY (IDCOMUNE,ID),
-  KEY IDX_LOGSUAP_001 (IDCOMUNE,CODICERICHIESTA),
-  KEY IDX_LOGSUAP_002 (IDCOMUNE,DATA),
-  KEY IDX_LOGSUAP_003 (IDCOMUNE,IP),
-  KEY IDX_LOGSUAP_004 (IDCOMUNE,OPERATORE),
-  KEY IDX_LOGSUAP_005 (IDCOMUNE,CODICEERRORE)
-) ENGINE=INNODB DEFAULT CHARSET=utf8;
+DROP TABLE IF EXISTS `logsuap`;
 
-
-
+CREATE TABLE `logsuap` (
+  `ID` decimal(9,0) NOT NULL,
+  `DATA` varchar(8) DEFAULT NULL,
+  `ORA` varchar(5) DEFAULT NULL,
+  `IP` varchar(15) DEFAULT NULL,
+  `OPERATORE` varchar(80) DEFAULT NULL,
+  `CODICERICHIESTA` varchar(20) DEFAULT NULL,
+  `CODICEERRORE` varchar(20) DEFAULT NULL,
+  `IDCOMUNE` varchar(6) NOT NULL,
+  `MESSAGGIO` varchar(4000) DEFAULT NULL,
+  PRIMARY KEY (`IDCOMUNE`,`ID`),
+  KEY `IDX_LOGSUAP_001` (`IDCOMUNE`,`CODICERICHIESTA`),
+  KEY `IDX_LOGSUAP_002` (`IDCOMUNE`,`DATA`),
+  KEY `IDX_LOGSUAP_003` (`IDCOMUNE`,`IP`),
+  KEY `IDX_LOGSUAP_004` (`IDCOMUNE`,`OPERATORE`),
+  KEY `IDX_LOGSUAP_005` (`IDCOMUNE`,`CODICEERRORE`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `mail_config` */
 
@@ -2469,6 +2519,16 @@ CREATE TABLE `mapoggetti` (
   `NOMECAMPO` varchar(30) NOT NULL DEFAULT '',
   PRIMARY KEY (`NOMETABELLA`,`NOMECAMPO`),
   UNIQUE KEY `MAPOGGETTI_PK` (`NOMETABELLA`,`NOMECAMPO`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Table structure for table `masterkey` */
+
+DROP TABLE IF EXISTS `masterkey`;
+
+CREATE TABLE `masterkey` (
+  `TABLENAME` varchar(40) NOT NULL,
+  `COLUMNNAME` varchar(40) NOT NULL,
+  PRIMARY KEY (`TABLENAME`,`COLUMNNAME`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `menuinfo` */
@@ -2957,8 +3017,8 @@ CREATE TABLE `responsabili` (
   `PESO_CARICO_LAVORO` decimal(3,0) DEFAULT NULL,
   `FLAG_MOD_RESP_SORT` decimal(1,0) DEFAULT NULL,
   `FLAG_GESTTUTTICOMUNI` decimal(1,0) DEFAULT NULL,
-  flag_dis_modanagrafe numeric(1,0) DEFAULT '0',
-  CIRCOSCRIZIONE VARCHAR(50) DEFAULT NULL,
+  `flag_dis_modanagrafe` decimal(1,0) DEFAULT '0',
+  `CIRCOSCRIZIONE` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`IDCOMUNE`,`CODICERESPONSABILE`),
   UNIQUE KEY `RESPONSABILI_PK` (`IDCOMUNE`,`CODICERESPONSABILE`),
   UNIQUE KEY `USERID_UNIQUE` (`IDCOMUNE`,`USERID`),
@@ -3062,14 +3122,13 @@ CREATE TABLE `sdeproxy` (
   `USERNAME_WS` varchar(15) DEFAULT NULL,
   `PASSWORD_WS` varchar(15) DEFAULT NULL,
   `IDCOMUNEBASE` varchar(6) DEFAULT NULL,
-	`WS_SERVIZI` VARCHAR(255) DEFAULT NULL,
-	`ALIAS_WS_SERVIZI` VARCHAR(20),
-   `WS_SERVIZI_CONSOLE` VARCHAR(255) DEFAULT NULL,
+  `WS_SERVIZI` varchar(255) DEFAULT NULL,
+  `ALIAS_WS_SERVIZI` varchar(20) DEFAULT NULL,
+  `WS_SERVIZI_CONSOLE` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`IDENTE`),
   KEY `FK_SDEPROXY_COMUNI` (`CODICECATASTALECOMUNE`),
   CONSTRAINT `FK_SDEPROXY_COMUNI` FOREIGN KEY (`CODICECATASTALECOMUNE`) REFERENCES `comuni` (`CODICECOMUNE`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 
 /*Table structure for table `sdeproxy_stc` */
 
@@ -3132,25 +3191,18 @@ CREATE TABLE `softwareattivi` (
   CONSTRAINT `FK_SOFTWAREATTIVI_SOFTWARE` FOREIGN KEY (`FK_SOFTWARE`) REFERENCES `software` (`CODICE`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+/*Table structure for table `star_configoneri` */
 
+DROP TABLE IF EXISTS `star_configoneri`;
 
-/*Table structure for table `STAR_CONFIGONERI` */
-
-DROP TABLE IF EXISTS `STAR_CONFIGONERI`;
-
-CREATE TABLE STAR_CONFIGONERI
-(
-  ID NUMERIC(10,0) NOT NULL
-, IDCOMUNE VARCHAR(6) NOT NULL
-, FLG_ONLINE_ENTITERZI NUMERIC(1,0) DEFAULT 1 , INFO_PAGAMENTI_FO LONGTEXT , CODICE_COMUNE NUMERIC(6) , CONSTRAINT STAR_CONFIGONERI_PK PRIMARY KEY
-  (
-    ID
-  , IDCOMUNE
-  )
-
-) ENGINE=INNODB DEFAULT CHARSET=utf8
-;
-
+CREATE TABLE `star_configoneri` (
+  `ID` decimal(10,0) NOT NULL,
+  `IDCOMUNE` varchar(6) NOT NULL,
+  `FLG_ONLINE_ENTITERZI` decimal(1,0) DEFAULT '1',
+  `INFO_PAGAMENTI_FO` longtext,
+  `CODICE_COMUNE` varchar(6) DEFAULT NULL,
+  PRIMARY KEY (`ID`,`IDCOMUNE`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `stili` */
 
@@ -3609,6 +3661,16 @@ CREATE TABLE `titoli` (
   UNIQUE KEY `TITOLI_PK` (`IDCOMUNE`,`CODICETITOLO`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+/*Table structure for table `tmp_oggetti_copia` */
+
+DROP TABLE IF EXISTS `tmp_oggetti_copia`;
+
+CREATE TABLE `tmp_oggetti_copia` (
+  `IDCOMUNE` varchar(6) NOT NULL,
+  `CODICEOGGETTO` decimal(10,0) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`IDCOMUNE`,`CODICEOGGETTO`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 /*Table structure for table `versione` */
 
 DROP TABLE IF EXISTS `versione`;
@@ -3617,8 +3679,6 @@ CREATE TABLE `versione` (
   `VERSIONE` varchar(15) DEFAULT NULL,
   `VERSIONEPRODOTTO` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-insert into versione(versione) values ('3.17');
 
 /*Table structure for table `verticalizzazioni` */
 
@@ -3717,12 +3777,6 @@ CREATE TABLE `view_vie` (
   `SHAPE` varchar(4000) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
-alter table sdeproxy add WS_SERVIZI varchar(255);
-alter table sdeproxy add ALIAS_WS_SERVIZI varchar(20);
-ALTER TABLE RESPONSABILI ADD CIRCOSCRIZIONE VARCHAR2(50);
-
-
 /*Table structure for table `vw_alberoproc` */
 
 DROP TABLE IF EXISTS `vw_alberoproc`;
@@ -3736,8 +3790,8 @@ DROP TABLE IF EXISTS `vw_alberoproc`;
  `SC_ID` decimal(10,0) ,
  `SC_CODICE` varchar(40) ,
  `SC_PADRE` decimal(1,0) ,
- `SC_DESCRIZIONE` longtext ,
- `SC_DESCRIZIONEPADRE` longtext ,
+ `SC_DESCRIZIONE` text ,
+ `SC_DESCRIZIONEPADRE` text ,
  `SC_DESCRIZIONEBREVE` varchar(500) ,
  `DESCR_L1` varchar(500) ,
  `DESCR_L2` varchar(500) ,
@@ -3760,7 +3814,7 @@ DROP TABLE IF EXISTS `vw_alberoproc`;
  `FKIDMERCATIUSO` decimal(4,0) ,
  `SC_ATTIVO` decimal(1,0) ,
  `PROGRESSIVOISTANZE` varchar(35) ,
- `PUBBLICA` varbinary(18) 
+ `PUBBLICA` varchar(18) 
 )*/;
 
 /*Table structure for table `vw_entilocali` */
@@ -3784,7 +3838,7 @@ DROP TABLE IF EXISTS `vw_province`;
 
 /*!50001 CREATE TABLE  `vw_province`(
  `SIGLAPROVINCIA` varchar(2) ,
- `PROVINCIA` varchar(20) 
+ `PROVINCIA` varchar(70) 
 )*/;
 
 /*Table structure for table `vw_stradario` */
@@ -3814,7 +3868,7 @@ DROP TABLE IF EXISTS `vw_stradario`;
 /*!50001 DROP TABLE IF EXISTS `vw_alberoproc` */;
 /*!50001 DROP VIEW IF EXISTS `vw_alberoproc` */;
 
-/*!50001 CREATE ALGORITHM=MERGE SQL SECURITY DEFINER VIEW `vw_alberoproc` AS select `alberoproc`.`IDCOMUNE` AS `IDCOMUNE`,`alberoproc`.`SOFTWARE` AS `SOFTWARE`,`alberoproc`.`SC_ID` AS `SC_ID`,`alberoproc`.`SC_CODICE` AS `SC_CODICE`,`alberoproc`.`SC_PADRE` AS `SC_PADRE`,concat(concat(concat(concat(concat(concat(concat(concat((case isnull(`alberoproc_l1`.`SC_DESCRIZIONE`) when 1 then '' else concat(`alberoproc_l1`.`SC_DESCRIZIONE`,' - ') end)),(case isnull(`alberoproc_l2`.`SC_DESCRIZIONE`) when 1 then '' else concat(`alberoproc_l2`.`SC_DESCRIZIONE`,' - ') end)),(case isnull(`alberoproc_l3`.`SC_DESCRIZIONE`) when 1 then '' else concat(`alberoproc_l3`.`SC_DESCRIZIONE`,' - ') end)),(case isnull(`alberoproc_l4`.`SC_DESCRIZIONE`) when 1 then '' else concat(`alberoproc_l4`.`SC_DESCRIZIONE`,' - ') end)),(case isnull(`alberoproc_l5`.`SC_DESCRIZIONE`) when 1 then '' else concat(`alberoproc_l5`.`SC_DESCRIZIONE`,' - ') end)),(case isnull(`alberoproc_l6`.`SC_DESCRIZIONE`) when 1 then '' else concat(`alberoproc_l6`.`SC_DESCRIZIONE`,' - ') end)),(case isnull(`alberoproc_l7`.`SC_DESCRIZIONE`) when 1 then '' else concat(`alberoproc_l7`.`SC_DESCRIZIONE`,' - ') end)),(case isnull(`alberoproc_l8`.`SC_DESCRIZIONE`) when 1 then '' else concat(`alberoproc_l8`.`SC_DESCRIZIONE`,' - ') end)) AS `SC_DESCRIZIONE`,concat(concat(concat(concat(concat(concat(concat((case isnull(`alberoproc_l2`.`SC_DESCRIZIONE`) when 1 then '' else concat(`alberoproc_l1`.`SC_DESCRIZIONE`,' - ') end)),(case isnull(`alberoproc_l3`.`SC_DESCRIZIONE`) when 1 then '' else concat(`alberoproc_l2`.`SC_DESCRIZIONE`,' - ') end)),(case isnull(`alberoproc_l4`.`SC_DESCRIZIONE`) when 1 then '' else concat(`alberoproc_l3`.`SC_DESCRIZIONE`,' - ') end)),(case isnull(`alberoproc_l5`.`SC_DESCRIZIONE`) when 1 then '' else concat(`alberoproc_l4`.`SC_DESCRIZIONE`,' - ') end)),(case isnull(`alberoproc_l6`.`SC_DESCRIZIONE`) when 1 then '' else concat(`alberoproc_l5`.`SC_DESCRIZIONE`,' - ') end)),(case isnull(`alberoproc_l7`.`SC_DESCRIZIONE`) when 1 then '' else concat(`alberoproc_l6`.`SC_DESCRIZIONE`,' - ') end)),(case isnull(`alberoproc_l8`.`SC_DESCRIZIONE`) when 1 then '' else concat(`alberoproc_l7`.`SC_DESCRIZIONE`,' - ') end)) AS `SC_DESCRIZIONEPADRE`,`alberoproc`.`SC_DESCRIZIONE` AS `SC_DESCRIZIONEBREVE`,`alberoproc_l1`.`SC_DESCRIZIONE` AS `DESCR_L1`,`alberoproc_l2`.`SC_DESCRIZIONE` AS `DESCR_L2`,`alberoproc_l3`.`SC_DESCRIZIONE` AS `DESCR_L3`,`alberoproc_l4`.`SC_DESCRIZIONE` AS `DESCR_L4`,`alberoproc_l5`.`SC_DESCRIZIONE` AS `DESCR_L5`,`alberoproc_l6`.`SC_DESCRIZIONE` AS `DESCR_L6`,`alberoproc_l7`.`SC_DESCRIZIONE` AS `DESCR_L7`,`alberoproc_l8`.`SC_DESCRIZIONE` AS `DESCR_L8`,`alberoproc`.`SC_ORDINE` AS `ORDINE0`,ifnull(`alberoproc_l1`.`SC_ORDINE`,0) AS `ORDINE1`,ifnull(`alberoproc_l2`.`SC_ORDINE`,0) AS `ORDINE2`,ifnull(`alberoproc_l3`.`SC_ORDINE`,0) AS `ORDINE3`,ifnull(`alberoproc_l4`.`SC_ORDINE`,0) AS `ORDINE4`,ifnull(`alberoproc_l5`.`SC_ORDINE`,0) AS `ORDINE5`,ifnull(`alberoproc_l6`.`SC_ORDINE`,0) AS `ORDINE6`,ifnull(`alberoproc_l7`.`SC_ORDINE`,0) AS `ORDINE7`,ifnull(`alberoproc_l8`.`SC_ORDINE`,0) AS `ORDINE8`,(case isnull(`alberoproc_l8`.`FKCODICEMERCATO`) when 1 then (case isnull(`alberoproc_l7`.`FKCODICEMERCATO`) when 1 then (case isnull(`alberoproc_l6`.`FKCODICEMERCATO`) when 1 then (case isnull(`alberoproc_l5`.`FKCODICEMERCATO`) when 1 then (case isnull(`alberoproc_l4`.`FKCODICEMERCATO`) when 1 then (case isnull(`alberoproc_l3`.`FKCODICEMERCATO`) when 1 then (case isnull(`alberoproc_l2`.`FKCODICEMERCATO`) when 1 then (case isnull(`alberoproc_l1`.`FKCODICEMERCATO`) when 1 then NULL else `alberoproc_l1`.`FKCODICEMERCATO` end) else `alberoproc_l2`.`FKCODICEMERCATO` end) else `alberoproc_l3`.`FKCODICEMERCATO` end) else `alberoproc_l4`.`FKCODICEMERCATO` end) else `alberoproc_l5`.`FKCODICEMERCATO` end) else `alberoproc_l6`.`FKCODICEMERCATO` end) else `alberoproc_l7`.`FKCODICEMERCATO` end) else `alberoproc_l8`.`FKCODICEMERCATO` end) AS `FKCODICEMERCATO`,(case isnull(`alberoproc_l8`.`FKIDMERCATIUSO`) when 1 then (case isnull(`alberoproc_l7`.`FKIDMERCATIUSO`) when 1 then (case isnull(`alberoproc_l6`.`FKIDMERCATIUSO`) when 1 then (case isnull(`alberoproc_l5`.`FKIDMERCATIUSO`) when 1 then (case isnull(`alberoproc_l4`.`FKIDMERCATIUSO`) when 1 then (case isnull(`alberoproc_l3`.`FKIDMERCATIUSO`) when 1 then (case isnull(`alberoproc_l2`.`FKIDMERCATIUSO`) when 1 then (case isnull(`alberoproc_l1`.`FKIDMERCATIUSO`) when 1 then NULL else `alberoproc_l1`.`FKIDMERCATIUSO` end) else `alberoproc_l2`.`FKIDMERCATIUSO` end) else `alberoproc_l3`.`FKIDMERCATIUSO` end) else `alberoproc_l4`.`FKIDMERCATIUSO` end) else `alberoproc_l5`.`FKIDMERCATIUSO` end) else `alberoproc_l6`.`FKIDMERCATIUSO` end) else `alberoproc_l7`.`FKIDMERCATIUSO` end) else `alberoproc_l8`.`FKIDMERCATIUSO` end) AS `FKIDMERCATIUSO`,`alberoproc`.`SC_ATTIVO` AS `SC_ATTIVO`,`alberoproc`.`PROGRESSIVOISTANZE` AS `PROGRESSIVOISTANZE`,concat_ws('',`alberoproc`.`SC_PUBBLICA`,`alberoproc_l1`.`SC_PUBBLICA`,`alberoproc_l2`.`SC_PUBBLICA`,`alberoproc_l3`.`SC_PUBBLICA`,`alberoproc_l4`.`SC_PUBBLICA`,`alberoproc_l5`.`SC_PUBBLICA`,`alberoproc_l6`.`SC_PUBBLICA`,`alberoproc_l7`.`SC_PUBBLICA`,`alberoproc_l8`.`SC_PUBBLICA`) AS `PUBBLICA` from ((((((((`alberoproc` left join `alberoproc` `alberoproc_l1` on(((`alberoproc`.`IDCOMUNE` = `alberoproc_l1`.`IDCOMUNE`) and (`alberoproc`.`SOFTWARE` = `alberoproc_l1`.`SOFTWARE`) and (substr(`alberoproc`.`SC_CODICE`,1,2) = `alberoproc_l1`.`SC_CODICE`) and (length(`alberoproc_l1`.`SC_CODICE`) = 2)))) left join `alberoproc` `alberoproc_l2` on(((`alberoproc_l1`.`IDCOMUNE` = `alberoproc_l2`.`IDCOMUNE`) and (`alberoproc_l1`.`SOFTWARE` = `alberoproc_l2`.`SOFTWARE`) and (substr(`alberoproc`.`SC_CODICE`,1,4) = `alberoproc_l2`.`SC_CODICE`) and (length(`alberoproc_l2`.`SC_CODICE`) = 4)))) left join `alberoproc` `alberoproc_l3` on(((`alberoproc_l2`.`IDCOMUNE` = `alberoproc_l3`.`IDCOMUNE`) and (`alberoproc_l2`.`SOFTWARE` = `alberoproc_l3`.`SOFTWARE`) and (substr(`alberoproc`.`SC_CODICE`,1,6) = `alberoproc_l3`.`SC_CODICE`) and (length(`alberoproc_l3`.`SC_CODICE`) = 6)))) left join `alberoproc` `alberoproc_l4` on(((`alberoproc_l3`.`IDCOMUNE` = `alberoproc_l4`.`IDCOMUNE`) and (`alberoproc_l3`.`SOFTWARE` = `alberoproc_l4`.`SOFTWARE`) and (substr(`alberoproc`.`SC_CODICE`,1,8) = `alberoproc_l4`.`SC_CODICE`) and (length(`alberoproc_l4`.`SC_CODICE`) = 8)))) left join `alberoproc` `alberoproc_l5` on(((`alberoproc_l4`.`IDCOMUNE` = `alberoproc_l5`.`IDCOMUNE`) and (`alberoproc_l4`.`SOFTWARE` = `alberoproc_l5`.`SOFTWARE`) and (substr(`alberoproc`.`SC_CODICE`,1,10) = `alberoproc_l5`.`SC_CODICE`) and (length(`alberoproc_l5`.`SC_CODICE`) = 10)))) left join `alberoproc` `alberoproc_l6` on(((`alberoproc_l5`.`IDCOMUNE` = `alberoproc_l6`.`IDCOMUNE`) and (`alberoproc_l5`.`SOFTWARE` = `alberoproc_l6`.`SOFTWARE`) and (substr(`alberoproc`.`SC_CODICE`,1,12) = `alberoproc_l6`.`SC_CODICE`) and (length(`alberoproc_l6`.`SC_CODICE`) = 12)))) left join `alberoproc` `alberoproc_l7` on(((`alberoproc_l6`.`IDCOMUNE` = `alberoproc_l7`.`IDCOMUNE`) and (`alberoproc_l6`.`SOFTWARE` = `alberoproc_l7`.`SOFTWARE`) and (substr(`alberoproc`.`SC_CODICE`,1,14) = `alberoproc_l7`.`SC_CODICE`) and (length(`alberoproc_l7`.`SC_CODICE`) = 14)))) left join `alberoproc` `alberoproc_l8` on(((`alberoproc_l7`.`IDCOMUNE` = `alberoproc_l8`.`IDCOMUNE`) and (`alberoproc_l7`.`SOFTWARE` = `alberoproc_l8`.`SOFTWARE`) and (substr(`alberoproc`.`SC_CODICE`,1,16) = `alberoproc_l8`.`SC_CODICE`) and (length(`alberoproc_l8`.`SC_CODICE`) = 16)))) */;
+/*!50001 CREATE ALGORITHM=MERGE SQL SECURITY DEFINER VIEW `vw_alberoproc` AS select `alberoproc`.`IDCOMUNE` AS `IDCOMUNE`,`alberoproc`.`SOFTWARE` AS `SOFTWARE`,`alberoproc`.`SC_ID` AS `SC_ID`,`alberoproc`.`SC_CODICE` AS `SC_CODICE`,`alberoproc`.`SC_PADRE` AS `SC_PADRE`,concat(concat(concat(concat(concat(concat(concat(concat((case isnull(`alberoproc_l1`.`SC_DESCRIZIONE`) when 1 then _utf8'' else concat(`alberoproc_l1`.`SC_DESCRIZIONE`,_utf8' - ') end)),(case isnull(`alberoproc_l2`.`SC_DESCRIZIONE`) when 1 then _utf8'' else concat(`alberoproc_l2`.`SC_DESCRIZIONE`,_utf8' - ') end)),(case isnull(`alberoproc_l3`.`SC_DESCRIZIONE`) when 1 then _utf8'' else concat(`alberoproc_l3`.`SC_DESCRIZIONE`,_utf8' - ') end)),(case isnull(`alberoproc_l4`.`SC_DESCRIZIONE`) when 1 then _utf8'' else concat(`alberoproc_l4`.`SC_DESCRIZIONE`,_utf8' - ') end)),(case isnull(`alberoproc_l5`.`SC_DESCRIZIONE`) when 1 then _utf8'' else concat(`alberoproc_l5`.`SC_DESCRIZIONE`,_utf8' - ') end)),(case isnull(`alberoproc_l6`.`SC_DESCRIZIONE`) when 1 then _utf8'' else concat(`alberoproc_l6`.`SC_DESCRIZIONE`,_utf8' - ') end)),(case isnull(`alberoproc_l7`.`SC_DESCRIZIONE`) when 1 then _utf8'' else concat(`alberoproc_l7`.`SC_DESCRIZIONE`,_utf8' - ') end)),(case isnull(`alberoproc_l8`.`SC_DESCRIZIONE`) when 1 then _utf8'' else concat(`alberoproc_l8`.`SC_DESCRIZIONE`,_utf8' - ') end)) AS `SC_DESCRIZIONE`,concat(concat(concat(concat(concat(concat(concat((case isnull(`alberoproc_l2`.`SC_DESCRIZIONE`) when 1 then _utf8'' else concat(`alberoproc_l1`.`SC_DESCRIZIONE`,_utf8' - ') end)),(case isnull(`alberoproc_l3`.`SC_DESCRIZIONE`) when 1 then _utf8'' else concat(`alberoproc_l2`.`SC_DESCRIZIONE`,_utf8' - ') end)),(case isnull(`alberoproc_l4`.`SC_DESCRIZIONE`) when 1 then _utf8'' else concat(`alberoproc_l3`.`SC_DESCRIZIONE`,_utf8' - ') end)),(case isnull(`alberoproc_l5`.`SC_DESCRIZIONE`) when 1 then _utf8'' else concat(`alberoproc_l4`.`SC_DESCRIZIONE`,_utf8' - ') end)),(case isnull(`alberoproc_l6`.`SC_DESCRIZIONE`) when 1 then _utf8'' else concat(`alberoproc_l5`.`SC_DESCRIZIONE`,_utf8' - ') end)),(case isnull(`alberoproc_l7`.`SC_DESCRIZIONE`) when 1 then _utf8'' else concat(`alberoproc_l6`.`SC_DESCRIZIONE`,_utf8' - ') end)),(case isnull(`alberoproc_l8`.`SC_DESCRIZIONE`) when 1 then _utf8'' else concat(`alberoproc_l7`.`SC_DESCRIZIONE`,_utf8' - ') end)) AS `SC_DESCRIZIONEPADRE`,`alberoproc`.`SC_DESCRIZIONE` AS `SC_DESCRIZIONEBREVE`,`alberoproc_l1`.`SC_DESCRIZIONE` AS `DESCR_L1`,`alberoproc_l2`.`SC_DESCRIZIONE` AS `DESCR_L2`,`alberoproc_l3`.`SC_DESCRIZIONE` AS `DESCR_L3`,`alberoproc_l4`.`SC_DESCRIZIONE` AS `DESCR_L4`,`alberoproc_l5`.`SC_DESCRIZIONE` AS `DESCR_L5`,`alberoproc_l6`.`SC_DESCRIZIONE` AS `DESCR_L6`,`alberoproc_l7`.`SC_DESCRIZIONE` AS `DESCR_L7`,`alberoproc_l8`.`SC_DESCRIZIONE` AS `DESCR_L8`,`alberoproc`.`SC_ORDINE` AS `ORDINE0`,ifnull(`alberoproc_l1`.`SC_ORDINE`,0) AS `ORDINE1`,ifnull(`alberoproc_l2`.`SC_ORDINE`,0) AS `ORDINE2`,ifnull(`alberoproc_l3`.`SC_ORDINE`,0) AS `ORDINE3`,ifnull(`alberoproc_l4`.`SC_ORDINE`,0) AS `ORDINE4`,ifnull(`alberoproc_l5`.`SC_ORDINE`,0) AS `ORDINE5`,ifnull(`alberoproc_l6`.`SC_ORDINE`,0) AS `ORDINE6`,ifnull(`alberoproc_l7`.`SC_ORDINE`,0) AS `ORDINE7`,ifnull(`alberoproc_l8`.`SC_ORDINE`,0) AS `ORDINE8`,(case isnull(`alberoproc_l8`.`FKCODICEMERCATO`) when 1 then (case isnull(`alberoproc_l7`.`FKCODICEMERCATO`) when 1 then (case isnull(`alberoproc_l6`.`FKCODICEMERCATO`) when 1 then (case isnull(`alberoproc_l5`.`FKCODICEMERCATO`) when 1 then (case isnull(`alberoproc_l4`.`FKCODICEMERCATO`) when 1 then (case isnull(`alberoproc_l3`.`FKCODICEMERCATO`) when 1 then (case isnull(`alberoproc_l2`.`FKCODICEMERCATO`) when 1 then (case isnull(`alberoproc_l1`.`FKCODICEMERCATO`) when 1 then NULL else `alberoproc_l1`.`FKCODICEMERCATO` end) else `alberoproc_l2`.`FKCODICEMERCATO` end) else `alberoproc_l3`.`FKCODICEMERCATO` end) else `alberoproc_l4`.`FKCODICEMERCATO` end) else `alberoproc_l5`.`FKCODICEMERCATO` end) else `alberoproc_l6`.`FKCODICEMERCATO` end) else `alberoproc_l7`.`FKCODICEMERCATO` end) else `alberoproc_l8`.`FKCODICEMERCATO` end) AS `FKCODICEMERCATO`,(case isnull(`alberoproc_l8`.`FKIDMERCATIUSO`) when 1 then (case isnull(`alberoproc_l7`.`FKIDMERCATIUSO`) when 1 then (case isnull(`alberoproc_l6`.`FKIDMERCATIUSO`) when 1 then (case isnull(`alberoproc_l5`.`FKIDMERCATIUSO`) when 1 then (case isnull(`alberoproc_l4`.`FKIDMERCATIUSO`) when 1 then (case isnull(`alberoproc_l3`.`FKIDMERCATIUSO`) when 1 then (case isnull(`alberoproc_l2`.`FKIDMERCATIUSO`) when 1 then (case isnull(`alberoproc_l1`.`FKIDMERCATIUSO`) when 1 then NULL else `alberoproc_l1`.`FKIDMERCATIUSO` end) else `alberoproc_l2`.`FKIDMERCATIUSO` end) else `alberoproc_l3`.`FKIDMERCATIUSO` end) else `alberoproc_l4`.`FKIDMERCATIUSO` end) else `alberoproc_l5`.`FKIDMERCATIUSO` end) else `alberoproc_l6`.`FKIDMERCATIUSO` end) else `alberoproc_l7`.`FKIDMERCATIUSO` end) else `alberoproc_l8`.`FKIDMERCATIUSO` end) AS `FKIDMERCATIUSO`,`alberoproc`.`SC_ATTIVO` AS `SC_ATTIVO`,`alberoproc`.`PROGRESSIVOISTANZE` AS `PROGRESSIVOISTANZE`,concat_ws(_utf8'',`alberoproc`.`SC_PUBBLICA`,`alberoproc_l1`.`SC_PUBBLICA`,`alberoproc_l2`.`SC_PUBBLICA`,`alberoproc_l3`.`SC_PUBBLICA`,`alberoproc_l4`.`SC_PUBBLICA`,`alberoproc_l5`.`SC_PUBBLICA`,`alberoproc_l6`.`SC_PUBBLICA`,`alberoproc_l7`.`SC_PUBBLICA`,`alberoproc_l8`.`SC_PUBBLICA`) AS `PUBBLICA` from ((((((((`alberoproc` left join `alberoproc` `alberoproc_l1` on(((`alberoproc`.`IDCOMUNE` = `alberoproc_l1`.`IDCOMUNE`) and (`alberoproc`.`SOFTWARE` = `alberoproc_l1`.`SOFTWARE`) and (substr(`alberoproc`.`SC_CODICE`,1,2) = `alberoproc_l1`.`SC_CODICE`) and (length(`alberoproc_l1`.`SC_CODICE`) = 2)))) left join `alberoproc` `alberoproc_l2` on(((`alberoproc_l1`.`IDCOMUNE` = `alberoproc_l2`.`IDCOMUNE`) and (`alberoproc_l1`.`SOFTWARE` = `alberoproc_l2`.`SOFTWARE`) and (substr(`alberoproc`.`SC_CODICE`,1,4) = `alberoproc_l2`.`SC_CODICE`) and (length(`alberoproc_l2`.`SC_CODICE`) = 4)))) left join `alberoproc` `alberoproc_l3` on(((`alberoproc_l2`.`IDCOMUNE` = `alberoproc_l3`.`IDCOMUNE`) and (`alberoproc_l2`.`SOFTWARE` = `alberoproc_l3`.`SOFTWARE`) and (substr(`alberoproc`.`SC_CODICE`,1,6) = `alberoproc_l3`.`SC_CODICE`) and (length(`alberoproc_l3`.`SC_CODICE`) = 6)))) left join `alberoproc` `alberoproc_l4` on(((`alberoproc_l3`.`IDCOMUNE` = `alberoproc_l4`.`IDCOMUNE`) and (`alberoproc_l3`.`SOFTWARE` = `alberoproc_l4`.`SOFTWARE`) and (substr(`alberoproc`.`SC_CODICE`,1,8) = `alberoproc_l4`.`SC_CODICE`) and (length(`alberoproc_l4`.`SC_CODICE`) = 8)))) left join `alberoproc` `alberoproc_l5` on(((`alberoproc_l4`.`IDCOMUNE` = `alberoproc_l5`.`IDCOMUNE`) and (`alberoproc_l4`.`SOFTWARE` = `alberoproc_l5`.`SOFTWARE`) and (substr(`alberoproc`.`SC_CODICE`,1,10) = `alberoproc_l5`.`SC_CODICE`) and (length(`alberoproc_l5`.`SC_CODICE`) = 10)))) left join `alberoproc` `alberoproc_l6` on(((`alberoproc_l5`.`IDCOMUNE` = `alberoproc_l6`.`IDCOMUNE`) and (`alberoproc_l5`.`SOFTWARE` = `alberoproc_l6`.`SOFTWARE`) and (substr(`alberoproc`.`SC_CODICE`,1,12) = `alberoproc_l6`.`SC_CODICE`) and (length(`alberoproc_l6`.`SC_CODICE`) = 12)))) left join `alberoproc` `alberoproc_l7` on(((`alberoproc_l6`.`IDCOMUNE` = `alberoproc_l7`.`IDCOMUNE`) and (`alberoproc_l6`.`SOFTWARE` = `alberoproc_l7`.`SOFTWARE`) and (substr(`alberoproc`.`SC_CODICE`,1,14) = `alberoproc_l7`.`SC_CODICE`) and (length(`alberoproc_l7`.`SC_CODICE`) = 14)))) left join `alberoproc` `alberoproc_l8` on(((`alberoproc_l7`.`IDCOMUNE` = `alberoproc_l8`.`IDCOMUNE`) and (`alberoproc_l7`.`SOFTWARE` = `alberoproc_l8`.`SOFTWARE`) and (substr(`alberoproc`.`SC_CODICE`,1,16) = `alberoproc_l8`.`SC_CODICE`) and (length(`alberoproc_l8`.`SC_CODICE`) = 16)))) */;
 
 /*View structure for view vw_entilocali */
 
@@ -3835,7 +3889,7 @@ DROP TABLE IF EXISTS `vw_stradario`;
 /*!50001 DROP TABLE IF EXISTS `vw_stradario` */;
 /*!50001 DROP VIEW IF EXISTS `vw_stradario` */;
 
-/*!50001 CREATE ALGORITHM=MERGE SQL SECURITY DEFINER VIEW `vw_stradario` AS select `stradario`.`CODICESTRADARIO` AS `CODICESTRADARIO`,trim(concat_ws('',`stradario`.`PREFISSO`,' ',`stradario`.`DESCRIZIONE`)) AS `INDIRIZZO`,`stradario`.`PREFISSO` AS `PREFISSO`,`stradario`.`DESCRIZIONE` AS `DESCRIZIONE`,`stradario`.`CAP` AS `CAP`,`stradario`.`LOCFRAZ` AS `LOCFRAZ`,`stradario`.`FKIDZONA` AS `FKIDZONA`,`stradario`.`CODICECOMUNE` AS `CODICECOMUNE`,`stradario`.`IDCOMUNE` AS `IDCOMUNE`,`stradario`.`CS_DATE` AS `CS_DATE`,`stradario`.`CODVIARIO` AS `CODVIARIO`,`stradario`.`DATAVALIDITA` AS `DATAVALIDITA` from `stradario` */;
+/*!50001 CREATE ALGORITHM=MERGE SQL SECURITY DEFINER VIEW `vw_stradario` AS select `stradario`.`CODICESTRADARIO` AS `CODICESTRADARIO`,trim(concat_ws(_utf8'',`stradario`.`PREFISSO`,_utf8' ',`stradario`.`DESCRIZIONE`)) AS `INDIRIZZO`,`stradario`.`PREFISSO` AS `PREFISSO`,`stradario`.`DESCRIZIONE` AS `DESCRIZIONE`,`stradario`.`CAP` AS `CAP`,`stradario`.`LOCFRAZ` AS `LOCFRAZ`,`stradario`.`FKIDZONA` AS `FKIDZONA`,`stradario`.`CODICECOMUNE` AS `CODICECOMUNE`,`stradario`.`IDCOMUNE` AS `IDCOMUNE`,`stradario`.`CS_DATE` AS `CS_DATE`,`stradario`.`CODVIARIO` AS `CODVIARIO`,`stradario`.`DATAVALIDITA` AS `DATAVALIDITA` from `stradario` */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

@@ -39,10 +39,12 @@ public class Messaggi implements Serializable {
     private Long id;
     @Column(name = "IDCOMUNE", nullable = false, length = 6)
     private String idcomune;
-    @Column(name = "CODICECOMUNE", nullable = false, length = 6)
-    private String codicecomune;
-    @Column(name = "SOFTWARE", nullable = false, length = 2)
-    private String software;
+//    @Column(name = "CODICECOMUNE", nullable = false, length = 6)
+//    private String codicecomune;
+//    @Column(name = "SOFTWARE", nullable = false, length = 2)
+//    private String software;
+    @Column(name = "IDENTIFICATIVO_SERVIZIO", nullable = false, length = 50)
+    private String identificativoServizio;
     @Column(name = "TIME_TO_LIVE", precision = 6, scale = 0)
     private Integer timeToLive;
     @Column(name = "SUBJECT", length = 120)

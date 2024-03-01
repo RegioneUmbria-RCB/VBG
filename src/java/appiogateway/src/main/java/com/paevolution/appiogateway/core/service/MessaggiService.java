@@ -17,6 +17,8 @@ public interface MessaggiService {
     Page<Messaggi> allPaginatedMessages(Pageable pageable);
 
     Optional<MessaggiDTO> findByMessageId(String idMessaggio);
+    
+    
 
     List<MessaggiDTO> findAllMessaggi() throws Exception;
 

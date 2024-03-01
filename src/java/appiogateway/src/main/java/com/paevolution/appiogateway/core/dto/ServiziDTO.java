@@ -15,8 +15,8 @@ public class ServiziDTO implements Serializable {
     private Long id;
     private String idServizio;
     private String idcomune;
-    private String codicecomune;
-    private String software;
+//    private String codicecomune;
+//    private String software;
     private String nomeServizio;
     private String dipartimento;
     private String ente;

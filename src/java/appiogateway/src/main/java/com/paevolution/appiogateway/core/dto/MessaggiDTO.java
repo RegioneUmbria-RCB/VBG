@@ -20,8 +20,8 @@ public class MessaggiDTO implements Serializable {
     private static final long serialVersionUID = -5318529628581595582L;
     private Long id;
     private String idcomune;
-    private String codicecomune;
-    private String software;
+//    private String codicecomune;
+//    private String software;
     private Integer timeToLive;
     private String subject;
     private String markdown;
@@ -50,4 +50,5 @@ public class MessaggiDTO implements Serializable {
     private Integer statusCode;
     private String detail;
     private String title;
+    private String identificativoServizio;
 }

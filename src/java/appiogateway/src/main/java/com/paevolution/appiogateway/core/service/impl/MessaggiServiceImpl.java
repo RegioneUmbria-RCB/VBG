@@ -219,12 +219,12 @@ public class MessaggiServiceImpl implements MessaggiService {
 
     private void dataIntegration(Messaggi entity) throws DataIntegrationException {
 
-	Optional<Servizi> servizioOpt = this.serviziRepository.findByIdcomuneAndCodicecomuneAndSoftware(entity.getIdcomune(),
-		entity.getCodicecomune(), entity.getSoftware());
+//	Optional<Servizi> servizioOpt = this.serviziRepository.findByIdcomuneAndCodicecomuneAndSoftware(entity.getIdcomune(),
+//		entity.getCodicecomune(), entity.getSoftware());
+	Optional<Servizi> servizioOpt = this.serviziRepository.findByIdServizio(entity.getIdentificativoServizio());
 	// Verifica se il Servizio è presente
 	if (!servizioOpt.isPresent()) {
-	    throw new DataIntegrationException("Data Integration error: servizio con [idcomune=" + entity.getIdcomune() + ", codicecomune="
-		    + entity.getCodicecomune() + ", software=" + entity.getSoftware() + "] non trovato.");
+	    throw new DataIntegrationException("Data Integration error: servizio con [identificativoServizio=" + entity.getIdentificativoServizio()+  "] non trovato.");
 	}
 	entity.setServizi(servizioOpt.get());
 	// Set dello Stato Messaggio iniziale
