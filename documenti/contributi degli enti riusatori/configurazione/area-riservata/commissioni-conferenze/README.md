@@ -48,7 +48,6 @@ aggiungere poi due logger accodandoli a quello di root:
     </logger>
 ```
 
-
 ## Accesso alla funzionalità
 
 L'utente troverà nella pagina iniziale della area riservata la nuova funzionalità evidenziata nella seguente immagine
@@ -138,4 +137,4 @@ L'operazione non potrà essere annullata e per poter proseguire e confermare la 
 
 ## Backoffice
 
-Per le configurazioni e spiegazioni della funzionalità nel backoffice far riferimento alla [documentazione](/configurazione/commissioni-conferenze/README.md)
+Per le configurazioni e spiegazioni della funzionalità nel backoffice far riferimento alla [documentazione](../../commissioni-conferenze/README.md)

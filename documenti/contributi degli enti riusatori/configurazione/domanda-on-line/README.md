@@ -6,4 +6,4 @@ TODO...
 
 ## Configurazione
 
-- [Configurazione workflow](./workflow/readme.md)
+- [Configurazione di un intervento per la pubblicazione su Domanda On Line](./interventi/README.md)

@@ -4,11 +4,9 @@
 
 ### Backoffice
 
-- Nuova procedura (con calcolo) per l'assegnazione delle pratiche ai gruppi di operatori
+### Console (3.20)
 
-### Area riservata
-
-### Console
+- [Integrazione con SIT locale](../configurazione/console/domanda-on-line/configurazione-step/integrazione-sit/README.md) possibilità di effettuare ricerca e validazione di civici e mappali interfacciandosi con un sit dell'installazione locale
 
 ### Nodo pagamenti
 
@@ -22,6 +20,135 @@
   - inserimento della descrizione estesa nel campo Intervento in fase di ricerca
 
 ---
+
+## 2.126
+
+### Backoffice 2.126
+
+- Modifiche abbonamento
+- Email da eventi (gestione dell'account)
+- L'integrazione con i SIT è diventata un'applicazione standalone. Per l'installazione fare riferimento alla guida all'installazione: [Windows/IIS](../sviluppo/manuale-installazione-vbg/app/sit/README.md) oppure [Docker](../immagini-docker/aspnet-backend-sit.md) **Configurare nel security il nuovo URL dei servizi SIT**
+- Calcolo costo costruzione/urbanizzazione 
+  - Possibilità di effettuare l'override del costo al mq del listino di default in base all'intervento destinazione
+  - Fix su funzionalità incompatibili con i browser moderni
+- Dati dinamici: aggiunta funzionalità di gestione TAGS
+- Integrazione con Parix Gate Cloud
+
+### App ambulanti 2.126
+
+- Unificata gestione abbonamenti
+
+## 2.125
+
+### 2.125 Backoffice
+
+- Gestione accertamento esecutivo a partire dalla blacklist delle posizioni debitorie della bolletazione/plateatico
+- Implementazione dell'oggetto/corpo della mail sulla protocollazione
+- Gestione regole protetta da ruolo GESTIONE_REGOLE
+
+### 2.125 Nodopagamenti
+
+- Implementazione del connettore REST JCity che sostituisce il connettore SOAP
+- Implementata modifica data fine validità la posizione debitoria
+
+## 2.124
+
+### 2.124 Backoffice
+
+- Comunicazioni massive delle istanze e dei mercati
+- Ottimizzazioni massive della bollettazione
+- Migrazione funzionalità legacy Sorteggi
+- Segnaposti personalizzati contenenti informazioni generalizzate: Introduzione di una nuova sezione denominata "METADATI CONFIGURAZIONE", all'interno della quale sarà possibile definire liberamente coppie chiave-valore di tipo testuale. Tali coppie potranno essere utilizzate come segnaposto dinamici, da richiamare nei template documentali in fase di stampa. Per garantire la coerenza tecnica e funzionale dell'intervento, è stato definito un vincolo legato alla verticalizzazione “STAMPE_DOCTIPO”, che dovrà essere impostata con valore JAVA.
+
+### 2.124 Frontoffice/Area riservata
+
+- Gestione del rating
+
+## 2.123
+
+### 2.123 Backoffice
+
+- Segnaposto nelle lettere tipo **Metadato del movimento** con formato MD_MOV(<nome_metadato>)
+
+```text
+Es:
+UTENTE LOGGATO: [-MD_MOV(NOME_UTENTE_LOGGATO)-] 
+CODICE FISCALE: [-MD_MOV(CF_UTENTE_LOGGATO)-]
+```
+
+- Protocollazione asserzione SAML sulle domande pervenute (Solo connettori Cohesion/Federa). Le informazioni sono salvate anche nella tabella istanze_metadati
+
+### 2.123 Area riservata Legacy e AR CORE
+
+- [Gestione metadati token](../configurazione/area-riservata/riepilogo-ricevuta/metadati-token/README.md)
+- [Gestione template di renderizzazione delle schede dinamiche](../configurazione/area-riservata/configurazione-template-riepilogo-schede/README.md) in fase di presentazione domanda e invio integrazioni
+
+### 2.123 Area riservata CORE
+
+- Editor di Workflow visuale
+- [Gestione metadati token](../configurazione/area-riservata/riepilogo-ricevuta/metadati-token/README.md)
+- [Gestione template di renderizzazione delle schede dinamiche](../configurazione/area-riservata/configurazione-template-riepilogo-schede/README.md) in fase di presentazione domanda e invio integrazioni
+
+### 2.123 Security
+
+- Api per la gestione dei metadati del Token
+
+### 2.123 Authentication Gateway
+
+- Salvataggio SPIDCODE, ASSERZIONE_SAML, HASH dell'Asserzione SAML (Solo per Cohesion/FederaAG). Durante l'autenticazione vengono salvate le informazioni dello SPID Code (se l'utente si autentica con SPID), dell'asserzione SAML e dell'hash calcolato dell'asserzione SAML. Questa funzionalità serve poi per stampare l'informazione nel riepilogo istanza, e per protocollare un File con l'hash dell'asserzione. La funzionalità è valida solamente per i connettori FederaAG e Cohesion.
+
+## 2.122
+
+### 2.122 Backoffice
+
+- Gestione borsellino elettronico: possibilità di attivare per singolo mercato
+- Invio mail da movimenti: possibilità di salvare una mail (oggetto/corpo come bozza)
+- Gestione mercati: nuova funzionalità di spostamento presenze tra autorizzazioni
+- Gestione mercati: possibilità di annullare la giornata di mercato
+- Nuova funzionalità per ricalcolare le aree delle istanze. [(documentazione)](../configurazione/gestione-istanze/ricalcolo-aree/README.md)
+- Gestione Accettazione protocollo
+
+
+
+### 2.122 AR CORE
+
+- nuova gestione del workflow con editor grafico (vd. [Steps Workflow](../configurazione/area-riservata/steps-workflow/README.md))
+
+--
+
+## 2.121
+
+### 2.121 Backoffice
+
+- Correzione Bug e segnalazioni
+- Predisposizione ad infrastruttura containerizzata
+
+
+## 2.120
+
+### 2.120 Backoffice
+
+- Modifica alla interfaccia e gestione delle firme remote
+- Gestione manifestazioni: aggiunta tipo manifestazione **Gruppo Posteggi**
+
+## 2.119
+
+### 2.119 Backoffice
+
+- Inserimento nella tabella dedicata allo zip logico (rif. tag **[-ZIPLOGICO_TABELLA_HASH-]** ) di due colonne che riportano per ogni documento inserito nello zip il n. di prot. gen e data di protocollazione conseguente, il dato verrà recuperato dal protocollo presente nel relativo movimento o istanza su cui insiste il documento presente nello zip logico. Possono venir usati i segnaposto **@NUM_PROT_DOC@** e **@DATA_PROT_DOC@** sovrascrivendo la definizione del tag nella tabella **segnapostipersonalizzati**.  Visualizzazione, nell'interfaccia dello zip logico, del link ipertestuale relativo allo stesso zip logico. Verrà inserita una snippet che indicherà il link all'interno dell'interfaccia ZIP Logico.
+
+## 2.118
+
+### 2.118 Backoffice
+
+- Nuova procedura (con calcolo) per l'assegnazione delle pratiche ai gruppi di operatori [(documentazione)](../configurazione/gestione-istanze/assegnazione-operatore/README.md)
+- Modifica elaborazione dei contromovimenti: Modifica sulla configurazione che va a modificare il comportamento nella gestione di un movimento che viene riproposto dal flusso di lavoro nel momento in cui viene modificata l'amministrazione e inserito l'endo di competenza. La configurazione riguarderà le impostazioni dei contromovimenti senza amministrazione in modo che nell'elaborazione sia possibile utilizzare qualsiasi amministrazione utilizzata per toglierla dai movimenti da effettuare. All'interno di un movimento deve essere possibile, modificando l'amministrazione e/o l'endoprocedimento, fare in modo che lo stesso movimento non venga proposto nuovamente tra i movimenti da effettuare.
+- modifica del tag [-LINKALLEGATI_NO_HYPERLINK-]. Gestione del segnaposto personalizzato per usare i tag:
+  - @URL_SCARICA@: propone un link del tipo **"(Scarica la _documentazione_)"** dove _documentazione_ è cliccabile e serve per nascondere il link molto lungo
+  - @URL_LINK@: il link cliccabile al download della documentazione
+  - @NOMEFILE@: il nome del file da scaricare
+  - @PIN@: il pin richiesto per scaricare il file
+- Modifiche Borsellino: il borsellino ativabile solo per le persone fisiche. Logica di ricerca delle autorizzazioni legate alla persona fisica per le istanze che hanno autorizzazioni attive con registri legati a flag manifestazioni.
 
 ## 2.117
 
@@ -37,7 +164,7 @@
 
 ### 2.117 Console
 
-- Funzionalità di ricerca/collegamento pratiche presentate [(documentazione)](../configurazione/console/domanda-on-line/configurazione-step/ricerca-pratiche/)
+- Funzionalità di ricerca/collegamento pratiche presentate [(documentazione)](../configurazione/console/domanda-on-line/configurazione-step/ricerca-pratiche/README.md)
 
 ### 2.117 Authenticationgateway
 
@@ -57,12 +184,9 @@
 - Fix protocollo
 - Fix e aggiornamenti su gestione presenze
 - Protocollazione attivazione Layer e QRCOde su PDF
-
-  [(documentazione protocollo)](../configurazione/protocollazione/protocollo_attivo.md)
-  
-  [(documentazione layer)](../configurazione/protocollazione/applica_layer_ai_PDF.md)
-
-  [(documentazione qrcode)](../configurazione/protocollazione/qrcode.md)
+  - [(documentazione protocollo)](../configurazione/protocollazione/protocollo_attivo.md)
+  - [(documentazione layer)](../configurazione/protocollazione/applica_layer_ai_PDF.md)
+  - [(documentazione qrcode)](../configurazione/protocollazione/qrcode.md)
 
 ## 2.115
 
@@ -111,11 +235,11 @@
   - Cessazione automatica delle autorizzazioni/concessioni alla data scadenza/cessazione
   - Subentro automatico in caso di fine affitto. Gestione nella configurazione dei mercati delle causali per la chiusura automatica/fine affitto/riottenimento
   - Tipologia registri: aggiunta del flag manifestazioni per indicare che è un registro che permette il recupero delle autorizzazioni nelle aree pubbliche
-    - Possibilità di indicare un posteggio come "NON ASSEGNABILE"
+  - Possibilità di indicare un posteggio come "NON ASSEGNABILE"
 
 - Bollettazione
   - Filtro Interfaccia Grafica per ricerca concessionari su Bollettazione. Nella schermata di backoffice in cui è presente il dettaglio/riepilogo di tutte le informazioni del bimestre bollettato, si deve rendere possibile all’operatore la ricerca di uno specifico concessionario (ricercandolo per nominativo, partita iva, concessione)
-    - Adeguamento tracciato bollettazione. In fase di creazione della bollettazione, nel caso fossero presenti degli indirizzi mail non corretti dal punto di vista sintattico, ometterne l'invio di tale campo
+  - Adeguamento tracciato bollettazione. In fase di creazione della bollettazione, nel caso fossero presenti degli indirizzi mail non corretti dal punto di vista sintattico, ometterne l'invio di tale campo
 
 ### 2.113 App-Vigili
 
@@ -216,7 +340,7 @@
 
 ### Area riservata/Backend ASP.NET
 
-- Consultare la [Guida all'aggiornamento dell'area riservata](../configurazione/area-riservata/guida-aggiornamento/) per aggiornare alla versione 2.106
+- Consultare la [Guida all'aggiornamento dell'area riservata](../configurazione/area-riservata/guida-aggiornamento/README.md) per aggiornare alla versione 2.106
 
 ## 2.105
 
@@ -227,7 +351,7 @@
 
 ### 2.105 Area riservata
 
-- Visualizzazione dei documenti dei movimenti nell'accesso agli atti [(documentazione)](../configurazione/accesso-agli-atti/)
+- Visualizzazione dei documenti dei movimenti nell'accesso agli atti [(documentazione)](../configurazione/accesso-agli-atti/README.md)
 
 ## 2.104
 
@@ -312,13 +436,11 @@
 ### 2.97 Area riservata
 
 - Gestione commissioni: [(documentazione)](../configurazione/area-riservata/commissioni-conferenze/README.md)
-
   - Un parere può essere espresso una sola volta per ciascuna - pratica
   - Protocollazione dei pareri espressi sulla pratica
   - Accesso alle commissioni tramite PIN
 
 - Intestatario posizione debitoria
-
   - Quando vengono create le posizioni debitorie vengono assegnate al soggetto richiedente. È possibile tramite il parametro di verticalizzazione NODO_PAGAMENTI.SOGGETTO_PENDENZA sovrascrivere questo comportamento per associare la pendenza all'azienda. Lo stesso comportamento è stato implementato in console.
 
 ### 2.97 Nodo pagamenti
@@ -340,7 +462,7 @@
 ### 2.96 Area riservata
 
 - Evolutiva Area Riservata: step gradimento del servizio
-  [(documentazione)](../configurazione/area-riservata/questionario-gradimento/)
+  [(documentazione)](../configurazione/area-riservata/questionario-gradimento/README.md)
 
 ### 2.96 Nodo pagamenti
 
@@ -401,7 +523,7 @@
 ### 2.91 Backoffice
 
 - Funzionalità zip logico
-  [(documentazione)](../configurazione/zip%20logico/README.md)
+  [(documentazione)](../configurazione/ziplogico/README.md)
 
 ## 2.90
 
@@ -429,7 +551,7 @@
 - COSAP suolo pubblico e pubblicità - integrazione con Software Esatto
   [(documentazione)](../configurazione/calcolo-cosap/comune-trieste/README.md)
 - Gestione movimenti: possibilità di aggiungere soggetti che possono effettuare il movimento e possibilità di far effettuare il movimento solo a quei soggetti
-  [(documentazione)](../configurazione/area-riservata/movimenti-frontoffice/)
+  [(documentazione)](../configurazione/area-riservata/movimenti-frontoffice/README.md)
 - Gestione della tabella PEOPLEPROCSPORTELLI
   [(documentazione)](../configurazione/people/README.md)
 - Visura: possibilità di specificare il livello visura in base al tipo soggetto
@@ -459,7 +581,7 @@
 ### 2.87 Area riservata
 
 - Funzionalità "Già pagato" negli oneri integrati con nodo pagamenti
-- Soggetti che possono eseguire i movimenti [(documentazione)](../configurazione/area-riservata/movimenti-frontoffice/)
+- Soggetti che possono eseguire i movimenti [(documentazione)](../configurazione/area-riservata/movimenti-frontoffice/README.md)
 
 ### 2.87 Nodo pagamenti
 

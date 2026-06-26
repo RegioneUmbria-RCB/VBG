@@ -49,7 +49,7 @@ Prima di installare .NET, eseguire i comandi seguenti per aggiungere la chiave d
 Microsoft all'elenco di chiavi attendibili
 
 ```shell
-wget https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoftprod.deb -O packages-microsoft-prod.deb
+wget https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
 sudo dpkg -i packages-microsoft-prod.deb
 rm packages-microsoft-prod.deb
 ```

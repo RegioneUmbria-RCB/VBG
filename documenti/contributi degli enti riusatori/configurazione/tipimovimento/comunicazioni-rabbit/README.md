@@ -2,7 +2,7 @@
 
 La funzionalità permette di configurare la messaggistica utente da inviare alla componente middleware RABBIT che è delegata a gestire lo scambio di messaggi applicativi/utente verso diversi attori che li consumano (es. DOMANDA-ONLINE).
 
-Deve essere attiva la configurazione delle componenti RABBIT come descritto in [Attivazione delle componenti Rabbit](/componenti/README.md#attivazione-della-configurazione-nelle-varie-applicazioni)
+Deve essere attiva la configurazione delle componenti RABBIT come descritto in [Attivazione delle componenti Rabbit](../../../componenti/README.md#attivazione-della-configurazione-nelle-varie-applicazioni)
 
 Per ogni movimento è possibile specificare una serie di TOPIC/mail tipo a partire dal pulsante di azione **CONFIGURAZIONE RABBIT** presente nella maschera dei tipimovimento.
 

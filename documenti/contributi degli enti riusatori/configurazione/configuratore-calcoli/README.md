@@ -11,7 +11,7 @@ OPZIONALE: Area Riservata alla versione 2.110 o successiva
 
 La funzionalità di configurazione di un calcolo si attiva abilitando la voce di menu **Utilità** -> **Configuratore Calcoli**
 
-![Operatore con menu abilitato](./immagini/menu-abilitato.png)
+![Operatore con menu abilitato](./immagini/configuratore01.png)
 
 ## Interfaccia di configurazione
 
@@ -22,7 +22,7 @@ Una volta acceduti al menu, verrà mostrata la lista degli eventuali calcoli gi�
  3. Modificare la descrizione di una configurazione ( il salvataggio avviene automaticamente togliendo il cursore dal campo )
  4. Eliminare una configurazione esistente
 
-![Elenco configurazioni esistenti](./immagini/elenco-configurazioni.png)
+![Elenco configurazioni esistenti](./immagini/configuratore02.png)
 
 Mentre invece la pagina di gestione di un calcolo si divide in due aree
 

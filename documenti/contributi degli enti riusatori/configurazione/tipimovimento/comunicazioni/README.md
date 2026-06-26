@@ -1,7 +1,7 @@
 # Configurazione Tipimovimento Comunicazione
 
 Per configurare un tipomovimento comunicazione si accede al menù 
-Archivi -> Archivi (software) -> Movimenti . Navigerà alla pagina della lista dei movimenti .
+Archivi -> Archivi (software) -> Movimenti . Navigherà alla pagina della lista dei movimenti .
 
 ![](./immagini/listamovimenti.png)
 *fig.1 Lista Movimenti*

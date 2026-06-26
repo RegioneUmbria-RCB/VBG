@@ -16,6 +16,7 @@ All'interno dello zip i file sono nominati con il loro nome registrato.
 Questo METADATO configurato nella voce degli interventi permette di sovrascrivere questo comportamento e indicare una stringa di sostituzione usando dei segnaposto.
 
 I segnaposto disponibili sono
+
 - {protocollo_istanza}
   viene riportato il numero protocollo della pratica (se presente) con una serie di zeri per comporre una stringa di 8 caratteri. Ad esempio, se il numero di protocollo è **123** sarà riportato **00000123**
 - {data_protocollo_istanza}
@@ -25,15 +26,12 @@ I segnaposto disponibili sono
 - {uuid_pratica}
  viene riportato l'attributo UUID della pratica
 
-
-
 ### FRONTEND_TITOLO_SERVIZIO
 
-Vedi funzionalità [(Messaggistica Rabbit)](/configurazione/tipimovimento/comunicazioni-rabbit/README.md)
-
+Vedi funzionalità [(Messaggistica Rabbit)](../../tipimovimento/comunicazioni-rabbit/README.md)
 
 ### FRONTEND_SOTTOTITOLO_SERVIZIO
 
-Vedi funzionalità [(Messaggistica Rabbit)](/configurazione/tipimovimento/comunicazioni-rabbit/README.md)
+Vedi funzionalità [(Messaggistica Rabbit)](../../tipimovimento/comunicazioni-rabbit/README.md)
 
 ### WS_ATTI.CODICE_TRATTAMENTO
