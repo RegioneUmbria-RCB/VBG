@@ -50,12 +50,10 @@ servizi.
 
 Il repository ha la seguente struttura
 
-Folder   |  Descrizione
----------|-------------
-[bin](./bin)|Questo folder contiente i file compilati o binari delle web app java. Negli war sono inclusi i sorgenti applicativi.
-[documenti](./documenti)|Questo folder contiene la parte documentale del progetto. Il folder è suddiviso in sub folders per contenere documenti tra loro omogenei.
-[src](./src)|Questo folder contiente la parte del codice sorgente delle componenti .NET. I sorgenti degli applicativi java sono inclusi negli archivi war presenti nella directory [bin]
-[vm-image](./vm-image)|Questo folder contiene le immagini virtuali di VBG Community installate su una singola macchina server
+| Folder | Descrizione |
+| --------- | ------------- |
+| [documenti](./documenti) | Questo folder contiene la parte documentale del progetto. Il folder è suddiviso in sub folders per contenere documenti tra loro omogenei. |
+| [src](./src) | Questo folder contiente la parte del codice sorgente delle componenti .NET. I sorgenti degli applicativi java sono inclusi negli archivi war presenti nella directory [bin] |
 
 ## Ambiente di esercizio e di sviluppo
 
@@ -63,12 +61,11 @@ Prerequisiti di natura tecnica (hw e sw di base) per il funzionamento della solu
 
 + Linux OS
 + Windows OS
-+ Apache webserver
 + IIS Web Server
 + Nginx
-+ Tomcat 6
-+ JRE 1.6.x
-+ MySQL 5.x
++ Tomcat 9
++ JRE 1.8.x
++ MySQL 8.x
 + Eclipse
 
 ## Licenza
