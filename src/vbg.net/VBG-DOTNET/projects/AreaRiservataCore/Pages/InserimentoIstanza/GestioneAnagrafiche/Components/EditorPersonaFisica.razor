@@ -1,0 +1,354 @@
+﻿@using Init.SIGePro.Manager.DTO.Comuni;
+@using Init.Sigepro.FrontEnd.AppLogic.ObjectSpace.PresentazioneIstanza;
+@using System.ComponentModel.DataAnnotations;
+@using VBG.BlazorComponentsLibrary.DesignComuni.Forms
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.EditFormComponents;
+@using VBG.BlazorComponentsLibrary.EditFormComponents.DropDown
+@using VBG.BlazorComponentsLibrary.RisorseTestuali
+
+@inherits EditorAnagraficaBase
+
+<ModalBody>
+    <ContenitoreRisorseTestuali Nome="editor-persona-fisica">
+        <VbgForm id="personaFisicaForm" Model="_model" ValidationCallBack="ValidationCallbackAsync" OnValidSubmit="OnValidSubmitAsync">
+
+            <div class="mb-4">
+
+                <DropDownForm @bind-Value="_model.TipoSoggetto"
+                              Id="tipoSoggetto"
+                              Label="In qualità di"
+                              OnChanged="(DropDownItem i) => {
+                                VerificaSeTipoSoggettoRichiedeDatiAlboEDescrizioneEstesa(_model.TipoSoggetto == null ? string.Empty :_model.TipoSoggetto.Value);
+                              }"
+                              Items="@TipiSoggetto"
+                              ShowEmptyItem="true"
+                              ValidationFor="() => _model.TipoSoggetto" IsDisabled="@(!ImpostazioniStep.PermettiModificaTipoSoggetto)"
+                              Required="true">
+                </DropDownForm>
+            </div>
+
+            <h4 class="title-large-semi-bold mb-4">
+                <RisorsaTestuale IdRisorsa="titolo.dati-soggetto">
+                    Dati del soggetto
+                </RisorsaTestuale>
+            </h4>
+
+            @if (ImpostazioniStep.DettagliPf.TitoloVisibile)
+            {
+                <div class="mb-4">
+
+                    <DropDownForm @bind-Value="_model.Titolo"
+                                  Id="titolo"
+                                  Label="Titolo"
+                                  Items="@TitoliDataItems"
+                                  ShowEmptyItem="true"
+                                  ValidationFor="() => _model.Titolo"
+                                  Required="@ImpostazioniStep.DettagliPf.TitoloObbligatorio">
+                    </DropDownForm>
+                </div>
+            }
+
+            <div class="mb-4">
+                <TextInputForm Id="nome"
+                               @bind-Value="_model.Nome"
+                               Label="Nome"
+                               ValidationFor="() => _model.Nome" IsDisabled="@(!PermettiModificaDatiAnagrafici)"
+                               Required="true" />
+
+                <TextInputForm Id="nominativo"
+                               @bind-Value="_model.Cognome"
+                               Label="Cognome"
+                               ValidationFor="() => _model.Cognome" IsDisabled="@(!PermettiModificaDatiAnagrafici)"
+                               Required="true" />
+            </div>
+
+            <div class="mb-4">
+                <DropDownForm Id="sesso"
+                              Label="Sesso"
+                              @bind-Value="_model.Sesso"
+                              Items="@SessoDataItems"
+                              ShowEmptyItem="true"
+                              Required="true"
+                              ValidationFor="() => _model.Sesso">
+                </DropDownForm>
+            </div>
+
+
+            @if (ImpostazioniStep.DettagliPf.CittadinanzaVisible)
+            {
+                <div class="mb-4">
+                    <DropDownForm Id="codiceCittadinanza"
+                                  Label="Cittadinanza"
+                                  @bind-Value="_model.Cittadinanza"
+                                  TItem="DropDownItem"
+                                  Items="@CittadinanzaDataItems"
+                                  ShowEmptyItem="true"
+                                  ValidationFor="() => _model.Cittadinanza"
+                                  Required="@ImpostazioniStep.DettagliPf.CittadinanzaObbligatoria">
+                    </DropDownForm>
+                </div>
+            }
+
+
+            <div class="mb-4">
+                <DateInputForm Id="dataNascita"
+                               Label="Data di nascita" ResourceId="data-nascita"
+                               Value="@_model.DataDiNascita" ValueExpression="() => _model.DataDiNascita"
+                               ValueChanged="(DateTime? d) => _model.DataDiNascita = d"
+                               ValidationFor="() => _model.DataDiNascita"
+                               Required="true">
+                </DateInputForm>
+            </div>
+            <div class="mb-4">
+                <AutocompleteForm Id="acComuneNascita"
+                                  Label="Comune di nascita" ResourceId="comune-nascita"
+                                  TItem="DatiComuneCompatto" TValue="AutocompleteFormResult"
+                                  SearchMethod="FindComuniAsync"
+                                  ConvertMethod="ComuneToAutocompleteResult"
+                                  Value="_model.ComuneNascita"
+                                  ValueChanged="(AutocompleteFormResult r) => _model.ComuneNascita = r"
+                                  ValueExpression="() => _model.ComuneNascita"
+                                  ItemFormatExpression="@((item) => $"{item.Comune} ({item.SiglaProvincia})")"
+                                  HelpText="Per i nati all'estero indicare il nome dello stato di nascita"
+                                  IsDisabled="@(!PermettiModificaDatiAnagrafici)"
+                                  ValidationFor="() => _model.ComuneNascita"
+                                  Required="true">
+                </AutocompleteForm>
+            </div>
+            <div class="mb-4">
+                <TextInputForm Id="codiceFiscale"
+                               @bind-Value="_model.CodiceFiscale"
+                               Label="Codice fiscale"
+                               ValidationFor="() => _model.CodiceFiscale"
+                               Required="true"
+                               IsDisabled="true" />
+            </div>
+
+
+            @if (ImpostazioniStep.DettagliPf.ResidenzaVisible)
+            {
+                <h4 class="title-large-semi-bold mb-4">
+                    <RisorsaTestuale IdRisorsa="titolo.residenza">
+                        Residenza
+                    </RisorsaTestuale>
+                </h4>
+
+                <div class="mb-4">
+                    <AutocompleteForm Id="acComuneResidenza"
+                                      Label="Comune"
+                                      ResourceId="comune-residenza"
+                                      TItem="DatiComuneCompatto" TValue="AutocompleteFormResult"
+                                      SearchMethod="FindComuniAsync" ConvertMethod="ComuneToAutocompleteResult"
+                                      Value="_model.ComuneResidenza"
+                                      ValueChanged="(r) => _model.ComuneResidenza = r"
+                                      ValueExpression="() => _model.ComuneResidenza"
+                                      ItemFormatExpression="@((item) => $"{item.Comune} ({item.SiglaProvincia})")"
+                                      ValidationFor="() => _model.ComuneResidenza"
+                                      Required="@ImpostazioniStep.DettagliPf.ResidenzaObbligatoria">
+                    </AutocompleteForm>
+                </div>
+                <div class="mb-4">
+                    <TextInputForm Id="indirizzo"
+                                   @bind-Value="_model.Indirizzo"
+                                   Label="Indirizzo" ResourceId="indirizzo-residenza"
+                                   ValidationFor="() => _model.Indirizzo"
+                                   Required="@ImpostazioniStep.DettagliPf.ResidenzaObbligatoria" />
+                </div>
+                <div class="mb-4">
+                    <TextInputForm Id="citta"
+                                   @bind-Value="_model.Citta"
+                                   Label="Località/Frazione" ResourceId="localita-residenza"
+                                   ValidationFor="() => _model.Citta"
+                                   Required="false" />
+                </div>
+                <div class="mb-4">
+                    <TextInputForm Id="cap"
+                                   @bind-Value="_model.CAP"
+                                   Label="CAP" ResourceId="cap-residenza"
+                                   ValidationFor="() => _model.CAP"
+                                   Required="@ImpostazioniStep.DettagliPf.ResidenzaObbligatoria" />
+                </div>
+
+            }
+
+            @if (_richiedeDatiAlbo)
+            {
+                <h4 class="title-large-semi-bold mb-4">
+                    <RisorsaTestuale IdRisorsa="albo-elenco">
+                        Dati elenco professionale
+                    </RisorsaTestuale>
+                </h4>
+
+                <div class="mb-4">
+                    <DropDownForm Id="ddlAlbo"
+                                  Label="Elenco professionale" ResourceId="albo-elenco"
+                                  @bind-Value="_model.AlboProfessionale"
+                                  OnChanged="(DropDownItem i) => VerificaSeAlboRichiedeProvincia()"
+                                  Items="@AlboDataItems"
+                                  ShowEmptyItem="true"
+                                  ValidationFor="() => _model.AlboProfessionale"
+                                  Required="true">
+                    </DropDownForm>
+                </div>
+                <div class="mb-4">
+                    <TextInputForm Id="txtNumeroAlbo"
+                                   @bind-Value="_model.NumeroAlbo"
+                                   Label="Numero" ResourceId="albo-numero"
+                                   ValidationFor="() => _model.NumeroAlbo"
+                                   Required="true" />
+                </div>
+
+                @if (_mostraProvinciaAlbo)
+                {
+                    <div class="mb-4">
+                        <AutocompleteForm Id="acProvinciaAlbo"
+                                          Label="Provincia" ResourceId="albo-provincia"
+                                          TItem="DatiProvinciaCompatto" TValue="AutocompleteFormResult"
+                                          SearchMethod="FindProvincieAsync" ConvertMethod="ProvinciaToAutocompleteResult"
+                                          Value="_model.ProvinciaAlbo"
+                                          ValueChanged="EventCallback.Factory.Create(this, (AutocompleteFormResult r) => _model.ProvinciaAlbo = r)"
+                                          ValueExpression="() => _model.ProvinciaAlbo"
+                                          ItemFormatExpression="@((item) => $"{item.Provincia} ({item.SiglaProvincia})")"
+                                          ValidationFor="() => _model.ProvinciaAlbo"
+                                          Required="true">
+                        </AutocompleteForm>
+                    </div>
+                }
+                else
+                {
+                    <div class="mb-4">
+                        <AutocompleteForm Id="acRegioneAlbo"
+                                          Label="Regione"
+                                          TItem="string" TValue="AutocompleteFormResult"
+                                          SearchMethod="GetRegioniAsync"
+                                          ConvertMethod="regioneAlboConvertMethod"
+                                          MinimumLength="0"
+                                          Value="_model.RegioneAlbo"
+                                          ValueChanged="(AutocompleteFormResult r) => _model.RegioneAlbo = r"
+                                          ValueExpression="() => _model.RegioneAlbo"
+                                          ValidationFor="() => _model.RegioneAlbo"
+                                          Required="true">
+                        </AutocompleteForm>
+                    </div>
+                }
+
+            }
+
+            @if (ImpostazioniStep.DettagliPf.TelefonoVisible || ImpostazioniStep.DettagliPf.CellulareVisible ||
+                ImpostazioniStep.DettagliPf.EmailVisible ||
+                ImpostazioniStep.DettagliPf.PecVisible)
+            {
+                <h4 class="title-large-semi-bold mb-4">
+                    <RisorsaTestuale IdRisorsa="titolo.contatti">
+                        Contatti
+                    </RisorsaTestuale>
+                </h4>
+
+
+                @if (ImpostazioniStep.DettagliPf.TelefonoVisible || ImpostazioniStep.DettagliPf.CellulareVisible)
+                {
+
+                    @if (ImpostazioniStep.DettagliPf.TelefonoVisible)
+                    {
+                        <div class="mb-4">
+                            <TextInputForm Id="telefono"
+                                           @bind-Value="_model.Telefono"
+                                           Label="Telefono" ResourceId="contatti-telefono"
+                                           ValidationFor="() => _model.Telefono"
+                                           Required="@ImpostazioniStep.DettagliPf.TelefonoObbligatorio" />
+                        </div>
+                    }
+                    @if (ImpostazioniStep.DettagliPf.CellulareVisible)
+                    {
+                        <div class="mb-4">
+                            <TextInputForm Id="telefonoCellulare"
+                                           @bind-Value="_model.Cellulare"
+                                           Label="Cellulare" ResourceId="contatti-cellulare"
+                                           ValidationFor="() => _model.Cellulare"
+                                           Required="@ImpostazioniStep.DettagliPf.CellulareObbligatorio" />
+                        </div>
+                    }
+
+                }
+
+
+                @if (ImpostazioniStep.DettagliPf.EmailVisible || ImpostazioniStep.DettagliPf.PecVisible)
+                {
+                    @if (ImpostazioniStep.DettagliPf.EmailVisible)
+                    {
+                        <div class="mb-4">
+                            <TextInputForm Id="email"
+                                           @bind-Value="_model.EMail"
+                                           Label="E-Mail" ResourceId="contatti-email"
+                                           ValidationFor="() => _model.EMail"
+                                           Required="@ImpostazioniStep.DettagliPf.EmailObbligatoria" />
+                        </div>
+                    }
+                    @if (ImpostazioniStep.DettagliPf.PecVisible)
+                    {
+                        <div class="mb-4">
+                            <TextInputForm Id="emailPec"
+                                           @bind-Value="_model.EMailPEC"
+                                           Label="PEC" ResourceId="contatti-pec"
+                                           ValidationFor="() => _model.EMailPEC"
+                                           Required="@ImpostazioniStep.DettagliPf.PecObbligatoria" />
+                        </div>
+                    }
+                }
+
+            }
+
+            @if (ImpostazioniStep.DettagliPf.CorrispondenzaVisibile)
+            {
+                <h4 class="title-large-semi-bold mb-4">
+                    <RisorsaTestuale IdRisorsa="titolo.corrispondenza">
+                        Indirizzo per la corrispondenza
+                    </RisorsaTestuale>
+                </h4>
+
+
+                <div class="mb-4">
+                    <AutocompleteForm Id="acComuneCorrispondenza"
+                                      Label="Comune" ResourceId="corrispondenza-comune"
+                                      TItem="DatiComuneCompatto"
+                                      TValue="AutocompleteFormResult"
+                                      SearchMethod="FindComuniAsync"
+                                      ConvertMethod="ComuneToAutocompleteResult"
+                                      @bind-Value="_model.ComuneCorrispondenza"
+                                      ItemFormatExpression="@((item) => $"{item.Comune} ({item.SiglaProvincia})")"
+                                      ValidationFor="() => _model.ComuneCorrispondenza"
+                                      Required="@ImpostazioniStep.DettagliPf.CorrispondenzaObbligatoria">
+                    </AutocompleteForm>
+                </div>
+                <div class="mb-4">
+                    <TextInputForm Id="indirizzoCorrispondenza"
+                                   @bind-Value="_model.IndirizzoCorrispondenza"
+                                   Label="Indirizzo" ResourceId="corrispondenza-indirizzo"
+                                   ValidationFor="() => _model.IndirizzoCorrispondenza"
+                                   Required="@ImpostazioniStep.DettagliPf.CorrispondenzaObbligatoria" />
+                </div>
+                <div class="mb-4">
+                    <TextInputForm Id="cittaCorrispondenza"
+                                   @bind-Value="_model.CittaCorrispondenza"
+                                   Label="Località/Frazione" ResourceId="corrispondenza-localita"
+                                   ValidationFor="() => _model.CittaCorrispondenza"
+                                   Required="false" />
+                </div>
+                <div class="mb-4">
+                    <TextInputForm Id="capCorrispondenza"
+                                   @bind-Value="_model.CAPCorrispondenza"
+                                   Label="CAP" ResourceId="corrispondenza-cap"
+                                   ValidationFor="() => _model.CAPCorrispondenza"
+                                   Required="@ImpostazioniStep.DettagliPf.CorrispondenzaObbligatoria" />
+                </div>
+
+            }
+        </VbgForm>
+    </ContenitoreRisorseTestuali>
+</ModalBody>
+
+<ModalFooter>
+    <FormSubmitButton Form="personaFisicaForm">Conferma</FormSubmitButton>
+</ModalFooter>
+

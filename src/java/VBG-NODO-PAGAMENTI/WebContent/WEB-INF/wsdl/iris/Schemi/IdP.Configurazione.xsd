@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+****
+**** Project. . : IRIS
+****
+**** Nome . . . : IdpConfigurazione
+**** Versione . : 01.00-00 Draft 01
+****
+**** Descrizione: Invio da Ente a IRIS dati anagrafici Ente, SIL, Operatori, Tributi, Rapporti
+****
+**** - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<xs:schema xmlns="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpConfigurazione" xmlns:h="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpHeader" xmlns:i="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpInclude" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpConfigurazione" elementFormDefault="qualified">
+	<xs:import namespace="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpHeader" schemaLocation="IdP.Header.xsd"/>
+	<xs:import namespace="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpInclude" schemaLocation="IdP.Include.xsd"/>
+	<xs:element name="IdpConfigurazioneEnte" type="IdpConfigurazioneEnte"/>
+	<xs:element name="IdpConfigurazioneTributi" type="IdpConfigurazioneTributi"/>
+	<xs:complexType name="IdpConfigurazioneEnte">
+		<xs:sequence>
+			<xs:element ref="h:IdpHeader" maxOccurs="1" minOccurs="0"/>
+			<xs:element name="IdpBody" type="IdpBodyEnte"/>
+		</xs:sequence>
+		<xs:attribute name="Versione" type="Versione" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="IdpConfigurazioneTributi">
+		<xs:sequence>
+			<xs:element ref="h:IdpHeader" maxOccurs="1" minOccurs="0"/>
+			<xs:element name="IdpBody" type="IdpBodyTributi"/>
+		</xs:sequence>
+		<xs:attribute name="Versione" type="Versione" use="required"/>
+	</xs:complexType>
+	<xs:simpleType name="Versione">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="01.00-00"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- Definizione del Body   -->
+	<xs:complexType name="IdpBodyEnte">
+		<xs:sequence>
+			<xs:element name="ConfigurazioneEnte" type="ConfigurazioneEnte"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="IdpBodyTributi">
+		<xs:sequence>
+			<xs:element name="ConfigurazioneTributi" type="ConfigurazioneTributi"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- Definizione della Configurazione Ente -->
+	<xs:complexType name="ConfigurazioneEnte">
+		<xs:sequence>
+			<xs:element name="DatiAnagraficiEnte"
+				type="DatiAnagraficiEnte" />
+			<xs:element name="ParametriGenerazioneIUV" type="ParametriGenerazioneIUVEnteType" minOccurs="0"></xs:element>
+		</xs:sequence>
+	<xs:attribute name="TipoOperazione" type="TipoOperazione" use="required"/>		
+	</xs:complexType>
+	
+	<xs:complexType name="ConfigurazioneTributi">
+		<xs:sequence>
+			<xs:element name="DatiAnagraficiTributo"
+				type="Tributo" />
+			<xs:element name="ParametriGenerazioneIUV" type="ParametriGenerazioneIUVTributoType" minOccurs="0"></xs:element>
+		</xs:sequence>
+	<xs:attribute name="TipoOperazione" type="TipoOperazione" use="required"/>		
+	</xs:complexType>
+	
+	<xs:simpleType name="TipoOperazione">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Insert"/>
+			<xs:enumeration value="Update"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<!-- Definizione Dati Anagrafici Ente -->
+	<xs:complexType name="DatiAnagraficiEnte">
+		<xs:sequence>
+			<xs:element name="CodiceEnte" type="i:Max50Text" />
+			<xs:element name="TipoEnte" type="i:Max50Text" />
+			<xs:element name="RagioneSociale" type="i:Max100Text" />
+			<xs:element name="CodiceFiscale" type="i:IdentificativoIdp" />
+			<xs:element name="PartitaIVA" type="i:IdentificativoIdp"
+				minOccurs="0" />
+			<xs:element name="Indirizzo" type="Indirizzo" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<!-- Definizione Tributi -->
+	<xs:complexType name="Tributo">
+		<xs:sequence>
+			<xs:element name="CodiceEnte" type="i:Max50Text" />
+			<xs:element name="CodiceTributo" type="i:Max50Text" />
+			<xs:element name="Descrizione" type="i:Max50Text" />
+			<xs:element name="Categoria" type="i:Max50Text"/>
+			<xs:element name="CodiceSilEnte" type="i:Max35Text" />
+			<xs:element name="IBANAccreditoBancario"
+				type="i:IBANIdentifier" />
+			<xs:element name="IBANAccreditoPostale"
+				type="i:IBANIdentifier"/>
+			<xs:element name="Stato" type="Stato" />
+			<xs:element name="PagamentoPressoPSP" type="xs:boolean"></xs:element>
+			<xs:element name="IuvGenerato" type="xs:boolean"></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- Definizione Indirizzo -->
+	<xs:complexType name="Indirizzo">
+		<xs:sequence>
+			<xs:element name="Indirizzo" type="i:Max100Text"
+				minOccurs="0" />
+			<xs:element name="Comune" type="i:Max35Text" minOccurs="0" />
+			<xs:element name="Provincia" type="i:Max2Text"
+				minOccurs="0" />
+			<xs:element name="CAP" type="i:Max5Text" minOccurs="0" />
+			<xs:element name="Nazione" type="i:Max20Text" minOccurs="0" />
+			<xs:element name="NumeroTelefono" type="i:Max20Text"
+				minOccurs="0" />
+			<xs:element name="NumeroFAX" type="i:Max20Text"
+				minOccurs="0" />
+			<xs:element name="CasellaPostale" type="i:Max5Text"
+				minOccurs="0" />
+			<xs:element name="Email" type="i:Max256Text" minOccurs="0" />
+			<xs:element name="EmailPec" type="i:Max256Text" maxOccurs="1" minOccurs="0"></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<!-- Definizione SIL -->
+	<xs:complexType name="SILType">
+		<xs:sequence>
+			<xs:element name="CodiceSIL" type="i:Max35Text"></xs:element>
+			<xs:element name="DescrizioneSIL" type="i:Max50Text"></xs:element>
+			<xs:element name="CodiceSILIntermediario"
+				type="i:Max35Text">
+			</xs:element>
+			<xs:element name="DescrizioneSILIntermediario"
+				type="i:Max50Text">
+			</xs:element>
+			<xs:element name="UserId" type="xs:string"></xs:element>
+			<xs:element name="SILCredential" type="xs:string"></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="ParametriGenerazioneIUVEnteType">
+		<xs:sequence>
+			<xs:element name="AuxDigit" type="AuxDigitType"></xs:element>
+			<xs:element name="CodiceStazione" type="i:Max2Text"></xs:element>
+			<xs:element name="CodiceSegregazione" type="i:Max2Text"></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="ParametriGenerazioneIUVTributoType">
+		<xs:sequence>
+			<xs:element name="PrefissoGenerazioneIUV" type="i:Max10Text"></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<!-- Definizione Stato -->
+	<xs:simpleType name="Stato">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Attivo"/>
+			<xs:enumeration value="Non Attivo"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- Definizione AuxDigit -->
+	<xs:simpleType name="AuxDigitType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="0"/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="2"/>
+			<xs:enumeration value="3"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+</xs:schema>

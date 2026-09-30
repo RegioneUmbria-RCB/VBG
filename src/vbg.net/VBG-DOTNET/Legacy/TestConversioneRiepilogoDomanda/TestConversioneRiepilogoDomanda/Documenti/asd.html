@@ -1,0 +1,27 @@
+﻿<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+</head>
+<body>
+
+    <xsl:variable name="pratTelematicaNumero" select="/Istanze/NUMEROISTANZA" />
+    <xsl:variable name="CFUtenteLoggato" select="substring($pratTelematicaNumero,9,16)" />
+
+    <xsl:if test="count(Istanze/Richiedenti/IstanzeRichiedenti/Richiedente/CODICEFISCALE[.!=$CFUtenteLoggato]) != '0'">
+        <hr />
+        <div style="font-size: 8px">
+            Altri soggetti Coinvolti:
+            <ul>
+                <xsl:for-each select="Istanze/Richiedenti/IstanzeRichiedenti/Richiedente/CODICEFISCALE[.!=$CFUtenteLoggato]">
+                    <li>
+                        <xsl:value-of select="../../Richiedente/NOMINATIVO" />&#160;
+                        <xsl:value-of select="../../Richiedente/NOME" />
+                    </li>
+                </xsl:for-each>
+            </ul>
+        </div>
+    </xsl:if>
+
+
+</body>
+</html>	

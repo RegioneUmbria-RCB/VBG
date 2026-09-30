@@ -1,0 +1,173 @@
+﻿@using AreaRiservataCore.Pages.InserimentoIstanza.AllegatiIntervento
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneConversioneFiles
+
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.DesignComuni.Forms
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards.CardButtons
+@using static VBG.BlazorComponentsLibrary.AccessibilityComponents.BadgeComponent
+
+@if (DataSource is not null)
+{
+    @foreach (var item in DataSource)
+    {
+        <StepCardItem>
+            <StepCardButtonGroup EditText="@(item.CodiceOggetto.HasValue ? "Modifica" : "Carica documento")"
+                                 EditClick="() => ModificaAllegato(item)"
+                                 DeleteText="Elimina"
+                                 DeleteVisible="item.CodiceOggetto.HasValue"
+                                 DeleteClick="() => ShowConfirmationModal(item.Id)"></StepCardButtonGroup>
+
+            <StepCardItemTitle Titolo="@item.Descrizione"></StepCardItemTitle>
+
+            <StepBadgeContainer>
+                @if (item.CodiceOggetto.HasValue)
+                {
+                    <BadgeComponent Type="BadgeComponent.BadgeCategoryEnum.SUCCESS">Compilato con successo</BadgeComponent>
+                }
+                else
+                {
+                    @if (item.Richiesto)
+                    {
+                        <BadgeComponent Type="BadgeCategoryEnum.DANGER" CssClass="fw-normal">Obbligatorio</BadgeComponent>
+                    }
+
+                    @if (item.RichiedeFirmaDigitale)
+                    {
+                        <BadgeComponent Type="BadgeCategoryEnum.WARNING" CssClass="fw-normal">Richiede firma digitale</BadgeComponent>
+                    }
+                }
+            </StepBadgeContainer>
+
+            @if (!String.IsNullOrEmpty(item.Note))
+            {
+                <div class="fw-normal mb-2">
+                    @((MarkupString)item.Note)
+                </div>
+            }
+
+            @if (!SoloFirma && item.ConsenteDownloadModello)
+            {
+                @if (item.CanDownloadAsFileSenzaPrecompilazione && item.CodiceOggettoModello.HasValue)
+                {
+                    <StepDownloadButton Titolo="Scarica modello" CodiceOggetto="@item.CodiceOggettoModello"></StepDownloadButton>
+                }
+
+                @if (item.SupportaConversione && item.CodiceOggettoModello.HasValue)
+                {
+                    <p class="card-info">
+
+                        <div class="dropdown">
+                            <button class="btn btn-dropdown dropdown-toggle text-nowrap" type="button" id="@($"dropdownMenuButton-{item.Id}")" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                                @(item.CanDownloadAsFileSenzaPrecompilazione && item.CodiceOggettoModello.HasValue ? "Scarica modello in altri formati" : "Scarica modello")
+                                <SvgIcon IconId="it-expand" CssClass="icon-expand icon-sm icon-primary"></SvgIcon>
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <div class="link-list-wrapper">
+                                    <ul class="link-list">
+                                        <li>
+                                            @if (item.CanDownloadAsPdf)
+                                            {
+                                                <ScaricaOggettoCompilabileComponent Text="Scarica in formato Pdf" IconId="it-file-pdf" CssClass="dropdown-item list-item" CodiceOggetto="@item.CodiceOggettoModello" IdDomanda="@item.IdDomanda" Formato="@FormatoConversioneEnum.PDF">
+                                                </ScaricaOggettoCompilabileComponent>
+                                            }
+                                        </li>
+                                        <li>
+                                            @if (item.CanDownloadAsPdfCompilabile)
+                                            {
+                                                <ScaricaOggettoCompilabileComponent Text="Scarica in formato Pdf compilabile" IconId="it-file-pdf" CssClass="dropdown-item list-item" CodiceOggetto="@item.CodiceOggettoModello" IdDomanda="@item.IdDomanda" Formato="@FormatoConversioneEnum.PDFC">
+                                                </ScaricaOggettoCompilabileComponent>
+                                            }
+                                        </li>
+                                        <li>
+                                            @if (item.CanDownloadAsRtf)
+                                            {
+                                                <ScaricaOggettoCompilabileComponent Text="Scarica in formato Rtf" CssClass="dropdown-item list-item" CodiceOggetto="@item.CodiceOggettoModello" IdDomanda="@item.IdDomanda" Formato="@FormatoConversioneEnum.RTF">
+                                                </ScaricaOggettoCompilabileComponent>
+                                            }
+                                        </li>
+                                        <li>
+                                            @if (item.CanDownloadAsDoc)
+                                            {
+                                                <ScaricaOggettoCompilabileComponent Text="Scarica in formato Word" CssClass="dropdown-item list-item" CodiceOggetto="@item.CodiceOggettoModello" IdDomanda="@item.IdDomanda" Formato="@FormatoConversioneEnum.DOC">
+                                                </ScaricaOggettoCompilabileComponent>
+                                            }
+                                        </li>
+                                        <li>
+                                            @if (item.CanDownloadAsOdt)
+                                            {
+                                                <ScaricaOggettoCompilabileComponent Text="Scarica in formato Open Document" IconId="it-file-odt" CssClass="dropdown-item list-item" CodiceOggetto="@item.CodiceOggettoModello" IdDomanda="@item.IdDomanda" Formato="@FormatoConversioneEnum.ODT">
+                                                </ScaricaOggettoCompilabileComponent>
+                                            }
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                    </p>
+                }
+            }
+
+            <StepDownloadButton Titolo="File caricato" CodiceOggetto="@item.CodiceOggetto"></StepDownloadButton>
+
+            @if (PermettiAllegatiMultipili && item.MostraBottoneAllega)
+            {
+                <button class="btn btn-primary mt-3" @onclick="() => OpenMultipleAttachment(item)">Allegati multipli</button>
+            }
+
+        </StepCardItem>
+    }
+}
+
+@if (_mostraModalAllegatiMultipli)
+{
+    <FormModal OnClose="() => _mostraModalAllegatiMultipli = false" Model="@_multiUploaders" FormId="formGrigliaAllegati" OnValidSubmit="AddMultipleFilesAsync">
+        <ModalHeader Titolo="Allegati multipli">
+        </ModalHeader>
+        <ModalBody>
+            <div class="multi-upload-step">
+
+                <div class="mb-4">
+                    Selezionare uno o più files da allegare per il _documento
+                    <span class="fw-bold">@_modalItem?.Descrizione</span>
+                </div>
+
+                @foreach (var (uploader, index) in _multiUploaders.Select((value, i) => (value, i)))
+                {
+                    var validations = GetValidPostedFileSpecification?.Invoke(_modalItem.Id);
+
+                    <FormUpload @bind-Value="_multiUploaders[index].CodiceOggetto"
+                                OnFileChanged="(FormFileChangedEventArgs e) => OnMultiUploadChange(e, index)"
+                                Obbligatorio="validations?.Obbligatorio ?? false"
+                                VerificaFirmaDigitale="validations?.FirmatoDigitalmente ?? false"
+                                DimensioneMassimaFile="validations?.DimensioneMassimaBytes"
+                                ValidationFor="() => _multiUploaders[index].CodiceOggetto">
+                    </FormUpload>
+                }
+
+            </div>
+        </ModalBody>
+        <ModalFooter>
+            <FormSubmitButton Form="formGrigliaAllegati"></FormSubmitButton>
+        </ModalFooter>
+    </FormModal>
+}
+
+
+<ModalModificaAllegato Allegato="_editingItem"
+                       OnAnnulla="() => _editingItem = null"
+                       OnConferma="SalvaModificheAsync"
+                       CategorieAllegati="Categorie">
+</ModalModificaAllegato>
+
+<ConfirmationModal Titolo="Conferma eliminazione" Visible="@_mostraConfermaEliminazione" ConfermaClick="() => upload_OnDeleteAsync()" AnnullaClick="() => _mostraConfermaEliminazione = false">
+    <ModalBody>
+        Rimuovere il file selezionato?
+    </ModalBody>
+</ConfirmationModal>
+
+
+

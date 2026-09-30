@@ -1,0 +1,630 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://tempuri.org/" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://tempuri.org/" xmlns:intf="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Apr 22, 2006 (06:55:48 PDT)-->
+ <wsdl:types>
+  <schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns="http://www.w3.org/2001/XMLSchema">
+   <element name="FascicolaDocumento">
+    <complexType>
+     <sequence>
+      <element name="IDFascicolo" type="xsd:int"/>
+      <element name="IDDocumento" type="xsd:int"/>
+      <element name="AggiornaClassifica" type="xsd:string"/>
+      <element name="Utente" type="xsd:string"/>
+      <element name="Ruolo" type="xsd:string"/>
+      <element name="CodiceAmministrazione" type="xsd:string"/>
+      <element name="CodiceAOO" type="xsd:string"/>
+      <element name="Principale" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="FascicolaDocumentoResponse">
+    <complexType>
+     <sequence>
+      <element name="FascicolaDocumentoResult" type="impl:EsitoOperazione"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="EsitoOperazione">
+    <sequence>
+     <element name="Esito" type="xsd:boolean"/>
+     <element maxOccurs="1" minOccurs="0" name="Messaggio" nillable="true" type="xsd:string"/>
+     <element maxOccurs="1" minOccurs="0" name="Errore" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <element name="CreaFascicolo">
+    <complexType>
+     <sequence>
+      <element name="FascicoloIn" type="impl:FascicoloIn"/>
+      <element name="CodiceAmministrazione" type="xsd:string"/>
+      <element name="CodiceAOO" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="FascicoloIn">
+    <sequence>
+     <element maxOccurs="1" minOccurs="0" name="Anno" nillable="true" type="xsd:string"/>
+     <element maxOccurs="1" minOccurs="0" name="Numero" nillable="true" type="xsd:string"/>
+     <element maxOccurs="1" minOccurs="0" name="Data" nillable="true" type="xsd:string"/>
+     <element maxOccurs="1" minOccurs="0" name="Oggetto" nillable="true" type="xsd:string"/>
+     <element maxOccurs="1" minOccurs="0" name="Classifica" nillable="true" type="xsd:string"/>
+     <element maxOccurs="1" minOccurs="0" name="AltriDati" nillable="true" type="xsd:string"/>
+     <element maxOccurs="1" minOccurs="0" name="Utente" nillable="true" type="xsd:string"/>
+     <element maxOccurs="1" minOccurs="0" name="Ruolo" nillable="true" type="xsd:string"/>
+     <element maxOccurs="1" minOccurs="0" name="Eterogeneo" nillable="true" type="xsd:string"/>
+     <element maxOccurs="1" minOccurs="0" name="DataChiusura" nillable="true" type="xsd:string"/>
+     <element maxOccurs="1" minOccurs="0" name="DatiAggiuntivi" nillable="true" type="xsd:string"/>
+     <element maxOccurs="1" minOccurs="0" name="Applicazione" nillable="true" type="xsd:string"/>
+     <element maxOccurs="1" minOccurs="0" name="Aggiornamento" nillable="true" type="xsd:string"/>
+     <element maxOccurs="1" minOccurs="0" name="AnagraficaCf" nillable="true" type="xsd:string"/>
+     <element maxOccurs="1" minOccurs="0" name="AnagraficaPiva" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <element name="CreaFascicoloResponse">
+    <complexType>
+     <sequence>
+      <element name="FascicoloOut" type="impl:FascicoloOut"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="DocumentoFascicoloOut">
+    <sequence>
+     <element name="IdDocumento" type="xsd:int"/>
+     <element maxOccurs="1" minOccurs="0" name="TipoDocumento" nillable="true" type="xsd:string"/>
+     <element name="DataInserimento" nillable="true" type="xsd:dateTime"/>
+     <element maxOccurs="1" minOccurs="0" name="DestinatarioInterno" nillable="true" type="xsd:string"/>
+     <element name="DataInvioDestinatario" nillable="true" type="xsd:dateTime"/>
+     <element name="Copia" type="xsd:boolean"/>
+     <element maxOccurs="1" minOccurs="0" name="AnnoProtocollo" nillable="true" type="xsd:string"/>
+     <element maxOccurs="1" minOccurs="0" name="NumeroProtocollo" nillable="true" type="xsd:string"/>
+     <element name="IterAttivo" type="xsd:boolean"/>
+     <element maxOccurs="1" minOccurs="0" name="Oggetto" nillable="true" type="xsd:string"/>
+     <element name="DataAnnullamento" nillable="true" type="xsd:dateTime"/>
+     <element maxOccurs="1" minOccurs="0" name="Origine" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="ArrayOfDocumentoFascicoloOut">
+    <sequence>
+     <element maxOccurs="unbounded" minOccurs="0" name="item" type="impl:DocumentoFascicoloOut"/>
+    </sequence>
+   </complexType>
+   <complexType name="FascicoloOut">
+    <sequence>
+     <element name="Id" type="xsd:int"/>
+     <element name="Anno" type="xsd:int"/>
+     <element maxOccurs="1" minOccurs="0" name="Numero" nillable="true" type="xsd:string"/>
+     <element maxOccurs="1" minOccurs="0" name="NumeroSenzaClassifica" nillable="true" type="xsd:string"/>
+     <element maxOccurs="1" minOccurs="0" name="Oggetto" nillable="true" type="xsd:string"/>
+     <element name="Data" nillable="true" type="xsd:dateTime"/>
+     <element maxOccurs="1" minOccurs="0" name="Classifica" nillable="true" type="xsd:string"/>
+     <element maxOccurs="1" minOccurs="0" name="Classifica_Descrizione" nillable="true" type="xsd:string"/>
+     <element maxOccurs="1" minOccurs="0" name="AltriDati" nillable="true" type="xsd:string"/>
+     <element maxOccurs="1" minOccurs="0" name="Archiviata" nillable="true" type="xsd:string"/>
+     <element name="AnnoArchiviazione" type="xsd:int"/>
+     <element name="NumeroArchiviazione" type="xsd:int"/>
+     <element maxOccurs="1" minOccurs="0" name="UtenteDiInserimento" nillable="true" type="xsd:string"/>
+     <element maxOccurs="1" minOccurs="0" name="RuoloDiInserimento" nillable="true" type="xsd:string"/>
+     <element name="DataDiInserimento" nillable="true" type="xsd:dateTime"/>
+     <element name="DataDiChiusura" nillable="true" type="xsd:dateTime"/>
+     <element name="PraticaChiusa" type="xsd:boolean"/>
+     <element name="DataDiScarto" nillable="true" type="xsd:dateTime"/>
+     <element name="PraticaRiservata" type="xsd:short"/>
+     <element maxOccurs="1" minOccurs="0" name="DocumentiFascicolo" nillable="true" type="impl:ArrayOfDocumentoFascicoloOut"/>
+     <element maxOccurs="1" minOccurs="0" name="FormatoData" nillable="true" type="xsd:string"/>
+     <element maxOccurs="1" minOccurs="0" name="LivelloDiSicurezza" nillable="true" type="xsd:string"/>
+     <element name="PraticaScartabile" type="xsd:boolean"/>
+     <element name="NumeroDocumentiPratica" type="xsd:int"/>
+     <element name="IterAttivo" type="xsd:int"/>
+     <element maxOccurs="1" minOccurs="0" name="ACL" nillable="true" type="xsd:string"/>
+     <element maxOccurs="1" minOccurs="0" name="ErrDescription" nillable="true" type="xsd:string"/>
+     <element name="DataDiAnnullo" nillable="true" type="xsd:dateTime"/>
+     <element name="PraticaAnnullata" type="xsd:boolean"/>
+     <element maxOccurs="1" minOccurs="0" name="AnnullamentoNote" nillable="true" type="xsd:string"/>
+     <element maxOccurs="1" minOccurs="0" name="AnnullamentoUtente" nillable="true" type="xsd:string"/>
+     <element maxOccurs="1" minOccurs="0" name="Padre" nillable="true" type="xsd:string"/>
+     <element maxOccurs="1" minOccurs="0" name="Key" nillable="true" type="xsd:string"/>
+     <element maxOccurs="1" minOccurs="0" name="SottoFascicolo" nillable="true" type="xsd:string"/>
+     <element name="IsSottofascicolo" type="xsd:boolean"/>
+     <element name="HasSottofascicolo" type="xsd:boolean"/>
+     <element name="HasDocumenti" type="xsd:boolean"/>
+     <element name="HasDocumentiConIter" type="xsd:boolean"/>
+     <element maxOccurs="1" minOccurs="0" name="Messaggio" nillable="true" type="xsd:string"/>
+     <element maxOccurs="1" minOccurs="0" name="Errore" nillable="true" type="xsd:string"/>
+     <element name="Eterogeneo" type="xsd:boolean"/>
+    </sequence>
+   </complexType>
+   <element name="CreaSottoFascicolo">
+    <complexType>
+     <sequence>
+      <element name="IDFascicolo" type="xsd:int"/>
+      <element name="Utente" type="xsd:string"/>
+      <element name="Ruolo" type="xsd:string"/>
+      <element name="CodiceAmministrazione" type="xsd:string"/>
+      <element name="CodiceAOO" type="xsd:string"/>
+      <element name="FascicoloIn" type="impl:FascicoloIn"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="CreaSottoFascicoloResponse">
+    <complexType>
+     <sequence>
+      <element name="FascicoloOut" type="impl:FascicoloOut"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="LeggiFascicolo">
+    <complexType>
+     <sequence>
+      <element name="IDFascicolo" type="xsd:string"/>
+      <element name="Anno" type="xsd:string"/>
+      <element name="Numero" type="xsd:string"/>
+      <element name="Utente" type="xsd:string"/>
+      <element name="Ruolo" type="xsd:string"/>
+      <element name="CodiceAmministrazione" type="xsd:string"/>
+      <element name="CodiceAOO" type="xsd:string"/>
+      <element name="CodiceClassificazione" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="LeggiFascicoloResponse">
+    <complexType>
+     <sequence>
+      <element name="FascicoloOut" type="impl:FascicoloOut"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="CreaFascicoloString">
+    <complexType>
+     <sequence>
+      <element name="FascicoloInStr" type="xsd:string"/>
+      <element name="CodiceAmministrazione" type="xsd:string"/>
+      <element name="CodiceAOO" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="CreaFascicoloStringResponse">
+    <complexType>
+     <sequence>
+      <element name="CreaFascicoloStringResult" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="CreaSottoFascicoloString">
+    <complexType>
+     <sequence>
+      <element name="IDFascicolo" type="xsd:int"/>
+      <element name="Utente" type="xsd:string"/>
+      <element name="Ruolo" type="xsd:string"/>
+      <element name="CodiceAmministrazione" type="xsd:string"/>
+      <element name="CodiceAOO" type="xsd:string"/>
+      <element name="FascicoloInStr" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="CreaSottoFascicoloStringResponse">
+    <complexType>
+     <sequence>
+      <element name="CreaSottoFascicoloStringResult" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="LeggiFascicoloString">
+    <complexType>
+     <sequence>
+      <element name="IDFascicolo" type="xsd:string"/>
+      <element name="Anno" type="xsd:string"/>
+      <element name="Numero" type="xsd:string"/>
+      <element name="Utente" type="xsd:string"/>
+      <element name="Ruolo" type="xsd:string"/>
+      <element name="CodiceAmministrazione" type="xsd:string"/>
+      <element name="CodiceAOO" type="xsd:string"/>
+      <element name="CodiceClassificazione" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="LeggiFascicoloStringResponse">
+    <complexType>
+     <sequence>
+      <element name="LeggiFascicoloStringResult" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="InserisciMetadati">
+    <complexType>
+     <sequence>
+      <element name="Contesto" type="xsd:string"/>
+      <element name="IDFascicolo" type="xsd:string"/>
+      <element name="MetadatiStr" type="xsd:string"/>
+      <element name="ConnectionString" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="InserisciMetadatiResponse">
+    <complexType>
+     <sequence>
+      <element name="InserisciMetadatiResult" type="impl:EsitoOperazione"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="ModificaFascicolo">
+    <complexType>
+     <sequence>
+      <element name="FascicoloInStr" type="xsd:string"/>
+      <element name="CodiceAmministrazione" type="xsd:string"/>
+      <element name="CodiceAOO" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="ModificaFascicoloResponse">
+    <complexType>
+     <sequence>
+      <element name="ModificaFascicoloResult" type="impl:EsitoOperazione"/>
+     </sequence>
+    </complexType>
+   </element>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="LeggiFascicoloResponse">
+
+      <wsdl:part element="impl:LeggiFascicoloResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="ModificaFascicoloRequest">
+
+      <wsdl:part element="impl:ModificaFascicolo" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="FascicolaDocumentoRequest">
+
+      <wsdl:part element="impl:FascicolaDocumento" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="CreaSottoFascicoloStringResponse">
+
+      <wsdl:part element="impl:CreaSottoFascicoloStringResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="CreaFascicoloStringResponse">
+
+      <wsdl:part element="impl:CreaFascicoloStringResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="CreaFascicoloResponse">
+
+      <wsdl:part element="impl:CreaFascicoloResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="FascicolaDocumentoResponse">
+
+      <wsdl:part element="impl:FascicolaDocumentoResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="CreaFascicoloStringRequest">
+
+      <wsdl:part element="impl:CreaFascicoloString" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="LeggiFascicoloRequest">
+
+      <wsdl:part element="impl:LeggiFascicolo" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="CreaSottoFascicoloResponse">
+
+      <wsdl:part element="impl:CreaSottoFascicoloResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="LeggiFascicoloStringResponse">
+
+      <wsdl:part element="impl:LeggiFascicoloStringResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="InserisciMetadatiRequest">
+
+      <wsdl:part element="impl:InserisciMetadati" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="InserisciMetadatiResponse">
+
+      <wsdl:part element="impl:InserisciMetadatiResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="CreaSottoFascicoloRequest">
+
+      <wsdl:part element="impl:CreaSottoFascicolo" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="CreaSottoFascicoloStringRequest">
+
+      <wsdl:part element="impl:CreaSottoFascicoloString" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="CreaFascicoloRequest">
+
+      <wsdl:part element="impl:CreaFascicolo" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="ModificaFascicoloResponse">
+
+      <wsdl:part element="impl:ModificaFascicoloResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="LeggiFascicoloStringRequest">
+
+      <wsdl:part element="impl:LeggiFascicoloString" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:portType name="DocWSFascicoliSoap">
+
+      <wsdl:operation name="FascicolaDocumento">
+
+         <wsdl:input message="impl:FascicolaDocumentoRequest" name="FascicolaDocumentoRequest"/>
+
+         <wsdl:output message="impl:FascicolaDocumentoResponse" name="FascicolaDocumentoResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="CreaFascicolo">
+
+         <wsdl:input message="impl:CreaFascicoloRequest" name="CreaFascicoloRequest"/>
+
+         <wsdl:output message="impl:CreaFascicoloResponse" name="CreaFascicoloResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="CreaSottoFascicolo">
+
+         <wsdl:input message="impl:CreaSottoFascicoloRequest" name="CreaSottoFascicoloRequest"/>
+
+         <wsdl:output message="impl:CreaSottoFascicoloResponse" name="CreaSottoFascicoloResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="LeggiFascicolo">
+
+         <wsdl:input message="impl:LeggiFascicoloRequest" name="LeggiFascicoloRequest"/>
+
+         <wsdl:output message="impl:LeggiFascicoloResponse" name="LeggiFascicoloResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="CreaFascicoloString">
+
+         <wsdl:input message="impl:CreaFascicoloStringRequest" name="CreaFascicoloStringRequest"/>
+
+         <wsdl:output message="impl:CreaFascicoloStringResponse" name="CreaFascicoloStringResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="CreaSottoFascicoloString">
+
+         <wsdl:input message="impl:CreaSottoFascicoloStringRequest" name="CreaSottoFascicoloStringRequest"/>
+
+         <wsdl:output message="impl:CreaSottoFascicoloStringResponse" name="CreaSottoFascicoloStringResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="LeggiFascicoloString">
+
+         <wsdl:input message="impl:LeggiFascicoloStringRequest" name="LeggiFascicoloStringRequest"/>
+
+         <wsdl:output message="impl:LeggiFascicoloStringResponse" name="LeggiFascicoloStringResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="InserisciMetadati">
+
+         <wsdl:input message="impl:InserisciMetadatiRequest" name="InserisciMetadatiRequest"/>
+
+         <wsdl:output message="impl:InserisciMetadatiResponse" name="InserisciMetadatiResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="ModificaFascicolo">
+
+         <wsdl:input message="impl:ModificaFascicoloRequest" name="ModificaFascicoloRequest"/>
+
+         <wsdl:output message="impl:ModificaFascicoloResponse" name="ModificaFascicoloResponse"/>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="DocWSFascicoliSoapSoapBinding" type="impl:DocWSFascicoliSoap">
+
+      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="FascicolaDocumento">
+
+         <wsdlsoap:operation soapAction="http://tempuri.org/FascicolaDocumento"/>
+
+         <wsdl:input name="FascicolaDocumentoRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="FascicolaDocumentoResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="CreaFascicolo">
+
+         <wsdlsoap:operation soapAction="http://tempuri.org/CreaFascicolo"/>
+
+         <wsdl:input name="CreaFascicoloRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="CreaFascicoloResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="CreaSottoFascicolo">
+
+         <wsdlsoap:operation soapAction="http://tempuri.org/CreaSottoFascicolo"/>
+
+         <wsdl:input name="CreaSottoFascicoloRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="CreaSottoFascicoloResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="LeggiFascicolo">
+
+         <wsdlsoap:operation soapAction="http://tempuri.org/LeggiFascicolo"/>
+
+         <wsdl:input name="LeggiFascicoloRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="LeggiFascicoloResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="CreaFascicoloString">
+
+         <wsdlsoap:operation soapAction="http://tempuri.org/CreaFascicoloString"/>
+
+         <wsdl:input name="CreaFascicoloStringRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="CreaFascicoloStringResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="CreaSottoFascicoloString">
+
+         <wsdlsoap:operation soapAction="http://tempuri.org/CreaSottoFascicoloString"/>
+
+         <wsdl:input name="CreaSottoFascicoloStringRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="CreaSottoFascicoloStringResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="LeggiFascicoloString">
+
+         <wsdlsoap:operation soapAction="http://tempuri.org/LeggiFascicoloString"/>
+
+         <wsdl:input name="LeggiFascicoloStringRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="LeggiFascicoloStringResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="InserisciMetadati">
+
+         <wsdlsoap:operation soapAction="http://tempuri.org/InserisciMetadati"/>
+
+         <wsdl:input name="InserisciMetadatiRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="InserisciMetadatiResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="ModificaFascicolo">
+
+         <wsdlsoap:operation soapAction="http://tempuri.org/ModificaFascicolo"/>
+
+         <wsdl:input name="ModificaFascicoloRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="ModificaFascicoloResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="DocWSFascicoli">
+
+      <wsdl:port binding="impl:DocWSFascicoliSoapSoapBinding" name="DocWSFascicoliSoap">
+
+         <wsdlsoap:address location="http://sicrawebappserverforl:58080/client/services/DocWSFascicoliSoap"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

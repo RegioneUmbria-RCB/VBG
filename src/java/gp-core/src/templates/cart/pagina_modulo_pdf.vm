@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<style>
+	.monospaceboldchar{
+		font-weight: bold;
+		font-family: monospace;
+	}
+	.boldchar{
+		font-weight: bold;
+	}
+	
+</style>
+<title>$helper.Modulo.Titolo</title>
+</head>
+<body>
+	<h2>$helper.Modulo.Titolo</h2>
+	##visualizzare in PDF il valore di modulo.help?
+		#set($rowIndex = $helper.nuovoIndiceIdSemantico())
+    	#foreach($quadro in $helper.Modulo.Quadro)
+    		#set($renderQuadro = ${helper.evaluateExpression($quadro.Attivo,$rowIndex)})
+    		#if($renderQuadro)
+    			#parse("/cart/quadro_pdf.vm")
+    		#end
+    	#end
+</body>
+</html>

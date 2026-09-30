@@ -1,0 +1,142 @@
+﻿@using Init.Sigepro.FrontEnd.AppLogic.Autenticazione.Vbg.AutenticazioneUtente
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneRisorseTestuali
+@using Vbg.CoreControls.JavascriptInterop
+
+@if (IsEditable && !string.IsNullOrEmpty(ResourceId))
+{
+    <div class="risorsa-testuale @(_isAttivo ? "attivo" : "")" data-id-risorsa="@ResourceId">
+        <div class="evidenzia"></div>
+        <div class="risorsa-testuale-edit" @onclick="OnModificaClick" @onmouseover="OnMouseOver" @onmouseout="OnMouseOut">
+            <i class="fa fa-pencil"></i>Modifica
+        </div>
+        <div class="editabile">
+            @if (String.IsNullOrEmpty(TestoCorrente))
+            {
+                @ChildContent
+            }
+            else
+            {
+                @((MarkupString)TestoCorrente)
+            }
+        </div>
+        @if (String.IsNullOrEmpty(TestoDefault))
+        {
+            <div style="display:none" @ref="testoDefaultElement">@ChildContent</div>
+        }
+    </div>
+
+    <ModalWindowComponent @ref="modal" StartVisible="false" OnOkButton="AggiornaRisorsa">
+        <HeaderTemplate>
+            <h3 style="margin:0">Modifica Risorsa</h3>
+        </HeaderTemplate>
+        <BodyTemplate>
+            <div>
+                <InputComponent Label="ID Risorsa" Value="@ResourceId" IsDisabled="true"></InputComponent>
+
+                <div class="mb-3">
+                    <label for="txt0_0" class="form-label">
+                        Testo Risorsa
+                    </label>
+                    <textarea id="txt0_0" @bind="TestoModificato" class="form-control" rows="6"></textarea>
+                </div>
+            </div>
+        </BodyTemplate>
+    </ModalWindowComponent>
+}
+else
+{
+    @if (String.IsNullOrEmpty(TestoCorrente))
+    {
+        <span>@ChildContent </span>
+    }
+    else
+    {
+        @((MarkupString)TestoCorrente)
+    }
+}
+
+
+@code {
+
+    [Inject]
+    private IAuthenticationDataResolver _authDataResolver { get; set; } = default!;
+    [Inject]
+    private IRisorseTestualiService _risorseService { get; set; } = default!;
+    [Inject]
+    private RisorseTestualiClientService _clientService { get; set; } = default!;
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+    [Parameter]
+    public string ResourceId { get; set; } = "";
+
+    private ModalWindowComponent? modal { get; set; }
+    private string TestoCorrente { get; set; } = "";
+    private string TestoModificato { get; set; } = "";
+    private string TestoDefault { get; set; } = "";
+
+    ElementReference testoDefaultElement;
+
+    bool _isAttivo = false;
+
+    bool IsEditable => this._authDataResolver.DatiAutenticazione?.DatiUtente?.UtenteTester ?? false;
+
+    protected override Task OnInitializedAsync()
+    {
+        if (!string.IsNullOrEmpty(ResourceId))
+            this.TestoCorrente = this._risorseService.GetRisorsa(ResourceId, String.Empty);
+
+        return base.OnInitializedAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        if (String.IsNullOrEmpty(this.TestoDefault))
+        {
+            this.TestoDefault = await GetTestoDefaultDaHtmlAsync();
+        }
+
+        if (String.IsNullOrEmpty(this.TestoCorrente))
+        {
+            this.TestoCorrente = this.TestoDefault;
+            this.StateHasChanged();
+        }
+    }
+
+    private async Task<string> GetTestoDefaultDaHtmlAsync()
+    {
+        var tmp = await _clientService.GetInnerHtml(testoDefaultElement);
+        return tmp?.Replace("<!--!-->", "");
+    }
+
+
+    void OnModificaClick(MouseEventArgs e)
+    {
+
+        this.TestoModificato = this.TestoCorrente;
+        modal?.Show();
+    }
+
+    async Task AggiornaRisorsa()
+    {
+        if (string.IsNullOrEmpty(this.TestoModificato))
+        {
+            this.TestoModificato = this.TestoDefault;
+        }
+
+        this._risorseService.AggiornaRisorsa(ResourceId, this.TestoModificato);
+        this.TestoCorrente = this.TestoModificato;
+        this.StateHasChanged();
+    }
+
+    void OnMouseOver()
+    {
+        _isAttivo = true;
+    }
+    void OnMouseOut()
+    {
+        _isAttivo = false;
+    }
+}

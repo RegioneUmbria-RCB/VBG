@@ -1,0 +1,35 @@
+#set($size = $campo.getProprietaCampo("Columns","40"))
+
+#if($modelloHelper.isRenderForPrint())
+	#if ( "$!val" == "" )
+		<b>_____________________________________</b>
+	#else
+		<b>$val</b>
+	#end
+#else
+	#set($size = $campo.getProprietaCampo("Columns","40"))
+	#set($maxLength = $campo.getProprietaCampo("MaxLength",""))
+	#if($maxLength)
+		#set($maxLength = "maxlength='$maxLength'")
+	#else
+		#set($maxLength = "")
+	#end
+	#set($readonly = $campo.getProprietaCampo("ReadOnly",""))
+	#if($readonly && $readonly == "true")
+		#set($readonly = "readonly='readonly'")
+	#else
+		#set($readonly = "")
+	#end
+	#set($isMultiline = $campo.getProprietaCampo("MultiLine","false") == "true")
+	#set($textRows = $campo.getProprietaCampo("Rows",""))
+	#if($textRows && $isMultiline)
+		#set($textRows = "rows='$textRows'")
+	#else
+		#set($textRows = "")
+	#end
+	#if(!$isMultiline)
+		<input type="text" name="${nameAttr}" starid='${idStar}' id="${nameAttr}_ID" value="$val" $readonly size="$size" $maxLength class="$classeCampo"/>
+	#else
+		<textarea name="${nameAttr}" starid='${idStar}' id="${nameAttr}_ID" $readonly cols="$size" $maxLength $textRows class="$classeCampo">$val</textarea>
+	#end
+#end

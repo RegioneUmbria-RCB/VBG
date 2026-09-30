@@ -1,0 +1,120 @@
+﻿@using Init.SIGePro.Manager.DTO.Commissioni
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneCommissioni
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneOggetti
+@using VBG.BlazorComponentsLibrary
+@using VBG.BlazorComponentsLibrary.DesignComuni.Forms
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.EditFormComponents
+@using VBG.BlazorComponentsLibrary.RisorseTestuali
+
+@inherits BaseSharedPage
+
+
+<a class="approva-documento" style="cursor:pointer;" data-hash="@Item.Sha256" data-id="@Item.Id" @onclick="OnViewClick" @onclick:preventDefault>Prendi visione/Approva</a>
+
+<BasicModal @ref="modal" Size="ModalSizeEnum.Normal" OnClose="() => modal.Hide()">
+    <ModalHeader Titolo="Attenzione" Size="ModalHeaderSizeEnum.Small">
+    </ModalHeader>
+    <ModalBody>
+        <VbgForm Id="modalForm" Model="@Item" OnValidSubmit="OnValidSubmit">
+            <div class="alert alert-warning" role="alert">
+                <RisorsaTestuale IdRisorsa="dettaglio-commissione.popup.warning">Attenzione! Stai per approvare un documento di una commissione, l'operazione non potrà essere annullata</RisorsaTestuale>
+            </div>
+
+            <div class="alert alert-info" role="alert">
+                <RisorsaTestuale IdRisorsa="dettaglio-commissione.popup.testo-download-file">Per approvare il documento è necessario scaricare e visualizzare il file</RisorsaTestuale>
+                <span> @Item.Nomefile</span>
+            </div>
+            <div class="row">
+                @* <TextInputForm Label="Hash"
+                                @bind-Value="Item.Sha256"
+                                ValidationFor="() => Item.Sha256"
+                                IsDisabled="true" /> *@
+
+                <FormTextReadonly Titolo="Hash">
+                    <span>@Item.Sha256</span>
+                </FormTextReadonly>
+            </div>
+
+            <div class="row">
+                @* <DateInputForm Label="Data caricamento"
+                                @bind-Value="Item.DataRegistrazione"
+                                ValidationFor="() => Item.DataRegistrazione"
+                                IsDisabled="true" /> *@
+                    
+                <FormTextReadonly Titolo="Data caricamento">
+                    <span>@(Item.DataRegistrazione.HasValue ? Item.DataRegistrazione.Value.ToString("dd/MM/yyyy") : "")</span>
+                </FormTextReadonly>
+            </div>
+
+            <div class="row">
+                <div class="mb-3 col-md-12">
+                    <FormDownloadButton CodiceOggetto="@Item.CodiceOggetto" Label="Visualizza file" OnDownloaded="@onAfterDownload"></FormDownloadButton>
+                </div>
+            </div>
+        </VbgForm>
+    </ModalBody>
+    <ModalFooter>
+        <FormSubmitButton Form="modalForm" IsButtonDisabled="@isButtonDisabled"></FormSubmitButton>
+    </ModalFooter>
+</BasicModal>
+
+
+@code {
+    [Parameter]
+    public AllegatoCommissioneDao Item { get; set; }
+
+    [Parameter]
+    public int IdCommissione { get; set; }
+
+    [Parameter]
+    public EventCallback OnApproved { get; set; }
+
+    [Inject]
+    protected ICommissioniService _commissioniService { get; set; } = default!;
+
+    private BasicModal? modal { get; set; } = new BasicModal();
+    private bool isButtonDisabled = true;
+
+    private void OnViewClick()
+    {
+        modal?.Show();
+    }
+
+    private async Task OnValidSubmit()
+    {
+        try
+        {
+            if (this._commissioniService.ApprovaAllegatoPerUtenteCorrente(IdCommissione, Item.Id))
+            {
+                if (OnApproved.HasDelegate)
+                {
+                    await OnApproved.InvokeAsync();                
+                }
+            }
+            else
+            {
+                await GotoAsync("commissionierroreaccesso");
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageContainer.ClearErrors();
+            MessageContainer.AddError("Errore durante l'approvazione dell'allegato");
+            Logger.Error($"Errore durante l'approvazione dell'allegato: {ex.Message}");
+        }
+
+        modal?.Hide();
+
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private void onAfterDownload()
+    {
+        if (modal is not null)
+        {
+            isButtonDisabled = true;
+            //StateHasChanged();
+        }
+    }
+}

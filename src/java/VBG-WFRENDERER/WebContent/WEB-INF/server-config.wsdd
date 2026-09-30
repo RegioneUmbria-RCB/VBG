@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<deployment name="sigeprorenderer"
+            xmlns="http://xml.apache.org/axis/wsdd/"
+            xmlns:java="http://xml.apache.org/axis/wsdd/providers/java"
+            xmlns:handler="http://xml.apache.org/axis/wsdd/providers/handler">
+  <globalConfiguration>
+    <parameter name="disablePrettyXML" value="true"/>
+    <parameter name="sendMultiRefs" value="true"/>
+    <parameter name="sendXsiTypes" value="true"/>
+    <parameter name="attachments.implementation" value="org.apache.axis.attachments.AttachmentsImpl"/>
+    <parameter name="sendXMLDeclaration" value="true"/>
+  </globalConfiguration>
+  <handler type="java:org.apache.axis.handlers.http.URLMapper" name="URLMapper"/>
+  <handler type="java:org.apache.axis.transport.local.LocalResponder" name="LocalResponder"/>
+  <handler type="java:org.apache.axis.handlers.SimpleAuthenticationHandler" name="Authenticate"/>
+
+  <!-- Services from sigeprorenderer WSDL service -->
+
+  <service name="sigeprorendererSOAP" provider="java:RPC" style="rpc" use="literal">
+      <parameter name="wsdlTargetNamespace" value="http://gruppoinit.it/sigeprorenderer/"/>
+      <parameter name="wsdlServiceElement" value="sigeprorenderer"/>
+      <parameter name="wsdlServicePort" value="sigeprorendererSOAP"/>
+      <parameter name="className" value="it.gruppoinit.sigeprorenderer.SigeprorendererSOAPImpl"/>
+      <parameter name="wsdlPortType" value="sigeprorenderer"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <parameter name="allowedMethods" value="*"/>
+  </service>
+  <transport name="http">
+    <parameter name="qs:list" value="org.apache.axis.transport.http.QSListHandler"/>
+    <parameter name="qs:method" value="org.apache.axis.transport.http.QSMethodHandler"/>
+    <parameter name="qs:wsdl" value="org.apache.axis.transport.http.QSWSDLHandler"/>
+    <requestFlow>
+      <handler type="URLMapper"/>
+      <handler type="java:org.apache.axis.handlers.http.HTTPAuthHandler"/>
+    </requestFlow>
+  </transport>
+  <transport name="local">
+    <responseFlow>
+      <handler type="LocalResponder"/>
+    </responseFlow>
+  </transport>
+</deployment>

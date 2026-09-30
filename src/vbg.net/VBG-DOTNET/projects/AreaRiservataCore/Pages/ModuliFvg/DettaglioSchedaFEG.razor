@@ -1,0 +1,143 @@
+﻿@page "/modulifvg/{Alias}/{Software}/compila/{IdDomandaFEG:long}/{IdQuadro}/{IdScheda:int}"
+@using Init.Sigepro.FrontEnd.AppLogic.DatiDinamici;
+@using Init.Sigepro.FrontEnd.AppLogic.DatiDinamici.FileUpload;
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneServiziFVG;
+@using Init.Sigepro.FrontEnd.AppLogic.Services.Domanda;
+@using VBG.BlazorComponentsLibrary.DesignComuni.Spinner
+@using VBG.DatiDinamici
+@using VBG.DatiDinamici.Agid.WebControls
+@using VBG.DatiDinamici.WebControls.MaschereSolaLettura
+@inherits FVGComponentBase
+
+<PageTitle>@_titoloPagina</PageTitle>
+@if (_schedaCorrente is not null)
+{
+    <h1>@_titoloPagina</h1>
+
+    <CascadingValue Value="@_datiDinamiciDomandaFileUpload">
+        <ModelloDinamicoRenderer Modello="@_schedaCorrente" MostraTitolo="false" CampiInSolaLettura="@_mascheraSolaLettura" OnModelStateChanged="StatoModelloModificato" />
+    </CascadingValue>
+    <div>
+        <button id="cmdSalvaEContinua" class="btn btn-primary" @onclick="SalvaEContinua" disabled="@_salvataggioDisabilitato">Salva e continua</button>
+        <button id="cmdSalva" class="btn btn-primary" @onclick="Salva" disabled="@_salvataggioDisabilitato">Salva e torna alla lista dei quadri</button>
+        <a href="@_returnToAddress" class="btn btn-default d2WatchButton">Chiudi senza salvare</a>
+    </div>
+}
+
+
+
+@code {
+
+    [Inject]
+    public IModelliDinamiciService _modelliService { get; set; } = default!;
+    [Inject]
+    public ServiziFVGService _fvgService { get; set; } = default!;
+    [Inject]
+    public NavigationManager _navigationManager { get; set; } = default!;
+    [Inject]
+    public IJSRuntime _jsRuntime { get; set; } = default!;
+    [Inject]
+    public SpinnerService _spinnerService { get; set; } = default!;
+
+    [Parameter]
+    public int IdScheda { get; set; }
+
+    private ModelloDinamicoBase? _schedaCorrente;
+    private IDatiDinamiciFileUploadService? _datiDinamiciDomandaFileUpload;
+    private IMascheraSolaLettura _mascheraSolaLettura = new MascheraSolaLetturaVuota();
+    private string _titoloPagina = "";
+    private string _returnToAddress = "";
+    private bool _salvataggioDisabilitato = false;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        var indiceScheda = 0; // per ora FVG non supporta la molteplicità a livello di scheda
+        var scheda = this._fvgService.GetModelloDinamico(IdDomandaFEG, IdQuadro, IdScheda, indiceScheda);
+
+        this._titoloPagina = scheda.NomeModello;
+
+        scheda.EseguiScriptCaricamento();
+
+        // Non c'è un'istanza, quindi al momento non è possibile effettuare l'upload
+        // this._datiDinamiciDomandaFileUpload = new DatiDinamiciDomandaFileUploadService(idDomanda, _allegatiDomandaFoRepository);
+
+        this._schedaCorrente = scheda;
+        this._returnToAddress = $"modulifvg/{Alias}/{Software}/compila/{IdDomandaFEG}/{IdQuadro}";
+    }
+
+    private async Task SalvaEContinua()
+    {
+        if (await SalvaScheda())
+        {
+            _navigationManager.NavigateTo($"{_returnToAddress}?continua={this.IdScheda}");
+        }
+    }
+
+    private async Task Salva()
+    {
+        if (await SalvaScheda())
+        {
+            _navigationManager.NavigateTo(_returnToAddress);
+        };
+    }
+
+
+
+
+    async Task<bool> SalvaScheda()
+    {
+        bool retVal = false;
+
+        await _spinnerService.ShowSpinnerAsync(async () =>
+            {
+                MessageContainer.ClearErrors();
+
+                try
+                {
+                    if (_schedaCorrente == null)
+                        return;
+
+                    _schedaCorrente.ValidaModello();
+
+                    this._fvgService.SalvaScheda(_schedaCorrente);
+
+                    retVal = true;
+                }
+                catch (SalvataggioModelloDinamicoException ex)
+                {
+                    foreach (var msg in ex.Errori)
+                    {
+                        MessageContainer.AddError(msg.Messaggio);
+                    }
+
+                    var errore = ex.Errori.First();
+                    await _jsRuntime.InvokeVoidAsync("scrollTo", $"{errore.IdCampo}_I{errore.Indice}");
+                }
+                catch (ValidazioneModelloDinamicoException ex)
+                {
+                    foreach (var msg in ex.ListaErrori)
+                    {
+                        MessageContainer.AddError(msg.Messaggio);
+                    }
+
+                    var errore = ex.ListaErrori.First();
+                    await _jsRuntime.InvokeVoidAsync("scrollTo", $"{errore.IdCampo}_I{errore.Indice}");
+                }
+                catch (Exception ex) // Eccezione sollevata sia in fase di validazione modello che in fase di salvataggio
+                {
+                    // TODO: Log errore
+                    MessageContainer.AddError(ex.Message);
+                }
+            });
+
+        return retVal;
+    }
+
+    void StatoModelloModificato(bool hasErrors)
+    {
+        _salvataggioDisabilitato = hasErrors;
+    }
+
+}

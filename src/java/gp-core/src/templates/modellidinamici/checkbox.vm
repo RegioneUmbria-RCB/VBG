@@ -1,0 +1,33 @@
+#set($valTrue = $campo.getProprietaCampo("ValoreTrue","1"))
+#set($valFalse = $campo.getProprietaCampo("ValoreFalse","0"))
+#if($modelloHelper.isRenderForPrint())
+	#if($val.equalsIgnoreCase($valTrue))
+		#set($val = "x")
+	#else
+		#set($val = " ")
+	#end
+	<b>[$val]</b>
+#else
+	#set($checked = "")
+	#if($val.equalsIgnoreCase($valTrue) && !$isTemplate)
+		#set($checked = "checked='checked'")
+	#end
+	<div class="check-radio-wrap ${classeCampo}" align="center">
+		<input type="checkbox" name="TMP_$nameAttr" id="TMP_${nameAttr}_ID" value="$valTrue" $checked 
+		onclick="javascript:settaValoreCheckbox(this);"/>
+	</div>
+	<input type="hidden" value="$val" name="${nameAttr}" id="${nameAttr}_ID"/>
+	#if(!$isTemplate)
+	<script type="text/javascript">
+		jQuery(document).ready(function(){
+			jQuery('#TMP_${nameAttr}_ID').data("ValoreTrue","$valTrue");
+			jQuery('#TMP_${nameAttr}_ID').data("ValoreFalse","$valFalse");
+		});
+	</script>
+	#else
+		#set($script = "jQuery('#TMP_${nameAttr}_ID').data(${esc.q}ValoreTrue${esc.q},${esc.q}${valTrue}${esc.q});")
+		$blocco.addScript($script)
+		#set($script = "jQuery('#TMP_${nameAttr}_ID').data(${esc.q}ValoreFalse${esc.q},${esc.q}${valFalse}${esc.q});")
+		$blocco.addScript($script)
+	#end
+#end

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="urn:it.regulus.gestoreincassi" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:it.regulus.gestoreincassi" elementFormDefault="qualified">
+	<xs:include schemaLocation="../XSD/BillPaymentNotifyReq.xsd"/>
+	<xs:element name="MSG">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="TITOLO" type="xs:string"/>
+				<xs:element name="RICHIESTA">
+					<xs:complexType>
+						<xs:attribute name="IdentificativoRichiesta" type="xs:string" use="required"/>
+						<xs:attribute name="DataRichiesta" type="xs:string" use="required"/>
+						<xs:attribute name="ABI" type="xs:string" use="optional"/>
+						<xs:attribute name="CAB" type="xs:string" use="optional"/>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="CANALE">
+					<xs:complexType>
+						<xs:attribute name="IdentificativoCanale" type="xs:string" use="required"/>
+						<xs:attribute name="CodiceUtente" type="xs:string" use="required"/>
+					</xs:complexType>
+				</xs:element>
+				<xs:element ref="DATIFORNITI" />
+			</xs:sequence>
+			<xs:attribute name="VersioneMessaggio" type="xs:string" use="required"/>
+			<xs:attribute name="NomeFunzione" type="xs:string" use="required"/>
+			<xs:attribute name="CodiceFunzione" type="xs:string" use="required"/>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

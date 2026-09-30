@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:complexType name="TipoAttestazionePostale">
+		<xs:annotation>
+			<xs:documentation>Informazioni necessarie all'invio dell'attestazione di pagamento attraverso il canale postale</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="COGNOME" type="xs:string"/>
+			<xs:element name="NOME" type="xs:string"/>
+			<xs:element name="PRESSO" type="xs:string" minOccurs="0"/>
+			<xs:element name="INDIRIZZO" type="xs:string"/>
+			<xs:element name="NUMCIVICO" type="xs:string" minOccurs="0"/>
+			<xs:element name="SUBCIVICO" type="xs:string" minOccurs="0"/>
+			<xs:element name="CAP" type="xs:string" minOccurs="0"/>
+			<xs:element name="COMUNE" type="xs:string"/>
+			<xs:element name="PROVINCIA" type="xs:string"/>
+			<xs:element name="NAZIONE" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TipoAttestazione">
+		<xs:sequence>
+			<xs:element name="MODALITA">
+				<xs:annotation>
+					<xs:documentation>0 - nessuna attestazione, 1 - attestazione postale, 2 - attestazione via e-mail, 3 - attestazione postale e via e-mail</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="0"/>
+						<xs:enumeration value="1"/>
+						<xs:enumeration value="2"/>
+						<xs:enumeration value="3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:choice minOccurs="0">
+				<xs:element name="EMAIL" type="xs:string"/>
+				<xs:sequence>
+					<xs:element name="DATIPOSTALI" type="TipoAttestazionePostale"/>
+					<xs:element name="EMAIL" type="xs:string" minOccurs="0"/>
+				</xs:sequence>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

@@ -1,0 +1,110 @@
+﻿@page "/{IdComune}/{Software}/riepilogoeinvio/{IdMovimento:int}/{Step:int?}/{*GoBackUrl}"
+@using Init.Sigepro.FrontEnd.GestioneMovimenti.ViewModels
+@using VBG.BlazorComponentsLibrary.DesignComuni.Download
+@using VBG.BlazorComponentsLibrary.DesignComuni.Forms
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.DesignComuni.NavScroll
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards.CardButtons
+@using VBG.BlazorComponentsLibrary.EditFormComponents
+
+@inherits MovimentiBasePage
+
+
+<TitoloPagina>@getTitle()</TitoloPagina>
+
+<NavScrollComponent Title="Indice di pagina">
+
+    <div class="inputForm">
+        <StepCard Titolo="Riepilogo">
+            @if (PermettiModificaNote)
+            {       
+                <StepCardItem>
+                    <div class="float-end mt-2">
+                        <button @onclick="() => OpenModalModifiche()" class="text-decoration-none me-2"><span class="text-button-sm-semi t-primary">Modifica</span></button>
+                    </div>
+                    <StepCardItemTitle Titolo="Note per lo sportello"></StepCardItemTitle>
+                    @if (string.IsNullOrEmpty(model.NoteText))
+                    {
+                        <div class="mt-3 fst-italic">Nessuna nota per lo sportello</div>
+                    }
+                    else
+                    {
+                        <div class="mt-3">@model.NoteText</div>    
+                    }
+                </StepCardItem> 
+            }
+    
+            @if (MovimentoDaEffettuare.RiepiloghiSchedeDinamiche != null && MovimentoDaEffettuare.RiepiloghiSchedeDinamiche.Count > 0)
+            {
+                <StepCardItem>
+                    <StepCardItemTitle Titolo="Schede compilate"></StepCardItemTitle>
+
+                    @foreach (RiepilogoMovimentoDaEffettuareViewModel.RigaRiepilogoSchedeDinamiche riga in this._viewModel.GetListaSchedeCompilate())
+                    {
+                        <StepDownloadButton Titolo="@riga.NomeScheda" CodiceOggetto="@riga.CodiceOggetto"></StepDownloadButton>
+                    }
+                </StepCardItem>
+            }
+
+            @if (this._viewModel.GetListaSostituzioni().Count() > 0)
+            {
+                <StepCardItem>
+                    <StepCardItemTitle Titolo="Sostituzioni documentali"></StepCardItemTitle>
+
+                    @foreach (RiepilogoMovimentoDaEffettuareViewModel.RigaRiepilogoSostituzioniDocumentali riga in this._viewModel.GetListaSostituzioni())
+                    {
+                        <StepDownloadButton Titolo="@riga.Descrizione" CodiceOggetto="@riga.FileSostitutivo.CodiceOggetto"></StepDownloadButton>
+                    }
+
+                </StepCardItem>
+            }
+
+            @if (MovimentoDaEffettuare.Allegati.Count() > 0)
+            {
+                <StepCardItem>
+                    <StepCardItemTitle Titolo="Allegati inseriti"></StepCardItemTitle>
+
+                    @foreach (var allegato in MovimentoDaEffettuare.Allegati)
+                    {
+                        <StepDownloadButton Titolo="@allegato.Descrizione" CodiceOggetto="@allegato.IdAllegato" NomeOggetto="@allegato.Note"></StepDownloadButton>
+                    }
+
+                </StepCardItem>
+            }
+        </StepCard>
+
+        <div id="divComandi" class="d-flex gap-3 mb-3">
+            <button class="btn btn-light" @onclick="OnBtnBackAsync">Torna indietro</button>
+            <button class="btn btn-primary" @onclick="() => _showConfirmationModal = true">Trasmetti</button>
+        </div>
+    </div>
+</NavScrollComponent>
+
+@if(_showModalModifiche)
+{
+    <FormModal OnClose="() => CloseModalModifiche()" AlwaysVisible="true" Size="ModalSizeEnum.Large" Model="@model" FormId="formModifiche" OnValidSubmit="() => OnSaveNote()">
+        <ModalHeader Titolo="Modifica note"></ModalHeader>
+        <ModalBody>
+            <div class="row">
+                <TextInputForm Id="txtNote"
+                                @bind-Value="_editingNote"
+                                Label="Note"
+                                IsMultiline="true"
+                                Rows="8"
+                                ValidationFor="() => model.NoteText" />
+            </div>
+        </ModalBody>
+        <ModalFooter>
+            <FormSubmitButton Form="formModifiche">Salva</FormSubmitButton>
+        </ModalFooter>
+    </FormModal>
+}
+
+<ConfirmationModal Titolo="Conferma invio" Visible="_showConfirmationModal" ConfermaClick="@OnBtnSendAsync" AnnullaClick="() => _showConfirmationModal = false">
+    <ModalBody>
+        Proseguendo con l'invio non sarà più possibile apportare modifiche ai dati immessi.
+        <br />
+        Continuare?
+    </ModalBody>
+</ConfirmationModal>

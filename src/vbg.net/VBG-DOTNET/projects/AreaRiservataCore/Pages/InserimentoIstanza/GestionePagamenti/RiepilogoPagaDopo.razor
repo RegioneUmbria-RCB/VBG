@@ -1,0 +1,46 @@
+﻿@page "/{IdComune}/{Software}/inserimento-istanza/pagamenti/riepilogo-paga-dopo/{idDomanda:int}/{stepId:int}"
+@using AreaRiservataCore.Pages.InserimentoIstanza.GestionePagamenti.Components
+@using AreaRiservataCore.Pages.InserimentoIstanza.GestionePagamenti.v2.Componenti
+@using Init.Sigepro.FrontEnd.AppLogic.Pagamenti.NodoPagamenti
+@using Init.Sigepro.FrontEnd.CoreServices.GestionePresentazioneDomanda.Paginatore
+@using VBG.BlazorComponentsLibrary.RisorseTestuali
+@inherits IstanzeStepPage
+
+<div>
+    <RisorsaTestuale IdRisorsa="riepilogo-posizioni-debitorie.descrizione-estesa">
+        <div class="alert alert-info" role="alert">
+            <span class="fw-bold">
+                Gli avvisi saranno validi per trenta giorni dalla data di elaborazione, come indicato nel testo dell’avviso.
+                Una volta scaduti senza che sia stato effettuato il pagamento bisognerà rigenerare le posizioni debitorie.
+            </span>
+        </div>
+    </RisorsaTestuale>
+</div>
+
+<RiepilogoPosizioniDebitorie IdDomanda="@this.IdDomanda" Titolo="Sono state aperte le seguenti posizioni debitorie" IdRisorsaTitolo="riepilogo-posizioni-debitorie.titolo"></RiepilogoPosizioniDebitorie>
+
+<div class="piede-pagina">
+    <RisorsaTestuale IdRisorsa="riepilogo-posizioni-debitorie.piede-pagina">
+        La compilazione della domanda potrà riprendere al termine del saldo di tutte le posizioni debitorie aperte
+    </RisorsaTestuale>
+</div>
+<br />
+<button class="btn btn-primary" @onclick="TornaAllaHome">Torna alla home page</button>
+
+@code {
+    [Inject]
+    public IPagamentiNodoPagamentiService _nodoPagamentiService { get; set; } = default!;
+    [CascadingParameter]
+    private PaginatoreStateService _paginatoreStateService { get; set; } = default!;
+
+    protected override void OnLoadStep()
+    {
+        this._nodoPagamentiService.AggiornaStatoPagamenti(IdDomanda.Value);
+        this._paginatoreStateService.NascondiPaginatore();
+    }
+
+    private void TornaAllaHome()
+    {
+        GotoAsync("");
+    }
+}

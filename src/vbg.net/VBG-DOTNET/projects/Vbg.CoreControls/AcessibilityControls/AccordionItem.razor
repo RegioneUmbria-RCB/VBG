@@ -1,0 +1,112 @@
+﻿
+<div class="accordion-item">
+    <div class="accordion-header" id="@HeaderElementId">
+        <button class="@GetAccordionButtonCssClass()" type="button" data-bs-toggle="collapse" data-bs-target="#@(CollapsibleElementId)" aria-expanded="@(StartingCollapsed ? "false" : "true")" aria-controls="collapse-parents" data-focus-mouse="false">
+            <span class="d-flex align-items-center">
+                @Title
+                <svg class="icon icon-primary icon-sm">
+                    <use href="@($"{SvgFilePath}{SvgIcon}")"></use>
+                </svg>
+            </span>
+        </button>
+    </div>
+    <div class="@GetAccordionCollapsedCssClass()" role="region" id="@(CollapsibleElementId)" aria-labelledby="@HeaderElementId">
+        <div class="@GetAccordionCollapsingBodyCssClass()">
+            @ChildContent
+        </div>
+    </div>
+</div>
+
+
+@code {
+    
+    [CascadingParameter]
+    private AccordionContainer Parent { get; set; }
+
+    /// <summary>
+    /// The id of header div item
+    /// </summary>
+    [Parameter]
+    public string HeaderElementId { get; set; }
+
+    /// <summary>
+    /// The id of collapsing div item
+    /// </summary>
+    [Parameter, EditorRequired]
+    public string CollapsibleElementId { get; set; }
+
+    /// <summary>
+    /// Expanding/collapsing text title
+    /// </summary>
+    [Parameter]
+    public string Title { get; set; }
+
+    /// <summary>
+    /// Set the starting behaviour of the collapsing item
+    /// </summary>
+    [Parameter]
+    public bool StartingCollapsed { get; set; } = true;
+
+    /// <summary>
+    /// Collapsing div item content
+    /// </summary>
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    /// <summary>
+    /// The sprites.svg file path used for icons
+    /// </summary>
+    [Parameter]
+    public string SvgFilePath { get; set; } = "css/bootstrap-italia/svg/sprites.svg";
+
+    /// <summary>
+    /// The icon to use among sprites.svg file
+    /// </summary>
+    [Parameter]
+    public string SvgIcon { get; set; } = "#it-expand";
+
+    /// <summary>
+    /// The default class is "accordion-button". If you want to add other classes you can specify them in this property
+    /// </summary>
+    [Parameter]
+    public string AccordionButtonCssClass { get; set; } = "";
+
+    /// <summary>
+    /// The default class is "accordion-body". If you want to add other classes you can specify them in this property
+    /// </summary>
+    [Parameter]
+    public string AccordionCollapsingBodyCssClass { get; set; } = "";
+
+
+    protected override void OnInitialized()
+    {
+        if (Parent == null)
+            throw new ArgumentNullException(nameof(Parent), "AccordionItem must exist within an AccordionContainer");
+
+        Parent.AddItem(this);
+
+        base.OnInitialized();
+    }
+
+
+    private string GetAccordionButtonCssClass()
+    {
+        if (string.IsNullOrEmpty(AccordionButtonCssClass))
+            return "accordion-button";
+
+        return $"accordion-button {AccordionButtonCssClass}";
+    }
+
+    private string GetAccordionCollapsingBodyCssClass()
+    {
+        if (string.IsNullOrEmpty(AccordionCollapsingBodyCssClass))
+            return "accordion-body";
+
+        return $"accordion-body {AccordionCollapsingBodyCssClass}";
+    }
+
+    private string GetAccordionCollapsedCssClass()
+    {
+        return StartingCollapsed ? "accordion-collapse collapse" : "accordion-collapse collapse show";
+    }
+}

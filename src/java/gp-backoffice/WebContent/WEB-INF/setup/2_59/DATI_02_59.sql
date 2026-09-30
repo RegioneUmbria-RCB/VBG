@@ -1,0 +1,28 @@
+INSERT INTO VERTICALIZZAZIONIBASE (MODULO, DESCRIZIONE) VALUES ('FIRMA_REMOTA_ARUBA', 'Se attivo sarà possibile effettuare la firma digitale remota con le soluzione ARUBA ');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE   (modulo, parametro, descrizione ) VALUES ('FIRMA_REMOTA_ARUBA','URL_SERVIZIO','Indica l''url che espone i servizi di ARUBA per le operazioni di firma');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE   (modulo, parametro, descrizione ) VALUES ('FIRMA_REMOTA_ARUBA','NUM_PAGINA_FIRMA_PADES','Indica la pagina su cui apporre la firma; valore obbligatorio. Se non presente, di default la firma verrà apposta sull''ultima pagina');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE   (modulo, parametro, descrizione ) VALUES ('FIRMA_REMOTA_ARUBA','TESTO_FIRMA_PADES','Indica il testo che verrà applicato in caso di firma PAdES sul file pdf. Parametro non obbligatorio, in caso non sia valorizzato sul pdf non apparirà alcun testo, ma la firma rimarrà valida');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE   (modulo, parametro, descrizione ) VALUES ('FIRMA_REMOTA_ARUBA','POS_RETT_FIRM_LEFT_PADES','Indica la coppia ascissa, ordinata (x,y) del margine basso del rettangolo di firma. Unità di misura espressa in px; Es. 10,6');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE   (modulo, parametro, descrizione ) VALUES ('FIRMA_REMOTA_ARUBA','POS_RETT_FIRM_RIGTH_PADES','Indica la coppia ascissa, ordinata (x,y) del margine alto del rettangolo di firma. Unità di misura espressa in px; Es. 10,6');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE   (modulo, parametro, descrizione ) VALUES ('FIRMA_REMOTA_ARUBA','PROFILO_FIRMA_PADES','Indica il tipo di profilo applicato alla firma PAdES : BASIC, BES. In caso il profilo sia passato dalla maschera di firma, il valore presente sarà sovrascritto. Valore di default BES');
+
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE   (modulo, parametro, descrizione ) VALUES ('FIRMA_REMOTA_ARUBA','DESCRIZIONE','Indica il nome presentato sulla maschera di firma che permette di scegliere il provider di firma in caso ne siano presenti più di uno. Se attivo un solo provider, verrà presentato solo il nome senza la possibilità di scelta');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE   (modulo, parametro, descrizione ) VALUES ('FIRMA_REMOTA_ARUBA','IS_MARCA_TEMPORALE_RICHIESTA','Può assumere i valori 0(NULL),1. Utilizzato per pilotare la generazione della busta CAdES-T o PAdES-T (1); firma digitale con apposizione contestuale della marca temporale. In caso di parametro uguale ad 1, il server ARSS dovrà essere preventivamente configurato con account di marcatura temporale valido');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE   (modulo, parametro, descrizione ) VALUES ('FIRMA_REMOTA_ARUBA','TYPE_HSM','Stringa contenente il tipo di HSM. Da specifiche Aruba valorizzare con COSING');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE   (modulo, parametro, descrizione ) VALUES ('FIRMA_REMOTA_ARUBA','CERT_ID','Da specifiche di Aruba valorizzare con AS0');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE   (modulo, parametro, descrizione ) VALUES ('FIRMA_REMOTA_ARUBA','TYPEOTPAUTH','Stringa per indicare il dominio di autenticazione');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE   (modulo, parametro, descrizione ) VALUES ('FIRMA_REMOTA_ARUBA','RELAX_SSL','Può assumere i valori 0(NULL) o 1. Se 0 all''interno della JVM usata dal tomcat dovranno essere caricati i certificati associati all''indirizzo del endpoint per permettere al sistema di scaricare il wsdl per le chiamate ai servizi esposti. 1: il wsdl viene caricato dal file (ArubaSignService.wsdl) presente all''interno del backoffice e non è necessaria la configurazione dei certificati nella JVM ');
+INSERT INTO clmenu_java (id,descrizione,pagina,menulink,software,jsp,verticalizzazione,softwareesclusi,link_standard,tipo_funzionalita,layouttesti,menulink_v2) VALUES ('1038','Gruppi di procedimenti per lo smistamento di pratiche STC','gruppiendoprocedimentit/list.htm?software=SOFTWARE','0AZQ','*','JAVA',NULL,'AB','gruppiendoprocedimentit/list.htm?software=SOFTWARE','S','0','0AZQ');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('PROTOCOLLO_ATTIVO', 'ESTRAI_ZIP', 'Questo parametro, se valorizzato a 1, consente, in fase di lettura di un protocollo (quindi è valildo solo per i protocolli che espongono tale funzionalità), di estrarre un eventuale file zippato (zip, rar, 7z), visualizzando quindi i file all''interno di esso e non più il file zippato.');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('PROTOCOLLO_ATTIVO', 'EXT_FILE_ZIP', 'Indicare in questo parametro la lista di estensioni (comprese di punto e separate da virgola) dei file compressi che devono essere scompattati in fase di lettura protocollo, ove previsto. Questo parametro viene va di pari passo con ESTRAI_ZIP, che deve essere valorizzato a 1. In pratica qui vanno indicate le estensioni dei file zip che si vuole estrarre in fase di lettura protocollo.');
+
+INSERT INTO VERTICALIZZAZIONIBASE (MODULO, DESCRIZIONE) VALUES ('SUAPER','Se attivata permette gestisce i parametri per la ricezione delle pratiche da SUAPER');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE   (modulo, parametro, descrizione ) VALUES ('SUAPER','CODICEINTERVENTO_DEFAULT','Indica il codice intervento predefinito nel caso che la ricerca degli interventi mediante la logica dei gruppi di smistamento fallisca.');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE   (modulo, parametro, descrizione ) VALUES ('SUAPER','LISTA_NODI_GRP_SMIST','La lista dei nodi abilitati ad utilizzare la logica di smistamento mediante le configurazioni di ALBEROPROC_GRUPPI_SMIST');
+
+UPDATE COMUNI SET REGIONE = 'LAZIO', CODICEISTATREGIONE = '12' WHERE CODICECOMUNE = 'C338';

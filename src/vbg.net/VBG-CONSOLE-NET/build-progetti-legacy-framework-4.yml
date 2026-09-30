@@ -1,0 +1,194 @@
+# ASP.NET Core (.NET Framework)
+# Build and test ASP.NET Core projects targeting the full .NET Framework.
+# Add steps that publish symbols, save build artifacts, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+trigger:
+  tags:
+    include:
+    - '*'
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: 'windows-2025-vs2026'
+  #vmImage: 'windows-latest'
+
+variables:
+  solution: '**/*.slnx'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+  outputPathAreaRiservata: '$(build.artifactStagingDirectory)\areariservata'
+  publishPathAreaRiservata: '.\projects\UI\Init.Sigepro.FrontEnd\obj\$(buildConfiguration)\Package\PackageTmp'
+
+  outputPathBackoffice: '$(build.artifactStagingDirectory)\backoffice'
+  publishPathBackoffice: '.\projects\UI\Sigepro.net\obj\$(buildConfiguration)\Package\PackageTmp'
+  
+
+  ${{ if eq(variables['Build.SourceBranchName'], 'main') }}:
+    imageTag: 'latest'
+  ${{ else }}:
+    imageTag: $(Build.SourceBranchName)
+
+steps:
+- task: NuGetToolInstaller@1
+
+- task: PowerShell@2
+  condition: and(succeeded(), ne(variables['Build.SourceBranchName'], 'main'))
+  inputs:
+      targetType: 'inline'
+      script: |
+        echo "Env:SOURCE_BRANCH_NAME $Env:SOURCE_BRANCH_NAME"
+        $buildNumber = $Env:SOURCE_BRANCH_NAME -split "\."
+        $major = $buildNumber[0]
+        $minor = $buildNumber[1]
+        $version = "$major.$minor"
+        echo "version = $version"
+        echo "##vso[task.setvariable variable=imageTag]$version"
+
+
+
+
+# Pubblicazione dell'area riservata
+
+- task: NuGetCommand@2
+  inputs:
+    command: 'restore'
+    restoreSolution: '.\AreaRiservata.sln'
+    feedsToUse: 'select'
+    vstsFeed: REDACTED
+
+- task: VSBuild@1
+  displayName: Build area riservata
+  inputs:
+    solution: '.\AreaRiservata.sln'
+    vsVersion: '18.0'
+    msbuildArgs: '/p:DeployOnbuild=True /p:PublishUrl=REDACTED
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+    msbuildArchitecture: 'x64'
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(publishPathAreaRiservata)'
+    Contents: '**'
+    TargetFolder: '$(outputPathAreaRiservata)'
+
+- script: |
+    ren %BASE_PATH%\web.config web.config_
+    ren %BASE_PATH%\bindings.config bindings.config_
+    ren %BASE_PATH%\Menu\menu.xml menu.xml_
+    del %BASE_PATH%\bin\*.xml /s
+    del %BASE_PATH%\bin\*.config /s
+    del %BASE_PATH%\bin\*.pdb /s
+    del %BASE_PATH%\*.pdb /s
+  displayName: Pulisce i files non necessari per la distribuzione
+  env:
+    BASE_PATH: $(outputPathAreaRiservata)
+
+- task: ArchiveFiles@2
+  displayName: Creazione del file VERSIONE_areariservata.zip
+  inputs:
+    rootFolderOrFile: '$(outputPathAreaRiservata)'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(outputPathAreaRiservata)/$(imageTag)_areariservata_console.zip'
+    replaceExistingArchive: true
+
+- task: CopyFilesOverSSH@0
+  displayName: Invio del file VERSIONE_areariservata.zip via SSH
+  inputs:
+    sshEndpoint: 'CENTROSERVIZI-SSH-DISTRIBUZIONE'
+    sourceFolder: '$(outputPathAreaRiservata)'
+    contents: '$(imageTag)_areariservata_console.zip'
+    targetFolder: './upload/distribuzione/console/$(imageTag)/net-framework'
+    readyTimeout: '20000'
+
+# Preparazione e rilascio della versione lite
+- script: |
+
+    del %BASE_PATH%\gsdll32.dll
+    del %BASE_PATH%\gsdll64.dll
+    del %BASE_PATH%\bin\gsdll32.dll
+    del %BASE_PATH%\bin\gsdll64.dll
+    del %BASE_PATH%\bin\SpreadsheetLight.dll
+    del %BASE_PATH%\bin\DocumentFormat.OpenXml.dll
+    del %BASE_PATH%\$(imageTag)_areariservata_console.zip
+    del %BASE_PATH%\phantomjs\*.exe /s
+    rd /S /Q %BASE_PATH%\PraticheInUscita
+  displayName: Preparazione versione lite
+  env:
+    BASE_PATH: $(outputPathAreaRiservata)
+
+- task: ArchiveFiles@2
+  displayName: Creazione del file VERSIONE_areariservata_lite.zip
+  inputs:
+    rootFolderOrFile: '$(outputPathAreaRiservata)'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(outputPathAreaRiservata)/$(imageTag)_areariservata_lite_console.zip'
+    replaceExistingArchive: true
+
+- task: CopyFilesOverSSH@0
+  displayName: Invio del file VERSIONE_areariservata_lite_console.zip via SSH
+  inputs:
+    sshEndpoint: 'CENTROSERVIZI-SSH-DISTRIBUZIONE'
+    sourceFolder: '$(outputPathAreaRiservata)'
+    contents: '$(imageTag)_areariservata_lite_console.zip'
+    targetFolder: './upload/distribuzione/console/$(imageTag)/net-framework'
+    readyTimeout: '20000'
+
+# Preparazione e rilascio del backoffice aspnet
+- task: NuGetCommand@2
+  inputs:
+    command: 'restore'
+    restoreSolution: '.\Backoffice.sln'
+    feedsToUse: 'select'
+    vstsFeed: REDACTED
+
+- task: VSBuild@1
+  displayName: Build backoffice .net
+  inputs:
+    solution: '.\Backoffice.sln'
+    vsVersion: '18.0'
+    msbuildArgs: '/p:DeployOnbuild=True /p:GenerateSerializationAssemblies=Off /p:PublishUrl=REDACTED
+    platform: '$(buildPlatform)'
+    configuration: 'Release'
+    msbuildArchitecture: 'x64'
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(publishPathBackoffice)'
+    Contents: '**'
+    TargetFolder: '$(outputPathBackoffice)'
+
+- script: |
+    ren %BASE_PATH%\web.config web.config_
+    ren %BASE_PATH%\bindings.config bindings.config_
+    del %BASE_PATH%\bin\*.xml /s
+    del %BASE_PATH%\bin\*.config /s
+    del %BASE_PATH%\bin\*.pdb /s
+  displayName: Pulisce i files non necessari per la distribuzione
+  env:
+    BASE_PATH: $(outputPathBackoffice)
+
+- task: ArchiveFiles@2
+  displayName: Creazione dell'archivio VERSIONE_aspnet.zip
+  inputs:
+    rootFolderOrFile: '$(outputPathBackoffice)'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(outputPathBackoffice)/$(imageTag)_aspnet_console.zip'
+    replaceExistingArchive: true
+
+- task: CopyFilesOverSSH@0
+  displayName: Invio del file VERSIONE_aspnet.zip via SSH
+  inputs:
+    sshEndpoint: 'CENTROSERVIZI-SSH-DISTRIBUZIONE'
+    sourceFolder: '$(outputPathBackoffice)'
+    contents: '$(imageTag)_aspnet_console.zip'
+    targetFolder: './upload/distribuzione/console/$(imageTag)/net-framework'
+    readyTimeout: '20000'
+    

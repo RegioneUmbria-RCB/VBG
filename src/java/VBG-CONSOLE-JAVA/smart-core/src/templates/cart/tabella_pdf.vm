@@ -1,0 +1,53 @@
+
+
+	#set($table = $item.Tabella)
+	$rowIndex.incrementaLivello($table)
+	#set($rowValues = $helper.getListOfRows($item,$rowIndex,false))
+	#set($tableId = $helper.getIdTabella(${table},${helper.countUniqueIds("tabella_${table.Id}")},$rowIndex))
+	#if($table.Titolo)
+		<div class="titolotabella">
+			$table.Titolo
+        </div>
+	#end
+	<table>
+		<thead>
+            <tr>
+    		#foreach($column in $table.Colonna)
+    			<th class="colonnatitolo">$!column.Titolo</th>
+			#end
+			#if(!$pdfOutput)
+				<th></th>
+			#end
+            </tr>
+       </thead>
+	   <tbody>
+			$helper.pushContainerInStack($item,$tableId)
+			#foreach($row in $rowValues) ##ciclo sulle righe di dati effettivamente trasmesse durante la compilazione del modulo
+    			<tr >
+        		#foreach($column in $table.Colonna)
+        		<td valign="top" class="colonnadati">        			
+        				#set($item = $column.Cella)
+                		#set($numCols = $helper.countColumnsForItem($item, $rowIndex))
+                		#if($numCols > 0)
+							#parse("/cart/elemento_figlio_pdf.vm")
+						#end    					
+    				</td>
+				#end
+				
+                </tr>
+                $rowIndex.incrementaIndice()
+    			#set($itemWrap = $helper.peekContainerFromStack())
+    			#set($item = ${itemWrap.Container})
+				##set($item = $precItem)
+				#set($table = $item.Tabella)
+			#end ##fine loop sulle righe
+ 			#set($itemWrap = ${helper.popContainerFromStack()})
+			#set($item = ${itemWrap.Container})
+			#set($table = $item.Tabella)
+			#set($tableId = ${itemWrap.getContainerId()})
+        
+    </tbody>
+    </table>
+	#set($table = false)
+	#set($foo = $rowIndex.decrementaLivello())
+

@@ -1,0 +1,113 @@
+#set($dynCampo = $campo.getDyn2Campi())
+#if($dynCampo)
+	#set($colspanLeft = $colspanLeft + 1)
+	#set($idCampo = $dynCampo.getId().getCodice())
+	#set($descCampo = false)
+	#set($descCampo = $dynCampo.getDescrizione())
+	#set($nameAttr = "FLD_${idCampo}_${campo.Indice}_${campo.Indicemolteplicita}")
+	#set($val = $campo.getValore(""))
+	#set($decodedVal = $campo.getValoreDecodificato(""))
+	#set($errors = false)
+	#set($errors = $campo.Errors)
+	#set($classeCampo = "")
+	#if($campo.isObbligatorio())
+		#set($classeCampo = "mandatory")
+	#end
+	#if($errors && $errors.size() > 0)
+		#set($classeCampo = "${classeCampo} field-error")
+	#end
+	#if($righeTab)
+		#set($idxm = ${campo.Indicemolteplicita})
+		#set($idxBlocco = ${riga.getNumRiga()})
+	#else
+		#set($idxm = "")
+		#set($idxBlocco = "")
+	#end
+	#if($isTemplate)
+		#set($nameAttr = "FLD_${idCampo}_${campo.Indice}_${indicePh}")
+		#set($decodedVal = "")
+		#set($val = "")
+		#set($idxm = "${indicePh}")
+	#end
+	#set($handleAttrs = "")
+	#if(!$regolaAttRiga)
+		#set($handleAttrs = "dynid='${regolaHandle}' dynidx='${campo.Indice}' dynidxm='${idxm}' dynblock='${idxBlocco}'")
+	#end
+	<td id="TD_${colonna.getNumColonna()}_LBL" width="10%">
+		#if($renderElement)
+			<span class="etichettaControllo" style="vertical-align: top;" ${handleAttrs}>
+			<label for="${nameAttr}_ID">
+			#if($dynCampo.getEtichetta()!='')
+			  $dynCampo.getEtichetta()&nbsp
+			#end
+			</label>
+			#if($campo.isObbligatorio() && !$modelloHelper.isRenderForPrint())
+			<label for="${nameAttr}_ID" class="mandatory-star">
+			*
+			</label>
+			#end
+			</span>
+		#end
+	</td>
+	<td  id="TD_${colonna.getNumColonna()}" colspan="$colspanLeft" >
+		#if($renderElement)
+			<span class="controllo" ${handleAttrs}>
+			#if($dynCampo.getTipodato() == "Checkbox")
+				#parse("modellidinamici/checkbox.vm")
+			#elseif($dynCampo.getTipodato() == "Lista")
+				#set($isMultiLista = false)
+				#parse("modellidinamici/lista.vm")
+			#elseif($dynCampo.getTipodato() == "ListaSIGePro")
+				#parse("modellidinamici/ricerca.vm")
+			#elseif($dynCampo.getTipodato() == "Data")
+				#parse("modellidinamici/data.vm")
+			#elseif($dynCampo.getTipodato() == "MultiLista")
+				#set($isMultiLista = true)
+				#parse("modellidinamici/lista.vm")
+			#elseif($dynCampo.getTipodato() == "NumericoDouble")
+				#set($isDecimal = true)
+				#parse("modellidinamici/numerico.vm")
+			#elseif($dynCampo.getTipodato() == "NumericoIntero")
+				#set($isDecimal = false)
+				#parse("modellidinamici/numerico.vm")
+			#elseif($dynCampo.getTipodato() == "Ricerca")
+				#parse("modellidinamici/ricerca.vm")
+			#elseif($dynCampo.getTipodato() == "Testo")
+				#parse("modellidinamici/textbox.vm")
+			#elseif($dynCampo.getTipodato() == "Upload")
+				#parse("modellidinamici/upload.vm")
+			#elseif($dynCampo.getTipodato() == "Bottone")
+				#parse("modellidinamici/bottone.vm")
+			#elseif($dynCampo.getTipodato() == "RadioButtons")
+				#parse("modellidinamici/radiobuttons.vm")
+			#else
+			...
+			#end
+
+			#if(!$modelloHelper.isRenderForPrint())
+				#if($descCampo)
+					<span class="help_image" id="${nameAttr}_HELP" 
+					title="${descCampo}">
+						<label>(?)</label>
+					</span>
+				#end
+				#set($errStyle = "style='display:none;'")
+				#set($errText = "")
+				#if($errors && $errors.size() > 0)
+					#set($errStyle = "style='display:inline;'")
+					#foreach($error in $errors)
+						#if($velocityCount > 1)
+							#set($errText = $errText + "\r\n")
+						#end
+						#set($err = $campo.renderError($error))
+						#set($errText = $errText + $err)
+					#end
+				#end
+					<span class="error_image" ${errStyle} title="${errText}">
+						<label >(!)</label>
+		            </span>
+		    #end
+			</span>
+		#end
+	</td>
+#end

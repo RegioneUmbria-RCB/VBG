@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2005 rel. 3 U (http://www.altova.com) by any (INSIEL S.p.A.) -->
+<xs:schema xmlns:intAnaReq="http://insiel.it/protocollo/schemixsd/InterrogazioneAnagraficaRequest" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tgen="http://insiel.it/protocollo/schemixsd/TipiGenerali" targetNamespace="http://insiel.it/protocollo/schemixsd/InterrogazioneAnagraficaRequest" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:import namespace="http://insiel.it/protocollo/schemixsd/TipiGenerali" schemaLocation="tipi_generali.xsd"/>
+	<xs:element name="InterrogazioneAnagraficaRequest">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Utente" type="tgen:Utente"/>
+				<xs:element name="Anagrafica" type="intAnaReq:CercaAnagrafica"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="CercaAnagrafica">
+		<xs:sequence>
+			<xs:element name="cod_ana" nillable="true" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="valore" type="xs:string" nillable="true" minOccurs="0"/>
+						<xs:element name="relazione" nillable="true" minOccurs="0">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="uguale"/>
+									<xs:enumeration value="iniziaCon"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="desc_ana" nillable="true" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="valore" type="xs:string" nillable="true" minOccurs="0"/>
+						<xs:element name="relazione" nillable="true" minOccurs="0">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="uguale"/>
+									<xs:enumeration value="iniziaCon"/>
+									<xs:enumeration value="contiene"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="cod_tipo_ana" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="codfis" nillable="true" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:length value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="nome" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="cognome" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="cod_uff" type="xs:string" nillable="true" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

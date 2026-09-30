@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="RISPOSTA">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="HEADER">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ESECUTORE" type="xs:string"/>
+              <xs:element name="SERVIZIO" type="xs:string"/>
+              <xs:element name="ESITO" type="xs:string"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="DATI">
+          <xs:complexType>
+            <xs:choice>
+              <xs:element name="ERRORE">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="TIPO" type="xs:string"/>
+                    <xs:element name="MSG_ERR" type="xs:string"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="LISTA_IMPRESE">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element minOccurs="0" maxOccurs="unbounded" name="ESTREMI_IMPRESA">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="DENOMINAZIONE" minOccurs="0" type="xs:string"/>
+                          <xs:element name="CODICE_FISCALE" minOccurs="0" type="xs:string"/>
+                          <xs:element name="PARTITA_IVA" minOccurs="0" type="xs:string"/>
+                          <xs:element name="FORMA_GIURIDICA" minOccurs="0">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="C_FORMA_GIURIDICA" minOccurs="0" type="xs:string"/>
+                                <xs:element name="DESCRIZIONE" minOccurs="0" type="xs:string"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="DATI_ISCRIZIONE_RI" minOccurs="0">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="NUMERO_RI" minOccurs="0" type="xs:string"/>
+                                <xs:element name="DATA" minOccurs="0" type="xs:string"/>
+                                <xs:element name="SEZIONI" minOccurs="0">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element minOccurs="0" maxOccurs="unbounded" name="SEZIONE">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element name="C_SEZIONE" minOccurs="0" type="xs:string"/>
+                                            <xs:element name="DESCRIZIONE" minOccurs="0" type="xs:string"/>
+                                            <xs:element name="DT_ISCRIZIONE" minOccurs="0" type="xs:string"/>
+                                            <xs:element name="COLT_DIRETTO" minOccurs="0" type="xs:string"/>
+                                          </xs:sequence>
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element minOccurs="0" maxOccurs="unbounded" name="DATI_ISCRIZIONE_REA">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="NREA" minOccurs="0" type="xs:string"/>
+                                <xs:element name="CCIAA" minOccurs="0" type="xs:string"/>
+                                <xs:element name="FLAG_SEDE" minOccurs="0" type="xs:string"/>
+                                <xs:element name="I_TRASFERIMENTO_SEDE" minOccurs="0" type="xs:string"/>
+                                <xs:element name="F_AGGIORNAMENTO" minOccurs="0" type="xs:string"/>
+                                <xs:element name="DATA" minOccurs="0" type="xs:string"/>
+                                <xs:element name="DT_ULT_AGGIORNAMENTO" type="xs:string"/>
+                                <xs:element name="C_FONTE" minOccurs="0" type="xs:string"/>
+                                <xs:element name="CESSAZIONE" minOccurs="0">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="DT_CANCELLAZIONE" minOccurs="0" type="xs:string"/>
+                                      <xs:element name="DT_CESSAZIONE" minOccurs="0" type="xs:string"/>
+                                      <xs:element name="DT_DENUNCIA_CESS" minOccurs="0" type="xs:string"/>
+                                      <xs:element name="CAUSALE" minOccurs="0" type="xs:string"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="elemento" type="xs:string" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="totale" type="xs:string" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:choice>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

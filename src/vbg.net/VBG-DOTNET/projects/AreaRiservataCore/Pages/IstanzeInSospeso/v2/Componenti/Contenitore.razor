@@ -1,0 +1,235 @@
+﻿@using AreaRiservataCore.Pages.InserimentoIstanza
+@using AreaRiservataCore.Shared.enums
+@using Init.Sigepro.FrontEnd.AppLogic.Autenticazione.Vbg.AutenticazioneUtente
+@using Init.Sigepro.FrontEnd.AppLogic.GestionePresentazioneDomanda
+@using Init.Sigepro.FrontEnd.AppLogic.Services.Domanda
+@using VBG.BlazorComponentsLibrary.DesignComuni.NavigationButtons
+@using static AreaRiservataCore.Pages.IstanzeInSospeso.v2.Componenti.Filtri
+@inherits BasePage
+
+<div class="cmp-card">
+    <div class="card">
+        <div class="card-header border-0 p-0 mb-lg-30 m-0">
+            <Filtri Id="filtriPratiche"
+            Title="Pratiche in sospeso"
+            FiltriChanged="HandleFiltriChanged"
+            RicercaTestuale="@ricercaTestuale"
+            RicercaChanged="HandleRicercaChanged"
+            OrdinaPer="@ordinaPer"
+            OrdinaChanged="HandleOrdineChanged"
+            ListaRichiedenti="this._listaRichiedenti?.ToList()"
+            Disabled="filtriDisabled">
+            </Filtri>
+        </div>
+        <div class="card-body p-0">
+            <CascadingValue Value="this">
+                <Lista IsLoading="_isLoading" Items="@_domande" PratichePerPagina="PratichePerPagina"></Lista>
+            </CascadingValue>
+        </div>
+    </div>
+</div>
+
+@if (_domandeCache != null && _domandeCache.Any())
+{
+    <NavigationPager PaginaCorrente="Pagina"
+    TotalePagine="(int)Math.Ceiling(((double)totalePratiche / PratichePerPagina))"
+    PaginaChanged="HandlePaginaChanged"
+    Disabled="_isLoading"
+    ScrollOnPaginaChanged="NavigationPager.ScrollTo.PageBottom">
+    </NavigationPager>
+}
+
+@code {
+    private IEnumerable<DomandeListItem>? _domande = default!;
+    private IEnumerable<DomandeListItem>? _domandeCache = default!;
+    private IEnumerable<string>? _listaRichiedenti = default!;
+    private int totalePratiche = 0;
+
+    private bool filtriDisabled = true;
+
+    private bool _isLoading = true;
+
+    [Inject]
+    public DomandeOnlineService _datiDomandaService { get; set; } = default!;
+
+    [Inject]
+    public IAuthenticationDataResolver authenticationDataResolver { get; set; } = default!;
+
+    [Parameter]
+    public int PratichePerPagina { get; set; }
+
+    [Parameter]
+    public int Pagina { get; set; } = 1;
+
+    protected override async Task OnInitializedAsync()
+    {
+        PratichePerPagina = PratichePerPagina == 0 ? 10 : PratichePerPagina;
+
+        await LoadDataAsync();
+
+        await base.OnInitializedAsync();
+    }
+
+    private OrderByDate ordinaPer = OrderByDate.DataDiscendente;
+
+    private async Task HandleOrdineChanged(OrderByDate ordine)
+    {
+        ordinaPer = ordine;
+        Pagina = 1;
+
+        await ApplyFiltersAsync();
+    }
+
+    private string ricercaTestuale = "";
+
+    private async Task HandleRicercaChanged(string text)
+    {
+        ricercaTestuale = text;
+        Pagina = 1;
+
+        await ApplyFiltersAsync();
+    }
+
+    private FiltroIstanzeInSospeso? parametriDiFiltro = default;
+
+    private async Task HandleFiltriChanged(FiltroIstanzeInSospeso filtri)
+    {
+        parametriDiFiltro = filtri;
+        Pagina = 1;
+
+        await ApplyFiltersAsync();
+    }
+
+    private async Task HandlePaginaChanged(int page)
+    {
+        Pagina = page;
+
+        await ApplyFiltersAsync();
+    }
+
+    public async Task LoadDataAsync()
+    {
+        _isLoading = true;
+
+        try
+        {
+            var codiceAnagrafe = UserAuthenticationResult.DatiUtente.Codiceanagrafe.Value;
+            var domandeInSospeso = await _datiDomandaService.GetDomandeInSospesoAsync(codiceAnagrafe);
+
+            var results = domandeInSospeso.Select(domanda =>
+            {
+                // DomandaOnline datiDomanda = null;
+                // bool pagamentoAvviato = false;
+                // bool pagamentoCompletato = false;
+                // string url = string.Empty;
+                // string errorMessage = string.Empty;
+
+                //try
+                //{
+                // datiDomanda = _datiDomandaService.GetById(domanda.Id);
+                // pagamentoAvviato = datiDomanda.ReadInterface.Oneri.GetOneriOnlineConPagamentoAvviato().Any();
+                // pagamentoCompletato = datiDomanda.ReadInterface.Oneri.GetOneriOnlineConPagamentoRiuscito().Any();
+                var url = $"{String.Join("/", InserimentoIstanzaConstants.UrlPaginaInizialePresentazioneDomanda, domanda.Id, "0")}";
+
+                if (!String.IsNullOrEmpty(domanda.Bookmark))
+                {
+                    url = $"{String.Join("/", InserimentoIstanzaConstants.UrlPaginaInizialePresentazioneDomandaBookmark, domanda.Id, "0")}";
+                }
+                // }
+                // catch (Exception ex)
+                // {
+                //     errorMessage = ex.Message;
+                // }
+
+                return new DomandeListItem
+                    {
+                        Id = domanda.Id,
+                        DataUltimaModifica = domanda.DataUltimaModifica,
+                        Richiedente = domanda.Richiedente ?? "",
+                        IdentificativoDomanda = domanda.IdentificativoDomanda,
+                        Intervento = (domanda.Intervento ?? "Non definito").Replace(Environment.NewLine, "<br/>"),
+                        Oggetto = domanda.Oggetto ?? "",
+                        PagamentoAvviato = domanda.PagamentoAvviato,
+                        PagamentoCompletato = domanda.PagamentoCompletato,
+                        Url = url,
+                        HasError = false // !string.IsNullOrEmpty(errorMessage)
+                    };
+            });
+
+            this._domandeCache = results.ToArray();
+
+            filtriDisabled = !this._domandeCache.Any();
+
+            this._listaRichiedenti = this._domandeCache.Select(x => x.Richiedente).Concat(new[] { "" }).Distinct().OrderBy(x => x);
+
+            await ApplyFiltersAsync();
+            StateHasChanged();
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private async Task ApplyFiltersAsync()
+    {
+        _isLoading = true;
+
+        await Task.Delay(1);
+
+        try
+        {
+            var results = this._domandeCache;
+
+            if (!string.IsNullOrEmpty(ricercaTestuale))
+            {
+                results = results.Where(item =>
+                    item.IdentificativoDomanda.Contains(ricercaTestuale, StringComparison.OrdinalIgnoreCase) ||
+                    item.Intervento.Contains(ricercaTestuale, StringComparison.OrdinalIgnoreCase)
+                );
+            }
+
+            if (parametriDiFiltro != null)
+            {
+                if (parametriDiFiltro.endDate.HasValue)
+                {
+                    DateTime endDate = parametriDiFiltro.endDate.Value;
+                    endDate = endDate.AddDays(1).AddSeconds(-1);
+
+                    results = results.Where(x => x.DataUltimaModifica < endDate);
+                }
+
+                if (parametriDiFiltro.startDate.HasValue)
+                    results = results.Where(x => x.DataUltimaModifica >= parametriDiFiltro.startDate);
+
+                if (parametriDiFiltro.richiedente is not null)
+                    results = results.Where(x => x.Richiedente == parametriDiFiltro.richiedente);
+            }
+
+            if (ordinaPer == OrderByDate.DataDiscendente)
+                results = results.OrderByDescending(x => x.DataUltimaModifica);
+            else
+                results = results.OrderBy(x => x.DataUltimaModifica);
+
+            this.totalePratiche = results.Count();
+
+            if (this.totalePratiche <= PratichePerPagina)
+            {
+                this._domande = results.ToList();
+                return;
+            }
+
+            int indiceIniziale = (Pagina - 1) * PratichePerPagina;
+
+            results = results
+                .Skip(indiceIniziale)
+                .Take(PratichePerPagina);
+
+            this._domande = results.ToList();
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+}

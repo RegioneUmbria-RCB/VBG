@@ -1,0 +1,119 @@
+﻿@page "/"
+@attribute [IgnoreAntiforgeryToken(Order = 1001)]
+@namespace AreaRiservataCore.Pages
+@using Init.Sigepro.FrontEnd.AppLogic.Autenticazione.Vbg
+@using Init.Sigepro.FrontEnd.AppLogic.Autenticazione.Vbg.AutenticazioneUtente
+@using Init.Sigepro.FrontEnd.AppLogic.Common
+@using Init.Sigepro.FrontEnd.CoreServices.Autenticazione
+@using Microsoft.AspNetCore.Components
+@using System.Web
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using log4net
+@inject IVbgAuthenticationService _authService;
+@inject IAuthenticationUrlBuilder _authUrlBuilder;
+@inject AliasSoftwareProvider _aliasSoftwareProvider;
+@inject SigeproSecurityProxy _sigeproSecurityProxy;
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+	Layout = "_Layout";
+
+	ILog log = LogManager.GetLogger(this.GetType());
+
+	Response.Headers["Cache-Control"] = "no-store";
+
+	// Recupero token
+	var token = HttpContext.Request.Query["token"].FirstOrDefault();
+
+	if (String.IsNullOrEmpty(token) && HttpContext.Request.Method == HttpMethod.Post.Method)
+	{
+		token = HttpContext.Request.Form["token"].FirstOrDefault();
+	}
+
+	if (String.IsNullOrEmpty(token))
+	{
+		token = HttpContext.Session.GetString("token");
+	}
+
+	// Recupero alias e software (tutti path delle pagine devono
+	// essere nel formato /{alias}/{software}/blabla/blablabla)
+	var pathParts = Request.Path.ToString().Split("/").Where(x => x.Length > 0);
+
+	if (!pathParts.Any())
+	{
+		throw new InvalidOperationException("Alias e software non impostati, impossibile avviare l'applicazione");
+	}
+	var alias = pathParts.ElementAt(0);
+	var software = pathParts.ElementAt(1);
+
+	if (String.IsNullOrEmpty(alias))
+	{
+		throw new InvalidOperationException("Alias non impostato");
+	}
+
+	if (String.IsNullOrEmpty(software))
+	{
+		throw new InvalidOperationException("Software non impostato");
+	}
+
+	this._aliasSoftwareProvider.AliasComune = alias;
+	this._aliasSoftwareProvider.Software = software;
+
+	// Verifica del token
+	var authResult = _authService.CheckTokenIgnoreCache(token);
+
+	InitialApplicationState? appState = null;
+
+	if (authResult == null || authResult.Alias != alias)
+	{
+		log.Info($"HttpContext.Request.Scheme={HttpContext.Request.Scheme}");
+		log.Info($"HttpContext.Request.Host={HttpContext.Request.Host}");
+		log.Info($"HttpContext.Request.PathBase={HttpContext.Request.PathBase}");
+		log.Info($"HttpContext.Request.Path={HttpContext.Request.Path}");
+		log.Info($"HttpContext.Request.QueryString={HttpContext.Request.QueryString}");
+
+		var qs = HttpUtility.ParseQueryString(HttpContext.Request.QueryString.ToString());
+
+		qs.Remove("AUTH_TYPE");
+		qs.Remove("Token");
+
+		var fullQs = qs.ToString();
+
+		if (!String.IsNullOrEmpty(fullQs))
+		{
+			fullQs = $"?{fullQs}";
+		}
+
+		var returnUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.PathBase}{HttpContext.Request.Path}{fullQs}";
+
+		var url = this._authUrlBuilder.BuildAuthenticationUrl(
+			this._aliasSoftwareProvider.AliasComune, 
+			this._aliasSoftwareProvider.Software, 
+			returnUrl
+		);
+
+		HttpContext.Response.Redirect(url);
+	}
+	else
+	{
+		HttpContext.Session.SetString("token", token);
+
+		appState = new InitialApplicationState
+		{
+			Token = token,
+			Alias = alias,
+			Software = software,
+			UserAuthenticationResult = authResult
+		};
+	}
+}
+
+
+@(await Html.RenderComponentAsync<StiliComuniCustom>(Microsoft.AspNetCore.Mvc.Rendering.RenderMode.Static, new { Alias = alias }))
+
+
+@if (authResult != null)
+{
+	<component type="typeof(App)" render-mode="Server" param-InitialApplicationState="appState" />
+}

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:intf="urn:CmnWSSGateway" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:impl="urn:CmnWSSGateway" targetNamespace="urn:CmnWSSGateway" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:CmnWSSGateway">
+      <xsd:import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+      <xsd:complexType name="ArrayOf_xsd_string">
+        <xsd:complexContent mixed="false">
+          <xsd:restriction base="soapenc:Array">
+            <xsd:attribute wsdl:arrayType="xsd:string[]" ref="soapenc:arrayType" />
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="serviceRequest">
+    <wsdl:part name="args" type="impl:ArrayOf_xsd_string" />
+  </wsdl:message>
+  <wsdl:message name="serviceResponse">
+    <wsdl:part name="serviceReturn" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:portType name="CmnWSSGateway">
+    <wsdl:operation name="service" parameterOrder="args">
+      <wsdl:input name="serviceRequest" message="impl:serviceRequest" />
+      <wsdl:output name="serviceResponse" message="impl:serviceResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="CmnWSSGatewaySoapBinding" type="impl:CmnWSSGateway">
+    <wsdlsoap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc" />
+    <wsdl:operation name="service">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="serviceRequest">
+        <wsdlsoap:body use="encoded" namespace="urn:CmnWSSGateway" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="serviceResponse">
+        <wsdlsoap:body use="encoded" namespace="urn:CmnWSSGateway" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="CmnWSSGatewayService">
+    <wsdl:port name="CmnWSSGateway" binding="impl:CmnWSSGatewaySoapBinding">
+      <wsdlsoap:address location="http://sicrawebappserver:58000/client/services/CmnWSSGateway" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

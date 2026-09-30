@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://gruppoinit.it/sigepro/schemas/messages/movimenti" elementFormDefault="qualified" xmlns:xmime="http://www.w3.org/2005/05/xmlmime"
+	xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://gruppoinit.it/sigepro/schemas/messages/movimenti"
+	xmlns:base="http://gruppoinit.it/sigepro/schemas/messages/base"	>
+	<import id="oggettiBase" schemaLocation="backoffice_oggetti_base.xsd" namespace="http://gruppoinit.it/sigepro/schemas/messages/base" />
+	<element name="MovimentiAllegatiInsertRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string" />
+				<element name="descrizione" minOccurs="1" maxOccurs="1">
+					<simpleType>
+						<restriction base="string">
+							<minLength value="1"></minLength>
+							<maxLength value="4000"></maxLength>
+						</restriction>
+					</simpleType>
+				</element>
+				<element name="note" minOccurs="0" maxOccurs="1">
+					<simpleType>
+						<restriction base="string">
+							<maxLength value="4000"></maxLength>
+							<minLength value="0"></minLength>
+						</restriction>
+					</simpleType>
+				</element>
+				<element name="codicemovimento" type="int" minOccurs="1" maxOccurs="1">
+					<annotation>
+						<documentation>Codice del movimenti al quale aggiungere l'allegato</documentation>
+					</annotation>
+				</element>
+				<element name="flagPubblica" type="boolean" minOccurs="0" maxOccurs="1" />
+				<element name="stcIdDocumento" minOccurs="0" maxOccurs="1">
+					<simpleType>
+						<restriction base="string">
+							<minLength value="0"></minLength>
+							<maxLength value="200"></maxLength>
+						</restriction>
+					</simpleType>
+				</element>
+				<element name="stcIdAllegato" minOccurs="0" maxOccurs="1">
+					<simpleType>
+						<restriction base="string">
+							<minLength value="0"></minLength>
+							<maxLength value="200"></maxLength>
+						</restriction>
+					</simpleType>
+				</element>
+				<element name="dataRegistrazione" minOccurs="0" maxOccurs="1" type="date" />
+				<element name="allegato" type="base:AllegatoBaseType" minOccurs="1" maxOccurs="1" />
+				<element name="software" type="string" maxOccurs="1"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="MovimentiAllegatiInsertResponse">
+		<complexType>
+			<sequence>
+				<element name="id" type="integer" minOccurs="1" maxOccurs="1" />
+			</sequence>
+		</complexType>
+	</element>	
+	<element name="MovimentiDownloadZipLogicoRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string" />
+				<element name="codicemovimento" type="int" minOccurs="1" maxOccurs="1">
+					<annotation>
+						<documentation>Codice del movimento per il quale scaricare lo zip logico</documentation>
+					</annotation>
+				</element>
+				<element name="uuid_istanza" type="string" minOccurs="1" maxOccurs="1">
+					<annotation>
+						<documentation>UUID dell'istanza del movimento per il quale scaricare lo zip logico</documentation>
+					</annotation>
+				</element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="MovimentiDownloadZipLogicoResponse">
+		<complexType>
+			<sequence>
+				<element name="fileName" type="string" />
+				<element name="mimeType" type="string" minOccurs="0" maxOccurs="1" />
+				<element name="binaryData" type="base64Binary" xmime:expectedContentTypes="application/octet-stream" />
+			</sequence>
+		</complexType>
+	</element>
+</schema>

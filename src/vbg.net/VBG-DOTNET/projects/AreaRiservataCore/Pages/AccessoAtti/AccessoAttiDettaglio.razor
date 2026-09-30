@@ -1,0 +1,26 @@
+﻿@page "/{IdComune}/{Software}/accessoattidettaglio/{IdAccessoAtti:int}/{UuidIstanza}"
+@using AreaRiservataCore.Pages.Visura
+
+@inherits BasePage
+
+
+<VisuraExCtrl IdComune="@IdComune" Software="@Software" CodiceIstanza="@UuidIstanza"
+              LivelloAccessoVisura="@GetLivelloAccessoVisura()"
+              CallbackValidazioneAllegati="@CallbackValidazioneAllegati"
+              MostraScadenze="false" MostraPraticheCollegate="false"
+              GoBackUrl="@GetGoBackUrl()">
+
+            <Bottoni>
+                <button class="btn btn-light" @onclick="OnBtnCloseAsync">Chiudi</button>
+
+                @if (_permetteDownloadFileZip)
+                {
+                    <button class="btn btn-primary ms-1" @onclick="OnBtnDownloadDocZipAsync">Scarica documenti</button>
+                }
+            </Bottoni>
+</VisuraExCtrl>
+
+
+@code {
+
+}

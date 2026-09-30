@@ -1,0 +1,151 @@
+
+package it.init.sigepro.rte.types;
+
+import java.util.ArrayList;
+import java.util.List;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
+
+
+/**
+ * <p>Java class for AllegatiType complex type.
+ * 
+ * <p>The following schema fragment specifies the expected content contained within this class.
+ * 
+ * <pre>
+ * &lt;complexType name="AllegatiType">
+ *   &lt;complexContent>
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *       &lt;sequence>
+ *         &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="allegato" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="file" type="{http://sigepro.init.it/rte/types}AllegatoBinarioType" minOccurs="0"/>
+ *         &lt;element name="metaDati" type="{http://sigepro.init.it/rte/types}MetaDatoType" maxOccurs="unbounded" minOccurs="0"/>
+ *       &lt;/sequence>
+ *     &lt;/restriction>
+ *   &lt;/complexContent>
+ * &lt;/complexType>
+ * </pre>
+ * 
+ * 
+ */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "AllegatiType", propOrder = {
+    "id",
+    "allegato",
+    "file",
+    "metaDati"
+})
+public class AllegatiType {
+
+    @XmlElement(required = true)
+    protected String id;
+    @XmlElement(required = true)
+    protected String allegato;
+    protected AllegatoBinarioType file;
+    protected List<MetaDatoType> metaDati;
+
+    /**
+     * Gets the value of the id property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * Sets the value of the id property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setId(String value) {
+        this.id = value;
+    }
+
+    /**
+     * Gets the value of the allegato property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getAllegato() {
+        return allegato;
+    }
+
+    /**
+     * Sets the value of the allegato property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setAllegato(String value) {
+        this.allegato = value;
+    }
+
+    /**
+     * Gets the value of the file property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link AllegatoBinarioType }
+     *     
+     */
+    public AllegatoBinarioType getFile() {
+        return file;
+    }
+
+    /**
+     * Sets the value of the file property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link AllegatoBinarioType }
+     *     
+     */
+    public void setFile(AllegatoBinarioType value) {
+        this.file = value;
+    }
+
+    /**
+     * Gets the value of the metaDati property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the metaDati property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getMetaDati().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link MetaDatoType }
+     * 
+     * 
+     */
+    public List<MetaDatoType> getMetaDati() {
+        if (metaDati == null) {
+            metaDati = new ArrayList<MetaDatoType>();
+        }
+        return this.metaDati;
+    }
+
+}

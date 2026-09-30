@@ -1,0 +1,4 @@
+INSERT INTO verticalizzazioniparametribase (modulo, parametro, descrizione) VALUES  ('NODO_PAGAMENTI', 'AR_ATTIVA_PAGO_DOPO', 'Se impostato a 1 permette di attivare la funzionalità "pago dopo" nello step dei pagamenti dell''area riservata (i lconnettore in uso deve supportare il modello 3 e il download dell''avviso di pagamento)');
+INSERT INTO verticalizzazioniparametribase (modulo, parametro, descrizione) VALUES  ('NODO_PAGAMENTI', 'AR_PAGO_DOPO_GG_SCADENZA', 'Giorni da utilizzare per calcolare la scadenza di una posizione debitoria aperta tramite "paga dopo". Se lasciato vuoto verrà impostato a 30 giorni');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO, PARAMETRO, DESCRIZIONE) VALUES ('NODO_PAGAMENTI', 'SOGGETTO_PENDENZA', 'Parametro che determina se la posizione debitoria deve essere aperta verso l''azienda o direttamente verso il richiedente. Se non popolato prendera'' di dafault il richiedente.');

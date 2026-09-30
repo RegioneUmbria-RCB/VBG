@@ -1,0 +1,118 @@
+﻿@using AreaRiservataCore.Pages.InserimentoIstanza.RiepilogoDomanda
+@using Init.Sigepro.FrontEnd.AppLogic.DatiDinamici
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneOggetti
+@using VBG.BlazorComponentsLibrary.DesignComuni.Forms
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.DesignComuni.Services.GestioneOggetti
+@using VBG.BlazorComponentsLibrary.DesignComuni.Spinner
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards.CardButtons
+@using VBG.BlazorComponentsLibrary.DesignComuni.Utils
+@using VBG.BlazorComponentsLibrary.EditFormComponents
+@using VBG.BlazorComponentsLibrary.EditFormComponents.FileUpload
+
+@if (Riepilogo is not null)
+{
+    <FormModal OnClose="OnCancel" AlwaysVisible="true" Size="ModalSizeEnum.Small" Model="_model" FormId="formUpload" OnValidSubmit="OnValidSubmit">
+        <ModalHeader Titolo="Caricamento riepilogo"></ModalHeader>
+        <ModalBody>
+            <div class="mb-2">
+                <label>Modello da scaricare@(Riepilogo.RichiedeFirmaDigitale?", firmare": "") e ricaricare</label>
+                <button role="button" class="btn btn-primary w-100 mb-4 p-2" @onclick="DownloadModelloAsync">Scarica</button>
+
+            </div>
+            <FormUpload Label="@(Riepilogo.RichiedeFirmaDigitale? "Documento firmato" : "Documento")"
+                        @bind-Value="_model.CodiceOggetto"
+                        Obbligatorio="Riepilogo.Richiesto"
+                        VerificaFirmaDigitale="@Riepilogo.RichiedeFirmaDigitale"
+                        ValidationFor="() => _model.CodiceOggetto"></FormUpload>
+        </ModalBody>
+        <ModalFooter>
+            <FormSubmitButton Form="formUpload"></FormSubmitButton>
+        </ModalFooter>
+    </FormModal>
+}
+
+@code {
+    [Inject]
+    public IRiepiloghiDatiDinamiciAsyncService _riepiloghiService { get; set; } = default!;
+    [Inject]
+    public DownloadHelperService _downloadHelper { get; set; } = default!;
+    [Inject]
+    public SpinnerService _spinnerService { get; set; } = default!;
+
+    [Parameter]
+    public RiepilogoRichiesto? Riepilogo { get; set; }
+    [Parameter]
+    public EventCallback OnCancel { get; set; }
+    [Parameter]
+    public EventCallback OnUploadSuccesful { get; set; }
+    [Parameter]
+    public EventCallback<string> OnError { get; set; }
+    [Parameter, EditorRequired]
+    public Func<RiepilogoRichiesto, Task<BinaryFile>> CallbackGenerazioneRiepilogo { get; set; }
+
+
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        _model = new();
+
+        if (Riepilogo is not null)
+        {
+            _model.CodiceOggetto = Riepilogo.CodiceOggetto;
+        }
+    }
+
+    public class UploadModel
+    {
+        public int? CodiceOggetto { get; set; }
+    }
+
+    private UploadModel _model = new();
+
+    async Task OnValidSubmit()
+    {
+        if (Riepilogo is null || !_model.CodiceOggetto.HasValue)
+        {
+            return;
+        }
+
+        try
+        {
+            await _riepiloghiService.AggiungiOggettoRiepilogoAsync(Riepilogo.IdDomanda, Riepilogo.IdModello, Riepilogo.IndiceMolteplicita, _model.CodiceOggetto.Value);
+
+            await OnUploadSuccesful.InvokeAsync(Riepilogo);
+        }
+        catch (Exception ex)
+        {
+            await OnError.InvokeAsync(ex.Message);
+        }
+    }
+
+    async Task DownloadModelloAsync()
+    {
+        if (Riepilogo is null)
+        {
+            return;
+        }
+
+        await _spinnerService.ShowSpinnerAsync(async () => {
+
+            var file = await CallbackGenerazioneRiepilogo.Invoke(Riepilogo);  // await _riepiloghiService.GeneraRiepilogoAsync(Riepilogo.IdDomanda, Riepilogo.IdModello, Riepilogo.IndiceMolteplicita);
+
+            if (file is null)
+            {
+                return;
+            }
+
+            await _downloadHelper.DownloadFileAsync(new FileReference
+                {
+                    ContentType = file.MimeType,
+                    FileContent = file.FileContent,
+                    FileName = file.FileName
+                });
+        });
+    }
+}

@@ -1,0 +1,90 @@
+
+package it.init.sigepro.rte.types;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlType;
+
+
+/**
+ * Rappresenta la posizione di un campo all'interno di
+ * 				una scheda dinamica, la posizione verticale può essere compresa tra
+ * 				0 e 9999 mentre la posizione orizzontale può essere compresa tra 0 e 9
+ * 			
+ * 
+ * <p>Java class for PosizioneCampoType complex type.
+ * 
+ * <p>The following schema fragment specifies the expected content contained within this class.
+ * 
+ * <pre>
+ * &lt;complexType name="PosizioneCampoType">
+ *   &lt;complexContent>
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *       &lt;sequence>
+ *         &lt;element name="riga">
+ *           &lt;simpleType>
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}integer">
+ *               &lt;minInclusive value="0"/>
+ *               &lt;maxInclusive value="9999"/>
+ *             &lt;/restriction>
+ *           &lt;/simpleType>
+ *         &lt;/element>
+ *         &lt;element name="colonna">
+ *           &lt;simpleType>
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}integer">
+ *               &lt;minInclusive value="0"/>
+ *               &lt;maxInclusive value="9"/>
+ *             &lt;/restriction>
+ *           &lt;/simpleType>
+ *         &lt;/element>
+ *       &lt;/sequence>
+ *     &lt;/restriction>
+ *   &lt;/complexContent>
+ * &lt;/complexType>
+ * </pre>
+ * 
+ * 
+ */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "PosizioneCampoType", propOrder = {
+    "riga",
+    "colonna"
+})
+public class PosizioneCampoType {
+
+    protected int riga;
+    protected int colonna;
+
+    /**
+     * Gets the value of the riga property.
+     * 
+     */
+    public int getRiga() {
+        return riga;
+    }
+
+    /**
+     * Sets the value of the riga property.
+     * 
+     */
+    public void setRiga(int value) {
+        this.riga = value;
+    }
+
+    /**
+     * Gets the value of the colonna property.
+     * 
+     */
+    public int getColonna() {
+        return colonna;
+    }
+
+    /**
+     * Sets the value of the colonna property.
+     * 
+     */
+    public void setColonna(int value) {
+        this.colonna = value;
+    }
+
+}

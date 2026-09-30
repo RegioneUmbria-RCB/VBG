@@ -1,0 +1,250 @@
+﻿@using Init.Sigepro.FrontEnd.AppLogic.GestioneAllegatiDomanda.RiepilogoDomanda
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneOggetti
+@using Init.Sigepro.FrontEnd.AppLogic.GestionePresentazioneDomanda
+@using Init.Sigepro.FrontEnd.AppLogic.VerificaSoggettiFirmatari
+@using Init.Sigepro.FrontEnd.CoreServices.Markdown
+@using VBG.AreaRiservataCore.Controls
+@using log4net
+
+
+@if (DomandaCorrente is not null)
+{
+    <StepCard Titolo="@TitoloFaseInvio">
+        <StepCardSubtitle>@((MarkupString)new MarkdownString(SottotitoloFaseInvio).ToHtml(false))</StepCardSubtitle>
+
+        @if (MostraGrigliaSottoscrittori && DomandaCorrente.Anagrafiche.GetSoggettiSottoscrittori() != null && DomandaCorrente.Anagrafiche.GetSoggettiSottoscrittori().Any())
+        {
+            <StepCardItem>
+                <StepCardItemTitle Titolo="@TitoloGrigliaSottoscrittori"></StepCardItemTitle>
+
+                <StepCollapsibleContent StartCollapsed="false">
+                    @foreach (var item in DomandaCorrente.Anagrafiche.GetSoggettiSottoscrittori())
+                    {
+                        <StepCollapsibleContentItem Titolo="@item.NomeEsteso">
+                            <StepCardInfo Titolo="In qualità di">@item.TipoSoggetto</StepCardInfo>
+                            <StepCardInfo Titolo="Codice fiscale">@item.Codicefiscale</StepCardInfo>
+                        </StepCollapsibleContentItem>
+                    }
+                </StepCollapsibleContent>
+            </StepCardItem>
+        }
+
+        @if (MostraGrigliaNonSottoscrittori && DomandaCorrente.Anagrafiche.GetSoggettiNonSottoscrittori().Any())
+        {
+            <StepCardItem>
+                <StepCardItemTitle Titolo="@TitoloGrigliaNonSottoscrittori"></StepCardItemTitle>
+
+                <StepCollapsibleContent>
+                    @foreach (var item in DomandaCorrente.Anagrafiche.GetSoggettiNonSottoscrittori())
+                    {
+                        <StepCollapsibleContentItem Titolo="@item.NomeEsteso">
+                            <StepCardInfo Titolo="In qualità di">@item.TipoSoggetto</StepCardInfo>
+                            <StepCardInfo Titolo="Codice fiscale">@item.Codicefiscale</StepCardInfo>
+                        </StepCollapsibleContentItem>
+                    }
+                </StepCollapsibleContent>
+            </StepCardItem>
+        }
+
+        @if (!_model.Uploader.CodiceOggetto.HasValue)
+        {
+            <StepCardItem>
+                <StepCardItemTitle Titolo="File da scaricare e firmare"></StepCardItemTitle>
+                <StepCardItemSubtitle>@((MarkupString)new MarkdownString(DescrizioneFaseInvio).ToHtml(false))</StepCardItemSubtitle>
+
+                <StepCardInfo Titolo="Istanza">
+                    <SvgIcon IconId="it-file" CssClass="icon-sm icon-primary"></SvgIcon>
+                    <button class="btn btn-link p-0" @onclick="ScaricaRiepilogo">Scarica Istanza</button>
+                </StepCardInfo>
+            </StepCardItem>
+        }
+
+
+        <VbgForm Model="@_model">
+            <StepCardItem>
+                <StepCardItemTitle Titolo="@_uploadTitle"></StepCardItemTitle>
+                <div class="mt-4">
+                    @if (_model.Uploader.CodiceOggetto is null)
+                    {
+                        <FormUpload @bind-Value="@_model.Uploader.CodiceOggetto" id="upl_file"
+                                    OnFileChanged="(FormFileChangedEventArgs e) => OnFileChanged(e) "
+                                    Obbligatorio="true"
+                                    VerificaFirmaDigitale="VerificaFirmaSuRiepilogo"
+                                    ValidationFor="() => _model.Uploader.CodiceOggetto">
+                        </FormUpload>
+                    }
+                    else
+                    {
+                        <div class="float-end mt-2">
+                            <button @onclick="() => OnRiepilogoDomandaEliminato()" class="text-decoration-none me-2"><span class="text-button-sm-semi t-alert">Elimina</span></button>
+                        </div>
+
+                        <StepDownloadButton Titolo="Documento" CodiceOggetto="@_model.Uploader.CodiceOggetto"></StepDownloadButton>
+                    }
+                </div>
+            </StepCardItem>
+
+            @if (_model.Uploader.CodiceOggetto.HasValue && !String.IsNullOrEmpty(TestoDichiarazione))
+            {
+                <StepCardItem>
+                    <StepCardItemTitle Titolo="@TestoDichiarazione"></StepCardItemTitle>
+
+                    <div class="form-check">
+                        <input id="chkDichiarazione" type="checkbox" checked="@_model.DichiarazioneChecked" @oninput="OnDichiarazioneModificata" />
+                        <label for="chkDichiarazione">@TestoCheckDichiarazione</label>
+                    </div>
+                </StepCardItem>
+            }
+
+            @* submit button nascosto per accessibilità *@
+            <button type="submit" class="d-none" aria-hidden="true"></button>
+        </VbgForm>
+    </StepCard>
+
+    @if (!_model.Uploader.CodiceOggetto.HasValue)
+    {
+        <button class="btn btn-outline-primary" @onclick="@Close">Torna al riepilogo</button>
+    }
+    else
+    {
+        if (_model.DichiarazioneChecked || String.IsNullOrEmpty(TestoDichiarazione))
+        {
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-primary" @onclick="ConfermaInvio">@TestoBottoneTrasferisciIstanza</button>
+            </div>
+        }
+    }
+}
+
+@code {
+    [Inject]
+    public RiepilogoDomandaAllegatoService _riepilogoDomandaService { get; set; } = default!;
+
+    [Inject]
+    public ValidazioneSoggettiRiepilogoDomandaService _validazioneSoggettiRiepilogoDomandaService { get; set; } = default!;
+
+
+    [Parameter, EditorRequired]
+    public string TitoloFaseInvio { get; set; } = "Invio della domanda";
+    [Parameter, EditorRequired]
+    public string SottotitoloFaseInvio { get; set; } = "Scarica, firma digitalmente e carica l'istanza firmata.";
+    [Parameter, EditorRequired]
+    public string DescrizioneFaseInvio { get; set; } = "Scarica l'istanza in formato PDF, apponi la firma digitale e carica il file firmato tramite l'apposito controllo sottostante.";
+    [Parameter, EditorRequired]
+    public string TestoDichiarazione { get; set; } = "";
+    [Parameter, EditorRequired]
+    public string TestoCheckDichiarazione { get; set; } = "";
+
+
+    [Parameter, EditorRequired]
+    public bool MostraGrigliaSottoscrittori { get; set; }
+    [Parameter, EditorRequired]
+    public string TitoloGrigliaSottoscrittori { get; set; } = "Sottoscrivono";
+    [Parameter, EditorRequired]
+    public bool MostraGrigliaNonSottoscrittori { get; set; }
+    [Parameter, EditorRequired]
+    public string TitoloGrigliaNonSottoscrittori { get; set; } = "Non sottoscrivono";
+    [Parameter, EditorRequired]
+    public string TestoBottoneTrasferisciIstanza { get; set; } = "Invia domanda";
+
+    [Parameter, EditorRequired]
+    public bool VerificaFirmaSuRiepilogo { get; set; }
+
+
+
+    [Parameter, EditorRequired]
+    public IDomandaOnlineReadInterface? DomandaCorrente { get; set; }
+    [Parameter, EditorRequired]
+    public EventCallback ScaricaRiepilogo { get; set; }
+    [Parameter, EditorRequired]
+    public EventCallback Close { get; set; }
+    [Parameter, EditorRequired]
+    public EventCallback ConfermaInvio { get; set; }
+
+
+    [CascadingParameter]
+    public MessageContainer MessageContainer { get; set; } = default!;
+
+    private int? IdDomanda => DomandaCorrente?.AltriDati.IdPresentazione;
+
+    public class Model
+    {
+        public UploaderItem Uploader { get; set; } = new();
+        public bool DichiarazioneChecked { get; set; } = false;
+    }
+
+    private Model _model = new();
+    private string _uploadTitle = "Selezionare il file da inviare";
+    private ILog _log = LogManager.GetLogger(typeof(RiepilogoDomanda));
+
+
+
+    private void OnRiepilogoDomandaCaricato(FormFileChangedEventArgs e)
+    {
+        if (e.FileRef is null)
+        {
+            return;
+        }
+
+        if (this.DomandaCorrente is null)
+        {
+            return;
+        }
+
+        this.MessageContainer.ClearErrors();
+
+        try
+        {
+            var file = BinaryFile.FromFileData(e.FileRef.FileName, e.FileRef.ContentType, e.FileRef.FileContent);
+
+            var esitoValidazioneSoggetti = this._validazioneSoggettiRiepilogoDomandaService.ValidaRiepilogoDomanda(this.IdDomanda!.Value, file);
+
+            if (!esitoValidazioneSoggetti.Result)
+            {
+                foreach (var errorMsg in esitoValidazioneSoggetti.ErroriValidazione)
+                {
+                    this.MessageContainer.AddError(errorMsg);
+                }
+
+                this.OnRiepilogoDomandaEliminato();
+
+                return;
+            }
+
+            this._riepilogoDomandaService.SalvaOggettoRiepilogo(this.IdDomanda!.Value, file);
+            this._uploadTitle = "File caricato";
+
+            this._model.Uploader.CodiceOggetto = this.DomandaCorrente.Documenti.Intervento.GetRiepilogoDomanda().AllegatoDellUtente.CodiceOggetto;
+
+            this.StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            this.MessageContainer.AddError("Errore durante l'inserimento del file");
+            this._log.Error($"Errore durante l'inserimento del file: {ex.Message}");
+        }
+    }
+
+    private void OnRiepilogoDomandaEliminato()
+    {
+        // this._model.Uploader.BinaryFile = null;
+        this._riepilogoDomandaService.EliminaOggettoRiepilogoDomanda(this.IdDomanda.Value);
+        this._uploadTitle = "Selezionare il file da inviare";
+        // this.model.Uploader.ModalitaInserimento = true;
+        this._model.Uploader.CodiceOggetto = null;
+    }
+
+    private void OnDichiarazioneModificata(ChangeEventArgs e)
+    {
+        this._model.DichiarazioneChecked = e.Value != null ? Convert.ToBoolean(e.Value) : false;
+    }
+
+    private void OnFileChanged(FormFileChangedEventArgs e)
+    {
+        if (e.Event == FromEvent.OnChange)
+            this.OnRiepilogoDomandaCaricato(e);
+
+        if (e.Event == FromEvent.OnDelete)
+            this.OnRiepilogoDomandaEliminato();
+    }
+}

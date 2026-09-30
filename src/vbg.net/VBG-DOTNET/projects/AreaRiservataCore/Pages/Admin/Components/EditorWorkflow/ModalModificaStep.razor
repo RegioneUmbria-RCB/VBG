@@ -1,0 +1,176 @@
+﻿@using Init.Sigepro.FrontEnd.AppLogic.PresentazioneIstanze.Workflow.V2
+
+@using VBG.BlazorComponentsLibrary.DesignComuni.Forms
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards.CardButtons
+@using VBG.BlazorComponentsLibrary.EditFormComponents
+@using static Init.Sigepro.FrontEnd.AppLogic.PresentazioneIstanze.Workflow.V2.WorkflowDescriptor
+@using static AreaRiservataCore.Utils.RoutesHelper
+
+
+@if(_proprietaDaAggiungere == null)
+{
+    <FormModal Size="ModalSizeEnum.ExtraLarge" OnClose="async () => await OnClose.InvokeAsync()" FormId="modifica_step_form" Model="@Step" OnValidSubmit="() => SalvaModificheStep()">
+        <ModalHeader Titolo="Modifica step" Size="ModalHeaderSizeEnum.Small">
+        </ModalHeader>
+        <ModalBody>
+
+            @if (this._isStepDeprecato)
+            {
+                <div class="alert alert-warning" role="alert">
+                    <span class="fw-bold">Attenzione! </span> Lo step selezionato è deprecato.
+                </div>
+            }
+
+            <div class="form-check mb-3">
+                <InputCheckbox id="@($"checkbox-{Step.Id}")" @bind-Value="this._step.Disabled" />
+                <label for="@($"checkbox-{Step.Id}")" class="text-start">Disabilita step</label>
+                <div>
+                    <small id="@($"helper-check-{Step.Id}")" class="help-block">Lo step rimarrà comunque visibile agli utenti tester durante l'inserimento di una domanda. </small>
+                </div>
+            </div>
+
+            <div class="py-1">
+                <FormTextReadonly Id="@($"stepId-{Step.Id}")" Titolo="Tipologia step" UserCssClass="fs-6">@this._step.StepId</FormTextReadonly>
+            </div>
+
+            <div class="py-1">
+                <TextInputForm Id="@($"titolo-{Step.Id}")" @bind-Value="this._step.Title" Label="Titolo" Required="true" ValidationFor="() => this._step.Title" />
+            </div>
+
+            <div class="py-1">
+                <TextInputForm Id="@($"descrizione-{Step.Id}")" @bind-Value="this._step.Description" IsMultiline="true" Label="Descrizione" ValidationFor="() => this._step.Description" />
+            </div>
+
+            <div class="d-flex justify-content-between mt-3 mb-3">
+                <h4>Proprietà</h4>
+                <StepButton Text="Aggiungi proprietà" OnClick="() => _proprietaDaAggiungere = new ControlProperty()" Icon="StepButtonIcons.PlusCircle"></StepButton>
+            </div>
+
+            @if (this._step.ControlProperties.Any())
+            {
+                @foreach (var prop in this._step.ControlProperties)
+                {
+                    this._descrizioneProprieta = this._listaProprietaStep?.FirstOrDefault(x => x.Nome == prop.Nome)?.Descrizione ?? "Descrizione non disponibile";
+                    <div class="py-1">
+                        <TextInputForm Id="@($"valore-{prop.Nome}-{Step.Id}")" @bind-Value="@prop.Valore" Label="@prop.Nome" IsMultiline="true" HelpText="@_descrizioneProprieta" ValidationFor="() => prop.Valore"></TextInputForm>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="alert alert-info" role="alert">
+                    Non ci sono proprietà configurate per questo step. Cliccare sul bottone "Aggiungi proprietà" per aggiungere le proprietà.
+                </div>
+            }
+        </ModalBody>
+        <ModalFooter>
+            <FormSubmitButton Form="modifica_step_form" IsButtonDisabled="false" Text="Conferma"></FormSubmitButton>
+        </ModalFooter>
+
+    </FormModal>
+}
+else 
+{
+    <ModalAggiungiControlProperty ListaProprieta="@_listaProprietaStep" OnClose="() => _proprietaDaAggiungere = null" OnSave="@SalvaNuovaProprieta"></ModalAggiungiControlProperty>
+}
+
+
+@code {
+    [Parameter]
+    public EventCallback OnClose { get; set; }
+
+    [Parameter]
+    public EventCallback<Step> OnSave { get; set; }
+
+    [Parameter]
+    public Step Step { get; set; } = new Step();
+
+    [Parameter]
+    public List<RouteInfo> ListaRoutes { get; set; } = new List<RouteInfo>();
+
+    [CascadingParameter]
+    public MessageContainer messageContainer { get; set; } = default!;
+
+    private List<StepPropertyInfo>? _listaProprietaStep = new List<StepPropertyInfo>();
+    private ControlProperty? _proprietaDaAggiungere;
+    private string _descrizioneProprieta = "";
+    private Step _step = new Step();
+    private StepDescriptor _stepDescriptor = new StepDescriptor();
+    private bool _isStepDeprecato;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        var stepRoute = WorkflowDescriptor.GetStepUrlById(Step.StepId);
+        // var routePart = stepRoute.Split('/')!.Last();
+
+        // this._listaProprietaStep = ListaRoutes?.FirstOrDefault(x => x.ARRoute == routePart)?.Properties;
+        this._listaProprietaStep = ListaRoutes?.FirstOrDefault(x => GetTrasformazioneRoute(x.ARRoute) == GetTrasformazioneRoute(stepRoute))?.Properties;
+
+        this._stepDescriptor = WorkflowDescriptor.GetStepDescriptor(Step.StepId);
+        this._isStepDeprecato = this._stepDescriptor.Deprecato;
+
+        this._step = new Step(Step.Id)
+        {
+            StepId = Step.StepId,
+            Title = Step.Title,
+            Description = Step.Description,
+            Control = Step.Control,
+            Disabled = Step.Disabled,
+            ControlProperties = new List<ControlProperty>()
+        };
+
+        foreach (var prop in Step.ControlProperties)
+        {
+            this._step.ControlProperties.Add(prop);
+        }
+    }
+
+    private async Task SalvaModificheStep()
+    {
+        await OnSave.InvokeAsync(this._step);
+        await OnClose.InvokeAsync();
+    }
+
+    private void SalvaNuovaProprieta(ControlProperty? proprietaDaAggiungere)
+    {
+        if (proprietaDaAggiungere != null)
+        {
+            this._proprietaDaAggiungere = proprietaDaAggiungere;
+            var nomeProprietaDaAggiungere = Step.ControlProperties.FirstOrDefault(x => x.Nome == this._proprietaDaAggiungere.Nome)?.Nome;
+
+            if (!string.IsNullOrEmpty(nomeProprietaDaAggiungere))
+            {
+                messageContainer.AddError($"La proprietà \"{nomeProprietaDaAggiungere}\" è già stata configurata.");
+                return;
+            }
+
+            this._step.ControlProperties.Add(this._proprietaDaAggiungere);
+            this._proprietaDaAggiungere = null;
+        }
+    }
+
+    private string GetTrasformazioneRoute(string route)
+    {
+        var listaRoutes = route.Split('/');
+
+        //se listaRoutes contiene ssu o pagamenti allora concateno tutti gli elementi a partire da ssu (o pagamenti) separandoli con uno /
+        if (listaRoutes.Contains("ssu"))
+        {
+            int index = Array.IndexOf(listaRoutes, "ssu");
+            string[] relativeRoutes = listaRoutes.Skip(index).ToArray();
+            return string.Join("/", relativeRoutes);
+        }
+
+        if (listaRoutes.Contains("pagamenti"))
+        {
+            int index = Array.IndexOf(listaRoutes, "pagamenti");
+            string[] relativeRoutes = listaRoutes.Skip(index).ToArray();
+            return string.Join("/", relativeRoutes);
+        }
+
+        return listaRoutes.Last();
+    }
+}

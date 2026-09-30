@@ -1,0 +1,351 @@
+<definitions xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="urn:proWsFascicolo" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns="http://schemas.xmlsoap.org/wsdl/" targetNamespace="urn:proWsFascicolo">
+<types>
+<xsd:schema targetNamespace="urn:proWsFascicolo">
+<xsd:import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+<xsd:import namespace="http://schemas.xmlsoap.org/wsdl/"/>
+<xsd:complexType name="datiFascicolo">
+<xsd:all>
+<xsd:element name="ufficioOperatore" type="xsd:string"/>
+<xsd:element name="titolario" type="xsd:string"/>
+<xsd:element name="descrizione" type="xsd:string"/>
+<xsd:element name="natura" type="xsd:string"/>
+<xsd:element name="responsabile" type="xsd:string"/>
+<xsd:element name="ufficioResponsabile" type="xsd:string"/>
+<xsd:element name="codiceSerie" type="xsd:string"/>
+<xsd:element name="progressivoSerie" type="xsd:string"/>
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="retFascicolo">
+<xsd:all>
+<xsd:element name="codiceProtocollo" type="xsd:string"/>
+<xsd:element name="codiceFascicolo" type="xsd:string"/>
+<xsd:element name="codiceSottoFascicolo" type="xsd:string"/>
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="listaFascicoli">
+<xsd:complexContent>
+<xsd:restriction base="SOAP-ENC:Array">
+<xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:dettaglioFascicolazione[]"/>
+</xsd:restriction>
+</xsd:complexContent>
+</xsd:complexType>
+<xsd:complexType name="dettaglioFascicolazione">
+<xsd:all>
+<xsd:element name="codiceFascicolo" type="xsd:string"/>
+<xsd:element name="descrizioneFascicolo" type="xsd:string"/>
+<xsd:element name="titolario" type="xsd:string"/>
+<xsd:element name="codiceSottofascicolo" type="xsd:string"/>
+<xsd:element name="descrizioneSottofascicolo" type="xsd:string"/>
+<xsd:element name="principale" type="xsd:string"/>
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="parametroRicerca">
+<xsd:all>
+<xsd:element name="chiave" type="xsd:string"/>
+<xsd:element name="valore" type="xsd:string"/>
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="arrayParamRicerca">
+<xsd:sequence>
+<xsd:element name="parametroRicerca" type="tns:parametroRicerca" minOccurs="0" maxOccurs="unbounded"/>
+</xsd:sequence>
+</xsd:complexType>
+<xsd:complexType name="elencoFascicoli">
+<xsd:complexContent>
+<xsd:restriction base="SOAP-ENC:Array">
+<xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:dettaglioFascicolo[]"/>
+</xsd:restriction>
+</xsd:complexContent>
+</xsd:complexType>
+<xsd:complexType name="dettaglioFascicolo">
+<xsd:all>
+<xsd:element name="codiceFascicolo" type="xsd:string"/>
+<xsd:element name="descrizioneFascicolo" type="xsd:string"/>
+<xsd:element name="titolario" type="xsd:string"/>
+<xsd:element name="titolarioDescrizione" type="xsd:string"/>
+<xsd:element name="dataFascicolo" type="xsd:string"/>
+<xsd:element name="dataChiusuraFascicolo" type="xsd:string"/>
+<xsd:element name="responsabile" type="xsd:string"/>
+<xsd:element name="nomeResponsabile" type="xsd:string"/>
+<xsd:element name="ufficioResopnsabile" type="xsd:string"/>
+<xsd:element name="descUfficioResponsabile" type="xsd:string"/>
+<xsd:element name="naturaFascicolo" type="xsd:string"/>
+<xsd:element name="codiceSerie" type="xsd:string"/>
+<xsd:element name="progressivoSerie" type="xsd:string"/>
+<xsd:element name="segnatura" type="xsd:string"/>
+<xsd:element name="sottoFascicoli" type="tns:sottoFascicoli"/>
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="sottoFascicoli">
+<xsd:complexContent>
+<xsd:restriction base="SOAP-ENC:Array">
+<xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:sottoFascicolo[]"/>
+</xsd:restriction>
+</xsd:complexContent>
+</xsd:complexType>
+<xsd:complexType name="sottoFascicolo">
+<xsd:all>
+<xsd:element name="codiceSottofascicolo" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="descrizioneSottofascicolo" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="sottoFascicoli" type="tns:sottoFascicoli" minOccurs="0" maxOccurs="0"/>
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="messageResult">
+<xsd:all>
+<xsd:element name="descrizione" type="xsd:string"/>
+<xsd:element name="tipoRisultato" type="xsd:string"/>
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="elencoProtocolli">
+<xsd:complexContent>
+<xsd:restriction base="SOAP-ENC:Array">
+<xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:voceProtocollo[]"/>
+</xsd:restriction>
+</xsd:complexContent>
+</xsd:complexType>
+<xsd:complexType name="voceProtocollo">
+<xsd:all>
+<xsd:element name="rowID" type="xsd:string"/>
+<xsd:element name="tipoProtocollo" type="xsd:string"/>
+<xsd:element name="annoProtocollo" type="xsd:string"/>
+<xsd:element name="numeroProtocollo" type="xsd:string"/>
+<xsd:element name="dataProtocollo" type="xsd:string"/>
+<xsd:element name="oraProtocollo" type="xsd:string"/>
+<xsd:element name="oggetto" type="xsd:string"/>
+<xsd:element name="ufficioCreatore" type="xsd:string"/>
+<xsd:element name="descrizioneUfficioCreatore" type="xsd:string"/>
+<xsd:element name="soggetto" type="xsd:string"/>
+<xsd:element name="titolario" type="xsd:string"/>
+</xsd:all>
+</xsd:complexType>
+</xsd:schema>
+</types>
+<message name="GetItaEngineContextTokenRequest">
+<part name="userName" type="xsd:string"/>
+<part name="userPassword" type="xsd:string"/>
+<part name="domainCode" type="xsd:string"/>
+</message>
+<message name="GetItaEngineContextTokenResponse">
+<part name="return" type="xsd:string"/>
+</message>
+<message name="GetItaEngineContextTokenInfoRequest">
+<part name="token" type="xsd:string"/>
+<part name="domainCode" type="xsd:string"/>
+</message>
+<message name="GetItaEngineContextTokenInfoResponse">
+<part name="UserName" type="xsd:string"/>
+<part name="UserCode" type="xsd:string"/>
+</message>
+<message name="CheckItaEngineContextTokenRequest">
+<part name="token" type="xsd:string"/>
+<part name="domainCode" type="xsd:string"/>
+</message>
+<message name="CheckItaEngineContextTokenResponse">
+<part name="return" type="xsd:string"/>
+</message>
+<message name="DestroyItaEngineContextTokenRequest">
+<part name="token" type="xsd:string"/>
+<part name="domainCode" type="xsd:string"/>
+</message>
+<message name="DestroyItaEngineContextTokenResponse">
+<part name="return" type="xsd:string"/>
+</message>
+<message name="CreaFascicoloRequest">
+<part name="token" type="xsd:string"/>
+<part name="datiFascicolo" type="tns:datiFascicolo"/>
+</message>
+<message name="CreaFascicoloResponse">
+<part name="datiFascicolo" type="tns:dettaglioFascicolo"/>
+<part name="messageResult" type="tns:messageResult"/>
+</message>
+<message name="FascicolaProtocolloRequest">
+<part name="token" type="xsd:string"/>
+<part name="annoProtocollo" type="xsd:string"/>
+<part name="numeroProtocollo" type="xsd:string"/>
+<part name="tipoProtocollo" type="xsd:string"/>
+<part name="codiceFascicolo" type="xsd:string"/>
+<part name="codiceSottoFascicolo" type="xsd:string"/>
+</message>
+<message name="FascicolaProtocolloResponse">
+<part name="retDatiFascicolo" type="tns:retFascicolo"/>
+<part name="messageResult" type="tns:messageResult"/>
+</message>
+<message name="CreaSottofascicoloRequest">
+<part name="token" type="xsd:string"/>
+<part name="codiceFascicolo" type="xsd:string"/>
+<part name="descrizioneSottoFascicolo" type="xsd:string"/>
+<part name="responsabile" type="xsd:string"/>
+<part name="ufficioResponsabile" type="xsd:string"/>
+</message>
+<message name="CreaSottofascicoloResponse">
+<part name="retDatiFascicolo" type="tns:dettaglioFascicolazione"/>
+<part name="messageResult" type="tns:messageResult"/>
+</message>
+<message name="GetFascicoliProtocolloRequest">
+<part name="token" type="xsd:string"/>
+<part name="annoProtocollo" type="xsd:string"/>
+<part name="numeroProtocollo" type="xsd:string"/>
+<part name="tipoProtocollo" type="xsd:string"/>
+</message>
+<message name="GetFascicoliProtocolloResponse">
+<part name="ElencoFascicoli" type="tns:listaFascicoli"/>
+<part name="messageResult" type="tns:messageResult"/>
+</message>
+<message name="GetElencoFascicoliRequest">
+<part name="token" type="xsd:string"/>
+<part name="arrayParamRicerca" type="tns:arrayParamRicerca"/>
+</message>
+<message name="GetElencoFascicoliResponse">
+<part name="ElencoFascicoli" type="tns:elencoFascicoli"/>
+<part name="messageResult" type="tns:messageResult"/>
+</message>
+<message name="GetFascicoloRequest">
+<part name="token" type="xsd:string"/>
+<part name="codiceFascicolo" type="xsd:string"/>
+</message>
+<message name="GetFascicoloResponse">
+<part name="datiFascicolo" type="tns:dettaglioFascicolo"/>
+<part name="elencoProtocolli" type="tns:elencoProtocolli"/>
+<part name="messageResult" type="tns:messageResult"/>
+</message>
+<portType name="proWsFascicoloPortType">
+<operation name="GetItaEngineContextToken">
+<input message="tns:GetItaEngineContextTokenRequest"/>
+<output message="tns:GetItaEngineContextTokenResponse"/>
+</operation>
+<operation name="GetItaEngineContextTokenInfo">
+<input message="tns:GetItaEngineContextTokenInfoRequest"/>
+<output message="tns:GetItaEngineContextTokenInfoResponse"/>
+</operation>
+<operation name="CheckItaEngineContextToken">
+<input message="tns:CheckItaEngineContextTokenRequest"/>
+<output message="tns:CheckItaEngineContextTokenResponse"/>
+</operation>
+<operation name="DestroyItaEngineContextToken">
+<input message="tns:DestroyItaEngineContextTokenRequest"/>
+<output message="tns:DestroyItaEngineContextTokenResponse"/>
+</operation>
+<operation name="CreaFascicolo">
+<input message="tns:CreaFascicoloRequest"/>
+<output message="tns:CreaFascicoloResponse"/>
+</operation>
+<operation name="FascicolaProtocollo">
+<input message="tns:FascicolaProtocolloRequest"/>
+<output message="tns:FascicolaProtocolloResponse"/>
+</operation>
+<operation name="CreaSottofascicolo">
+<input message="tns:CreaSottofascicoloRequest"/>
+<output message="tns:CreaSottofascicoloResponse"/>
+</operation>
+<operation name="GetFascicoliProtocollo">
+<input message="tns:GetFascicoliProtocolloRequest"/>
+<output message="tns:GetFascicoliProtocolloResponse"/>
+</operation>
+<operation name="GetElencoFascicoli">
+<input message="tns:GetElencoFascicoliRequest"/>
+<output message="tns:GetElencoFascicoliResponse"/>
+</operation>
+<operation name="GetFascicolo">
+<input message="tns:GetFascicoloRequest"/>
+<output message="tns:GetFascicoloResponse"/>
+</operation>
+</portType>
+<binding name="proWsFascicoloBinding" type="tns:proWsFascicoloPortType">
+<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+<operation name="GetItaEngineContextToken">
+<soap:operation soapAction="http://bovillacollemandina.nuvolapalitalsoft.it/ws/Protocollo/proWsFascicolo.php/GetItaEngineContextToken" style="rpc"/>
+<input>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</input>
+<output>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</output>
+</operation>
+<operation name="GetItaEngineContextTokenInfo">
+<soap:operation soapAction="http://bovillacollemandina.nuvolapalitalsoft.it/ws/Protocollo/proWsFascicolo.php/GetItaEngineContextTokenInfo" style="rpc"/>
+<input>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</input>
+<output>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</output>
+</operation>
+<operation name="CheckItaEngineContextToken">
+<soap:operation soapAction="http://bovillacollemandina.nuvolapalitalsoft.it/ws/Protocollo/proWsFascicolo.php/CheckItaEngineContextToken" style="rpc"/>
+<input>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</input>
+<output>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</output>
+</operation>
+<operation name="DestroyItaEngineContextToken">
+<soap:operation soapAction="http://bovillacollemandina.nuvolapalitalsoft.it/ws/Protocollo/proWsFascicolo.php/DestroyItaEngineContextToken" style="rpc"/>
+<input>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</input>
+<output>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</output>
+</operation>
+<operation name="CreaFascicolo">
+<soap:operation soapAction="http://bovillacollemandina.nuvolapalitalsoft.it/ws/Protocollo/proWsFascicolo.php/CreaFascicolo" style="rpc"/>
+<input>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</input>
+<output>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</output>
+</operation>
+<operation name="FascicolaProtocollo">
+<soap:operation soapAction="http://bovillacollemandina.nuvolapalitalsoft.it/ws/Protocollo/proWsFascicolo.php/FascicolaProtocollo" style="rpc"/>
+<input>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</input>
+<output>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</output>
+</operation>
+<operation name="CreaSottofascicolo">
+<soap:operation soapAction="http://bovillacollemandina.nuvolapalitalsoft.it/ws/Protocollo/proWsFascicolo.php/CreaSottofascicolo" style="rpc"/>
+<input>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</input>
+<output>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</output>
+</operation>
+<operation name="GetFascicoliProtocollo">
+<soap:operation soapAction="http://bovillacollemandina.nuvolapalitalsoft.it/ws/Protocollo/proWsFascicolo.php/GetFascicoliProtocollo" style="rpc"/>
+<input>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</input>
+<output>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</output>
+</operation>
+<operation name="GetElencoFascicoli">
+<soap:operation soapAction="http://bovillacollemandina.nuvolapalitalsoft.it/ws/Protocollo/proWsFascicolo.php/GetElencoFascicoli" style="rpc"/>
+<input>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</input>
+<output>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</output>
+</operation>
+<operation name="GetFascicolo">
+<soap:operation soapAction="http://bovillacollemandina.nuvolapalitalsoft.it/ws/Protocollo/proWsFascicolo.php/GetFascicolo" style="rpc"/>
+<input>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</input>
+<output>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</output>
+</operation>
+</binding>
+<service name="proWsFascicolo">
+<port name="proWsFascicoloPort" binding="tns:proWsFascicoloBinding">
+<soap:address location="http://bovillacollemandina.nuvolapalitalsoft.it/ws/Protocollo/proWsFascicolo.php"/>
+</port>
+</service>
+</definitions>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://gruppoinit.it/sigepro/schemas/messages/oggetti" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xmime="http://www.w3.org/2005/05/xmlmime">
+	<element name="OggettiFindRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string" />
+				<element name="id" type="integer" />
+			</sequence>
+		</complexType>
+	</element>
+	<element name="OggettiFindResponse">
+		<complexType>
+			<sequence>
+				<element name="fileName" type="string" />
+				<element name="mimeType" type="string" minOccurs="0" maxOccurs="1" />
+				<element name="binaryData" type="base64Binary" xmime:expectedContentTypes="application/octet-stream" />
+			</sequence>
+		</complexType>
+	</element>
+	<element name="OggettiFindNomeRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string" />
+				<element name="id" type="integer" />
+			</sequence>
+		</complexType>
+	</element>
+	<element name="OggettiFindNomeResponse">
+		<complexType>
+			<sequence>
+				<element name="fileName" type="string" />
+			</sequence>
+		</complexType>
+	</element>
+	<element name="OggettiInsertRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string" />
+				<element name="fileName" type="string" />
+				<element name="mimeType" type="string" minOccurs="0" maxOccurs="1" />
+				<element name="binaryData" type="base64Binary" xmime:expectedContentTypes="application/octet-stream" />
+			</sequence>
+		</complexType>
+	</element>
+	<element name="OggettiInsertResponse">
+		<complexType>
+			<sequence>
+				<element name="id" type="integer" />
+			</sequence>
+		</complexType>
+	</element>
+	<element name="OggettiUpdateRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string" />
+				<element name="id" type="integer" />
+				<element name="fileName" type="string" minOccurs="0" maxOccurs="1" />
+				<element name="mimeType" type="string" minOccurs="0" maxOccurs="1" />
+				<element name="binaryData" type="base64Binary" minOccurs="0" maxOccurs="1" xmime:expectedContentTypes="application/octet-stream" />
+			</sequence>
+		</complexType>
+	</element>
+	<element name="OggettiUpdateResponse">
+		<complexType>
+			<sequence>
+				<element name="result" type="boolean" />
+			</sequence>
+		</complexType>
+	</element>
+	<element name="OggettiDeleteRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string" />
+				<element name="id" type="integer" />
+			</sequence>
+		</complexType>
+	</element>
+	<element name="OggettiDeleteResponse">
+		<complexType>
+			<sequence>
+				<element name="result" type="boolean" />
+			</sequence>
+		</complexType>
+	</element>
+</schema>

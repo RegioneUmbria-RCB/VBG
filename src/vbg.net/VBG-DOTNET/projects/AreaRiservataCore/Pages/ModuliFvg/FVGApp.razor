@@ -1,0 +1,40 @@
+﻿@using Init.Sigepro.FrontEnd.AppLogic.Autenticazione.Vbg;
+@using Init.Sigepro.FrontEnd.AppLogic.Common
+@using Init.Sigepro.FrontEnd.CoreServices.Autenticazione
+@using Microsoft.AspNetCore.WebUtilities
+@inject AliasSoftwareProvider _aliasSoftwareProvider
+@inject IAuthenticationDataStore _authenticationDataStore
+
+<Router AppAssembly="@typeof(FVGApp).Assembly">
+	<Found Context="routeData">
+		<CascadingValue Name="AppRouteData" Value="@routeData">
+			<RouteView RouteData="@routeData" DefaultLayout="@typeof(FVGLayout)"></RouteView>
+			<FocusOnNavigate RouteData="@routeData" Selector="h1" />
+			<!-- <RouteDataHandler /> -->
+		</CascadingValue>
+	</Found>
+	<NotFound>
+        <PageTitle>Pagina non trovata</PageTitle>
+        <LayoutView Layout="@typeof(MainLayout)">
+            <h1>Pagina non trovata</h1>
+            <p role="alert">La pagina richiesta non è stata trovata</p>
+        </LayoutView>
+	</NotFound>
+</Router>
+
+@code {
+	[Parameter]
+	public InitialApplicationState InitialApplicationState { get; set; }
+
+
+	protected override Task OnInitializedAsync()
+	{
+		this._aliasSoftwareProvider.AliasComune = InitialApplicationState.Alias;
+		this._aliasSoftwareProvider.Software = InitialApplicationState.Software;
+
+        this._authenticationDataStore.Save(new UserAuthenticationResult());
+
+		return base.OnInitializedAsync();
+	}
+
+}

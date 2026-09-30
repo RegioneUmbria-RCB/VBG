@@ -1,0 +1,84 @@
+﻿@using Init.Sigepro.FrontEnd.AppLogic.Autenticazione.Vbg.AutenticazioneUtente;
+@using Init.Sigepro.FrontEnd.CoreServices.LabelUpdater
+@using Vbg.CoreControls
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneRisorseTestuali
+@inherits MyBaseComponentMin
+@implements IDisposable
+@inject IRisorseTestualiService _risorseService
+@inject LabelUpdaterService _labelUpdaterService
+@inject IAuthenticationDataResolver _authDataResolver
+
+@if (_authDataResolver.DatiAutenticazione?.DatiUtente?.UtenteTester ?? false)
+{
+    <ModalWindowComponent AllwaysPresentInDOM="true" CssVisibility="@Visible" OnOkButton="@UpdateResourceId" OnCancelButton="() => _labelUpdaterService.HideAsync()">
+    <HeaderTemplate>
+        <h3 style="margin:0">Modifica Risorsa</h3>
+    </HeaderTemplate>
+    <BodyTemplate>
+        <div>
+            <InputComponent Label="ID Risorsa" Value="@ResourceId" IsDisabled="true"></InputComponent>
+            <InputComponent Label="Testo Risorsa" Value="@this.Value" ValueChanged="HandleCallback" IsMultiline="true" Rows="6"></InputComponent>
+        </div>
+    </BodyTemplate>
+</ModalWindowComponent>
+}
+
+@code {
+    /// <summary>
+    /// Set the component visibility by CSS style
+    /// </summary>
+    [Parameter]
+    public bool Visible { get; set; } = false;
+
+    private LabelComponent? sender;
+
+    protected override Task OnInitializedAsync()
+    {
+        _labelUpdaterService.OnShowAsync += Show;
+        _labelUpdaterService.OnHideAsync += Hide;
+
+        return base.OnInitializedAsync();
+    }
+
+    public void Dispose()
+    {
+        sender = null;
+    }
+
+    private async Task HandleCallback(Dictionary<string, object> dictionaryParams)
+    {
+        foreach (var param in dictionaryParams)
+        {
+            if (param.Key == "ReceivedValue")
+                this.Value = param.Value.ToString();
+        }
+
+        await Task.CompletedTask;
+    }
+
+    public async Task Show(string resourceId, object labelComponent)
+    {
+        sender = labelComponent as LabelComponent;
+
+        Visible = true;
+        this.ResourceId = resourceId;
+        this.Value = sender.Value;
+
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public async Task Hide()
+    {
+        Visible = false;
+
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task UpdateResourceId()
+    {
+        this._risorseService.AggiornaRisorsa(ResourceId, this.Value);
+
+        await _labelUpdaterService.HideAsync();
+        await _labelUpdaterService.RefreshLabelAsync(this.Value, sender);
+    }
+}

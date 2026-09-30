@@ -1,0 +1,2708 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:sch="it/lineacomune/pagopa/be/ws/endpoint/public" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="it/lineacomune/pagopa/be/ws/endpoint/public" targetNamespace="it/lineacomune/pagopa/be/ws/endpoint/public">
+  <wsdl:types>
+    <xs:schema xmlns="it/lineacomune/pagopa/be/ws/endpoint/public" xmlns:iuv="it/lineacomune/pagopa/be/ws/endpoint/shared" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" elementFormDefault="qualified" targetNamespace="it/lineacomune/pagopa/be/ws/endpoint/public">
+  <xs:import namespace="it/lineacomune/pagopa/be/ws/endpoint/shared" schemaLocation="iuvSchema.xsd"/>
+
+  <xs:element name="inserisciPagamentiAttesiRequest">
+    <xs:annotation>
+      <xs:documentation xml:lang="it">Richiesta di inserimento
+        di uno o più Pagamenti Attesi
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:annotation>
+          <xs:documentation xml:lang="it">Lista dei Pagamenti
+            Attesi
+          </xs:documentation>
+        </xs:annotation>
+        <xs:element maxOccurs="unbounded" minOccurs="1" name="datiPagamentoAttesoWs" type="tns:datiNuovoPagamentoAttesoWs">
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="inserisciPagamentiAttesiResponse">
+    <xs:annotation>
+      <xs:documentation xml:lang="it">Risposta dell'inserimento
+        di uno o più Pagamenti Attesi
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="codiceErrore" type="xs:string">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">Codice di errore reso
+              dal sistema
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="descrizioneErrore" type="xs:string">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">Descrizione
+              dell'errore reso dal sistema
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="pagamentoAttesoRispostaWs" type="tns:pagamentoAttesoRispostaWs">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">Proprietà relative al
+              Pagamento Atteso
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="modificaPagamentiAttesiRequest">
+    <xs:annotation>
+      <xs:documentation xml:lang="it">Richiesta di modifica
+        di
+        uno o più Pagamenti Attesi
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" minOccurs="1" name="datiPagamentoAttesoWs" type="tns:datiModificaPagamentoAttesoWs">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">Lista dei Pagamenti
+              Attesi
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="modificaPagamentiAttesiResponse">
+    <xs:annotation>
+      <xs:documentation xml:lang="it">Risposta della modifica
+        di uno o più Pagamenti Attesi
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="codiceErrore" type="xs:string">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">Codice di errore reso
+              dal sistema
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="descrizioneErrore" type="xs:string">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">Descrizione
+              dell'errore reso dal sistema
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="pagamentoAttesoRispostaWs" type="tns:pagamentoAttesoRispostaWs">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">Proprietà relative al
+              Pagamento Atteso
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="annullaPagamentiAttesiRequest">
+    <xs:annotation>
+      <xs:documentation xml:lang="it">Richiesta di annullamento
+        di uno o più Pagamenti Attesi
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" minOccurs="1" name="datiPagamentoAttesoWs" type="tns:datiAnnullaPagamentoAttesoWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="annullaPagamentiAttesiResponse">
+    <xs:annotation>
+      <xs:documentation xml:lang="it">Risposta di annullamento
+        di uno o più Pagamenti Attesi
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="codiceErrore" type="xs:string">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">Codice di errore reso
+              dal sistema
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="descrizioneErrore" type="xs:string">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">Descrizione
+              dell'errore reso dal sistema
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="pagamentoAttesoRispostaWs" type="tns:pagamentoAttesoRispostaWs">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">Proprietà relative al
+              Pagamento Atteso
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="segnaPagatoPagamentiAttesiRequest">
+    <xs:annotation>
+      <xs:documentation xml:lang="it">Richiesta di Segnare come
+        Pagato
+        uno o più Pagamenti Attesi
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" minOccurs="1" name="DatiPagamentoAttesoWs" type="tns:datiSegnaPagatoPagamentoAttesoWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="segnaPagatoPagamentiAttesiResponse">
+    <xs:annotation>
+      <xs:documentation xml:lang="it">Risposta di Segnare come
+        Pagato
+        di uno o più Pagamenti Attesi
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="codiceErrore" type="xs:string">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">Codice di errore reso
+              dal sistema
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="descrizioneErrore" type="xs:string">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">Descrizione
+              dell'errore reso dal sistema
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="pagamentoAttesoRispostaWs" type="tns:pagamentoAttesoRispostaWs">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">Proprietà relative al
+              Pagamento Atteso
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="datiNuovoPagamentoAttesoWs">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="1" name="nuovoPagamentoAttesoWs" type="tns:nuovoPagamentoAttesoWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="datiModificaPagamentoAttesoWs">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="1" name="modificaPagamentoAttesoWs" type="tns:pagamentoAttesoWs"/>
+      <xs:element name="motivazione">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">
+            Motivazione
+            dell'operazione richiesta
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="datiAnnullaPagamentoAttesoWs">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="1" name="annullaPagamentoAttesoWs" type="tns:annullaPagamentoAttesoWs"/>
+      <xs:element name="motivazione">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">
+            Motivazione
+            dell'operazione richiesta
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="datiSegnaPagatoPagamentoAttesoWs">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="1" name="segnaPagatoPagamentoAttesoWs" type="tns:segnaPagatoPagamentoAttesoWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="datiRiattivaPagamentoAttesoWs">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="1" name="riattivaPagamentoAttesoWs" type="tns:riattivaPagamentoAttesoWs"/>
+      <xs:element name="motivazione">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">
+            Motivazione
+            dell'operazione richiesta
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="riattivaPagamentiAttesiRequest">
+    <xs:annotation>
+      <xs:documentation xml:lang="it">Richiesta di
+        riattivazione
+        di uno o più Pagamenti Attesi
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" minOccurs="1" name="datiPagamentoAttesoWs" type="tns:datiRiattivaPagamentoAttesoWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="riattivaPagamentiAttesiResponse">
+    <xs:annotation>
+      <xs:documentation xml:lang="it">Risposta di riattivazione
+        di uno o più Pagamenti Attesi
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="codiceErrore" type="xs:string">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">Codice di errore reso
+              dal sistema
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="descrizioneErrore" type="xs:string">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">Descrizione
+              dell'errore reso dal sistema
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="pagamentoAttesoRispostaWs" type="tns:pagamentoAttesoRispostaWs">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">Proprietà relative al
+              Pagamento Atteso
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="nuovoPagamentoAttesoWs">
+    <xs:annotation>
+      <xs:documentation xml:lang="it">Proprietà relative
+        all'inserimento del nuovo Pagamento
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="pagamentoAttesoWs" type="tns:pagamentoAttesoWs"/>
+      <xs:element name="datiSpecificiRiscossione">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">Da specifiche agid,
+            rappresenta l’indicazione dell’imputazione della specifica entrata
+            ed è così articolato: [tipo contabilità]/[codice contabilità].
+            Dove [tipo contabilità] ha il seguente significato: 0 - Capitolo
+            e articolo di Entrata del Bilancio dello Stato; 1 - Numero della
+            contabilità speciale; 2 - Codice SIOPE; 9 - Altro codice ad uso
+            dell’Ente Creditore
+            UPDATE: rappresenta il codice tassonomia del servizio di incasso. Il codice è così composto:
+            9/[Codice Ente creditore][Progressivo Macroarea][Codice tipologia servizio][Motivo giuridico riscossione]/[dati liberi per ente]
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="138"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="pagamentoAttesoWs">
+    <xs:annotation>
+      <xs:documentation xml:lang="it">Proprietà relative al
+        Pagamento Atteso
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="idBoPagamentoAtteso">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">Identificativo del
+            pagamento atteso del back office che lo ha inserito
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="100"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+
+      <xs:element name="codiceServizio">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">codice del servizio
+            assegnato da Linea Comune
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="10"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+
+      <xs:element name="codiceEnte">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">codice ente assegnato
+            da Linea Comune
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="partiteDebitorieWs" type="iuv:partitaDebitoriaWs">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">struttura che deve
+            essere presente se abilitata la gestione della contabilità per il
+            servizio
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element minOccurs="0" name="anagCap">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">codice avviamento
+            postale del soggetto pagante
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="5"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+
+      <xs:element name="anagCfPiva">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">codice fiscale (se
+            soggetto fisico) o partita iva (se soggetto giuridico) del
+            soggetto pagante. Per pagamenti anonimi il valore deve essere
+            ANONIMO
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="16"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+
+      <xs:element minOccurs="0" name="anagCivico">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">numero civico
+            dell'indirizzo del soggetto pagante
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="16"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+
+      <xs:element name="anagDenominazione">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">nome e cognome o
+            denominazione società
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="70"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+
+      <xs:element minOccurs="0" name="anagEmail">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">email del soggetto
+            pagante
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:pattern value="[^@]+@[^\.]+\..+"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+
+      <xs:element minOccurs="0" name="anagIndirizzo">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">Indirizzo del soggetto
+            pagante
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="70"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+
+      <xs:element minOccurs="0" name="anagLocalita">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">Descrizione del comune
+            o della località di residenza
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="35"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+
+      <xs:element name="anagNaturaGiuridica">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">natura giuridica del
+            soggetto pagante. I valori possibili sono 'F' (fisica) o 'G'
+            (giuridica)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+
+      <xs:element minOccurs="0" name="anagNazione">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">Codice ISO 3166 della
+            nazione di residenza
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+
+      <xs:element minOccurs="0" name="anagProvincia">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">provincia di residenza
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="35"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+
+      <xs:element name="causale">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">causale del pagamento
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="100"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+
+      <xs:element name="importo">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">importo del pagamento
+            con due decimali divisi da punto o virgola
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+
+      <xs:element maxOccurs="1" minOccurs="0" name="iuv">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">identificativo univoco
+            del pagamento (17 cifre) o numero avviso (18 cifre)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="17"/>
+            <xs:maxLength value="18"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+
+      <xs:element name="visibileSol">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">indica se il pagamento
+            atteso può essere visualizzato in un eventuale prospetto del
+            cittadino che riassuma la situazione debitoria per intero
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:boolean"/>
+        </xs:simpleType>
+      </xs:element>
+
+      <xs:element name="dataInizioValidita">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">data e ora dalla quale
+            il pagamento atteso potrà essere visto (se visibile_sol = true) e
+            pagato
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:dateTime"/>
+        </xs:simpleType>
+      </xs:element>
+
+      <xs:element name="dataScadenza">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">data e ora dalla quale
+            il pagamento atteso potrà essere visto (se visibile_sol = true) e
+            pagato
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:dateTime"/>
+        </xs:simpleType>
+      </xs:element>
+
+      <xs:element minOccurs="0" name="dataScadenzaStampabile">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">data e ora di scadenza
+            visibile al cittadino. Se presente, deve essere precedente alla
+            data di scadenza
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:dateTime"/>
+        </xs:simpleType>
+      </xs:element>
+
+      <xs:element minOccurs="0" name="dataScadenzaNote">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">Messaggio al cittadino nel caso
+            la data di scadenza non sia conosciuta al momento dell'inserimento
+            del pagamento atteso
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="500"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+  <xs:complexType name="annullaPagamentoAttesoWs">
+    <xs:annotation>
+      <xs:documentation xml:lang="it">Proprietà relative
+        all'annullamento del Pagamento Atteso
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="iuv">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">identificativo univoco
+            del pagamento (17 cifre) o numero avviso (18 cifre)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="17"/>
+            <xs:maxLength value="18"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="codiceServizio">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">codice del servizio
+            assegnato da Linea Comune
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="10"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="codiceEnte">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">codice ente assegnato
+            da Linea Comune
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="segnaPagatoPagamentoAttesoWs">
+    <xs:annotation>
+      <xs:documentation xml:lang="it">Proprietà relative
+        all'aggiornamento a "Pagato" dello stato del Pagamento Atteso
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="iuv">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">identificativo univoco
+            del pagamento (17 cifre) o numero avviso (18 cifre)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="17"/>
+            <xs:maxLength value="18"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="codiceServizio">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">codice del servizio
+            assegnato da Linea Comune
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="10"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="codiceEnte">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">codice ente assegnato
+            da Linea Comune
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="dataPagamento" type="xs:dateTime">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">data nella quale è
+            stato effettuato il pagamento (formato AAAA-MM-GG)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="canalePagamento">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">Canale di Pagamento
+            utilizzato per effettuare il Pagamento.
+            I valori possibili sono 1
+            ("File"), 2("WS"), 3("Manuale");
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="importo" type="xs:decimal">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">importo del pagamento
+            con due decimali divisi da punto o virgola
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="riattivaPagamentoAttesoWs">
+    <xs:sequence>
+      <xs:element name="iuv">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">identificativo univoco
+            del pagamento (17 cifre) o numero avviso (18 cifre)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="17"/>
+            <xs:maxLength value="18"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="codiceServizio">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">codice del servizio
+            assegnato da Linea Comune
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="10"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="codiceEnte">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">codice ente assegnato
+            da Linea Comune
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="pagamentoAttesoRispostaWs">
+    <xs:annotation>
+      <xs:documentation xml:lang="it">Proprietà relative al
+        Pagamento
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+
+      <xs:element name="codiceEsito">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">Codice che rappresenta
+            l'esito dell'operazione sul Pagamento Atteso
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="descrizioneEsito">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">
+            Descrizione dell'esito
+            dell'operazione sul Pagamento.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+
+      </xs:element>
+      <xs:element name="iuv">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">identificativo univoco
+            del pagamento (17 cifre) o numero avviso (18 cifre)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="17"/>
+            <xs:maxLength value="18"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="idBoPagamentoAtteso">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">Identificativo del
+            pagamento atteso del back office che lo ha inserito
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="100"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="partiteDebitorieRispostaWs" type="tns:partitaDebitoriaRispostaWs">
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="partitaDebitoriaRispostaWs">
+    <xs:sequence>
+      <xs:annotation>
+        <xs:documentation xml:lang="it">Proprietà della Partita
+          Debitoria
+        </xs:documentation>
+      </xs:annotation>
+      <xs:element maxOccurs="unbounded" minOccurs="1" name="articoliDebitoriRispostaWs" type="tns:articoloDebitorioRispostaWs"/>
+      <xs:element name="idBoPartitaDebitoria">
+
+        <xs:annotation>
+          <xs:documentation xml:lang="it">Identificativo di Back
+            Office della Partita Debitoria. Viene registrato dal sistema ma
+            non utilizzato
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="100"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+
+      <xs:element name="descrizione">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">Descrizione della
+            Partita Debitoria
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="256"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="importo">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">importo dell'articolo
+            debitorio
+            con due decimali divisi da punto o virgola
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="articoloDebitorioRispostaWs">
+    <xs:annotation>
+      <xs:documentation xml:lang="it">Proprietà dell'Articolo
+        Debitorio
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="codiceEntrata">
+
+        <xs:annotation>
+          <xs:documentation xml:lang="it">Codice entrata secondo
+            la
+            codifica dell'agenzia delle entrate (non utilizzato dal
+            sistema,
+            utile in casi di rendicontazione per sistemi di back
+            office quali,
+            per esempio, la riscossione coattiva)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="4"/>
+            <xs:maxLength value="4"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="descrizione">
+
+        <xs:annotation>
+          <xs:documentation xml:lang="it">Descrizione
+            dell'Articolo Debitorio
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="256"/>
+          </xs:restriction>
+        </xs:simpleType>
+
+      </xs:element>
+      <xs:element name="importo">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">importo dell'articolo
+            debitorio
+            con due decimali divisi da punto o virgola
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="getPagamentoAttesoByIuvRequest">
+    <xs:annotation>
+      <xs:documentation xml:lang="it">Richiesta di ricerca di
+        un singolo Pagamento Atteso attraverso il suo IUV
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="codiceEnte">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">codice ente assegnato
+              da Linea Comune
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="1"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+
+        <xs:element name="codiceServizio">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">codice del servizio
+              assegnato da Linea Comune
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="1"/>
+              <xs:maxLength value="10"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="iuv">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">identificativo univoco
+              del pagamento (17 cifre) o numero avviso (18 cifre)
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="17"/>
+              <xs:maxLength value="18"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getPagamentoAttesoByIuvResponse">
+    <xs:annotation>
+      <xs:documentation xml:lang="it">Risposta di ricerca di
+        un
+        singolo Pagamento Atteso attraverso il suo IUV
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="codiceErrore" type="xs:string">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">Codice di errore reso
+              dal sistema
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="descrizioneErrore" type="xs:string">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">Descrizione
+              dell'errore reso dal sistema
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element maxOccurs="1" minOccurs="0" name="pagamentoAttesoWs" type="iuv:getPagamentoAttesoWs">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">Proprietà relative al
+              Pagamento Atteso
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getRicevutaTelematicaByIuvRequest">
+    <xs:annotation>
+      <xs:documentation xml:lang="it">Richiesta di ricerca di
+        una singola Ricevuta Telematica attraverso lo IUV del Pagamento
+        Atteso ad essa associato
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="codiceEnte">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">codice ente assegnato
+              da Linea Comune
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="1"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="codiceServizio">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">codice del servizio
+              assegnato da Linea Comune
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="1"/>
+              <xs:maxLength value="10"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="iuv">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">identificativo univoco
+              del pagamento (17 cifre) o numero avviso (18 cifre)
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="17"/>
+              <xs:maxLength value="18"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="pdf" type="xs:boolean">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">Booleano che, se true,
+              richiede l'inclusione nella Response del PDF della Ricevuta
+              Telematica
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getRicevutaTelematicaByIuvResponse">
+    <xs:annotation>
+      <xs:documentation xml:lang="it">Risposta di ricerca di
+        una singola Ricevuta Telematica attraverso lo IUV del Pagamento
+        Atteso ad essa associato
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="codiceErrore" type="xs:string">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">Codice di Errore
+              associato all'operazione
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="descrizioneErrore" type="xs:string">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">Descrizione
+              dell'errore reso dal sistema
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="iuv">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">identificativo univoco
+              del pagamento (17 cifre) o numero avviso (18 cifre)
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="17"/>
+              <xs:maxLength value="18"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element maxOccurs="1" minOccurs="1" name="ricevutaTelematicaRispostaWs" type="tns:getRicevutaTelematicaRispostaWs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="pdfRicevutaTelematicaWs">
+
+    <xs:annotation>
+      <xs:documentation xml:lang="it">Proprietà del PDF della
+        Ricevuta Telematica associata al Pagamento
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="1" name="pdf" type="xs:string">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">Proprietà del PDF della
+            Contenuto del PDF della Ricevuta Telematica
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element maxOccurs="1" minOccurs="0" name="errore" type="xs:boolean">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">Booleano che indica se
+            c'è stato un errore durante l'operazione
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element maxOccurs="1" minOccurs="0" name="descrizioneErrore" type="xs:string">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">Descrizione
+            dell'errore
+            reso dal sistema
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getRicevutaTelematicaRispostaWs">
+    <xs:annotation>
+      <xs:documentation xml:lang="it">Proprietà della Ricevuta
+        Telematica associata al Pagamento Atteso
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="1" name="ricevutaTelematicaWs" type="iuv:ricevutaTelematicaWs"/>
+      <xs:element maxOccurs="1" minOccurs="0" name="pdfRicevutaTelematicaWs" type="tns:pdfRicevutaTelematicaWs"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="getListaIuvRequest">
+    <xs:annotation>
+      <xs:documentation xml:lang="it">Richiesta di generazione
+        del numero desiderato di Codice Iuv
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="codiceEnte">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">codice ente assegnato
+              da Linea Comune
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="1"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="codiceServizio">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">codice del servizio
+              assegnato da Linea Comune
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="1"/>
+              <xs:maxLength value="10"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="quantitaIuv" type="xs:integer">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">
+              Numero di IUV da
+              emettere
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getListaIuvResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="codiceErrore" type="xs:string">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">Codice di Errore
+              associato all'operazione
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="iuvFeList" type="iuv:IuvFeList"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getTokenRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="codiceEnte">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">codice ente assegnato
+              da Linea Comune
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="1"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="codiceServizio">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">codice del servizio
+              assegnato da Linea Comune
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="1"/>
+              <xs:maxLength value="10"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="iuvFeList" type="iuv:IuvFeList"/>
+        <xs:element minOccurs="0" name="msgSol">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">
+              Messaggio del servizio
+              che verrà mostrato nel portale dei pagamenti, all'interno della
+              prima schermata (riepilogo dei pagamenti)
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="1"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="urlRitorno">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">
+              Url di ritorno al
+              quale l'utente sarà indirizzato qualora a
+              completamento
+              dell'operazione desideri tornare al servizio di
+              partenza, uscendo
+              dal portale dei pagamenti
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="1"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getTokenResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="codiceErrore" type="xs:string">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">Codice di Errore
+              associato all'operazione
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="token">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">
+              Stringa contenente il
+              token associato all'operazione effettuata dall'utente
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="1"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getEsitoPagamentoRequest">
+    <xs:annotation>
+      <xs:documentation xml:lang="it">Richiede l'Esito del
+        Pagamento Atteso specificato
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="codiceEnte">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">codice ente assegnato
+              da Linea Comune
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="1"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="codiceServizio">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">codice del servizio
+              assegnato da Linea Comune
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="1"/>
+              <xs:maxLength value="10"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="token">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">Stringa contenente il
+              token associato all'operazione effettuata dall'utente
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="1"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getEsitoPagamentoResponse">
+    <xs:annotation>
+      <xs:documentation xml:lang="it">Mostra l'Esito del
+        Pagamento Atteso ed eventualmente un codice di errore
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="codiceErrore" type="xs:string">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">Codice di Errore
+              associato all'operazione
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="esitopagamento">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">I valori possibili
+              sono: POSITIVO("OK"), NEGATIVO("ERROR"), DIFFERITO("DIFFERITO")
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="1"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+
+  <xs:element name="inviaRichiestaStornoRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="codiceEnte">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">codice ente assegnato
+              da Linea Comune
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="1"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="codiceServizio">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">codice del servizio
+              assegnato da Linea Comune
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="1"/>
+              <xs:maxLength value="10"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="iuv">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">
+              iuv del pagamento da stornare
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="1"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="causale">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">
+              causale della richiesta di storno
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="1"/>
+              <xs:maxLength value="140"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="datiAggiuntivi">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">
+              causale della richiesta di storno
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="1"/>
+              <xs:maxLength value="140"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="inviaRichiestaStornoResponse">
+    <xs:annotation>
+      <xs:documentation xml:lang="it">
+        Operazione Invia Richiesta Storno
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="esito">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">
+              Esito dell'Operazione
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="1"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="codiceErrore" type="xs:string">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">Codice di Errore
+              associato all'operazione
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="descrizioneErrore" type="xs:string">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">
+              Descrizione
+              dell'errore, valorizzato con stringa testuale in caso di errore
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="leggiEsitoStornoRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="codiceEnte">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">codice ente assegnato
+              da Linea Comune
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="1"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="codiceServizio">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">codice del servizio
+              assegnato da Linea Comune
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="1"/>
+              <xs:maxLength value="10"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="iuv">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">
+              iuv del pagamento per cui leggere esito storno
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="1"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="leggiEsitoStornoResponse">
+    <xs:annotation>
+      <xs:documentation xml:lang="it">
+        Operazione leggi Esito Storno
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="esito">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">
+              Esito dell'Operazione
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="OK"/>
+              <xs:enumeration value="KO"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="statoRevoca">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">
+              Stato della Revoca
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="IN CORSO"/>
+              <xs:enumeration value="ESITO POSITIVO"/>
+              <xs:enumeration value="ESITO NEGATIVO"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="dataOraMessaggioEsito">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">data e ora dell'arrivo Esito Storno
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:dateTime"/>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="esitoPositivoStorno" type="xs:boolean">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">
+              Booleano positivo se
+              Esito Storno positivo
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="causaleEsito" type="xs:string">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">
+              causale Esito Storno
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="datiAggiuntiviEsito" type="xs:string">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">
+              dati aggiuntivi Esito Storno
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="xml" type="xs:base64Binary">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">Base64 binary
+              che riporta il contenuto della ER
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="codiceErrore" type="xs:string">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">Codice di Errore
+              associato all'operazione
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="descrizioneErrore" type="xs:string">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">
+              Descrizione
+              dell'errore, valorizzato con stringa testuale in caso di errore
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="setEsitoRevocaRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="codiceEnte">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">codice ente assegnato
+              da Linea Comune
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="1"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="codiceServizio">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">codice del servizio
+              assegnato da Linea Comune
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="1"/>
+              <xs:maxLength value="10"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="iuv">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">
+              iuv del pagamento per cui viene inviato l'esito della richiesta di revoca
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="1"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="esitoPositivoRevoca" type="xs:boolean">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">
+              Booleano positivo se
+              Esito Revoca positivo
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="causaleEsito" type="xs:string">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">
+              causale Esito Revoca
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="datiAggiuntiviEsito" type="xs:string">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">
+              dati aggiuntivi Esito Revoca
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="setEsitoRevocaResponse">
+    <xs:annotation>
+      <xs:documentation xml:lang="it">
+        Operazione di invio Esito Revoca
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="esito">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">
+              Esito dell'Operazione: OK, KO
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="OK"/>
+              <xs:enumeration value="KO"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="codiceErrore" type="xs:string">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">Codice di Errore
+              associato all'operazione
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="descrizioneErrore" type="xs:string">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">
+              Descrizione
+              dell'errore, valorizzato con stringa testuale in caso di errore
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getTokenMarcaBolloRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="codiceEnte">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">codice ente assegnato
+              da Linea Comune
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="1"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="importo" type="xs:decimal">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">
+              Importo Marca da Bollo
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="hashDocumento">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">Hash documento
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="1"/>
+              <xs:maxLength value="70"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="anagCfPiva">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">Codice Fiscale/Partita
+              IVA del debitore
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="1"/>
+              <xs:maxLength value="16"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="anagDenominazione" type="xs:string">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">Denominazione del
+              debitore
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="anagNaturaGiuridica" type="xs:string">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">Natura Giuridica del
+              debitore ("F" per persona fisica, "G" per persona giuridica)
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="anagProvincia" type="xs:string">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">Provincia del
+              debitore
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="urlRitorno" type="xs:string">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">
+              Url di ritorno al
+              quale l'utente sarà indirizzato qualora a
+              completamento
+              dell'operazione desideri tornare al servizio di
+              partenza, uscendo
+              dal portale dei pagamenti
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getTokenMarcaBolloResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="esito">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">
+              Esito dell'Operazione
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="1"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="codiceErrore" type="xs:string">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">Codice di Errore
+              associato all'operazione
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="descrizioneErrore" type="xs:string">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">
+              Descrizione
+              dell'errore, valorizzato con stringa testuale in caso di errore
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="token">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">
+              Stringa contenente il
+              token di sessione (validità 30 minuti) associato all'operazione
+              effettuata dall'utente.
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="1"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="iuv">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">Identificativo Univoco
+              del Pagamento Atteso (17 caratteri)
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="17"/>
+              <xs:maxLength value="18"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getMarcaBolloByHashDocumentoRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="codiceEnte">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">codice ente assegnato
+              da Linea Comune
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="1"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="hashDocumento">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">Hash documento
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="1"/>
+              <xs:maxLength value="70"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getMarcaBolloByHashDocumentoResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="esito">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">
+              Esito dell'Operazione
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="1"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="codiceErrore" type="xs:string">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">Codice di Errore
+              associato all'operazione
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="descrizioneErrore" type="xs:string">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">
+              Descrizione
+              dell'errore, valorizzato con stringa testuale in caso di errore
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="listaMarcaBollo">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">
+              Lista di stringhe contenenti le marche da bollo
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="1"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getMarcaBolloByTokenRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="codiceEnte">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">codice ente assegnato
+              da Linea Comune
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="1"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="token">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">
+              Stringa contenente il
+              token di sessione (validità 30 minuti) associato all'operazione
+              effettuata dall'utente.
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="1"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getMarcaBolloByTokenResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="esito">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">
+              Esito dell'Operazione
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="1"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="codiceErrore" type="xs:string">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">Codice di Errore
+              associato all'operazione
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="descrizioneErrore" type="xs:string">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">
+              Descrizione
+              dell'errore, valorizzato con stringa testuale in caso di errore
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="marcaBollo">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">
+              Stringa contenente la marca da bollo
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="1"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="getPagamentoAttesoPdfRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="codiceEnte">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">codice ente assegnato
+              da Linea Comune
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="1"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="codiceServizio">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">codice del servizio
+              assegnato da Linea Comune
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="1"/>
+              <xs:maxLength value="10"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="iuv">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">identificativo univoco
+              del pagamento (17 cifre) o numero avviso (18 cifre)
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="17"/>
+              <xs:maxLength value="18"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getPagamentoAttesoPdfResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="codiceErrore" type="xs:string">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">Codice di Errore
+              associato all'operazione
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="streampdf">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">Contenuto dello Stream
+              PDF del Pagamento Atteso
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="1"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+
+  <xs:element name="getRavvedimentoOperosoRequest">
+    <xs:annotation>
+      <xs:documentation xml:lang="it">Richiesta di ravvedimento operoso
+        di uno o più Pagamenti Attesi
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="codiceEnte" type="xs:string">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">Campo alfanumerico contenente il codice fiscale dell'Ente Creditore destinatario del pagamento</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="salvaRavvedimento" type="xs:boolean"/>
+        <xs:element name="elencoPagamentiRequest" type="tns:elencoPagamentiRequest"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="elencoPagamentiRequest">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" name="pagamentoRequest" type="tns:pagamentoRequest">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">Lista dei Pagamenti
+            Attesi
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="pagamentoRequest">
+    <xs:sequence>
+      <xs:element name="iuv" type="xs:string"/>
+      <xs:element name="anagCfPiva">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">codice fiscale (se
+            soggetto fisico) o partita iva (se soggetto giuridico) del
+            soggetto pagante. Per pagamenti anonimi il valore deve essere
+            ANONIMO
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="16"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="importo" type="xs:decimal"/>
+      <xs:element minOccurs="0" name="dataPagamento" type="xs:dateTime"/>
+      <xs:element name="stampaBollettino" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+
+
+  <xs:element name="getRavvedimentoOperosoResponse">
+    <xs:complexType>
+      <xs:sequence>
+
+        <xs:element name="codiceEnte" type="xs:string">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">Campo alfanumerico contenente il codice fiscale dell’Ente Creditore destinatario del pagamento</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+
+        <xs:element name="esitoComunicazione" type="xs:string"/>
+
+        <xs:element minOccurs="0" name="elencoPagamentiResponse" type="tns:elencoPagamentiResponse"/>
+        <xs:element minOccurs="0" name="codiceErrore" type="xs:string"/>
+        <xs:element minOccurs="0" name="descrizioneErrore" type="xs:string"/>
+
+      </xs:sequence>
+    </xs:complexType>
+
+  </xs:element>
+
+  <xs:complexType name="elencoPagamentiResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="pagamentoResponse" type="tns:pagamentoResponse">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">Lista dei Pagamenti
+            Attesi
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="pagamentoResponse">
+    <xs:sequence>
+      <xs:element name="codiceEsito" type="xs:string"/>
+      <xs:element name="descrizioneEsito" type="xs:string"/>
+      <xs:element name="codiceServizio" type="xs:string"/>
+      <xs:element name="iuv" type="xs:string"/>
+      <xs:element name="importo" type="xs:decimal"/>
+      <xs:element name="dataScadenza" type="xs:date"/>
+      <xs:element name="streamPdf" type="xs:base64Binary"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="inviaRichiestaStornoResponse">
+    <wsdl:part element="tns:inviaRichiestaStornoResponse" name="inviaRichiestaStornoResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getEsitoPagamentoResponse">
+    <wsdl:part element="tns:getEsitoPagamentoResponse" name="getEsitoPagamentoResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getPagamentoAttesoByIuvResponse">
+    <wsdl:part element="tns:getPagamentoAttesoByIuvResponse" name="getPagamentoAttesoByIuvResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="modificaPagamentiAttesiResponse">
+    <wsdl:part element="tns:modificaPagamentiAttesiResponse" name="modificaPagamentiAttesiResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getMarcaBolloByTokenRequest">
+    <wsdl:part element="tns:getMarcaBolloByTokenRequest" name="getMarcaBolloByTokenRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="inserisciPagamentiAttesiResponse">
+    <wsdl:part element="tns:inserisciPagamentiAttesiResponse" name="inserisciPagamentiAttesiResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="riattivaPagamentiAttesiRequest">
+    <wsdl:part element="tns:riattivaPagamentiAttesiRequest" name="riattivaPagamentiAttesiRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getTokenRequest">
+    <wsdl:part element="tns:getTokenRequest" name="getTokenRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="inviaRichiestaStornoRequest">
+    <wsdl:part element="tns:inviaRichiestaStornoRequest" name="inviaRichiestaStornoRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="inserisciPagamentiAttesiRequest">
+    <wsdl:part element="tns:inserisciPagamentiAttesiRequest" name="inserisciPagamentiAttesiRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="riattivaPagamentiAttesiResponse">
+    <wsdl:part element="tns:riattivaPagamentiAttesiResponse" name="riattivaPagamentiAttesiResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getRavvedimentoOperosoRequest">
+    <wsdl:part element="tns:getRavvedimentoOperosoRequest" name="getRavvedimentoOperosoRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getListaIuvResponse">
+    <wsdl:part element="tns:getListaIuvResponse" name="getListaIuvResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getPagamentoAttesoByIuvRequest">
+    <wsdl:part element="tns:getPagamentoAttesoByIuvRequest" name="getPagamentoAttesoByIuvRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getMarcaBolloByHashDocumentoResponse">
+    <wsdl:part element="tns:getMarcaBolloByHashDocumentoResponse" name="getMarcaBolloByHashDocumentoResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getMarcaBolloByTokenResponse">
+    <wsdl:part element="tns:getMarcaBolloByTokenResponse" name="getMarcaBolloByTokenResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getPagamentoAttesoPdfRequest">
+    <wsdl:part element="tns:getPagamentoAttesoPdfRequest" name="getPagamentoAttesoPdfRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getRicevutaTelematicaByIuvResponse">
+    <wsdl:part element="tns:getRicevutaTelematicaByIuvResponse" name="getRicevutaTelematicaByIuvResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setEsitoRevocaResponse">
+    <wsdl:part element="tns:setEsitoRevocaResponse" name="setEsitoRevocaResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="annullaPagamentiAttesiRequest">
+    <wsdl:part element="tns:annullaPagamentiAttesiRequest" name="annullaPagamentiAttesiRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getRicevutaTelematicaByIuvRequest">
+    <wsdl:part element="tns:getRicevutaTelematicaByIuvRequest" name="getRicevutaTelematicaByIuvRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getRavvedimentoOperosoResponse">
+    <wsdl:part element="tns:getRavvedimentoOperosoResponse" name="getRavvedimentoOperosoResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="segnaPagatoPagamentiAttesiResponse">
+    <wsdl:part element="tns:segnaPagatoPagamentiAttesiResponse" name="segnaPagatoPagamentiAttesiResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getTokenMarcaBolloRequest">
+    <wsdl:part element="tns:getTokenMarcaBolloRequest" name="getTokenMarcaBolloRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getMarcaBolloByHashDocumentoRequest">
+    <wsdl:part element="tns:getMarcaBolloByHashDocumentoRequest" name="getMarcaBolloByHashDocumentoRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getEsitoPagamentoRequest">
+    <wsdl:part element="tns:getEsitoPagamentoRequest" name="getEsitoPagamentoRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getTokenMarcaBolloResponse">
+    <wsdl:part element="tns:getTokenMarcaBolloResponse" name="getTokenMarcaBolloResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getListaIuvRequest">
+    <wsdl:part element="tns:getListaIuvRequest" name="getListaIuvRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="modificaPagamentiAttesiRequest">
+    <wsdl:part element="tns:modificaPagamentiAttesiRequest" name="modificaPagamentiAttesiRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setEsitoRevocaRequest">
+    <wsdl:part element="tns:setEsitoRevocaRequest" name="setEsitoRevocaRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="segnaPagatoPagamentiAttesiRequest">
+    <wsdl:part element="tns:segnaPagatoPagamentiAttesiRequest" name="segnaPagatoPagamentiAttesiRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="leggiEsitoStornoResponse">
+    <wsdl:part element="tns:leggiEsitoStornoResponse" name="leggiEsitoStornoResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getTokenResponse">
+    <wsdl:part element="tns:getTokenResponse" name="getTokenResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="leggiEsitoStornoRequest">
+    <wsdl:part element="tns:leggiEsitoStornoRequest" name="leggiEsitoStornoRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getPagamentoAttesoPdfResponse">
+    <wsdl:part element="tns:getPagamentoAttesoPdfResponse" name="getPagamentoAttesoPdfResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="annullaPagamentiAttesiResponse">
+    <wsdl:part element="tns:annullaPagamentiAttesiResponse" name="annullaPagamentiAttesiResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="mip2BEWsdlPublic">
+    <wsdl:operation name="inviaRichiestaStorno">
+      <wsdl:input message="tns:inviaRichiestaStornoRequest" name="inviaRichiestaStornoRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:inviaRichiestaStornoResponse" name="inviaRichiestaStornoResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getEsitoPagamento">
+      <wsdl:input message="tns:getEsitoPagamentoRequest" name="getEsitoPagamentoRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:getEsitoPagamentoResponse" name="getEsitoPagamentoResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getPagamentoAttesoByIuv">
+      <wsdl:input message="tns:getPagamentoAttesoByIuvRequest" name="getPagamentoAttesoByIuvRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:getPagamentoAttesoByIuvResponse" name="getPagamentoAttesoByIuvResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="modificaPagamentiAttesi">
+      <wsdl:input message="tns:modificaPagamentiAttesiRequest" name="modificaPagamentiAttesiRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:modificaPagamentiAttesiResponse" name="modificaPagamentiAttesiResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getMarcaBolloByToken">
+      <wsdl:input message="tns:getMarcaBolloByTokenRequest" name="getMarcaBolloByTokenRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:getMarcaBolloByTokenResponse" name="getMarcaBolloByTokenResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="inserisciPagamentiAttesi">
+      <wsdl:input message="tns:inserisciPagamentiAttesiRequest" name="inserisciPagamentiAttesiRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:inserisciPagamentiAttesiResponse" name="inserisciPagamentiAttesiResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="riattivaPagamentiAttesi">
+      <wsdl:input message="tns:riattivaPagamentiAttesiRequest" name="riattivaPagamentiAttesiRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:riattivaPagamentiAttesiResponse" name="riattivaPagamentiAttesiResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getToken">
+      <wsdl:input message="tns:getTokenRequest" name="getTokenRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:getTokenResponse" name="getTokenResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getRavvedimentoOperoso">
+      <wsdl:input message="tns:getRavvedimentoOperosoRequest" name="getRavvedimentoOperosoRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:getRavvedimentoOperosoResponse" name="getRavvedimentoOperosoResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getListaIuv">
+      <wsdl:input message="tns:getListaIuvRequest" name="getListaIuvRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:getListaIuvResponse" name="getListaIuvResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getMarcaBolloByHashDocumento">
+      <wsdl:input message="tns:getMarcaBolloByHashDocumentoRequest" name="getMarcaBolloByHashDocumentoRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:getMarcaBolloByHashDocumentoResponse" name="getMarcaBolloByHashDocumentoResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getPagamentoAttesoPdf">
+      <wsdl:input message="tns:getPagamentoAttesoPdfRequest" name="getPagamentoAttesoPdfRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:getPagamentoAttesoPdfResponse" name="getPagamentoAttesoPdfResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getRicevutaTelematicaByIuv">
+      <wsdl:input message="tns:getRicevutaTelematicaByIuvRequest" name="getRicevutaTelematicaByIuvRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:getRicevutaTelematicaByIuvResponse" name="getRicevutaTelematicaByIuvResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setEsitoRevoca">
+      <wsdl:input message="tns:setEsitoRevocaRequest" name="setEsitoRevocaRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:setEsitoRevocaResponse" name="setEsitoRevocaResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="annullaPagamentiAttesi">
+      <wsdl:input message="tns:annullaPagamentiAttesiRequest" name="annullaPagamentiAttesiRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:annullaPagamentiAttesiResponse" name="annullaPagamentiAttesiResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="segnaPagatoPagamentiAttesi">
+      <wsdl:input message="tns:segnaPagatoPagamentiAttesiRequest" name="segnaPagatoPagamentiAttesiRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:segnaPagatoPagamentiAttesiResponse" name="segnaPagatoPagamentiAttesiResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getTokenMarcaBollo">
+      <wsdl:input message="tns:getTokenMarcaBolloRequest" name="getTokenMarcaBolloRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:getTokenMarcaBolloResponse" name="getTokenMarcaBolloResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="leggiEsitoStorno">
+      <wsdl:input message="tns:leggiEsitoStornoRequest" name="leggiEsitoStornoRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:leggiEsitoStornoResponse" name="leggiEsitoStornoResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="mip2BEWsdlPublicSoap11" type="tns:mip2BEWsdlPublic">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="inviaRichiestaStorno">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="inviaRichiestaStornoRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="inviaRichiestaStornoResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getEsitoPagamento">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="getEsitoPagamentoRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getEsitoPagamentoResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getPagamentoAttesoByIuv">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="getPagamentoAttesoByIuvRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getPagamentoAttesoByIuvResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="modificaPagamentiAttesi">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="modificaPagamentiAttesiRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="modificaPagamentiAttesiResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getMarcaBolloByToken">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="getMarcaBolloByTokenRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getMarcaBolloByTokenResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="inserisciPagamentiAttesi">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="inserisciPagamentiAttesiRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="inserisciPagamentiAttesiResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="riattivaPagamentiAttesi">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="riattivaPagamentiAttesiRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="riattivaPagamentiAttesiResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getToken">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="getTokenRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getTokenResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getRavvedimentoOperoso">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="getRavvedimentoOperosoRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getRavvedimentoOperosoResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getListaIuv">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="getListaIuvRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getListaIuvResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getMarcaBolloByHashDocumento">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="getMarcaBolloByHashDocumentoRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getMarcaBolloByHashDocumentoResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getPagamentoAttesoPdf">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="getPagamentoAttesoPdfRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getPagamentoAttesoPdfResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getRicevutaTelematicaByIuv">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="getRicevutaTelematicaByIuvRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getRicevutaTelematicaByIuvResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setEsitoRevoca">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="setEsitoRevocaRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="setEsitoRevocaResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="annullaPagamentiAttesi">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="annullaPagamentiAttesiRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="annullaPagamentiAttesiResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="segnaPagatoPagamentiAttesi">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="segnaPagatoPagamentiAttesiRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="segnaPagatoPagamentiAttesiResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getTokenMarcaBollo">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="getTokenMarcaBolloRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getTokenMarcaBolloResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="leggiEsitoStorno">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="leggiEsitoStornoRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="leggiEsitoStornoResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="mip2BEWsdlPublicService">
+    <wsdl:port binding="tns:mip2BEWsdlPublicSoap11" name="mip2BEWsdlPublicSoap11">
+      <soap:address location="https://pagopabe-staging.055055.it:443/pagopabe/ws"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

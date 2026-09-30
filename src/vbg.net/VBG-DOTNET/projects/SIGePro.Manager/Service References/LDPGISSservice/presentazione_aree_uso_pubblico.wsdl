@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="https://ws.ldpgis.it/" xmlns:s="http://www.w3.org/2001/XMLSchema" targetNamespace="https://ws.ldpgis.it/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema targetNamespace="https://ws.ldpgis.it/">
+      <s:complexType name="ComplexTypeStringa">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="testo" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ComplexTypeStringa" type="tns:ComplexTypeStringa" />
+      <s:complexType name="ArrayOfComplexTypeStringa">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ComplexTypeStringa" type="tns:ComplexTypeStringa" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ComplexTypeStringaArray" type="tns:ArrayOfComplexTypeStringa" />
+      <s:complexType name="ComplexTypeAreeUsoPubblico">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="tipologia" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="giorni_settimana" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ripetizione" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="a_periodi" nillable="true" type="tns:ArrayOfComplexTypePeriodo" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ComplexTypeAreeUsoPubblico" type="tns:ComplexTypeAreeUsoPubblico" />
+      <s:complexType name="ComplexTypePeriodo">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="inizio" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="fine" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="a_aree" nillable="true" type="tns:ArrayOfComplexTypeArea" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ComplexTypePeriodo" type="tns:ComplexTypePeriodo" />
+      <s:complexType name="ArrayOfComplexTypePeriodo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ComplexTypePeriodo" type="tns:ComplexTypePeriodo" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ComplexTypePeriodoArray" type="tns:ArrayOfComplexTypePeriodo" />
+      <s:complexType name="ComplexTypeArea">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="identificativo" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="metri_quadrati" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="descrizione" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ComplexTypeArea" type="tns:ComplexTypeArea" />
+      <s:complexType name="ArrayOfComplexTypeArea">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ComplexTypeArea" type="tns:ComplexTypeArea" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ComplexTypeAreaArray" type="tns:ArrayOfComplexTypeArea" />
+      <s:complexType name="ComplexTypePraticaIdentificativi">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="identificativo_temporaneo" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="numero_pratica" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ComplexTypePraticaIdentificativi" type="tns:ComplexTypePraticaIdentificativi" />
+      <s:complexType name="ComplexTypeStatoOccupazione">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="identificativo_temporaneo" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="stato_occupazione" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ComplexTypeStatoOccupazione" type="tns:ComplexTypeStatoOccupazione" />
+      <s:complexType name="ComplexTypePeriodo2Wkt">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="id_temporaneo" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="num_pratica" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="inizio_periodo" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="fine_periodo" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="nome_disegno" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ComplexTypePeriodo2Wkt" type="tns:ComplexTypePeriodo2Wkt" />
+      <s:complexType name="ComplexTypePraticaIdentificativiDelete">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="identificativo_temporaneo" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="numero_pratica" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ComplexTypePraticaIdentificativiDelete" type="tns:ComplexTypePraticaIdentificativiDelete" />
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="getDatiOccupazioneSuoloByIdentificativoTemporaneoSoapIn">
+    <wsdl:part name="identificativo_temporaneo" element="tns:ComplexTypeStringa" />
+  </wsdl:message>
+  <wsdl:message name="getDatiOccupazioneSuoloByIdentificativoTemporaneoSoapOut">
+    <wsdl:part name="return" element="tns:ComplexTypeAreeUsoPubblico" />
+  </wsdl:message>
+  <wsdl:message name="setNumeroPraticaSoapIn">
+    <wsdl:part name="pratica_identificativi" element="tns:ComplexTypePraticaIdentificativi" />
+  </wsdl:message>
+  <wsdl:message name="setNumeroPraticaSoapOut">
+    <wsdl:part name="return" element="tns:ComplexTypeStringa" />
+  </wsdl:message>
+  <wsdl:message name="setStatoOccupazioneSoapIn">
+    <wsdl:part name="stato_occupazione" element="tns:ComplexTypeStatoOccupazione" />
+  </wsdl:message>
+  <wsdl:message name="setStatoOccupazioneSoapOut">
+    <wsdl:part name="return" element="tns:ComplexTypeStringa" />
+  </wsdl:message>
+  <wsdl:message name="deleteOccupazioneSoapIn">
+    <wsdl:part name="pratica_identificativi" element="tns:ComplexTypePraticaIdentificativiDelete" />
+  </wsdl:message>
+  <wsdl:message name="deleteOccupazioneSoapOut">
+    <wsdl:part name="return" element="tns:ComplexTypeStringa" />
+  </wsdl:message>
+  <wsdl:message name="deleteAreaOnPeriodoSoapIn">
+    <wsdl:part name="periodo2wkt" element="tns:ComplexTypePeriodo2Wkt" />
+  </wsdl:message>
+  <wsdl:message name="deleteAreaOnPeriodoSoapOut">
+    <wsdl:part name="return" element="tns:ComplexTypeStringa" />
+  </wsdl:message>
+  <wsdl:portType name="PresentazioneAreeUsoPubblicoSoap">
+    <wsdl:operation name="getDatiOccupazioneSuoloByIdentificativoTemporaneo">
+      <wsdl:input message="tns:getDatiOccupazioneSuoloByIdentificativoTemporaneoSoapIn" />
+      <wsdl:output message="tns:getDatiOccupazioneSuoloByIdentificativoTemporaneoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="setNumeroPratica">
+      <wsdl:input message="tns:setNumeroPraticaSoapIn" />
+      <wsdl:output message="tns:setNumeroPraticaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="setStatoOccupazione">
+      <wsdl:input message="tns:setStatoOccupazioneSoapIn" />
+      <wsdl:output message="tns:setStatoOccupazioneSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="deleteOccupazione">
+      <wsdl:input message="tns:deleteOccupazioneSoapIn" />
+      <wsdl:output message="tns:deleteOccupazioneSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="deleteAreaOnPeriodo">
+      <wsdl:input message="tns:deleteAreaOnPeriodoSoapIn" />
+      <wsdl:output message="tns:deleteAreaOnPeriodoSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="PresentazioneAreeUsoPubblicoSoap" type="tns:PresentazioneAreeUsoPubblicoSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="getDatiOccupazioneSuoloByIdentificativoTemporaneo">
+      <soap:operation soapAction="https://ws.ldpgis.it/getDatiOccupazioneSuoloByIdentificativoTemporaneo" />
+      <wsdl:input>
+        <soap:body use="literal" parts="identificativo_temporaneo" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" parts="return" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setNumeroPratica">
+      <soap:operation soapAction="https://ws.ldpgis.it/setNumeroPratica" />
+      <wsdl:input>
+        <soap:body use="literal" parts="pratica_identificativi" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" parts="return" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setStatoOccupazione">
+      <soap:operation soapAction="https://ws.ldpgis.it/setStatoOccupazione" />
+      <wsdl:input>
+        <soap:body use="literal" parts="stato_occupazione" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" parts="return" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteOccupazione">
+      <soap:operation soapAction="https://ws.ldpgis.it/deleteOccupazione" />
+      <wsdl:input>
+        <soap:body use="literal" parts="pratica_identificativi" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" parts="return" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteAreaOnPeriodo">
+      <soap:operation soapAction="https://ws.ldpgis.it/deleteAreaOnPeriodo" />
+      <wsdl:input>
+        <soap:body use="literal" parts="periodo2wkt" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" parts="return" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="PresentazioneAreeUsoPubblico">
+    <wsdl:port name="PresentazioneAreeUsoPubblicoSoap" binding="tns:PresentazioneAreeUsoPubblicoSoap">
+      <soap:address location="https://ws.ldpgis.it/livornosit/presentazione_aree_uso_pubblico.php" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

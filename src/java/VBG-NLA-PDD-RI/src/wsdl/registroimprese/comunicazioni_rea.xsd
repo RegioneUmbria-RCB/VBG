@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace='http://ejb.protocollo.infocamere.it/' version='1.0' xmlns:tns='http://ejb.protocollo.infocamere.it/' xmlns:xs='http://www.w3.org/2001/XMLSchema'>
+            <xs:element name='PraticaSUAPException' type='tns:PraticaSUAPException'/>
+            <xs:element name='ProtocolloSUAPException' type='tns:ProtocolloSUAPException'/>
+            <xs:element name='caricaTabellePraticaSUAP' type='tns:caricaTabellePraticaSUAP'/>
+            <xs:element name='caricaTabellePraticaSUAPResponse' type='tns:caricaTabellePraticaSUAPResponse'/>
+            <xs:element name='comunicazioneREA' type='tns:comunicazioneREA'/>
+            <xs:element name='comunicazioneREAResponse' type='tns:comunicazioneREAResponse'/>
+            <xs:element name='comunicazioneREAStd' type='tns:comunicazioneREAStd'/>
+            <xs:element name='comunicazioneREAStdResponse' type='tns:comunicazioneREAStdResponse'/>
+            <xs:complexType name='caricaTabellePraticaSUAP'>
+                <xs:sequence>
+                    <xs:element minOccurs='0' name='soggetti' type='tns:soggettoSUAP'/>
+                    <xs:element minOccurs='0' name='nomePratica' type='xs:string'/>
+                    <xs:element minOccurs='0' name='suapXml' type='tns:allegatoSUAPXml'/>
+                    <xs:element minOccurs='0' name='protocollo' type='tns:protocollo'/>
+                    <xs:element minOccurs='0' name='cciaaProt' type='xs:string'/>
+                    <xs:element minOccurs='0' name='prid' type='xs:string'/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name='soggettoSUAP'>
+                <xs:sequence>
+                    <xs:element minOccurs='0' name='cognomeAddetto' type='xs:string'/>
+                    <xs:element minOccurs='0' name='loginAddetto' type='xs:string'/>
+                    <xs:element minOccurs='0' name='nomeAddetto' type='xs:string'/>
+                    <xs:element minOccurs='0' name='useridAddetto' type='xs:string'/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name='allegatoSUAPXml'>
+                <xs:sequence>
+                    <xs:element minOccurs='0' name='dataHandler' ns1:expectedContentTypes='text/xml' type='xs:base64Binary' xmlns:ns1='http://www.w3.org/2005/05/xmlmime'/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name='protocollo'>
+                <xs:sequence>
+                    <xs:element minOccurs='0' name='alboProtocollo' type='xs:string'/>
+                    <xs:element minOccurs='0' name='annoProtocollo' type='xs:string'/>
+                    <xs:element minOccurs='0' name='dtProtocolloRi' type='xs:string'/>
+                    <xs:element minOccurs='0' name='numeroProtocollo' type='xs:string'/>
+                    <xs:element minOccurs='0' name='numeroRea' type='xs:string'/>
+                    <xs:element minOccurs='0' name='tipoProtocollazione' type='xs:string'/>
+                    <xs:element minOccurs='0' name='tipoProtocollo' type='xs:string'/>
+                    <xs:element minOccurs='0' name='ufficioRi' type='xs:string'/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name='caricaTabellePraticaSUAPResponse'>
+                <xs:sequence/>
+            </xs:complexType>
+            <xs:complexType name='PraticaSUAPException'>
+                <xs:sequence>
+                    <xs:element minOccurs='0' name='message' type='xs:string'/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name='comunicazioneREA'>
+                <xs:sequence>
+                    <xs:element minOccurs='0' name='soggetti' type='tns:soggettoSUAP'/>
+                    <xs:element minOccurs='0' name='pridPratica' type='xs:string'/>
+                    <xs:element minOccurs='0' name='suapReaXml' type='tns:allegatoSUAPReaXml'/>
+                    <xs:element minOccurs='0' name='suapXml' type='tns:allegatoSUAPXml'/>
+                    <xs:element maxOccurs='unbounded' minOccurs='0' name='allegati' type='tns:allegatoSUAP'/>
+                    <xs:element name='visuraXML' type='xs:boolean'/>
+                    <xs:element name='visuraPDF' type='xs:boolean'/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name='allegatoSUAPReaXml'>
+                <xs:sequence>
+                    <xs:element minOccurs='0' name='dataHandler' ns2:expectedContentTypes='text/xml' type='xs:base64Binary' xmlns:ns2='http://www.w3.org/2005/05/xmlmime'/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name='allegatoSUAP'>
+                <xs:sequence>
+                    <xs:element minOccurs='0' name='allegatoDataHandler' ns3:expectedContentTypes='application/octet-stream' type='xs:base64Binary' xmlns:ns3='http://www.w3.org/2005/05/xmlmime'/>
+                    <xs:element minOccurs='0' name='name' type='xs:string'/>
+                    <xs:element minOccurs='0' name='tipo' type='xs:string'/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name='comunicazioneREAResponse'>
+                <xs:sequence>
+                    <xs:element minOccurs='0' name='return' type='tns:rispostaREA'/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name='rispostaREA'>
+                <xs:sequence>
+                    <xs:element maxOccurs='unbounded' minOccurs='0' name='allegati' nillable='true' type='tns:allegatoSUAP'/>
+                    <xs:element minOccurs='0' name='dettaglioEsitoRichiesta' type='xs:string'/>
+                    <xs:element name='esitoRichiesta' type='xs:int'/>
+                    <xs:element minOccurs='0' name='protocollo' type='tns:protocollo'/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name='ProtocolloSUAPException'>
+                <xs:sequence>
+                    <xs:element minOccurs='0' name='message' type='xs:string'/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name='comunicazioneREAStd'>
+                <xs:sequence>
+                    <xs:element minOccurs='0' name='soggetti' type='tns:soggettoSUAP'/>
+                    <xs:element minOccurs='0' name='pridPratica' type='xs:string'/>
+                    <xs:element minOccurs='0' name='suapReaXml' type='tns:allegatoSUAPReaXml'/>
+                    <xs:element minOccurs='0' name='suapXml' type='tns:allegatoSUAPXml'/>
+                    <xs:element maxOccurs='unbounded' minOccurs='0' name='allegati' type='tns:allegatoSUAP'/>
+                    <xs:element name='visuraXML' type='xs:boolean'/>
+                    <xs:element name='visuraPDF' type='xs:boolean'/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name='comunicazioneREAStdResponse'>
+                <xs:sequence>
+                    <xs:element minOccurs='0' name='return' type='tns:rispostaREAStd'/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name='rispostaREAStd'>
+                <xs:sequence>
+                    <xs:element maxOccurs='unbounded' minOccurs='0' name='allegati' nillable='true' type='tns:allegatoSUAP'/>
+                    <xs:element minOccurs='0' name='dettaglioEsitoRichiesta' type='xs:string'/>
+                    <xs:element name='esitoRichiesta' type='xs:int'/>
+                    <xs:element minOccurs='0' name='protocollo' type='tns:protocolloRI'/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name='protocolloRI'>
+                <xs:sequence>
+                    <xs:element minOccurs='0' name='anno' type='xs:string'/>
+                    <xs:element minOccurs='0' name='dataProtocolloRi' type='xs:string'/>
+                    <xs:element minOccurs='0' name='numeroProtocolloRi' type='xs:string'/>
+                    <xs:element minOccurs='0' name='sottoNumeroProtocolloRi' type='xs:string'/>
+                    <xs:element minOccurs='0' name='ufficioRi' type='xs:string'/>
+                </xs:sequence>
+            </xs:complexType>
+</xs:schema>

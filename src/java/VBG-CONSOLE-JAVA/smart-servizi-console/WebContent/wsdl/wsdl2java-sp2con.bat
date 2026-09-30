@@ -1,0 +1,1 @@
+C:\SVILUPPO\Frameworks\apache-cxf\apache-cxf-2.5.1\bin\wsdl2java.bat -client -frontend jaxws21 https://registrazione.sp2con-demo.it/HostingTemporaneoBE/ws/filetemporanei?wsdl

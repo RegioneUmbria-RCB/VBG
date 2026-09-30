@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jms="http://www.springframework.org/schema/jms" xmlns:amq="http://activemq.apache.org/schema/core"
+	xmlns:oxm="http://www.springframework.org/schema/oxm" xmlns:sws="http://www.springframework.org/schema/web-services"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms.xsd
+		http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core-5.3.0.xsd
+		http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm-1.5.xsd
+		http://www.springframework.org/schema/web-services http://www.springframework.org/schema/web-services/web-services-1.5.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
+
+	<context:property-placeholder location="classpath:deploy.properties" />	
+	<bean id="messageReceiver" class="org.springframework.ws.soap.server.SoapMessageDispatcher" />
+	<bean id="messageFactory" class="org.springframework.ws.soap.saaj.SaajSoapMessageFactory" />
+	<bean id="nlaSchema" class="org.springframework.xml.xsd.commons.CommonsXsdSchemaCollection">
+        <property name="xsds" value="nla.xsd"/>
+        <property name="inline" value="true"/>
+    </bean>
+    <bean id="nlaSchemaWSgestioneMail" class="org.springframework.xml.xsd.commons.CommonsXsdSchemaCollection">
+        <property name="xsds" value="WsNlaPec.xsd"/>
+        <property name="inline" value="true"/>
+    </bean>
+	<bean id="nlaWebService" class="it.gruppoinit.nlapec.service.stc.NlaWebService">
+		<property name="pecSender" ref="pecSender" />
+		<property name="stcWebServiceClient" ref="stcWebServiceClientPECSender" />
+		<property name="mailtipoWSClient" ref="mailtipoWSClient" />
+		<property name="sigeproSecurityWebServiceClient" ref="sigeprosecurityWebServiceClient" />
+		<property name="mailServiceWsUrl"  value="${ws.mailservice.url}" />
+	</bean>
+	<bean id="webServiceTemplate" class="org.springframework.ws.client.core.WebServiceTemplate">
+		<property name="messageFactory" ref="messageFactory" />
+		<property name="marshaller" ref="marshaller" />
+		<property name="unmarshaller" ref="marshaller" />
+	</bean>
+	
+	<bean id="gestoreCasellaMailWebService" class="it.gruppoinit.nlapec.service.wsnlapec.GestoreCasellaMailWebService">
+		<property name="sigeproSecurityWebServiceClient" ref="sigeprosecurityWebServiceClient" />
+		<property name="sigeproWebServiceClient" ref="sigeproWSClient" />
+		<property name="sigeproService" ref="sigeproService" />
+		<property name="pecReader" ref="pecReader" />
+		<property name="stcWebServiceClient" ref="stcWebServiceClient" />
+		<property name="helper" ref="gestoreCasellaMailHelper" />
+		<property name="baseTmpPath" value="${tmp.basePath}" />
+	</bean>	
+	<!--  oxm:jaxb2-marshaller id="marshaller" contextPath="it.gruppoinit.stc.schema" / -->
+	
+	<bean id="marshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+        <property name="contextPath" value="it.init.sigepro.rte:it.init.sigepro.rte.types:it.gruppoinit.sigepro.schemas.messages.mailconfig:it.gruppoinit.sigepro.schemas.messages.movimentimail:it.gruppoinit.nlapec.schema.mailservice:it.gruppoinit.nlapec.schema.wsnlapec:it.gruppoinit.sigepro.schemas.messages.eventi:it.gruppoinit.sigepro.schemas.messages.mailtipo:it.gruppoinit.sigepro.schemas.messages.oggetti"/>
+        <property name="mtomEnabled" value="true"/>
+    </bean>
+	
+	<sws:marshalling-endpoints />
+	<bean id="pecReader" class="it.gruppoinit.nlapec.service.PECReader">
+		<property name="sigeproService" ref="sigeproService" />
+		<property name="sigeproSecurityWebServiceClient" ref="sigeprosecurityWebServiceClient" />
+		<property name="stcWebServiceClient" ref="stcWebServiceClient" />
+		<property name="sigeproWebServiceClient" ref="sigeproWSClient" />
+		<property name="movimentiMailWebServiceClient" ref="movimentiMailWSClient" />
+		<property name="eventiWebServiceClient" ref="eventiWSClient" />
+		<property name="pecManager" ref="pecManager" />
+		<!-- commentare per non inviare email -->
+		<!-- property name="emailSender" ref="emailSender" / -->
+		<property name="idcomunealias" value="${ws.ibcsecurity.idcomunealias}" />
+		<!-- property name="software" value="${ws.stc.idSportelloDestinatario}" / -->
+		<!-- property name="pecHost" value="${pec.host}" / -->
+		<!-- property name="pecProtocol" value="${pec.protocol}" / -->
+		<!-- property name="pecUser" value="${pec.user}" / -->
+		<!-- property name="pecPassword" value="${pec.password}" / -->
+		<property name="baseTmpPath" value="${tmp.basePath}" />
+	</bean>
+	<bean id="pecSender" class="it.gruppoinit.nlapec.service.PECSender">
+		<property name="mailServiceWSClient" ref="mailServiceWSClient" />
+	</bean>
+	<bean id="mailServiceWSClient" class="it.gruppoinit.nlapec.service.mailservice.MailServiceWSClient" >
+		<property name="webServiceTemplate" ref="webServiceTemplate" />
+	</bean>
+	<bean id="sigeproWSClient" class="it.gruppoinit.nlapec.service.sigepro.SigeproWebServiceClient">
+		<property name="webServiceTemplate" ref="webServiceTemplate" />	
+	</bean>
+	<bean id="movimentiMailWSClient" class="it.gruppoinit.nlapec.service.movimentimail.MovimentiMailWSClient">
+		<property name="webServiceTemplate" ref="webServiceTemplate" />
+	</bean>
+	<bean id="mailtipoWSClient" class="it.gruppoinit.nlapec.service.mailtipo.MailtipoWSClient">
+		<property name="webServiceTemplate" ref="webServiceTemplate" />
+	</bean>
+	<bean id="eventiWSClient" class="it.gruppoinit.nlapec.service.eventi.EventiWSClient">
+		<property name="webServiceTemplate" ref="webServiceTemplate" />
+	</bean>
+	<bean id="oggettiWSClient" class="it.gruppoinit.nlapec.service.oggetti.OggettiWSClient">
+		<property name="webServiceTemplate" ref="webServiceTemplate" />
+	</bean>
+	<bean id="sigeproService" class="it.gruppoinit.nlapec.service.sigepro.SigeproService">
+		<property name="sigeproDAO" ref="sigeproDAO" />	
+	</bean>
+
+	<bean id="sigeproDAO" class="it.gruppoinit.nlapec.dao.SigeproDAO" />
+	<bean id="sigeprosecurityWebServiceClient" class="it.gruppoinit.nlapec.service.sigeprosecurity.SigeproSecurityWebServiceClient">
+		<property name="sigeproSecurityUrl" value="${ws.token.url}" />
+		<property name="sigeproSecurityUserId" value="${ws.token.user}" />
+		<property name="sigeproSecurityUserPassword" value="${ws.token.pwd}" />
+	</bean>
+	<bean id="stcWebServiceClient" class="it.gruppoinit.nlapec.service.stc.StcWebServiceClient">
+		<property name="webServiceTemplate" ref="webServiceTemplate" />
+		<property name="stcWsUrl" value="${ws.stc.url}" />
+		<property name="nlaUserId" value="${ws.stc.user}" />
+		<property name="nlaPassword" value="${ws.stc.pwd}" />
+		<property name="idEnteDestinatario" value="${ws.stc.idEnteDestinatario}" />
+		<property name="idSportelloDestinatario" value="${ws.stc.idSportelloDestinatario}" />
+		<property name="idNodoDestinatario" value="${ws.stc.idNodoDestinatario}" />
+		<property name="idEnteMittente" value="${ws.stc.idEnteMittente}" />
+		<property name="idSportelloMittente" value="${ws.stc.idSportelloMittente}" />
+		<property name="idNodoMittente" value="${ws.stc.idNodoMittente}" />
+		<property name="codiceComuneAssociato" value="${codice.comune.associato}" />
+	</bean>
+	<bean id="stcWebServiceClientPECSender" class="it.gruppoinit.nlapec.service.stc.StcWebServiceClientPECSender">
+		<property name="webServiceTemplate" ref="webServiceTemplate" />
+		<property name="stcWsUrl" value="${ws.stc.url}" />
+		<property name="nlaUserId" value="${ws.stc.user}" />
+		<property name="nlaPassword" value="${ws.stc.pwd}" />
+	</bean>
+	<bean id="pecProcessor" class="it.gruppoinit.nlapec.service.PECProcessor">
+		<property name="stcClient" ref="stcWebServiceClient" />	
+		<property name="sigeproService" ref="sigeproService" />	
+	</bean>
+	<bean id="pecManager" class="it.gruppoinit.nlapec.service.PECManager">
+		<property name="processor" ref="pecProcessor" />
+		<property name="movimentiMailWebServiceClient" ref="movimentiMailWSClient" />
+		<property name="sigeproService" ref="sigeproService" />
+		<property name="oggettiWSClient" ref="oggettiWSClient" />
+		<property name="stcWSClient" ref="stcWebServiceClient" />
+		<property name="eventiWebServiceClient" ref="eventiWSClient" />
+	</bean>
+	<bean id="gestoreCasellaMailHelper" class="it.gruppoinit.nlapec.service.helper.GestoreCasellaMailHelper" />
+	<bean 
+		class="org.springframework.ws.server.endpoint.mapping.PayloadRootAnnotationMethodEndpointMapping">
+		<description>Detects @PayloadRoot annotations on @Endpoint bean methods.</description>
+		<property name="interceptors">
+			<list>
+				<bean class="org.springframework.ws.server.endpoint.interceptor.PayloadLoggingInterceptor" />
+				<bean class="org.springframework.ws.soap.server.endpoint.interceptor.PayloadValidatingInterceptor">
+					<property name="schemas">
+						<list>
+							<value>nla.xsd</value>
+							<value>WsNlaPec.xsd</value>
+						</list>
+					</property>
+					 
+					<property name="validateRequest" value="false" />
+					<property name="validateResponse" value="false" />
+					 
+				</bean>
+			</list>
+		</property>
+		<property name="order" value="1" />
+	</bean>
+	<bean class="org.springframework.ws.soap.server.endpoint.SoapFaultAnnotationExceptionResolver">
+		<description>This exception resolver maps exceptions with the @SoapFault annotation to SOAP Faults.</description>
+		<property name="order" value="1" />
+	</bean>
+	<bean class="org.springframework.ws.soap.server.endpoint.SoapFaultMappingExceptionResolver">
+		<description>
+			This exception resolver maps other exceptions to SOAP Faults. Both
+			UnmarshallingException and ValidationFailureException are mapped to a SOAP Fault with a "Client"
+			fault code. All other exceptions are mapped to a "Server" error code, the default.
+		</description>
+		<property name="defaultFault" value="SERVER" />
+		<property name="exceptionMappings">
+			<props>
+				<prop key="org.springframework.oxm.UnmarshallingFailureException">CLIENT,Invalid request</prop>
+				<prop key="org.springframework.oxm.ValidationFailureException">CLIENT,Invalid request</prop>
+			</props>
+		</property>
+		<property name="order" value="2" />
+	</bean>
+	
+	<bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  		<property name="targetObject" ref="pecReader" />
+  		<property name="targetMethod" value="mainRun" />
+	</bean>
+	
+	<bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+    	<property name="jobDetail" ref="jobDetail" />
+    	<!-- tempi espressi in millisecondi -->
+      
+    	<property name="startDelay" value="120000" />
+    	<property name="repeatInterval" value="12000000" />
+	</bean>
+	<bean id="cronTrigger1" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    	<property name="jobDetail" ref="jobDetail" />
+    	<!-- eseguito ogni giorno alle [secondi] [minuti] [ore] -->
+    	<property name="cronExpression" value="0 30 13 * * ?" />
+	</bean>
+	
+	<bean id="cronTrigger2" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    	<property name="jobDetail" ref="jobDetail" />
+    	<!-- eseguito ogni giorno alle [secondi] [minuti] [ore] -->
+    	<property name="cronExpression" value="${scheduler.cron.expression}" />
+	</bean>
+	
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+    	<property name="triggers">
+        	<list>
+        	<!-- scommentare un trigger per abilitare l'esecuzione schedulata -->
+        	
+            	<!-- ref bean="simpleTrigger" / -->
+            	<!-- ref bean="cronTrigger1" / -->
+            	<ref bean="cronTrigger2" />
+        	</list>
+    	</property>
+	</bean>
+	
+
+	<bean id="emailSender" class="it.gruppoinit.nlapec.service.EmailSender">
+	  <property name="mailSender" ref="mailSender" />
+	  <property name="templateMessage" ref="templateMessage" />
+	</bean>
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+	  <property name="host" value="${mail.host}" />
+	</bean>
+	<bean id="templateMessage" class="org.springframework.mail.SimpleMailMessage">
+	  <property name="from" value="${mail.from}" />
+	  <property name="to" value="${mail.to}" />
+	  <property name="cc" value="${mail.cc}" />
+	  <property name="subject" value="${mail.subject}" />
+	  <property name="text" value="${mail.text}" />
+	</bean>
+</beans>

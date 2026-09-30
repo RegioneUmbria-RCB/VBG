@@ -1,0 +1,325 @@
+<?xml version="1.0" ?><wsdl:definitions name="OggettiService" targetNamespace="http://gruppoinit.it/sigepro/definitions/oggetti" xmlns:ns1="http://gruppoinit.it/sigepro/schemas/messages/oggetti" xmlns:ns2="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://gruppoinit.it/sigepro/definitions/oggetti" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+<xs:schema elementFormDefault="qualified" targetNamespace="http://gruppoinit.it/sigepro/schemas/messages/oggetti" version="1.0" xmlns:tns="http://gruppoinit.it/sigepro/schemas/messages/oggetti" xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:import namespace="http://www.w3.org/2005/05/xmlmime"></xs:import>
+<xs:element name="OggettiDeleteRequest">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="token" type="xs:string"></xs:element>
+<xs:element name="id" type="xs:integer"></xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="OggettiDeleteResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="result" type="xs:boolean"></xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="OggettiFindByUidRequest">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="token" type="xs:string"></xs:element>
+<xs:element name="uid" type="xs:string"></xs:element>
+<xs:element name="software" type="xs:string"></xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="OggettiFindMetadatiRequest">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="token" type="xs:string"></xs:element>
+<xs:element name="codiceIstanza" type="xs:integer"></xs:element>
+<xs:element maxOccurs="unbounded" name="metadati" type="tns:MetadatoType"></xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="OggettiFindMetadatiResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="codiciOggetto" nillable="true" type="xs:integer"></xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="OggettiFindNomeRequest">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="token" type="xs:string"></xs:element>
+<xs:element name="id" type="xs:integer"></xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="OggettiFindNomeResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="fileName" type="xs:string"></xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="OggettiFindRequest">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="token" type="xs:string"></xs:element>
+<xs:element name="id" type="xs:integer"></xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="OggettiFindResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="fileName" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="mimeType" type="xs:string"></xs:element>
+<xs:element name="binaryData" type="xs:base64Binary" xmime:expectedContentTypes="application/octet-stream"></xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="OggettiInsertRequest">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="token" type="xs:string"></xs:element>
+<xs:element name="fileName" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="mimeType" type="xs:string"></xs:element>
+<xs:element name="binaryData" type="xs:base64Binary" xmime:expectedContentTypes="application/octet-stream"></xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="OggettiInsertResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="id" type="xs:integer"></xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="OggettiInsertV2Request">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="token" type="xs:string"></xs:element>
+<xs:element name="fileName" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="mimeType" type="xs:string"></xs:element>
+<xs:element name="binaryData" type="xs:base64Binary" xmime:expectedContentTypes="application/octet-stream"></xs:element>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="metadati" nillable="true" type="tns:MetadatoType"></xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="OggettiUpdateRequest">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="token" type="xs:string"></xs:element>
+<xs:element name="id" type="xs:integer"></xs:element>
+<xs:element minOccurs="0" name="fileName" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="mimeType" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="binaryData" type="xs:base64Binary" xmime:expectedContentTypes="application/octet-stream"></xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="OggettiUpdateResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="result" type="xs:boolean"></xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:complexType name="MetadatoType">
+<xs:sequence>
+<xs:element name="chiave" type="xs:string"></xs:element>
+<xs:element name="valore" type="xs:string"></xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="OggettiFindNome">
+    <wsdl:part element="ns1:OggettiFindNomeRequest" name="OggettiFindNomeRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="OggettiInsertV2">
+    <wsdl:part element="ns1:OggettiInsertV2Request" name="OggettiInsertV2Request">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="OggettiDelete">
+    <wsdl:part element="ns1:OggettiDeleteRequest" name="OggettiDeleteRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="OggettiFindByUid">
+    <wsdl:part element="ns1:OggettiFindByUidRequest" name="OggettiFindByUidRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="OggettiInsertResponse">
+    <wsdl:part element="ns1:OggettiInsertResponse" name="OggettiInsertResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="OggettiInsert">
+    <wsdl:part element="ns1:OggettiInsertRequest" name="OggettiInsertRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="OggettiUpdate">
+    <wsdl:part element="ns1:OggettiUpdateRequest" name="OggettiUpdateRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="OggettiFindNomeResponse">
+    <wsdl:part element="ns1:OggettiFindNomeResponse" name="OggettiFindNomeResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="OggettiFindResponse">
+    <wsdl:part element="ns1:OggettiFindResponse" name="OggettiFindResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="OggettiDeleteResponse">
+    <wsdl:part element="ns1:OggettiDeleteResponse" name="OggettiDeleteResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="OggettiFind">
+    <wsdl:part element="ns1:OggettiFindRequest" name="OggettiFindRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="OggettiFindMetadati">
+    <wsdl:part element="ns1:OggettiFindMetadatiRequest" name="OggettiFindMetadatiRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="OggettiUpdateResponse">
+    <wsdl:part element="ns1:OggettiUpdateResponse" name="OggettiUpdateResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="OggettiInsertV2Response">
+    <wsdl:part element="ns1:OggettiInsertResponse" name="OggettiInsertResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="OggettiFindByUidResponse">
+    <wsdl:part element="ns1:OggettiFindResponse" name="OggettiFindResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="OggettiFindMetadatiResponse">
+    <wsdl:part element="ns1:OggettiFindMetadatiResponse" name="OggettiFindMetadatiResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="Oggetti">
+    <wsdl:operation name="OggettiFind">
+      <wsdl:input message="tns:OggettiFind" name="OggettiFind">
+    </wsdl:input>
+      <wsdl:output message="tns:OggettiFindResponse" name="OggettiFindResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OggettiFindNome">
+      <wsdl:input message="tns:OggettiFindNome" name="OggettiFindNome">
+    </wsdl:input>
+      <wsdl:output message="tns:OggettiFindNomeResponse" name="OggettiFindNomeResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OggettiInsertV2">
+      <wsdl:input message="tns:OggettiInsertV2" name="OggettiInsertV2">
+    </wsdl:input>
+      <wsdl:output message="tns:OggettiInsertV2Response" name="OggettiInsertV2Response">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OggettiFindMetadati">
+      <wsdl:input message="tns:OggettiFindMetadati" name="OggettiFindMetadati">
+    </wsdl:input>
+      <wsdl:output message="tns:OggettiFindMetadatiResponse" name="OggettiFindMetadatiResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OggettiDelete">
+      <wsdl:input message="tns:OggettiDelete" name="OggettiDelete">
+    </wsdl:input>
+      <wsdl:output message="tns:OggettiDeleteResponse" name="OggettiDeleteResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OggettiFindByUid">
+      <wsdl:input message="tns:OggettiFindByUid" name="OggettiFindByUid">
+    </wsdl:input>
+      <wsdl:output message="tns:OggettiFindByUidResponse" name="OggettiFindByUidResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OggettiInsert">
+      <wsdl:input message="tns:OggettiInsert" name="OggettiInsert">
+    </wsdl:input>
+      <wsdl:output message="tns:OggettiInsertResponse" name="OggettiInsertResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OggettiUpdate">
+      <wsdl:input message="tns:OggettiUpdate" name="OggettiUpdate">
+    </wsdl:input>
+      <wsdl:output message="tns:OggettiUpdateResponse" name="OggettiUpdateResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="OggettiServiceSoapBinding" type="tns:Oggetti">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"></soap:binding>
+    <wsdl:operation name="OggettiFind">
+      <soap:operation soapAction="oggettiFind" style="document"></soap:operation>
+      <wsdl:input name="OggettiFind">
+        <soap:body use="literal"></soap:body>
+      </wsdl:input>
+      <wsdl:output name="OggettiFindResponse">
+        <soap:body use="literal"></soap:body>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OggettiFindNome">
+      <soap:operation soapAction="oggettiFindNome" style="document"></soap:operation>
+      <wsdl:input name="OggettiFindNome">
+        <soap:body use="literal"></soap:body>
+      </wsdl:input>
+      <wsdl:output name="OggettiFindNomeResponse">
+        <soap:body use="literal"></soap:body>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OggettiInsertV2">
+      <soap:operation soapAction="oggettiInsertV2" style="document"></soap:operation>
+      <wsdl:input name="OggettiInsertV2">
+        <soap:body use="literal"></soap:body>
+      </wsdl:input>
+      <wsdl:output name="OggettiInsertV2Response">
+        <soap:body use="literal"></soap:body>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OggettiFindMetadati">
+      <soap:operation soapAction="OggettiFindMetadati" style="document"></soap:operation>
+      <wsdl:input name="OggettiFindMetadati">
+        <soap:body use="literal"></soap:body>
+      </wsdl:input>
+      <wsdl:output name="OggettiFindMetadatiResponse">
+        <soap:body use="literal"></soap:body>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OggettiDelete">
+      <soap:operation soapAction="oggettiDelete" style="document"></soap:operation>
+      <wsdl:input name="OggettiDelete">
+        <soap:body use="literal"></soap:body>
+      </wsdl:input>
+      <wsdl:output name="OggettiDeleteResponse">
+        <soap:body use="literal"></soap:body>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OggettiFindByUid">
+      <soap:operation soapAction="oggettiFindByUid" style="document"></soap:operation>
+      <wsdl:input name="OggettiFindByUid">
+        <soap:body use="literal"></soap:body>
+      </wsdl:input>
+      <wsdl:output name="OggettiFindByUidResponse">
+        <soap:body use="literal"></soap:body>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OggettiInsert">
+      <soap:operation soapAction="oggettiInsert" style="document"></soap:operation>
+      <wsdl:input name="OggettiInsert">
+        <soap:body use="literal"></soap:body>
+      </wsdl:input>
+      <wsdl:output name="OggettiInsertResponse">
+        <soap:body use="literal"></soap:body>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OggettiUpdate">
+      <soap:operation soapAction="oggettiUpdate" style="document"></soap:operation>
+      <wsdl:input name="OggettiUpdate">
+        <soap:body use="literal"></soap:body>
+      </wsdl:input>
+      <wsdl:output name="OggettiUpdateResponse">
+        <soap:body use="literal"></soap:body>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="OggettiService">
+    <wsdl:port binding="tns:OggettiServiceSoapBinding" name="OggettiSoap11">
+      <soap:address location="https://devel3.vbg.community/backend/services/oggetti"></soap:address>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

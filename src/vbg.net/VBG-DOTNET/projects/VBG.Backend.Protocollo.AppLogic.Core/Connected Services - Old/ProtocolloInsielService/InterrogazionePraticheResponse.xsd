@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:rpres="http://insiel.it/protocollo/schemixsd/InterrogazionePraticheResponse" xmlns:dpratres="http://insiel.it/protocollo/schemixsd/DettagliPraticaResponse" xmlns:TipiGenerali="http://insiel.it/protocollo/schemixsd/TipiGenerali" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://insiel.it/protocollo/schemixsd/InterrogazionePraticheResponse" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="tipi_generali.xsd" namespace="http://insiel.it/protocollo/schemixsd/TipiGenerali" />
+  <xs:import schemaLocation="DettagliPraticaResponse.xsd" namespace="http://insiel.it/protocollo/schemixsd/DettagliPraticaResponse" />
+  <xs:element name="InterrogazionePraticheResponse">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="PraticaEstratta" type="dpratres:DettagliPratica" />
+        <xs:element name="Errore" type="TipiGenerali:Errore" />
+      </xs:choice>
+      <xs:attribute name="esito" type="xs:boolean" use="required" />
+      <xs:attribute name="numPrat" type="xs:integer" use="required" />
+      <xs:attribute name="numPratTotale" type="xs:integer" use="required" />
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

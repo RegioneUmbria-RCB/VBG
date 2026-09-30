@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:jms="http://www.springframework.org/schema/jms"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+			http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+			http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.2.xsd
+			http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms.xsd">
+
+	<context:annotation-config />
+	
+	<context:component-scan base-package="it.gruppoinit.pal.gp">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+	
+	<!-- file di configurazione (se modificato, modificare anche le costanti in WebConstants)-->
+	<context:property-placeholder location="classpath:deploy.properties" />
+
+	<!-- configurazione dei messaggi -->
+	<bean id="messageSource" 
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource"
+		p:basenames="classpath:messages" p:cacheSeconds="30">
+		
+	</bean>
+
+	<bean id="externalDBResolver"
+		class="it.gruppoinit.pal.gp.core.utils.ExternalDBResolverWS">
+		<property name="configurationProperties">
+			<props>
+				<prop key="ws.token.url">${ws.token.url}</prop>
+				<prop key="ws.token.user">${ws.token.user}</prop>
+				<prop key="ws.token.pwd">${ws.token.pwd}</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="dataSourceContainer" class="it.gruppoinit.pal.gp.core.dao.helper.DataSourceContainer">
+		<property name="factoryWrappers">
+			<map></map>
+		</property>
+		<property name="externalDBResolver" ref="externalDBResolver" />
+		<property name="packageToScan" value="it.gruppoinit.pal.gp.core.domain" />
+		<!--
+			lasciare sempre settato l'handler per oracle. quello di default lo carica da solo
+		-->
+		<property name="lobHandler" ref="oracleLobHandler" />
+	</bean>
+
+	<bean id="sessionFactory" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="proxyInterfaces">
+			<list>
+				<value>org.hibernate.SessionFactory</value>
+			</list>
+		</property>
+		<property name="targetSource" ref="sessionFactoryTarget" />
+	</bean>
+
+	<bean id="defaultLobHandler" class="org.springframework.jdbc.support.lob.DefaultLobHandler" />
+
+	<bean id="oracleLobHandler" class="org.springframework.jdbc.support.lob.OracleLobHandler">
+		<property name="nativeJdbcExtractor" ref="nativeJdbcExtractor" />
+	</bean>
+
+	<bean id="nativeJdbcExtractor"
+		class="org.springframework.jdbc.support.nativejdbc.C3P0NativeJdbcExtractor" />
+
+	<bean id="sessionFactoryTarget"
+		class="it.gruppoinit.pal.gp.core.dao.helper.SessionFactoryTargetSource">
+		<property name="dataSourceContainer" ref="dataSourceContainer" />
+	</bean>
+	
+	<bean name="openSessionInViewInterceptor"
+		class="org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor">
+		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="singleSession" value="true" />
+	</bean>
+
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager"
+		p:sessionFactory-ref="sessionFactory" />
+		
+	<!-- ASPECTJ CONFIGURATION -->
+	<aop:aspectj-autoproxy />
+	
+	<aop:config>
+		<aop:pointcut id="webMethods"
+			expression="execution(* (@org.springframework.stereotype.Controller *..*Controller).*(..))" />
+		<aop:pointcut id="serviceMethods"
+			expression="execution(* it.gruppoinit.pal.gp.gestionecalendari.service.*Service.*(..)) || execution(* it.gruppoinit.pal.gp.core.service.*Service.*(..))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="serviceMethods" />
+	</aop:config>
+	
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="find*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="is*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="check*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="exist*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="count*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="*" propagation="REQUIRED" />
+		</tx:attributes>
+	</tx:advice>
+	 
+    <bean name="importTask" class="it.gruppoinit.pal.gp.core.scheduler.task.ImportTaskAll" />
+    
+    <bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="importTask" />
+		<property name="targetMethod" value="processTask" />
+	</bean>
+	<bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="jobDetail" ref="jobDetail" />
+		<property name="startDelay" value="${scheduler.simple.startDelay}" />
+		<property name="repeatInterval" value="${scheduler.simple.repeatInterval}" />
+	</bean>
+	<bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="jobDetail" />
+		<property name="volatility" value="true" />
+		<property name="cronExpression" value="${scheduler.cron.expression}" />
+	</bean>
+	<bean name="quartzSchedulerFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="autoStartup" value="${scheduler.enable}" />
+		<property name="waitForJobsToCompleteOnShutdown" value="true" />
+		<property name="triggers">
+			<list>
+				<ref bean="${scheduler.type}Trigger" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="securityWSClient"
+		class="it.gruppoinit.pal.gp.core.ws.client.SecurityWSClient">
+		<property name="wsUrl" value="${ws.token.url}" />
+		<property name="username" value="${ws.token.user}" />
+		<property name="password" value="${ws.token.pwd}" />
+		<property name="timeout" value="15000" />
+	</bean>
+</beans>

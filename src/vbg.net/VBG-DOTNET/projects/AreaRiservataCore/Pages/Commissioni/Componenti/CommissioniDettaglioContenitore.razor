@@ -1,0 +1,98 @@
+﻿@using Init.SIGePro.Manager.DTO.Commissioni
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.DesignComuni.Download
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards.CardButtons
+@using VBG.BlazorComponentsLibrary.DesignComuni.Timeline
+@using static AreaRiservataCore.Pages.Commissioni.CommissioniDettaglio
+@inherits CommissioniBasePage
+
+
+
+@if (DataSource != null)
+{
+    <TitoloPagina>@DataSource.Testata.Descrizione</TitoloPagina>
+
+    <StepCard Titolo="Commissione" IdRisorsaTitolo="dettaglio-commissione.commissione.titolo">
+
+        <StepCardItem>
+            <StepCardInfo Titolo="Numero">@DataSource.Testata.Numero</StepCardInfo>
+            <StepCardInfo Titolo="Data">@DataSource.Testata.Data</StepCardInfo>
+            <StepCardInfo Titolo="Ora inizio">@DataSource.Testata.OraInizio</StepCardInfo>
+            <StepCardInfo Titolo="Ora fine">@DataSource.Testata.OraFine</StepCardInfo>
+        </StepCardItem>
+    </StepCard>
+    @if (ConvocazioniDataSource != null && ConvocazioniDataSource.Any())
+    {
+        <StepCard Titolo="Convocazioni" IdRisorsaTitolo="dettaglio-commissione.convocazioni.titolo">
+            <StepCardItem>
+                <Timeline Items="@ConvocazioniDataSource" Title=""></Timeline>
+            </StepCardItem>
+        </StepCard>
+    }
+    @if (DocumentiDataSource != null && DocumentiDataSource.Any())
+    {
+        <StepCard Titolo="Documenti della convocazione" IdRisorsaTitolo="dettaglio-commissione.lista-documenti.titolo">
+            @foreach (AllegatoCommissioneDao item in DocumentiDataSource)
+            {
+                <StepCardItem>
+                    <StepCardItemTitle Titolo="@item.Nomefile"></StepCardItemTitle>
+                    <StepCardInfo Titolo="Hash">@item.Sha256</StepCardInfo>
+                    <StepCardInfo Titolo="Descrizione">@item.Descrizione</StepCardInfo>
+                    <StepCardInfo Titolo="Registrazione">@(item.DataRegistrazione != null ? item.DataRegistrazione.Value.ToString("dd/MM/yyyy") : string.Empty)</StepCardInfo>
+                    <div class="mt-3">
+                        <DownloadButton NomeOggetto="Scarica file" CodiceOggetto="item.CodiceOggetto"></DownloadButton>
+                    </div>
+                    <div class="mt-3">
+                        @if (item.Approvato)
+                        {
+                            <BadgeComponent Type="BadgeComponent.BadgeCategoryEnum.WARNING">
+                                Approvato il @item.DataApprovazione
+                            </BadgeComponent>
+                        }
+                        else
+                        {
+                            <ApprovaDocItemComponent IdCommissione="@idCommissione" Item="@item" OnApproved="LoadDataAsync"></ApprovaDocItemComponent>
+                        }
+                    </div>
+                </StepCardItem>
+            }
+        </StepCard>
+    }
+    @if (PraticheDataSource != null && PraticheDataSource.Any())
+    {
+        <StepCard Titolo="Istanze in discussione" IdRisorsaTitolo="dettaglio-commissione.lista-istanze.titolo">
+            @foreach (PraticaCommissioneBreveDto item in PraticheDataSource)
+            {
+                <StepCardItem>
+                    <StepCardInfo Titolo="Dettaglio Istanza">
+                        @item.Comune <br />
+                        @item.NumeroData <br />
+                        @item.DatiProtocollo <br />
+                        @item.Richiedente <br />
+                    </StepCardInfo>
+                    <StepCardInfo Titolo="Oggetto della pratica">
+                        <div class="intervento-pratica">
+                            @item.Intervento
+                        </div>
+
+                        <div class="lavori-pratica">
+                            @item.DescrizioneLavori
+                        </div>
+
+                        <div class="documenti-pratica">
+                            @item.DocumentiSelezionati documenti
+                        </div>
+                    </StepCardInfo>
+                    <StepCardInfo Titolo="Parere">@item.DescrizioneParere</StepCardInfo>
+                    <div class="buttonContainer">
+                        <button class="btn btn-primary justify-content-center w-100" @onclick="@(async () => await GotoAsync($"praticadettaglio/{idCommissione}/{item.Uuid}"))">Seleziona </button>
+                    </div>
+                </StepCardItem>
+            }
+        </StepCard>
+    }
+}
+<div class="buttonContainer mb-3">
+    <button class="btn btn-light vbg-show-spinner" @onclick="@(async () => await GotoAsync("commissionilista"))">Chiudi</button>
+</div>

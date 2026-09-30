@@ -1,0 +1,3509 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- MUDE REVISIONE 0.89 DEL 20/04/2015-->
+<xs:schema xmlns="http://www.mude.gov.it" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:gml="http://www.opengis.net/gml" targetNamespace="http://www.mude.gov.it" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:import namespace="http://www.opengis.net/gml" schemaLocation="MUDE_gml.xsd"/>
+	<xs:element name="MUDE">
+		<xs:annotation>
+			<xs:documentation>Modello Unico Digitale dell'Edilizia.
+E' il modello unico utilizzato dal professionista per effettuare tutte le richieste e comunicazioni che devono essere inoltrate al Comune nell'ambito di un intervento edilizio.
+Sono previste le seguenti tipologie di MUDE:
+- MUDE-TitoloEdilizio,
+- MUDE-NotificaPreliminare,
+- MUDE-ComunicazioneInizioLavoriPdC,
+- MUDE-ComunicazioneVariazioneRuoliSoggetti,
+- MUDE-ComunicazioneFineLavori,
+- MUDE-ComunicazioneGenerica,
+- MUDE-RichiestaGenerica,
+- MUDE-Agibilita,
+- MUDE-RichiestaCCEA,
+- MUDE-Lottizzazione.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="NumeroMUDE" type="NumeroMUDEType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Numero MUDE della presente istanza.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="ProtocolloMUDE" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Riferimenti di protocollo della presente istanza MUDE.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="RiferimentoProtocollo" minOccurs="0"/>
+							<xs:element ref="RiferimentoProtocolloInformatico" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Comune" type="ComuneType">
+					<xs:annotation>
+						<xs:documentation>Comune al quale è indirizzato il MUDE</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="RiferimentoProcessoMUDE" type="NumeroMUDEType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Codice che identifica univocamente il processo MUDE (e quindi la trasformazione edilizia) al quale afferisce questa istanza MUDE. Non tutte le istanze appartengono in un determinato momento ad un processo MUDE. Ad esempio un'istanza MUDE-RichiestaGenerica per l'ottenimento di un preparere non afferisce ad alcun processo MUDE.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="RiferimentoPrecedenteIstanzaMUDE" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Estremi identificativi dell'eventuale precedente istanza MUDE alla quale questa istanza è collegata. Da indicare secondo la seguente casistica.
+1) Nei casi di 
+- MUDE-ComunicazioneInizioLavoriPdC,
+- MUDE-ComunicazioneVariazioneRuoliSoggetti,
+- MUDE-ComunicazioneFineLavori,
+deve obbligatoriamente essere indicata l'istanza di titolo edilizio cui questa istanza si riferisce.
+2) Nel caso di istanza di tipo MUDE-TitoloEdilizio deve essere indicata l'istanza di titolo edilizio cui questa istanza si riferisce solo nel caso la presente istanza costituisca variante o rettifica della precedente.
+3) Nel caso di istanza di tipo MUDE-NotificaPreliminare non deve essere indicato alcun riferimento ad istanze precedenti. Deve invece essere indicato, nell'elemento appostio, il riferimento al processo MUDE.
+4) Nel caso di istanza di tipo MUDE-ComunicazioneGenerica deve essere indicato il riferimento all'istanza MUDE, di qualsiasi tipo, cui la comunicazione si riferisce.
+5) Il caso di istanza di tipo MUDE-RichiestaGenerica è come il caso di MUDE-ComunicazioneGenerica ma l'indicazione è opzionale nel caso la richiesta apra un processo MUDE nuovo e non si inserisca in un processo MUDE esistente.
+6) Nel caso di istanza di tipo MUDE-Agibilita deve essere indicato il riferimento all'istanza di fine lavori cui l'agibilità si riferisce. Oppure deve essere indicato il riferimento all'istanza di titolo edilizio in caso di sanatoria senza ulteriori opere. Oppure non deve essere indicato niente nel caso la richiesta agibilità costituisca un processo MUDE autonomo e quindi non sia connessa ad un intervento edilizio.
+7) Nel caso di istanza di tipo MUDE-Lottizzazione deve essere indicata l'istanza di lottizzazione cui questa istanza si riferisce solo nel caso la presente istanza costituisca variante o rettifica della precedente.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="RiferimentoIstanzaMUDE" type="NumeroMUDEType">
+								<xs:annotation>
+									<xs:documentation>Codice che identifica univocamente uno specifico MUDE presentato al comune.</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element ref="RiferimentoProtocollo" minOccurs="0"/>
+							<xs:element ref="RiferimentoProtocolloInformatico" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element ref="Ruoli">
+					<xs:annotation>
+						<xs:documentation>Riporta per tutti i ruoli previsti dalla specifica istanza i soggetti che li ricoprono. Ogni ruolo fa riferimento (mediante il codice fiscale) ad uno o più soggetti che devono obbligatoriamente essere presenti nell'elemento AnagraficaSoggetto. A seconda dell'istanza saranno indicati differenti ruoli. </xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="TipoMUDE">
+					<xs:annotation>
+						<xs:documentation>Specifico tipo di MUDE da utilizzare da parte del professionista per effettuare una specifica comunicazione/richiesta prevista nell'ambito di un intervento edilizio.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:choice>
+							<xs:element ref="MUDE-TitoloEdilizio"/>
+							<xs:element ref="MUDE-NotificaPreliminare"/>
+							<xs:element ref="MUDE-ComunicazioneInizioLavoriPdC"/>
+							<xs:element ref="MUDE-ComunicazioneVariazioneRuoliSoggetti">
+								<xs:annotation>
+									<xs:documentation>MUDE per la comunicazione di variazioni occorse relativamente ai dati anagrafici dei soggetti coinvolti in un titolo edilizio e/o alla nomina/revoca/sostituzione(voltura) di soggetti che ricoprono i diversi ruoli previsti per un titolo edilizio (es. variazione del direttore lavori). Il riferimento al titolo edilizio deve essere fornito in testata.
+Più precisamente le variazioni possono riguardare: 
+- modifiche ai dati anagrafici e/o al recapito del soggetto (deve essere compilato il solo elemento AnagraficaSoggetto);
+- aggiunta di nuovi soggetti aventi ruolo nell'ambito del titolo edilizio (devono essere compilati gli elementi AnagraficaSoggetto e RuoliAggiunti);
+- revoche o rimozioni di ruoli, ad esempio revoca del  direttore lavori (devono essere compilati gli elementi AnagraficaSoggetto e RuoliRimossi);
+- sostituzioni di ruoli, ad esempio sostituzione del direttore lavori o cambio di intestatario (devono essere compilati gli elementi AnagraficaSoggetto, RuoliRimossi, RuoliAgggiunti).</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element ref="MUDE-ComunicazioneFineLavori"/>
+							<xs:element ref="MUDE-ComunicazioneGenerica"/>
+							<xs:element ref="MUDE-RichiestaGenerica"/>
+							<xs:element ref="MUDE-Agibilita"/>
+							<xs:element ref="MUDE-Lottizzazione"/>
+							<xs:element ref="MUDE-RichiestaCCEA"/>
+						</xs:choice>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Allegati" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Gli allegati sono forniti congiuntamente all'istanza MUDE. All'interno dell'istanza è riportato l'elenco dei tipi di allegato. Per ciascun tipo di allegato possono essere forniti con l'istanza uno o più allegati fisici. Esemplificando, all'interno dell'istanza è presente l'indicazione della presenza del tipo allegato "Documenti di identità", mentre congiuntamente alla domanda saranno depositati uno o più file fisici connessi a questo tipo di allegato.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Allegato" type="AllegatoType" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="Versione" type="TestoBreveType" use="required">
+				<xs:annotation>
+					<xs:documentation>Numero di versione del modello dati del MUDE utilizzato per la redazione della presente istanza MUDE.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="Autore" type="TestoBreveType">
+				<xs:annotation>
+					<xs:documentation>Autore della presente istanza MUDE.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="DataOra" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation>Timestamp di creazione della presente istanza MUDE.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MUDE-TitoloEdilizio">
+		<xs:annotation>
+			<xs:documentation>MUDE per la presentazione di un titolo edilizio.
+E' necessario per:
+- presentare una istanza di richiesta di Permesso di Costruire,
+- presentare una Segnalazione Certificata di Inizio Attività (SCIA),
+- presentare una Comunicazione di Inizio Lavori (CIL).
+- presentare una variante o una rettifica ad un precedente  titolo edilizio.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="DatiGeneraliTitoloEdilizio">
+					<xs:annotation>
+						<xs:documentation>Elementi descrittivi generali del titolo edilizio.
+Nota: le date di inizio e fine lavori, che possono essere presunte, riguardano i soli casi di SCIA e CIL.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="TipoTitoloEdilizio" type="CodificaUnicaType">
+								<xs:annotation>
+									<xs:documentation>Tipologia del titolo edilizio. 
+Può assumere i valori:
+- Permesso di Costruire
+- SCIA
+- CIL</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="InRettificaDi" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Presente quando il titolo edilizio è stato già accettato (protocollato) e si deve intervenire per apportare delle rettifiche. Si applica nel caso di titoli edilizi già ricevuti (protocollati) dal Comune per i quali non sia ancora conclusa la fase di verifiche che porta all'efficacia del titolo.</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="NoteRettifica" type="TestoLungoType">
+											<xs:annotation>
+												<xs:documentation>Descrizione testuale delle modifiche che si presentano con questo MUDE rispetto al titolo edilizio che si vuole rettificare.</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="VarianteA" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Se presente indica che questa istanza MUDE costituisce variante ad un titolo edilizio precedente già rilasciato. Il riferimento a tale titolo edilizio deve essere fornito in testata.</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="TipoVariante" type="CodificaUnicaType">
+											<xs:annotation>
+												<xs:documentation>Tipo della variante come previsto dal DPR 380/2001: essenziale o minore. Nei casi di applicazione della legge regionale 15/2013 di Regione Emilia-Romagna assume viceversa i valori seguenti: C - variante in corso d'opera, F - variante in corso d'opera presentata all'atto della fine lavori, A - nuovo titolo abilitativo presentato su intervento in corso d'opera.</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="ASanatoria" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Titolo edilizio a sanatoria.</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Parziale" type="xs:boolean">
+											<xs:annotation>
+												<xs:documentation>Può assumere valori: vero o falso. Il titolo edilizio si intende a parziale sanatoria quando, oltre a sanare un abuso, si propone di realizzare anche altre opere.</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="RiferimentoNormativoSanatoria" type="CodificaUnicaType" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Indica il riferimento normativo che consente la sanatoria.</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="DataEsecuzioneOpere" type="xs:date" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Rilevante per la determinazione del regime normativo in vigore all'epoca dell'abuso.</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="RiferimentoPrecedenteTitolo" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Nel caso in cui il presente titolo a sanatoria si riferisca ad opere realizzate in difformità rispetto ad un precedente titolo edilizio, deve essere riportato il riferimento a tale precedente titolo.</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="RiferimentoIstanzaMUDE" type="NumeroMUDEType" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Codice che identifica univocamente uno specifico MUDE presentato al comune.</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element ref="RiferimentoProtocollo" minOccurs="0"/>
+													<xs:element ref="RiferimentoProtocolloInformatico" minOccurs="0"/>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="InDeroga" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Titolo edilizio in deroga alle regole vigenti. 
+La deroga può essere:
+- già stata ottenuta: EstremiDerogaOttenuta
+- richiesta con il presente titolo edilizio: RichiestaDiDeroga
+- richiesta precedentemente alla presentazione del titolo edilizio e non ancora ottenuta (RiferimentoProtocollo).</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:choice>
+										<xs:element name="EstremiDerogaOttenuta" type="TestoBreveType">
+											<xs:annotation>
+												<xs:documentation>Estremi testuali di riferimento alla deroga: numero di protocollo, delibere di consiglio, altri provvedimenti comunali.</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="RichiestaDiDeroga">
+											<xs:annotation>
+												<xs:documentation>Riporta gli estremi per cui si richiede la deroga. La richiesta di deroga è contestuale alla presentazione del titolo edilizio ed avvia un endoprocedimento specifico. </xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:choice>
+													<xs:element name="DerogaCodificata" type="CodificaUnicaType">
+														<xs:annotation>
+															<xs:documentation>Indicazione codificata della deroga. I riferimenti normativi per i quali si richiede la deroga sono desunti dalla descrizione.</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="AltraDeroga" type="TestoLungoType">
+														<xs:annotation>
+															<xs:documentation>Descrizione testuale di deroga non codificata. Occorre indicare i riferimenti normativi per i quali si richiede la deroga.</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+												</xs:choice>
+											</xs:complexType>
+										</xs:element>
+										<xs:element ref="RiferimentoProtocollo"/>
+									</xs:choice>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="RiferimentoNormativo" type="CodificaUnicaType" minOccurs="0" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>Esempio: Piano Casa</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element ref="TipoInterventoPrincipale"/>
+							<xs:element ref="DestinazioneUsoPrincipale"/>
+							<xs:element name="RiferimentoIstanzaMUDELottizzazione" type="NumeroMUDEType" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Eventuale riferimento all'istanza MUDE di lottizzazione cui questa istanza MUDE si riferisce.</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="PrecedenteEdilizio" minOccurs="0" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>Estremi degli eventuali precedenti edilizi inerenti gli oggetti edilizi correlati al presente intervento.</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="TipoPratica" type="TestoLungoType" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Descrizione libera del tipo di pratica/istanza costituente il precendete edilizio. Ad esempio "Permesso di costruire", "Agibilità", ...</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="RiferimentoIstanzaMUDE" type="NumeroMUDEType" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Codice che identifica univocamente uno specifico MUDE presentato al comune.</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element ref="RiferimentoProtocollo" minOccurs="0"/>
+										<xs:element ref="RiferimentoProtocolloInformatico" minOccurs="0"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="DescrizioneIntervento" type="TestoLungoType">
+								<xs:annotation>
+									<xs:documentation>Descrizione testuale dell'intervento.</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="Note" type="TestoLungoType" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Eventuali note relative all'intero intervento.</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element ref="DataInizioLavori" minOccurs="0"/>
+							<xs:element ref="DataFineLavori" minOccurs="0"/>
+							<xs:element name="OperePrecarie" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Se presente questo elemento significa che l'intervento riguarda opere precarie.</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="RiferimentoRichiestaCCEA" type="NumeroMUDEType" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Nel caso l'istanza di titolo edilizio costituisca variante di fine lavori, questo elemento contiene il riferimento alla richiesta di CCEA corrispondente.</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element ref="LocalizzazioneIntervento"/>
+				<xs:element ref="TrasformazioneEdilizia">
+					<xs:annotation>
+						<xs:documentation>Descrive gli stati degli oggetti edilizi prima e dopo l'intervento e le variazioni intercorse.
+La descrizione della trasformazione edilizia deve sempre essere completa anche nel caso di varianti (essenziali o minori)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="DatiTecnicoEconomiciIntervento" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>In questo elemento viene riportata la descrizione dell'intervento edilizio in termini di variazioni di dati tecnici ed economici.
+I dati tecnici ed economici dell'intervento devono essere forniti scomponendo l'intervento in "sotto-interventi" omogenei per un insieme di caratteristiche. 
+E' prevista la possibilità di fornire anche ulteriori dati economici direttamente riconducibili all'intero intervento edilizio.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="SottoInterventoEdilizio" minOccurs="0" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>Scomposizione dell'intervento edilizio in "sotto-interventi" relativamente ai quali debbono essere forniti dati tecnici ed economici a fini di istruttoria, calcolo degli oneri, e monitoraggio.
+Uno specifico "sotto-intervento edilizio" si caratterizza per un gruppo omogeneo di caratteristiche distinte da quelle degli altri "sotto-interventi edilizi".
+Le caratteristiche di distinzione sono:
+- tipo di intervento,
+- eventuale sotto tipo di intervento,
+- eventuale destinazione d'uso "iniziale",
+- destinazione d'uso "finale",
+- indicazione se a sanatoria oppure no,
+- eventuali ulteriori dati tecnici.
+
+Per ciascun "sotto-intervento edilizio" devono essere riportate le variazioni di dati tecnici ed economici da esprimersi fra la situazione finale e quella iniziale secondo la seguente casistica:
+1) titolo non a sanatoria: la situazione finale è costituita dallo stato di progetto mentre quella iniziale è costituita dallo stato legittimato;
+2) titolo con sole opere a sanatoria: la situazione finale è costituita dallo stato di fatto mentre quella iniziale è costituita dallo stato legittimato;
+3) titolo con opere a sanatoria e nuove opere: devono essere riportati due distinti elementi di variazione:
+3a) il primo relativo alla sanatoria dove la situazione finale è costituita dallo stato di fatto mentre quella iniziale è costituita dallo stato legittimato
+3b) il secondo relativo alle nuove opere dove la situazione finale è costituita dallo stato di progetto mentre quella iniziale è costituita dallo stato di fatto. 
+
+Nel caso in cui il presente titolo edilizio costituisca variante essenziale occorre fornire i dati tecnici ed economici completi, come se si trattasse di un nuovo titolo edilizio. Se invece il presente titolo edilizio costituisce variante minore occorre fornire i dati tecnici ed economici in termini di differenza rispetto a quelli forniti nel titolo edilizio principale.
+
+Le variazioni devono essere descritte per ogni ulteriore dizionario rispetto al quale si vogliano esprimere le codifiche degli elementi di variazione e delle entità di variazione.
+
+
+</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element ref="Dizionario" minOccurs="0"/>
+										<xs:element name="CaratteristicheOmogenee">
+											<xs:annotation>
+												<xs:documentation>Combinazione di caratteristiche omogenee (tipo intervento, eventuale sottotipo, destinazione d'uso iniziale, destinazione d'uso finale, sanatoria) che identificano il "sotto-intervento edilizio". Ad esempio: 
+- manutenzione straordinaria residenziale,
+- nuova costruzione residenziale,
+- cambio d'uso da residenziale a commerciale,
+- cambio d'uso da residenziale a direzionale,
+- sopraelevazione residenziale da sanare,
+- sopraelevazione residenziale,
+- ...</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="TipoIntervento" type="CodificaUnicaType">
+														<xs:annotation>
+															<xs:documentation>Ad esempio "Nuova costruzione", "Manutenzione straordinaria", ....</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="SottotipoIntervento" type="CodificaUnicaType" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Ad esempio "Ampliamenti e sopraelevazioni", "Realizzazione e/o spostamento di collegamenti verticali interni alle singole unità immobiliari senza aumento di Su", ...</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="DestinazioneUsoIniziale" type="CodificaUnicaType" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Destinazione d'uso prima dell'intervento o della sanatoria. Può non essere presente ad esempio nel caso di nuova costruzione. Esempio di destinazione d'uso iniziale: "abitazione".</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="DestinazioneUsoFinale" type="CodificaUnicaType">
+														<xs:annotation>
+															<xs:documentation>Destinazione d'uso dopo l'intervento o la sanatoria. Esempio di destinazione d'uso finale: "ufficio".</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="DaSanare" type="xs:boolean">
+														<xs:annotation>
+															<xs:documentation>Può assumere valori: SI (la variazione descritta riguarda la parte dell'intervento da sanare) e NO (la variazione descritta riguarda la parte di nuovo intervento).</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="DatiTecnici" type="DatiTecniciType" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Dati tecnici dello specifico "sotto-intervento edilizio" espressi in termini di SuperficieUtile, SuperficieAccessoria, o altri dati tecnici. Le quantità devono essere positive se in aumento o negative se in diminuzione. Ad esempio un ampliamento comporta una variazione positiva di superficie. </xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="DatiEconomici" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Dati economici (costo di costruzione, oneri di urbanizzazione primaria, oneri di urbanizzazione secondaria) relativi allo specifico "sotto-intervento edilizio".</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="QuotaCostoCostruzione" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Importo, in euro, del costo di costruzione. Può non essere dovuto a seconda della classificazione dell'intervento e a quanto stabilito dal regolamento edilizio.
+Esempi:
+- nei casi di edilizia abitativa convenzionata, relativa anche ad edifici esistenti, il contributo afferente al permesso di costruire è ridotto alla sola quota degli oneri di urbanizzazione qualora il titolare del permesso si impegni, a mezzo di una convenzione con il comune, ad applicare
+prezzi di vendita e canoni di locazione convenzionati.
+- il regolamento di un particolare comune potrebbe stabilire che in caso di cambio di destinazione d'uso senza opere  il permesso di costruire è esente dal costo di costruzione, così come in caso di ristrutturazione edilizia l'esenzione potrebbe essere limitata a particolari destinazioni d'uso.</xs:documentation>
+														</xs:annotation>
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="QuotaOrdinaria" type="ImportoType" minOccurs="0"/>
+																<xs:element name="QuotaSanzione" type="ImportoType" minOccurs="0"/>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="QuotaOneriUrbanizzazionePrimaria" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Importo, in euro, degli oneri dovuti per la realizzazione di opere di urbanizzazione primaria (DPR 380/2001 - art. 16 commi 7, 7 bis), quali ad esempio: strade residenziali, spazi di sosta o di parcheggio, fognature, rete idrica, rete di distribuzione dell'energia elettrica e del gas, pubblica illuminazione, spazi di verde attrezzato, ...</xs:documentation>
+														</xs:annotation>
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="QuotaOrdinaria" type="ImportoType" minOccurs="0"/>
+																<xs:element name="QuotaSanzione" type="ImportoType" minOccurs="0"/>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="QuotaOneriUrbanizzazioneSecondaria" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Importo, in euro, degli oneri dovuti per la realizzazione di opere di urbanizzazione secondaria (DPR 380/2001 - art. 16 comma 8), quali ad esempio: asili nido e scuole materne, scuole dell’obbligo nonché strutture e complessi per l’istruzione superiore all’obbligo, mercati di quartiere, delegazioni comunali, chiese e altri edifici religiosi, impianti sportivi di quartiere, aree verdi di quartiere, centri sociali e attrezzature culturali e sanitarie, ...</xs:documentation>
+														</xs:annotation>
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="QuotaOrdinaria" type="ImportoType" minOccurs="0"/>
+																<xs:element name="QuotaSanzione" type="ImportoType" minOccurs="0"/>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="AltroDatoEconomico" minOccurs="0" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>Eventuali ulteriori dati economici relativi all'intervento edilizio e differenti dal quelli riportati per "sotto-intervento edilizio". Si tratta ad esempio di diritti di segreteria, diritti accessori, ....</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="TipoDatoEconomico" type="CodificaMultiplaType">
+											<xs:annotation>
+												<xs:documentation>Tipo di dato economico: Diritti di segreteria, ...</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="Importo" type="ImportoType">
+											<xs:annotation>
+												<xs:documentation>Importo in euro.</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element ref="DotazioniTerritorialiEOpereInConvenzione" minOccurs="0"/>
+				<xs:element name="Dichiarazioni" type="DichiarazioniType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Dichiarazioni e asseverazioni.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="NormativaUrbanisticaEVincoli" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MUDE-NotificaPreliminare">
+		<xs:annotation>
+			<xs:documentation>MUDE per la presentazione della Notifica Preliminare. Il riferimento al titolo edilizio deve essere fornito in testata.
+L'indirizzo del cantiere si assume essere lo stesso dell'intervento.
+Si assume che la data di comunicazione coincida con la data di inoltro della presente notifica preliminare.
+I committenti si intendono coincidere con gli intestatari del titolo edilizio.
+Secondo il D.Lgs. 81/2008 - Art. 89 (Definizioni), comma 1 lettera b, il committente è il soggetto per conto del quale l'intera opera viene realizzata, indipendentemente da eventuali frazionamenti della sua realizzazione. 
+I soggetti previsti dalla notifica preliminare secondo il D.Lgs. 81/2008 - Art. 89 comma 1 (ResponsabileSicurezza - lettera c, CoordinatoreSicurezzaProgettazione - lettera e, CoordinatoreSicurezzaRealizzazione - lettera f) devono essere forniti nella radice del MUDE.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="NaturaOpera" type="CodificaMultiplaType">
+					<xs:annotation>
+						<xs:documentation>Tipologia sommaria dei lavori prevalenti tra quelli previsti per tutte le fasi del cantiere.
+
+Il dizionario di riferimento è quello previsto dall'ALLEGATO X del D.Lgs. 81/2008 - Elenco dei lavori edili o di ingegneria civile di cui all'articolo 89 comma 1, lettera a):
+1. I lavori di costruzione, manutenzione, riparazione, demolizione, conservazione, risanamento, ristrutturazione o equipaggiamento, la trasformazione, il rinnovamento o lo smantellamento di opere fisse, permanenti o temporanee, in muratura, in cemento armato, in metallo, in legno o in altri materiali, comprese le parti strutturali delle linee elettriche e le parti strutturali degli impianti elettrici, le opere stradali, ferroviarie, idrauliche, marittime, idroelettriche e, solo per la parte che comporta lavori edili o di ingegneria civile, le opere di bonifica, di sistemazione forestale e di sterro.
+2. Sono, inoltre, lavori di costruzione edile o di ingegneria civile gli scavi, ed il montaggio e lo smontaggio di elementi prefabbricati utilizzati per la realizzazione di lavori edili o di ingegneria civile.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="DataPresuntaInizioLavori" type="xs:date">
+					<xs:annotation>
+						<xs:documentation>Data riferita alle fasi iniziali o preliminari del cantiere (recinzione, prospezione...).</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="DurataPresuntaLavori" type="xs:duration">
+					<xs:annotation>
+						<xs:documentation>Durata presunta dei lavori in cantiere.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="NumeroPresuntoLavoratori" type="xs:unsignedInt">
+					<xs:annotation>
+						<xs:documentation>Numero massimo presunto dei lavoratori sul cantiere.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="NumeroPresuntoImprese" type="xs:unsignedInt">
+					<xs:annotation>
+						<xs:documentation>Numero previsto di imprese e di lavoratori autonomi sul cantiere.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="AmmontarePresuntoLavori" type="ImportoType">
+					<xs:annotation>
+						<xs:documentation>Ammontare complessivo presunto dei lavori.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="DatiIntegrativi" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Ulteriori dati, non previsti dall'allegato XII del D.Lgs. 81/2008, che aggiungono notizie di interesse sulla pericolosità dei cantieri. Il presente elemento è da ripetere nel caso si vogliano fornire i dati integrativi secondo più dizionari.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ElementoDiPotenzialePericolo" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>Un elemento di potenziale pericolo descrive una  situazione o un lavoro che presentano aspetti di pericolosità.
+Una situazione di potenziale pericolo è, ad esempio, la presenza a meno di 30 metri dal confine del lotto d’intervento di linee elettriche aeree con tensione superiore a 380 volt. Tipicamente la rilevazione di una situazione di potenziale pericolo avviene rispondendo ad una domanda del tipo "E' prevista la presenza di ...? Si/No". 
+Un lavoro potenzialmente pericoloso è, ad esempio, la demolizione o rimozione di materiali contenenti amianto. Tipicamente la rilevazione di un lavoro di potenziale pericolo avviene rispondendo ad una domanda del tipo "Sono previsti lavori di ...? Si/No".
+Un elemento di potenziale pericolo è quindi descritto da un tipo codificato, in corrispondenza della situazione o del lavoro di potenziale pericolo a cui il professionista ha risposto affermativamente, e da eventuali caratteristiche tecniche che lo dettagliano maggiormente quando questo è richiesto. Ad esempio in caso di lavori in quota ad altezza superiore a 3 metri potrebbe essere necessario specificare l'altezza massima a cui sono previsti i lavori.</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="TipoPericolo" type="CodificaUnicaType">
+											<xs:annotation>
+												<xs:documentation>Ad esempio:
+- Presenza a meno di 30 metri dal confine del lotto d’intervento di linee elettriche aeree con tensione superiore a 380 volt
+- Presenza nel lotto d'intervento di  condotte gas, (I, II o III famiglia) con esercizio &gt; 0,5 MPa (esclusi impianti per utenze), interessate da scavi
+- Sono previste demolizioni di parti strutturali, portanti dell'edificio
+- E' prevista la demolizione o rimozione di materiali contenenti amianto
+- Sono previsti lavori in quota ad altezza superiore a 3 metri su coperti con parti non calpestabili a rischio sfondamento
+- ...</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="CaratteristicaTecnica" minOccurs="0" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Caratteristica tecnica che consente di dettagliare meglio l'elemento di pericolo.
+Ad esempio in caso di lavori in quota ad altezza superiore a 3 metri è necessario specificare l'altezza massima a cui sono previsti i lavori.</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="TipoCaratteristica" type="CodificaUnicaType">
+														<xs:annotation>
+															<xs:documentation>Ad esempio:
+- altezza massima lavori in quota (m)
+- profondità massima scavo in trincea (m)
+- sviluppo lineare scavo aperto (m)
+- sup. complessiva scavo a platea/sbancamento (mq)
+- ...
+Il tipo di caratteristica tecnica determina anche l'unità di misura da adottare per esprimerne il valore: metri per le lunghezze, metri quadrati per le superfici, metri cubi per i volumi, ...</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="ValoreDimensionale" type="xs:decimal">
+														<xs:annotation>
+															<xs:documentation>Valore numerico decimale della caratteristica tecnica.</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MUDE-ComunicazioneInizioLavoriPdC">
+		<xs:annotation>
+			<xs:documentation>MUDE per la comunicazione dell'inizio lavori relativo ad un titolo edilizio di tipo "permesso di costruire".
+Alla presentazione della comuncazione di inizio lavori devono essere noti il direttore lavori e/o l'assuntore lavori. Possono essere forniti per la prima volta con questa istanza oppure essere stati forniti in precedenza con l'istanza di titolo edilizio e/o successive istanze di variazioni ruoli soggetti. Con la comunicazione di inizio lavori non può essere indicati un direttore lavori e/o un assuntore lavori differenti rispetto a quelli indicati in precedenza: se è sopravvenuta una varizione di tali soggetti questa deve essere preventivamente comunicata in forma esplicita attraverso l'apposita istanza MUDE per la variazione dei ruoli e dei soggetti.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="DataInizioLavori"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MUDE-ComunicazioneFineLavori">
+		<xs:annotation>
+			<xs:documentation>MUDE per la comunicazione della fine lavori di un titolo edilizio. Il riferimento al titolo edilizio per il quale si comunica la fine lavori deve essere fornito in testata. Dichiarando la fine lavori del titolo edilizio di riferimento (titolo edilizio originario o sua variante essenziale, nell'ultima versione eventualmente rettificata) si intende che la fine lavori si applica anche alle eventuali varianti minori.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="DataFineLavori"/>
+				<xs:element name="FineLavoriParziale" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Se presente questo elemento significa che si sta comunicando una fine lavori "parziale". Per fine lavori parziale si intende la possibilità di dichiarare l'ultimazione delle opere solo per alcuni degli oggetti edilizi coinvolti in una trasformazione edilizia.
+E' una prassi in uso in diversi Comuni che consente al professionista di richiedere il successivo Certificato di conformità edilizia e agibilità. Per tale ragione, per dichiarare la fine lavori di un'unità immobiliare comunale è necessario che siano state ultimate anche le opere relative alle parti comuni dell'edificio. Occorre fornire i riferimenti mnemonici di tutti gli oggetti edilizi (unità immobiliari e edifici) per i quali si comunica la fine lavori.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="RiferimentoMnemonico" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="FineLavoriVariantiMinori" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Eventuale indicazione dei riferimenti di tutte le varianti minori presentate sul titolo edilizio per il quale si sta presentando la fine lavori. </xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="RiferimentoFineLavori" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="RiferimentoIstanzaMUDE" type="NumeroMUDEType" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Codice che identifica univocamente uno specifico MUDE presentato al comune.</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element ref="RiferimentoProtocollo" minOccurs="0"/>
+										<xs:element ref="RiferimentoProtocolloInformatico" minOccurs="0"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MUDE-Agibilita">
+		<xs:annotation>
+			<xs:documentation>MUDE per richiedere l'agibilità o per depositare la scheda tecnica descrittiva.
+In testata deve obbligatoriamente essere indicato il riferimento al MUDE con il quale è stata presentata la comunicazione di fine lavori (eventualmente parziale).
+Rif. DPR 380/6 giugno 2001 - artt. 24 e 25.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="RichiestaAgibilita">
+					<xs:annotation>
+						<xs:documentation>Assume valore SI se si sta richiedendo il rilascio del certificato di conformità edilizia e agibilità. Assume valore NO se si tratta di un deposito di scheda tecnica descrittiva. </xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="SI"/>
+							<xs:enumeration value="NO"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="AgibilitaPrecedente" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Estremi identificativi dell'eventuale agibilità richiesta precedentemente per le parti comuni. Si applica nel caso in cui l'intervento edilizio non abbia coinvolto le parti comuni o nel caso in cui tali parti comuni siano già state oggetto di una precedente richiesta di agibilità nell'ambito dello stesso intervento edilizio a seguito della presentazione di una fine lavori parziale. </xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="RiferimentoIstanzaMUDE" type="NumeroMUDEType" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Codice che identifica univocamente uno specifico MUDE presentato al comune.</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element ref="RiferimentoProtocollo" minOccurs="0"/>
+							<xs:element ref="RiferimentoProtocolloInformatico" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="RiepilogoDatiDelTitoloEdilizio" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Non sono dati aggiuntivi richiesti a chi presenta l'istanza. Si tratta invece del riepilogo dei dati generali forniti all'atto della presentazione del titolo edilizio (o variante) cui questa agibilità fa riferimento.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="DescrizioneIntervento" type="TestoLungoType" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Descrizione testuale dell'intervento.</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="Note" type="TestoLungoType" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Eventuali note relative all'intero intervento.</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element ref="TipoInterventoPrincipale" minOccurs="0"/>
+							<xs:element ref="DestinazioneUsoPrincipale" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element ref="LocalizzazioneIntervento" minOccurs="0"/>
+				<xs:element name="DescrizioneOggettiEdilizi">
+					<xs:annotation>
+						<xs:documentation>La descrizione degli oggetti edilizi all'atto della agibilità assume differenze a seconda di alcuni casi:
+1) Caso di agibilità presentata su un intervento edilizio gestito con MUDE: in questo caso occorre riportare solo lo stato finale degli oggetti edilizi. Per le UI e gli edifici dovranno essere obbligatoriamente riportati TUTTI i riferimenti catastali e toponomastici. Per le UI deve essere riportato anche il classamento catastale così come risultante dall'avvenuto accatastamento. Tutte le informazioni sui dati tecnici degli oggetti edilizi non devono necessariamente essere riportate in quanto acquiste in fase di presentazione del titolo edilizio.
+2) Caso di agibilità presentata su un intervento edilizio gestito senza MUDE: in questo caso, oltre a quanto riportato al punto precedente, deve essere anche descritta la trasformazione edilizia. Occorre quindi descrivere anche lo stato legittimato iniziale e le trasformazioni intercorse, in modo del tutto analogo a quanto deve essere fatto all'interno dell'istanza MUDE di titolo edilizio.
+3) Caso di agilbilità che non fa seguito ad una intervento edilizio ma costituisce richiesta autonoma da parte dell'intestatario. Questo caso è trattato come il caso 1 ma occorre indicare anche le informazioni sui dati tecnici degli oggetti edilizi.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="StatoIniziale" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Stato legittimato iniziale degli oggetti edilizi prima che fossero sottoposti alle trasformazioni dell'intervento edilizio. </xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element ref="UnitaImmobiliareComunale" minOccurs="0" maxOccurs="unbounded"/>
+										<xs:element ref="Edificio" minOccurs="0" maxOccurs="unbounded"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="StatoFinale">
+								<xs:annotation>
+									<xs:documentation>Descrizione degli oggetti edilizi così come risultanti a seguito dell'intervento edilizio.</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element ref="UnitaImmobiliareComunale" minOccurs="0" maxOccurs="unbounded"/>
+										<xs:element ref="Edificio" minOccurs="0" maxOccurs="unbounded"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element ref="DescrizioneTrasformazioni" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MUDE-RichiestaCCEA">
+		<xs:annotation>
+			<xs:documentation>Tipologia di MUDE con la quale viene richiesta la Certificazione di Conformità Edilizia e Agibilità (CCEA) di oggetti edilizi. Se relativa ad interventi con opere implica la fine dei lavori, eventualmente limitatamente ad un sottoinsieme degli oggetti coinvolti nell'intervento edilizio.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="DataFineLavori" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Data fine lavori. Presente in caso di richiesta di certificazione di conformità e agibilità per interventi con realizzazione di opere.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="AgibilitaPrecedente" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Estremi identificativi dell'eventuale agibilità richiesta precedentemente per le parti comuni. Si applica nel caso in cui l'intervento edilizio non abbia coinvolto le parti comuni o nel caso in cui tali parti comuni siano già state oggetto di una precedente richiesta di agibilità nell'ambito dello stesso intervento edilizio a seguito della presentazione di una fine lavori parziale. </xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="RiferimentoIstanzaMUDE" type="NumeroMUDEType" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Codice che identifica univocamente uno specifico MUDE presentato al comune.</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element ref="RiferimentoProtocollo" minOccurs="0"/>
+							<xs:element ref="RiferimentoProtocolloInformatico" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="RiepilogoDatiDelTitoloEdilizio" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Non sono dati aggiuntivi richiesti a chi presenta l'istanza. Si tratta invece del riepilogo dei dati generali forniti all'atto della presentazione del titolo edilizio (o variante) cui questa richiesta fa riferimento.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="DescrizioneIntervento" type="TestoLungoType" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Descrizione testuale dell'intervento.</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="Note" type="TestoLungoType" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Eventuali note relative all'intero intervento.</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element ref="TipoInterventoPrincipale" minOccurs="0"/>
+							<xs:element ref="DestinazioneUsoPrincipale" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element ref="LocalizzazioneIntervento" minOccurs="0"/>
+				<xs:element name="DescrizioneOggettiEdilizi">
+					<xs:annotation>
+						<xs:documentation>La descrizione degli oggetti edilizi all'atto della agibilità assume differenze a seconda di alcuni casi:
+1) Caso di agibilità presentata su un intervento edilizio gestito con MUDE: in questo caso occorre riportare solo lo stato finale degli oggetti edilizi. Per le UI e gli edifici dovranno essere obbligatoriamente riportati TUTTI i riferimenti catastali e toponomastici. Per le UI deve essere riportato anche il classamento catastale così come risultante dall'avvenuto accatastamento. Tutte le informazioni sui dati tecnici degli oggetti edilizi non devono necessariamente essere riportate in quanto acquiste in fase di presentazione del titolo edilizio.
+2) Caso di agibilità presentata su un intervento edilizio gestito senza MUDE: in questo caso, oltre a quanto riportato al punto precedente, deve essere anche descritta la trasformazione edilizia. Occorre quindi descrivere anche lo stato legittimato iniziale e le trasformazioni intercorse, in modo del tutto analogo a quanto deve essere fatto all'interno dell'istanza MUDE di titolo edilizio.
+3) Caso di agilbilità che non fa seguito ad una intervento edilizio ma costituisce richiesta autonoma da parte dell'intestatario. Questo caso è trattato come il caso 1 ma occorre indicare anche le informazioni sui dati tecnici degli oggetti edilizi.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="StatoIniziale" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Stato legittimato iniziale degli oggetti edilizi prima che fossero sottoposti alle trasformazioni dell'intervento edilizio. </xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element ref="UnitaImmobiliareComunale" minOccurs="0" maxOccurs="unbounded"/>
+										<xs:element ref="Edificio" minOccurs="0" maxOccurs="unbounded"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="StatoFinale">
+								<xs:annotation>
+									<xs:documentation>Descrizione degli oggetti edilizi così come risultanti a seguito dell'intervento edilizio.</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element ref="UnitaImmobiliareComunale" minOccurs="0" maxOccurs="unbounded"/>
+										<xs:element ref="Edificio" minOccurs="0" maxOccurs="unbounded"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element ref="DescrizioneTrasformazioni" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Impianti" type="ImpiantiType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Elenco degli impianti oggetto d'intervento presenti in uno o più oggetti edilizi coinvolti nell'intervento edilizio. Non si applica alla fine lavori su CIL.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Dichiarazioni" type="DichiarazioniType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Dichiarazioni ed asseverazioni.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="RiferimentoVarianteFineLavori" type="NumeroMUDEType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Eventuale riferimento alla Variante di fine lavori integrata in questa richiesta di CCEA.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="ccea" type="xs:boolean" use="required">
+				<xs:annotation>
+					<xs:documentation>Se presente con valore "true/1" indica che questa istanza è di tipo "Richiesta di CCEA", in caso contrario si tratta di una istanza di tipo "Comunicazione di fine lavori su CIL".</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="parziale" type="xs:boolean" use="optional">
+				<xs:annotation>
+					<xs:documentation>Se presente con valore "true/1" la Richiesta di CCEA è relativa ad un sottoinsieme degli oggetti coinvolti nell'intervento edilizio; al contrario, se assente o con valore "false/0" la Richiesta di CCEA è relativa alla totalità degli oggetti coinvolti nell'intervento edilizio.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MUDE-ComunicazioneVariazioneRuoliSoggetti">
+		<xs:annotation>
+			<xs:documentation>MUDE per la comunicazione di variazioni occorse relativamente ai dati anagrafici dei soggetti coinvolti in un titolo edilizio e/o ai soggetti che ricoprono i diversi ruoli previsti per un titolo edilizio (es. variazione del direttore lavori). Il riferimento al titolo edilizio deve essere fornito in testata.
+Più precisamente le variazioni possono riguardare: 
+1) Modifiche ai dati anagrafici e/o al recapito del soggetto (deve essere compilato l'elemento AnagraficaModificata presente in questa istanza e i relativi dati anagrafici nell'elemento AnagraficaSoggetto  presente nella radice del MUDE).
+2) Aggiunta di nuovi soggetti aventi ruolo nell'ambito del titolo edilizio (deve essere compilato l'elemento RuoloAggiunto presente in questa istanza e i relativi dati anagrafici nell'elemento AnagraficaSoggetto presente nella radice del MUDE).
+3) Revoche o rimozioni di ruoli, ad esempio revoca del  direttore lavori (deve essere compilato l'elemento RuoloRimosso presente in questa istanza e i relativi dati anagrafici nell'elemento AnagraficaSoggetto presente nella radice del MUDE).
+4) Sostituzioni di ruoli, ad esempio sostituzione del direttore lavori o cambio di intestatario (devono essere compilati contestualmente i dati dei punti 2 e 3 precedenti).</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="DataDecorrenza" type="xs:date">
+					<xs:annotation>
+						<xs:documentation>Data a partire dalla quale la variazione ha effetto.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="RuoloRimosso" minOccurs="0" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Eventuali ruoli rimossi.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="CodiceFiscaleSoggetto"/>
+							<xs:element name="Ruolo" type="CodificaUnicaType">
+								<xs:annotation>
+									<xs:documentation>Codice del ruolo da rimuovere:
+- intestatario
+- conintestario
+- assuntore lavori
+- progettista architettonico
+- progettista strutturale
+- progettista impianti
+- direttore lavori
+- ...</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="RuoloAggiunto" minOccurs="0" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Eventuali ruoli aggiunti.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:choice>
+							<xs:element ref="RuoloIntestatarioPrincipale"/>
+							<xs:element ref="RuoloCointestatario"/>
+							<xs:element ref="RuoloAssuntoreLavori"/>
+							<xs:element ref="AltroRuolo"/>
+						</xs:choice>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="AnagraficaModificata" minOccurs="0" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Eventuali anagrafiche modificate</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="CodiceFiscaleSoggetto"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MUDE-ComunicazioneGenerica">
+		<xs:annotation>
+			<xs:documentation>MUDE per l'inoltro di una comunicazione generica.
+Il contenuto della comunicazione viene fornito come allegato da specificare in testata. Anche il riferimento al titolo edilizio al quale si riferisce questa comunicazione deve essere fornito in testata.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="TipoComunicazione" type="CodificaMultiplaType">
+					<xs:annotation>
+						<xs:documentation>Classificazione della comunicazione.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Oggetto" type="TestoLungoType">
+					<xs:annotation>
+						<xs:documentation>Oggetto della comunicazione.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="DataDecorrenza" type="xs:date" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Data di efficacia della comunicazione. E' presente se l'oggetto della comunicazione decorre da una data diversa dalla sua protocollazione.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MUDE-RichiestaGenerica">
+		<xs:annotation>
+			<xs:documentation>MUDE per l'inoltro di una richiesta generica.
+Il contenuto della richiesta viene fornito come allegato da specificare in testata. L'eventuale riferimento al titolo edilizio al quale può riferirsi questa comunicazione deve essere fornito in testata.
+Esempi di richiesta:
+- Domanda di accertamento di compatibilità paesaggistica 
+- Richiesta di autorizzazione paesaggistica
+- Richiesta di autorizzazione sismica
+- Richiesta di deroga
+- Richiesta di proroga
+- Richiesta di restituzione oneri
+- ...</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="TipoRichiesta" type="CodificaMultiplaType">
+					<xs:annotation>
+						<xs:documentation>Esempio di tipi di richiesta:
+- Domanda di accertamento di compatibilità paesaggistica 
+- Richiesta di autorizzazione paesaggistica
+- Richiesta di autorizzazione sismica
+- Richiesta di deroga
+- Richiesta di proroga
+- Richiesta di restituzione oneri
+- ...</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Oggetto" type="TestoLungoType">
+					<xs:annotation>
+						<xs:documentation>Oggetto della richiesta.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MUDE-Lottizzazione">
+		<xs:annotation>
+			<xs:documentation>MUDE per la presentazione di una lottizzazione.
+La presente istanza si intende debba essere inviata da parte del professionista a seguito della approvazione della lottizzazione da parte del comune e prima della stipula della convenzione.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="DatiGeneraliLottizzazione">
+					<xs:annotation>
+						<xs:documentation>Elementi descrittivi generali della lottizzazione.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="NomeComparto" type="TestoBreveType">
+								<xs:annotation>
+									<xs:documentation>Nome testuale che individua, all'interno del Comune, il comparto oggetto della presente istanza di lottizzazione. Per definizione il comparto è la porzione di territorio la cui trasformazione è sottoposta a strumentazione urbanistica operativa e attuativa. </xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="DescrizioneComparto" type="TestoLungoType" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Eventuale descrizione del comparto.</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="TipoLottizzazione" type="CodificaUnicaType">
+								<xs:annotation>
+									<xs:documentation>Tipologia di lottizzazione (ad esempio: piano particolareggiato di iniziativa privata, piano di recupero di iniziativa privata, piano di sviluppo aziendale, ...).</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="VarianteA" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Elemento che, se presente, indica che questa lottizzazione costituisce variante a precedente lottizzazione approvata. Il riferimento alla precedente istanza MUDE di lottizzazione deve essere fornito in testata.</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="TipoVariante" type="CodificaUnicaType">
+											<xs:annotation>
+												<xs:documentation>Può essere essenziale o minore. Nel primo caso viene chiuso il precedente procedimento.</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="RiferimentoAmministrativo" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>Riferimenti agli atti amministrativi pertinenti per la presente istanza di lottizzazione. Devono essere indicati gli estremi della delibera di consiglio o di giunta che ha approvato la lottizzazione. </xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="EstremiRiferimentoAmministrativo" type="TestoBreveType">
+											<xs:annotation>
+												<xs:documentation>Estremi testuali del riferimento amministrativo: numero di protocollo, delibere di consiglio, altri provvedimenti comunali.</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="Oggetto" type="TestoLungoType">
+											<xs:annotation>
+												<xs:documentation>Oggetto dell'atto amministrativo.</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="DescrizioneIntervento" type="TestoLungoType">
+								<xs:annotation>
+									<xs:documentation>Descrizione testuale dell'intervento.</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="Note" type="TestoLungoType" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Eventuali note relative all'intero intervento.</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="LocalizzazioneIntervento" type="LocalizzazioneInterventoType">
+					<xs:annotation>
+						<xs:documentation>Localizzazione generale dell'intervento.
+Devono essere indicati i riferimenti catastali di tutte le particelle che in toto o in parte intersecano l'area del comparto. </xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="TrasformazioneUrbanistica">
+					<xs:annotation>
+						<xs:documentation>Descrizione della trasformazione urbanistica prevista dall'istanza di lottizzazione.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="StatoLegittimato">
+								<xs:annotation>
+									<xs:documentation>Lo stato legittimato dell'istanza di lottizzazione deve essere compilato solo nel caso di variante a precedente istanza di lottizzazione; in tal caso debbono essere riportati i lotti definiti dallo stato di progetto della precedente istanza. 
+Eventuali edifici presenti nel comparto (ad esempio da demolire o ristrutturare) non devono comunque essere indicati.</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element ref="Lotto" minOccurs="0" maxOccurs="unbounded"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="StatoDiProgetto">
+								<xs:annotation>
+									<xs:documentation>Lo stato di progetto dell'istanza di lottizzazione prevede la descrizione dei lotti. </xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element ref="Lotto" minOccurs="0" maxOccurs="unbounded"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element ref="DescrizioneTrasformazioni"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Dichiarazioni" type="DichiarazioneType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Dichiarazioni e asseverazioni.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="DotazioniTerritorialiEOpereInConvenzione"/>
+				<xs:element ref="NormativaUrbanisticaEVincoli"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="AccessoEsterno">
+		<xs:annotation>
+			<xs:documentation>Nel caso di accesso esterno il riferimento toponomastico è costituito dai dati di via e numero civico. 
+Nel caso si preveda un nuovo accesso esterno non ancora istituito nella toponomastica comunale, allora al posto del riferimento civico deve essere fornito l'elemento "CodiceMnemonicoAccessoDaIstituire".</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="CodiceMnemonicoAccessoDaIstituire" type="CodiceType">
+					<xs:annotation>
+						<xs:documentation>La presenza di questo elemento indica che l'oggetto edilizio dispone di un accesso esterno non noto in quanto ancora da istituire all'interno della toponomastica comunale. Viene richiesto di indicare un codice mnemonico per identificare il nuovo accesso di futura istituzione.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="RiferimentoCivico"/>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="AltroRuolo">
+		<xs:annotation>
+			<xs:documentation>Riporta il riferimento al codice fiscale dei soggetti che esercitano altri ruoli  differenti dall'intestatario principale, dagli eventuali cointestatari e dall'assuntore lavori. Per ogni soggetto può essere indicato l'eventuale rappresentante.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Ruolo" type="CodificaUnicaType">
+					<xs:annotation>
+						<xs:documentation>Ruoli previsti dalla normativa per gli interventi edilizi:
+- progettista architettonico
+- progettista strutturale
+- progettista impianti
+- direttore lavori
+- ...
+Fra questi ruoli sono sicuramente presenti quelli previsti dal D.Lgs. 81/2008, in materia di Tutela della salute e della sicurezza nei luoghi di lavoro, e richiesti nell'ambito della istanza di Notifica Preliminare:
+- Responsabile della Sicurezza (comma 1 lettera c)
+- Coordinatore della Sicurezza durante la Progettazione (comma 1 lettera e)
+- Coordinatore della Sicurezza durante la Realizzazione (comma 1 lettera f)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="CodiceFiscaleSoggetto"/>
+				<xs:element name="DipendenteIntestatario" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Se presente questo elemento indica che il soggetto che ricopre lo specifico ruolo è dipendente dell'intestatario. Ciò è rilevante ai fini delle comunicazioni che i Comuni devono inoltrare in materia di edilizia all'Agenzia delle Entrate.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="Rappresentante" minOccurs="0"/>
+				<xs:element name="IncaricoSvolto" type="TestoLungoType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Consente l'indicazione dell'incarico svolto per i soggetti che ricoprono il ruolo di tecnico incaricato nel contesto dell'intervento edilizio (es: progettista architettonico, progettista degli impianti, ...).</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="AnagraficaSoggetto">
+		<xs:annotation>
+			<xs:documentation>Dati anagrafici del soggetto.
+Ogni soggetto può essere una persona fisica, una persona giuridica o un professionista. Ogni soggetto è descritto dai suoi dati anagrafici comprensivi di residenza/sede e dalle informazioni di recapito.
+Possono essere presenti dei soggetti che non svolgono direttamente alcun ruolo nel titolo edilizio ma che sono presenti in anagrafica perché 'rappresentano' altri soggetti (ad esempio l'amministratore del condominio o il legale rappresentante di una società).</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:element ref="PersonaFisica"/>
+				<xs:element ref="PersonaGiuridica"/>
+				<xs:element ref="Professionista"/>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="CodiceFiscalePF" type="CodiceFiscalePFType">
+		<xs:annotation>
+			<xs:documentation>Codice fiscale rilasciato dalla Anagrafe Tributaria. Per definizione non sono ammessi casi di omocodia.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="CodiceFiscalePG">
+		<xs:annotation>
+			<xs:documentation>Codice fiscale della persona giuridica.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="CodiceFiscalePGItalia" type="CodiceFiscalePGType">
+					<xs:annotation>
+						<xs:documentation>Codice fiscale italiano per la persona giuridica.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="CodicePGComunitaria"/>
+				<xs:element ref="CodiceFiscalePF">
+					<xs:annotation>
+						<xs:documentation>Indicazione del codice fiscale della persona fisica titolare di ditta individuale italiana in luogo della indicazione della partita IVA della ditta.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="CodiceFiscaleSoggetto" type="CodiceFiscaleSoggettoType">
+		<xs:annotation>
+			<xs:documentation>Codice fiscale del soggetto.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="CodicePGComunitaria">
+		<xs:annotation>
+			<xs:documentation>Partita IVA della persona giuridica di uno Stato appartenente all'UE, esclusa l'Italia.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="CodiceStatoEstero"/>
+				<xs:element name="PartitaIVAComunitaria">
+					<xs:annotation>
+						<xs:documentation>I formati possibili, per ogni Stato, sono i seguenti:
+- AUSTRIA - U99999999 (1 blocco di 9 caratteri). Il primo carattere è sempre 'U'.
+- BELGIO - 0999999999 (1 blocco di 10 cifre). La prima cifra è sempre uno '0'.
+- BULGARIA - 999999999 o 9999999999 (1 blocco di 9 o 10 cifre). 9 cifre per le società e 10 cifre per le persone fisiche e gli stranieri.
+- CIPRO - 99999999A (1 blocco di 9 caratteri). L'ultimo carattere è una lettera.
+- DANIMARCA - 99999999 (4 blocchi di 2 cifre).
+- ESTONIA - 999999999 (1 blocco di 9 cifre).
+- FINLANDIA -99999999 (1 blocco di 8 cifre).
+- FRANCIA - XX999999999 (1 blocco di 2 caratteri alfanumerici da A a Z ovvero da 0 a 9, 1 blocco di 9 cifre).
+- GERMANIA - 999999999 (1 blocco di 9 cifre).
+- GRAN BRETAGNA - 999999999 (1 blocco di 9 cifre).
+- GRECIA - 999999999 (1 blocco di 9 cifre).
+- IRLANDA - 9X99999A (1 blocco di 8 caratteri).
+- LETTONIA - 99999999999 (1 blocco di 11 cifre).
+- LITUANIA - 999999999 o 999999999999 (1 blocco di 9 o 12 cifre).
+- LUSSEMBURGO - 99999999 (1 blocco di 8 cifre).
+- MALTA - 99999999 (1 blocco di 8 cifre).
+- OLANDA - 999999999B99 (1 blocco di 12 caratteri). La decima posizione è sempre una 'B'.
+- POLONIA - 9999999999 (1 blocco di 10 cifre).
+- PORTOGALLO - 999999999 (1 blocco di 9 cifre).
+- REPUBBLICA CECA - 99999999 o 999999999 o 9999999999 (1 blocco di 8 o 9 o 10 cifre).
+- ROMANIA - Da 99 a 9999999999 (1 blocco da un minimo di 2 cifre ad un massimo di 10 cifre).
+- SLOVACCHIA - 9999999999 (1 blocco di 10 cifre).
+- SLOVENIA - 99999999 (1 blocco di 8 cifre).
+- SPAGNA - X9999999X (1 blocco di 9 caratteri).
+Il primo e l'ultimo carattere possono essere alfabetici o numerici ma non possono essere entrambi numerici
+- SVEZIA - 999999999999 (1 blocco di 12 cifre).
+- UNGHERIA - 99999999 (1 blocco di 8 cifre).
+</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:minLength value="8"/>
+							<xs:maxLength value="12"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="CodiceStatoEstero" type="CodiceComuneType">
+		<xs:annotation>
+			<xs:documentation>E' il codice dello stato estero adottato dalla Agenza delle Entrate (una lettera seguita da 3 numeri) in uso anche all'interno del codice fiscale delle persone fisiche.
+L'Agenzia delle Entrate mantiene un elenco aggiornato di tali codici disponibile a questo indirizzo: http://www.agenziaentrate.gov.it/wps/content/Nsilib/Nsi/Strumenti/Codici+attivita+e+tributo/Codici+territorio/Comuni+italia+esteri/</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="DataFineLavori" type="xs:date">
+		<xs:annotation>
+			<xs:documentation>Data fine lavori.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="DataInizioLavori" type="xs:date">
+		<xs:annotation>
+			<xs:documentation>Data inizio lavori.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="DatiTecniciPerDestinazioneUso">
+		<xs:annotation>
+			<xs:documentation>Ripetere questo elemento riportando dati tecnici (superfici, volumi, inidici, ...) relativi a ciascuna differente destinazione d'uso prevista.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="DestinazioneUso" type="CodificaMultiplaType">
+					<xs:annotation>
+						<xs:documentation>E' la destinazione d'uso così come prevista dalla normativa del Comune, ed opzionalmente da altre normative (ad esempio regionali o nazionali).</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="DatoTecnico" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="DatoTecnico" type="DatoTecnicoType">
+		<xs:annotation>
+			<xs:documentation>Misure di superficie, volume, vani, altezze, indici, ecc... </xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="DescrizioneTrasformazioni">
+		<xs:annotation>
+			<xs:documentation>Descrive le trasformazioni apportate dall'intervento edilizio fra gli oggetti edilizi prima dell'intervento (OggettiStatoIniziale) e gli oggetti edilizi dopo l'intervento (OggettiStatoFinale). Lo stato iniziale è costituito dallo stato legittimato. Lo stato finale è costituito dallo:
+- stato di progetto, nel caso di intervento non a sanatoria;
+- stato di fatto, nel caso di intervento a solo sanatoria;
+- stato di progetto, nel  caso di intervento a sanatoria con ulteriori opere.
+La descrizione della trasformazione deve esse completa,  questo vuol dire che: 
+- tutti gli oggetti descritti nello stato legittimato devono comparire in un elemento OggettiStatoIniziale di una trasformazione;
+- tutti gli oggetti descritti nello stato di progetto (o di fatto per interventi a sola sanatoria) devono comparire in un elemento OggettiStatoFinale di una trasformazione.
+Uno stesso oggetto può prendere parte anche a più di una trasformazione: ad esempio un oggetto dello stato iniziale potrebbe prendere parte sia ad un frazionamento che ad un accorpamento.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Trasformazione" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Singola trasformazione apportata con l'intervento edilizio.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="TipoTrasformazione" type="CodificaUnicaType">
+								<xs:annotation>
+									<xs:documentation>Il codice può assumere i seguenti valori predefiniti in base all'oggetto edilizio:
+1) ACC_UI
+2) FRAZ_UI
+3) CESSAZ_UI
+4) CREAZ_UI
+5) VARIAZ_UI
+6) VARIAZ_ED
+7) CREAZ_ED
+8) CESSAZ_ED</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="OggettiStatoIniziale" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Oggetti dello stato inziale che prendono parte alla trasformazione. Non è presente alcun oggetto per il tipo trasformazione "creazione".</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element ref="RiferimentoMnemonico" maxOccurs="unbounded"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="OggettiStatoFinale" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Oggetti dello stato finale che prendono parte alla trasformazione. Non è presente alcun oggetto per il tipo trasformazione "cessazione".</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element ref="RiferimentoMnemonico" maxOccurs="unbounded"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="DestinazioneUsoPrincipale">
+		<xs:annotation>
+			<xs:documentation>Destinazione d'uso "principale" così come prevista secondo la normativa comunale e, opzionalmente, secondo classificazioni di livello superiore (regionali o nazionali). Un esempio di destinazione d'uso "principale" può essere "Abitativa".</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="DestinazioneUsoType">
+					<xs:sequence>
+						<xs:element name="DizionarioAggiuntivo" type="DestinazioneUsoType" minOccurs="0" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Classificazione secondo un dizionario differente da quello di riferimento Il dizionario utilizzato deve essere indicato in modo univoco attraverso un URI. Esempi di dizionari possono essere regionali o nazionali.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Dizionario" type="DizionarioType">
+		<xs:annotation>
+			<xs:documentation>Identificativo (URI) del dizionario utilizzato per tutte le codifiche presenti in questo ramo XML.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="DotazioniTerritorialiEOpereInConvenzione">
+		<xs:annotation>
+			<xs:documentation>In caso il presente titolo edilizio costituisca variante essenziale occorre fornire i dati economici completi, come se si trattasse di un nuovo titolo edilizio. Se invece il presente titolo edilizio costituisce variante minore occorre fornire i dati economici in termini di differenza rispetto ai dati economici forniti nel titolo edilizio principale.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="DotazioniTerritoriali" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Insieme degli impianti, opere e spazi attrezzati che concorrono a realizzare gli standard di qualità urbana ed ecologico ambientale definiti dalla pianificazione urbanistica. 
+La realizzazione di queste opere è a carico del titolare del titolo edilizio e può, a facoltà del Comune, essere sostituita, parzialmente o totalmente, con la cessione di aree e/o il versamento di un contributo (corresponsione).
+Nei casi in cui le dotazioni territoriali non si possono fisicamente realizzare il versamento di un contributo è reso obbligatorio: in questo caso non si parla di "corresponsione" ma di "monetizzazione".
+In tutti questi casi (realizzazione, cessione di aree, corresponsione/monetizzazione), se le dotazioni rientrano tra le opere di urbanizzazione primaria (U1) o secondaria (U2),  può essere riconosciuto uno scomputo totale o parziale dei relativi oneri.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="DotazioneTerritoriale" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>Descrizione dell'entità della realizzazione in loco e della cessione, ovvero della conversione in onere monetario, delle dotazioni per l'urbanizzazione (ad esempio "Parcheggi pubblici"). Tipicamente i valori esprimono delle superfici ma in taluni casi possono esprimere altre grandezze.</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="TipoDotazioneTerritoriale" type="CodificaMultiplaType">
+											<xs:annotation>
+												<xs:documentation>Esempi:
+- Parcheggi pubblici per l'urbanizzazione
+- Dotazioni ecologiche e ambientali
+- ...
+Il tipo di dotazione territoriale determina anche l'unità di misura da adottare per esprimerne la sua misura: metri per le lunghezze, metri quadrati per le superfici, metri cubi per i volumi, numero per le quantità adimensionali, ...</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="DotazioneDovuta" type="MisuraType" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Valore dimensionale della dotazione territoriale dovuta in base alla normativa urbanistica. 
+Questo elemento può essere presente più volte perché per uno stesso tipo di dotazione territoriale può essere necessario realizzare opere misurate in modo diverso. Ad esempio l'intervento presentato potrebbe comportare la realizzazione di "5 posti auto" e di "70 mq",  tutti destinati al tipo di dotazione territoriale "Parcheggi pubblici per l'urbanizzazione". </xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="DotazioneRealizzata" type="MisuraType" minOccurs="0" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Dotazione territoriale che si prevede di realizzare con il progetto. 
+Questo elemento può essere presente più volte perché per uno stesso tipo di dotazione territoriale può essere necessario realizzare opere misurate in modo diverso. Ad esempio l'intervento presentato potrebbe comportare la realizzazione di "5 posti auto" e di "70 mq",  tutti destinati al tipo di dotazione territoriale "Parcheggi pubblici per l'urbanizzazione". </xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="CostoRealizzazione" type="ImportoType" minOccurs="0"/>
+										<xs:element name="AreaCeduta" type="SuperficieType" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>E' sempre una superficie espressa in metri quadri.
+Misura l'area ceduta al Comune per la realizzazione della dotazione territoriale.</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="Scomputo" type="xs:boolean" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Indica se la dotazione territoriale ha o meno uno scomputo. Valore booleano.</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:choice>
+											<xs:element name="DotazioneMonetizzata" type="ImportoType" minOccurs="0">
+												<xs:annotation>
+													<xs:documentation>Importo della dotazione monetizzata.
+Le dotazioni monetizzabili sono solo quelle che non si possono fisicamente realizzare.</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+											<xs:element name="DotazioneCorrisposta" type="ImportoType" minOccurs="0">
+												<xs:annotation>
+													<xs:documentation>Importo della dotazione corrisposta in euro.</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+										</xs:choice>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="OpereInConvenzione" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Altre opere per l'attuazione di particolari politiche urbanistiche, come ad esempio quelle legate alla riqualificazione urbana o ai programmi di edilizia residenziale solidale. La  realizzazione di tali opere è regolata da una convenzione con cui il Comune trasferisce al committente costi e obblighi.  Le convenzioni sono frutto di negoziazioni con conseguenti scambi complessi comprendenti transazioni finanziarie, incentivi, sovvenzioni, realizzazione di opere pubbliche, fornitura e gestione di servizi, permute, compensazioni.
+La prima convenzione viene solitamente concordata all'atto di presentazione della istanza di lottizzazione.
+Ogni successiva presentazione di titolo edilizio per interventi di trasformazione edilizia può avere una propria convenzione che si aggiunge a quella precedente relativa alla lottizzazione.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Convenzione">
+								<xs:annotation>
+									<xs:documentation>Riferimenti amministrativi della convenzione stipulata tra il committente e il Comune relativamente alla presente istanza. </xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="EstremiConvenzione" type="TestoBreveType">
+											<xs:annotation>
+												<xs:documentation>Estremi testuali di riferimento alla convenzione: numero di protocollo, delibere di consiglio, altri provvedimenti comunali.</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="Oggetto" type="TestoLungoType">
+											<xs:annotation>
+												<xs:documentation>Oggetto della convenzione.</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="AreaCeduta" type="xs:decimal" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>E' sempre una superficie espressa in metri quadri.
+Misura l'area ceduta al Comune.</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="ContributoEconomico" type="ImportoType" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Importo del contributo da versare al Comune.</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="Opera" minOccurs="0" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>Descrizione dell'opera da cedere, realizzare o soggetta ad altra obbligazione (ad esempio: data in locazione a canoni convenzionati). </xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="TipoOpera" type="CodificaMultiplaType">
+											<xs:annotation>
+												<xs:documentation>Esempio: Abitazioni</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="EntitaOpera" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="TipoObbligazione" type="CodificaUnicaType">
+														<xs:annotation>
+															<xs:documentation>Esempi:
+- cessione
+- realizzazione
+- locazione
+- ...
+</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="DurataObbligazione" type="xs:unsignedInt" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Se l'obbligazione non è permanente indicare il numero di mesi di durata della obbligazione.</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="UnitaMisura" type="CodificaUnicaType">
+														<xs:annotation>
+															<xs:documentation>Unità di misura adottata per esprimere l'entità dell'opera. Esempi:
+- n.
+- sup.
+- ...</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="ValoreDimensionale" type="xs:decimal">
+														<xs:annotation>
+															<xs:documentation>Valore numerico decimale dell'entità dell'opera.</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="ValoreEconomico" type="ImportoType" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Valore economico dell'opera. E' assente in caso di opere non valorizzabili come ad esempio le locazioni di abitazioni.</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="Scomputo" type="xs:boolean" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Indica se l'opera ha o meno uno scomputo. Valore booleano.</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Edificio">
+		<xs:annotation>
+			<xs:documentation>Identificazione e descrizione dell'edificio. 
+A seconda del contesto nel quale viene descritto un edificio le sue componenti possono essere obbligatorie od opzionali. Ad esempio: 1) Nel caso di edificio dello stato legittimanto può non essere presente l'indicazione della destinazione d'uso prevalente, mentre essa dovrà essere obbligatoriamente presente per gli edifici dello stato di progetto. 2) La scheda tenica è obbligatoria per gli edifici solo per l'istanza di Agibilità. 3) Il perimetro georiferito dell'edificio è obbligatorio solo nello stato di progetto e solo nel caso in cui esso sia oggetto di variazione con l'intervento edilizio in essere. 4) L'accesso da istituire è possibile solo per gli edifici dello stato di progetto, mentre non è possibile per quelli dello stato legittimato e per quelli descritti nella Agibilità. 5) ...</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="RiferimentoMnemonico"/>
+				<xs:element name="IdentificativiEdificio" type="IdentificativiEdificioType">
+					<xs:annotation>
+						<xs:documentation>Riferimento che identifica univocamente un edificio. Nel caso di nuova costruzione possono mancare i riferimenti catastali. Devono essere indicati tutti i riferimenti toponomastici, siano essi esistenti che di nuova istituzione. Il riferimento geografico è costituito dal perimetro dell'edificio ed finalizzato alla identificazione dell'edificio ed alla determinazione della normativa urbanistica e della vincolistica che si applica sull'edificio. Se il perimetro è rappresentato in modo conforme alle regole di rappresentazione della anagrafe comunale degli immobili esso può essere usato anche il suo aggiornamento. Altrimenti l'aggiornamento della anagrafe comunale degli immobili verrà effettuato dal tecnico comunale sulla base degli elaborati tecnici forniti in allegato.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="DestinazioneUsoPrevalente" type="CodificaMultiplaType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>E' la destinazione d'uso prevalente dell'edificio.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="DatiTecnici" type="DatiTecniciType" minOccurs="0"/>
+				<xs:element name="SchedaTecnica" type="SchedaTecnicaType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Descrive la scheda tecnica relativa alle parti comuni di ciascun edificio. Tutte le codifiche della scheda tecnica devono essere espresse rispetto al dizionario di riferimento. E' possibile fornire ulteriori schede tecniche codificate secondo altri dizionari da esplicitare nell'elemento Dizionario.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute ref="VarianteMinore"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ElementoDiNormativa">
+		<xs:annotation>
+			<xs:documentation>Codifica della norma che si applica per l'intervento. Nel caso in cui la normativa urbanistica del comune sia organizzata gerarchicamente, è possibile indicare il sotto-ElementoDiNormativa che si riferisce al presente ElementiDiNormativa. </xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="NomeElementoNormativa" type="CodificaUnicaType">
+					<xs:annotation>
+						<xs:documentation>Nome codificato dell'elemento di normativa. Ad esempio "Ambito", "Zona", ... </xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="ValoreElementoNormativa">
+					<xs:annotation>
+						<xs:documentation>Individuazione dell'elemento di normativa. Lo specifico elemento di normativa può essere indicato in forma codificata, oppure essere riferito in forma libera</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:choice>
+							<xs:element name="ValoreCodificato" type="CodificaUnicaType">
+								<xs:annotation>
+									<xs:documentation>Individuazione dell'elemento di normativa in forma codificata. Ad esempio codice 02, corrispondente all' "Ambito II" definito nello strumento urbanistico. </xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="ValoreLibero">
+								<xs:annotation>
+									<xs:documentation>Individuazione libera dell'elemento di normativa. Ad esempio indicazione del numero della zona.</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:choice>
+					</xs:complexType>
+				</xs:element>
+				<xs:element ref="ElementoDiNormativa" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Impresa">
+		<xs:annotation>
+			<xs:documentation>Codice fiscale dell'impresa, ed eventuale indicazione del rappresentante. I dati dell'impresa devono essere forniti con l'elemento AnagraficaSoggetto. Nel solo caso di impresa individuale è possibile non indicare il CodiceFiscalePG indicando in sua vece il solo CodiceFiscalePF del titolare.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="CodiceFiscalePG" minOccurs="0"/>
+				<xs:element ref="Rappresentante" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="LocalizzazioneIntervento">
+		<xs:annotation>
+			<xs:documentation>Localizzazione generale dell'intervento.
+Non è finalizzata all'individuazione degli oggetti edilizi dell'intervento (descritti nello stato di progetto) bensì al recupero della normativa urbanistica e dei vincoli nonché dei precedenti edilizi qualora esistenti. 
+Nel caso di costruzione di un nuovo edificio la localizzazione è individuata tipicamente dal mappale terreni e dalla collocazione geografica.
+Nel caso di intervento su un edificio esistente o su una delle sue unità edilizie la localizzazione dell'edificio è individuata tipicamente dall'indirizzo dell'edificio.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="LocalizzazioneInterventoType"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Lotto">
+		<xs:annotation>
+			<xs:documentation>Identificazione e descrizione del lotto. A seconda del contesto nel quale viene descritto un lotto le sue componenti possono essere obbligatorie od opzionali.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="RiferimentoMnemonico"/>
+				<xs:element name="IdentificativiLotto" type="IdentificativiLottoType">
+					<xs:annotation>
+						<xs:documentation>Riferimenti che identificano univocamente il lotto all'interno del comparto. Il riferimento catastale deve identificare il lotto altrimenti se non disponibile (in quanto non sono ancora avvenute le operazioni di frazionamento/accorpamento a catasto) deve essere omesso. E' previsto un solo riferimento catastale per il lotto. Il riferimento geografico è costituito dal perimetro del lotto ed è finalizzato alla identificazione del lotto ed alla determinazione della normativa urbanistica e della vincolistica che si applica su di esso. Se il perimetro è rappresentato in modo conforme alle regole di rappresentazione della anagrafe comunale degli immobili esso può essere usato anche per il suo aggiornamento. Altrimenti l'aggiornamento della anagrafe comunale degli immobili verrà effettuato dal tecnico comunale sulla base degli elaborati tecnici forniti in allegato.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="DatiTecniciLotto">
+					<xs:annotation>
+						<xs:documentation>Dati tecnici del lotto. Sono previsti la superficie del lotto, dati tecnici generici indipendenti dalla destinazione d'uso, dati tecnici generici riferiti alla destinazione d'uso. A seconda dello specifico dato tecnico i valori dovranno essere espressi per specifica destinazione d'uso oppure no. 
+Per quanto riguarda le misure di superficie, nel caso si dimostri, a seguito di nuova rilevazione, che la superficie reale non è coincidente con la superficie indicata su carta tecnica, su Data Base Topografico o su mappa catastale, si deve indicare la superficie reale.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="SuperficieLotto" type="SuperficieType">
+								<xs:annotation>
+									<xs:documentation>Superficie reale del lotto. Per i soli casi di interventi su lotti del territorio urbanizzato, tale superficie può comprendere le eventuali superfici di dotazioni territoriali pubbliche che si rendono necessarie a seguito dell’intervento.</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element ref="DatoTecnico" minOccurs="0" maxOccurs="unbounded"/>
+							<xs:element ref="DatiTecniciPerDestinazioneUso" minOccurs="0" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>Ripetere questo elemento riportando dati tecnici (superfici, volumi, indici, ...) relativi a ciascuna differente destinazione d'uso prevista.</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="LuogoEstero">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="CodiceStatoEstero"/>
+				<xs:element name="NomeStatoEstero" type="TestoIndirizzoType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Nome dello stato estero.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="NomeLuogoEstero" type="TestoIndirizzoType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Nome del comune (o più in generale del luogo).</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="NormativaUrbanisticaEVincoli">
+		<xs:annotation>
+			<xs:documentation>Normativa urbanistica e vincoli che si applicano per l'intervento. </xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:choice>
+					<xs:element name="Norma">
+						<xs:annotation>
+							<xs:documentation>Normativa urbanistica che si applica per l'intervento edilizio. La normativa comprende l'elenco degli elementi di normativa di rilievo per l'intervento e l'elenco degli strumenti urbanistici cui questi appartengono.</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="ElementoDiNormativa" type="ElementoDiNormativaType" maxOccurs="unbounded">
+									<xs:annotation>
+										<xs:documentation>Sono possibili 3 casi:
+1) Se il Comune ha organizzato la propria normativa urbanistica in forma "piatta" saranno presenti tanti elementi "ElementoDiNormativa" quanti sono gli elementi di normativa urbanistica che si applicano per l'intervento; il codice univoco ed il nome di ciascun elemento di normativa saranno contenuti nell'elemento figlio "NomeElementoNormativa".
+2) Se il Comune ha organizzato la propria normativa urbanistica in forma gerarchica, vi sarà un unico l'elemento "ElementoDiNormativa" rappresentante la radice della gerarchia e contenente uno o più "ElementoDiNormativaFiglio". Ciascun "ElementoDiNormativaFiglio" potrà ricorsivamente rappresentare un nodo intermedio della gerarchia oppure un nodo foglia, ossia l'elemento effettivo di normativa. Ciascun elemento "NomeElementoNormativa" rappresenterà, rispettivamente a seconda del caso, o il nome del livello gerarchico oppure il nome dell'elemento di normativa.
+3) Se il Comune ha organizzato la propria normativa urbanistica in forma "mista", allora si applica contestualmente quanto indicato ai casi 1 e 2.</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="VarianteStrumentoUrbanistico" type="TestoLungoType" minOccurs="0" maxOccurs="unbounded">
+									<xs:annotation>
+										<xs:documentation>Riferimenti testuali delle eventuali varianti allo strumento urbanistico vigente adottate ma non ancora in esecuzioneche si applicano per l'intervento (es: Variante di piano 4 del 2010, ...)</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="NormaLibera" type="TestoLungoType"/>
+				</xs:choice>
+				<xs:element name="Vincoli" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Vincoli che si applicano per l'intervento.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="GruppoVincoli" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>I vincoli possono essere raggruppati logicamente. In tal caso sono presenti più elementi GruppoVincolo, ciascuno dei quali caratterizzato da un nome identificativo del gruppo e dall'insieme dei soli vincoli di qual gruppo che si applicano per l'intervento. Gruppi e vincoli sono codificati.</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="NomeGruppo" type="CodificaUnicaType">
+											<xs:annotation>
+												<xs:documentation>Nome codificato identificativo del gruppo di vincoli.</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="Vincolo" type="CodificaUnicaType" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Vincolo che si applica per l'intervento edilizio.</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="PersonaFisica" type="PersonaFisicaType">
+		<xs:annotation>
+			<xs:documentation>Dati anagrafici di una persona fisica o di una ditta individuale non dotata di partita IVA.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="PersonaGiuridica" type="PersonaGiuridicaType">
+		<xs:annotation>
+			<xs:documentation>Dati anagrafici di una persona giuridica o di una ditta individuale dotata di partita IVA.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="Professionista" type="ProfessionistaType">
+		<xs:annotation>
+			<xs:documentation>Dati anagrafici di un professionista.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="Provincia">
+		<xs:annotation>
+			<xs:documentation>Sigla della provincia.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:pattern value="[A-Z][A-Z]"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="Rappresentante">
+		<xs:annotation>
+			<xs:documentation>Persona fisica che rappresenta un soggetto. Viene fornito il codice fiscale del rappresentante ed il tipo di rappresentanza.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="TipoRappresentanza"/>
+				<xs:element ref="CodiceFiscalePF"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Recapito">
+		<xs:annotation>
+			<xs:documentation>Recapito da utilizzare per le comunicazioni.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="IndirizzoRecapito" type="IndirizzoType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Indica l'indirizzo da utilizzare per le comunicazioni, eventualmente uguale a quello di residenza o alla sede.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Telefono" type="TelefonoType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Numero di telefono</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="TelefonoCellulare" type="TelefonoType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Numero telefono cellulare.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Fax" type="TelefonoType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Numero di fax.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Email" type="EmailType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Indirizzo email non certificata.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="EmailCertificata" type="EmailType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Indirizzo email PEC.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="RiferimentoCatastaleCdF">
+		<xs:annotation>
+			<xs:documentation>Riferimento catastale della UIU (Unità Immobiliare Urbana) al CdF. Nota: il codice Comune è obbligatorio perché a causa di mancate variazioni circoscrizionali può essere diverso dal codice del Comune sul quale si realizza l'intervento.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="CodiceComune" type="CodiceComuneType"/>
+				<xs:element name="Sezione" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:length value="1"/>
+							<xs:pattern value="[A-Z]|[0-9]"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="SezioneUrbana" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="3"/>
+							<xs:minLength value="1"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Foglio">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="4"/>
+							<xs:minLength value="1"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Mappale">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="5"/>
+							<xs:minLength value="1"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Subalterno" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="4"/>
+							<xs:minLength value="1"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Denominatore" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:unsignedInt">
+							<xs:totalDigits value="4"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Edificialita" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:length value="1"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="IdImmobileCatastale" type="IdentificativoType">
+				<xs:annotation>
+					<xs:documentation>L'identificativo univoco non è un dato compilabile da chi presenta il MUDE ma è riservato alle applicazioni informatiche di gestione. </xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="ProgressivoCatastale" type="ProgressivoType">
+				<xs:annotation>
+					<xs:documentation>Progressivo catastale che unitamente all'id immobile catastale identifica univocamente lo stadio (o situazione oggettiva) dell'immobile.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="RiferimentoCatastaleCdT">
+		<xs:annotation>
+			<xs:documentation>Riferimento catastale di una particella terreni del CdT (Catasto dei Terreni). Nota: il codice Comune è obbligatorio perché a causa di mancate variazioni circoscrizionali può essere diverso dal codice del Comune sul quale si realizza l'intervento.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="CodiceComune" type="CodiceComuneType"/>
+				<xs:element name="Sezione" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:length value="1"/>
+							<xs:pattern value="[A-Z]|[0-9]"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Foglio">
+					<xs:simpleType>
+						<xs:restriction base="xs:unsignedInt">
+							<xs:totalDigits value="5"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Mappale">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="5"/>
+							<xs:minLength value="1"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Subalterno" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="4"/>
+							<xs:minLength value="1"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Denominatore" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:unsignedInt">
+							<xs:totalDigits value="4"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Edificialita" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:length value="1"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="IdImmobileCatastale" type="IdentificativoType">
+				<xs:annotation>
+					<xs:documentation>L'identificativo univoco non è un dato compilabile da chi presenta il MUDE ma è riservato alle applicazioni informatiche di gestione. </xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="ProgressivoCatastale" type="ProgressivoType">
+				<xs:annotation>
+					<xs:documentation>Progressivo catastale che unitamente all'id immobile catastale identifica univocamente lo stadio (o situazione oggettiva) dell'immobile.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="RiferimentoCivico">
+		<xs:annotation>
+			<xs:documentation>Riferimento al civico. Compatibile con la struttura dati prevista dal modello ISTAT del 20/11/2010 (documento RNC-EDI Tracciati per il colloquio con i Comuni_rev20101120.doc).</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="RiferimentoVia">
+					<xs:annotation>
+						<xs:documentation>Riferimento all'area di circolazione dell'unità immobiliare comunale.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="NomeVia" type="NomeViaType">
+								<xs:annotation>
+									<xs:documentation>Denominazione dell’area di circolazione che identifica l’indirizzo comprensivo della specie o Denominazione Urbanistica Generica (DUG) che identifica la tipologia di toponimo stradale (via, piazza, lungomare, campiello, salita, eccetera). </xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="IdVia" type="IdentificativoType">
+							<xs:annotation>
+								<xs:documentation>L'identificativo univoco non è un dato compilabile da chi presenta il MUDE ma è riservato alle applicazioni informatiche di gestione. Identifica univocamente la via sul territorio comunale.</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attribute name="Progressivo" type="ProgressivoType">
+							<xs:annotation>
+								<xs:documentation>Progressivo della via che unitamente all'identificativo della via che ne identifica univocamente lo stadio (o situazione oggettiva).</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+					</xs:complexType>
+				</xs:element>
+				<xs:choice>
+					<xs:sequence>
+						<xs:element name="ToponimoInterno" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Eventuale toponimo interno alla via a cui si riferisce il numero civico.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Numero" type="xs:unsignedInt">
+							<xs:annotation>
+								<xs:documentation>La parte numerica che contraddistingue l’accesso esterno che dall’area di circolazione immette direttamente o indirettamente alle unità immobiliari (abitazioni, esercizi, uffici, ecc.). </xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Esponente" type="EsponenteType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Eventuale parte alfanumerica del numero civico.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="TipoCivico" type="CodificaUnicaType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Indica la tipologia del civico laddove questa è significativa (ad esempio civico Rosso oppure Nero in uso presso alcuni comuni).</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+					<xs:element name="Km" type="xs:unsignedInt">
+						<xs:annotation>
+							<xs:documentation>Indicazione del chilometro sostitutiva del numero civico. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:choice>
+			</xs:sequence>
+			<xs:attribute name="IdCivico" type="IdentificativoType">
+				<xs:annotation>
+					<xs:documentation>L'identificativo univoco non è un dato compilabile da chi presenta il MUDE ma è riservato alle applicazioni informatiche di gestione. Identifica univocamente il numero civico sul territorio comunale.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="Progressivo" type="ProgressivoType">
+				<xs:annotation>
+					<xs:documentation>Progressivo del civico che unitamente all'identificativo del civico ne identifica univocamente lo stadio (o  situazione oggettiva).</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="RiferimentoMnemonico" type="CodiceType">
+		<xs:annotation>
+			<xs:documentation>Codice, sigla, riferimento mnemonico che individua univocamente un oggetto edilizio all'interno del MUDE. La codifica è libera, ad esempio due unità immobiliari possono essere identificate con le sigle  U01 e U02. Il riferimento è utile per identificare gli oggetti edilizi (unità immobiliari comunali, edifici, lotti) in fase di progetto, e/o come riferimento ad elaborati tecnici allegati. Nel caso il MUDE descriva variazioni, questo riferimento consente di legare gli oggetti edilizi descritti nello stato di progetto con quelli descritti nello stato di fatto.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="RiferimentoProtocollo">
+		<xs:annotation>
+			<xs:documentation>Riferimento ad un numero di protocollo.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Ente" type="TestoBreveType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Eventuale nome testuale dell'ente. Se assente si assume coincida con il Comune a cui si sta presentando il MUDE. Ad esempio "Comune di Mirandola", "Soprintendenza per i Beni Archeologici dell'Emilia-Romagna", ...</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Classificazione" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Eventuale classificazione testuale del protocollo all'interno dell'ente. Ad esempio: "PG", "PUT", indicazione dell'eventuale repertorio, altro.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Anno" type="xs:gYear">
+					<xs:annotation>
+						<xs:documentation>Anno di protocollazione.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Numero" type="NumeroProtocolloType">
+					<xs:annotation>
+						<xs:documentation>Numero di protocollo.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Data" type="xs:date" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Data di protocollo.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="RiferimentoProtocolloInformatico">
+		<xs:annotation>
+			<xs:documentation>Identificatore di un documento informatico ai sensi della circolare dell'Agenzia per l'Italia digitale numero 60 del 23 gennaio 2013 in revisione della precedente circolare AIPA numero 28 del 7 maggio 2001: 
+"Un elemento Identificatore contiene le informazioni identificative minime di protocollo, ai sensi del d.P.R. 445/2000. [...] L'elemento Identificatore riporta i dati di un generico Identificatore di Protocollo il cui significato è desumibile dal contesto. Regole aggiuntive:
+- un CodiceAmministrazione e` codificato mediante i caratteri previsti dalla specifica ISO 646 (US-ASCII a 7 bit) ed e` composto di lettere maiuscole ([A-Z]), lettere minuscole ([a-z]), cifre decimali ([0-9]) e dal carattere '-'; 
+- un CodiceAmministrazione deve avere una lunghezza non superiore a 8 caratteri. 
+- un CodiceAOO e` codificato mediante i caratteri previsti dalla specifica ISO 646 (US-ASCII a 7 bit) ed e` composto da una sequenza di lettere maiuscole ([A-Z]), lettere minuscole ([a-z]), cifre decimali ([0-9]) e dal carattere '-'; 
+- un CodiceAOO deve avere una lunghezza non superiore a 8 caratteri. 
+- il NumeroRegistrazione deve essere sempre formato da sette cifre decimali, con giustificazione mediante zeri (e.g. il numero 1 deve essere codificato come 0000001); 
+- la DataRegistrazione deve essere in formato ISO 8601 esteso (i.e. aaaa-mm-gg). 
+Regole di corrispondenza:
+- il CodiceAmministrazione deve essere un codice valido ai sensi del d.P.R. 445/2000 e del d.P.C.M 31/10/2000; 
+- il CodiceAOO deve corrispondere ad un codice valido attribuito dalla amministrazione di cui la AOO fa parte (come previsto dal d.P.R. 445/2000 e dal d.P.C.M 31/10/2000)."</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="CodiceAmministrazione" type="Amministrazione-AOOType"/>
+				<xs:element name="CodiceAOO" type="Amministrazione-AOOType"/>
+				<xs:element name="NumeroRegistrazione" type="NumeroProtocolloType"/>
+				<xs:element name="DataRegistrazione" type="xs:date"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Ruoli">
+		<xs:annotation>
+			<xs:documentation>Riporta per tutti i ruoli previsti dalla specifica istanza i soggetti che li ricoprono. Ogni ruolo fa riferimento (mediante il codice fiscale) ad uno o più soggetti che devono obbligatoriamente essere presenti nell'elemento AnagraficaSoggetto.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="AnagraficaSoggetto" maxOccurs="unbounded"/>
+				<xs:element name="RuoliSoggetti">
+					<xs:annotation>
+						<xs:documentation>Elenco dei ruoli previsti per lo specifico titolo edilizio ed associazione con i soggetti che li ricoprono.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="SoggettoPresentante" type="CodiceFiscalePFType">
+								<xs:annotation>
+									<xs:documentation>Codice Fiscale della persona fisica che presenta l'istanza. Tipicamente si tratta della persona che ricopre anche il ruolo di progettista architettonico o di direttore lavori, ma può essere anche il solo tecnico incaricato alla presentazione di un CIL o di una richiesta di agibilità autonoma.</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element ref="RuoloIntestatarioPrincipale"/>
+							<xs:element ref="RuoloCointestatario" minOccurs="0" maxOccurs="unbounded"/>
+							<xs:element ref="RuoloAssuntoreLavori" minOccurs="0"/>
+							<xs:element ref="AltroRuolo" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="RuoloAssuntoreLavori">
+		<xs:annotation>
+			<xs:documentation>Riporta l'assuntore dei lavori contemplando anche la possibilità dell'esecuzione dei lavori in proprio.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="AssuntoreInProprio" type="CodiceFiscalePFType">
+					<xs:annotation>
+						<xs:documentation>Codice fiscale della persona fisica indicata come intestatario principale o cointestatario nella presentazione del titolo edilizio.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="Impresa" maxOccurs="unbounded"/>
+				<xs:element name="Assuntore" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Indicazione dell'impresa comprensiva dell'incarico svolto</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="Impresa"/>
+							<xs:element name="IncaricoSvolto" type="TestoLungoType">
+								<xs:annotation>
+									<xs:documentation>Consente l'indicazione dell'incarico svolto per l'impresa.</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="RuoloCointestatario" type="IntestatarioType">
+		<xs:annotation>
+			<xs:documentation>Riporta il riferimento all'eventuale soggetto che esercita il ruolo di cointestatario, unitamente alle  informazioni sul tipo di legittimazione e sull'eventuale rappresentanza.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="RuoloIntestatarioPrincipale" type="IntestatarioType">
+		<xs:annotation>
+			<xs:documentation>Riporta il riferimento al soggetto che esercita il ruolo di intestatario principale, unitamente alle informazioni sul titolo di legittimazione e sulla eventuale rappresentanza.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="TipoInterventoPrincipale">
+		<xs:annotation>
+			<xs:documentation>Tipologia di intervento principale ed eventuale sottotipologia. Il tipo di intervento è unico ma può essere fornito secondo più codifiche relative a differenti dizionari (ad esempio secondo il dizionario definito dallo specifico regolamento edilizio comunale e secondo il dizionario previsto a livello regionale). Analogamente il sottotipo.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="TipoInterventoPrincipaleType">
+					<xs:sequence>
+						<xs:element name="DizionarioAggiuntivo" minOccurs="0" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Classificazione secondo un dizionario differente da quello di riferimento Il dizionario utilizzato deve essere indicato in modo univoco attraverso un URI. Esempi di dizionari possono essere regionali o nazionali.</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="TipoInterventoType">
+										<xs:sequence>
+											<xs:element ref="Dizionario"/>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="TipoRappresentanza" type="CodificaUnicaType">
+		<xs:annotation>
+			<xs:documentation>Può assumere i seguenti valori: Legale rappresentante /  Amministratore / Titolare / Tutore / Curatore fallimentare / ...</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="TitoloLegittimazioneIntestatario" type="CodificaUnicaType">
+		<xs:annotation>
+			<xs:documentation>Può assumere i seguenti valori: Proprietario / Locatario / Enfiteuta / Usufruttuario / ...</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="TrasformazioneEdilizia">
+		<xs:annotation>
+			<xs:documentation>Descrive gli stati degli oggetti edilizi prima e dopo l'intervento e le variazioni intercorse.
+Nel caso il titolo edilizio sia una variante minore, allora occorre riportare solo lo stato di progetto, e per esso limitare la descrizione ai soli oggetti edilizi interessati dalla variante minore. 
+Nel caso di variante essenziale la descrizione deve invece essere completa come per il titolo edilizio originario.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="StatoLegittimato" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Lo stato legittimo riporta gli oggetti edilizi che saranno soggetti ad intervento. Questi oggetti risulteranno modificati a seguito della trasformazione edilizia, ossia  nell'Anagrafe Comunale degli Immobili saranno registrati nuovi stadi di tali oggetti e/o saranno creati a partire da essi nuovi oggetti edilizi. Lo stato legittimo prevede obbligatoriamente almeno un riferimento catastale ed almeno un riferimento toponomastico per ogni oggetto edilizio. 
+Questo elemento non è presente nel caso di nuova costruzione o di abuso.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="UnitaImmobiliareComunale" minOccurs="0" maxOccurs="unbounded"/>
+							<xs:element ref="Edificio" minOccurs="0" maxOccurs="unbounded"/>
+							<xs:element ref="Lotto" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="StatoDiFatto" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Descrive lo stato di fatto di unità immobiliari comunali e di edifici qualora esso a seguito di un abuso risulti differente dallo stato legittimato. E' necessario ai fine della istruttoria nel caso di titolo edilizio a sanatoria. </xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="UnitaImmobiliareComunale" minOccurs="0" maxOccurs="unbounded"/>
+							<xs:element ref="Edificio" minOccurs="0" maxOccurs="unbounded"/>
+							<xs:element ref="Lotto" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="StatoDiProgetto" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Descrive gli oggetti edilizi così come risultanti a seguito del presente intervento edilizio, eventualmente includenti anche situazioni di fatto non corrispondenti allo stato legittimo. Alcune sezioni possono non essere note (ad esempio i riferimenti catastali e toponomastici in caso di nuova costruzione).
+Nel caso di sanatoria senza ulteriori opere lo stato di progetto non è presente. Nel caso di sanatoria con ulteriori opere lo stato di progetto riporta la descrizione completa - quindi comprensiva anche degli oggetti edilizi sanati già riportati nello stato di fatto - dello stato finale.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="UnitaImmobiliareComunale" minOccurs="0" maxOccurs="unbounded"/>
+							<xs:element ref="Edificio" minOccurs="0" maxOccurs="unbounded"/>
+							<xs:element ref="Lotto" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element ref="DescrizioneTrasformazioni" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="UnitaImmobiliareComunale">
+		<xs:annotation>
+			<xs:documentation>Identificazione e descrizione dell'unità immobiliare comunale (corrisponde all'unità edilizia di ACI - Anagrafe Comunale degli Immobili). L'unità immobiliare comunale è l'unità minima sulla quale è possibile presentare un titolo edilizio. Tipicamente coincide con la UIU (Unità Immobiliare Urbana) catastale.  
+Si osserva che sebbene una unità immobiliare comunale sia tipicamente identificata al CdF vi sono casi in cui essa risulta censita al CdT.
+Si osserva che un'unità immobiliare comunale non ha un riferimento geografico diretto ma lo assume indirettamente dai riferimenti geografici dell'edificio di appartenenza e del numero civico. 
+A seconda del contesto nel quale viene descritta un'unità immobiliare le sue componenti possono essere obbligatorie od opzionali. Ad esempio: 1) Nel caso di unità immobiliare dello stato legittimanto può non essere presente l'indicazione della destinazione d'uso e del piano, mentre esse dovranno essere obbligatoriamente presenti per le unità immobiliari dello stato di progetto. 2) La scheda tecnica è obbligatoria solo per l'istanza di Agibilità. 3) L'informazione completa sul classamento catastale è obbligatoria solo per l'istanza di Agibilità. 4) L'accesso da istituire è possibile solo per le unità immobiliari dello stato di progetto, mentre non è possibile per quelle dello stato legittimato e per quelle descritte nella Agibilità. 5) ...</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="RiferimentoMnemonico"/>
+				<xs:element name="RiferimentoMnemonicoEdificio" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Riferimento mnemonico dell'edificio di appartenenza della unità immobiliare comunale. 
+Deve essere obbligatoriamente valorizzato in caso di descrizione dello stato di progetto di una nuova costruzione di unità immobiliare comunale interna ad un edificio.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="RiferimentoMnemonico"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="IdentificativiUnitaImmobiliareComunale" type="IdentificativiUnitaImmobiliareComunaleType">
+					<xs:annotation>
+						<xs:documentation>Riferimenti che identificano univocamente una unità immobiliare comunale. Il riferimento è costituito da uno o più riferimenti catastali e/o da uno o più riferimenti toponomastici che identificano la medesima unità immobiliare comunale. Nel caso di più riferimenti catastali e/o nel caso di più riferimenti toponomastici, tali riferimenti sono da considerarsi paritetici. E' obbligatorio indicare tuttti i riferimenti toponomastici della unità immobiliare: sia quelli esistenti che quelli di nuova istituzione. </xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Piano" type="CodificaUnicaType" minOccurs="0" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Indicazione del piano dell'unità immobiliare comunale. Da ripetere nel caso l'unità immobiliare comunale si sviluppi su più piani.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="DestinazioneUso" type="CodificaMultiplaType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>E' la destinazione d'uso così come prevista dalla normativa del Comune, ed opzionalmente da altre normative (ad esempio regionali o nazionali).</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="DatiTecnici" type="DatiTecniciType" minOccurs="0"/>
+				<xs:element name="ClassamentoCatastale" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Questa sezione riporta i dati di classamento catastale così come risultanti a seguito dell'avvenuto accatastamento dell'unità immobiliare comunale.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ZonaCensuaria" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Rappresenta una porzione omogenea di territorio comunale (ordinariamente è una sola per i comuni medio piccoli e più di una per le città più grandi), nell’ambito della quale la redditività dei fabbricati è da considerarsi uniforme. Può comprendere un solo comune o una porzione del medesimo, caratterizzati da similari caratteristiche ambientali e socioeconomiche. Per ogni zona censuaria esiste uno specifico “quadro tariffario” consultabile presso il locale Ufficio dell’Agenzia del Territorio. </xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:maxLength value="3"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="Categoria">
+								<xs:annotation>
+									<xs:documentation>Identifica la tipologia delle unità immobiliari, presenti nella zona censuaria, differente per le caratteristiche intrinseche che ne determinano la destinazione ordinaria e permanente. </xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:maxLength value="4"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="DescrizioneCategoria" type="TestoLungoType" minOccurs="0"/>
+							<xs:element name="Classe" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>E' un parametro che identifica il grado di produttività delle unità immobiliari appartenenti alle categorie dei gruppi A, B e C. Viene indicata con ‘U’ (unica) in assenza di una ripartizione in classi della categoria (ciò, in quanto, la redditività è omogenea all’interno del comune o della zona censuaria) ovvero con i numeri da ‘1’ ad ‘n’ al crescere della redditività. </xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:maxLength value="2"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="Consistenza" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Rappresenta la dimensione dell'unità immobiliare. Per le abitazioni e gli uffici (immobili della categoria A) è espressa in "vani". Per i negozi, i magazzini, le rimesse (immobili della categoria C) è espressa in metri quadrati. Per gli immobili a destinazione collettiva (ospedali, caserme, ecc.) e' espressa in metri cubi. Per gli immobili appartenenti alle categorie speciali dei gruppi D ed E non viene indicata la consistenza catastale.</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:double">
+										<xs:minInclusive value="0"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="RenditaInEuro" type="ImportoType">
+								<xs:annotation>
+									<xs:documentation>Per le unità immobiliari appartenenti alle categorie dei gruppi A, B e C la rendita catastale è determinata moltiplicando la consistenza per la tariffa unitaria specifica per comune, zona censuaria e corrispondente alla categoria e classe. Per le unità immobiliari appartenenti ai gruppi delle categorie D ed E la rendita è determinata attraverso stima diretta.</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="SchedaTecnica" type="SchedaTecnicaType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Scheda tecnica che descrive l'unità immobiliare comunale in fase di agibilità. Tutte le codifiche della scheda tecnica devono essere espresse rispetto al dizionario di riferimento. E' possibile fornire ulteriori schede tecniche codificate secondo altri dizionari da esplicitare nell'elemento Dizionario.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute ref="VarianteMinore">
+				<xs:annotation>
+					<xs:documentation>Attributo presente solo nel caso in cui si stia descrivendo l'oggetto edilizio nell'ambito di una variante minore. Può assumere valori SI (oggetto interessato dalla variante minore) e NO (oggetto non interessato dalla variante minore).</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="WKT">
+		<xs:annotation>
+			<xs:documentation>Rappresentazione geometrica in standard WKT.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:string">
+					<xs:attribute name="SRS" type="SrsType"/>
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="AllegatoType">
+		<xs:sequence>
+			<xs:element name="TipoAllegato" type="CodificaUnicaType">
+				<xs:annotation>
+					<xs:documentation>Tipo di allegato. Ad esempio:
+- Attestazione versamento diritti di segreteria
+- Dichiarazione di conformità barriere architettoniche
+- DURC (Documento Unico di Regolarità Contributiva)
+- Elaborato grafico
+- Estratto di mappa catastale
+- Nulla osta VV.FF.
+- Parere preventivo AUSL
+- Relazione tecnica dell’intervento
+- ...
+- Altro</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NomeAllegato" type="TestoBreveType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Nome del file. Il nome del file deve essere univoco all'interno dell'istanza.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CodiceFiscaleSoggettoType">
+		<xs:choice>
+			<xs:element ref="CodiceFiscalePF"/>
+			<xs:element ref="CodiceFiscalePG"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="CodificaMultiplaType">
+		<xs:sequence>
+			<xs:element name="Codice" type="CodiceType"/>
+			<xs:element name="Nome" type="TestoBreveType" minOccurs="0"/>
+			<xs:element name="Descrizione" type="TestoLungoType" minOccurs="0"/>
+			<xs:element name="DizionarioAggiuntivo" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Classificazione secondo un dizionario differente da quello di riferimento Il dizionario utilizzato deve essere indicato in modo univoco attraverso un URI. Esempi di dizionari possono essere regionali o nazionali.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="CodificaUnicaType">
+							<xs:sequence>
+								<xs:element ref="Dizionario"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CodificaUnicaType">
+		<xs:sequence>
+			<xs:element name="Codice" type="CodiceType"/>
+			<xs:element name="Nome" type="TestoBreveType" minOccurs="0"/>
+			<xs:element name="Descrizione" type="TestoLungoType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ComuneType">
+		<xs:sequence>
+			<xs:element name="CodiceComune" type="CodiceComuneType">
+				<xs:annotation>
+					<xs:documentation>E' il codice del Comune italiano adottato dalla Agenza delle Entrate (una lettera seguita da 3 numeri)  in uso anche all'interno del codice fiscale delle persone fisiche.
+L'Agenzia delle Entrate mantiene un elenco aggiornato di tali codici disponibile a questo indirizzo: http://www.agenziaentrate.gov.it/wps/content/Nsilib/Nsi/Strumenti/Codici+attivita+e+tributo/Codici+territorio/Comuni+italia+esteri/</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CodiceISTATComune" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Eventuale indicazione del codice ISTAT del Comune composto da 6 cifre.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:length value="6"/>
+						<xs:pattern value="[0-9]*"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="NomeComune" type="TestoIndirizzoType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Nome del Comune. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element ref="Provincia" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DatiTecniciType">
+		<xs:sequence>
+			<xs:element name="SuperficieUtile" type="SuperficieType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Superficie "utile" espressa in metri quadri così come definita dal dizionario adottato.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SuperficieAccessoria" type="SuperficieType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Superficie "accessoria" (o identificata da altra nomenclatura, ad esempio "superficie non residenziale") espressa in metri quadri così come definita dal dizionario adottato.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element ref="DatoTecnico" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="DizionarioAggiuntivo" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Dati tecnici espressi secondo codifiche definiti in un dizionario differente da quello di base.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="Dizionario"/>
+						<xs:element ref="DatoTecnico" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DatoTecnicoType">
+		<xs:sequence>
+			<xs:element name="TipoDatoTecnico" type="CodificaUnicaType">
+				<xs:annotation>
+					<xs:documentation>Tipo di dato tecnico. Ad esempio:
+- Volume Totale Esistente (VTE)
+- Superficie Utile Lorda (SUL)
+- ...
+Il Nome del tipo di dato tecnico comprende l'unità di misura nella quale esprimerne il valore. Ad esempio: Superficie utile (mq), Altezza massima vani (m), Numero piani fuori terra (unità), Indice di efficienza energetica (Classe energetica), ...</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Valore" type="TestoLungoType">
+				<xs:annotation>
+					<xs:documentation>Valore del dato tecnico coerente con l'unità di misura indicata nel Nome.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DestinazioneUsoType">
+		<xs:sequence>
+			<xs:element name="Attuale" type="CodificaUnicaType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Destinazione d'uso attuale, quella che si riferisce allo stato legittimo degli oggetti edilizi. Un esempio di destinazione d'uso attuale può essere "Abitativa".</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DiProgetto" type="CodificaUnicaType">
+				<xs:annotation>
+					<xs:documentation>Destinazione d'uso di progetto, quella che si riferisce allo stato di progetto degli oggetti edilizi. Un esempio di destinazione d'uso attuale può essere "Commerciale".</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DichiarazioneType">
+		<xs:sequence>
+			<xs:element name="Dichiaranti" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Indicazione dei soggetti che rendono la dichiarazione/asseverazione.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Intestatario" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Se presente, significa che l'intestatario dichiara/assevera quanto contenuto nel dettaglio.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Cointestatari" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Se presente, significa che i cointestatari dichiarano/asseverano quanto contenuto nel dettaglio.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="AssuntoreLavori" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Se presente, significa che l'assuntore lavori dichiara/assevera quanto contenuto nel dettaglio.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="AltroRuolo" type="CodificaUnicaType" minOccurs="0" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Altro ruolo (diverso dall'intestatario, da un cointestatario e dall'assuntore lavori) che dichiara/assevera quanto contenuto nel dettaglio.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="GruppoDiAppartenenza" type="CodificaUnicaType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Eventuale gruppo logico cui afferisce la presente dichiarazione. L'eventuale raggruppamento è effettuato in base all'argomento a cui si riferiscono le dichiarazioni. Per esempio:
+- Conformità
+- Disposizioni in materia di rendimento energetico
+- Barriere architettoniche
+- ...</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="OggettoDichiarazione" type="OggettoDichiarazioneType">
+				<xs:annotation>
+					<xs:documentation>Descrive il contenuto della dichiarazione/asseverazione in base ad un testo fisso. Ad esempio: Descrizione = "I lavori non comportano la necessità di realizzare, modificare, rinnovare o sostituire elementi strutturali dell'edificio (opere non strutturali)."</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NoteIntegrative" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Consente di integrare il testo della dichiarazione con eventuali dati forniti in fase di compilazione.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DichiarazioniType">
+		<xs:sequence>
+			<xs:element name="Dichiarazione" type="DichiarazioneType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ElementoDiNormativaType">
+		<xs:sequence>
+			<xs:element name="NomeElementoNormativa" type="CodificaUnicaType">
+				<xs:annotation>
+					<xs:documentation>Nome dell'elemento di normativa o del gruppo gerarchico.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ElementoDiNormativaFiglio" type="ElementoDiNormativaType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="IdentificativiEdificioType">
+		<xs:sequence>
+			<xs:element ref="RiferimentoCatastaleCdT" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="RiferimentiToponomasticiEdificio" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Riporta l'elenco di tutti gli accessi all'edificio, sia quelli esistenti nella toponomastica comunale, sia gli eventuali nuovi accessi da istituire.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="AccessoEsterno" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="RiferimentoGeografico" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Geometria georiferita del perimetro dell'edificio ai fini della sua identificazione  e della determinazione della normativa urbanistica e della vincolistica che si applica su di esso.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:choice>
+						<xs:element ref="gml:MultiSurface"/>
+						<xs:element ref="WKT"/>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="IdEdificio" type="IdentificativoType">
+			<xs:annotation>
+				<xs:documentation>L'identificativo univoco non è un dato compilabile da chi presenta il MUDE ma è riservato alle applicazioni informatiche di gestione. Identifica univocamente sul territorio comunale l'edificio.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Progressivo" type="ProgressivoType">
+			<xs:annotation>
+				<xs:documentation>Progressivo dell'edificio che unitamente all'identificativo dell'edificio identifica univocamente lo stadio (o  situazione oggettiva) dell'edificio.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="IdentificativiLottoType">
+		<xs:sequence>
+			<xs:element name="NomeLotto" type="TestoBreveType">
+				<xs:annotation>
+					<xs:documentation>Nome/codice/sigla del lotto all'interno del comparto.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element ref="RiferimentoCatastaleCdT" minOccurs="0"/>
+			<xs:element name="RiferimentoGeografico" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Geometria georiferita del perimetro del lotto ai fini della sua identificazione  e della determinazione della normativa urbanistica e della vincolistica che si applica su di esso.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:choice>
+						<xs:element ref="gml:MultiSurface"/>
+						<xs:element ref="WKT"/>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="IdLotto" type="IdentificativoType">
+			<xs:annotation>
+				<xs:documentation>L'identificativo univoco non è un dato compilabile da chi presenta il MUDE ma è riservato alle applicazioni informatiche di gestione. Identifica univocamente sul territorio comunale il lotto.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Progressivo" type="ProgressivoType">
+			<xs:annotation>
+				<xs:documentation>Progressivo del lotto che unitamente all'identificativo del lotto identifica univocamente lo stadio (o  situazione oggettiva) del lotto.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="IdentificativiUnitaImmobiliareComunaleType">
+		<xs:sequence>
+			<xs:choice minOccurs="0">
+				<xs:element ref="RiferimentoCatastaleCdF" maxOccurs="unbounded"/>
+				<xs:element ref="RiferimentoCatastaleCdT" maxOccurs="unbounded"/>
+			</xs:choice>
+			<xs:element name="RiferimentiToponomasticiUI" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Riporta l'elenco di tutti gli accessi alla unità immobiliare, sia quelli esistenti nella toponomastica comunale, sia gli eventuali nuovi accessi da istituire. </xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="RiferimentoToponomasticoUI" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Il riferimento toponomastico dell'unità immobiliare può essere costituito da:
+- Accesso esterno: l'accesso alla unità immobiliare avviene direttamente dall'area pubblica. 
+- Accesso interno: l'accesso alla unità immobiliare avviene a partire da parti comuni. </xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:choice>
+									<xs:element ref="AccessoEsterno"/>
+									<xs:element name="AccessoInterno">
+										<xs:annotation>
+											<xs:documentation>Nel caso di accesso interno il riferimento toponomastico è costituito dai dati dell'accesso al fabbricato (AccessoEsterno) più il numero interno. L'interno deve essere fornito anche nel caso in cui sia di nuova istituzione, ossia non presente nella toponomastica comunale.</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element ref="AccessoEsterno"/>
+												<xs:element name="Interno">
+													<xs:annotation>
+														<xs:documentation>L'interno dell'unità immobiliare comunale. Può essere già presente nella toponomastica comunale oppure essere di nuova istituzione. </xs:documentation>
+													</xs:annotation>
+													<xs:complexType>
+														<xs:sequence>
+															<xs:element name="DaIstituire" minOccurs="0">
+																<xs:annotation>
+																	<xs:documentation>La presenza di questo elemento indica che l'accesso interno non è presente nella toponomastica comunale.</xs:documentation>
+																</xs:annotation>
+																<xs:simpleType>
+																	<xs:restriction base="xs:string">
+																		<xs:length value="0"/>
+																	</xs:restriction>
+																</xs:simpleType>
+															</xs:element>
+															<xs:element name="RiferimentoInterno">
+																<xs:annotation>
+																	<xs:documentation>Identificazione dell'interno.</xs:documentation>
+																</xs:annotation>
+																<xs:complexType>
+																	<xs:sequence>
+																		<xs:element name="Scala" minOccurs="0">
+																			<xs:simpleType>
+																				<xs:restriction base="xs:string">
+																					<xs:maxLength value="3"/>
+																				</xs:restriction>
+																			</xs:simpleType>
+																		</xs:element>
+																		<xs:element name="Numero" type="xs:unsignedInt"/>
+																		<xs:element name="Esponente" minOccurs="0">
+																			<xs:simpleType>
+																				<xs:restriction base="xs:string">
+																					<xs:maxLength value="3"/>
+																				</xs:restriction>
+																			</xs:simpleType>
+																		</xs:element>
+																	</xs:sequence>
+																	<xs:attribute name="IdInterno" type="IdentificativoType">
+																		<xs:annotation>
+																			<xs:documentation>L'identificativo univoco non è un dato compilabile da chi presenta il MUDE ma è riservato alle applicazioni informatiche di gestione. Identifica univocamente il numero interno sul territorio comunale.</xs:documentation>
+																		</xs:annotation>
+																	</xs:attribute>
+																	<xs:attribute name="Progressivo" type="ProgressivoType">
+																		<xs:annotation>
+																			<xs:documentation>Progressivo dell'interno che unitamente all'identificativo del l'interno ne identifica univocamente lo stadio (o  situazione oggettiva).</xs:documentation>
+																		</xs:annotation>
+																	</xs:attribute>
+																</xs:complexType>
+															</xs:element>
+															<xs:element name="DatiInterno" minOccurs="0">
+																<xs:annotation>
+																	<xs:documentation>Dati aggiuntivi dell'interno.</xs:documentation>
+																</xs:annotation>
+																<xs:complexType>
+																	<xs:sequence>
+																		<xs:element name="Principale" type="xs:boolean" minOccurs="0">
+																			<xs:annotation>
+																				<xs:documentation>Indicazione se l'interno è principale oppure no.</xs:documentation>
+																			</xs:annotation>
+																		</xs:element>
+																		<xs:element name="Piano" type="CodificaUnicaType" minOccurs="0">
+																			<xs:annotation>
+																				<xs:documentation>Indicazione del piano dell'unità immobiliare comunale al quale si colloca l'interno.</xs:documentation>
+																			</xs:annotation>
+																		</xs:element>
+																	</xs:sequence>
+																</xs:complexType>
+															</xs:element>
+														</xs:sequence>
+													</xs:complexType>
+												</xs:element>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+								</xs:choice>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="IdUnitaImmobiliareComunale" type="IdentificativoType">
+			<xs:annotation>
+				<xs:documentation>L'identificativo univoco non è un dato compilabile da chi presenta il MUDE ma è riservato alle applicazioni informatiche di gestione. Identifica univocamente sul territorio comunale l'unità immobiliare comunale.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Progressivo" type="ProgressivoType">
+			<xs:annotation>
+				<xs:documentation>Progressivo dell'unità immobiliare comunale che unitamente all'identificativo dell'unità immobiliare comunale identifica univocamente lo stadio (o situazione oggettiva) dell'unità immobiliare comunale.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="ImpiantiType">
+		<xs:sequence>
+			<xs:element name="ImpiantoInterventoEdilizio" type="ImpiantoInterventoEdilizioType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Ogni elemento di questo tipo corrisponde ad una tipologia di impianto presente negli oggetti edilizi oggetto dell'intervento. Per ognuno di essi il professionista indica i riferimenti protocollari delle certificazioni depositate presso il Comune.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ComunicazioneAscensorePerComune" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Se true/1 vale la dichiarazione seguente "Quanto all’impianto di ascensore (o ai montacarichi o altro apparecchio di sollevamento rispondenti  alla definizione di ascensore, la cui velocità di spostamento non  supera 0,15 m/s, non destinati ad un servizio pubblico di trasporto) la presente istanza ha anche il valore e gli effetti di comunicazione al Comune, ai sensi dell’art. 12, comma 1, del dPR n. 162/1999, ai fini dell’assegnazione all’impianto della matricola". Se false/0 l'istanza non ha questo valore.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ImpiantoInterventoEdilizioType">
+		<xs:sequence>
+			<xs:element name="TipoImpianto" type="CodificaUnicaType">
+				<xs:annotation>
+					<xs:documentation>Tipo di impianto, ad esempio: elettrico, idrico sanitario, ....</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="OggettoDiIntervento" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Se true/1 indica che l'impianto è stato oggetto di intervento nel contesto dell'intervento edilizio.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:sequence>
+				<xs:element name="DichiarazioneConformita" type="xs:boolean" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Se true/1 indica che per l'impianto è disponibile in Comune una dichiarazione di conformità.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Collaudo" type="xs:boolean" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Se true/1 indica che per l'impianto è disponibile in Comune un documento di collaudo.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="AttoNotorio" type="xs:boolean" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Se true/1 indica che per l'impianto è disponibile in Comune un atto notorio.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+			<xs:element name="RiferimentiProtocolloCertificazioni" type="TestoLungoType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Elenco dei riferimenti di protocollo delle certifiazioni depositate presso il comune per l'impianto.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="IndirizzoType">
+		<xs:sequence>
+			<xs:annotation>
+				<xs:documentation>Indicazione dell'indirizzo secondo le specifiche di Poste Italiane (cfr. http://www.poste.it/postali/cap/standard_composizione_indirizzi.pdf)</xs:documentation>
+			</xs:annotation>
+			<xs:element name="InfoAggDestinatario" type="TestoBreveType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Eventuali informazioni aggiuntive per la specifica del destinatario. Es. "Presso Assicurazioni Unite", "C.A. Mario Rossi", ...</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InfoAggEdificio" type="TestoBreveType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Eventuali indicazioni dell'edificio, della scala, della frazione, dell'ufficio cui si riferisce la casella postale. Es. "EDIFICIO 12, INTERNO 27, "ISOLA 22", "CASTELLACCIO" (caso di Frazione di un Comune), "UFFICIO ROMA TRULLO" (caso di casella postale), ...</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Indirizzo" type="TestoIndirizzoType">
+				<xs:annotation>
+					<xs:documentation>Nome completo della via e del numero civico, o in alternativa della casella postale. Ad esempio "VIA MAZZINI, 2/A", "CASELLA POSTALE 2421", ...</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:choice>
+				<xs:element name="Italia">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Comune" type="ComuneType"/>
+							<xs:element name="CAP" type="CAPType">
+								<xs:annotation>
+									<xs:documentation>CAP italiano. </xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Estero">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="LuogoEstero"/>
+							<xs:element name="CAPEstero" type="CodiceType">
+								<xs:annotation>
+									<xs:documentation>Codice di avviamento postale estero.</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="IntestatarioType">
+		<xs:sequence>
+			<xs:element ref="CodiceFiscaleSoggetto"/>
+			<xs:choice>
+				<xs:element name="IntestatarioInProprio">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="TitoloLegittimazioneIntestatario"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="IntestatarioRappresentato">
+					<xs:annotation>
+						<xs:documentation>Da utilizzare ad esempio nel caso in cui l'intestatario del titolo edilizio sia una società.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="TitoloLegittimazioneIntestatario"/>
+							<xs:element ref="Rappresentante"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="IntestatarioRappresentante">
+					<xs:annotation>
+						<xs:documentation>Da utilizzare ad esempio nel caso in cui l'intestatario del titolo edilizio sia il rappresentante legale di una società.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="TipoRappresentanza"/>
+							<xs:element name="InRappresentanzaDi">
+								<xs:annotation>
+									<xs:documentation>Indicare l'eventuale soggetto che l'intestatario rappresenta. </xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:choice>
+											<xs:element ref="CodiceFiscalePF"/>
+											<xs:element ref="CodiceFiscalePG"/>
+										</xs:choice>
+										<xs:element name="TitoloLegittimazioneSoggettoRappresentato" type="CodificaUnicaType">
+											<xs:annotation>
+												<xs:documentation>Può assumere i seguenti valori: Proprietario / Locatario / Enfiteuta / Usufruttuario / ...</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LocalizzazioneInterventoType">
+		<xs:sequence>
+			<xs:element ref="RiferimentoCatastaleCdT" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Civico" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Localizzazione mediante numero civico.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="RiferimentoCivico"/>
+						<xs:element name="TipoProssimitaCivico" type="ProssimitaCivicoType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Nel caso in cui l'intervento non sia localizzabile da un civico attribuito dalla toponomastica, questo elemento indica il tipo di prossimità rispetto ad un civico esistente. Può assumere valori: FRONTE_A, PROSSIMO_A. Non si applica nel caso di indicazione del chilometro sostitutiva del numero civico.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Geolocalizzazione" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Localizzazione geografica dell'intervento. Può essere rappresentata dall'area oggetto di intervento o semplicemente da un punto interno a tale area. </xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:choice>
+						<xs:element ref="gml:Point"/>
+						<xs:element ref="gml:MultiSurface"/>
+						<xs:element ref="WKT"/>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MisuraType">
+		<xs:sequence>
+			<xs:element name="UnitaMisura" type="CodificaUnicaType">
+				<xs:annotation>
+					<xs:documentation>Esempi:
+- n.
+- sup.
+- ...</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValoreDimensionale" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation>Valore numerico decimale.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="NumeroMUDEType">
+		<xs:sequence>
+			<xs:element name="Anno" type="xs:gYear"/>
+			<xs:element name="Numero" type="NumeroIstanzaMudeType"/>
+		</xs:sequence>
+		<xs:attribute name="IdMUDE">
+			<xs:annotation>
+				<xs:documentation>Identificativo univoco dell'istanza o del processo MUDE. Non è un dato compilabile da chi presenta il MUDE ma è riservato alle applicazioni informatiche di gestione.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="OggettoDichiarazioneType">
+		<xs:complexContent>
+			<xs:extension base="CodificaUnicaType">
+				<xs:sequence>
+					<xs:element name="NoteIntegrative" type="xs:string" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Consente di integrare il testo della dichiarazione con eventuali dati forniti in fase di compilazione.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="OggettoDichiarazioneFiglio" type="OggettoDichiarazioneType" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="PersonaFisicaType">
+		<xs:sequence>
+			<xs:element ref="CodiceFiscalePF"/>
+			<xs:element name="Cognome" type="CognomeNomeType"/>
+			<xs:element name="Nome" type="CognomeNomeType"/>
+			<xs:element name="Sesso">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="F"/>
+						<xs:enumeration value="M"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="DataNascita" type="xs:date"/>
+			<xs:element name="LuogoNascita">
+				<xs:complexType>
+					<xs:choice>
+						<xs:element name="ComuneItaliano" type="ComuneType"/>
+						<xs:element ref="LuogoEstero"/>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Residenza" type="IndirizzoType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Indirizzo di residenza</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element ref="Recapito"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PersonaGiuridicaType">
+		<xs:sequence>
+			<xs:element ref="CodiceFiscalePG"/>
+			<xs:element name="RagioneSociale" type="TestoBreveType">
+				<xs:annotation>
+					<xs:documentation>Ragione sociale della persona giuridica</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IndirizzoSede" type="IndirizzoType">
+				<xs:annotation>
+					<xs:documentation>Indirizzo della sede legale della persona giuridica.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element ref="Recapito"/>
+			<xs:element name="IscrizioneCassaEdile" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Estremi di iscrizione alla Cassa Edile.
+E' obbligatorio solo nei casi in cui la persona giuridica operi nel ruolo di assuntore lavori o in altri ruoli che comportino l'esecuzione delle opere previste dall'intervento.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="CassaEdile" type="TestoBreveType">
+							<xs:annotation>
+								<xs:documentation>Denominazione della Cassa Edile.
+Esempio:
+- Cassa edile della provincia di Bologna
+- C.E.D.A.F. - Cassa edile Dipendenti Artigiani Ferraresi
+- ...</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Sede" type="TestoBreveType">
+							<xs:annotation>
+								<xs:documentation>Sede della cassa edile.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="EstremiIscrizione" type="TestoBreveType">
+							<xs:annotation>
+								<xs:documentation>Codice che identifica univocamente l'impresa iscritta all'interno della Cassa Edile.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="IscrizioneCCIAA" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Estremi di iscrizione alla CCIAA.
+Si considerano solo gli estremi di iscrizione della sede legale e non delle eventuali unità operative locali. 
+</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="CCIAA" type="TestoBreveType">
+							<xs:annotation>
+								<xs:documentation>Nome della Camera di Commercio Industria Artigianato e Agricoltura.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element ref="Provincia"/>
+						<xs:element name="NumeroREA" type="xs:positiveInteger">
+							<xs:annotation>
+								<xs:documentation>Numero REA (Repertorio delle notizie Economiche e Amministrative del Registro delle Imprese) assegnato dalla CCIAA/Provincia in cui è localizzata la sede legale della persona giuridica.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="TipoPersonaGiuridica" type="CodificaUnicaType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Indica il tipo di persona giuridica.
+E' obbligatorio solo nei casi in cui la persona giuridica eserciti il ruolo di "titolare" (intestatario/cointestatario) del titolo edilizio.
+Si applica, per esempio, nei moduli ISTAT (Sez. 5 del Mod. ISTAT/PDC/RE e Sez. 6 del Mod. ISTAT/PDC/NRE), nei casi diversi da Persona fisica:
+- Impresa (codice 2)
+- Cooperativa edilizia (codice 3)
+- Ente pubblico (codice 4)
+- Altro (codice 5)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PartitaIVA" type="CodiceFiscalePGType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Eventuale partita IVA della persona giuridica.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IscrizioneINPS" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Riporta gli estremi di iscrizione INPS della persona giuridica. E' obbligatorio per le imprese coinvolte nell'intervento edilizio con ruolo di Assuntori lavori.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Sede" type="TestoBreveType">
+							<xs:annotation>
+								<xs:documentation>Sede di iscrizione INPS.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="MatricolaAziendale" type="TestoBreveType">
+							<xs:annotation>
+								<xs:documentation>Matricola aziendale di iscrizione INPS</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="IscrizioneINAIL" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Riporta gli estremi di iscrizione INAIL della persona giuridica. E' obbligatorio per le imprese coinvolte nell'intervento edilizio con ruolo di Assuntori lavori.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Sede" type="TestoBreveType">
+							<xs:annotation>
+								<xs:documentation>Sede di iscrizione INAIL.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="CodiceImpresa" type="TestoBreveType">
+							<xs:annotation>
+								<xs:documentation>Codice di iscrizione INAIL.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="NumeroPosizioneAssicurativa" type="TestoBreveType">
+							<xs:annotation>
+								<xs:documentation>Numero della posizione assicurativa territoriale.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="TipoDiDitta" type="CodificaUnicaType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Indica il tipo di ditta: 
+- datore di lavoro;
+- gestione separata – committente/associante;
+- lavoratore autonomo;
+- gestione separata – titolare di reddito di lavoro autonomo di arte e professione.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AdozioneCCNL" type="CodificaUnicaType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Indica il tipo di Contratto Nazionale del Lavoro applicato ai dipendenti. Nel caso di inserimento libero da parte dell'utente (voce "Altro settore") quanto specificato liberamente dal soggetto presentante è disponibile nel campo Descrizione. E' obbligatorio per le imprese coinvolte nell'intervento edilizio con ruolo di Assuntori lavori.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ProfessionistaType">
+		<xs:complexContent>
+			<xs:extension base="PersonaFisicaType">
+				<xs:sequence>
+					<xs:element ref="CodiceFiscalePG" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Riporta la partita IVA (11 cifre) del professionista</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="StudioProfessionale" minOccurs="0">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Nome" type="TestoBreveType" minOccurs="0">
+									<xs:annotation>
+										<xs:documentation>Eventuale nome dello studio professionale.</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="IndirizzoSede" type="IndirizzoType"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="IscrizioneAlbo" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>Estremi di iscrizione all'albo professionale.</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="TipoAlbo" type="CodificaUnicaType">
+									<xs:annotation>
+										<xs:documentation>Ad esempio: Ordine degli architetti, Collegio dei geometri, Oridine degli ingegneri, Ordine dei geologi, Ordine dei periti industriali ...</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="SezioneAlbo" type="TestoBreveType">
+									<xs:annotation>
+										<xs:documentation>Sezione dell'albo. Ad esempio la sigla provincia di 2 lettere per l'albo dei geometri.</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="EstremiIscrizione" type="TestoBreveType">
+									<xs:annotation>
+										<xs:documentation>Codice che identifica univocamente l'iscritto all'interno dell'albo.</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="RappresentanteType">
+		<xs:sequence>
+			<xs:element ref="TipoRappresentanza"/>
+			<xs:element ref="PersonaFisica"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SchedaTecnicaType">
+		<xs:sequence>
+			<xs:element ref="Dizionario" minOccurs="0"/>
+			<xs:element name="RequisitiTecnici" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Requisiti tecnici pertinenti all'intervento.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="RequisitoTecnico" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Requisito tecnico cogente o volontario.</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Cogente" type="xs:boolean">
+										<xs:annotation>
+											<xs:documentation>Può assumere valori: SI (il requisito è cogente) e NO (il requisito è volontario).</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="TipoRequisito" type="CodificaUnicaType">
+										<xs:annotation>
+											<xs:documentation>Tipi di requisiti possono essere: 
+- Resistenza al fuoco
+- Tenuta all'acqua </xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="MetodoDiVerificaRequisito" type="CodificaUnicaType" minOccurs="0" maxOccurs="unbounded">
+										<xs:annotation>
+											<xs:documentation>Metodo di verifica requisito a lavori ultimati. Ad esempio: 
+- Attestazione
+- Collaudo
+- Dichiarazione di conformità</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Impianti" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Dichiarazioni di certificazione degli impianti di un oggetto edilizio.
+Rif. normativi: L. 46/1990 art. 9,  D.Lgs. 203/30-09-2005 art 11 quaterdecies, comma 13 lettera a) convertito in L. 248/02-12-2005,  D.M. 37/22-02-2008 art. 7 </xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Impianto" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Certificazione impianto.</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="TipoImpianto" type="CodificaUnicaType">
+										<xs:annotation>
+											<xs:documentation>Esempi di tipo di impianto sono:
+- Elettrico
+- Idrosanitario
+- Radiotelevisivo
+- ...</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="TipoCertificazioneImpianto" type="CodificaUnicaType">
+										<xs:annotation>
+											<xs:documentation>Ad esempio:
+- Dichiarazione di conformità
+- Dichiarazione di rispondenza 
+- Collaudo
+- Atto notorio
+- ...</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element ref="RiferimentoProtocollo" minOccurs="0"/>
+									<xs:element name="DataScadenza" type="xs:date" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>Data di scadenza della certificazione dell'impianto.</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Dichiarazioni" type="DichiarazioniType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Dichiarazioni e asseverazioni.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Allegato" type="AllegatoType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Allegati dello specifico oggetto edilizio.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TipoInterventoType">
+		<xs:complexContent>
+			<xs:extension base="CodificaUnicaType">
+				<xs:sequence>
+					<xs:element name="TipoInterventoSubordinato" type="TipoInterventoType" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="TipoInterventoPrincipaleType">
+		<xs:sequence>
+			<xs:element name="TipoIntervento" type="TipoInterventoType">
+				<xs:annotation>
+					<xs:documentation>Tipo di intervento. Un tipo di intervento può essere "Nuova costruzione".</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SottotipoIntervento" type="CodificaUnicaType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Sottotipo di intervento. Un sottotipo di intervento può essere "Ampliamenti e sopraelevazioni".</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="Amministrazione-AOOType">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="8"/>
+			<xs:pattern value="[A-Z|a-z|0-9|\-]*"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CAPType">
+		<xs:restriction base="xs:string">
+			<xs:length value="5"/>
+			<xs:pattern value="[0-9]*"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CodiceComuneType">
+		<xs:restriction base="xs:string">
+			<xs:length value="4"/>
+			<xs:pattern value="[A-Z][0-9]*"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CodiceFiscalePFType">
+		<xs:restriction base="xs:string">
+			<xs:length value="16"/>
+			<xs:pattern value="[0-9|A-Z]*"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CodiceFiscalePGType">
+		<xs:restriction base="xs:string">
+			<xs:length value="11"/>
+			<xs:pattern value="[0-9]*"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CodiceType">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="20"/>
+			<xs:pattern value="[A-Z|a-z|0-9|\-|_|.]*"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CognomeNomeType">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="DizionarioType">
+		<xs:restriction base="xs:anyURI"/>
+	</xs:simpleType>
+	<xs:simpleType name="EmailType">
+		<xs:annotation>
+			<xs:documentation>Pattern tratto da "XML Schema Standard Type Library" (vedi http://www.codesynthesis.com/projects/xsstl/xsstl/email-address.xsd)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="200"/>
+			<xs:pattern value="([a-zA-Z0-9_\-])([a-zA-Z0-9_\-\.]*)@(\[((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.){3}|((([a-zA-Z0-9\-]+)\.)+))([a-zA-Z]{2,}|(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\])"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="EsponenteType">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="10"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="IdentificativoType">
+		<xs:restriction base="xs:unsignedLong"/>
+	</xs:simpleType>
+	<xs:simpleType name="ImportoType">
+		<xs:restriction base="xs:decimal">
+			<xs:fractionDigits value="2"/>
+			<xs:minInclusive value="0"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="NomeViaType">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="NumeroProtocolloType">
+		<xs:restriction base="xs:string">
+			<xs:length value="7"/>
+			<xs:pattern value="[0-9]*"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="NumeroIstanzaMudeType">
+		<xs:restriction base="xs:positiveInteger">
+			<xs:maxInclusive value="9999999"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ProgressivoType">
+		<xs:restriction base="xs:unsignedInt">
+			<xs:maxInclusive value="999"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ProssimitaCivicoType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="FRONTE_A"/>
+			<xs:enumeration value="PROSSIMO_A"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ProvinciaType">
+		<xs:restriction base="xs:string">
+			<xs:length value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SrsType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="EPSG:3003"/>
+			<xs:enumeration value="EPSG:3004"/>
+			<xs:enumeration value="EPSG:23032"/>
+			<xs:enumeration value="EPSG:23033"/>
+			<xs:enumeration value="EPSG:32632"/>
+			<xs:enumeration value="EPSG:25832"/>
+			<xs:enumeration value="EPSG:32633"/>
+			<xs:enumeration value="EPSG:25833"/>
+			<xs:enumeration value="EPSG:4326"/>
+			<xs:enumeration value="EPSG:4258"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SuperficieType">
+		<xs:restriction base="xs:decimal">
+			<xs:fractionDigits value="2"/>
+			<xs:minInclusive value="0"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TelefonoType">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="20"/>
+			<xs:pattern value="[+]?[0-9]*"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TestoBreveType">
+		<xs:annotation>
+			<xs:documentation>max 100 caratteri</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TestoIndirizzoType">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TestoLungoType">
+		<xs:annotation>
+			<xs:documentation>max 4000 caratteri</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="4000"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:attribute name="VarianteMinore">
+		<xs:annotation>
+			<xs:documentation>Attributo presente solo nel caso in cui si stia descrivendo l'oggetto edilizio nell'ambito di una variante minore. Può assumere valori SI (oggetto interessato dalla variante minore) e NO (oggetto non interessato dalla variante minore).</xs:documentation>
+		</xs:annotation>
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="SI"/>
+				<xs:enumeration value="NO"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:attribute>
+</xs:schema>

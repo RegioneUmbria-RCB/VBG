@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+     th:replace="~{decorator_main :: layout(~{::title}, ~{::section})}">
+<head>
+	<title th:text="#{label.lista_degli_accessi}">label.lista_degli_accessi</title>
+</head>
+<body>
+   <section 
+   	class="section section-muted" 
+	th:attr="aria-describedby=titleSection">
+   
+   <div class="container">
+    <!-- contenuto di esempio START -->
+
+    <h1 id="titleSection" th:text="#{label.lista_degli_accessi}">label.lista_degli_accessi</h1>
+
+
+					<form name="inviodati" method="post">
+					
+						<div th:replace="~{fragments/lists :: list-common-parts}" />
+		
+						<div class="table-responsive">
+							<table class="table table-sm table-striped table-hover table-bordered">
+							    <thead>
+							        <tr>
+							        	<th scope="col" th:text="#{label.token}" width="8%" 		class="table-filterable-header" data-filter-name="id" />
+							        	<th scope="col" th:text="#{label.userid}" width="8%" 		class="table-filterable-header" data-filter-name="userid"  />
+							            <th scope="col" th:text="#{label.contesto}"  width="8%" 	class="table-filterable-header" data-filter-name="contesto" />
+							            <th scope="col" th:text="#{label.idcomune}"  width="5%" 	class="table-filterable-header" data-filter-name="idcomune" />
+							            <th scope="col" th:text="#{label.client_ip}"  width="5%" 	class="table-filterable-header" data-filter-name="clientIp" />
+							            <th scope="col" th:text="#{label.firstrequest}"  width="8%" class="table-filterable-header" data-filter-name="firstrequest" />				            
+							            <th scope="col" th:text="#{label.lastrequest}"  width="8%"  class="table-filterable-header" data-filter-name="lastrequest" />
+							            <th scope="col" th:text="#{label.valid_token}"  width="5%" />
+							            <th scope="col" th:text="#{label.authlevel}"  width="2%" />
+							            <th scope="col" th:text="#{button.delete}"  width="5%" />
+							        </tr>
+							    </thead>
+							    <tbody>
+							        <tr th:each="sessione, iStat : ${sessioni.content}">
+							        	<td th:text="${sessione.id}"  />
+							        	<td th:text="${sessione.userid}"/>
+							            <td th:text="${sessione.contesto}"/>
+							            <td th:text="${sessione.idcomune}"/>
+							            <td th:text="${sessione.clientIp}"/>
+							            <td th:text="${sessione.firstrequest}"/>				            
+							            <td th:text="${sessione.lastrequest}"/>
+							            <td th:text="${sessione.valid}" />
+							            <td th:text="${sessione.authLevel}"/>
+							            <td width="5%">
+											<button type="button" id="back" 
+												class="btn btn-primary elimina-action" 
+												th:attr="data-id=${sessione.id}"																		
+												th:text="#{button.delete }">button.delete</button>				            
+							            </td>				            
+							        </tr>
+							    </tbody>
+							</table>
+						</div>
+					</form>
+
+					
+					<div th:replace="~{fragments/lists :: list-pagination(dataList=${sessioni})}" />		
+					
+					<button type="button" id="back" class="btn btn-secondary" 								
+						th:onclick="location.href=[[@{/}]]"
+						th:text="#{button.back}">button.back</button>
+										
+
+  </div>	  	
+  
+
+  	<script  th:replace="~{fragments/lists :: script-list-pagination}"  />
+  
+  
+  
+  </section>
+</body>
+</html>

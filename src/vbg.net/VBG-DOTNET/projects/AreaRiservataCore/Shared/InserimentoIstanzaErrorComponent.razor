@@ -1,0 +1,25 @@
+﻿@using Init.Sigepro.FrontEnd.CoreServices.GestionePresentazioneDomanda.Paginatore
+
+<div class="alert alert-danger" role="alert">
+    <h4 class="alert-heading">Errore!</h4>
+    <p>
+        Non è possibile proseguire con la compilazione della domanda a causa di un errore imprevisto.
+        <br/>
+        Cliccare sul bottone "Indietro" e ricaricare la pagina per tornare allo step precedente.
+    </p>
+</div>
+
+@code {
+
+    [CascadingParameter]
+    public PaginatoreStateService _paginatoreService { get; set; } = default!;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        
+        this._paginatoreService.NascondiBottoneAvanti();
+    }
+
+}

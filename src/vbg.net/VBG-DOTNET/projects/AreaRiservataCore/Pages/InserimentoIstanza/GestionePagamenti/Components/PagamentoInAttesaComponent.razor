@@ -1,0 +1,171 @@
+﻿@using Init.Sigepro.FrontEnd.AppLogic.GestioneOneri;
+@using Init.Sigepro.FrontEnd.AppLogic.GestionePresentazioneDomanda.GestioneOneri
+@using Init.Sigepro.FrontEnd.AppLogic.Pagamenti.NodoPagamenti
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.RisorseTestuali
+@implements IAsyncDisposable
+
+@if (!_timeoutScaduto)
+{
+    <BasicModal @ref="modal" AlwaysVisible="true" Size="ModalSizeEnum.Small" >
+        <ModalHeader Titolo="Attesa esito..." ShowCloseButton="false" Size="ModalHeaderSizeEnum.Small">
+        </ModalHeader>
+        <ModalBody>
+            <div id="testoAttenderePrego">
+                <RisorsaTestuale IdRisorsa="pagamento-nodo-pagamenti.modal.messaggio-attendere">
+                    <p>
+                        Siamo in attesa di un esito dal sistema di pagamenti, l'operazione potrebbe richiedere anche alcuni minuti.
+                    </p>
+                    <p>
+                        Attendere senza effettuare altre operazioni.
+                    </p>
+                </RisorsaTestuale>
+                <small>@(_retryCount + 1) / @_maxRetries</small>
+            </div>
+            <div id="spinnerAttenderePrego" class="progress progress-striped active" style="margin-bottom: 0;">
+                <div class="progress-bar" style="width: 100%"></div>
+            </div>
+            <br />
+            <br />
+            <p>Se non vuoi attendere oltre clicca sul pulsante sottostante</p>
+            <button class="btn btn-light" @onclick="OnStopWainiting">Interrompi</button>
+        </ModalBody>
+    </BasicModal>
+}
+else
+{
+    <div class="card mb-2">
+        <div class="card-body">
+            <RisorsaTestuale IdRisorsa="pagamento-nodo-pagamenti.modal.timeout-risposta">
+                <p>
+                    Siamo in attesa di ricevere le informazioni di avvenuto pagamento dal sistema PagoPA.
+                    Possono passare diversi minuti prima che la ricevuta sia resa disponibile al nostro sistema.
+                </p>
+                <p>
+                    Facendo click su <span class="fw-bold">"Continua ad attendere"</span> riproveremo a contattare PagoPA per richiedere la ricevuta
+                </p>
+
+                <p>
+                    Facendo click su <span class="fw-bold">"Torna alla pagina principale"</span> potrai tornare alla pagina iniziale per usare ulteriori servizi.
+                    Sarà comunque possibile riprendere la domanda in un secondo momento per verificare lo stato del pagamento
+                    e, in caso di esito positivo, portare a termine la compilazione.
+                </p>
+
+            </RisorsaTestuale>
+
+            <div class="margin-top: var(--default-padding)">
+                <button class="btn btn-primary" @onclick="StartUpdateTimer">Continua ad attendere</button>
+                <button class="btn btn-primary" @onclick="OnTornaAllaHome">Torna alla pagina principale</button>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+
+    enum StatoPagamentoEnum
+    {
+        Pagato,
+        Annullato,
+        NonPagato
+    }
+
+    [Inject]
+    public IPagamentiNodoPagamentiService _pagamentiService { get; set; } = default!;
+
+    [Parameter]
+    public int IdDomanda { get; set; }
+    [Parameter]
+    public EventCallback OnPagamentoCompletato { get; set; }
+    [Parameter]
+    public EventCallback OnTornaAllaHome { get; set; }
+
+    private bool _timeoutScaduto = false;
+    private int _retryCount = 0;
+    private int _maxRetries = 20;   // Numero di retries per verificare l'esito del pagamento
+    private int _retryRate = 3000; // Tempo tra un retry e il successivo
+    private System.Threading.Timer? _timer; // NOTE: THIS LINE OF CODE ADDED
+    private BasicModal modal;
+
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+
+        if (_timer == null)
+        {
+            StartUpdateTimer();
+        }
+    }
+
+    private void OnStopWainiting()
+    {
+        _timer.Change(Timeout.Infinite, Timeout.Infinite);
+        _timeoutScaduto = true;
+    }
+
+    private void StartUpdateTimer()
+    {
+        this._retryCount = 0;
+        this._timeoutScaduto = false;
+
+        _timer = new System.Threading.Timer(async (object? stateInfo) =>
+        {
+            var pagamentoCompletato = VerificaStatoRicevutaNodoPagamenti();
+
+            if (pagamentoCompletato)
+            {
+                _timer?.Change(Timeout.Infinite, Timeout.Infinite);
+
+                await OnPagamentoCompletato.InvokeAsync();
+
+                return;
+            }
+
+            _retryCount++;
+
+            if (_retryCount >= _maxRetries)
+            {
+                _timer?.Change(Timeout.Infinite, Timeout.Infinite);
+                _timeoutScaduto = true;
+            }
+
+            await InvokeAsync(() => StateHasChanged());
+        }, new System.Threading.AutoResetEvent(false), _retryRate, _retryRate); // fire every 2000 milliseconds
+    }
+
+    private bool VerificaStatoRicevutaNodoPagamenti()
+    {
+        var statoPagamento = AggiornaStatoPosizione();
+
+        return (statoPagamento == StatoPagamentoEnum.Pagato || statoPagamento == StatoPagamentoEnum.Annullato);
+    }
+
+    private StatoPagamentoEnum AggiornaStatoPosizione()
+    {
+        _pagamentiService.AggiornaStatoPagamenti(IdDomanda);
+
+        var statoPagamento = _pagamentiService.GetStatoPosizioni(IdDomanda);
+
+        if (statoPagamento.StatoGlobale == StatoPagamentoOnereEnum.PagamentoRiuscito)
+        {
+            return StatoPagamentoEnum.Pagato;
+        }
+
+        if (statoPagamento.StatoGlobale == StatoPagamentoOnereEnum.PagamentoFallito)
+        {
+            return StatoPagamentoEnum.Annullato;
+        }
+
+        return StatoPagamentoEnum.NonPagato;
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_timer is not null)
+        {
+            await _timer.DisposeAsync();
+            _timer = null;
+        }
+    }
+}

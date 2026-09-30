@@ -1,0 +1,67 @@
+<?xml version="1.0" ?><schema elementFormDefault="qualified" targetNamespace="http://gruppoinit.it/sigepro/schemas/messages/eventi" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:base="http://gruppoinit.it/sigepro/schemas/messages/base" xmlns:tns="http://gruppoinit.it/sigepro/schemas/messages/eventi" xmlns:xmime="http://www.w3.org/2005/05/xmlmime">
+	<import id="oggettiBase" namespace="http://gruppoinit.it/sigepro/schemas/messages/base" 
+		schemaLocation="./backoffice_oggetti_base.xsd"></import>
+	<element name="EventoIstanzaInsertRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string"></element>
+				<element maxOccurs="1" minOccurs="0" name="categoriaEvento" type="base:CategorieEventiBaseType"></element>
+				<element maxOccurs="1" minOccurs="1" name="codiceistanza" type="integer"></element>
+				<element maxOccurs="1" minOccurs="1" name="messaggio">
+					<annotation>
+						<documentation>Messaggio dell'evento</documentation>
+					</annotation>
+					<simpleType>
+						<restriction base="string">
+							<minLength value="0"></minLength>
+							<maxLength value="4000"></maxLength>
+						</restriction>
+					</simpleType>
+				</element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="EventoMovimentoInsertRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string"></element>
+				<element maxOccurs="1" minOccurs="0" name="categoriaEvento" type="base:CategorieEventiBaseType"></element>
+				<element maxOccurs="1" minOccurs="1" name="codicemovimento" type="integer"></element>
+				<element maxOccurs="1" minOccurs="1" name="messaggio">
+					<annotation>
+						<documentation>Messaggio dell'evento</documentation>
+					</annotation>
+					<simpleType>
+						<restriction base="string">
+							<minLength value="0"></minLength>
+							<maxLength value="4000"></maxLength>
+						</restriction>
+					</simpleType>
+				</element>
+				<!-- <element name="software" type="string" maxOccurs="1"></element> -->
+			</sequence>
+		</complexType>
+	</element>
+	<element name="EventoBackofficeInsertRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string"></element>
+				<element maxOccurs="1" minOccurs="0" name="categoriaEvento" type="base:CategorieEventiBaseType"></element>
+				<element maxOccurs="1" minOccurs="1" name="messaggio">
+					<annotation>
+						<documentation>Messaggio dell'evento</documentation>
+					</annotation>
+					<simpleType>
+						<restriction base="string">
+							<minLength value="0"></minLength>
+							<maxLength value="4000"></maxLength>
+						</restriction>
+					</simpleType>
+				</element>
+				<element maxOccurs="1" name="software" type="string"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="EventoInsertResponse" type="base:EsitoOperazioneType"></element>
+
+</schema>

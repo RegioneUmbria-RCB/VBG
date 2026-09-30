@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ConfigurazioneRicerche>
+	<!-- SEZIONE PER LA DEFINIZIONE GLOBALE DELLE TIPOLOGIE DI RICERCA -->
+	<DefinizioneRicerche>
+		<!-- RICERCA PERSONA FISICA PER CODICE FISCALE -->
+		<DefinizioneRicerca>
+			<IdRicerca>anagrafe.byCodiceFiscale</IdRicerca>
+			<UrlController>ricercheAjax/findAnagrafePf.htm</UrlController>
+			<ControlloJavascript>SingleRecordAutocompiler</ControlloJavascript>
+		</DefinizioneRicerca>
+		<!-- RICERCA PERSONA GIURIDICA PER PARTITA IVA -->
+		<DefinizioneRicerca>
+			<IdRicerca>anagrafe.byPartitaIVA</IdRicerca>
+			<UrlController>ricercheAjax/findAnagrafePg.htm</UrlController>
+			<ControlloJavascript>SingleRecordAutocompiler</ControlloJavascript>
+		</DefinizioneRicerca>
+		<!-- RICERCA STRADARIO PER VIA -->
+		<DefinizioneRicerca>
+			<IdRicerca>stradario.byVia</IdRicerca>
+			<UrlController>ricercheAjax/findStradarioPerVia.htm</UrlController>
+			<ControlloJavascript>MultiRecordAutocompiler</ControlloJavascript>
+		</DefinizioneRicerca>
+	</DefinizioneRicerche>
+	<!-- SEZIONE CHE CONFIGURA L'APPLICAZIONE DELLE RICERCHE DEFINITE A SPECIFICI CAMPI DELLA MODULISTAICA -->
+	<ApplicazioneRicerche>
+		<!-- AL CAMPO RICHIEDENTE.NOME SI APPLICA LA RICERCA PERSONA FISICA PER CODICE FISCALE -->
+		<ApplicazioneRicerca>
+			<IdCampo>RICHIEDENTE.NOME</IdCampo>
+			<IdRicerca>anagrafe.byCodiceFiscale</IdRicerca>
+			<MappingValoriRestituiti>
+				<Mapping>
+					<AttributoRecord>CODICEFISCALE</AttributoRecord>
+					<IdCampoDestinazione>RICHIEDENTE.CF</IdCampoDestinazione>
+				</Mapping>
+				<Mapping>
+					<AttributoRecord>NOME</AttributoRecord>
+					<IdCampoDestinazione>RICHIEDENTE.NOME</IdCampoDestinazione>
+				</Mapping>
+				<Mapping>
+					<AttributoRecord>COGNOME</AttributoRecord>
+					<IdCampoDestinazione>RICHIEDENTE.COGNOME</IdCampoDestinazione>
+				</Mapping>
+				<Mapping>
+					<AttributoRecord>DATANASCITA</AttributoRecord>
+					<IdCampoDestinazione>RICHIEDENTE.DATA_NASCITA</IdCampoDestinazione>
+				</Mapping>				
+				<Mapping>
+					<AttributoRecord>COMUNENASCITA.COMUNE</AttributoRecord>
+					<IdCampoDestinazione>RICHIEDENTE.NATO_A</IdCampoDestinazione>
+				</Mapping>				
+				<Mapping>
+					<AttributoRecord>comuneResidenza.COMUNE</AttributoRecord>
+					<IdCampoDestinazione>RICHIEDENTE.RESIDENZA.ITALIA.COMUNE</IdCampoDestinazione>
+				</Mapping>				
+				<Mapping>
+					<AttributoRecord>comuneResidenza.PROVINCIA</AttributoRecord>
+					<IdCampoDestinazione>RICHIEDENTE.RESIDENZA.ITALIA.PROVINCIA</IdCampoDestinazione>
+				</Mapping>				
+			</MappingValoriRestituiti>
+		</ApplicazioneRicerca>
+		<!-- AL CAMPO IMPRESA.DENOMINAZIONE SI APPLICA LA RICERCA PERSONA GIURIDICA PER PARTITA IVA -->
+		<ApplicazioneRicerca>
+			<IdCampo>IMPRESA.DENOMINAZIONE</IdCampo>
+			<IdRicerca>anagrafe.byPartitaIVA</IdRicerca>
+			<MappingValoriRestituiti>
+				<Mapping>
+					<AttributoRecord>PARTITAIVA</AttributoRecord>
+					<IdCampoDestinazione>IMPRESA.PARTITA_IVA</IdCampoDestinazione>
+				</Mapping>
+				<Mapping>
+					<AttributoRecord>NOMINATIVO</AttributoRecord>
+					<IdCampoDestinazione>IMPRESA.DENOMINAZIONE</IdCampoDestinazione>
+				</Mapping>
+				<Mapping>
+					<AttributoRecord>NUMISCRREA</AttributoRecord>
+					<IdCampoDestinazione>IMPRESA.REG_IMPRESE.NUM_ISCRIZIONE</IdCampoDestinazione>
+				</Mapping>
+				<Mapping>
+					<AttributoRecord>comuneResidenza.COMUNE</AttributoRecord>
+					<IdCampoDestinazione>IMPRESA.SEDE_LEGALE.COMUNE</IdCampoDestinazione>
+				</Mapping>				
+				<Mapping>
+					<AttributoRecord>comuneResidenza.PROVINCIA</AttributoRecord>
+					<IdCampoDestinazione>IMPRESA.SEDE_LEGALE.PROVINCIA</IdCampoDestinazione>
+				</Mapping>				
+			</MappingValoriRestituiti>
+		</ApplicazioneRicerca>
+		<!-- AL CAMPO ATTIVITA.INDIRIZZO.VIA SI APPLICA LA RICERCA DELLO STRADARIO PER VIA -->
+		<ApplicazioneRicerca>
+			<IdCampo>ATTIVITA.INDIRIZZO.VIA</IdCampo>
+			<IdRicerca>stradario.byVia</IdRicerca>
+			<MappingValoriRestituiti>
+				<Mapping>
+					<AttributoRecord>VIA</AttributoRecord>
+					<IdCampoDestinazione>ATTIVITA.INDIRIZZO.VIA</IdCampoDestinazione>
+				</Mapping>
+			</MappingValoriRestituiti>
+		</ApplicazioneRicerca>
+		<!-- AL CAMPO COMUNICAZIONI.INDIRIZZO_POSTALE.VIA SI APPLICA DI NUOVO LA RICERCA DELLO STRADARIO PER VIA -->
+		<ApplicazioneRicerca>
+			<IdCampo>COMUNICAZIONI.INDIRIZZO_POSTALE.VIA</IdCampo>
+			<IdRicerca>stradario.byVia</IdRicerca>
+			<MappingValoriRestituiti>
+				<Mapping>
+					<AttributoRecord>VIA</AttributoRecord>
+					<IdCampoDestinazione>COMUNICAZIONI.INDIRIZZO_POSTALE.VIA</IdCampoDestinazione>
+				</Mapping>
+			</MappingValoriRestituiti>
+		</ApplicazioneRicerca>
+	</ApplicazioneRicerche>
+</ConfigurazioneRicerche>

@@ -1,0 +1,14 @@
+INSERT INTO COMUNI (CODICECOMUNE, COMUNE, SIGLAPROVINCIA, PROVINCIA, REGIONE, CAP, CF, CODICEISTAT, CODICEISTATREGIONE, CODICESTATOESTERO) VALUES ('L870','VIGATTO','PR','PARMA','EMILIA ROMAGNA',NULL,'L870','034810','08',NULL);
+
+
+INSERT INTO verticalizzazioniparametribase VALUES ('PEOPLE', 'NUM_FIGURE_SOGGETTI_COLLEGATI', 'Cardinalità delle tipologie dei soggetti collegati, configurati nel file di propertiesmappatureSoggettiCollegati.properties presente nella webapp NLAPeople, se posta a 0 o non valorizzato, non vengono recuperati i soggetti anagrafici presenti nelle dichiarazioni ');
+INSERT INTO verticalizzazioniparametribase VALUES ('PEOPLE', 'ABILITA_INTEGRAZIONI', 'Se valorizzato a 1, viene abilitata la logica applicativa che permette di inserire una pratica come un movimento ad una pratica esistente. Sulla pratica in ingresso di Accesso Unitario deve essere presente un campo marcato con il valore COD_PRATICA_INTEGRAZIONE con il valore utente riportante il numero pratica madre su cui fare l''operazione di inserimentoAttivita. Se non valorizzato o valorizzato a 0, le pratiche di Accesso Unitario verranno inserite sempre come nuova pratica.');
+INSERT INTO verticalizzazioniparametribase VALUES ('PEOPLE', 'TIPOMOV_INTEGRAZIONE_DINAMICA', 'Se valorizzato a 1, ed il parametro ABILITA_INTEGRAZIONI è attivo, il nodo NLAPeople in fase di inserimento del movimento, interroga il backoffice per sapere il codice del movimento da eseguire. Se non non valorizzato il codice movimento è preso dal parametro TIPOMOVIMENTO_DEFAULT');
+INSERT INTO verticalizzazioniparametribase VALUES ('PEOPLE', 'TIPOMOVIMENTO_DEFAULT', 'Va sempre valorizzato nel caso il parametro ABILITA_INTEGRAZIONI è attivo, e contiene il codice del movimento con cui eseguire l''inserimento di un nuovo movimento. Tale valore sarà sovrascritto se il parametro TIPOMOVIMENTO_INTEGRAZIONE_DINAMICO è attivo e il servizio di backoffice restituirà il codice del movimento di inserimento');
+INSERT INTO TIPI_SCADENZA (ID, DESCRIZIONE) VALUES (10, '20 del mese');
+INSERT INTO verticalizzazioniparametribase(modulo, parametro, descrizione) VALUES ('AREA_RISERVATA', 'PAG_PERMETTI_ANNULLAMENTO_MOD3', 'Se impostato a 1 permette l''annullamento di posizioni debitorie create tramite moddello 3 (paga dopo). Default=1');
+INSERT INTO verticalizzazioniparametribase (MODULO,PARAMETRO,DESCRIZIONE) VALUES ('AREA_RISERVATA_SSU', 'BASE_URL_API_VALIDATOR', 'Url di base su cui sono esposte le API del validator');
+
+
+INSERT INTO clmenu_java ( ID , DESCRIZIONE , PAGINA , MENULINK , SOFTWARE , JSP , VERTICALIZZAZIONE, SOFTWAREESCLUSI , LINK_STANDARD , TIPO_FUNZIONALITA, LAYOUTTESTI , MENULINK_V2 )VALUES ( ( ( SELECT MAX(A.ID) FROM CLMENU_JAVA A )+ 1) , 'Accertamenti esecutivi' , 'blacklist/view.htm?software=SOFTWARE&contesto=presenze', '787' , '*' , 'JAVA' , NULL , NULL , 'blacklist/view.htm?software=SOFTWARE&contesto=presenze', 'E' , NULL , '787' );
+

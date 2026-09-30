@@ -1,0 +1,2016 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions name="ProtocollazioneService" targetNamespace="http://it.gruppoinit/Protocollazione" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://it.gruppoinit/Protocollazione">
+	<wsp:Policy wsu:Id="BasicHttpBinding_IProtocollazioneService_policy">
+		<wsp:ExactlyOne>
+			<wsp:All>
+				<wsoma:OptimizedMimeSerialization xmlns:wsoma="http://schemas.xmlsoap.org/ws/2004/09/policy/optimizedmimeserialization"/>
+			</wsp:All>
+		</wsp:ExactlyOne>
+	</wsp:Policy>
+	<wsdl:types>
+		<xs:schema elementFormDefault="qualified" targetNamespace="http://it.gruppoinit/Protocollazione" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+			<xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+			<xs:import namespace="http://schemas.datacontract.org/2004/07/VBG.Backend.Protocollo.AppLogic.Shared.Data"/>
+			<xs:import namespace="http://schemas.datacontract.org/2004/07/Init.SIGePro.Protocollo.WsDataClass"/>
+			<xs:element name="CreaCopie">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="token" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="codiceIstanza" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="codiceAmministrazione" nillable="true" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="CreaCopieResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="CreaCopieResult" nillable="true" type="tns:DatiProtocolloResponseType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="DatiProtocolloResponseType">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="Warning" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="IdProtocollo" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="AnnoProtocollo" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="DataProtocollo" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="NumeroProtocollo" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Errore" nillable="true" type="tns:ErroreProtocolloType"/>
+					<xs:element minOccurs="0" name="Messaggio" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="CodiciOggettoAllegati" nillable="true" type="q1:ArrayOfint" xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="DatiProtocolloResponseType" nillable="true" type="tns:DatiProtocolloResponseType"/>
+			<xs:complexType name="ErroreProtocolloType">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="Descrizione" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="StackTrace" nillable="true" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="ErroreProtocolloType" nillable="true" type="tns:ErroreProtocolloType"/>
+			<xs:element name="MettiAllaFirmaXml">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="token" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="codiceMovimento" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="file" nillable="true" type="tns:DatiRequestType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="DatiRequestType">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="TipoDocumento" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="TipoSmistamento" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Oggetto" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Flusso" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Classifica" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="NumProtMitt" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="DataProtMitt" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Mittenti" nillable="true" type="tns:DatiMittentiXmlType"/>
+					<xs:element minOccurs="0" name="Destinatari" nillable="true" type="tns:DatiDestinatariXmlType"/>
+					<xs:element minOccurs="0" name="Allegati" nillable="true" type="tns:ArrayOfAllegatoType"/>
+					<xs:element minOccurs="0" name="Metadati" nillable="true" type="tns:ArrayOfMetadatoType"/>
+					<xs:element minOccurs="0" name="Mail" nillable="true" type="tns:DatiMailType"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="DatiRequestType" nillable="true" type="tns:DatiRequestType"/>
+			<xs:complexType name="DatiMittentiXmlType">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="Anagrafe" nillable="true" type="q2:ArrayOfProtocolloAnagrafe" xmlns:q2="http://schemas.datacontract.org/2004/07/VBG.Backend.Protocollo.AppLogic.Shared.Data"/>
+					<xs:element minOccurs="0" name="Amministrazione" nillable="true" type="q3:ArrayOfProtocolloAmministrazioni" xmlns:q3="http://schemas.datacontract.org/2004/07/VBG.Backend.Protocollo.AppLogic.Shared.Data"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="DatiMittentiXmlType" nillable="true" type="tns:DatiMittentiXmlType"/>
+			<xs:complexType name="DatiDestinatariXmlType">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="Anagrafe" nillable="true" type="q4:ArrayOfProtocolloAnagrafe" xmlns:q4="http://schemas.datacontract.org/2004/07/VBG.Backend.Protocollo.AppLogic.Shared.Data"/>
+					<xs:element minOccurs="0" name="Amministrazione" nillable="true" type="q5:ArrayOfProtocolloAmministrazioni" xmlns:q5="http://schemas.datacontract.org/2004/07/VBG.Backend.Protocollo.AppLogic.Shared.Data"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="DatiDestinatariXmlType" nillable="true" type="tns:DatiDestinatariXmlType"/>
+			<xs:complexType name="ArrayOfAllegatoType">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="unbounded" name="AllegatoType" nillable="true" type="tns:AllegatoType"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="ArrayOfAllegatoType" nillable="true" type="tns:ArrayOfAllegatoType"/>
+			<xs:complexType name="AllegatoType">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="Cod" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Descrizione" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="InviaTramitePec" nillable="true" type="xs:boolean"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="AllegatoType" nillable="true" type="tns:AllegatoType"/>
+			<xs:complexType name="ArrayOfMetadatoType">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="unbounded" name="MetadatoType" nillable="true" type="tns:MetadatoType"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="ArrayOfMetadatoType" nillable="true" type="tns:ArrayOfMetadatoType"/>
+			<xs:complexType name="MetadatoType">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="Chiave" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Valore" nillable="true" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="MetadatoType" nillable="true" type="tns:MetadatoType"/>
+			<xs:complexType name="DatiMailType">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="Oggetto" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Corpo" nillable="true" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="DatiMailType" nillable="true" type="tns:DatiMailType"/>
+			<xs:element name="MettiAllaFirmaXmlResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="MettiAllaFirmaXmlResult" nillable="true" type="tns:DatiProtocolloResponseType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ProtocollazioneXml">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="token" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="software" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="file" nillable="true" type="tns:DatiRequestType"/>
+						<xs:element minOccurs="0" name="codiceComune" nillable="true" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ProtocollazioneXmlResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="ProtocollazioneXmlResult" nillable="true" type="tns:DatiProtocolloResponseType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ProtocollazioneIstanza">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="token" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="codiceIstanza" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="source" type="xs:int"/>
+						<xs:element minOccurs="0" name="mittenti" nillable="true" type="tns:DatiMittentiType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="DatiMittentiType">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="Anagrafe" nillable="true" type="tns:ArrayOfDatiAnagraficiType"/>
+					<xs:element minOccurs="0" name="Amministrazione" nillable="true" type="tns:ArrayOfDatiAnagraficiType"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="DatiMittentiType" nillable="true" type="tns:DatiMittentiType"/>
+			<xs:complexType name="ArrayOfDatiAnagraficiType">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="unbounded" name="DatiAnagraficiType" nillable="true" type="tns:DatiAnagraficiType"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="ArrayOfDatiAnagraficiType" nillable="true" type="tns:ArrayOfDatiAnagraficiType"/>
+			<xs:complexType name="DatiAnagraficiType">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="Cod" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Mezzo" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="ModalitaTrasmissione" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Email" nillable="true" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="DatiAnagraficiType" nillable="true" type="tns:DatiAnagraficiType"/>
+			<xs:element name="ProtocollazioneIstanzaResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="ProtocollazioneIstanzaResult" nillable="true" type="tns:DatiProtocolloResponseType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ProtocollazioneIstanzaXml">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="token" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="codiceIstanza" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="file" nillable="true" type="tns:DatiRequestType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ProtocollazioneIstanzaXmlResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="ProtocollazioneIstanzaXmlResult" nillable="true" type="tns:DatiProtocolloResponseType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ProtocollazionePecXml">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="token" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="codicePec" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="file" nillable="true" type="tns:DatiRequestType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ProtocollazionePecXmlResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="ProtocollazionePecXmlResult" nillable="true" type="tns:DatiProtocolloResponseType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ProtocollazioneMovimento">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="token" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="codiceMovimento" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="mittenti" nillable="true" type="tns:DatiMittentiType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ProtocollazioneMovimentoResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="ProtocollazioneMovimentoResult" nillable="true" type="tns:DatiProtocolloResponseType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ProtocollazioneComunicazioneGraduatoria">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="token" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="codiceMovimento" nillable="true" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ProtocollazioneComunicazioneGraduatoriaResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="ProtocollazioneComunicazioneGraduatoriaResult" nillable="true" type="tns:DatiProtocolloResponseType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ProtocollazioneMovimentoXml">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="request" nillable="true" type="tns:ProtocollazioneMovimentoXmlRequestType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="ProtocollazioneMovimentoXmlRequestType">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="CodiceMovimento" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Dati" nillable="true" type="tns:DatiRequestType"/>
+					<xs:element minOccurs="0" name="Metadati" nillable="true" type="tns:ArrayOfMetadatoType"/>
+					<xs:element minOccurs="0" name="Source" type="xs:int"/>
+					<xs:element minOccurs="0" name="Token" nillable="true" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="ProtocollazioneMovimentoXmlRequestType" nillable="true" type="tns:ProtocollazioneMovimentoXmlRequestType"/>
+			<xs:element name="ProtocollazioneMovimentoXmlResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="ProtocollazioneMovimentoXmlResult" nillable="true" type="tns:DatiProtocolloResponseType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="GetTipiDocumento">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="token" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="software" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="codiceComune" nillable="true" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="GetTipiDocumentoResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="GetTipiDocumentoResult" nillable="true" type="tns:ListaTipiDocumentoResponseType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="ListaTipiDocumentoResponseType">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="Documento" nillable="true" type="tns:ArrayOfListaTipiDocumentoDocumentoType"/>
+					<xs:element minOccurs="0" name="Errore" nillable="true" type="tns:ErroreProtocolloType"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="ListaTipiDocumentoResponseType" nillable="true" type="tns:ListaTipiDocumentoResponseType"/>
+			<xs:complexType name="ArrayOfListaTipiDocumentoDocumentoType">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="unbounded" name="ListaTipiDocumentoDocumentoType" nillable="true" type="tns:ListaTipiDocumentoDocumentoType"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="ArrayOfListaTipiDocumentoDocumentoType" nillable="true" type="tns:ArrayOfListaTipiDocumentoDocumentoType"/>
+			<xs:complexType name="ListaTipiDocumentoDocumentoType">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="Codice" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Descrizione" nillable="true" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="ListaTipiDocumentoDocumentoType" nillable="true" type="tns:ListaTipiDocumentoDocumentoType"/>
+			<xs:element name="GetClassifiche">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="token" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="software" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="codiceComune" nillable="true" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="GetClassificheResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="GetClassificheResult" nillable="true" type="tns:ListaTipiClassificaType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="ListaTipiClassificaType">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="Classifica" nillable="true" type="tns:ArrayOfListaTipiClassificaClassifica"/>
+					<xs:element minOccurs="0" name="Errore" nillable="true" type="tns:ErroreProtocolloType"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="ListaTipiClassificaType" nillable="true" type="tns:ListaTipiClassificaType"/>
+			<xs:complexType name="ArrayOfListaTipiClassificaClassifica">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="unbounded" name="ListaTipiClassificaClassifica" nillable="true" type="tns:ListaTipiClassificaClassifica"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="ArrayOfListaTipiClassificaClassifica" nillable="true" type="tns:ArrayOfListaTipiClassificaClassifica"/>
+			<xs:complexType name="ListaTipiClassificaClassifica">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="Codice" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Descrizione" nillable="true" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="ListaTipiClassificaClassifica" nillable="true" type="tns:ListaTipiClassificaClassifica"/>
+			<xs:element name="LeggiProtocollo">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="leggiProtocolloRequest" nillable="true" type="q6:LeggiProtocolloRequest" xmlns:q6="http://schemas.datacontract.org/2004/07/Init.SIGePro.Protocollo.WsDataClass"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="LeggiProtocolloResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="LeggiProtocolloResult" nillable="true" type="tns:ArrayOfDatiProtocolloLettoResponseType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="ArrayOfDatiProtocolloLettoResponseType">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="unbounded" name="DatiProtocolloLettoResponseType" nillable="true" type="tns:DatiProtocolloLettoResponseType"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="ArrayOfDatiProtocolloLettoResponseType" nillable="true" type="tns:ArrayOfDatiProtocolloLettoResponseType"/>
+			<xs:complexType name="DatiProtocolloLettoResponseType">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="Warning" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="IdProtocollo" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="AnnoProtocollo" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="NumeroProtocollo" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="DataProtocollo" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Oggetto" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Origine" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Classifica" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Classifica_Descrizione" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="TipoDocumento" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="TipoDocumento_Descrizione" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="MittenteInterno" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="MittenteInterno_Descrizione" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="InCaricoA" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="InCaricoA_Descrizione" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="DocAllegati" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Annullato" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="MotivoAnnullamento" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="DataAnnullamento" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="MittentiDestinatari" nillable="true" type="tns:ArrayOfMittDestOutType"/>
+					<xs:element minOccurs="0" name="NumeroPratica" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="AnnoNumeroPratica" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="DataInserimento" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="NumeroProtocolloMittente" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="DataProtocolloMittente" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Allegati" nillable="true" type="tns:ArrayOfAllegatoResponseType"/>
+					<xs:element minOccurs="0" name="Errore" nillable="true" type="tns:ErroreProtocolloType"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="DatiProtocolloLettoResponseType" nillable="true" type="tns:DatiProtocolloLettoResponseType"/>
+			<xs:complexType name="ArrayOfMittDestOutType">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="unbounded" name="MittDestOutType" nillable="true" type="tns:MittDestOutType"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="ArrayOfMittDestOutType" nillable="true" type="tns:ArrayOfMittDestOutType"/>
+			<xs:complexType name="MittDestOutType">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="IdSoggetto" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="CognomeNome" nillable="true" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="MittDestOutType" nillable="true" type="tns:MittDestOutType"/>
+			<xs:complexType name="ArrayOfAllegatoResponseType">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="unbounded" name="AllegatoResponseType" nillable="true" type="tns:AllegatoResponseType"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="ArrayOfAllegatoResponseType" nillable="true" type="tns:ArrayOfAllegatoResponseType"/>
+			<xs:complexType name="AllegatoResponseType">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="Serial" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="TipoFile" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="ContentType" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Image" nillable="true" type="xs:base64Binary"/>
+					<xs:element minOccurs="0" name="Commento" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="IDBase" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Versione" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Errore" nillable="true" type="tns:ErroreProtocolloType"/>
+					<xs:element minOccurs="0" name="Uo" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Ruolo" nillable="true" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="AllegatoResponseType" nillable="true" type="tns:AllegatoResponseType"/>
+			<xs:element name="LeggiProtocolloUORuolo">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="token" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="idProtocollo" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="annoProtocollo" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="numProtocollo" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="uo" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="ruolo" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="software" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="codiceComune" nillable="true" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="LeggiProtocolloUORuoloResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="LeggiProtocolloUORuoloResult" nillable="true" type="tns:ArrayOfDatiProtocolloLettoResponseType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="LeggiProtocolloConData">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="token" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="idProtocollo" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="dataProtocollo" type="xs:dateTime"/>
+						<xs:element minOccurs="0" name="numProtocollo" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="software" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="codiceComune" nillable="true" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="LeggiProtocolloConDataResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="LeggiProtocolloConDataResult" nillable="true" type="tns:ArrayOfDatiProtocolloLettoResponseType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="LeggiAllegato">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="token" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="idBase" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="software" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="codiceComune" nillable="true" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="LeggiAllegatoResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="LeggiAllegatoResult" nillable="true" type="tns:AllegatoResponseType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="LeggiAllegatoUORuolo">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="token" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="idBase" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="uo" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="ruolo" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="software" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="codiceComune" nillable="true" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="LeggiAllegatoUORuoloResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="LeggiAllegatoUORuoloResult" nillable="true" type="tns:AllegatoResponseType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="LeggiAllegatoStorico">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="token" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="idBase" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="software" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="codiceComune" nillable="true" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="LeggiAllegatoStoricoResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="LeggiAllegatoStoricoResult" nillable="true" type="tns:AllegatoResponseType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="StampaEtichette">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="token" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="idProtocollo" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="numeroProtocollo" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="dataProtocollo" nillable="true" type="xs:dateTime"/>
+						<xs:element minOccurs="0" name="numeroCopie" type="xs:int"/>
+						<xs:element minOccurs="0" name="stampante" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="software" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="codiceComune" nillable="true" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="StampaEtichetteResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="StampaEtichetteResult" nillable="true" type="tns:EtichetteResponseType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="EtichetteResponseType">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="Warning" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="IdEtichetta" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Errore" nillable="true" type="tns:ErroreProtocolloType"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="EtichetteResponseType" nillable="true" type="tns:EtichetteResponseType"/>
+			<xs:element name="GetMotiviAnnullamento">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="token" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="software" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="codiceComune" nillable="true" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="GetMotiviAnnullamentoResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="GetMotiviAnnullamentoResult" nillable="true" type="tns:ListaMotiviAnnullamentoResponseType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="ListaMotiviAnnullamentoResponseType">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="MotivoAnnullamento" nillable="true" type="tns:ArrayOfListaMotiviAnnullamentoMotivoAnnullamentoType"/>
+					<xs:element minOccurs="0" name="Errore" nillable="true" type="tns:ErroreProtocolloType"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="ListaMotiviAnnullamentoResponseType" nillable="true" type="tns:ListaMotiviAnnullamentoResponseType"/>
+			<xs:complexType name="ArrayOfListaMotiviAnnullamentoMotivoAnnullamentoType">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="unbounded" name="ListaMotiviAnnullamentoMotivoAnnullamentoType" nillable="true" type="tns:ListaMotiviAnnullamentoMotivoAnnullamentoType"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="ArrayOfListaMotiviAnnullamentoMotivoAnnullamentoType" nillable="true" type="tns:ArrayOfListaMotiviAnnullamentoMotivoAnnullamentoType"/>
+			<xs:complexType name="ListaMotiviAnnullamentoMotivoAnnullamentoType">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="Codice" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Descrizione" nillable="true" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="ListaMotiviAnnullamentoMotivoAnnullamentoType" nillable="true" type="tns:ListaMotiviAnnullamentoMotivoAnnullamentoType"/>
+			<xs:element name="AnnullaProtocollo">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="token" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="idProtocollo" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="annoProtocollo" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="numeroProtocollo" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="motivoAnnullamento" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="noteAnnullamento" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="software" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="codiceComune" nillable="true" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="AnnullaProtocolloResponse">
+				<xs:complexType>
+					<xs:sequence/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="IsAnnullato">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="token" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="idProtocollo" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="annoProtocollo" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="numeroProtocollo" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="software" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="codiceComune" nillable="true" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="IsAnnullatoResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="IsAnnullatoResult" nillable="true" type="tns:DatiProtocolloAnnullatoResponseType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="DatiProtocolloAnnullatoResponseType">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="Annullato" type="tns:EnumAnnullatoType"/>
+					<xs:element minOccurs="0" name="MotivoAnnullamento" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="NoteAnnullamento" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Errore" nillable="true" type="tns:ErroreProtocolloType"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="DatiProtocolloAnnullatoResponseType" nillable="true" type="tns:DatiProtocolloAnnullatoResponseType"/>
+			<xs:simpleType name="EnumAnnullatoType">
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="si"/>
+					<xs:enumeration value="no"/>
+					<xs:enumeration value="nondefinito"/>
+					<xs:enumeration value="warning"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:element name="EnumAnnullatoType" nillable="true" type="tns:EnumAnnullatoType"/>
+			<xs:element name="GetFascicoli">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="token" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="codiceIstanza" nillable="true" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="GetFascicoliResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="GetFascicoliResult" nillable="true" type="tns:ListaFascicoliResponseType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="ListaFascicoliResponseType">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="Fascicolo" nillable="true" type="tns:ArrayOfDatiFascType"/>
+					<xs:element minOccurs="0" name="Errore" nillable="true" type="tns:ErroreProtocolloType"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="ListaFascicoliResponseType" nillable="true" type="tns:ListaFascicoliResponseType"/>
+			<xs:complexType name="ArrayOfDatiFascType">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="unbounded" name="DatiFascType" nillable="true" type="tns:DatiFascType"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="ArrayOfDatiFascType" nillable="true" type="tns:ArrayOfDatiFascType"/>
+			<xs:complexType name="DatiFascType">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="NumeroFascicolo" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="DataFascicolo" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="ClassificaFascicolo" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="OggettoFascicolo" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="AnnoFascicolo" nillable="true" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="DatiFascType" nillable="true" type="tns:DatiFascType"/>
+			<xs:element name="SearchFascicoli">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="token" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="software" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="codiceComune" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="datiFascicolo" nillable="true" type="tns:DatiFascType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="SearchFascicoliResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="SearchFascicoliResult" nillable="true" type="tns:ListaFascicoliResponseType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="IsFascicolato">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="token" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="idProtocollo" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="annoProtocollo" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="numeroProtocollo" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="software" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="codiceComune" nillable="true" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="IsFascicolatoResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="IsFascicolatoResult" nillable="true" type="tns:DatiProtocolloFascicolatoResponseType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="DatiProtocolloFascicolatoResponseType">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="Fascicolato" type="tns:EnumFascicolatoType"/>
+					<xs:element minOccurs="0" name="NumeroFascicolo" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="DataFascicolo" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="AnnoFascicolo" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="NoteFascicolo" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Classifica" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Oggetto" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Errore" nillable="true" type="tns:ErroreProtocolloType"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="DatiProtocolloFascicolatoResponseType" nillable="true" type="tns:DatiProtocolloFascicolatoResponseType"/>
+			<xs:simpleType name="EnumFascicolatoType">
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="si"/>
+					<xs:enumeration value="no"/>
+					<xs:enumeration value="nondefinito"/>
+					<xs:enumeration value="warning"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:element name="EnumFascicolatoType" nillable="true" type="tns:EnumFascicolatoType"/>
+			<xs:element name="FascicolazioneXml">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="token" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="software" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="datiFasc" nillable="true" type="tns:DatiFascType"/>
+						<xs:element minOccurs="0" name="codiceComune" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="idProtocollo" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="numeroProtocollo" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="annoProtocollo" nillable="true" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="FascicolazioneXmlResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="FascicolazioneXmlResult" nillable="true" type="tns:DatiFascicoloResponseType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="DatiFascicoloResponseType">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="Warning" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="AnnoFascicolo" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="DataFascicolo" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="NumeroFascicolo" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Errore" nillable="true" type="tns:ErroreProtocolloType"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="DatiFascicoloResponseType" nillable="true" type="tns:DatiFascicoloResponseType"/>
+			<xs:element name="FascicolazioneIstanza">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="token" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="codiceIstanza" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="source" type="xs:int"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="FascicolazioneIstanzaResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="FascicolazioneIstanzaResult" nillable="true" type="tns:DatiFascicoloResponseType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="FascicolazioneIstanzaXml">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="token" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="codiceIstanza" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="datiFasc" nillable="true" type="tns:DatiFascType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="FascicolazioneIstanzaXmlResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="FascicolazioneIstanzaXmlResult" nillable="true" type="tns:DatiFascicoloResponseType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="FascicolazioneMovimento">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="token" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="codiceMovimento" nillable="true" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="FascicolazioneMovimentoResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="FascicolazioneMovimentoResult" nillable="true" type="tns:DatiFascicoloResponseType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="FascicolazioneMovimentoXml">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="token" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="codiceMovimento" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="datiFasc" nillable="true" type="tns:DatiFascType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="FascicolazioneMovimentoXmlResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="FascicolazioneMovimentoXmlResult" nillable="true" type="tns:DatiFascicoloResponseType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="CambiaFascicoloIstanzaXml">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="token" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="codiceIstanza" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="datiFasc" nillable="true" type="tns:DatiFascType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="CambiaFascicoloIstanzaXmlResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="CambiaFascicoloIstanzaXmlResult" nillable="true" type="tns:DatiFascicoloResponseType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="CreaUnitaDocumentaleIstanza">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="token" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="codiceIstanza" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="request" nillable="true" type="tns:CreaUnitaDocumentaleRequestType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="CreaUnitaDocumentaleRequestType">
+				<xs:sequence>
+					<xs:element name="TipoDocumento" nillable="true" type="xs:string"/>
+					<xs:element name="Allegati" nillable="true" type="tns:ArrayOfAllegatoType"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="CreaUnitaDocumentaleRequestType" nillable="true" type="tns:CreaUnitaDocumentaleRequestType"/>
+			<xs:element name="CreaUnitaDocumentaleIstanzaResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="CreaUnitaDocumentaleIstanzaResult" nillable="true" type="tns:CreaUnitaDocumentaleResponseType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="CreaUnitaDocumentaleResponseType">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="UnitaDocumentale" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Errore" nillable="true" type="tns:ErroreProtocolloType"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="CreaUnitaDocumentaleResponseType" nillable="true" type="tns:CreaUnitaDocumentaleResponseType"/>
+			<xs:element name="CreaUnitaDocumentaleMovimento">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="token" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="codiceMovimento" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="request" nillable="true" type="tns:CreaUnitaDocumentaleRequestType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="CreaUnitaDocumentaleMovimentoResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="CreaUnitaDocumentaleMovimentoResult" nillable="true" type="tns:CreaUnitaDocumentaleResponseType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="RegistrazioneIstanzaXml">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="token" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="codiceIstanza" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="registro" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="dati" nillable="true" type="tns:DatiRequestType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="RegistrazioneIstanzaXmlResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="RegistrazioneIstanzaXmlResult" nillable="true" type="tns:DatiProtocolloResponseType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="RegistrazioneMovimentoXml">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="token" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="codiceMovimento" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="registro" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="dati" nillable="true" type="tns:DatiRequestType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="RegistrazioneMovimentoXmlResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="RegistrazioneMovimentoXmlResult" nillable="true" type="tns:DatiProtocolloResponseType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="InvioPec">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="token" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="codiceMovimento" nillable="true" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="InvioPecResponse">
+				<xs:complexType>
+					<xs:sequence/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="AggiungiAllegati">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="token" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="numeroProtocollo" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="dataProtocollo" nillable="true" type="xs:dateTime"/>
+						<xs:element minOccurs="0" name="idProtocollo" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="codiciAllegati" nillable="true" type="q7:ArrayOfint" xmlns:q7="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+						<xs:element minOccurs="0" name="software" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="codiceComune" nillable="true" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="AggiungiAllegatiResponse">
+				<xs:complexType>
+					<xs:sequence/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="GetFirmatari">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="token" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="software" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="codiceComune" nillable="true" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="GetFirmatariResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="GetFirmatariResult" nillable="true" type="tns:ListaFirmatari"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="ListaFirmatari">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="Firmatari" nillable="true" type="tns:ArrayOfFirmatario"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="ListaFirmatari" nillable="true" type="tns:ListaFirmatari"/>
+			<xs:complexType name="ArrayOfFirmatario">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="unbounded" name="Firmatario" nillable="true" type="tns:Firmatario"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="ArrayOfFirmatario" nillable="true" type="tns:ArrayOfFirmatario"/>
+			<xs:complexType name="Firmatario">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="Codice" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Descrizione" nillable="true" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="Firmatario" nillable="true" type="tns:Firmatario"/>
+			<xs:element name="RecuperaMetadati">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="token" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="software" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="codiceComune" nillable="true" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="RecuperaMetadatiResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="RecuperaMetadatiResult" nillable="true" type="tns:ArrayOfMetadatoType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="EseguiAccettazione">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="token" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="idProtocollo" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="annoProtocollo" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="numProtocollo" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="software" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="codiceComune" nillable="true" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="EseguiAccettazioneResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="EseguiAccettazioneResult" nillable="true" type="tns:EseguiAccettazioneResponseType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="EseguiAccettazioneResponseType">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="Status" type="tns:EnumStatusType"/>
+					<xs:element minOccurs="0" name="ErroreProtocollo" nillable="true" type="tns:ErroreProtocolloType"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="EseguiAccettazioneResponseType" nillable="true" type="tns:EseguiAccettazioneResponseType"/>
+			<xs:simpleType name="EnumStatusType">
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="OK"/>
+					<xs:enumeration value="KO"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:element name="EnumStatusType" nillable="true" type="tns:EnumStatusType"/>
+			<xs:element name="IsEsitato">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="token" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="idProtocollo" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="annoProtocollo" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="numeroProtocollo" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="software" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="codiceComune" nillable="true" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="IsEsitatoResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="IsEsitatoResult" nillable="true" type="tns:DatiProtocolloEsitatoResponseType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="DatiProtocolloEsitatoResponseType">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="Esitato" type="tns:EnumEsitatoType"/>
+					<xs:element minOccurs="0" name="Errore" nillable="true" type="tns:ErroreProtocolloType"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="DatiProtocolloEsitatoResponseType" nillable="true" type="tns:DatiProtocolloEsitatoResponseType"/>
+			<xs:simpleType name="EnumEsitatoType">
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="si"/>
+					<xs:enumeration value="no"/>
+					<xs:enumeration value="warning"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:element name="EnumEsitatoType" nillable="true" type="tns:EnumEsitatoType"/>
+		</xs:schema>
+		<xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/">
+			<xs:element name="anyType" nillable="true" type="xs:anyType"/>
+			<xs:element name="anyURI" nillable="true" type="xs:anyURI"/>
+			<xs:element name="base64Binary" nillable="true" type="xs:base64Binary"/>
+			<xs:element name="boolean" nillable="true" type="xs:boolean"/>
+			<xs:element name="byte" nillable="true" type="xs:byte"/>
+			<xs:element name="dateTime" nillable="true" type="xs:dateTime"/>
+			<xs:element name="decimal" nillable="true" type="xs:decimal"/>
+			<xs:element name="double" nillable="true" type="xs:double"/>
+			<xs:element name="float" nillable="true" type="xs:float"/>
+			<xs:element name="int" nillable="true" type="xs:int"/>
+			<xs:element name="long" nillable="true" type="xs:long"/>
+			<xs:element name="QName" nillable="true" type="xs:QName"/>
+			<xs:element name="short" nillable="true" type="xs:short"/>
+			<xs:element name="string" nillable="true" type="xs:string"/>
+			<xs:element name="unsignedByte" nillable="true" type="xs:unsignedByte"/>
+			<xs:element name="unsignedInt" nillable="true" type="xs:unsignedInt"/>
+			<xs:element name="unsignedLong" nillable="true" type="xs:unsignedLong"/>
+			<xs:element name="unsignedShort" nillable="true" type="xs:unsignedShort"/>
+			<xs:element name="char" nillable="true" type="tns:char"/>
+			<xs:simpleType name="char">
+				<xs:restriction base="xs:int"/>
+			</xs:simpleType>
+			<xs:element name="duration" nillable="true" type="tns:duration"/>
+			<xs:simpleType name="duration">
+				<xs:restriction base="xs:duration">
+					<xs:pattern value="\-?P(\d*D)?(T(\d*H)?(\d*M)?(\d*(\.\d*)?S)?)?"/>
+					<xs:minInclusive value="-P10675199DT2H48M5.4775808S"/>
+					<xs:maxInclusive value="P10675199DT2H48M5.4775807S"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:element name="guid" nillable="true" type="tns:guid"/>
+			<xs:simpleType name="guid">
+				<xs:restriction base="xs:string">
+					<xs:pattern value="[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:attribute name="FactoryType" type="xs:QName"/>
+			<xs:attribute name="Id" type="xs:ID"/>
+			<xs:attribute name="Ref" type="xs:IDREF"/>
+			<xs:simpleType name="dateOnly">
+				<xs:restriction base="xs:date">
+					<xs:pattern value="([0-9]{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType name="timeOnly">
+				<xs:restriction base="xs:time">
+					<xs:pattern value="([01][0-9]|2[0-3]):([0-5][0-9])(:([0-5][0-9])(\.[0-9]{1,7})?)?"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:schema>
+		<xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+			<xs:complexType name="ArrayOfint">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="unbounded" name="int" type="xs:int"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="ArrayOfint" nillable="true" type="tns:ArrayOfint"/>
+		</xs:schema>
+		<xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/VBG.Backend.Protocollo.AppLogic.Shared.Data" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.datacontract.org/2004/07/VBG.Backend.Protocollo.AppLogic.Shared.Data">
+			<xs:complexType name="ArrayOfProtocolloAnagrafe">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="unbounded" name="ProtocolloAnagrafe" nillable="true" type="tns:ProtocolloAnagrafe"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="ArrayOfProtocolloAnagrafe" nillable="true" type="tns:ArrayOfProtocolloAnagrafe"/>
+			<xs:complexType name="ProtocolloAnagrafe">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="CAP" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="CITTA" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="CODCOMNASCITA" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="CODICEANAGRAFE" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="CODICEFISCALE" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="COMUNERESIDENZA" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="CodiceIstatComNasc" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="CodiceIstatComRes" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="CodiceStatoEsteroNasc" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="CodiceStatoEsteroRes" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="ComuneResidenza" nillable="true" type="tns:ProtocolloComune"/>
+					<xs:element minOccurs="0" name="DATANASCITA" nillable="true" type="xs:dateTime"/>
+					<xs:element minOccurs="0" name="DATANOMINATIVO" nillable="true" type="xs:dateTime"/>
+					<xs:element minOccurs="0" name="EMAIL" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="FAX" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="INDIRIZZO" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Mezzo" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="ModalitaTrasmissione" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="NOME" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="NOMINATIVO" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="PARTITAIVA" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="PROVINCIA" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="PecAnagrafica" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="PecProtocollazione" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="SESSO" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="TELEFONO" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="TELEFONOCELLULARE" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="TIPOANAGRAFE" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="TITOLO" nillable="true" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="ProtocolloAnagrafe" nillable="true" type="tns:ProtocolloAnagrafe"/>
+			<xs:complexType name="ProtocolloComune">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="DenominazioneComune" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="SiglaProvincia" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="CodiceStatoEstero" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="CodiceIstat" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Provincia" nillable="true" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="ProtocolloComune" nillable="true" type="tns:ProtocolloComune"/>
+			<xs:complexType name="ArrayOfProtocolloAmministrazioni">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="unbounded" name="ProtocolloAmministrazioni" nillable="true" type="tns:ProtocolloAmministrazioni"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="ArrayOfProtocolloAmministrazioni" nillable="true" type="tns:ArrayOfProtocolloAmministrazioni"/>
+			<xs:complexType name="ProtocolloAmministrazioni">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="CODICEAMMINISTRAZIONE" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Mezzo" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="ModalitaTrasmissione" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="PEC" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="PARTITAIVA" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="AMMINISTRAZIONE" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="INDIRIZZO" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="EMAIL" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="ComuneResidenza" nillable="true" type="tns:ProtocolloComune"/>
+					<xs:element minOccurs="0" name="CITTA" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="PROVINCIA" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="CAP" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="TELEFONO1" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="FAX" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="PROT_UO" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="PROT_RUOLO" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="TELEFONO2" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="UFFICIO" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="CodiceIPA" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="STC_IDSPORTELLO" nillable="true" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="ProtocolloAmministrazioni" nillable="true" type="tns:ProtocolloAmministrazioni"/>
+		</xs:schema>
+		<xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Init.SIGePro.Protocollo.WsDataClass" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.datacontract.org/2004/07/Init.SIGePro.Protocollo.WsDataClass">
+			<xs:complexType name="LeggiProtocolloRequest">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="AllaData" nillable="true" type="xs:dateTime"/>
+					<xs:element minOccurs="0" name="AnnoProtocollo" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Assegnatario" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Classifica" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="CodiceComune" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="DallaData" nillable="true" type="xs:dateTime"/>
+					<xs:element minOccurs="0" name="Flusso" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="IdProtocollo" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="NumeroProtocollo" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Oggetto" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Pagina" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Software" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Token" nillable="true" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="LeggiProtocolloRequest" nillable="true" type="tns:LeggiProtocolloRequest"/>
+		</xs:schema>
+	</wsdl:types>
+	<wsdl:message name="IProtocollazioneService_CreaCopie_InputMessage">
+		<wsdl:part name="parameters" element="tns:CreaCopie"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_CreaCopie_OutputMessage">
+		<wsdl:part name="parameters" element="tns:CreaCopieResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_MettiAllaFirmaXml_InputMessage">
+		<wsdl:part name="parameters" element="tns:MettiAllaFirmaXml"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_MettiAllaFirmaXml_OutputMessage">
+		<wsdl:part name="parameters" element="tns:MettiAllaFirmaXmlResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_ProtocollazioneXml_InputMessage">
+		<wsdl:part name="parameters" element="tns:ProtocollazioneXml"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_ProtocollazioneXml_OutputMessage">
+		<wsdl:part name="parameters" element="tns:ProtocollazioneXmlResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_ProtocollazioneIstanza_InputMessage">
+		<wsdl:part name="parameters" element="tns:ProtocollazioneIstanza"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_ProtocollazioneIstanza_OutputMessage">
+		<wsdl:part name="parameters" element="tns:ProtocollazioneIstanzaResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_ProtocollazioneIstanzaXml_InputMessage">
+		<wsdl:part name="parameters" element="tns:ProtocollazioneIstanzaXml"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_ProtocollazioneIstanzaXml_OutputMessage">
+		<wsdl:part name="parameters" element="tns:ProtocollazioneIstanzaXmlResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_ProtocollazionePecXml_InputMessage">
+		<wsdl:part name="parameters" element="tns:ProtocollazionePecXml"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_ProtocollazionePecXml_OutputMessage">
+		<wsdl:part name="parameters" element="tns:ProtocollazionePecXmlResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_ProtocollazioneMovimento_InputMessage">
+		<wsdl:part name="parameters" element="tns:ProtocollazioneMovimento"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_ProtocollazioneMovimento_OutputMessage">
+		<wsdl:part name="parameters" element="tns:ProtocollazioneMovimentoResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_ProtocollazioneComunicazioneGraduatoria_InputMessage">
+		<wsdl:part name="parameters" element="tns:ProtocollazioneComunicazioneGraduatoria"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_ProtocollazioneComunicazioneGraduatoria_OutputMessage">
+		<wsdl:part name="parameters" element="tns:ProtocollazioneComunicazioneGraduatoriaResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_ProtocollazioneMovimentoXml_InputMessage">
+		<wsdl:part name="parameters" element="tns:ProtocollazioneMovimentoXml"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_ProtocollazioneMovimentoXml_OutputMessage">
+		<wsdl:part name="parameters" element="tns:ProtocollazioneMovimentoXmlResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_GetTipiDocumento_InputMessage">
+		<wsdl:part name="parameters" element="tns:GetTipiDocumento"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_GetTipiDocumento_OutputMessage">
+		<wsdl:part name="parameters" element="tns:GetTipiDocumentoResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_GetClassifiche_InputMessage">
+		<wsdl:part name="parameters" element="tns:GetClassifiche"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_GetClassifiche_OutputMessage">
+		<wsdl:part name="parameters" element="tns:GetClassificheResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_LeggiProtocollo_InputMessage">
+		<wsdl:part name="parameters" element="tns:LeggiProtocollo"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_LeggiProtocollo_OutputMessage">
+		<wsdl:part name="parameters" element="tns:LeggiProtocolloResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_LeggiProtocolloUORuolo_InputMessage">
+		<wsdl:part name="parameters" element="tns:LeggiProtocolloUORuolo"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_LeggiProtocolloUORuolo_OutputMessage">
+		<wsdl:part name="parameters" element="tns:LeggiProtocolloUORuoloResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_LeggiProtocolloConData_InputMessage">
+		<wsdl:part name="parameters" element="tns:LeggiProtocolloConData"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_LeggiProtocolloConData_OutputMessage">
+		<wsdl:part name="parameters" element="tns:LeggiProtocolloConDataResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_LeggiAllegato_InputMessage">
+		<wsdl:part name="parameters" element="tns:LeggiAllegato"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_LeggiAllegato_OutputMessage">
+		<wsdl:part name="parameters" element="tns:LeggiAllegatoResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_LeggiAllegatoUORuolo_InputMessage">
+		<wsdl:part name="parameters" element="tns:LeggiAllegatoUORuolo"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_LeggiAllegatoUORuolo_OutputMessage">
+		<wsdl:part name="parameters" element="tns:LeggiAllegatoUORuoloResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_LeggiAllegatoStorico_InputMessage">
+		<wsdl:part name="parameters" element="tns:LeggiAllegatoStorico"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_LeggiAllegatoStorico_OutputMessage">
+		<wsdl:part name="parameters" element="tns:LeggiAllegatoStoricoResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_StampaEtichette_InputMessage">
+		<wsdl:part name="parameters" element="tns:StampaEtichette"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_StampaEtichette_OutputMessage">
+		<wsdl:part name="parameters" element="tns:StampaEtichetteResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_GetMotiviAnnullamento_InputMessage">
+		<wsdl:part name="parameters" element="tns:GetMotiviAnnullamento"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_GetMotiviAnnullamento_OutputMessage">
+		<wsdl:part name="parameters" element="tns:GetMotiviAnnullamentoResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_AnnullaProtocollo_InputMessage">
+		<wsdl:part name="parameters" element="tns:AnnullaProtocollo"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_AnnullaProtocollo_OutputMessage">
+		<wsdl:part name="parameters" element="tns:AnnullaProtocolloResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_IsAnnullato_InputMessage">
+		<wsdl:part name="parameters" element="tns:IsAnnullato"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_IsAnnullato_OutputMessage">
+		<wsdl:part name="parameters" element="tns:IsAnnullatoResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_GetFascicoli_InputMessage">
+		<wsdl:part name="parameters" element="tns:GetFascicoli"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_GetFascicoli_OutputMessage">
+		<wsdl:part name="parameters" element="tns:GetFascicoliResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_SearchFascicoli_InputMessage">
+		<wsdl:part name="parameters" element="tns:SearchFascicoli"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_SearchFascicoli_OutputMessage">
+		<wsdl:part name="parameters" element="tns:SearchFascicoliResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_IsFascicolato_InputMessage">
+		<wsdl:part name="parameters" element="tns:IsFascicolato"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_IsFascicolato_OutputMessage">
+		<wsdl:part name="parameters" element="tns:IsFascicolatoResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_FascicolazioneXml_InputMessage">
+		<wsdl:part name="parameters" element="tns:FascicolazioneXml"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_FascicolazioneXml_OutputMessage">
+		<wsdl:part name="parameters" element="tns:FascicolazioneXmlResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_FascicolazioneIstanza_InputMessage">
+		<wsdl:part name="parameters" element="tns:FascicolazioneIstanza"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_FascicolazioneIstanza_OutputMessage">
+		<wsdl:part name="parameters" element="tns:FascicolazioneIstanzaResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_FascicolazioneIstanzaXml_InputMessage">
+		<wsdl:part name="parameters" element="tns:FascicolazioneIstanzaXml"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_FascicolazioneIstanzaXml_OutputMessage">
+		<wsdl:part name="parameters" element="tns:FascicolazioneIstanzaXmlResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_FascicolazioneMovimento_InputMessage">
+		<wsdl:part name="parameters" element="tns:FascicolazioneMovimento"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_FascicolazioneMovimento_OutputMessage">
+		<wsdl:part name="parameters" element="tns:FascicolazioneMovimentoResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_FascicolazioneMovimentoXml_InputMessage">
+		<wsdl:part name="parameters" element="tns:FascicolazioneMovimentoXml"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_FascicolazioneMovimentoXml_OutputMessage">
+		<wsdl:part name="parameters" element="tns:FascicolazioneMovimentoXmlResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_CambiaFascicoloIstanzaXml_InputMessage">
+		<wsdl:part name="parameters" element="tns:CambiaFascicoloIstanzaXml"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_CambiaFascicoloIstanzaXml_OutputMessage">
+		<wsdl:part name="parameters" element="tns:CambiaFascicoloIstanzaXmlResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_CreaUnitaDocumentaleIstanza_InputMessage">
+		<wsdl:part name="parameters" element="tns:CreaUnitaDocumentaleIstanza"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_CreaUnitaDocumentaleIstanza_OutputMessage">
+		<wsdl:part name="parameters" element="tns:CreaUnitaDocumentaleIstanzaResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_CreaUnitaDocumentaleMovimento_InputMessage">
+		<wsdl:part name="parameters" element="tns:CreaUnitaDocumentaleMovimento"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_CreaUnitaDocumentaleMovimento_OutputMessage">
+		<wsdl:part name="parameters" element="tns:CreaUnitaDocumentaleMovimentoResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_RegistrazioneIstanzaXml_InputMessage">
+		<wsdl:part name="parameters" element="tns:RegistrazioneIstanzaXml"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_RegistrazioneIstanzaXml_OutputMessage">
+		<wsdl:part name="parameters" element="tns:RegistrazioneIstanzaXmlResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_RegistrazioneMovimentoXml_InputMessage">
+		<wsdl:part name="parameters" element="tns:RegistrazioneMovimentoXml"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_RegistrazioneMovimentoXml_OutputMessage">
+		<wsdl:part name="parameters" element="tns:RegistrazioneMovimentoXmlResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_InvioPec_InputMessage">
+		<wsdl:part name="parameters" element="tns:InvioPec"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_InvioPec_OutputMessage">
+		<wsdl:part name="parameters" element="tns:InvioPecResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_AggiungiAllegati_InputMessage">
+		<wsdl:part name="parameters" element="tns:AggiungiAllegati"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_AggiungiAllegati_OutputMessage">
+		<wsdl:part name="parameters" element="tns:AggiungiAllegatiResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_GetFirmatari_InputMessage">
+		<wsdl:part name="parameters" element="tns:GetFirmatari"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_GetFirmatari_OutputMessage">
+		<wsdl:part name="parameters" element="tns:GetFirmatariResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_RecuperaMetadati_InputMessage">
+		<wsdl:part name="parameters" element="tns:RecuperaMetadati"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_RecuperaMetadati_OutputMessage">
+		<wsdl:part name="parameters" element="tns:RecuperaMetadatiResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_EseguiAccettazione_InputMessage">
+		<wsdl:part name="parameters" element="tns:EseguiAccettazione"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_EseguiAccettazione_OutputMessage">
+		<wsdl:part name="parameters" element="tns:EseguiAccettazioneResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_IsEsitato_InputMessage">
+		<wsdl:part name="parameters" element="tns:IsEsitato"/>
+	</wsdl:message>
+	<wsdl:message name="IProtocollazioneService_IsEsitato_OutputMessage">
+		<wsdl:part name="parameters" element="tns:IsEsitatoResponse"/>
+	</wsdl:message>
+	<wsdl:portType name="IProtocollazioneService">
+		<wsdl:operation name="CreaCopie">
+			<wsdl:input wsaw:Action="http://it.gruppoinit/CreaCopie" message="tns:IProtocollazioneService_CreaCopie_InputMessage"/>
+			<wsdl:output wsaw:Action="http://it.gruppoinit/Protocollazione/IProtocollazioneService/CreaCopieResponse" message="tns:IProtocollazioneService_CreaCopie_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="MettiAllaFirmaXml">
+			<wsdl:input wsaw:Action="http://it.gruppoinit/MettiAllaFirmaXml" message="tns:IProtocollazioneService_MettiAllaFirmaXml_InputMessage"/>
+			<wsdl:output wsaw:Action="http://it.gruppoinit/Protocollazione/IProtocollazioneService/MettiAllaFirmaXmlResponse" message="tns:IProtocollazioneService_MettiAllaFirmaXml_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="ProtocollazioneXml">
+			<wsdl:input wsaw:Action="http://it.gruppoinit/ProtocollazioneXml" message="tns:IProtocollazioneService_ProtocollazioneXml_InputMessage"/>
+			<wsdl:output wsaw:Action="http://it.gruppoinit/Protocollazione/IProtocollazioneService/ProtocollazioneXmlResponse" message="tns:IProtocollazioneService_ProtocollazioneXml_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="ProtocollazioneIstanza">
+			<wsdl:input wsaw:Action="http://it.gruppoinit/ProtocollazioneIstanza" message="tns:IProtocollazioneService_ProtocollazioneIstanza_InputMessage"/>
+			<wsdl:output wsaw:Action="http://it.gruppoinit/Protocollazione/IProtocollazioneService/ProtocollazioneIstanzaResponse" message="tns:IProtocollazioneService_ProtocollazioneIstanza_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="ProtocollazioneIstanzaXml">
+			<wsdl:input wsaw:Action="http://it.gruppoinit/ProtocollazioneIstanzaXml" message="tns:IProtocollazioneService_ProtocollazioneIstanzaXml_InputMessage"/>
+			<wsdl:output wsaw:Action="http://it.gruppoinit/Protocollazione/IProtocollazioneService/ProtocollazioneIstanzaXmlResponse" message="tns:IProtocollazioneService_ProtocollazioneIstanzaXml_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="ProtocollazionePecXml">
+			<wsdl:input wsaw:Action="http://it.gruppoinit/ProtocollazionePecXml" message="tns:IProtocollazioneService_ProtocollazionePecXml_InputMessage"/>
+			<wsdl:output wsaw:Action="http://it.gruppoinit/Protocollazione/IProtocollazioneService/ProtocollazionePecXmlResponse" message="tns:IProtocollazioneService_ProtocollazionePecXml_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="ProtocollazioneMovimento">
+			<wsdl:input wsaw:Action="http://it.gruppoinit/ProtocollazioneMovimento" message="tns:IProtocollazioneService_ProtocollazioneMovimento_InputMessage"/>
+			<wsdl:output wsaw:Action="http://it.gruppoinit/Protocollazione/IProtocollazioneService/ProtocollazioneMovimentoResponse" message="tns:IProtocollazioneService_ProtocollazioneMovimento_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="ProtocollazioneComunicazioneGraduatoria">
+			<wsdl:input wsaw:Action="http://it.gruppoinit/ProtocollazioneComunicazioneGraduatoria" message="tns:IProtocollazioneService_ProtocollazioneComunicazioneGraduatoria_InputMessage"/>
+			<wsdl:output wsaw:Action="http://it.gruppoinit/Protocollazione/IProtocollazioneService/ProtocollazioneComunicazioneGraduatoriaResponse" message="tns:IProtocollazioneService_ProtocollazioneComunicazioneGraduatoria_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="ProtocollazioneMovimentoXml">
+			<wsdl:input wsaw:Action="http://it.gruppoinit/ProtocollazioneMovimentoXml" message="tns:IProtocollazioneService_ProtocollazioneMovimentoXml_InputMessage"/>
+			<wsdl:output wsaw:Action="http://it.gruppoinit/Protocollazione/IProtocollazioneService/ProtocollazioneMovimentoXmlResponse" message="tns:IProtocollazioneService_ProtocollazioneMovimentoXml_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="GetTipiDocumento">
+			<wsdl:input wsaw:Action="http://it.gruppoinit/GetTipiDocumento" message="tns:IProtocollazioneService_GetTipiDocumento_InputMessage"/>
+			<wsdl:output wsaw:Action="http://it.gruppoinit/Protocollazione/IProtocollazioneService/GetTipiDocumentoResponse" message="tns:IProtocollazioneService_GetTipiDocumento_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="GetClassifiche">
+			<wsdl:input wsaw:Action="http://it.gruppoinit/GetClassifiche" message="tns:IProtocollazioneService_GetClassifiche_InputMessage"/>
+			<wsdl:output wsaw:Action="http://it.gruppoinit/Protocollazione/IProtocollazioneService/GetClassificheResponse" message="tns:IProtocollazioneService_GetClassifiche_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="LeggiProtocollo">
+			<wsdl:input wsaw:Action="http://it.gruppoinit/LeggiProtocollo" message="tns:IProtocollazioneService_LeggiProtocollo_InputMessage"/>
+			<wsdl:output wsaw:Action="http://it.gruppoinit/Protocollazione/IProtocollazioneService/LeggiProtocolloResponse" message="tns:IProtocollazioneService_LeggiProtocollo_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="LeggiProtocolloUORuolo">
+			<wsdl:input wsaw:Action="http://it.gruppoinit/LeggiProtocolloUORuolo" message="tns:IProtocollazioneService_LeggiProtocolloUORuolo_InputMessage"/>
+			<wsdl:output wsaw:Action="http://it.gruppoinit/Protocollazione/IProtocollazioneService/LeggiProtocolloUORuoloResponse" message="tns:IProtocollazioneService_LeggiProtocolloUORuolo_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="LeggiProtocolloConData">
+			<wsdl:input wsaw:Action="http://it.gruppoinit/LeggiProtocolloConData" message="tns:IProtocollazioneService_LeggiProtocolloConData_InputMessage"/>
+			<wsdl:output wsaw:Action="http://it.gruppoinit/Protocollazione/IProtocollazioneService/LeggiProtocolloConDataResponse" message="tns:IProtocollazioneService_LeggiProtocolloConData_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="LeggiAllegato">
+			<wsdl:input wsaw:Action="http://it.gruppoinit/LeggiAllegato" message="tns:IProtocollazioneService_LeggiAllegato_InputMessage"/>
+			<wsdl:output wsaw:Action="http://it.gruppoinit/Protocollazione/IProtocollazioneService/LeggiAllegatoResponse" message="tns:IProtocollazioneService_LeggiAllegato_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="LeggiAllegatoUORuolo">
+			<wsdl:input wsaw:Action="http://it.gruppoinit/LeggiAllegatoUORuolo" message="tns:IProtocollazioneService_LeggiAllegatoUORuolo_InputMessage"/>
+			<wsdl:output wsaw:Action="http://it.gruppoinit/Protocollazione/IProtocollazioneService/LeggiAllegatoUORuoloResponse" message="tns:IProtocollazioneService_LeggiAllegatoUORuolo_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="LeggiAllegatoStorico">
+			<wsdl:input wsaw:Action="http://it.gruppoinit/LeggiAllegatoStorico" message="tns:IProtocollazioneService_LeggiAllegatoStorico_InputMessage"/>
+			<wsdl:output wsaw:Action="http://it.gruppoinit/Protocollazione/IProtocollazioneService/LeggiAllegatoStoricoResponse" message="tns:IProtocollazioneService_LeggiAllegatoStorico_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="StampaEtichette">
+			<wsdl:input wsaw:Action="http://it.gruppoinit/StampaEtichette" message="tns:IProtocollazioneService_StampaEtichette_InputMessage"/>
+			<wsdl:output wsaw:Action="http://it.gruppoinit/Protocollazione/IProtocollazioneService/StampaEtichetteResponse" message="tns:IProtocollazioneService_StampaEtichette_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="GetMotiviAnnullamento">
+			<wsdl:input wsaw:Action="http://it.gruppoinit/GetMotiviAnnullamento" message="tns:IProtocollazioneService_GetMotiviAnnullamento_InputMessage"/>
+			<wsdl:output wsaw:Action="http://it.gruppoinit/Protocollazione/IProtocollazioneService/GetMotiviAnnullamentoResponse" message="tns:IProtocollazioneService_GetMotiviAnnullamento_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="AnnullaProtocollo">
+			<wsdl:input wsaw:Action="http://it.gruppoinit/AnnullaProtocollo" message="tns:IProtocollazioneService_AnnullaProtocollo_InputMessage"/>
+			<wsdl:output wsaw:Action="http://it.gruppoinit/Protocollazione/IProtocollazioneService/AnnullaProtocolloResponse" message="tns:IProtocollazioneService_AnnullaProtocollo_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="IsAnnullato">
+			<wsdl:input wsaw:Action="http://it.gruppoinit/IsAnnullato" message="tns:IProtocollazioneService_IsAnnullato_InputMessage"/>
+			<wsdl:output wsaw:Action="http://it.gruppoinit/Protocollazione/IProtocollazioneService/IsAnnullatoResponse" message="tns:IProtocollazioneService_IsAnnullato_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="GetFascicoli">
+			<wsdl:input wsaw:Action="http://it.gruppoinit/GetFascicoli" message="tns:IProtocollazioneService_GetFascicoli_InputMessage"/>
+			<wsdl:output wsaw:Action="http://it.gruppoinit/Protocollazione/IProtocollazioneService/GetFascicoliResponse" message="tns:IProtocollazioneService_GetFascicoli_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="SearchFascicoli">
+			<wsdl:input wsaw:Action="http://it.gruppoinit/SearchFascicoli" message="tns:IProtocollazioneService_SearchFascicoli_InputMessage"/>
+			<wsdl:output wsaw:Action="http://it.gruppoinit/Protocollazione/IProtocollazioneService/SearchFascicoliResponse" message="tns:IProtocollazioneService_SearchFascicoli_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="IsFascicolato">
+			<wsdl:input wsaw:Action="http://it.gruppoinit/IsFascicolato" message="tns:IProtocollazioneService_IsFascicolato_InputMessage"/>
+			<wsdl:output wsaw:Action="http://it.gruppoinit/Protocollazione/IProtocollazioneService/IsFascicolatoResponse" message="tns:IProtocollazioneService_IsFascicolato_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="FascicolazioneXml">
+			<wsdl:input wsaw:Action="http://it.gruppoinit/FascicolazioneXml" message="tns:IProtocollazioneService_FascicolazioneXml_InputMessage"/>
+			<wsdl:output wsaw:Action="http://it.gruppoinit/Protocollazione/IProtocollazioneService/FascicolazioneXmlResponse" message="tns:IProtocollazioneService_FascicolazioneXml_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="FascicolazioneIstanza">
+			<wsdl:input wsaw:Action="http://it.gruppoinit/FascicolazioneIstanza" message="tns:IProtocollazioneService_FascicolazioneIstanza_InputMessage"/>
+			<wsdl:output wsaw:Action="http://it.gruppoinit/Protocollazione/IProtocollazioneService/FascicolazioneIstanzaResponse" message="tns:IProtocollazioneService_FascicolazioneIstanza_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="FascicolazioneIstanzaXml">
+			<wsdl:input wsaw:Action="http://it.gruppoinit/FascicolazioneIstanzaXml" message="tns:IProtocollazioneService_FascicolazioneIstanzaXml_InputMessage"/>
+			<wsdl:output wsaw:Action="http://it.gruppoinit/Protocollazione/IProtocollazioneService/FascicolazioneIstanzaXmlResponse" message="tns:IProtocollazioneService_FascicolazioneIstanzaXml_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="FascicolazioneMovimento">
+			<wsdl:input wsaw:Action="http://it.gruppoinit/FascicolazioneMovimento" message="tns:IProtocollazioneService_FascicolazioneMovimento_InputMessage"/>
+			<wsdl:output wsaw:Action="http://it.gruppoinit/Protocollazione/IProtocollazioneService/FascicolazioneMovimentoResponse" message="tns:IProtocollazioneService_FascicolazioneMovimento_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="FascicolazioneMovimentoXml">
+			<wsdl:input wsaw:Action="http://it.gruppoinit/FascicolazioneMovimentoXml" message="tns:IProtocollazioneService_FascicolazioneMovimentoXml_InputMessage"/>
+			<wsdl:output wsaw:Action="http://it.gruppoinit/Protocollazione/IProtocollazioneService/FascicolazioneMovimentoXmlResponse" message="tns:IProtocollazioneService_FascicolazioneMovimentoXml_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="CambiaFascicoloIstanzaXml">
+			<wsdl:input wsaw:Action="http://it.gruppoinit/CambiaFascicoloIstanzaXml" message="tns:IProtocollazioneService_CambiaFascicoloIstanzaXml_InputMessage"/>
+			<wsdl:output wsaw:Action="http://it.gruppoinit/Protocollazione/IProtocollazioneService/CambiaFascicoloIstanzaXmlResponse" message="tns:IProtocollazioneService_CambiaFascicoloIstanzaXml_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="CreaUnitaDocumentaleIstanza">
+			<wsdl:input wsaw:Action="http://it.gruppoinit/CreaUnitaDocumentaleIstanza" message="tns:IProtocollazioneService_CreaUnitaDocumentaleIstanza_InputMessage"/>
+			<wsdl:output wsaw:Action="http://it.gruppoinit/Protocollazione/IProtocollazioneService/CreaUnitaDocumentaleIstanzaResponse" message="tns:IProtocollazioneService_CreaUnitaDocumentaleIstanza_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="CreaUnitaDocumentaleMovimento">
+			<wsdl:input wsaw:Action="http://it.gruppoinit/CreaUnitaDocumentaleMovimento" message="tns:IProtocollazioneService_CreaUnitaDocumentaleMovimento_InputMessage"/>
+			<wsdl:output wsaw:Action="http://it.gruppoinit/Protocollazione/IProtocollazioneService/CreaUnitaDocumentaleMovimentoResponse" message="tns:IProtocollazioneService_CreaUnitaDocumentaleMovimento_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="RegistrazioneIstanzaXml">
+			<wsdl:input wsaw:Action="http://it.gruppoinit/RegistrazioneIstanzaXml" message="tns:IProtocollazioneService_RegistrazioneIstanzaXml_InputMessage"/>
+			<wsdl:output wsaw:Action="http://it.gruppoinit/Protocollazione/IProtocollazioneService/RegistrazioneIstanzaXmlResponse" message="tns:IProtocollazioneService_RegistrazioneIstanzaXml_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="RegistrazioneMovimentoXml">
+			<wsdl:input wsaw:Action="http://it.gruppoinit/RegistrazioneMovimentoXml" message="tns:IProtocollazioneService_RegistrazioneMovimentoXml_InputMessage"/>
+			<wsdl:output wsaw:Action="http://it.gruppoinit/Protocollazione/IProtocollazioneService/RegistrazioneMovimentoXmlResponse" message="tns:IProtocollazioneService_RegistrazioneMovimentoXml_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="InvioPec">
+			<wsdl:input wsaw:Action="http://it.gruppoinit/InvioPec" message="tns:IProtocollazioneService_InvioPec_InputMessage"/>
+			<wsdl:output wsaw:Action="http://it.gruppoinit/Protocollazione/IProtocollazioneService/InvioPecResponse" message="tns:IProtocollazioneService_InvioPec_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="AggiungiAllegati">
+			<wsdl:input wsaw:Action="http://it.gruppoinit/AggiungiAllegati" message="tns:IProtocollazioneService_AggiungiAllegati_InputMessage"/>
+			<wsdl:output wsaw:Action="http://it.gruppoinit/Protocollazione/IProtocollazioneService/AggiungiAllegatiResponse" message="tns:IProtocollazioneService_AggiungiAllegati_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="GetFirmatari">
+			<wsdl:input wsaw:Action="http://it.gruppoinit/GetFirmatari" message="tns:IProtocollazioneService_GetFirmatari_InputMessage"/>
+			<wsdl:output wsaw:Action="http://it.gruppoinit/Protocollazione/IProtocollazioneService/GetFirmatariResponse" message="tns:IProtocollazioneService_GetFirmatari_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="RecuperaMetadati">
+			<wsdl:input wsaw:Action="http://it.gruppoinit/RecuperaMetadati" message="tns:IProtocollazioneService_RecuperaMetadati_InputMessage"/>
+			<wsdl:output wsaw:Action="http://it.gruppoinit/Protocollazione/IProtocollazioneService/RecuperaMetadatiResponse" message="tns:IProtocollazioneService_RecuperaMetadati_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="EseguiAccettazione">
+			<wsdl:input wsaw:Action="http://it.gruppoinit/EseguiAccettazione" message="tns:IProtocollazioneService_EseguiAccettazione_InputMessage"/>
+			<wsdl:output wsaw:Action="http://it.gruppoinit/Protocollazione/IProtocollazioneService/EseguiAccettazioneResponse" message="tns:IProtocollazioneService_EseguiAccettazione_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="IsEsitato">
+			<wsdl:input wsaw:Action="http://it.gruppoinit/IsEsitato" message="tns:IProtocollazioneService_IsEsitato_InputMessage"/>
+			<wsdl:output wsaw:Action="http://it.gruppoinit/Protocollazione/IProtocollazioneService/IsEsitatoResponse" message="tns:IProtocollazioneService_IsEsitato_OutputMessage"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="BasicHttpBinding_IProtocollazioneService" type="tns:IProtocollazioneService">
+		<wsp:PolicyReference URI="#BasicHttpBinding_IProtocollazioneService_policy"/>
+		<soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="CreaCopie">
+			<soap:operation soapAction="http://it.gruppoinit/CreaCopie" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="MettiAllaFirmaXml">
+			<soap:operation soapAction="http://it.gruppoinit/MettiAllaFirmaXml" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ProtocollazioneXml">
+			<soap:operation soapAction="http://it.gruppoinit/ProtocollazioneXml" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ProtocollazioneIstanza">
+			<soap:operation soapAction="http://it.gruppoinit/ProtocollazioneIstanza" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ProtocollazioneIstanzaXml">
+			<soap:operation soapAction="http://it.gruppoinit/ProtocollazioneIstanzaXml" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ProtocollazionePecXml">
+			<soap:operation soapAction="http://it.gruppoinit/ProtocollazionePecXml" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ProtocollazioneMovimento">
+			<soap:operation soapAction="http://it.gruppoinit/ProtocollazioneMovimento" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ProtocollazioneComunicazioneGraduatoria">
+			<soap:operation soapAction="http://it.gruppoinit/ProtocollazioneComunicazioneGraduatoria" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ProtocollazioneMovimentoXml">
+			<soap:operation soapAction="http://it.gruppoinit/ProtocollazioneMovimentoXml" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetTipiDocumento">
+			<soap:operation soapAction="http://it.gruppoinit/GetTipiDocumento" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetClassifiche">
+			<soap:operation soapAction="http://it.gruppoinit/GetClassifiche" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="LeggiProtocollo">
+			<soap:operation soapAction="http://it.gruppoinit/LeggiProtocollo" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="LeggiProtocolloUORuolo">
+			<soap:operation soapAction="http://it.gruppoinit/LeggiProtocolloUORuolo" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="LeggiProtocolloConData">
+			<soap:operation soapAction="http://it.gruppoinit/LeggiProtocolloConData" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="LeggiAllegato">
+			<soap:operation soapAction="http://it.gruppoinit/LeggiAllegato" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="LeggiAllegatoUORuolo">
+			<soap:operation soapAction="http://it.gruppoinit/LeggiAllegatoUORuolo" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="LeggiAllegatoStorico">
+			<soap:operation soapAction="http://it.gruppoinit/LeggiAllegatoStorico" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="StampaEtichette">
+			<soap:operation soapAction="http://it.gruppoinit/StampaEtichette" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetMotiviAnnullamento">
+			<soap:operation soapAction="http://it.gruppoinit/GetMotiviAnnullamento" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="AnnullaProtocollo">
+			<soap:operation soapAction="http://it.gruppoinit/AnnullaProtocollo" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="IsAnnullato">
+			<soap:operation soapAction="http://it.gruppoinit/IsAnnullato" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetFascicoli">
+			<soap:operation soapAction="http://it.gruppoinit/GetFascicoli" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="SearchFascicoli">
+			<soap:operation soapAction="http://it.gruppoinit/SearchFascicoli" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="IsFascicolato">
+			<soap:operation soapAction="http://it.gruppoinit/IsFascicolato" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="FascicolazioneXml">
+			<soap:operation soapAction="http://it.gruppoinit/FascicolazioneXml" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="FascicolazioneIstanza">
+			<soap:operation soapAction="http://it.gruppoinit/FascicolazioneIstanza" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="FascicolazioneIstanzaXml">
+			<soap:operation soapAction="http://it.gruppoinit/FascicolazioneIstanzaXml" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="FascicolazioneMovimento">
+			<soap:operation soapAction="http://it.gruppoinit/FascicolazioneMovimento" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="FascicolazioneMovimentoXml">
+			<soap:operation soapAction="http://it.gruppoinit/FascicolazioneMovimentoXml" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="CambiaFascicoloIstanzaXml">
+			<soap:operation soapAction="http://it.gruppoinit/CambiaFascicoloIstanzaXml" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="CreaUnitaDocumentaleIstanza">
+			<soap:operation soapAction="http://it.gruppoinit/CreaUnitaDocumentaleIstanza" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="CreaUnitaDocumentaleMovimento">
+			<soap:operation soapAction="http://it.gruppoinit/CreaUnitaDocumentaleMovimento" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="RegistrazioneIstanzaXml">
+			<soap:operation soapAction="http://it.gruppoinit/RegistrazioneIstanzaXml" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="RegistrazioneMovimentoXml">
+			<soap:operation soapAction="http://it.gruppoinit/RegistrazioneMovimentoXml" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="InvioPec">
+			<soap:operation soapAction="http://it.gruppoinit/InvioPec" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="AggiungiAllegati">
+			<soap:operation soapAction="http://it.gruppoinit/AggiungiAllegati" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetFirmatari">
+			<soap:operation soapAction="http://it.gruppoinit/GetFirmatari" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="RecuperaMetadati">
+			<soap:operation soapAction="http://it.gruppoinit/RecuperaMetadati" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="EseguiAccettazione">
+			<soap:operation soapAction="http://it.gruppoinit/EseguiAccettazione" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="IsEsitato">
+			<soap:operation soapAction="http://it.gruppoinit/IsEsitato" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="ProtocollazioneService">
+		<wsdl:port name="BasicHttpBinding_IProtocollazioneService" binding="tns:BasicHttpBinding_IProtocollazioneService">
+			<soap:address location="http://localhost:5037/ProtocollazioneService.svc"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

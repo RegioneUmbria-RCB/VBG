@@ -1,0 +1,1958 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+           xmlns:jcg_pagopa="http://schemi.informatica.maggioli.it/operations/jcgpagopa/1_2"
+           targetNamespace="http://schemi.informatica.maggioli.it/operations/jcgpagopa/1_2"
+           elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.2">
+
+    <!-- Simple Types -->
+    <xs:simpleType name="stEsito">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="OK"/>
+            <xs:enumeration value="Error"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="stText1000">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="1000"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="stText200">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="200"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="stText35">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="35"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="stText140">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="140"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="stText70">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="70"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="stText256">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="256"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="stText40">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="40"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="stText16">
+        <xs:restriction base="xs:string">
+            <xs:maxLength value="16"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="stText11">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="11"/>
+            <xs:maxLength value="11"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="stText1">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="1"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="stText2">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="2"/>
+            <xs:maxLength value="2"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="stAnno">
+        <xs:restriction base="xs:string">
+            <xs:maxLength value="4"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="stIUV">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="35"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="stIUVmod12">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="25"/>
+            <xs:maxLength value="25"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="stNumeroAvviso18">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="18"/>
+            <xs:maxLength value="18"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="stTipoIdentificativoUnivocoPersFG">
+        <xs:restriction base="xs:string">
+            <xs:length value="1"/>
+            <xs:enumeration value="F"/>
+            <xs:enumeration value="G"/>
+            <!-- Persona Fisica -->
+            <!-- Persona Giuridica -->
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="stImporto">
+        <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0.00"/>
+            <xs:maxInclusive value="999999999.99"/>
+            <xs:fractionDigits value="2"/>
+            <xs:totalDigits value="12"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="stCodiceLotto">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="200"/>
+            <xs:pattern value="[A-Za-z0-9]{1,1}[A-Za-z0-9\-]{0,199}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="stEsitoRiconciliazioneSospeso">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Totale"/>
+            <xs:enumeration value="Parziale"/>
+            <xs:enumeration value="NonPresente"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="stCodiceMotivoEliminazione">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="SOSTITUZIONE"/>
+            <xs:enumeration value="PAGAMENTO_ESTERNO"/>
+            <xs:enumeration value="ELIMINAZIONE_DEBITO"/>
+            <xs:enumeration value="ALTRO"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="stOperazioneRiconciliazione">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="PER_SOSPESI"/>
+            <xs:enumeration value="PER_IDENTIFICATIVO_FLUSSO"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="stModPagamento">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="MOD1"/>
+            <xs:enumeration value="MOD3"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="stStatoPagamento">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="CONTABILIZZATO"/>
+            <xs:enumeration value="NOTIFICATO"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="stContestoPos">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="CONCILIA"/>
+            <xs:enumeration value="JDEMOS"/>
+            <xs:enumeration value="JTRIB"/>
+            <xs:enumeration value="JCITYGOV"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="stContestoDovuto">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="MULTIBENEFICIARIO"/>
+            <xs:enumeration value="MONOBENEFICIARIO"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="stOperazioniModifica">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="MODIFICA_ANNO_COMPETENZA"/>
+            <xs:enumeration value="MODIFICA_CAUSALE_DEBITO"/>
+            <xs:enumeration value="MODIFICA_CONTRIBUENTE_DEBITO"/>
+            <xs:enumeration value="MODIFICA_IMPORTO_DEBITO"/>
+            <xs:enumeration value="MODIFICA_DETTAGLI_IMPORTO_DEBITO"/>
+            <xs:enumeration value="MODIFICA_SCADENZA_DEBITO"/>
+            <xs:enumeration value="ALL"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- Simple Types -->
+
+    <!-- Complex Types -->
+    <xs:complexType name="ctIntervallo">
+        <xs:sequence>
+            <xs:element name="dataInizio" type="xsd:dateTime" minOccurs="0"/>
+            <xs:element name="dataFine" type="xsd:dateTime" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ctEsito">
+        <xs:sequence>
+            <xs:element name="Esito" type="jcg_pagopa:stEsito"/>
+            <xs:element name="Messaggio" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ctNumeroAvviso">
+        <xs:simpleContent>
+            <xs:extension base="jcg_pagopa:stNumeroAvviso18">
+                <xs:attribute name="FlagAttivaDebito" type="xs:boolean" default="false"/>
+                <xs:attribute name="VersioneNumeroAvviso" type="xs:int"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="ctAvvisoPagamento">
+        <xs:sequence>
+            <xs:element name="NumeroAvviso" type="jcg_pagopa:ctNumeroAvviso" minOccurs="0"/>
+            <xs:element name="Debito" type="jcg_pagopa:ctDebito"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ctAvvisoPagamentoResult">
+        <xs:sequence>
+            <xs:element name="NumeroAvviso" type="jcg_pagopa:ctNumeroAvviso"/>
+            <xs:element name="ChiaveDebito" type="jcg_pagopa:ctChiaveDebito"/>
+            <xs:element name="Esito" type="jcg_pagopa:ctEsito"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ctInviaDovutoResult">
+        <xs:sequence>
+            <xs:element name="NumeroAvviso" type="jcg_pagopa:ctNumeroAvviso" minOccurs="0"/>
+            <xs:element name="ChiaveDebito" type="jcg_pagopa:ctChiaveDebito"/>
+            <xs:element name="Esito" type="jcg_pagopa:ctEsito"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="ctCancellaDovutoResult">
+        <xs:sequence>
+            <xs:element name="Esito" type="jcg_pagopa:ctEsito"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ctAttivaDovutoResult">
+        <xs:sequence>
+            <xs:element name="Esito" type="jcg_pagopa:ctEsito"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ctDebitoPagato">
+        <xs:sequence>
+            <xs:element name="ChiaviDebito" type="jcg_pagopa:ctChiaveDebito"/>
+            <xs:element name="IdentificativoUnivocoVersamento" type="jcg_pagopa:stIUV"/>
+            <xs:element name="ModalitaPagamento" type="jcg_pagopa:stModPagamento"/>
+            <xs:element name="StatoPagamento" type="jcg_pagopa:stStatoPagamento"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ctChiaveDebito">
+        <xs:sequence>
+            <xs:element name="IDPos" type="jcg_pagopa:stText256"/>
+            <xs:element name="IDDeb" type="jcg_pagopa:stText256"/>
+            <xs:element name="CodiceTipoDebito" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ctChiaveDebitoIDPos">
+        <xs:sequence>
+            <xs:element name="IDPos" type="jcg_pagopa:stText256"/>
+            <xs:element name="CodiceTipoDebito" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ctDebito">
+        <xs:sequence>
+            <xs:element name="TestataDebito" type="jcg_pagopa:ctTestataDebito"/>
+            <xs:element name="DettaglioDebito" type="jcg_pagopa:ctDettaglioDebito"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ctDovuto">
+        <xs:sequence>
+            <xs:element name="NumeroAvviso" type="jcg_pagopa:ctNumeroAvviso" minOccurs="0"/>
+            <xs:element name="ContestoDovuto" type="jcg_pagopa:stContestoDovuto"/>
+            <xs:element name="TestataDovuto" type="jcg_pagopa:ctTestataDovuto"/>
+            <xs:element name="DettaglioDovuto" type="jcg_pagopa:ctDettaglioDovuto" minOccurs="1" maxOccurs="2"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ctParametroDebito">
+        <xs:sequence>
+            <xs:element name="CodiceParametro" type="xs:string"/>
+            <xs:element name="ValoreParametro" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ctParametriDebito">
+        <xs:sequence>
+            <xs:element name="ParametroDebito" type="jcg_pagopa:ctParametroDebito"
+                        maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ctMarcaBollo">
+        <xs:sequence>
+            <xs:element name="HashDocumento" type="xs:string"/>
+            <xs:element name="ProvinciaResidenzaSoggettoPagatore" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ctInfoPagamentoTelematico">
+        <xs:sequence>
+            <xs:element name="IdentificativoDominio" type="xs:string"/>
+            <xs:element name="IdentificativoUnivocoVersamento" type="jcg_pagopa:stIUV"/>
+            <xs:element name="CodiceContestoApplicativo" type="xs:string"/>
+            <xs:element name="TipoVersamento" type="xs:string"/>
+            <xs:element name="NumeroAvviso" type="jcg_pagopa:stNumeroAvviso18" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Presente solo se pagamento in modalità 3, per avvisi caricati sul sistema
+                        payservice.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="StatoTecnicoPagamento" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>Stato tecnico:INSERITO (non ancora inviato),RIFIUTATO (tentato invio, con esito
+                        negativo), INVIATO (inviato al nodo), COMPLETATO (operazione completata, in attesa di ricevuta),
+                        CONTABILIZZATO (ricevuta disponibile), NOTIFICATO (notificato al B.O.), INDETERMINATO (pagamento
+                        non presente nel database locale)
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="EsitoRichiestaPagamento" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>Esito:
+                        NON_CONCLUSO,RIFIUTATA,NON_CONCLUSO,CONCLUSO_ESEGUITO,CONCLUSO_NON_ESEGUITO,CONCLUSO_ESEGUITO_PARZIALMENTE,CONCLUSO_NON_ESEGUITO_DECORRENZA,CONCLUSO_NON_ESEGUITO_DECORRENZA_PARZIALE
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="ImportoTotaleRichiesta" type="jcg_pagopa:stImporto" minOccurs="0"/>
+            <xs:element name="ImportoTotalePagato" type="jcg_pagopa:stImporto" minOccurs="0"/>
+            <xs:element name="DataPagamento" type="xs:dateTime" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Data in cui è stato effettuato il pagamento, coincide che con ladata presente
+                        nella ricevuta telematica o documento congruente.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="DataAccredito" type="xs:dateTime" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Data di accredito del pagamento, data in cui l'importo è stato riversato sul conto
+                        indicato dall'ente.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="NumeroVersamentiSingoli" type="xs:integer"/>
+            <xs:element name="InfoVersamentoSingolo" type="jcg_pagopa:ctInfoVersamentoSingolo"
+                        maxOccurs="5"/>
+            <xs:element name="FlussoRicevuta" type="xs:string" minOccurs="0"/>
+            <xs:element name="DatiVersante" type="jcg_pagopa:ctSoggetto" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Dati del contribuente che ha pagato il debito.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="DatiDebitore" type="jcg_pagopa:ctSoggetto" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Dati del intestatario del debito</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ctInfoVersamentoSingolo">
+        <xs:sequence>
+            <xs:element name="ChiaveDebito" type="jcg_pagopa:ctChiaveDebito" minOccurs="0"/>
+            <!--xs:element name="riferimentoNumeroAvvisoOriginario" type="jcg_pagopa:stNumeroAvviso18" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Presente solo se il pagamento è stato effettuato secondo il modello 1 o 2 per pagare un'avviso predisposto per la modalità 3.</xs:documentation>
+                </xs:annotation>
+            </xs:element-->
+            <xs:element name="ProgressivoVersamentoSingolo" type="xs:integer" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Posizione del versamento singolo nella richiesta di pagamento. Presente solo se
+                        non sono stati riportati tutti i versamenti (per esempio per informazioni specifiche su unn
+                        debito).
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="ImportoSingoloRichiesta" type="jcg_pagopa:stImporto" minOccurs="0"/>
+            <xs:element name="ImportoSingoloPagato" type="jcg_pagopa:stImporto" minOccurs="0"/>
+            <xs:element name="EsitoVersamentoSingolo" type="xs:string"/>
+            <xs:element name="TestoAllegato" type="xs:string" minOccurs="0"/>
+            <xs:element name="TipoAllegato" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ctIdentificativoUnivocoPersonaFG">
+        <xs:sequence>
+            <xs:element name="tipoIdentificativoUnivoco"
+                        type="jcg_pagopa:stTipoIdentificativoUnivocoPersFG" minOccurs="0">
+                <!-- 20190813 reso non obbligatorio per gestire i pagamenti anonimi -->
+                <xs:annotation>
+                    <xs:documentation>Campo alfanumerico che indica la natura del soggetto, può assumere i seguenti
+                        valori:
+                    </xs:documentation>
+                    <xs:documentation>F - Persona Fisica</xs:documentation>
+                    <xs:documentation>G - Persona Giuridica</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="codiceIdentificativoUnivoco" type="jcg_pagopa:stText16" minOccurs="0">
+                <!-- 20190813 reso non obbligatorio per gestire i pagamenti anonimi -->
+                <xs:annotation>
+                    <xs:documentation>Campo alfanumerico che può contenere il codice fiscale o, in alternativa, la
+                        partita IVA del soggetto.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ctBackUrl">
+        <xs:sequence>
+            <xs:element name="BackUrlOK" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>Callback url OK</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="BackUrlKO" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>Callback url KO</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="BackUrlNotify" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>Callback di notifica. Se non valorizzato viene usato l'url di notifica configurato
+                        per il servizio richiedente.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ctBackUrlPOS">
+        <xs:sequence>
+            <xs:element name="BackUrlOK" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Callback url OK</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="BackUrlKO" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Callback url KO</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="BackUrlNotify" type="xs:string" minOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Callback di notifica.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ctSoggetto">
+        <xs:sequence>
+            <xs:element name="IdentificativoUnivocoVersante"
+                        type="jcg_pagopa:ctIdentificativoUnivocoPersonaFG">
+                <xs:annotation>
+                    <xs:documentation>Aggregazione che riporta le informazioni concernenti l’identificazione fiscale del
+                        versante.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Nome" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Nome del soggetto.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Cognome" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Cognome del soggetto.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="RagioneSociale" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>denominazione nel caso della persona giuridica</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Indirizzo" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Indica l’indirizzo del soggetto.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Civico" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Indica il numero civico del versante.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Cap" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Indica il CAP del soggetto.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Localita" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Indica la località del soggetto.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Provincia" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Indica la provincia del soggetto.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Nazione" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Indica il codice nazione del soggetto secondo lo standard ISO 3166 alpha 2 (e.g.
+                        Italia = IT, Francia FR )
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Email" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Indirizzo di posta elettronica del soggetto.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ctDettaglioImporto">
+        <xs:annotation>
+            <xs:documentation>tipo complesso che rappresenta un dettaglio di importo, dato un importo i relativi
+                dettagli servono per poter specificare con maggiore precisione da cosa quell'importo è costituito (es:
+                iomposta, sanzioni, interessi, ecc...).
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="codice" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>utilizzato per inserire il TIPO VOCE</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="descrizione" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>descrizione testuale leggibile del dettaglio importo</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="importo" type="jcg_pagopa:stImporto">
+                <xs:annotation>
+                    <xs:documentation>valore decimale del dettaglio importo</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="capitoloBilancio" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>codice del capitolo di bilancio - utilizzato per inserire ANNO</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="anno" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>anno relativo al capitolo di bilancio - sovrascrive il campo capito di bilancio
+                        (non utilizzato al momento)
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ctDettagliImporto">
+        <xs:annotation>
+            <xs:documentation>tipo complesso che rappresenta una lista di dettagli importo.</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="dettaglioImporto" type="jcg_pagopa:ctDettaglioImporto"
+                        maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ctDettaglioDebito">
+        <xs:sequence>
+            <xs:element name="IDDeb" type="jcg_pagopa:stText256">
+                <xs:annotation>
+                    <xs:documentation>Identificativo del debito, è univoco nello scope della posizione debitoria.
+                        Utilizzato in coppia con IDPos per le notifiche di callback dovute a pagamenti effettuati.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="CodiceIPA" type="xs:string" minOccurs="0" nillable="true">
+                <xs:annotation>
+                    <xs:documentation>Identificativo dell'ente</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Gruppo" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>identifica una opzione di pagamento, a parita di IDPos jcg_pagopa opera dei
+                        blocchi confrontando l'id del gruppo. Se viene pagato un debito con IDDeb=y di una posizione
+                        debitoria con IDPos=x, jcg_pagopa si preoccupa di bloccare tutti i debiti con IDPos=x e id del
+                        gruppo differente da quello di IDDeb.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Ordinamento" type="xs:int" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Indica l'ordinamento del debito all'interno del gruppo.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="DataInizioValidita" type="xs:date">
+                <xs:annotation>
+                    <xs:documentation>Data di inizio validità del debito.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="DataFineValidita" type="xs:date" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Data di fine validità del debito.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="DataLimitePagabilita" type="xs:date" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Data che indica la data limite di pagabilità nel caso in cui la data di fine
+                        validità ricada in una data in cui non sia possibile effettuare il pagamento. Se non impostato
+                        la data limite di pagabilità sarà impostata uguale alla data di fine validità
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="ImportoDebito" type="jcg_pagopa:stImporto">
+                <xs:annotation>
+                    <xs:documentation>Importo del debito</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="CausaleDebito" type="jcg_pagopa:stText140">
+                <xs:annotation>
+                    <xs:documentation>La causale del debito che viene inviata ad AgID</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="DettagliImporto" type="jcg_pagopa:ctDettagliImporto" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Modalità di pagamento del debito</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="ParametriDebito" type="jcg_pagopa:ctParametriDebito" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Parametri relativi al debito, questi parametri vengono materializzati assieme al
+                        debito e vengono restituiti ai vari servizi assieme al resto del debito. Sono intesi per
+                        esclusiva consultazione e per arricchire il debito con informazioni aggiuntive che non sono di
+                        per sé utili alla procedura di pagamento. jcg_pagopa non utilizzerà queste informazioni.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="MarcaDaBollo" type="jcg_pagopa:ctMarcaBollo" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Dati realativi alla eventuale marca da bollo da firmare</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="CodiceLotto" type="jcg_pagopa:stCodiceLotto" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Codice del Lotto con cui il debito verrà caricato su BPIOL (Poste Italiane)
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ctDettaglioDovuto">
+        <xs:sequence>
+            <xs:element name="CodiceIpaCreditore" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>Codice identificativo ente creditore (nel caso di multibeneficiario ci saranno)
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="IDDeb" type="jcg_pagopa:stText256">
+                <xs:annotation>
+                    <xs:documentation>Identificativo del debito, è univoco nello scope della posizione debitoria.
+                        Utilizzato in coppia con IDPos per le notifiche di callback dovute a pagamenti effettuati.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="CodiceTipoDebito" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>Codice del tipo debito relativo alla chiamata</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Gruppo" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>identifica una opzione di pagamento, a parita di IDPos jcg_pagopa opera dei
+                        blocchi confrontando l'id del gruppo. Se viene pagato un debito con IDDeb=y di una posizione
+                        debitoria con IDPos=x, jcg_pagopa si preoccupa di bloccare tutti i debiti con IDPos=x e id del
+                        gruppo differente da quello di IDDeb.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Ordinamento" type="xs:int" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Indica l'ordinamento del debito all'interno del gruppo.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="DataInizioValidita" type="xs:date">
+                <xs:annotation>
+                    <xs:documentation>Data di inizio validità del debito.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="DataFineValidita" type="xs:date" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Data di fine validità del debito.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="DataLimitePagabilita" type="xs:date" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Data che indica la data limite di pagabilità nel caso in cui la data di fine
+                        validità ricada in una data in cui non sia possibile effettuare il pagamento. Se non impostato
+                        la data limite di pagabilità sarà impostata uguale alla data di fine validità
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="ImportoDebito" type="jcg_pagopa:stImporto">
+                <xs:annotation>
+                    <xs:documentation>Importo del debito</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="CausaleDebito" type="jcg_pagopa:stText140">
+                <xs:annotation>
+                    <xs:documentation>La causale del debito che viene inviata ad AgID</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="DettagliImporto" type="jcg_pagopa:ctDettagliImporto" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Modalità di pagamento del debito</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="ParametriDebito" type="jcg_pagopa:ctParametriDebito" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Parametri relativi al debito, questi parametri vengono materializzati assieme al
+                        debito e vengono restituiti ai vari servizi assieme al resto del debito. Sono intesi per
+                        esclusiva consultazione e per arricchire il debito con informazioni aggiuntive che non sono di
+                        per sé utili alla procedura di pagamento. jcg_pagopa non utilizzerà queste informazioni.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="MarcaDaBollo" type="jcg_pagopa:ctMarcaBollo" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Dati realativi alla eventuale marca da bollo da firmare</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="CodiceLotto" type="jcg_pagopa:stCodiceLotto" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Codice del Lotto con cui il debito verrà caricato su BPIOL (Poste Italiane)
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ctTestataDebito">
+        <xs:sequence>
+            <xs:element name="IDPos" type="jcg_pagopa:stText256">
+                <xs:annotation>
+                    <xs:documentation>Identificativo della posizione debitoria. Questo identificativo permette ai vari
+                        servizi di poter inserire lo stesso debito in modalità differenti e mantenere un comportamento
+                        congruo da parte di jcg_pagopa.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="CodiceTipoDebito" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>Codice del tipo debito relativo alla chiamata</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="DatiContribuente" type="jcg_pagopa:ctSoggetto">
+                <xs:annotation>
+                    <xs:documentation>Dati del contribuente debitore (soggetto pagatore da specifica AgID). E' il
+                        soggetto intestatario del debito.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="DettaglioPosizione" type="jcg_pagopa:stText70">
+                <xs:annotation>
+                    <xs:documentation>Dettaglio in formato testuale della posizione debitoria di riferimento di questo
+                        debito, ha lunghezza massima di 70 caratteri è un campo inteso per poter essere leggibile ed
+                        esplicativo. Nota 2020/02/24: Molti PSP accettano max 70 caratteri (EFIL/MyPay) Potrebbe avere i
+                        riferimenti ad una contravvenzione o esplicitare una descrizione testuale che accompagna un
+                        debito generato da un determinato documento contabile.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ctTestataDovuto">
+        <xs:sequence>
+            <xs:element name="IDPos" type="jcg_pagopa:stText256">
+                <xs:annotation>
+                    <xs:documentation>Identificativo della posizione debitoria. Questo identificativo permette ai vari
+                        servizi di poter inserire lo stesso debito in modalità differenti e mantenere un comportamento
+                        congruo da parte di jcg_pagopa.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="DatiContribuente" type="jcg_pagopa:ctSoggetto">
+                <xs:annotation>
+                    <xs:documentation>Dati del contribuente debitore (soggetto pagatore da specifica AgID). E' il
+                        soggetto intestatario del debito.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="DettaglioPosizione" type="jcg_pagopa:stText70">
+                <xs:annotation>
+                    <xs:documentation>Dettaglio in formato testuale della posizione debitoria di riferimento di questo
+                        debito, ha lunghezza massima di 70 caratteri è un campo inteso per poter essere leggibile ed
+                        esplicativo. Nota 2020/02/24: Molti PSP accettano max 70 caratteri (EFIL/MyPay) Potrebbe avere i
+                        riferimenti ad una contravvenzione o esplicitare una descrizione testuale che accompagna un
+                        debito generato da un determinato documento contabile.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ctAttivaAvvisoResult">
+        <xs:sequence>
+            <xs:element name="NumeroAvviso" type="jcg_pagopa:ctNumeroAvviso"/>
+            <xs:element name="Esito" type="jcg_pagopa:ctEsito"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ctAttivaAvvisoPerIdLottoResult">
+        <xs:sequence>
+            <xs:element name="Esito" type="jcg_pagopa:ctEsito"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ctIdentificativoSospeso">
+        <xs:sequence>
+            <xs:element name="NumeroSospeso" type="xs:string"/>
+            <xs:element name="AnnoSospeso" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ctRiconciliazionePagamentoSingolo">
+        <xs:sequence>
+            <xs:element name="IdentificativoUnivocoVersamento" type="xs:string"/>
+            <!-- da flusso , nel caso la richiesta sia per idFlusso, ma nel caso da iuv ci sarà sempre se allego i pagamenti singoli -->
+            <xs:element name="IdentificativoDominio" type="xs:string" minOccurs="0"/>
+            <xs:element name="CodiceContestoPagamento" type="xs:string" minOccurs="0"/>
+            <xs:element name="IdentificativoMessaggioRicevuta" type="xs:string" minOccurs="0"/>
+            <xs:element name="DataOraMessaggioRicevuta" type="xs:date" minOccurs="0"/>
+            <xs:element name="CodiceTipoDebito" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>
+                        il codice tipo debito relativo al singolo pagamento rappresentato dal nodo Parent, può essere
+                        opzionale nel caso in cui venga rendicontato uno IUV non presente all'interno della banca dati
+                        (i.e. ente multiintermediato)
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="IdentificativoUnivocoRiscossione" type="xs:string"/>
+            <!-- da flusso , nel caso la richiesta sia per idFlusso, oppure nella ricevuta-->
+            <xs:element name="SingoloImportoPagato" type="jcg_pagopa:stImporto"/>
+            <!-- da flusso , ma deve coincidere con la ricevuta  errore -->
+            <xs:element name="DatiVersante" type="jcg_pagopa:ctSoggetto" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Dati del contribuente che ha pagato il debito.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="DatiDebitore" type="jcg_pagopa:ctSoggetto" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Dati del intestatario del debito</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="CodiceEsitoSingoloPagamento" type="xs:string" minOccurs="0"/>
+            <!-- 0:1 da flusso ma deve coincidere con la ricevuta altrimenti errore: lo metto opz per compatibilità col caso by IUV -->
+            <xs:element name="DataEsitoSingoloPagamento" type="xs:date"/>
+            <!-- 1 da flusso , ma deve coincidere con la ricevuta altrimenti errore -->
+            <xs:element name="CausaleSingoloPagamento" type="xs:string" minOccurs="0"/>
+            <xs:element name="Debito" type="jcg_pagopa:ctRiconciliazioneDebito" minOccurs="0"/>
+            <!-- da 0 a 1 lo metto solo se trovo il debito -->
+            <xs:element name="EsitoRiconciliazione" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>popolato in caso di riconciliazione per fluso di rendicontazione o per
+                        identificativo univoco versamento
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Messaggio" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ctRiconciliazioneDebito">
+        <xs:sequence>
+            <xs:element name="ChiaveDebito" type="jcg_pagopa:ctChiaveDebito" minOccurs="0"/>
+            <xs:element name="importoDebito" type="jcg_pagopa:stImporto"/>
+            <xs:element name="DettagliImporto" type="jcg_pagopa:ctDettagliImporto" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Modalità di pagamento del debito</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ctDebugMode">
+        <xs:sequence>
+            <xs:element name="EsitoCallBack" type="jcg_pagopa:stEsito"/>
+            <xs:element name="Messaggio" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ctCriteriRicerca">
+        <xs:sequence>
+            <xs:element name="CodiceTipoDebito" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>Codice del tipo debito JPPA</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="DaDataInserimento" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="ADataInserimento" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="DaDataInizioValidita" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="ADataInizioValidita" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="DaDataFineValidita" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="ADataFineValidita" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="DaDataLimitePagabilita" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="ADataLimitePagabilita" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="Contribuente" type="jcg_pagopa:ctIdentificativoUnivocoPersonaFG"
+                        minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Dati del contribuente/debitore</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Pagati" type="xs:boolean" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Null = ignorare, True = solo avvisi che siano stati pagati, False = solo avvisi
+                        che non siano stati pagati
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Rendicontati" type="xs:boolean" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Null = ignorare, True = solo avvisi che siano stati rendicontati, False = solo
+                        avvisi che non siano stati rendicontati
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Riconciliati" type="xs:boolean" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Null = ignorare, True = solo avvisi che siano stati riconciliati, False = solo
+                        avvisi che non siano stati riconciliati
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ctModificaGruppoDebito">
+        <xs:sequence>
+            <xs:element name="Iuv" type="jcg_pagopa:stIUV"/>
+            <xs:element name="NuovoGruppo" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- WS Methods -->
+
+    <xs:element name="RichiestaScaricaFlussiAgid">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:documentation/>
+            </xs:annotation>
+            <xs:sequence>
+                <xs:element name="identFlusso" type="xs:string" minOccurs="0"/>
+                <xs:element name="dataDiRegolamento" type="jcg_pagopa:ctIntervallo" minOccurs="0"/>
+                <xs:element name="dataDiPresentazione" type="jcg_pagopa:ctIntervallo" minOccurs="0"/>
+                <xs:element name="dataDiInserimento" type="jcg_pagopa:ctIntervallo" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="RispostaScaricaFlussiAgid">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:documentation/>
+            </xs:annotation>
+            <xs:sequence>
+                <xsd:element name="flussi" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="RichiestaCreaAvvisiPagamento">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:documentation/>
+            </xs:annotation>
+            <xs:sequence>
+                <xs:element name="transactional" type="xs:boolean" minOccurs="0"/>
+                <xs:element name="AvvisoPagamento" type="jcg_pagopa:ctAvvisoPagamento"
+                            maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RispostaCreaAvvisiPagamento">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:documentation/>
+            </xs:annotation>
+            <xs:sequence>
+                <xs:element name="AvvisoPagamentoResult" type="jcg_pagopa:ctAvvisoPagamentoResult"
+                            maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RichiestaInviaDovuti">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:documentation/>
+            </xs:annotation>
+            <xs:sequence>
+                <xs:element name="Transactional" type="xs:boolean" minOccurs="1"/>
+                <xs:element name="Dovuto" type="jcg_pagopa:ctDovuto" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RispostaInviaDovuti">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:documentation/>
+            </xs:annotation>
+            <xs:sequence>
+                <xs:element name="InviaDovutoResult" type="jcg_pagopa:ctInviaDovutoResult" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RichiestaInviaDovuto">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:documentation/>
+            </xs:annotation>
+            <xs:sequence>
+                <xs:element name="Dovuto" type="jcg_pagopa:ctDovuto"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RispostaInviaDovuto">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:documentation/>
+            </xs:annotation>
+            <xs:sequence>
+                <xs:element name="InviaDovutoResult" type="jcg_pagopa:ctInviaDovutoResult"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RichiestaCancellaDovuti">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:documentation/>
+            </xs:annotation>
+            <xs:sequence>
+                <xs:element name="NumeroAvviso" type="jcg_pagopa:ctNumeroAvviso"/>
+                <xs:element name="codiceMotivoEliminazione" type="jcg_pagopa:stCodiceMotivoEliminazione" minOccurs="0"/>
+                <xs:element name="descrizioneMotivoEliminazione" type="xs:string" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RispostaCancellaDovuti">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:documentation/>
+            </xs:annotation>
+            <xs:sequence>
+                <xs:element name="CancellaDovutoResult" type="jcg_pagopa:ctCancellaDovutoResult" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RichiestaAttivaDovuti">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:documentation/>
+            </xs:annotation>
+            <xs:sequence>
+                <xs:element name="NumeroAvviso" type="jcg_pagopa:ctNumeroAvviso" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RispostaAttivaDovuti">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:documentation/>
+            </xs:annotation>
+            <xs:sequence>
+                <xs:element name="AttivaDovutoResult" type="jcg_pagopa:ctAttivaDovutoResult" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RichiestaModificaDovuti">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:documentation/>
+            </xs:annotation>
+            <xs:sequence>
+                <!-- DA VERIFICARE -->
+                <xs:element name="Operazione" type="jcg_pagopa:stOperazioniModifica">
+                    <xs:annotation>
+                        <xs:documentation>Operazione di modifica da svolgere</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="Dovuto" type="jcg_pagopa:ctDovuto"/>
+
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RispostaModificaDovuti">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:documentation/>
+            </xs:annotation>
+            <xs:sequence>
+                <xs:element name="Esito" type="jcg_pagopa:ctEsito"/>
+                <xs:element name="NumeroAvviso" type="jcg_pagopa:ctNumeroAvviso"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RichiestaCreaAvvisoPagamento">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:documentation/>
+            </xs:annotation>
+            <xs:sequence>
+                <xs:element name="AvvisoPagamento" type="jcg_pagopa:ctAvvisoPagamento" minOccurs="1"
+                />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RispostaCreaAvvisoPagamento">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:documentation/>
+            </xs:annotation>
+            <xs:sequence>
+                <xs:element name="AvvisoPagamentoResult" type="jcg_pagopa:ctAvvisoPagamentoResult"
+                            maxOccurs="1"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RichiestaModificaContribuente">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:documentation/>
+            </xs:annotation>
+            <xs:sequence>
+                <xs:element name="NumeroAvviso" type="jcg_pagopa:ctNumeroAvviso"/>
+                <xs:element name="Contribuente" type="jcg_pagopa:ctSoggetto"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RispostaModificaContribuente">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:documentation/>
+            </xs:annotation>
+            <xs:sequence>
+                <xs:element name="NumeroAvviso" type="jcg_pagopa:ctNumeroAvviso"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RichiestaModificaImporto">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:documentation/>
+            </xs:annotation>
+            <xs:sequence>
+                <xs:element name="NumeroAvviso" type="jcg_pagopa:ctNumeroAvviso"/>
+                <xs:element name="Importo" type="jcg_pagopa:stImporto"/>
+                <xs:element name="DettagliImporto" type="jcg_pagopa:ctDettagliImporto" minOccurs="0"
+                            nillable="false"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RispostaModificaImporto">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:documentation/>
+            </xs:annotation>
+            <xs:sequence>
+                <xs:element name="NumeroAvviso" type="jcg_pagopa:ctNumeroAvviso"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="RichiestaModificaCausale">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:documentation/>
+            </xs:annotation>
+            <xs:sequence>
+                <xs:element name="NumeroAvviso" type="jcg_pagopa:ctNumeroAvviso"/>
+                <xs:element name="Causale" type="jcg_pagopa:stText140"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="RispostaModificaCausale">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:documentation/>
+            </xs:annotation>
+            <xs:sequence>
+                <xs:element name="NumeroAvviso" type="jcg_pagopa:ctNumeroAvviso"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RichiestaModificaAnnoCompetenza">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:documentation>Richiesta per poter modificare l'anno di competenza su tutti i dettagli importo
+                </xs:documentation>
+            </xs:annotation>
+            <xs:sequence>
+                <xs:element name="Anno" type="jcg_pagopa:stAnno"/>
+                <xs:element name="NumeroAvviso" type="jcg_pagopa:ctNumeroAvviso"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RispostaModificaAnnoCompetenza">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:documentation/>
+            </xs:annotation>
+            <xs:sequence>
+                <xs:element name="Esito" type="jcg_pagopa:ctEsito"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RichiestaModificaDettagliImporto">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:documentation>Richiesta per poter modificare i dettagli dell'importo</xs:documentation>
+            </xs:annotation>
+            <xs:sequence>
+                <xs:element name="ChiaviDebito" type="jcg_pagopa:ctChiaveDebito"/>
+                <xs:element name="DettagliImporto" type="jcg_pagopa:ctDettagliImporto" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>Modalità di pagamento del debito</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RispostaModificaDettagliImporto">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:documentation/>
+            </xs:annotation>
+            <xs:sequence>
+                <xs:element name="Esito" type="jcg_pagopa:ctEsito"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+
+    <xs:element name="RichiestaSostituisciAvvisoPagamento">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:documentation/>
+            </xs:annotation>
+            <xs:sequence>
+                <xs:element name="NumeroAvviso" type="jcg_pagopa:ctNumeroAvviso"/>
+                <xs:element name="AvvisoPagamento" type="jcg_pagopa:ctAvvisoPagamento"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RispostaSostituisciAvvisoPagamento">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:documentation/>
+            </xs:annotation>
+            <xs:sequence>
+                <xs:element name="AvvisoPagamentoResult" type="jcg_pagopa:ctAvvisoPagamentoResult"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RichiestaEliminaAvvisoPagamento">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:documentation/>
+            </xs:annotation>
+            <xs:sequence>
+                <xs:element name="NumeroAvviso" type="jcg_pagopa:ctNumeroAvviso"/>
+                <xs:element name="codiceMotivoEliminazione"
+                            type="jcg_pagopa:stCodiceMotivoEliminazione" minOccurs="0"/>
+                <xs:element name="descrizioneMotivoEliminazione" type="xs:string" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RispostaEliminaAvvisoPagamento">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:documentation/>
+            </xs:annotation>
+            <xs:sequence>
+                <xs:element name="NumeroAvviso" type="jcg_pagopa:ctNumeroAvviso"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RichiestaAttivaAvvisoPagamento">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:documentation/>
+            </xs:annotation>
+            <xs:sequence>
+                <xs:element name="NumeroAvviso" type="jcg_pagopa:ctNumeroAvviso"
+                            maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RispostaAttivaAvvisoPagamento">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:documentation/>
+            </xs:annotation>
+            <xs:sequence>
+                <xs:element name="AttivaAvvisoResult" type="jcg_pagopa:ctAttivaAvvisoResult"
+                            maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RichiestaAttivaAvvisoPagamentoPerIdLotto">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:documentation/>
+            </xs:annotation>
+            <xs:sequence>
+                <xs:element name="CodiceLotto" type="jcg_pagopa:stText200" maxOccurs="1"/>
+                <xs:element name="Stato" type="jcg_pagopa:stText35" maxOccurs="1"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RispostaAttivaAvvisoPagamentoPerIdLotto">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:documentation/>
+            </xs:annotation>
+            <xs:sequence>
+                <xs:element name="AttivaAvvisoPerIdLottoResult"
+                            type="jcg_pagopa:ctAttivaAvvisoPerIdLottoResult" maxOccurs="1"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RichiestaPagaDebiti">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:documentation/>
+            </xs:annotation>
+            <xs:sequence>
+                <xs:element name="IdRichiestaPagamento" type="xs:string"/>
+                <xs:element name="Versante" type="jcg_pagopa:ctSoggetto"/>
+                <xs:element name="Debito" type="jcg_pagopa:ctDebito" maxOccurs="unbounded"/>
+                <xs:element name="BackUrl" type="jcg_pagopa:ctBackUrl"/>
+                <xs:element name="multibeneficiario" type="xs:boolean" minOccurs="0" nillable="true"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RichiestaPagaDebitoPOS">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:documentation/>
+            </xs:annotation>
+            <xs:sequence>
+                <xs:element name="IdRichiestaPagamento" type="xs:string" minOccurs="1"
+                            nillable="false">
+                    <xs:annotation>
+                        <xs:documentation>Timestamp della richiesta da parte del chiamate</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="Versante" type="jcg_pagopa:ctSoggetto" minOccurs="1"
+                            nillable="false"/>
+                <xs:element name="Debito" type="jcg_pagopa:ctDebito" minOccurs="1" nillable="false"/>
+                <xs:element name="IdentificativoPostazionePOS" type="xs:string" minOccurs="1"
+                            nillable="false"/>
+                <xs:element name="BackUrl" type="jcg_pagopa:ctBackUrlPOS" minOccurs="0"/>
+                <xs:element name="DebugMode" type="jcg_pagopa:ctDebugMode" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RispostaPagaDebiti">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:documentation/>
+            </xs:annotation>
+            <xs:sequence>
+                <xs:element name="Url" type="xs:string"/>
+                <xs:element name="IdentTransazione" type="jcg_pagopa:stText40"/>
+                <xs:element name="Esito" type="jcg_pagopa:ctEsito"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RispostaPagaDebitoPOS">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:documentation/>
+            </xs:annotation>
+            <xs:sequence>
+                <xs:element name="Url" type="xs:string" minOccurs="0"/>
+                <xs:element name="IdDebito" type="xs:string" minOccurs="0"/>
+                <xs:element name="Esito" type="jcg_pagopa:ctEsito"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <!-- Utilizzata per la risposta nella pagina html della callcack del POS APK -->
+    <xs:element name="RispostaPagaDebitoCallBackPOS">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:documentation/>
+            </xs:annotation>
+            <xs:sequence>
+                <xs:element name="ChiaviDebito" type="jcg_pagopa:ctChiaveDebito"/>
+                <xs:element name="IdentificativoUnivocoVersamento" type="jcg_pagopa:stIUV"/>
+                <xs:element name="IdDebito" type="xs:string"/>
+                <xs:element name="Esito" type="jcg_pagopa:ctEsito"/>
+                <xs:element name="ScontrinoPos" type="xs:string" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RichiestaInfoPagamentoTransazione">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:documentation/>
+            </xs:annotation>
+            <xs:sequence>
+                <xs:element name="IdentTransazione" type="jcg_pagopa:stText40"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RispostaInfoPagamentoTransazione">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:documentation/>
+            </xs:annotation>
+            <xs:sequence>
+                <xs:element name="IdentTransazione" type="jcg_pagopa:stText40"/>
+                <xs:element name="EsitoTransazione" type="xs:string">
+                    <xs:annotation>
+                        <xs:documentation>Esito transazione: OK (AgID), ERROR (AgID), DIFFERITO (AgID, per conoscere
+                            esito attendere ricevuta, esempio modello2), INDETERMINATO (esito non conosciuto)
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:sequence>
+                    <xs:element name="InfoPagamentoTelematico"
+                                type="jcg_pagopa:ctInfoPagamentoTelematico" minOccurs="0"
+                                maxOccurs="unbounded"/>
+                </xs:sequence>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RichiestaInfoPagamentoDebito">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:documentation/>
+            </xs:annotation>
+            <xs:sequence>
+                <xs:element name="ChiaveDebito" type="jcg_pagopa:ctChiaveDebito"/>
+                <!--  alternativa: NumeroAvviso ? -->
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RispostaInfoPagamentoDebito">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:documentation/>
+            </xs:annotation>
+            <xs:sequence>
+                <xs:element name="ChiaveDebito" type="jcg_pagopa:ctChiaveDebito"/>
+                <xs:sequence>
+                    <xs:element name="InfoPagamentoTelematico"
+                                type="jcg_pagopa:ctInfoPagamentoTelematico" minOccurs="0"
+                                maxOccurs="unbounded"/>
+                </xs:sequence>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <!-- RICONCILIAZIONE -->
+    <xs:element name="RichiestaInfoRiconciliazioneVersamento">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="CodiceIpaBeneficiario" type="xs:string"/>
+                <xs:element name="IdentificativoUnivocoVersamento" type="xs:string"/>
+                <xs:element name="DataRegolamento" type="xs:date"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RispostaInfoRiconciliazioneVersamento">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="CodiceIpaBeneficiario" type="xs:string"/>
+                <xs:element name="IdentificativoUnivocoVersamento" type="xs:string"/>
+                <xs:element name="PagamentiSingoli">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="PagamentoSingolo"
+                                        type="jcg_pagopa:ctRiconciliazionePagamentoSingolo" minOccurs="0"
+                                        maxOccurs="unbounded"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RichiestaInfoRiconciliazioneFlusso">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="IdentificativoFlusso" type="xs:string"/>
+                <xs:element name="CodiceIpaBeneficiario" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RispostaInfoRiconciliazioneFlusso">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="CodiceIpaBeneficiario" type="xs:string" minOccurs="1"/>
+                <xs:element name="IdentificativoFlusso" type="xs:string" minOccurs="1"/>
+                <xs:element name="DataOraFlusso" type="xs:dateTime" minOccurs="1"/>
+                <xs:element name="IdentificativoUnivocoRegolamento" type="xs:string" minOccurs="0"/>
+                <xs:element name="DataRegolamento" type="xs:date" minOccurs="1"/>
+                <xs:element name="TipoIdentificativoUnivocoMittente" type="xs:string" minOccurs="1"/>
+                <xs:element name="CodiceIdentificativoUnivocoMittente" type="xs:string"
+                            minOccurs="1"/>
+                <xs:element name="CodiceBicBancaDiRiversamento" type="xs:string" minOccurs="0"/>
+                <xs:element name="NumeroTotalePagamentiRendicontati" type="xs:integer" minOccurs="1"/>
+                <xs:element name="ImportoTotalePagamentiRendicontati" type="jcg_pagopa:stImporto"
+                            minOccurs="1"/>
+                <xs:element name="PagamentiSingoli" minOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="PagamentoSingolo"
+                                        type="jcg_pagopa:ctRiconciliazionePagamentoSingolo" minOccurs="0"
+                                        maxOccurs="unbounded"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="StatoRiconciliazione" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RichiestaInfoRiconciliazioneFlussoRendicontazione">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="IdentificativoFlusso" type="xs:string"/>
+                <xs:element name="CodiceIpaBeneficiario" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RispostaInfoRiconciliazioneFlussoRendicontazione">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="CodiceIpaBeneficiario" type="xs:string"/>
+                <xs:element name="IdentificativoFlusso" type="xs:string"/>
+                <xs:element name="DataOraFlusso" type="xs:dateTime"/>
+                <xs:element name="IdentificativoUnivocoRegolamento" type="xs:string" minOccurs="0"/>
+                <xs:element name="DataRegolamento" type="xs:date"/>
+                <xs:element name="TipoIdentificativoUnivocoMittente" type="xs:string"/>
+                <xs:element name="CodiceIdentificativoUnivocoMittente" type="xs:string"/>
+                <xs:element name="CodiceBicBancaDiRiversamento" type="xs:string" minOccurs="0"/>
+                <xs:element name="NumeroTotalePagamentiRendicontati" type="xs:integer"/>
+                <xs:element name="ImportoTotalePagamentiRendicontati" type="jcg_pagopa:stImporto"/>
+                <xs:element name="PagamentiSingoli">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="PagamentoSingolo"
+                                        type="jcg_pagopa:ctRiconciliazionePagamentoSingolo" minOccurs="0"
+                                        maxOccurs="unbounded"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="StatoRiconciliazione" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RichiestaInfoRiconciliazione">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Operazione" type="jcg_pagopa:stOperazioneRiconciliazione"
+                            minOccurs="1"/>
+                <xs:element name="CodiceIpaBeneficiario" type="xs:string" minOccurs="1"/>
+                <xs:element name="ListaIdentificativoFlusso" minOccurs="0">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="IdentificativoFlusso" type="xs:string" minOccurs="0"
+                                        maxOccurs="unbounded"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="ListaSospesi" minOccurs="0">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="IdentificativoSospeso"
+                                        type="jcg_pagopa:ctIdentificativoSospeso" minOccurs="0"
+                                        maxOccurs="unbounded"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RichiestaInfoRiconciliazioneFlussoCassa">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="CodiceIpaBeneficiario" type="xs:string"/>
+                <xs:element name="Sospesi">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="IdentificativoSospeso"
+                                        type="jcg_pagopa:ctIdentificativoSospeso" maxOccurs="unbounded"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RispostaInfoRiconciliazioneFlussoCassa">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="CodiceIpaBeneficiario" type="xs:string"/>
+                <xs:element name="SospesiRiconciliati">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="SospesoRiconciliato" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="IdentificativoSospeso"
+                                                    type="jcg_pagopa:ctIdentificativoSospeso"/>
+                                        <xs:element name="TipoIdentificativoUnivocoMittente"
+                                                    type="xs:string" minOccurs="0">
+                                            <xs:annotation>
+                                                <xs:documentation>Come riportato nel flusso di rendicontazione, indica
+                                                    la tipologia del PSP che ha effettuato il riversamento e ha emesso
+                                                    il relativo flusso di rendicontazione
+                                                </xs:documentation>
+                                            </xs:annotation>
+                                        </xs:element>
+                                        <xs:element name="CodiceIdentificativoUnivocoMittente"
+                                                    type="xs:string" minOccurs="0">
+                                            <xs:annotation>
+                                                <xs:documentation>Come riportato nel flusso di rendicontazione, indica
+                                                    il codice del PSP che ha effettuato il riversamento e ha emesso il
+                                                    relativo flusso di rendicontazione
+                                                </xs:documentation>
+                                            </xs:annotation>
+                                        </xs:element>
+                                        <xs:element name="CodiceBicBancaDiRiversamento"
+                                                    type="xs:string" minOccurs="0"/>
+                                        <xs:element name="PagamentiSingoli">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="PagamentoSingolo"
+                                                                type="jcg_pagopa:ctRiconciliazionePagamentoSingolo"
+                                                                minOccurs="0" maxOccurs="unbounded"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="EsitoRiconciliazione"
+                                                    type="jcg_pagopa:stEsitoRiconciliazioneSospeso"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RispostaInfoRiconciliazione">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="CodiceIpaBeneficiario" type="xs:string"/>
+                <xs:element name="SospesiRiconciliati">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="SospesoRiconciliato" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="NumeroSospeso" type="xs:string"
+                                                    minOccurs="0"/>
+                                        <xs:element name="AnnoSospeso" type="xs:string"
+                                                    minOccurs="0"/>
+
+                                        <xs:element name="IdentificativoFlusso" type="xs:string"/>
+                                        <xs:element name="DataOraFlusso" type="xs:dateTime"/>
+                                        <xs:element name="IdentificativoUnivocoRegolamento"
+                                                    type="xs:string" minOccurs="0"/>
+                                        <xs:element name="DataRegolamento" type="xs:date"/>
+                                        <xs:element name="NumeroTotalePagamentiRendicontati"
+                                                    type="xs:integer"/>
+                                        <xs:element name="ImportoTotalePagamentiRendicontati"
+                                                    type="jcg_pagopa:stImporto"/>
+
+                                        <xs:element name="TipoIdentificativoUnivocoMittente"
+                                                    type="xs:string" minOccurs="0">
+                                            <xs:annotation>
+                                                <xs:documentation>Come riportato nel flusso di rendicontazione, indica
+                                                    la tipologia del PSP che ha effettuato il riversamento e ha emesso
+                                                    il relativo flusso di rendicontazione
+                                                </xs:documentation>
+                                            </xs:annotation>
+                                        </xs:element>
+                                        <xs:element name="CodiceIdentificativoUnivocoMittente"
+                                                    type="xs:string" minOccurs="0">
+                                            <xs:annotation>
+                                                <xs:documentation>Come riportato nel flusso di rendicontazione, indica
+                                                    il codice del PSP che ha effettuato il riversamento e ha emesso il
+                                                    relativo flusso di rendicontazione
+                                                </xs:documentation>
+                                            </xs:annotation>
+                                        </xs:element>
+                                        <xs:element name="CodiceBicBancaDiRiversamento"
+                                                    type="xs:string" minOccurs="0"/>
+                                        <xs:element name="PagamentiSingoli">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="PagamentoSingolo"
+                                                                type="jcg_pagopa:ctRiconciliazionePagamentoSingolo"
+                                                                minOccurs="0" maxOccurs="unbounded"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="EsitoRiconciliazione"
+                                                    type="jcg_pagopa:stEsitoRiconciliazioneSospeso"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <!-- END RICONCILIAZIONE -->
+    <!-- 20190921 nuovi WS per Bolzano -->
+    <xs:element name="RichiestaInfoAvvisoPagamentoPerNumeroAvviso">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="CodiceIpaCreditore" type="xs:string" minOccurs="0"/>
+                <xs:element name="NumeroAvviso" type="jcg_pagopa:stNumeroAvviso18"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RichiestaInfoAvvisoPagamentoPerIdPos">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="CodiceIpaCreditore" type="xs:string" minOccurs="0"/>
+                <xs:element name="ChiaveDebitoIDPos" type="jcg_pagopa:ctChiaveDebitoIDPos"
+                            minOccurs="1"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RichiestaInfoAvvisoPagamentoPerChiaveDebito">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="CodiceIpaCreditore" type="xs:string" minOccurs="0"/>
+                <xs:element name="ChiaveDebito" type="jcg_pagopa:ctChiaveDebito"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RispostaInfoAvvisoPagamentoPerIdPos">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="AvvisiPagamento" type="jcg_pagopa:ctAvvisoPagamento" minOccurs="0"
+                            maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RispostaInfoAvvisoPagamentoPerChiaveDebito">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="AvvisoPagamento" type="jcg_pagopa:ctAvvisoPagamento" minOccurs="0"
+                />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RispostaInfoAvvisoPagamentoPerNumeroAvviso">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="AvvisoPagamento" type="jcg_pagopa:ctAvvisoPagamento" minOccurs="0"
+                />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <!-- 20190921 nuovi WS per Bolzano -->
+
+    <!-- 20220725 -->
+
+    <xs:element name="RichiestaInfoPagamentoPerIuv">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Iuv" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RispostaInfoPagamentoPerIuv">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="AvvisoPagamento" type="jcg_pagopa:ctAvvisoPagamento"/>
+                <xs:sequence>
+                    <xs:element name="InfoPagamentoTelematico"
+                                type="jcg_pagopa:ctInfoPagamentoTelematico" minOccurs="0"
+                                maxOccurs="unbounded"/>
+                </xs:sequence>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <!-- 20220725 -->
+
+    <!-- 20200529 Metodo per recuperare i pagamenti effettuati in un determinato periodo -->
+
+    <xs:element name="RichiestaListaPagamenti">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="CodiceTipoDebito" type="xs:string" minOccurs="1" nillable="false"/>
+                <xs:element name="DataInizio" type="xs:dateTime" minOccurs="1" nillable="false">
+                    <xs:annotation>
+                        <xs:documentation>Data inizio ricerca lista pagamenti - inclusa</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="DataFine" type="xs:dateTime" minOccurs="1" nillable="false">
+                    <xs:annotation>
+                        <xs:documentation>Data fine ricerca lista pagamenti - esclusa</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="RispostaListaPagamenti">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="ListaPagamenti">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Pagamenti" type="jcg_pagopa:ctDebitoPagato"
+                                        minOccurs="0" maxOccurs="unbounded"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- 20200529 Metodo per recuperare i pagamenti effettuati in un determinato periodo -->
+
+    <!-- 20201210  -->
+
+    <xs:element name="RichiestaInfoListaFlussiRendicontazione">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="CodiceIpaBeneficiario" type="xs:string"/>
+                <xs:element name="DataInizio" type="xs:dateTime" minOccurs="1" nillable="false">
+                    <xs:annotation>
+                        <xs:documentation>Data inizio ricerca lista pagamenti - inclusa</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="DataFine" type="xs:dateTime" minOccurs="1" nillable="false">
+                    <xs:annotation>
+                        <xs:documentation>Data fine ricerca lista pagamenti - esclusa</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="RispostaInfoListaFlussiRendicontazione">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="ListaFlussiRendicontazione" minOccurs="0">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="IdentificativoFlusso" type="xs:string" minOccurs="0"
+                                        maxOccurs="unbounded"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- 20201210  -->
+
+    <!-- 20210329 -->
+
+    <xs:element name="RichiestaInfoListaScartiCaricamentoDebitiPdp">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="CodiceIpa" type="xs:string"/>
+                <xs:element name="DataInizio" type="xs:dateTime" minOccurs="0" nillable="true">
+                    <xs:annotation>
+                        <xs:documentation>Data inizio ricerca lista pagamenti - inclusa</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="DataFine" type="xs:dateTime" minOccurs="0" nillable="true">
+                    <xs:annotation>
+                        <xs:documentation>Data fine ricerca lista pagamenti - inclusa</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="RispostaInfoListaScartiCaricamentoDebitiPdp">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="ListaScartiCaricamentoDebitiPdp" minOccurs="0"
+                            maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="NumeroAvviso" type="jcg_pagopa:ctNumeroAvviso"/>
+                            <xs:element name="ChiaveDebito" type="jcg_pagopa:ctChiaveDebito"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- 20210329 -->
+
+    <!-- 20210531 -->
+
+    <xs:element name="RichiestaInfoAvvisiPagamento">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="CriteriRicerca" type="jcg_pagopa:ctCriteriRicerca"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="RispostaInfoAvvisiPagamento">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="AvvisiPagamento" minOccurs="0" maxOccurs="unbounded"
+                            type="jcg_pagopa:ctAvvisoPagamento"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- 20210531 -->
+
+    <!-- 20210611 -->
+
+    <xs:element name="RichiestaModificaGruppoDebiti">
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded">
+                <xs:element name="ModificaGruppoDebito" type="jcg_pagopa:ctModificaGruppoDebito"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="RispostaModificaGruppoDebiti">
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded" minOccurs="0">
+                <xs:element name="IuvScartato" type="jcg_pagopa:stIUV"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- 20210611 -->
+
+    <!-- 20210702 -->
+
+    <xs:element name="RichiestaListaTerminaliPOS">
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded" minOccurs="0">
+                <xs:element name="Contesto" type="jcg_pagopa:stContestoPos" minOccurs="1"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="RispostaListaTerminaliPOS">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="ListaTerminaliPOS" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Contesto" type="jcg_pagopa:stContestoPos"
+                                        minOccurs="0"/>
+                            <xs:element name="IdPos" type="xs:string" minOccurs="1"/>
+                            <xs:element name="DescrizionePos" type="xs:string" minOccurs="0"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- 20210702 -->
+
+    <!-- WS Methods -->
+</xs:schema>

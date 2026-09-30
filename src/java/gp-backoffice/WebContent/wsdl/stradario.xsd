@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://gruppoinit.it/anagrafici/stradario/types" 
+	elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" 
+	xmlns:tns="http://gruppoinit.it/anagrafici/stradario/types">
+
+    <element name="CercaStradarioRequest">
+    	<complexType>
+    		<sequence>
+                <element name="token" type="string" maxOccurs="1" minOccurs="1"></element>
+                <element name="codiceCatastaleComune"
+    				type="tns:CodiceCatastaleType">
+    			</element>
+    			<element name="testoDaCercare" minOccurs="1"
+    				maxOccurs="1">
+    				<annotation>
+    					<documentation>
+    						La denominazione estesa (DUG + TOPONIMO)
+    						della via da ricercare. Es: "via manzoni"
+    					</documentation>
+    				</annotation>
+    				<simpleType>
+    					<restriction base="string">
+    						<minLength value="2"></minLength>
+    					</restriction>
+    				</simpleType>
+    			</element>
+    		</sequence>
+    	</complexType>
+    </element>
+    
+    <element name="CercaStradarioConCodiceViarioRequest">
+    	<complexType>
+    		<sequence>
+                <element name="token" type="string" maxOccurs="1" minOccurs="1"></element>
+                <element name="codiceCatastaleComune"
+    				type="tns:CodiceCatastaleType" minOccurs="0" maxOccurs="1">
+    			</element>
+    			<element name="codiceviario" type="string" minOccurs="1" maxOccurs="1">
+    			</element>
+    		</sequence>
+    	</complexType>
+    </element>
+    
+
+    <simpleType name="CodiceCatastaleType">
+        <annotation>
+        	<documentation>Tipo di dato semplice per un comune italiano codificato tramite il codice catastale (Belfiore)</documentation></annotation>
+        <restriction base="string">
+    		<pattern value="[A-L][0-9]{3}|M[0-3]{3}"></pattern>
+    	</restriction>
+    </simpleType>
+
+    
+    <complexType name="StradarioType">
+        <annotation>
+        	<documentation></documentation>
+        </annotation>
+        <sequence>
+            <element name="codicestradario" type="string" maxOccurs="1" minOccurs="0"/>
+    		<element name="dug" maxOccurs="1" minOccurs="0">
+    			<annotation>
+    				<documentation>
+    					Denominazione Urbanistica Generica -
+    					qualificatore del toponimo (es. Via, Piazza,
+    					Largo, ecc.)
+    				</documentation>
+    			</annotation>
+    			<simpleType>
+    				<restriction base="string">
+    					<maxLength value="20"></maxLength>
+    				</restriction>
+    			</simpleType>
+    		</element>
+    		<element name="toponimo" maxOccurs="1" minOccurs="1">
+                <annotation>
+                	<documentation>Nome della via es: "alessandro manzoni", "maestà delle volte", ecc</documentation>
+                </annotation>
+                <simpleType>
+    				<restriction base="string">
+    					<maxLength value="128"></maxLength>
+    				</restriction>
+    			</simpleType>
+    		</element>
+    		<element name="cap" maxOccurs="1" minOccurs="0">
+    			<simpleType>
+    				<restriction base="string">
+    					<pattern value="([0-9]{5})"></pattern>
+    					<length value="5"></length>
+    				</restriction>
+    			</simpleType>
+    		</element>
+    		<element name="localita" maxOccurs="1" minOccurs="0">
+                <annotation>
+                	<documentation>Se presente la località/frazione</documentation>
+                </annotation>
+                <simpleType>
+    				<restriction base="string">
+    					<maxLength value="128"></maxLength>
+    				</restriction>
+    			</simpleType>
+    		</element>
+    		<element name="codviario" type="string" maxOccurs="1" minOccurs="0">
+    			<annotation>
+    				<documentation>Il riferimento al codice viario dell'ente</documentation>
+    			</annotation></element>
+    		<element name="codiceCatastaleComune"
+    			type="tns:CodiceCatastaleType" maxOccurs="1" minOccurs="0">
+    		</element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="ListaStradarioType">
+        <annotation>
+        	<documentation>La lista dei risultati della ricerca</documentation>
+        </annotation>
+        <sequence>
+    		<element name="lista" type="tns:StradarioType" maxOccurs="unbounded" minOccurs="0"></element>
+    	</sequence>
+    </complexType>
+    <element name="CercaStradarioResponse">
+    	<complexType>
+    		<sequence>
+    			<element name="risultato"
+    				type="tns:ListaStradarioType">
+    			</element>
+    		</sequence>
+    	</complexType>
+    </element>
+    <element name="CercaStradarioConCodiceViarioResponse">
+    	<complexType>
+    		<sequence>
+    			<element name="risultato"
+    				type="tns:ListaStradarioType">
+    			</element>
+    		</sequence>
+    	</complexType>
+    </element>
+</schema>

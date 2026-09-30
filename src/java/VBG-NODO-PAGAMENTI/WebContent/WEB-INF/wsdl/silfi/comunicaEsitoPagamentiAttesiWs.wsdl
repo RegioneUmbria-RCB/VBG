@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:sch="it/lineacomune/pagopa/be/ws/endpoint"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tns="it/lineacomune/pagopa/be/ws/endpoint/esiti"
+	targetNamespace="it/lineacomune/pagopa/be/ws/endpoint/esiti">
+	<wsdl:types>
+		<xs:schema
+			targetNamespace="it/lineacomune/pagopa/be/ws/endpoint/esiti"
+			xmlns:sch="it/lineacomune/pagopa/be/ws/endpoint">
+			<xs:import namespace="it/lineacomune/pagopa/be/ws/endpoint"
+				schemaLocation="comunicaEsitoPagamentiAttesiWs.xsd" />
+
+		</xs:schema>
+	</wsdl:types>
+	<wsdl:message name="pagamentiAttesiEsitoPagamentoRequest">
+		<wsdl:part element="sch:pagamentiAttesiEsitoPagamentoRequest"
+			name="pagamentiAttesiEsitoPagamentoRequest">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="pagamentiAttesiEsitoPagamentoResponse">
+		<wsdl:part element="sch:pagamentiAttesiEsitoPagamentoResponse"
+			name="pagamentiAttesiEsitoPagamentoResponse">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:portType name="esitiPagamentiAttesiWSDL">
+		<wsdl:operation
+			name="pagamentiAttesiEsitoPagamento">
+			<wsdl:input
+				message="tns:pagamentiAttesiEsitoPagamentoRequest"
+				name="pagamentiAttesiEsitoPagamentoRequest"></wsdl:input>
+			<wsdl:output
+				message="tns:pagamentiAttesiEsitoPagamentoResponse"
+				name="pagamentiAttesiEsitoPagamentoResponse"></wsdl:output>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="esitiPagamentiAttesiSoap11"
+		type="tns:esitiPagamentiAttesiWSDL">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation
+			name="pagamentiAttesiEsitoPagamento">
+			<soap:operation soapAction="" />
+			<wsdl:input name="pagamentiAttesiEsitoPagamentoRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="pagamentiAttesiEsitoPagamentoResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="esitiPagamentiAttesiService">
+		<wsdl:port binding="tns:esitiPagamentiAttesiSoap11"
+			name="esitiPagamentiAttesiSoap11">
+			<soap:address location="silfi/esitipagamentiattesi" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

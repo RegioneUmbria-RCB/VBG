@@ -1,0 +1,187 @@
+﻿@using AreaRiservataCore.Pages.InserimentoIstanza.Allegati
+@using AreaRiservataCore.Pages.InserimentoIstanza.AllegatiIntervento
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneAllegatiDomanda.Intervento
+
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.DesignComuni.Spinner
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards.CardButtons
+
+@if (DataSource is not null)
+{
+    <div class="it-list-wrapper mb-4 p-2">
+        <ul class="it-list">
+            @foreach (var item in DataSource)
+            {
+                <li>
+                    <div class="list-item d-block mb-3">
+                        <div class="d-flex me-4 pe-0 gap-1">
+                            @if (item.CodiceOggetto.HasValue)
+                            {
+                                <span>
+                                    <span class="badge bg-success fs-6">Compilato con successo</span>
+                                </span>
+                            }
+                            else
+                            {
+                                if (item.Richiesto)
+                                {
+                                    <span>
+                                        <span class="badge bg-danger fs-6">Obbligatorio</span>
+                                    </span>
+                                }
+
+                                if (item.RichiedeFirmaDigitale)
+                                {
+                                    <span>
+                                        <span class="badge bg-warning fs-6">Richiede firma digitale</span>
+                                    </span>
+                                }
+                            }
+                        </div>
+                        <div class=" d-flex float-end me-4 pe-0 gap-1">
+                            <div>
+                                <button class="btn btn-outline-primary" type="button" @onclick="() => ModificaAllegato(item)">
+                                    @(item.CodiceOggetto.HasValue ? "Modifica" : "Carica documento")
+                                </button>
+                            </div>
+                            @if (item.CodiceOggetto.HasValue)
+                            {
+                                <div>
+                                    <button class="btn btn-outline-warning" type="button" @onclick="() => ShowConfirmationModal(item.Id)">
+                                        Elimina
+                                    </button>
+                                </div>
+                            }
+                        </div>
+                        <div class="it-right-zone">
+                            <div>
+                                <h4>@item.Descrizione</h4>
+                                <span class="mb-2 text-muted">@((MarkupString)item.Note)</span>
+                            </div>
+                        </div>
+                        @if (item.CodiceOggetto.HasValue)
+                        {
+                            <div class="p-2">
+                                <StepDownloadButton Titolo="File caricato" CodiceOggetto="@item.CodiceOggetto"></StepDownloadButton>
+
+                            </div>
+                        }
+                    </div>
+
+                </li>
+
+            }
+        </ul>
+    </div>
+}
+
+<ModalModificaAllegato Allegato="_editingItem"
+                       OnAnnulla="() => _editingItem = null"
+                       OnConferma="SalvaModificheAsync"
+                       CategorieAllegati="null">
+</ModalModificaAllegato>
+
+<ConfirmationModal Titolo="Conferma eliminazione" Visible="@_mostraConfermaEliminazione" ConfermaClick="() => OnUploadFileDeleteAsync()" AnnullaClick="() => _mostraConfermaEliminazione = false">
+    <ModalBody>
+        Rimuovere il file selezionato?
+    </ModalBody>
+</ConfirmationModal>
+
+
+
+@code {
+    [Parameter, EditorRequired]
+    public List<GrigliaAllegatiBindingItem> DataSource { get; set; } = new();
+
+    [Parameter, EditorRequired]
+    public EventCallback<int> OnDeleteFile { get; set; }
+
+    [Parameter, EditorRequired]
+    public EventCallback OnEditFile { get; set; }
+
+    [Parameter]
+    public EventCallback OnUploadFileMultipli { get; set; }
+
+    [Inject]
+    public AllegatiInterventoService AllegatiInterventoService { get; set; } = default!;
+
+    [Inject]
+    public SpinnerService _spinnerService { get; set; } = default!;
+
+    private List<GrigliaAllegatiBindingItem>? oldDataSource = null;
+
+    private GrigliaAllegatiBindingItem? _editingItem;
+
+    private bool _mostraConfermaEliminazione;
+
+    private int _deletingId;
+
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        this.LoadUploaders();
+    }
+
+    private void LoadUploaders()
+    {
+        if (this.oldDataSource == this.DataSource)
+        {
+            return;
+        }
+
+        this.oldDataSource = this.DataSource;
+    }
+
+    private async Task OnUploadFileDeleteAsync()
+    {
+        await this._spinnerService.ShowSpinnerAsync(async () =>
+        {
+            try
+            {
+                if (this.OnDeleteFile.HasDelegate)
+                {
+                    await this.OnDeleteFile.InvokeAsync(this._deletingId);
+                }
+
+                this._mostraConfermaEliminazione = false;
+            }
+            catch (Exception ex)
+            {
+                //this.errorContainerModel.Add($"Si è verificato un errore durante l'eliminazione del file {uploaders[index].FileName}: {ex.Message}");
+            }
+        });
+    }
+
+    private void ShowConfirmationModal(int documentId)
+    {
+        this._deletingId = documentId;
+        this._mostraConfermaEliminazione = true;
+    }
+
+    private void ModificaAllegato(GrigliaAllegatiBindingItem item)
+    {
+        this._editingItem = item;
+    }
+
+    private async Task SalvaModificheAsync(GrigliaAllegatiBindingItem editingItem)
+    {
+        await this._spinnerService.ShowSpinnerAsync(async () =>
+        {
+
+            if (editingItem.CodiceOggetto == null)
+            {
+                this.AllegatiInterventoService.EliminaOggettoUtente(this._editingItem.IdDomanda.Value, this._editingItem.Id);
+            }
+            else
+            {
+                this.AllegatiInterventoService.Salva(editingItem.IdDomanda.Value, editingItem.Id, editingItem.CodiceOggetto.Value);
+            }
+
+            this._editingItem = null;
+
+            await this.OnEditFile.InvokeAsync();
+        });
+    }
+}

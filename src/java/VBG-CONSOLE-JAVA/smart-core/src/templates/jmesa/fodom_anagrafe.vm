@@ -1,0 +1,11 @@
+$!itemEntity.presentatoreNome $!itemEntity.presentatoreCognome
+#if($!itemEntity.presentatoreCodfiscale)
+	<br />($!itemEntity.presentatoreCodfiscale)
+#end
+#if($!utenteConnessoVTY.codicefiscale != $!itemEntity.presentatoreCodfiscale)
+		#set($qstr = ("id=" + $!itemEntity.id.codice +"&idComuneDomanda=" + $!itemEntity.id.idcomune + "&ts_=" + $Utilities.generaPassword( 8 ) ))
+																																			
+		#set( $qsMAC = $Utilities.getLinkForFile( $qstr ) )
+
+		<div data-idDomanda="$itemEntity.id.codice" data-idcomuneDomanda="$itemEntity.id.idcomune" data-qsmac="$qsMAC" class="assegnazioneIntermediario" />
+#end

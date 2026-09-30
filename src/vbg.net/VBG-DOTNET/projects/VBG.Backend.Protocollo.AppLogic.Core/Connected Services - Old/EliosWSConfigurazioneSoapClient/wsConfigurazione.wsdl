@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="https://www.e-lios.eu/halley/WSElios/" xmlns:s="http://www.w3.org/2001/XMLSchema" targetNamespace="https://www.e-lios.eu/halley/WSElios/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema targetNamespace="https://www.e-lios.eu/halley/WSElios/">
+      <s:complexType name="wReConfigurazione">
+        <s:annotation>
+          <s:documentation>
+                        Oggetto di tipo wReConfigurazione
+                    </s:documentation>
+        </s:annotation>
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Enti" type="tns:wReEnteArray">
+            <s:annotation>
+              <s:documentation>
+                                Enti presenti nel sistema Halley
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="AreeOmogenee" type="tns:wReAreaOmogeneaArray">
+            <s:annotation>
+              <s:documentation>
+                                Aree omogenee del protocollo
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="Classificazioni" type="tns:wReClassificazioneArray">
+            <s:annotation>
+              <s:documentation>
+                                Classificazioni del protocollo
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="Uffici" type="tns:wReUfficioArray">
+            <s:annotation>
+              <s:documentation>
+                                Uffici presenti nel protocollo Halley
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="Esito" type="s:int">
+            <s:annotation>
+              <s:documentation>
+                                Numero errore
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="MessaggioEsito" nillable="true" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                Descrizione errore
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="wReEnteArray">
+        <s:annotation>
+          <s:documentation>
+                        Enti configurati restituiti
+                    </s:documentation>
+        </s:annotation>
+        <s:complexContent mixed="false">
+          <s:restriction base="soapenc:Array">
+            <s:attribute wsdl:arrayType="tns:wReEnte[]" ref="soapenc:arrayType" />
+          </s:restriction>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="wReAreaOmogeneaArray">
+        <s:annotation>
+          <s:documentation>
+                        Aree omogenee configurate restituite
+                    </s:documentation>
+        </s:annotation>
+        <s:complexContent mixed="false">
+          <s:restriction base="soapenc:Array">
+            <s:attribute wsdl:arrayType="tns:wReAreaOmogenea[]" ref="soapenc:arrayType" />
+          </s:restriction>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="wReClassificazioneArray">
+        <s:annotation>
+          <s:documentation>
+                        Classificazioni presenti nel titolario
+                    </s:documentation>
+        </s:annotation>
+        <s:complexContent mixed="false">
+          <s:restriction base="soapenc:Array">
+            <s:attribute wsdl:arrayType="tns:wReClassificazione[]" ref="soapenc:arrayType" />
+          </s:restriction>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="wReUfficioArray">
+        <s:annotation>
+          <s:documentation>
+                        Uffici presenti nel protocollo Halley
+                    </s:documentation>
+        </s:annotation>
+        <s:complexContent mixed="false">
+          <s:restriction base="soapenc:Array">
+            <s:attribute wsdl:arrayType="tns:wReUfficio[]" ref="soapenc:arrayType" />
+          </s:restriction>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="wReEnte">
+        <s:annotation>
+          <s:documentation>
+                        Oggetto di tipo wReEnte
+                    </s:documentation>
+        </s:annotation>
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Nome" nillable="true" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                Nome ente
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="Esito" type="s:int">
+            <s:annotation>
+              <s:documentation>
+                                Numero errore
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="MessaggioEsito" nillable="true" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                Descrizione errore
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="wReAreaOmogenea">
+        <s:annotation>
+          <s:documentation>
+                        Oggetto di tipo wReAreaOmogenea
+                    </s:documentation>
+        </s:annotation>
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int">
+            <s:annotation>
+              <s:documentation>
+                                Id area omogenea
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="Descrizione" nillable="true" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                Descrizione area omogenea
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="Esito" type="s:int">
+            <s:annotation>
+              <s:documentation>
+                                Numero errore
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="MessaggioEsito" nillable="true" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                Descrizione errore
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="wReUfficio">
+        <s:annotation>
+          <s:documentation>
+                        Oggetto di tipo wReUfficio
+                    </s:documentation>
+        </s:annotation>
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int">
+            <s:annotation>
+              <s:documentation>
+                                Codice Ufficio
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="Denominazione" nillable="true" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                Denominazione ufficio
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="0" maxOccurs="1" name="Tipo" nillable="true" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                Tipo ufficio ufficio 1 = "mittente" / 2 = "destinatario" in caso di
+                                protocollo interno
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="Esito" type="s:int">
+            <s:annotation>
+              <s:documentation>
+                                Numero errore
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="MessaggioEsito" nillable="true" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                Descrizione errore
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="wReClassificazione">
+        <s:annotation>
+          <s:documentation>
+                        result
+                    </s:documentation>
+        </s:annotation>
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="IdClassificazione" type="s:int">
+            <s:annotation>
+              <s:documentation>
+                                Id della classificazione
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="CodiceCategoria" nillable="true" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                Codice della categoria
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="DescrizioneCategoria" nillable="true" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                Descrizione della categoria
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="CodiceClasse" type="s:int">
+            <s:annotation>
+              <s:documentation>
+                                Codice della classe
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="DescrizioneClasse" nillable="true" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                Descrizione della Classe
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="CodiceSottoclasse" type="s:int">
+            <s:annotation>
+              <s:documentation>
+                                Codice della Sottoclasse
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="DescrizioneSottoclasse" nillable="true" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                Descrizione della Sottoclasse
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="Esito" type="s:int">
+            <s:annotation>
+              <s:documentation>
+                                Numero errore
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="MessaggioEsito" nillable="true" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                Descrizione errore
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="ConfigurazioneSoapIn">
+    <wsdl:part name="Token" type="s:string">
+      <s:documentation>
+                Token
+            </s:documentation>
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="ConfigurazioneSoapOut">
+    <wsdl:part name="return" type="tns:wReConfigurazione">
+      <s:documentation>
+                Ritorna un oggetto di tipo wReConfigurazione
+            </s:documentation>
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="wConfigurazioneSoap">
+    <wsdl:operation name="Configurazione">
+      <wsdl:documentation>
+                Get a complex type object
+            </wsdl:documentation>
+      <wsdl:input message="tns:ConfigurazioneSoapIn" />
+      <wsdl:output message="tns:ConfigurazioneSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="wConfigurazioneSoap" type="tns:wConfigurazioneSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc" />
+    <wsdl:operation name="Configurazione">
+      <soap:operation soapAction="https://www.e-lios.eu/halley/WSElios/Configurazione" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="https://www.e-lios.eu/halley/WSElios/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" parts="Token" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="https://www.e-lios.eu/halley/WSElios/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" parts="return" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="wConfigurazione">
+    <wsdl:port name="wConfigurazioneSoap" binding="tns:wConfigurazioneSoap">
+      <soap:address location="http://185.199.49.8:80/WSElios/wsConfigurazione.php" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

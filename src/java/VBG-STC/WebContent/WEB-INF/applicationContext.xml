@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:p="http://www.springframework.org/schema/p" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+			http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+
+	<!-- ========================= RESOURCE DEFINITIONS ========================= -->
+
+	<!-- Configurer that replaces ${...} placeholders with values from a properties file -->
+	<!-- (in this case, JDBC-related settings for the dataSource definition below) -->
+	<context:property-placeholder location="classpath:deploy.properties" />
+	
+	<context:component-scan base-package="it.gruppoinit.stc">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
+	<!-- services di UPGR4J -->
+	<context:component-scan base-package="it.gruppoinit.upgr.service" />
+	<context:component-scan base-package="it.gruppoinit.upgr.core.task" />
+	<!-- tasks di UPGR4J sviluppati per STC -->
+	<context:component-scan base-package="it.gruppoinit.stc.upgr.tasks" />
+	<!-- componente IHibernateConfigurationProvider -->
+	<context:component-scan base-package="it.gruppoinit.stc.upgr.hibernate" />
+	
+	<!-- Local C3P0 DataSource that works in any environment -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="driverClass" value="${jdbc.driverClassName}" />
+		<property name="jdbcUrl" value="${jdbc.url}" />
+		<property name="user" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="minPoolSize" value="${jdbc.c3p0.minPoolSize}" />
+		<property name="maxPoolSize" value="${jdbc.c3p0.maxPoolSize}" />
+		<property name="acquireIncrement" value="${jdbc.c3p0.acquireIncrement}" />
+		<property name="idleConnectionTestPeriod" value="${jdbc.c3p0.idleConnectionTestPeriod}" />
+		<property name="maxIdleTime" value="${jdbc.c3p0.maxIdleTime}" />
+		<property name="maxStatements" value="${jdbc.c3p0.maxStatements}" />
+	</bean>
+		
+	<!-- Aggiunta configurazione dei messaggi per UPGR4J -->
+	<bean id="messageSource" 
+		class="org.springframework.context.support.ResourceBundleMessageSource"
+		p:basename="messages">
+		<!-- §§§BEGIN§§§ -->
+		<property name="parentMessageSource"><ref bean="upgrMessageSource"/>
+		</property>
+		<!-- §§§END§§§ -->
+	</bean>
+	<!-- §§§BEGIN§§§ -->
+	<bean id="upgrMessageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource"
+		p:basename="upgr-messages"/>
+		
+	<!-- Aggiunta configurazione del DAO di UPGR4J che in STC usa la classe 
+	it.gruppoinit.stc.domain.Versione per accedere alla tabella VERSIONE-->
+	<bean id="versioneDao" class="it.gruppoinit.upgr.dao.impl.VersioneDAOImpl">
+		<property name="versioneClassName" value="it.gruppoinit.stc.domain.Versione"/>
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>	
+	<bean id="upgrDao" class="it.gruppoinit.upgr.dao.impl.UpgradeProcedureDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<!-- §§§END§§§ -->
+	<!-- Hibernate SessionFactory -->
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="packagesToScan" value="it.gruppoinit.stc.domain" />
+		<property name="configurationClass" value="org.hibernate.cfg.AnnotationConfiguration" />
+		<property name="lobHandler" ref="${hibernate.lobhandler}LobHandler" />
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+				<prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
+				<prop key="hibernate.use_sql_comments">${hibernate.use_sql_comments}</prop>
+				<prop key="hibernate.generate_statistics">${hibernate.generate_statistics}</prop>
+				<prop key="hibernate.connection.release_mode">${hibernate.connection.release_mode}</prop>
+			</props>
+		</property>
+		<property name="eventListeners">
+			<map>
+				<entry key="merge">
+					<bean class="org.springframework.orm.hibernate3.support.IdTransferringMergeEventListener" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="nativeJdbcExtractor" class="org.springframework.jdbc.support.nativejdbc.C3P0NativeJdbcExtractor" />
+	
+	<bean id="defaultLobHandler" class="org.springframework.jdbc.support.lob.DefaultLobHandler" />
+
+	<bean id="oracleLobHandler" class="org.springframework.jdbc.support.lob.OracleLobHandler" >
+		<property name="nativeJdbcExtractor" ref="nativeJdbcExtractor" />
+	</bean>
+	
+	<bean name="openSessionInViewInterceptor" class="org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor">
+		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="singleSession" value="true" />
+	</bean>
+
+	
+
+	<!-- ========================= BUSINESS OBJECT DEFINITIONS ========================= -->
+	<!--
+		Activates various annotations to be detected in bean classes: Spring's @Required and @Autowired,
+		as well as JSR 250's @Resource.
+	-->
+	
+	<!-- Transaction manager for a single Hibernate SessionFactory (alternative to JTA) -->
+	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager"
+		p:sessionFactory-ref="sessionFactory" />
+	
+	<context:annotation-config />
+
+	<aop:config>
+		<aop:pointcut id="serviceMethods" expression="execution(* it.gruppoinit.stc.service.*Service.*(..)) || execution(* it.gruppoinit.upgr.service.*Service.*(..)) || execution(* it.gruppoinit.upgr.core.task.*.run(..))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="serviceMethods" />
+	</aop:config>
+
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="*" propagation="REQUIRED" />
+			<tx:method name="setVersione" propagation="REQUIRES_NEW" />
+			<tx:method name="runTaskInNewTransaction" propagation="REQUIRES_NEW" />
+			<tx:method name="find*" propagation="REQUIRED" read-only="true" />
+		</tx:attributes>
+	</tx:advice>
+
+</beans>

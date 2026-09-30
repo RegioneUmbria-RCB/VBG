@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:sch="http://gruppoinit.it/pal/gp/backoffice/schemas/messages/responsabili"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://gruppoinit.it/pal/gp/backoffice/definitions/responsabili" targetNamespace="http://gruppoinit.it/pal/gp/backoffice/definitions/responsabili">
+	<wsdl:types>
+		<schema xmlns="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://gruppoinit.it/pal/gp/backoffice/schemas/messages/responsabili" schemaLocation="responsabili.xsd" />
+		</schema>
+	</wsdl:types>
+	<wsdl:message name="ResponsabiliInsertRequest">
+		<wsdl:part element="sch:ResponsabiliInsertRequest" name="ResponsabiliInsertRequest" />
+	</wsdl:message>
+	<wsdl:message name="ResponsabiliInsertResponse">
+		<wsdl:part element="sch:ResponsabiliInsertResponse" name="ResponsabiliInsertResponse" />
+	</wsdl:message>
+	<wsdl:message name="ResponsabiliUpdateRequest">
+		<wsdl:part element="sch:ResponsabiliUpdateRequest" name="ResponsabiliUpdateRequest" />
+	</wsdl:message>
+	<wsdl:message name="ResponsabiliUpdateResponse">
+		<wsdl:part element="sch:ResponsabiliUpdateResponse" name="ResponsabiliUpdateResponse" />
+	</wsdl:message>
+	<wsdl:portType name="Responsabili">
+		<wsdl:operation name="ResponsabiliInsert">
+			<wsdl:input message="tns:ResponsabiliInsertRequest" name="ResponsabiliInsertRequest" />
+			<wsdl:output message="tns:ResponsabiliInsertResponse" name="ResponsabiliInsertResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="ResponsabiliUpdate">
+			<wsdl:input message="tns:ResponsabiliUpdateRequest" name="ResponsabiliUpdateRequest" />
+			<wsdl:output message="tns:ResponsabiliUpdateResponse" name="ResponsabiliUpdateResponse" />
+		</wsdl:operation>	
+	</wsdl:portType>
+	<wsdl:binding name="ResponsabiliSoap11" type="tns:Responsabili">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="ResponsabiliInsert">
+			<soap:operation soapAction="ResponsabiliInsert" />
+			<wsdl:input name="ResponsabiliInsertRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="ResponsabiliInsertResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ResponsabiliUpdate">
+			<soap:operation soapAction="ResponsabiliUpdate" />
+			<wsdl:input name="ResponsabiliUpdateRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="ResponsabiliUpdateResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="ResponsabiliService">
+		<wsdl:port binding="tns:ResponsabiliSoap11" name="ResponsabiliSoap11">
+			<soap:address location="http://localhost:8080/backend/services/" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

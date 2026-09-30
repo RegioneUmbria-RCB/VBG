@@ -1,0 +1,433 @@
+x-commons:
+  ratelimit-headers: &ratelimit-headers
+    X-RateLimit-Limit:
+      $ref: '#/components/headers/X-RateLimit-Limit'
+    X-RateLimit-Remaining:
+      $ref: '#/components/headers/X-RateLimit-Remaining'
+    X-RateLimit-Reset:
+      $ref: '#/components/headers/X-RateLimit-Reset'
+  common-responses: &common-responses
+    '400':
+      $ref: '#/components/responses/400BadRequest'
+    '401':
+      $ref: '#/components/responses/401Unauthorized'
+    '429':
+      $ref: '#/components/responses/429TooManyRequests'
+    '500':
+      $ref: '#/components/responses/500InternalServerError'
+    '503':
+      $ref: '#/components/responses/503ServiceUnavailable'
+    default:
+      $ref: '#/components/responses/default'
+openapi: 3.0.0
+info:
+  title: Banche Dati Modulistica Unificata
+  version: 1.1.0
+  x-api-id: 62d8d908-4701-11e9-b210-d663bd873d93
+  x-catalog:
+    properties:
+      tag:
+        - Interrogazioni banche dati modulistica unificata SUAPE
+        - SUAPE 3.0
+      category:
+        - cataloghi indici elenchi
+  x-ecosystem:
+    - name: Ecosistema digitale regionale
+      url: REDACTED
+      description: Ecosistema digitale regionale Umbria
+  x-summary: API per l'interrogazione delle banche dati della modulistica unificata (Console)
+  description: "#### Documentazione\nAPI per l'interrogazione delle banche dati della modulistica unificata (Console)"
+  contact:
+    name: Riferimento Tecnico - PA Evolution
+#    url: REDACTED
+    email: "servicedesk@umbriadigitale.it"
+  # Per tutte le API pubblicate sull'Ecosistema digitale regionale
+  # lasciare 'https://apistore.regione.umbria.it/terms'
+  termsOfService: 'https://apistore.regione.umbria.it/terms'
+  # Team Digitale - L'audience delle API. Attualmente e' definito solamente
+  #   la tipologia `public`.
+  x-audience:
+    - public
+  x-lifecycle:
+    published: "2021-10-21T00:00:00.000Z"
+    maturity: published
+
+# Una lista di `tag` utili a raggruppare le varie operazioni
+#   eseguite dalle API. Ogni `tag` puo' referenziare un link
+#   alla sua descrizione.
+tags:
+  - name: gerarchia procedimenti
+    description: Servizio di recupero della classificazione e gerarchia degli  endoprocedimenti della modulistica
+
+  - name: dettaglio procedimento
+    description: Servizio di recupero delle informazioni di un endoprocedimento e di eventuali endo collegati
+     
+  - name: scarica documento
+    description: Servizio di recupero di un documento presente nei procedimenti
+ 
+  - name: status
+    description: metodo per verificare lo stato dei servizi di questa API
+
+paths:
+  /procedimenti/gerarchia/{idEnte}/{software}/{identificativo}:
+    get:
+      description: "Recupera la classificazione navigabile dei procedimenti, ovvero la classificazione sotto la quale i procedimenti sono catalogati. ES:  [MACROCATEGORIA] COMMERCIO AL DETTAGLIO/INGROSSO E FORME SPECIALI DI VENDITA--> [CATEGORIA] ESERCIZI DI VICINATO--> [ENDOPROCEDIMENTO] Apertura - Esercizio Vicinato (Alimentare)"
+      operationId: gerarchia-procedimenti
+      tags:
+        - gerarchia procedimenti
+      responses:
+        "200":
+          description: Chiamata effettuata con successo
+          content:
+            application/json:
+              schema:
+                type: object
+                title: risultati di inserimento della pratica
+                required:
+                  - lista
+                properties:
+                  lista:
+                   type: array
+                   items:
+                     $ref: '#/components/schemas/ProcedimentoSimple'
+
+        "500":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: Internal server error
+      parameters:
+        - in: path
+          name: idEnte
+          schema:
+            type: string
+          required: true
+          description: L'identificativo della bancadati CONSOLE. Per Umbria usare CONSMODUMB
+        - in: path
+          name: software
+          schema:
+            type: string
+          required: true
+          description: L'identificativo del modulo software dove sono memorizzate le info della modulistica della bancadati CONSOLE. Per Umbria usare SS
+        - in: path
+          name: identificativo
+          schema:
+            type: string
+          required: true
+          description: L'identificativo delle classificazioni per le quali interrogare il servizio. Per la chiamata iniziale indicare "-1". Per le successive chiamate usare gli dentificativi tornati. L'identificativo va usato se la proprietà sotto_cartelle è true. se false allora significa che è un [ENDOPROCEDIMENTO] ed allora in questo caso va chiamata l'API per ricavare la scheda del procedimento
+      summary: "Gerarchia e classificazione dei procedimenti"
+      x-auth-type: None
+      x-throttling-tier: Unlimited
+
+  /procedimento/{identificativoEnte}/{software}/{identificativoProcedimento}:
+    get:
+      description: Recupera la classificazione navigabile dei procedimenti, ovvero la classificazione sotto la quale i procedimenti sono catalogati. ES [MACROCATEGORIA] COMMERCIO AL DETTAGLIO/INGROSSO E FORME SPECIALI DI VENDITA--> [CATEGORIA] ESERCIZI DI VICINATO--> [ENDOPROCEDIMENTO] Apertura - Esercizio Vicinato (Alimentare)
+      operationId: dettaglio-procedimento
+      tags:
+        - dettaglio procedimento
+      responses:
+        "200":
+          description: Chiamata effettuata con successo
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Procedimento"
+        "500":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: Internal server error
+      parameters:
+        - in: path
+          name: identificativoEnte
+          schema:
+            type: string
+          required: true
+          description: L'identificativo dell'ente come registrato nella console e che ha aderito al progetto SUAPE. Di norma corrisponde al codice catastale dell'ente con [C] come prefisso. Es per Gubbio (codicecatastale E256) il valore da settare è CE256.
+        - in: path
+          name: software
+          schema:
+            type: string
+          required: true
+          description: L'identificativo del modulo software dove sono memorizzate le info della modulistica della bancadati CONSOLE. Per Umbria usare SS
+        - in: path
+          name: identificativoProcedimento
+          schema:
+            type: string
+          required: true
+          description: L'identificativo del procedimento recuperato
+      summary: "Scheda di un procedimento"
+      x-auth-type: None
+      x-throttling-tier: Unlimited
+
+  /documenti/{identificativoEnte}/{idDocumento}:
+    get:
+      description: Permette di recuperare un documento dato l'identificativo tornato dal servizio
+      operationId: scarica-documento
+      tags:
+        - scarica documento
+      responses:
+        "200":
+          description: Chiamata effettuata con successo
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+
+        "500":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: Internal server error
+      parameters:
+        - in: path
+          name: identificativoEnte
+          schema:
+            type: string
+          required: true
+          description: L'identificativo dell'ente come registrato nella console e che ha aderito al progetto SUAPE. Di norma corrisponde al codice catastale dell'ente con [C] come prefisso. Es per Gubbio (codicecatastale E256) il valore da settare è CE256.        
+        - in: path
+          name: idDocumento
+          schema:
+            type: string
+          required: true
+          description: L'identificativo del documento da scaricare. L'identificativo è presente nelle chiamate della scheda di un procedimento
+      summary: "Scheda di un procedimento"
+      x-auth-type: None
+      x-throttling-tier: Unlimited
+
+  #
+  # Questa risorsa deve essere sempre presente e serve per verificare lo stato del servizio di backend
+  #
+
+  /status:
+    get:
+      summary: Ritorna lo stato del servizio di backend.
+      description:  |
+        Ritorna lo stato del servizio di backend. A scopo
+        di test, su base randomica puo' ritornare
+        un errore.
+      operationId: getStatus
+      tags:
+        - status
+      responses:
+        <<: *common-responses
+        '200':
+          description: |
+            Il server ha ritornato lo status. In caso di problemi
+            ritorna sempre un problem+json.
+          # Il Rate Limit e' in fase di implementazione nell'Ecosistema Digitale, quindi l'headers seguente va lasciato commentato
+          #headers:
+          #  <<: *ratelimit-headers
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+
+servers:
+  - url: REDACTED
+    description: Server sviluppo
+components:
+
+
+  securitySchemes:
+    oAuth2ClientCredentials:REDACTED
+      type: oauth2
+      description: Per maggiori informazioni https://apistore.regione.umbria.it/store/forum
+      flows:
+        clientCredentials:REDACTED
+          tokenUrl: REDACTED
+          scopes: {}
+
+  headers:
+    X-RateLimit-Limit:
+      $ref: 'https://teamdigitale.github.io/openapi/0.0.5/definitions.yaml#/headers/X-RateLimit-Limit'
+    X-RateLimit-Remaining:
+      $ref: 'https://teamdigitale.github.io/openapi/0.0.5/definitions.yaml#/headers/X-RateLimit-Remaining'
+    X-RateLimit-Reset:
+      $ref: 'https://teamdigitale.github.io/openapi/0.0.5/definitions.yaml#/headers/X-RateLimit-Reset'
+    Retry-After:
+      $ref: 'https://teamdigitale.github.io/openapi/0.0.5/definitions.yaml#/headers/Retry-After'
+
+  responses:
+    # Risposte predefinite restituite dall'API Manager dell'Ecosistema (https://apistore.regione.umbria.it/apierrorcode/errors.html)
+    # Queste risposte devono essere sempre presenti
+    400BadRequest:
+      $ref: 'https://raw.githubusercontent.com/RegioneUmbria/ecosistema-openapi/0.0.1/definitions.yaml#/responses/400BadRequest'
+    401Unauthorized:
+      $ref: 'https://raw.githubusercontent.com/RegioneUmbria/ecosistema-openapi/0.0.1/definitions.yaml#/responses/401Unauthorized'
+    404NotFound:
+      $ref: 'https://raw.githubusercontent.com/RegioneUmbria/ecosistema-openapi/0.0.1/definitions.yaml#/responses/404NotFound'
+    429TooManyRequests:
+      $ref: 'https://raw.githubusercontent.com/RegioneUmbria/ecosistema-openapi/0.0.1/definitions.yaml#/responses/429TooManyRequests'
+    500InternalServerError:
+      $ref: 'https://raw.githubusercontent.com/RegioneUmbria/ecosistema-openapi/0.0.1/definitions.yaml#/responses/500InternalServerError'
+    503ServiceUnavailable:
+      $ref: 'https://raw.githubusercontent.com/RegioneUmbria/ecosistema-openapi/0.0.1/definitions.yaml#/responses/503ServiceUnavailable'
+    default:
+      $ref: 'https://raw.githubusercontent.com/RegioneUmbria/ecosistema-openapi/0.0.1/definitions.yaml#/responses/default'
+
+
+  schemas:
+
+
+
+
+    ProcedimentoSimple:
+      title: ProcedimentoSimple
+      properties:
+       id:
+         type: string
+       descrizione:
+         type: string
+       sotto_cartelle:
+         type: boolean
+        
+        
+    Procedimento:
+      title: Scheda di dettaglio di un Procedimento
+      properties:
+       id:
+        type: string
+       nome:
+        type: string
+       data_aggiornamento:
+        type: string
+       tipologia:
+        type: string
+       natura:
+        type: string
+       amministrazione:
+        type: string
+       descrizione:
+        type: string
+       requisiti:
+        type: string
+       adempimenti:
+        type: string
+       scheda_regionale:
+        type: string
+       oneri:
+          type: array
+          items:
+            $ref: '#/components/schemas/Onere'
+       normativa:
+          type: array
+          items:
+            $ref: '#/components/schemas/Normativa'
+       modulistica:
+          type: array
+          items:
+            $ref: '#/components/schemas/Modulistica'
+       procedimenti_collegati:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProcedimentoCollegato'
+        
+        
+    ProcedimentoCollegato:
+      title: ProcedimentoCollegato
+      properties:
+       id:
+        type: string
+       nome:
+        type: string
+       ordine:
+         type: integer
+         format: int32
+       principale:
+         type: boolean
+       regionale:
+         type: boolean
+       idcomune:
+        type: string
+       intervento:
+         type: boolean
+       procedimenti_collegati:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProcedimentoCollegato'
+            
+    Modulistica:
+      title: Modulistica
+      properties:
+       codice:
+        type: string
+       obbligatorio:
+         type: boolean
+       descrizione:
+        type: string
+       titolo:
+        type: string
+       file_id:
+        type: string
+       link:
+        type: string
+       download:
+        type: array
+        items:
+          $ref: '#/components/schemas/Download'
+      
+    Download:
+      title: Download
+      properties:
+       codice_oggetto:
+        type: string
+       formato:
+        type: string
+     
+    Onere:
+      title: Onere
+      properties:
+       causale:
+        type: string
+       note:
+        type: string
+       importo:
+        type: number
+        format: double
+    
+    Normativa:
+      title: Normativa
+      properties:
+       descrizione:
+        type: string
+       tipologia:
+        type: string
+       link:
+        type: string
+       codice_oggetto:
+        type: string
+     
+    Problem:
+      properties:
+        detail:
+          description: "A human readable explanation specific to this occurrence of the\nproblem.\n"
+          example: Generic API invocation error
+          type: string
+        instance:
+          description: "An absolute URI that identifies the specific occurrence of the problem.\nIt may or may not yield further information if dereferenced.\n"
+          format: uri
+          type: string
+        status:
+          description: "The HTTP status code generated by the origin server for this occurrence\nof the problem.\n"
+          example: 500
+          exclusiveMaximum: true
+          format: int32
+          maximum: 600
+          minimum: 100
+          type: integer
+        title:
+          description: "A short, summary of the problem type. Written in english and readable\nfor engineers (usually not suited for non technical stakeholders and\nnot localized); example: Service Unavailable\n"
+          type: string
+        type:
+          default: "about:blank"
+          description: "An absolute URI that identifies the problem type.  When dereferenced,\nit SHOULD provide human-readable documentation for the problem type\n(e.g., using HTML).\n"
+          format: uri
+          type: string
+      type: object
+

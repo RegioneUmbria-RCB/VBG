@@ -1,0 +1,86 @@
+﻿
+@using Init.Sigepro.FrontEnd.AppLogic.Pagamenti.NodoPagamenti
+@using VBG.Pagamenti.NodoPagamenti.Verifica
+
+@if (IdDomanda.HasValue && this._dataSource.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Causale</th>
+                <th>Stato</th>
+                <th>IUV</th>
+                <th>C.F. soggetto debitore</th>
+                <th>Codice avviso</th>
+                <th>Importo (€)</th>
+                <th>Scadenza</th>
+                <th>Avviso di pagamento</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in _dataSource)
+            {
+                <tr>
+                    <td>
+                        @item.Causale
+                    </td>
+                    <td>
+                        @item.Stato
+                    </td>
+                    <td>
+                        @item.IUV
+                    </td>
+                    <td>
+                        @item.CfSoggettoDebitore
+                    </td>
+                    <td>
+                        @item.CodiceAvviso
+                    </td>
+                    <td style="text-align: right">@item.Importo.ToString("N2")</td>
+                    <td>
+                        @item.Scadenza
+                    </td>
+                    <td style="text-align: right">
+                        @if (item.PermetteDownloadAvviso)
+                        {
+                            <button class="download-avviso btn btn-light" @onclick="() => DownloadAvvisoPagamento(item.UniqueId)">Scarica</button>
+                        }
+
+                        @if (item.OTF)
+                        {
+                            <span runat="server">Non disp.</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <PopupDownloadAvvisoPagamento IdDomanda="@IdDomanda.Value" @ref="_popupDownloadAvvisoPagamento"></PopupDownloadAvvisoPagamento>
+}
+
+@code {
+    [Inject]
+    public IPagamentiNodoPagamentiService _nodoPagamentiService { get; set; } = default!;
+
+    [Parameter]
+    public int? IdDomanda { get; set; }
+
+    private IEnumerable<DatiOperazioneSuNodoPagamenti> _dataSource = Enumerable.Empty<DatiOperazioneSuNodoPagamenti>();
+    private PopupDownloadAvvisoPagamento _popupDownloadAvvisoPagamento;
+
+    protected override void OnParametersSet()
+    {
+        if (!this.IdDomanda.HasValue)
+        {
+            return;
+        }
+
+        this._dataSource = this._nodoPagamentiService.GetDatiPosizioniDebitorie(IdDomanda.Value);
+    }
+
+    private async Task DownloadAvvisoPagamento(string uidOnere)
+    {
+        await _popupDownloadAvvisoPagamento.Show(uidOnere);
+    }
+}

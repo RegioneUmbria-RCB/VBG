@@ -1,0 +1,30 @@
+@if (interventi !== null) {
+  <div>
+    @if (mostraTitoliSezioni) {
+      <h3>{{ titolo }}</h3>
+    }
+    <ul>
+      @for (elemento of interventi | slice: 0:limitaRisultati; track elemento) {
+        <li>
+          @if (elemento.hasChilds) {
+            <a [routerLink]="[urlRedirect]" [queryParams]="{ open: elemento.id }"
+              (click)="onClick()">
+              <i class="glyphicon glyphicon-folder-close"></i>
+              {{ elemento.text }}
+            </a>
+          }
+          @if (!elemento.hasChilds) {
+            <a [routerLink]="[urlRedirect, elemento.id]" (click)="onClick()">
+              <i class="glyphicon glyphicon glyphicon-file"></i>
+              {{ elemento.text }}
+            </a>
+          }
+        </li>
+      }
+    </ul>
+    @if (interventi.length >= limitaRisultati) {
+      <small>Primi {{ limitaRisultati }} risultati di {{ interventi.length
+      }}</small>
+    }
+  </div>
+}

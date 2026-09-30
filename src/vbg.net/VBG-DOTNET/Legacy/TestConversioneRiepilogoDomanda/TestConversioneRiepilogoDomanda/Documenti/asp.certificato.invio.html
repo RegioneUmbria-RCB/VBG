@@ -1,0 +1,151 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+	</head>
+	<body>
+		valore di /Istanze/IstanzeDyn2Dati/IstanzeDyn2Dati/CampoDinamico/Nomecampo[.='MQ_ALIM']/../../Valore = '1' <xsl:value-of select="/Istanze/IstanzeDyn2Dati/IstanzeDyn2Dati/CampoDinamico/Nomecampo[.='MQ_ALIM']/../../Valore" />
+		<xsl:if test="/Istanze/IstanzeDyn2Dati/IstanzeDyn2Dati/CampoDinamico/Nomecampo[.='MQ_ALIM']/../../Valore = '1'">
+			Valore == 1
+		</xsl:if>
+		<center style="font-family: Verdana; font-size: 14px">
+			<div style="border: 1px solid black; width: 90%;">
+				<div style="font-size: 28px; padding: 20px; text-align: center; ">
+					RICEVUTA di PRESENTAZIONE S.C.I.A.
+				</div>
+			</div>
+			<div style="font-size: 18px;">
+				(Segnalazione Certificata Inizio Attivit�)
+			</div>
+			<div>
+				<div style="padding: 5px; margin-top: 20px; text-align: left;">
+					Il presente documento attesta l'avvenuta presentazione della domanda presso l'ufficio ricevente e costituisce titolo autorizzatorio per l'avvio dell'intervento richiesto.
+				</div>
+			</div>
+			<br style="clear: both;" />
+			<div style="border: 1px solid black; margin-top: 20px; width: 80%;">
+				<div style="padding: 5px; text-align: center; font-size: 18px">
+					INFORMAZIONI DELLA DOMANDA
+				</div>
+			</div>
+			<center>
+				<div style="width: 80%; text-align: left; margin-top: 20px; padding: 20px">
+					<table style="text-align: left; margin-top: 20px;" width="100%">
+						<tr>
+							<td valign="top" width="10%">
+								Impresa
+							</td>
+							<td valign="top" width="40%">
+								<b>
+									<xsl:value-of select="/Istanze/AziendaRichiedente/NOMINATIVO" />
+								</b>
+							</td>
+							<td valign="top" width="15%">
+								Dichiarante
+							</td>
+							<td valign="top" width="35%">
+								<b>
+									<xsl:value-of select="/Istanze/Richiedente/NOMINATIVO" />&#160; <xsl:value-of select="/Istanze/Richiedente/NOME" />
+								</b>
+							</td>
+						</tr>
+						<tr>
+							<td valign="top">
+								Protocollo
+							</td>
+							<td valign="top" colspan="3">
+								N.
+								<b>
+									<xsl:value-of select="/Istanze/NUMEROPROTOCOLLO " />
+								</b>
+								Data.
+								<b>
+									<xsl:call-template name="FormatDate">
+										<xsl:with-param name="DateTime" select="/Istanze/DATAPROTOCOLLO" />
+									</xsl:call-template>
+								</b>
+							</td>
+						</tr>
+						<tr>
+							<td valign="top">
+								Oggetto
+							</td>
+							<td valign="top" colspan="3">
+								<b>
+									<xsl:value-of select="/Istanze/LAVORI" />
+								</b>
+							</td>
+						</tr>
+						<tr>
+							<td valign="top">
+								Allegati
+							</td>
+							<td valign="top" colspan="3">
+								<ul>
+									<xsl:for-each select="/Istanze/DocumentiIstanza/DocumentiIstanza">
+										<li>
+											<xsl:value-of select="DOCUMENTO" />
+										</li>
+									</xsl:for-each>
+
+									<xsl:for-each select="/Istanze/EndoProcedimenti/IstanzeProcedimenti/IstanzeAllegati/IstanzeAllegati">
+										<xsl:if test="PRESENTE != '0'">
+											<li>
+												<xsl:value-of select="ALLEGATOEXTRA" />
+											</li>
+										</xsl:if>
+									</xsl:for-each>
+								</ul>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</center>
+			<br style="clear: both;" />
+			<div style="border: 1px solid black; margin-top: 20px; width: 80%;">
+				<div style="padding: 5px; text-align: center; font-size: 18px">
+					INFORMAZIONI DELL' UFFICIO
+				</div>
+			</div>
+			<center>
+				<div style="width: 80%; text-align: left; margin-top: 20px; padding: 20px">
+					<table style="text-align: left; margin-top: 20px" width="100%">
+						<tr>
+							<td valign="top">
+								Ufficio ricevente
+							</td>
+							<td valign="top">
+								<b>
+									<xsl:value-of select="/Istanze/ConfigurazioneComune/DENOMINAZIONE" />
+								</b>
+							</td>
+						</tr>
+						<tr>
+							<td valign="top">
+								Responsabile
+							</td>
+							<td valign="top">
+								<b>
+									<xsl:value-of select="/Istanze/Operatore/RESPONSABILE" />
+								</b>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</center>
+			<br style="clear: both;" />
+			<div style="border: 1px solid black; margin-top: 20px; width: 80%;">
+				<div style="padding: 5px; text-align: center; font-size: 18px">
+					NOTE
+				</div>
+			</div>
+			<div style="margin-bottom: 20px; text-align: justify;">
+				<p>
+					L'amministrazione competente, in caso di accertata carenza dei requisiti e dei presupposti di cui al comma 1 L. 30 luglio 2010 , n. 122, nel termine di sessanta giorni dal ricevimento della segnalazione di cui al medesimo comma, ha facolt� di adottare motivati provvedimenti di divieto di prosecuzione dell'attivit� e di rimozione degli eventuali effetti dannosi di essa, salvo che, ove ci� sia possibile, l'interessato provveda a conformare alla normativa vigente detta attivit� ed i suoi effetti entro un termine fissato dall'amministrazione, in ogni caso non inferiore a trenta giorni.
+				</p>
+				<p>
+					E' fatto comunque salvo il potere dell'amministrazione competente di assumere determinazioni in via di autotutela, ai sensi degli articoli 21-quinquies e 21-nonies L. 30 luglio 2010 , n. 122. In caso di dichiarazioni sostitutive di certificazione e dell'atto di notorieta' false o mendaci, l'amministrazione, ferma restando l'applicazione delle sanzioni penali di cui al comma 6, nonch� di quelle di cui al capo VI del testo unico di cui al decreto del Presidente della Repubblica 28 dicembre 2000, n. 445, pu� sempre e in ogni tempo adottare i provvedimenti di cui al primo periodo.
+				</p>
+			</div>
+		</center>
+	</body>
+</html>	

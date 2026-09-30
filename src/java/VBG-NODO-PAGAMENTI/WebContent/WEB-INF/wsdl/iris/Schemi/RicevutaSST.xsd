@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2013 (http://www.altova.com) by  () -->
+<xs:schema xmlns:tns="http://integration.iris.tasgroup.it/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xmime="http://www.w3.org/2005/05/xmlmime" targetNamespace="http://integration.iris.tasgroup.it/" version="1.0">
+	<xs:element name="ricevutaSST" type="tns:ricevutaSST"/>
+	<xs:complexType name="ricevutaSST">
+		<xs:sequence>
+			<xs:element name="versione" type="tns:versione" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="datiAnagraficiDebitore" type="tns:datiAnagraficiDebitore" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="datiPagamento" type="tns:datiPagamento" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="noteInformative" type="tns:noteInformative" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="versione">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="01.00"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- DATI DEL DEBITORE -->
+	<xs:element name="datiAnagraficiDebitore" type="tns:datiAnagraficiDebitore"/>
+	<xs:complexType name="datiAnagraficiDebitore">
+		<xs:sequence>
+			<xs:element name="nomeCognome" type="tns:Max100Text" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="dataNascita" type="tns:dataYYYYMMGG" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="codiceFiscale" type="tns:Max16Text" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="indirizzoResidenza" type="tns:Max255Text" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="localitaResidenza" type="tns:Max100Text" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- DATI DEL PAGAMENTO -->
+	<xs:element name="datiPagamento" type="tns:datiPagamento"/>
+	<xs:complexType name="datiPagamento">
+		<xs:sequence>
+			<xs:element name="IUV" type="tns:IdentificativoUnivocoVersamento" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="causalePagamento" type="tns:Max100Text" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="importoComplessivo" type="tns:Decimal15-2" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="importoVoci" type="tns:importoVoci" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="importoVoci">
+		<xs:sequence>
+			<xs:element name="importoVoce" type="tns:importoVoce" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="importoVoce">
+		<xs:sequence>
+			<xs:element name="descrizione" type="tns:Max100Text"/>
+			<xs:element name="importo" type="tns:Decimal15-2"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- DATI INFORMATIVI -->
+	<xs:element name="noteInformative" type="tns:noteInformative"/>
+	<xs:complexType name="noteInformative">
+		<xs:sequence>
+			<xs:element name="identificativoDocumento" type="tns:Max50Text" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="informazioni" type="tns:Max2048Text" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- XS: RESTRICTIONS -->
+	<xs:simpleType name="IdentificativoUnivocoVersamento">
+	    <xs:restriction base="xs:string">
+	        <xs:pattern value="\d{15}"/>
+	    </xs:restriction>
+	</xs:simpleType >
+	<xs:simpleType name="Decimal15-2">
+    	<xs:restriction base="xs:decimal">
+      		<xs:maxInclusive value="999999999999999"/>
+      		<xs:fractionDigits value="2"/>
+    	</xs:restriction>
+  	</xs:simpleType>
+	<xs:simpleType name="dataYYYYMMGG">
+	   <xs:restriction base="xs:string">
+		   <xs:pattern value="\d{4}(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])"/>
+	   </xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max16Text">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="16"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max50Text">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max100Text">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max255Text">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="255"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max2048Text">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="2048"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

@@ -1,0 +1,61 @@
+#set($valoriList = $helper.getListOfRows($blocco,$rowIndex,$isTemplate))
+#set($foo = $rowIndex.incrementaLivello($blocco))
+#foreach($valore in $valoriList)
+	#set($indiceBlocco = $rowIndex.getIndice())
+	## questo id non è univoco perche' usa l'id della riga del modello che è uguale per tutte le righe dello stesso blocco
+	#set($idBlocco = "BLOCK_${helper.getIdQuadroDinamico($quadro)}_${riga.NumRiga}_$indiceBlocco")
+	#if($isTemplate)
+		#set($idBlocco = "BLOCK_${helper.getIdQuadroDinamico($quadro)}_${riga.NumRiga}_${indicePh}")
+	#end
+	#set($idRigaBlocco = "TR_${idBlocco}")
+	<div id="$idBlocco" class="divBlocco" style="margin-bottom: 3px; margin-top: 3px;border: 1px solid #000000">
+		#set($righeTab = $blocco.getRighe())
+		#set($maxColonneTab = $blocco.getMaxColonne())
+		#if($righeTab && $righeTab.size() > 0)
+			<table cellpadding="0" cellspacing="2" width="100%" border="0">
+				#foreach($rigaTab in $righeTab)
+				<tr class="rigaBlocco" id="${idRigaBlocco}">
+					#set($primaRigaBlocco = $velocityCount == 1)
+					#set($colonneTab = $rigaTab.getColonne())
+					#set($deltaColonne = $maxColonneTab - $colonneTab.size())
+					##$modelloHelper.debug($colonneTab)
+					#foreach($colonnaTab in $colonneTab)
+						#set($lastColonna = $velocityCount == $colonneTab.size())
+						#set($d2md = false)
+						#set($d2md = $colonnaTab.Dyn2Modellid)
+						#set($campo = false)
+						#set($campo = $colonnaTab.getCampo())
+						#set($tabelleTab = false)
+						#set($tabelleTab = $colonnaTab.getTabelle())
+						#set($testo = $colonnaTab.getTesto())
+						#set($testoEsteso = $colonnaTab.getTestoesteso())
+						#if($tabelleTab)
+							##tabelle annidate non supportate
+						#else
+							#parse("/modellidinamici_v1_5/dyn2md.vm")
+						#end
+					#end
+					#set($colonnaTab = false)
+					#if($primaRigaBlocco && !$modelloHelper.isRenderForPrint())
+						#set($rowspanBlocco = $righeTab.size())
+						#set($eliminaBloccoArgument = ${indiceBlocco})
+						#set($eliminaBloccoFunction = "eliminaBlocco_${helper.getIdQuadroDinamico($quadro)}_${riga.getNumRiga()}")
+						#if($isTemplate)
+							#set($eliminaBloccoArgument = "${indicePh}")
+						#end
+						<td rowspan="$rowspanBlocco" width="10%">
+							<div class="divEliminazioneBlocco">
+								<input type="button" onclick="javascript:${helper.escapeForJsVariableName($eliminaBloccoFunction)}('${riga.getNumRiga()}',$eliminaBloccoArgument);" value="Elimina" class="cart-delete-row-button">
+							</div>
+						</td>
+					#end
+				</tr>
+				#end
+			</table>
+		#end
+	</div>
+	#set($righeTab = false)
+	#set($foo = $rowIndex.incrementaIndice())	
+#end
+#set($foo = $rowIndex.decrementaLivello())
+#set($indiceBlocco = 0)

@@ -1,0 +1,510 @@
+﻿<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+		<style media="all">
+					.etichetta{background-color: #efefef;font-size: 11px;}
+					.tilolo{background-color: #efefef;font-weight: bold;font-size: 13px;}
+					.dato{font-weight: bold;font-size: 10px;}
+					.nomeFile{font-size: 10px;}
+					pre{  font-family: Verdana; font-size: 10px; }
+					h3{  font-family: Verdana; font-size: 14px; }
+        </style>
+		<script type="text/javascript">
+			var PhantomJSPrinting = {
+				/*header: {
+					height: "4cm",
+					contents: function (pageNum, numPages) {
+
+						var header = document.getElementById("pageHeader"),
+							html = header.innerHTML;
+
+						return html;
+					}
+				},*/
+				footer: {
+					height: "1cm",
+					contents: function(pageNum, numPages) {
+						var footer = document.getElementById("pageFooter"),
+							html = footer.innerHTML;
+							
+						return html.replace("$pageNum", pageNum.toString()).replace("$numPages", numPages.toString()); 
+					}
+				}
+			};
+		</script>
+	</head>
+	<body style="font-family: Verdana; font-size: 12px;background-color:#ffffff">
+		<footer id="pageFooter" name="pageFooter">
+			<div style='width:40%; text-align:left;   font-family: Arial; font-size: 9px; float: left;'>
+				<xsl:value-of select="/Istanze/NUMEROISTANZA"/>&#160;
+				</div>
+			<div style='width:20%; text-align:center; font-family: Arial; font-size: 9px; float: left;'>
+					$pageNum/$numPages
+				</div>
+			<div style='width:40%; text-align:center; font-family: Arial; font-size: 9px; float: left;'>&#160;</div>
+		</footer>
+		<!--<table width="100%" border="1px" cellpadding="0" cellspacing="0" height="100px">
+          <tr>
+            <td width="50%">
+                <span class="dato"><xsl:value-of select="/Istanze/ConfigurazioneComune/DENOMINAZIONE" /></span>
+            </td>
+            <td width="50%">
+              <span class="dato">Pratica n. 
+              <xsl:value-of select="/Istanze/NUMEROISTANZA" /></span>
+              <br/>
+              <br />
+            </td>
+          </tr>
+        </table>-->
+		<div style="text-align:center">
+			<img src="https://dati.toscana.it/uploads/group/20150210-080937.916163cittametropolitanafirenze.png" width="80"/>
+			<pre>
+				<h3>
+					<xsl:value-of select="/Istanze/Intervento/SC_DESCRIZIONE"/>
+				</h3>
+			</pre>
+			<h4>
+				<i>Legge e Regolamento Forestali (L.R. n.39/2000, D.P.G.R. n. 48/R/2003), Regolamento C. M. (D.C.M. n. 64/2021)</i>
+			</h4>
+		</div>
+		<table width="100%" border="1px" cellpadding="0" cellspacing="0" height="100px">
+			<tr>
+				<td width="30%">
+          Pratica Telematica n. <xsl:value-of select="/Istanze/NUMEROISTANZA"/>
+				</td>
+				<td width="70%" style="text-align:center">
+					<b> Alla CITTA' METROPOLITANA DI FIRENZE<br/>
+										  Direzione Progetti Strategici<br/>
+										  Vincolo Idrogeologico<br/>
+										  Via Ginori 10, 50129 Firenze
+									   <br/>
+					</b>
+				</td>
+			</tr>
+		</table>
+		<div style="width:100%;text-align:left;">
+			<xsl:for-each select="/Istanze/Richiedenti/IstanzeRichiedenti">
+				<table width="100%" border="0px" cellpadding="0" cellspacing="0">
+					<tr>
+						<td width="100%" colspan="4" class="titolo">
+										DATI DEL RICHIEDENTE<br/>
+						</td>
+					</tr>
+					<tr>
+						<td width="100%" colspan="4" class="etichetta">
+							<br/>In qualit&#224; di <span class="dato">
+								<xsl:value-of select="DESCRSOGGETTO"/>
+							</span>
+						</td>
+					</tr>
+					<tr>
+						<td width="25%" class="etichetta">Nominativo</td>
+						<td width="75%" colspan="3" class="dato">
+							<xsl:value-of select="Richiedente/NOMINATIVO"/>&#160;
+										<xsl:value-of select="Richiedente/NOME"/>
+						</td>
+					</tr>
+					<tr>
+						<td width="25%" class="etichetta">Nato/a a</td>
+						<td width="25%" class="dato">
+							<xsl:value-of select="Richiedente/ComuneNascita/COMUNE"/>
+						</td>
+						<td width="5%" class="etichetta">il </td>
+						<td width="45%" class="dato">
+							<xsl:call-template name="FormatDate">
+								<xsl:with-param name="DateTime" select="Richiedente/DATANASCITA"/>
+							</xsl:call-template>
+						</td>
+					</tr>
+					<tr>
+						<td width="25%" class="etichetta">Residente in</td>
+						<td width="25%" class="dato">
+							<xsl:value-of select="Richiedente/ComuneResidenza/COMUNE"/>
+						</td>
+						<td width="5%" class="etichetta">in</td>
+						<td width="45%" class="dato">
+							<xsl:value-of select="Richiedente/INDIRIZZO"/>
+						</td>
+					</tr>
+					<tr>
+						<td width="25%" class="etichetta">Codice Fiscale</td>
+						<td width="75%" colspan="3" class="dato">
+							<xsl:value-of select="Richiedente/CODICEFISCALE"/>
+						</td>
+					</tr>
+					<tr>
+						<td width="25%" class="etichetta">E-mail/PEC</td>
+						<td width="75%" colspan="3" class="dato">
+							<xsl:value-of select="Richiedente/EMAIL"/> / <xsl:value-of select="Richiedente/Pec"/>
+						</td>
+					</tr>
+					<tr>
+						<td width="25%" class="etichetta">Telefono</td>
+						<td width="75%" colspan="3" class="dato">
+							<xsl:value-of select="Richiedente/TELEFONO"/>
+						</td>
+					</tr>
+				</table>
+				<br/>
+				<table width="100%" border="0px" cellpadding="0" cellspacing="0">
+					<tr>
+						<td width="100%" colspan="4" class="titolo">
+										DATI DELLA DITTA O SOCIETA' RICHIEDENTE<br/>
+						</td>
+					</tr>
+					<tr>
+						<td width="100%" colspan="4" class="etichetta">
+							<br/>
+							<span class="dato"/>
+						</td>
+					</tr>
+					<tr>
+						<td width="25%" class="etichetta">Nominativo</td>
+						<td class="dato" colspan="3" width="75%">
+							<xsl:value-of select="Richiedente/NOMINATIVO"/>&#160;
+								
+							</td>
+					</tr>
+					<tr>
+						<td width="25%" class="etichetta">Indirizzo</td>
+						<td class="dato" width="25%">
+							<xsl:value-of select="Richiedente/ComuneResidenza/COMUNE"/>
+						</td>
+						<td width="5%" class="etichetta"/>
+						<td class="dato" width="45%">
+							<xsl:value-of select="Richiedente/INDIRIZZO"/>
+						</td>
+					</tr>
+					<tr>
+						<td width="25%" class="etichetta">Codice Fiscale Impresa</td>
+						<td class="dato" colspan="3" width="75%">
+							<xsl:value-of select="Richiedente/PARTITAIVA"/>
+						</td>
+					</tr>
+					<tr>
+						<td width="25%" class="etichetta">E-mail/PEC</td>
+						<td width="75%" colspan="3" class="dato">
+							<xsl:value-of select="Richiedente/EMAIL"/> / <xsl:value-of select="Richiedente/Pec"/>
+						</td>
+					</tr>
+					<tr>
+						<td width="25%" class="etichetta">Telefono</td>
+						<td width="75%" colspan="3" class="dato">
+							<xsl:value-of select="Richiedente/TELEFONO"/>
+						</td>
+					</tr>
+				</table>
+				<br/>
+				<table width="100%" border="0px" cellpadding="0" cellspacing="0">
+					<tr>
+						<td width="100%" colspan="4" class="titolo">
+								DATI DEL TECNICO ABILITATO<br/>
+						</td>
+					</tr>
+					<tr>
+						<td width="100%" colspan="4" class="etichetta">
+							<br/>In qualit&#224; di <span class="dato">
+								<xsl:value-of select="DESCRSOGGETTO"/>
+							</span>
+						</td>
+					</tr>
+					<tr>
+						<td width="25%" class="etichetta">Nominativo</td>
+						<td width="75%" colspan="3" class="dato">
+							<xsl:value-of select="Richiedente/NOMINATIVO"/>&#160;
+								<xsl:value-of select="Richiedente/NOME"/>
+						</td>
+					</tr>
+					<tr>
+						<td width="25%" class="etichetta">Nato/a a</td>
+						<td width="25%" class="dato">
+							<xsl:value-of select="Richiedente/ComuneNascita/COMUNE"/>
+						</td>
+						<td width="5%" class="etichetta">il </td>
+						<td width="45%" class="dato">
+							<xsl:call-template name="FormatDate">
+								<xsl:with-param name="DateTime" select="Richiedente/DATANASCITA"/>
+							</xsl:call-template>
+						</td>
+					</tr>
+					<tr>
+						<td width="25%" class="etichetta">Residente in</td>
+						<td width="25%" class="dato">
+							<xsl:value-of select="Richiedente/ComuneResidenza/COMUNE"/>
+						</td>
+						<td width="5%" class="etichetta">in</td>
+						<td width="45%" class="dato">
+							<xsl:value-of select="Richiedente/INDIRIZZO"/>
+						</td>
+					</tr>
+					<tr>
+						<td width="25%" class="etichetta">Codice Fiscale</td>
+						<td width="75%" colspan="3" class="dato">
+							<xsl:value-of select="Richiedente/CODICEFISCALE"/>
+						</td>
+					</tr>
+					<tr>
+						<td width="25%" class="etichetta">E-mail/PEC</td>
+						<td width="75%" colspan="3" class="dato">
+							<xsl:value-of select="Richiedente/EMAIL"/> / <xsl:value-of select="Richiedente/Pec"/>
+						</td>
+					</tr>
+					<tr>
+						<td width="25%" class="etichetta">Telefono</td>
+						<td width="75%" colspan="3" class="dato">
+							<xsl:value-of select="Richiedente/TELEFONO"/>
+						</td>
+					</tr>
+				</table>
+				<br/>
+			</xsl:for-each>
+			<table width="100%" border="1px" cellpadding="0" cellspacing="0">
+				<tr>
+					<td width="25%" class="etichetta">Domicilio Elettronico </td>
+					<td colspan="3" width="75%" style="font-weight:bold">
+						<pre>
+							<xsl:value-of select="/Istanze/DOMICILIO_ELETTRONICO"/>
+						</pre>
+					</td>
+				</tr>
+				<!--
+				<tr>
+					<td width="25%" class="etichetta">Inoltra la domanda per </td>
+					<td colspan="3" width="75%" style="font-weight:bold">
+						<pre>
+							<xsl:value-of select="/Istanze/LAVORI" />
+						</pre>
+					</td>
+				</tr>
+				-->
+			</table>
+			<br/>
+			<!--<div style="text-align:center">
+			<h3>Indirizzi</h3>
+		</div>
+		
+		<table width="100%" border="1px" cellpadding="0" cellspacing="0">
+			<xsl:for-each select="Istanze/Stradario/IstanzeStradario">
+
+				<tr>
+					<td colspan="6" class="dato">
+						<xsl:value-of select="Stradario/PREFISSO"/>
+						&#160;
+						<xsl:value-of select="Stradario/DESCRIZIONE"/>
+						&#160;
+						<xsl:value-of select="CIVICO"/>
+						&#160;
+						<xsl:value-of select="ESPONENTE"/>
+					</td>
+				</tr>
+				<tr>
+					<td class="etichetta" width="25%">Note</td>
+					<td colspan="5" class="dato"><xsl:value-of select="NOTE"/>&#160;</td>
+				</tr>
+			</xsl:for-each>
+		</table>
+		
+		<div style="text-align:center">
+			<h3>Dati Catastali</h3>
+		</div>
+		
+		<table width="100%" border="1px" cellpadding="0" cellspacing="0">
+            <xsl:for-each select="Istanze/Mappali/IstanzeMappali">
+                    <tr>
+						<td width="15%" class="etichetta">Codice Catasto </td>
+						<td width="10%" style="font-weight:bold" align="center">
+                            <xsl:value-of select="Codicecatasto"/>
+                            &#160;                 
+                            <xsl:value-of select="Catasto/DESCRIZIONE"/>
+                        </td>
+                       <td width="15%" class="etichetta">Foglio </td>
+						<td width="10%" style="font-weight:bold">
+							<xsl:value-of select="Foglio"/>
+                        </td>
+						<td width="15%" class="etichetta">Particella </td>
+						<td width="10%" style="font-weight:bold">
+                            <xsl:value-of select="Particella"/>
+                        </td>
+						<td width="15%" class="etichetta">Sub </td>
+						<td width="10%" style="font-weight:bold">
+                            <xsl:value-of select="Sub"/>
+                        </td>
+					</tr>
+                                                               
+            </xsl:for-each>
+        </table>
+		-->
+			<br/>
+			<br/>
+			<br/>
+			<br/>
+			<hr/>
+			<schedeDinamiche/>
+			<br/>
+			<xsl:if test="count(/Istanze/DocumentiIstanza/DocumentiIstanza) != 0">
+				<div style="text-align:center">
+					<h3>
+									   Allegati
+						   </h3>
+				</div>
+				<ul>
+					<xsl:for-each select="/Istanze/DocumentiIstanza/DocumentiIstanza">
+						<li>
+							<div class="dato">
+								<xsl:value-of select="DOCUMENTO"/>&#160;
+							</div>
+							<div class="nomeFile">
+								<xsl:value-of select="Oggetto/NOMEFILE"/>
+							</div>
+						</li>
+					</xsl:for-each>
+				</ul>
+			</xsl:if>
+			<xsl:for-each select="Istanze/EndoProcedimenti/IstanzeProcedimenti">
+				<xsl:if test="count(IstanzeAllegati[PRESENTE = '1']) > 0">
+					<div style="text-align:center">
+						<h3>
+														   Allegati dell'endoprocedimento
+														   <xsl:value-of select="Endoprocedimento/Procedimento"/>
+						</h3>
+					</div>
+					<ul>
+						<xsl:for-each select="IstanzeAllegati">
+							<xsl:if test="PRESENTE != '0'">
+								<li>
+									<div class="dato">
+										<xsl:value-of select="ALLEGATOEXTRA"/>
+									</div>
+									<div class="nomeFile">
+										<xsl:value-of select="Oggetto/NOMEFILE"/>
+									</div>
+								</li>
+							</xsl:if>
+						</xsl:for-each>
+					</ul>
+				</xsl:if>
+			</xsl:for-each>
+			<xsl:for-each select="Istanze/EndoProcedimenti/IstanzeProcedimenti">
+				<xsl:if test="TipoAtto != ''">
+					<div style="text-align:center">
+						<h3>
+						   Estremi dell'endoprocedimento
+						   <xsl:value-of select="Endoprocedimento/Procedimento"/>
+						</h3>
+					</div>
+					<table width="100%" cellspacing="0" cellpadding="0" class="t1">
+						<tr>
+							<td valign="top" class="td1" width="15%">
+								<p class="p5">Tipo titolo</p>
+							</td>
+							<td valign="top" class="td2" width="85%">
+								<p class="p6" style="font-weight:bold">
+									<xsl:value-of select="TipoAtto"/>
+								</p>
+							</td>
+						</tr>
+						<tr>
+							<td valign="top" class="td1" width="15%">
+								<p class="p5">Numero Protocollo</p>
+							</td>
+							<td valign="top" class="td2" width="85%">
+								<p class="p6" style="font-weight:bold">
+									<xsl:value-of select="PROT_NUM"/>
+								</p>
+							</td>
+						</tr>
+						<tr>
+							<td valign="top" class="td1" width="15%">
+								<p class="p5">Data Protocollo</p>
+							</td>
+							<td valign="top" class="td2" width="85%">
+								<p class="p6" style="font-weight:bold">
+									<xsl:call-template name="FormatDate">
+										<xsl:with-param name="DateTime" select="PROT_DEL"/>
+									</xsl:call-template>
+								</p>
+							</td>
+						</tr>
+						<tr>
+							<td valign="top" class="td1" width="15%">
+								<p class="p5">Rilasciato da</p>
+							</td>
+							<td valign="top" class="td2" width="85%">
+								<p class="p6" style="font-weight:bold">
+									<xsl:value-of select="RilasciatoDa"/>
+								</p>
+							</td>
+						</tr>
+						<tr>
+							<td valign="top" class="td1" width="15%">
+								<p class="p5">Note</p>
+							</td>
+							<td valign="top" class="td2" width="85%">
+								<p class="p6" style="font-weight:bold">
+									<xsl:value-of select="Note"/>
+								</p>
+							</td>
+						</tr>
+					</table>
+				</xsl:if>
+			</xsl:for-each>
+			<br/>
+			<br/>
+		</div>
+		<div style="text-align:center">
+			<h3>Tutto cio' premesso la pratica risulta sottoscritta da</h3>
+		</div>
+		<ul>
+			<xsl:for-each select="Istanze/Richiedenti/IstanzeRichiedenti">
+				<xsl:if test="count(Procuratore) = 0">
+					<xsl:variable name="codiceFiscaleAnagrafica" select="Richiedente/CODICEFISCALE"/>
+					<xsl:if test="count(../IstanzeRichiedenti/Procuratore/CODICEFISCALE[.=$codiceFiscaleAnagrafica]) != 0">
+						<li>
+							<xsl:value-of select="Richiedente/NOMINATIVO"/>&#160;
+                  <xsl:value-of select="Richiedente/NOME"/>
+						</li>
+					</xsl:if>
+				</xsl:if>
+			</xsl:for-each>
+			<xsl:for-each select="Istanze/Richiedenti/IstanzeRichiedenti">
+				<xsl:if test="count(Procuratore) = 0">
+					<xsl:variable name="codicefiscaleRic" select="Richiedente/CODICEFISCALE"/>
+					<xsl:if test="count(../IstanzeRichiedenti/Procuratore/CODICEFISCALE[.=$codicefiscaleRic]) = 0">
+						<xsl:if test="TipoSoggetto/TIPODATO = 'R' and TipoSoggetto/TIPODATO != 'T'">
+							<li>
+								<xsl:value-of select="Richiedente/NOMINATIVO"/>&#160;
+                    <xsl:value-of select="Richiedente/NOME"/>
+							</li>
+						</xsl:if>
+					</xsl:if>
+				</xsl:if>
+			</xsl:for-each>
+		</ul>
+		<br/>
+		<br/>
+		<table style="width: 100%;border: 0px" width="100%">
+			<tbody>
+				<tr>
+					<td align="center" width="50%">LUOGO E DATA</td>
+					<td align="center" width="50%">FIRMA </td>
+				</tr>
+				<tr>
+					<td align="center" width="50%">___________________________________</td>
+					<td align="center" width="50%">___________________________________</td>
+				</tr>
+			</tbody>
+		</table>
+		<!--
+		<xsl:for-each select="Istanze/Richiedenti/IstanzeRichiedenti">
+            <xsl:if test="TipoSoggetto/TIPODATO = 'R' and CODICETIPOSOGGETTO = 67" >
+                <li>
+					<div  class="nomeFile">
+					  <xsl:value-of select="Richiedente/NOMINATIVO"/>&#160;
+					  <xsl:value-of select="Richiedente/NOME" />
+					</div>
+                </li>
+            </xsl:if>
+        </xsl:for-each>
+		-->
+	</body>
+</html>

@@ -1,0 +1,263 @@
+﻿@using Init.SIGePro.Manager.DTO.Endoprocedimenti
+@using Init.SIGePro.Manager.DTO.Interventi
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneEndoprocedimenti
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneInterventi
+@using VBG.BlazorComponentsLibrary.DesignComuni.Download
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.DesignComuni.Spinner
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards.CardButtons
+@using VBG.BlazorComponentsLibrary.RisorseTestuali
+
+
+@* <style>
+	.dettaglio-intervento {
+		width: unset;
+		max-width: 50%;
+	}
+
+		.dettaglio-intervento .modal-body {
+			overflow-y: scroll;
+			max-height: 70vh;
+		}
+
+		.dettaglio-intervento .fa-square-list,
+		.dettaglio-intervento .fa-folder-open {
+			margin-right: var(--padding-x-small);
+		}
+</style> *@
+
+
+<BasicModal @ref="_modal" OnClose="() => _modal?.Hide()">
+	<ModalHeader Titolo="Scheda dell'intervento">
+	</ModalHeader>
+	<ModalBody>
+		<StepCard Titolo="">
+			<h3><RisorsaTestuale IdRisorsa="popup-intervento.titolo.intervento">Intervento/Evento selezionato</RisorsaTestuale></h3>
+			
+			@if (this._rootAlbero is not null)
+			{
+				<StepCardItem>
+					<div>
+						<ul>
+							@for (var i = 0; i < this._rootAlbero.Count; i++)
+							{
+								var nodo = this._rootAlbero.ElementAt(i);
+
+								<li style="padding-left: @($"{i}em")">
+
+									@if (i == (this._rootAlbero.Count - 1))
+									{
+										<i class="fa fa-square-list" aria-hidden="true" />
+									}
+									else
+									{
+										<i class="fa fa-folder-open" aria-hidden="true" />
+									}
+
+									<span style="margin-left:0.5rem;"> @nodo.Descrizione </span>
+								</li>
+							}
+						</ul>
+					</div>
+				</StepCardItem>
+
+				@if (!String.IsNullOrEmpty(this.Intervento?.Note))
+				{
+					<StepCardItem>
+						<div>
+							<h3><RisorsaTestuale IdRisorsa="popup-intervento.titolo.informazioni-varie">Informazioni</RisorsaTestuale></h3>
+
+							<div>@((MarkupString)this.Intervento.Note)</div>
+						</div>
+					</StepCardItem>
+				}
+			}			
+		</StepCard>
+
+		@if (this.Intervento?.Normative is not null && this.Intervento?.Normative.Count > 0)
+		{
+			<StepCard>
+				<h3><RisorsaTestuale IdRisorsa="popup-intervento.titolo.normativa">Normativa</RisorsaTestuale></h3>
+
+				@foreach (var normativa in Intervento.Normative)
+				{
+					<StepCardItem>
+						<StepCardInfo Titolo="Descrizione">
+							@normativa.Descrizione
+						</StepCardInfo>
+
+						<StepCardInfo Titolo="Tipologia">
+							@normativa.Categoria
+						</StepCardInfo>
+
+						@if (!String.IsNullOrEmpty(normativa.Link))
+						{
+							<StepCardInfo Titolo="Link">
+								<a href="@normativa.Link" target="_blank">@normativa.Link</a>
+							</StepCardInfo>
+						}
+
+						@if (normativa.CodiceOggetto.HasValue)
+						{
+							<StepDownloadButton Titolo="Download" CodiceOggetto="@normativa.CodiceOggetto.Value"></StepDownloadButton>
+						}
+					</StepCardItem>
+				}
+
+			</StepCard>
+		}
+
+		@if (this.Intervento?.FasiAttuative is not null && this.Intervento?.FasiAttuative.Count > 0)
+		{
+			<StepCard>
+				<h3><RisorsaTestuale IdRisorsa="popup-intervento.titolo.fasi-attuative">Fasi attuative</RisorsaTestuale></h3>
+
+				@foreach (var fase in Intervento.FasiAttuative)
+				{
+					<StepCardItem>
+						<StepCardInfo Titolo="Titolo">
+							@((MarkupString)fase.Descrizione)
+						</StepCardInfo>
+
+						<StepCardInfo Titolo="Testo">
+							@((MarkupString)fase.DescrizioneEstesa)
+						</StepCardInfo>
+					</StepCardItem>
+				}
+			</StepCard>
+		}
+
+		@if (this.Intervento?.Documenti is not null && this.Intervento?.Documenti.Count > 0)
+		{
+			<StepCard Titolo="">
+				<h3><RisorsaTestuale IdRisorsa="popup-intervento.titolo.modulistica">Modulistica</RisorsaTestuale></h3>
+
+				@foreach (var doc in Intervento.Documenti)
+				{
+					<StepCardItem>
+						<StepCardInfo Titolo="Descrizione">
+							@((MarkupString)doc.Descrizione)
+						</StepCardInfo>
+
+						@if (doc.CodiceOggetto != null)
+						{
+							<StepDownloadButton Titolo="Download" CodiceOggetto="@doc.CodiceOggetto.Value"></StepDownloadButton>
+						}
+					</StepCardItem>	
+				}
+			</StepCard>
+		}
+
+		@if ((_endoNecessari != null && _endoNecessari.Any()) || (_endoRicorrenti != null && _endoRicorrenti.Any()) || (_endoEventuali != null && _endoEventuali.Any()))
+		{
+			<StepCard Titolo=" ">
+				<h3>Procedimenti</h3>
+
+				@if (_endoNecessari != null && _endoNecessari.Any())
+				{
+					<StepCardItem>
+						<AlberelloEndo Titolo="Procedimenti necessari" Famiglie="@_endoNecessari"></AlberelloEndo>
+					</StepCardItem>
+				}
+
+				@if (_endoRicorrenti != null && _endoRicorrenti.Any())
+				{
+					<StepCardItem>
+						<AlberelloEndo Titolo="Procedimenti ricorrenti" Famiglie="@_endoRicorrenti"></AlberelloEndo>
+					</StepCardItem>
+				}
+
+				@if (_endoEventuali != null && _endoEventuali.Any())
+				{
+					<StepCardItem>
+						<AlberelloEndo Titolo="Procedimenti eventuali" Famiglie="@_endoEventuali"></AlberelloEndo>
+					</StepCardItem>
+				}
+			</StepCard>
+		}
+		
+
+		@if (this.Intervento?.Oneri is not null && this.Intervento.Oneri.Any())
+		{
+			<StepCard Titolo="">
+				<h3><RisorsaTestuale IdRisorsa="popup-intervento.titolo.oneri">Oneri</RisorsaTestuale></h3>
+
+				@foreach (var onere in Intervento.Oneri)
+				{
+					<StepCardItem>
+						<StepCardInfo Titolo="Causale d'onere">
+							@((MarkupString)onere.Descrizione)
+						</StepCardInfo>
+
+						<StepCardInfo Titolo="Importo (€)">
+							@onere.Importo.ToString("N2")
+						</StepCardInfo>
+					</StepCardItem>
+				}
+
+			</StepCard>
+		}
+
+	</ModalBody>
+</BasicModal>
+
+
+
+
+@code {
+	[Inject]
+	private IInterventiRepository _alberoProcRepository { get; set; } = default!;
+	[Inject]
+	private IEndoprocedimentiService _endoprocedimentiService { get; set; } = default!;
+	[Inject]
+	private SpinnerService _spinnerService { get; set; } = default!;
+
+
+	[Parameter]
+	public InterventoDto? Intervento { get; set; }
+
+	LinkedList<InterventoDto>? _rootAlbero = null;
+	IEnumerable<FamigliaEndoprocedimentoDto> _endoNecessari = Enumerable.Empty<FamigliaEndoprocedimentoDto>();
+	IEnumerable<FamigliaEndoprocedimentoDto> _endoRicorrenti = Enumerable.Empty<FamigliaEndoprocedimentoDto>();
+	IEnumerable<FamigliaEndoprocedimentoDto> _endoEventuali = Enumerable.Empty<FamigliaEndoprocedimentoDto>();
+
+	private BasicModal? _modal;
+
+	protected override void OnParametersSet()
+	{
+		base.OnParametersSet();
+	}
+
+	void Bind()
+	{
+		_rootAlbero = _alberoProcRepository.GetAlberaturaNodoDaId2(this.Intervento.Codice);
+
+		var listaEndoIntervento = this._endoprocedimentiService.GetListaEndoDaIdIntervento(null, this.Intervento.Codice);
+
+		if (listaEndoIntervento is not null)
+		{
+			this._endoNecessari = listaEndoIntervento.Principali.Union(listaEndoIntervento.Richiesti);
+			this._endoRicorrenti = listaEndoIntervento.Ricorrenti;
+			this._endoEventuali = listaEndoIntervento.Altri;
+		}
+
+		this.StateHasChanged();
+	}
+
+	public async Task MostraDettagli(InterventoDto intervento)
+	{
+		await _spinnerService.ShowSpinnerAsync(() =>
+			{
+				this.Intervento = intervento;
+
+				if (this.Intervento is not null)
+				{
+					this.Bind();
+					_modal?.Show();
+					StateHasChanged();
+				}
+				
+			});
+	}
+}

@@ -1,0 +1,152 @@
+﻿@using System.Text
+@using Init.Sigepro.FrontEnd.AppLogic.Autenticazione.Vbg.AutenticazioneUtente
+@using Init.Sigepro.FrontEnd.AppLogic.PresentazioneIstanze.Workflow;
+@using Init.Sigepro.FrontEnd.CoreServices.GestionePresentazioneDomanda.Paginatore
+@using VBG.BlazorComponentsLibrary.DesignComuni.Spinner
+@using VBG.Shared.Infrastructure.Caching
+
+@implements IDisposable
+
+<style>
+    .list-item.active .text {
+    color: var(--bs-primary) !important;
+    }
+</style>
+
+@if (this._currentState is not null && this._currentState.IsVisible)
+{
+    <div class="row mb-2">
+
+
+        <div class="col-4 @(this._currentState.IsFirstStep ? "disabled" : "")">
+            @if (!this._currentState.IsFirstStep)
+            {
+                <BottoneIndietro OnClick="PrevStep"></BottoneIndietro>
+            }
+        </div>
+
+
+        <!-- PAGINA CORRENTE -->
+        <div class="col-4">
+            <StepCorrente CurrentState="_currentState" StepCompletati="_listaStepCompletati" OnGoToStep="GoToStep"></StepCorrente>
+        </div>
+
+
+        <div class="col-4">
+            @if (!this._currentState.IsLastStep && this._currentState.MostraBottoneAvanti)
+            {
+                <BottoneAvanti Text="Avanti" OnClick="NextStep"></BottoneAvanti>
+            }
+            @if (this._currentState.MostraBottoneInviaDomanda)
+            {
+                <BottoneAvanti Text="@this._currentState.TestoBottoneInviaDomanda" OnClick="SendAsync"></BottoneAvanti>
+            }
+        </div>
+    </div>
+
+}
+
+
+@code {
+
+    [CascadingParameter]
+    public MessageContainer messageContainer { get; set; } = default!;
+
+    [Inject]
+    private PaginatoreStateService _paginatoreService { get; set; } = default!;
+    [Inject]
+    private SpinnerService _spinnerService { get; set; } = default!;
+    [Inject]
+    private IWorkflowService _workflowService { get; set; } = default!;
+
+    [Inject]
+    public ITimedCache _timedCache { get; set; } = default!;
+
+    [Inject]
+    public IAuthenticationDataResolver _authenticationDataResolver { get; set; } = default!;
+
+    PaginatoreState? _currentState;
+
+    private List<int> _listaStepCompletati = new List<int>();
+
+    private string _key = "";
+    const int timeout = 60;
+
+    protected override async Task OnInitializedAsync()
+    {
+        this._paginatoreService.OnStateChanged += OnPagerStateChanged;
+        //this._paginatoreService.OnStatePropertyChanged += OnPagerStateChanged;
+
+        _key = $"step-completati-{_authenticationDataResolver.DatiAutenticazione.Alias}-{Convert.ToInt32(_authenticationDataResolver.DatiAutenticazione.DatiUtente.Codiceanagrafe)}";
+        _listaStepCompletati = _timedCache.GetOrAdd(_key, timeout, () => { return _listaStepCompletati; });
+
+        OnPagerStateChanged();
+
+        await base.OnInitializedAsync();
+    }
+
+    void OnPagerStateChanged()
+    {
+        this._currentState = this._paginatoreService.CurrentState;
+        this.StateHasChanged();
+    }
+
+
+    public void Dispose()
+    {
+        //this._paginatoreService.OnStatePropertyChanged -= OnPagerStateChanged;
+        this._paginatoreService.OnStateChanged -= OnPagerStateChanged;
+    }
+
+    async Task NextStep()
+    {
+        await _spinnerService.ShowSpinnerAsync(async () =>
+        {
+            try
+            {
+                messageContainer.ClearAll();
+
+                await this._paginatoreService.GoToNextStepAsync();
+            }
+            finally
+            {
+                _listaStepCompletati = _timedCache.GetOrAdd(_key, timeout, () => { return _listaStepCompletati; });
+
+                if (!_listaStepCompletati.Contains(_currentState.LastCompletedStep))
+                {
+                    _listaStepCompletati.Add(_currentState.LastCompletedStep);
+                }
+
+                _timedCache.Remove(_key);
+                _timedCache.GetOrAdd(_key, timeout, () => { return _listaStepCompletati; });
+            }
+        });
+
+        
+
+    }
+
+    void PrevStep()
+    {
+        //using var session = this._spinnerService.StartSession();
+
+        messageContainer.ClearAll();
+
+        this._paginatoreService.MostraBottoneAvanti();
+        this._paginatoreService.GoToPrevStep();
+    }
+
+    void GoToStep(int stepId)
+    {
+        if (stepId < _currentState.LastCompletedStep)
+        {
+            this._paginatoreService.GoToStep(stepId);
+        }
+    }
+
+    async Task SendAsync()
+    {
+        await this._paginatoreService.SendAsync();
+    }
+
+}

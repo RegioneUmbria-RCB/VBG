@@ -1,0 +1,59 @@
+﻿@using Init.Sigepro.FrontEnd.AppLogic.GestioneOneri;
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.DesignComuni.Messaggi
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards.CardButtons
+
+@if (Endo is not null)
+{
+    <StepCardItem>
+        <StepCardButtonGroup EditClick="Edit"></StepCardButtonGroup>
+        <StepCardItemTitle Titolo="@Endo.Descrizione" Sottotitolo="@GetToggleLabel(Endo.Presente)"></StepCardItemTitle>
+
+        @if (Endo.SelectedTipoTitoloItem is not null)
+        {
+            <StepCardInfo Titolo="@LabelTipoTitolo" ResourceId="gestione-endo-presenti.tipo-titolo">@Endo.SelectedTipoTitoloItem</StepCardInfo>
+
+            @if (Endo.SelectedTipoTitoloItemFlags.Numero)
+            {
+                <StepCardInfo Titolo="Numero" ResourceId="gestione-endo-presenti.numero-atto">@Endo.NumeroAtto</StepCardInfo>
+            }
+            @if (Endo.SelectedTipoTitoloItemFlags.Data)
+            {
+                <StepCardInfo Titolo="Del" ResourceId="gestione-endo-presenti.data-atto">@(Endo.DataAtto?.ToString("dd/MM/yyyy"))</StepCardInfo>
+            }
+            @if (Endo.SelectedTipoTitoloItemFlags.RilasciatoDa)
+            {
+                <StepCardInfo Titolo="Rilasciato da" ResourceId="gestione-endo-presenti.rilasciato-da">@Endo.RilasciatoDa</StepCardInfo>
+            }
+
+            <StepCardInfo Titolo="Note">@(string.IsNullOrEmpty(Endo.Note) ? "Nessuna nota" : Endo.Note)</StepCardInfo>
+
+            @if (Endo.SelectedTipoTitoloItemFlags.Allegato)
+            {
+                <StepDownloadButton Titolo="Documento comprovante il possesso del titolo" CodiceOggetto="Endo.CodiceOggetto"></StepDownloadButton>
+            }
+        }
+    </StepCardItem>
+}
+
+@code {
+    [Parameter, EditorRequired]
+    public EndoPresenteBindingItem? Endo { get; set; }
+    [Parameter, EditorRequired]
+    public EventCallback<EndoPresenteBindingItem> OnEdit { get; set; }
+    [Parameter]
+    public string TestoCheckPossessoTitolo { get; set; } = "Sono in possesso dell'autorizzazione/titolo abilitativo";
+    [Parameter]
+    public string LabelTipoTitolo { get; set; } = "Tipo titolo";
+
+    async Task Edit()
+    {
+        await this.OnEdit.InvokeAsync(this.Endo);
+    }
+
+    private string GetToggleLabel(bool inPossesso)
+    {
+        return inPossesso ? @TestoCheckPossessoTitolo : "Non sono in possesso dell'autorizzazione/titolo abilitativo";
+    }
+}

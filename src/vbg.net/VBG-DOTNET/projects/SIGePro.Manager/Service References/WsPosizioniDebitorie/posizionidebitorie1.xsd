@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<schema xmlns:tns="http://gruppoinit.it/sigepro/schemas/messages/posizionidebitorie" xmlns:base="http://gruppoinit.it/sigepro/schemas/messages/base" xmlns:xmime="http://www.w3.org/2005/05/xmlmime" elementFormDefault="qualified" targetNamespace="http://gruppoinit.it/sigepro/schemas/messages/posizionidebitorie" xmlns="http://www.w3.org/2001/XMLSchema">
+  <import schemaLocation="http://localhost:8080/backend/services/posizionidebitorie?xsd=backoffice_oggetti_base.xsd" id="oggettiBase" namespace="http://gruppoinit.it/sigepro/schemas/messages/base" />
+  <element name="InserisciPosizioneDaOnereRequest">
+    <complexType>
+      <sequence>
+        <element minOccurs="1" maxOccurs="1" name="token" type="string" />
+        <element minOccurs="1" maxOccurs="1" name="riferimentoOnere" type="integer" />
+      </sequence>
+    </complexType>
+  </element>
+  <element name="InserisciPosizioneDaOnereResponse">
+    <complexType>
+      <sequence>
+        <element minOccurs="0" maxOccurs="1" name="idDettaglioPosizioneDebitoria" type="tns:PosizioneInseritaPerOnereType" />
+        <element minOccurs="1" maxOccurs="1" name="esito" type="base:EsitoOperazioneType" />
+      </sequence>
+    </complexType>
+  </element>
+  <element name="InserisciPosizioneDaOnereRateizzatoRequest">
+    <complexType>
+      <sequence>
+        <element minOccurs="1" maxOccurs="1" name="token" type="string" />
+        <element minOccurs="1" maxOccurs="unbounded" name="riferimentoOnere" type="integer" />
+      </sequence>
+    </complexType>
+  </element>
+  <complexType name="PosizioneInseritaPerOnereType">
+    <sequence>
+      <element minOccurs="1" maxOccurs="1" name="riferimentoPosizioneDebitoria" type="integer" />
+      <element minOccurs="1" maxOccurs="1" name="riferimentoOnere" type="integer" />
+      <element minOccurs="0" maxOccurs="1" name="messaggioErrore" type="string" />
+    </sequence>
+  </complexType>
+  <element name="InserisciPosizioneDaOnereRateizzatoResponse">
+    <complexType>
+      <sequence>
+        <element minOccurs="0" maxOccurs="unbounded" name="idDettaglioPosizioneDebitoria" type="tns:PosizioneInseritaPerOnereType" />
+        <element minOccurs="1" maxOccurs="1" name="esito" type="base:EsitoOperazioneType" />
+      </sequence>
+    </complexType>
+  </element>
+</schema>

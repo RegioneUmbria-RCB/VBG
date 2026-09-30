@@ -1,0 +1,43 @@
+﻿@using Init.SIGePro.Manager.DTO.Endoprocedimenti
+
+@if (this.Famiglie is not null && this.Famiglie.Any())
+{
+	<div>
+		<h3>@Titolo</h3>
+		<ul>
+			@foreach (var famiglia in this.Famiglie)
+			{
+				<li class="famigliaEndo">
+					<span class="fw-bold"> @famiglia.Descrizione </span>
+
+					<ul>
+						@foreach(var tipo in famiglia.TipiEndoprocedimenti)
+						{
+							<li class="tipoEndo">
+								<i class="fa fa-folder-open" aria-hidden="true" /> <span style="margin-left: 0.5rem;"> @tipo.Descrizione </span>
+
+								<ul>
+									@foreach(var endo in tipo.Endoprocedimenti)
+									{
+										<li class="endo" style="margin-left: 1.8rem;">
+											<span> @endo.Descrizione </span>
+										</li>
+									}
+								</ul>
+
+							</li>
+						}
+					</ul>
+				</li>
+			}
+		</ul>
+	</div>
+}
+
+@code {
+	[Parameter]
+	public IEnumerable<FamigliaEndoprocedimentoDto> Famiglie { get; set; } = Enumerable.Empty<FamigliaEndoprocedimentoDto>();
+
+	[Parameter]
+	public string Titolo { get; set; } = "";
+}

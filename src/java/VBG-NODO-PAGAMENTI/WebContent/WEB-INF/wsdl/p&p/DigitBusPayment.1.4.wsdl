@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions name="DigitBusPayment" targetNamespace="http://e-fil.eu/PnP/PlugAndPayPayment" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://e-fil.eu/PnP/PlugAndPayPayment" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<wsdl:types>
+		<xs:schema elementFormDefault="qualified" targetNamespace="http://e-fil.eu/PnP/PlugAndPayPayment" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/">
+			<xs:import namespace="http://e-fil.eu/PnP/PlugAndPayCommon"/>
+			<xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/"/>
+			<xs:element name="InviaCarrelloPosizioni">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="request" nillable="true" type="q1:RichiestaInviaCarrelloPosizioni" xmlns:q1="http://e-fil.eu/PnP/PlugAndPayPayment"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="RichiestaInviaCarrelloPosizioni">
+				<xs:complexContent mixed="false">
+					<xs:extension base="q2:PaymentAuthenticatedRequestBase" xmlns:q2="http://e-fil.eu/PnP/PlugAndPayPayment">
+						<xs:sequence>
+							<xs:element name="Carrello" nillable="true" type="q2:ArrayOfPosizione"/>
+							<xs:element name="UrlBack" nillable="true" type="xs:string"/>
+							<xs:element name="UrlReturn" nillable="true" type="xs:string"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:element name="RichiestaInviaCarrelloPosizioni" nillable="true" type="q3:RichiestaInviaCarrelloPosizioni" xmlns:q3="http://e-fil.eu/PnP/PlugAndPayPayment"/>
+			<xs:complexType name="PaymentAuthenticatedRequestBase">
+				<xs:sequence>
+					<xs:element name="IdApplicazione" nillable="true" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="PaymentAuthenticatedRequestBase" nillable="true" type="q4:PaymentAuthenticatedRequestBase" xmlns:q4="http://e-fil.eu/PnP/PlugAndPayPayment"/>
+			<xs:complexType name="RichiestaDownloadDatiRicevuta">
+				<xs:complexContent mixed="false">
+					<xs:extension base="q5:PaymentAuthenticatedRequestBase" xmlns:q5="http://e-fil.eu/PnP/PlugAndPayPayment">
+						<xs:sequence>
+							<xs:element name="CodiceEnteCreditore" nillable="true" type="xs:string"/>
+							<xs:element name="IdentificativoPosizione" nillable="true" type="xs:string"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:element name="RichiestaDownloadDatiRicevuta" nillable="true" type="q6:RichiestaDownloadDatiRicevuta" xmlns:q6="http://e-fil.eu/PnP/PlugAndPayPayment"/>
+			<xs:complexType name="ArrayOfPosizione">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="unbounded" name="Posizione" nillable="true" type="q7:Posizione" xmlns:q7="http://e-fil.eu/PnP/PlugAndPayPayment"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="ArrayOfPosizione" nillable="true" type="q8:ArrayOfPosizione" xmlns:q8="http://e-fil.eu/PnP/PlugAndPayPayment"/>
+			<xs:complexType name="Posizione">
+				<xs:sequence>
+					<xs:element name="Causale" nillable="true" type="xs:string">
+						<xs:annotation>
+							<xs:appinfo>
+								<DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/"/>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0" name="CodiceRiferimentoCreditore" nillable="true" type="xs:string"/>
+					<xs:element name="Creditore" nillable="true" type="q9:Creditore" xmlns:q9="http://e-fil.eu/PnP/PlugAndPayPayment">
+						<xs:annotation>
+							<xs:appinfo>
+								<DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/"/>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0" name="DataScadenza" nillable="true" type="xs:dateTime"/>
+					<xs:element name="Debitore" nillable="true" type="q10:Debitore" xmlns:q10="http://e-fil.eu/PnP/PlugAndPayPayment">
+						<xs:annotation>
+							<xs:appinfo>
+								<DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/"/>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0" name="EmailInvioRicevuta" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="IdentificativoPosizione" nillable="true" type="xs:string"/>
+					<xs:element name="ImportoInCentesimi" type="xs:int">
+						<xs:annotation>
+							<xs:appinfo>
+								<DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/"/>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ParametriPosizione" nillable="true" type="q11:ArrayOfParametroPosizione" xmlns:q11="http://e-fil.eu/PnP/PlugAndPayPayment">
+						<xs:annotation>
+							<xs:appinfo>
+								<DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/"/>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Servizio" nillable="true" type="q12:Servizio" xmlns:q12="http://e-fil.eu/PnP/PlugAndPayCommon"/>
+					<xs:element name="Spontaneo" type="xs:boolean"/>
+					<xs:element minOccurs="0" name="TipoRiferimentoCreditore" nillable="true" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="Posizione" nillable="true" type="q13:Posizione" xmlns:q13="http://e-fil.eu/PnP/PlugAndPayPayment"/>
+			<xs:complexType name="Creditore">
+				<xs:sequence>
+					<xs:element name="CodiceEnte" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="CodiceFiscalePartitaIva" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="IBAN" nillable="true" type="xs:string">
+						<xs:annotation>
+							<xs:appinfo>
+								<DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/"/>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Intestazione" nillable="true" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="Creditore" nillable="true" type="q14:Creditore" xmlns:q14="http://e-fil.eu/PnP/PlugAndPayPayment"/>
+			<xs:complexType name="Debitore">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="Cellulare" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Civico" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="CodiceAvviamentoPostale" nillable="true" type="xs:string"/>
+					<xs:element name="CodiceFiscalePartitaIva" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Email" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Indirizzo" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Localita" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Nazione" nillable="true" type="q15:Nazione" xmlns:q15="http://e-fil.eu/PnP/PlugAndPayPayment"/>
+					<xs:element name="Nominativo" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Provincia" nillable="true" type="xs:string"/>
+					<xs:element name="TipoPagatore" type="q16:TipoPagatore" xmlns:q16="http://e-fil.eu/PnP/PlugAndPayCommon"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="Debitore" nillable="true" type="q17:Debitore" xmlns:q17="http://e-fil.eu/PnP/PlugAndPayPayment"/>
+			<xs:complexType name="Nazione">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="CodiceIsoNazione" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="NomeNazione" nillable="true" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="Nazione" nillable="true" type="q18:Nazione" xmlns:q18="http://e-fil.eu/PnP/PlugAndPayPayment"/>
+			<xs:complexType name="ArrayOfParametroPosizione">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="unbounded" name="ParametroPosizione" nillable="true" type="q19:ParametroPosizione" xmlns:q19="http://e-fil.eu/PnP/PlugAndPayPayment"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="ArrayOfParametroPosizione" nillable="true" type="q20:ArrayOfParametroPosizione" xmlns:q20="http://e-fil.eu/PnP/PlugAndPayPayment"/>
+			<xs:complexType name="ParametroPosizione">
+				<xs:sequence>
+					<xs:element name="Chiave" nillable="true" type="xs:string">
+						<xs:annotation>
+							<xs:appinfo>
+								<DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/"/>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Valore" nillable="true" type="xs:string">
+						<xs:annotation>
+							<xs:appinfo>
+								<DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/"/>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="ParametroPosizione" nillable="true" type="q21:ParametroPosizione" xmlns:q21="http://e-fil.eu/PnP/PlugAndPayPayment"/>
+			<xs:element name="InviaCarrelloPosizioniResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="InviaCarrelloPosizioniResult" nillable="true" type="q22:RispostaInviaCarrelloPosizioni" xmlns:q22="http://e-fil.eu/PnP/PlugAndPayPayment"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="RispostaInviaCarrelloPosizioni">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="CarrelloArricchito" nillable="true" type="q23:ArrayOfPosizione" xmlns:q23="http://e-fil.eu/PnP/PlugAndPayPayment"/>
+					<xs:element minOccurs="0" name="EsitiInvioCarrelloPosizioni" nillable="true" type="q24:ArrayOfEsitoInvioCarrelloPosizioni" xmlns:q24="http://e-fil.eu/PnP/PlugAndPayPayment"/>
+					<xs:element minOccurs="0" name="IdTransazione" type="ser:guid"/>
+					<xs:element minOccurs="0" name="UrlRedirect" nillable="true" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="RispostaInviaCarrelloPosizioni" nillable="true" type="q25:RispostaInviaCarrelloPosizioni" xmlns:q25="http://e-fil.eu/PnP/PlugAndPayPayment"/>
+			<xs:complexType name="ArrayOfEsitoInvioCarrelloPosizioni">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="unbounded" name="EsitoInvioCarrelloPosizioni" nillable="true" type="q26:EsitoInvioCarrelloPosizioni" xmlns:q26="http://e-fil.eu/PnP/PlugAndPayPayment"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="ArrayOfEsitoInvioCarrelloPosizioni" nillable="true" type="q27:ArrayOfEsitoInvioCarrelloPosizioni" xmlns:q27="http://e-fil.eu/PnP/PlugAndPayPayment"/>
+			<xs:complexType name="EsitoInvioCarrelloPosizioni">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="CodiceRiferimentoCreditore" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="ErroriDiValidazione" nillable="true" type="q28:ArrayOfErroreDiValidazionePosizione" xmlns:q28="http://e-fil.eu/PnP/PlugAndPayPayment"/>
+					<xs:element minOccurs="0" name="Esito" type="q29:Esito" xmlns:q29="http://e-fil.eu/PnP/PlugAndPayPayment"/>
+					<xs:element minOccurs="0" name="IdentificativoPosizione" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="TipoRiferimentoCreditore" nillable="true" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="EsitoInvioCarrelloPosizioni" nillable="true" type="q30:EsitoInvioCarrelloPosizioni" xmlns:q30="http://e-fil.eu/PnP/PlugAndPayPayment"/>
+			<xs:complexType name="ArrayOfErroreDiValidazionePosizione">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="unbounded" name="ErroreDiValidazionePosizione" nillable="true" type="q31:ErroreDiValidazionePosizione" xmlns:q31="http://e-fil.eu/PnP/PlugAndPayPayment"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="ArrayOfErroreDiValidazionePosizione" nillable="true" type="q32:ArrayOfErroreDiValidazionePosizione" xmlns:q32="http://e-fil.eu/PnP/PlugAndPayPayment"/>
+			<xs:complexType name="ErroreDiValidazionePosizione">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="Codice" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Descrizione" nillable="true" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="ErroreDiValidazionePosizione" nillable="true" type="q33:ErroreDiValidazionePosizione" xmlns:q33="http://e-fil.eu/PnP/PlugAndPayPayment"/>
+			<xs:simpleType name="Esito">
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="Ok"/>
+					<xs:enumeration value="Nok"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:element name="Esito" nillable="true" type="q34:Esito" xmlns:q34="http://e-fil.eu/PnP/PlugAndPayPayment"/>
+			<xs:element name="DownloadDatiRicevuta">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="request" nillable="true" type="q35:RichiestaDownloadDatiRicevuta" xmlns:q35="http://e-fil.eu/PnP/PlugAndPayPayment"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="DownloadDatiRicevutaResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="DownloadDatiRicevutaResult" nillable="true" type="q36:RispostaDownloadDatiRicevuta" xmlns:q36="http://e-fil.eu/PnP/PlugAndPayPayment"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="RispostaDownloadDatiRicevuta">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="Esito" type="q37:Esito" xmlns:q37="http://e-fil.eu/PnP/PlugAndPayPayment"/>
+					<xs:element minOccurs="0" name="Ricevuta" nillable="true" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="RispostaDownloadDatiRicevuta" nillable="true" type="q38:RispostaDownloadDatiRicevuta" xmlns:q38="http://e-fil.eu/PnP/PlugAndPayPayment"/>
+			<xs:element name="DownloadDatiOriginaliRicevuta">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="request" nillable="true" type="q39:RichiestaDownloadDatiOriginaliRicevuta" xmlns:q39="http://e-fil.eu/PnP/PlugAndPayPayment"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="RichiestaDownloadDatiOriginaliRicevuta">
+				<xs:complexContent mixed="false">
+					<xs:extension base="q40:PaymentAuthenticatedRequestBase" xmlns:q40="http://e-fil.eu/PnP/PlugAndPayPayment">
+						<xs:sequence>
+							<xs:element name="CodiceEnteCreditore" nillable="true" type="xs:string"/>
+							<xs:element name="IdentificativoPosizione" nillable="true" type="xs:string"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:element name="RichiestaDownloadDatiOriginaliRicevuta" nillable="true" type="q41:RichiestaDownloadDatiOriginaliRicevuta" xmlns:q41="http://e-fil.eu/PnP/PlugAndPayPayment"/>
+			<xs:element name="DownloadDatiOriginaliRicevutaResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="DownloadDatiOriginaliRicevutaResult" nillable="true" type="q42:RispostaDownloadDatiOriginaliRicevuta" xmlns:q42="http://e-fil.eu/PnP/PlugAndPayPayment"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="RispostaDownloadDatiOriginaliRicevuta">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="Esito" type="q43:Esito" xmlns:q43="http://e-fil.eu/PnP/PlugAndPayPayment"/>
+					<xs:element minOccurs="0" name="Ricevuta" nillable="true" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="RispostaDownloadDatiOriginaliRicevuta" nillable="true" type="q44:RispostaDownloadDatiOriginaliRicevuta" xmlns:q44="http://e-fil.eu/PnP/PlugAndPayPayment"/>
+		</xs:schema>
+		<xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/">
+			<xs:element name="anyType" nillable="true" type="xs:anyType"/>
+			<xs:element name="anyURI" nillable="true" type="xs:anyURI"/>
+			<xs:element name="base64Binary" nillable="true" type="xs:base64Binary"/>
+			<xs:element name="boolean" nillable="true" type="xs:boolean"/>
+			<xs:element name="byte" nillable="true" type="xs:byte"/>
+			<xs:element name="dateTime" nillable="true" type="xs:dateTime"/>
+			<xs:element name="decimal" nillable="true" type="xs:decimal"/>
+			<xs:element name="double" nillable="true" type="xs:double"/>
+			<xs:element name="float" nillable="true" type="xs:float"/>
+			<xs:element name="int" nillable="true" type="xs:int"/>
+			<xs:element name="long" nillable="true" type="xs:long"/>
+			<xs:element name="QName" nillable="true" type="xs:QName"/>
+			<xs:element name="short" nillable="true" type="xs:short"/>
+			<xs:element name="string" nillable="true" type="xs:string"/>
+			<xs:element name="unsignedByte" nillable="true" type="xs:unsignedByte"/>
+			<xs:element name="unsignedInt" nillable="true" type="xs:unsignedInt"/>
+			<xs:element name="unsignedLong" nillable="true" type="xs:unsignedLong"/>
+			<xs:element name="unsignedShort" nillable="true" type="xs:unsignedShort"/>
+			<xs:element name="char" nillable="true" type="tns:char"/>
+			<xs:simpleType name="char">
+				<xs:restriction base="xs:int"/>
+			</xs:simpleType>
+			<xs:element name="duration" nillable="true" type="tns:duration"/>
+			<xs:simpleType name="duration">
+				<xs:restriction base="xs:duration">
+					<xs:pattern value="\-?P(\d*D)?(T(\d*H)?(\d*M)?(\d*(\.\d*)?S)?)?"/>
+					<xs:minInclusive value="-P10675199DT2H48M5.4775808S"/>
+					<xs:maxInclusive value="P10675199DT2H48M5.4775807S"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:element name="guid" nillable="true" type="tns:guid"/>
+			<xs:simpleType name="guid">
+				<xs:restriction base="xs:string">
+					<xs:pattern value="[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:attribute name="FactoryType" type="xs:QName"/>
+			<xs:attribute name="Id" type="xs:ID"/>
+			<xs:attribute name="Ref" type="xs:IDREF"/>
+		</xs:schema>
+		<xs:schema elementFormDefault="qualified" targetNamespace="http://e-fil.eu/PnP/PlugAndPayCommon" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://e-fil.eu/PnP/PlugAndPayCommon">
+			<xs:simpleType name="TipoPagatore">
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="PersonaFisica"/>
+					<xs:enumeration value="PersonaGiuridica"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:element name="TipoPagatore" nillable="true" type="tns:TipoPagatore"/>
+			<xs:complexType name="Servizio">
+				<xs:sequence>
+					<xs:element name="CodiceServizio" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Descrizione" nillable="true" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="Servizio" nillable="true" type="tns:Servizio"/>
+		</xs:schema>
+	</wsdl:types>
+	<wsdl:message name="IPlugAndPayPayment_InviaCarrelloPosizioni_InputMessage">
+		<wsdl:part name="parameters" element="tns:InviaCarrelloPosizioni"/>
+	</wsdl:message>
+	<wsdl:message name="IPlugAndPayPayment_InviaCarrelloPosizioni_OutputMessage">
+		<wsdl:part name="parameters" element="tns:InviaCarrelloPosizioniResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IPlugAndPayPayment_DownloadDatiRicevuta_InputMessage">
+		<wsdl:part name="parameters" element="tns:DownloadDatiRicevuta"/>
+	</wsdl:message>
+	<wsdl:message name="IPlugAndPayPayment_DownloadDatiRicevuta_OutputMessage">
+		<wsdl:part name="parameters" element="tns:DownloadDatiRicevutaResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IPlugAndPayPayment_DownloadDatiOriginaliRicevuta_InputMessage">
+		<wsdl:part name="parameters" element="tns:DownloadDatiOriginaliRicevuta"/>
+	</wsdl:message>
+	<wsdl:message name="IPlugAndPayPayment_DownloadDatiOriginaliRicevuta_OutputMessage">
+		<wsdl:part name="parameters" element="tns:DownloadDatiOriginaliRicevutaResponse"/>
+	</wsdl:message>
+	<wsdl:portType name="IPlugAndPayPayment">
+		<wsdl:operation name="InviaCarrelloPosizioni">
+			<wsdl:input wsaw:Action="http://e-fil.eu/PnP/PlugAndPayPayment/IPlugAndPayPayment/InviaCarrelloPosizioni" message="tns:IPlugAndPayPayment_InviaCarrelloPosizioni_InputMessage"/>
+			<wsdl:output wsaw:Action="http://e-fil.eu/PnP/PlugAndPayPayment/IPlugAndPayPayment/InviaCarrelloPosizioniResponse" message="tns:IPlugAndPayPayment_InviaCarrelloPosizioni_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="DownloadDatiRicevuta">
+			<wsdl:input wsaw:Action="http://e-fil.eu/PnP/PlugAndPayPayment/IPlugAndPayPayment/DownloadDatiRicevuta" message="tns:IPlugAndPayPayment_DownloadDatiRicevuta_InputMessage"/>
+			<wsdl:output wsaw:Action="http://e-fil.eu/PnP/PlugAndPayPayment/IPlugAndPayPayment/DownloadDatiRicevutaResponse" message="tns:IPlugAndPayPayment_DownloadDatiRicevuta_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="DownloadDatiOriginaliRicevuta">
+			<wsdl:input wsaw:Action="http://e-fil.eu/PnP/PlugAndPayPayment/IPlugAndPayPayment/DownloadDatiOriginaliRicevuta" message="tns:IPlugAndPayPayment_DownloadDatiOriginaliRicevuta_InputMessage"/>
+			<wsdl:output wsaw:Action="http://e-fil.eu/PnP/PlugAndPayPayment/IPlugAndPayPayment/DownloadDatiOriginaliRicevutaResponse" message="tns:IPlugAndPayPayment_DownloadDatiOriginaliRicevuta_OutputMessage"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="BasicHttpBinding_IPlugAndPayPayment" type="tns:IPlugAndPayPayment">
+		<soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="InviaCarrelloPosizioni">
+			<soap:operation soapAction="http://e-fil.eu/PnP/PlugAndPayPayment/IPlugAndPayPayment/InviaCarrelloPosizioni" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="DownloadDatiRicevuta">
+			<soap:operation soapAction="http://e-fil.eu/PnP/PlugAndPayPayment/IPlugAndPayPayment/DownloadDatiRicevuta" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="DownloadDatiOriginaliRicevuta">
+			<soap:operation soapAction="http://e-fil.eu/PnP/PlugAndPayPayment/IPlugAndPayPayment/DownloadDatiOriginaliRicevuta" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="DigitBusPayment">
+		<wsdl:port name="BasicHttpBinding_IPlugAndPayPayment" binding="tns:BasicHttpBinding_IPlugAndPayPayment">
+			<soap:address location="http://localhost:2290/DigitBusPayment.svc"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

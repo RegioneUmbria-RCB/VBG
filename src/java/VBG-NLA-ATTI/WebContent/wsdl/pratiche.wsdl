@@ -1,0 +1,1038 @@
+<?xml version="1.0" encoding="UTF-8"?><wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:sch="http://aidaws.aida.valvolari.it/aida" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:sp="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702" xmlns:tns="http://aidaws.aida.valvolari.it/aida/definitions" xmlns:wsp="http://www.w3.org/ns/ws-policy" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" targetNamespace="http://aidaws.aida.valvolari.it/aida/definitions">
+
+    <wsdl:types xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" xmlns:aida="http://aidaws.aida.valvolari.it/aida" xmlns:xmime="http://www.w3.org/2005/05/xmlmime" attributeFormDefault="unqualified" elementFormDefault="qualified" jaxb:version="2.0" targetNamespace="http://aidaws.aida.valvolari.it/aida">
+
+            <xs:element name="getIstanzaRequest" type="aida:istanzaRequestType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+            <xs:element name="getIstanzaResponse" type="aida:istanzaResponseType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+            
+            <xs:complexType name="istanzaRequestType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="idIstanza" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="istanzaResponseType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element minOccurs="0" name="istanza" type="aida:istanzaType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:element name="getPraticaRequest" type="aida:praticaRequestType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+            <xs:element name="getPraticaResponse" type="aida:praticaResponseType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+
+            <xs:complexType name="praticaRequestType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="idPratica" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="praticaResponseType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element minOccurs="0" name="pratica" type="aida:praticaType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:element name="getAdempimentiPraticaRequest" type="aida:adempimentiPraticaRequestType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+            <xs:element name="getAdempimentiPraticaResponse" type="aida:adempimentiPraticaResponseType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+
+            <xs:complexType name="adempimentiPraticaRequestType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="idPratica" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="adempimentiPraticaResponseType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="adempimento" type="aida:adempimentoType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:element name="getAllegatiAdempimentoRequest" type="aida:allegatiAdempimentoRequestType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+            <xs:element name="getAllegatiAdempimentoResponse" type="aida:allegatiAdempimentoResponseType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+
+            <xs:complexType name="allegatiAdempimentoRequestType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="idAdempimento" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="allegatiAdempimentoResponseType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="allegato" type="aida:allegatoAdempimentoType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:element name="getPraticheDaTrasferireRequest" type="aida:praticheDaTrasferireRequestType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+            <xs:element name="getPraticheDaTrasferireResponse" type="aida:praticheDaTrasferireResponseType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+
+            <xs:complexType name="praticheDaTrasferireRequestType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+
+            <xs:complexType name="praticheDaTrasferireResponseType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="pratica" type="aida:praticaType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:element name="setPraticheTrasferiteRequest" type="aida:praticheTrasferiteRequestType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+            <xs:element name="setPraticheTrasferiteResponse" type="aida:praticheTrasferiteResponseType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+
+            <xs:complexType name="praticheTrasferiteRequestType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element maxOccurs="unbounded" name="idPratica" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="praticheTrasferiteResponseType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element maxOccurs="unbounded" name="esitoModificaPratica" type="aida:esitoModificaPraticaType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:element name="addStatoAvanzamentoRequest" type="aida:statoAvanzamentoRequestType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+            <xs:element name="addStatoAvanzamentoResponse" type="aida:statoAvanzamentoResponseType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+
+            <xs:complexType name="statoAvanzamentoRequestType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="statoAvanzamento" type="aida:statoAvanzamentoType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="statoAvanzamentoResponseType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="esito" type="xs:boolean" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:element name="addStatoPraticaEsternaRequest" type="aida:statoPraticaEsternaRequestType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+            <xs:element name="addStatoPraticaEsternaResponse" type="aida:statoPraticaEsternaResponseType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+
+            <xs:complexType name="statoPraticaEsternaRequestType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="statoPratica" type="aida:statoPraticaEsternaType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="statoPraticaEsternaResponseType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="esito" type="xs:boolean" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+            
+            <xs:element name="setProtocolloPraticaRequest" type="aida:protocolloPraticaRequestType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+            <xs:element name="setProtocolloPraticaResponse" type="aida:protocolloPraticaResponseType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+            
+            <xs:complexType name="protocolloPraticaRequestType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="protocolloPratica" type="aida:protocolloPraticaType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="protocolloPraticaResponseType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="esito" type="xs:boolean" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+            
+            <xs:element name="setProtocolloAdempimentoRequest" type="aida:protocolloAdempimentoRequestType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+            <xs:element name="setProtocolloAdempimentoResponse" type="aida:protocolloAdempimentoResponseType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+            
+            <xs:complexType name="protocolloAdempimentoRequestType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="protocolloAdempimento" type="aida:protocolloAdempimentoType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="protocolloAdempimentoResponseType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="esito" type="xs:boolean" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="istanzaType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="id" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="nome" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="descrizione" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="mimeType" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="contenuto" type="xs:integer" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="filepath" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="attachment" type="xs:base64Binary" xmime:expectedContentTypes="application/octet-stream" xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="creazioneRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="modificaRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:complexType name="praticaType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="id" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="nome" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="descrizione" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="richiedente" type="aida:utenteType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="impresa" type="aida:aziendaType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="dateSpedizione" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="stato" type="xs:short" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="ambito" type="aida:ambitoType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="titolare" type="aida:schedaAnagraficaType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="protocollo" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="dataProtocollo" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="codiceStruttura" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="riferimentoAida" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="creazioneRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="modificaRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:complexType name="utenteType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="id" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element name="username" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="password" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="creazioneRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="modificaRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:complexType name="aziendaType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="id" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element name="denominazione" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="codiceFiscale" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="partitaIva" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="cciaa" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="rea" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="email" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="pec" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="telefono" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="url" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="naturaGiuridica" type="aida:anagraficaBaseType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="cap" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="indirizzo" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="comune" type="aida:comuneType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="toponimo" type="aida:anagraficaMinimaType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="dataRea" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="creazioneRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="modificaRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:complexType name="schedaAnagraficaType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="id" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element name="cognome" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element name="nome" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="codiceFiscale" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="sesso" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="cognomeConiugata" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="comuneNascita" type="aida:comuneType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="dataNascita" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="email" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="telefono" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="pec" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="usl" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="personaGiuridica" type="xs:boolean" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="statoCivile" type="aida:anagraficaMinimaType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="titolo" type="aida:titoloType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="titoloOnorifico" type="aida:anagraficaMinimaType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="dataPubblicaAmministrazione" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="tipoAnagrafica" type="aida:anagraficaMinimaType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="cap" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="indirizzo" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="comune" type="aida:comuneType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="ambito" type="aida:ambitoType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="toponimo" type="aida:anagraficaMinimaType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="creazioneRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="modificaRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:complexType name="titoloType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="id" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element name="nome" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element name="descrizione" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:complexType name="adempimentoType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="id" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="protocollo" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="dataProtocollo" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="idPratica" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="idProcedimento" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="idTipoProcedimento" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="stato" type="xs:short" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="contenuto" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="idIstanza" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="flagObbligatorio" type="xs:boolean" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="statoCompilazione" type="xs:short" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="creazioneRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="modificaRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:complexType name="allegatoAdempimentoType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="id" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="idAdempimento" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="allegatoProcedimento" type="aida:allegatoProcedimentoType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="contenuto" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="idIstanza" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="stato" type="xs:short" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="nome" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="obbligatorio" type="xs:boolean" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="dinamico" type="xs:boolean" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="creazioneRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="modificaRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:complexType name="anagraficaMinimaType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="id" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element name="nome" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:complexType name="esitoModificaPraticaType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="idPratica" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element name="esitoModifica" type="aida:esitoModificaType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:simpleType name="esitoModificaType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:restriction base="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <!-- Valori esito modifica -->
+                    <!-- Modifica effettuata con successo -->
+                    <xs:enumeration value="0" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <!-- Oggetto da modificare non trovato -->
+                    <xs:enumeration value="1" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:restriction>
+            </xs:simpleType>
+            
+            <xs:complexType name="statoAvanzamentoType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="idAdempimento" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element name="descrizione" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="infoAggiuntive" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="esito" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:complexType name="statoPraticaEsternaType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="codiceFiscale" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element name="protocollo" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element name="dataProtocollo" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element name="adempimento" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="dettaglio" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+            
+            <xs:complexType name="protocolloPraticaType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="idPratica" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element name="protocollo" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element name="dataProtocollo" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+            
+            <xs:complexType name="protocolloAdempimentoType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="idAdempimento" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element name="protocollo" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element name="dataProtocollo" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+            
+            <xs:complexType name="documentoType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="id" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element name="nome" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="descrizione" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="mimeType" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="attachment" type="xs:base64Binary" xmime:expectedContentTypes="application/octet-stream" xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="creazioneRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="modificaRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:complexType name="modelloType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="id" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element name="nome" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="descrizione" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="moduloInterattivo" type="xs:boolean" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="riferimentoEsterno" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="tipoModello" type="aida:anagraficaBaseType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="ambito" type="aida:ambitoType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="note" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="documenti" type="aida:documentiType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="creazioneRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="modificaRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:complexType name="documentiType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="documento" type="aida:documentoType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:complexType name="ambitoType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="id" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element name="nome" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="descrizione" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="contatti" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="creazioneRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="modificaRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:complexType name="ufficioType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="id" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element name="nome" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="ente" type="aida:enteType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="creazioneRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="modificaRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+            
+            <xs:complexType name="enteType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="id" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element name="nome" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="creazioneRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="modificaRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+            
+            <xs:complexType name="sedeUfficioType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="id" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element name="nome" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="descrizione" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="indirizzo" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="cap" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="comune" type="aida:comuneType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="email" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="telefono" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="fax" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="url" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="ufficio" type="aida:ufficioType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="ambito" type="aida:ambitoType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="creazioneRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="modificaRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:complexType name="comuneType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="id" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element name="nome" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="codiceCatastale" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="codiceIstat" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="statusRecord" type="xs:short" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="provincia" type="aida:provinciaType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:complexType name="provinciaType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="id" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element name="nome" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="codice" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="codiceIstat" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="statusRecord" type="xs:short" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="regione" type="aida:regioneType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:complexType name="regioneType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="id" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element name="nome" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:complexType name="procedimentoType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="id" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element name="nome" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="descrizione" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="tipoProcedimento" type="aida:anagraficaBaseType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="termine" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="modalitaAvvio" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="requisitiSoggettivi" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="requisitiOggettivi" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="materia" type="aida:materiaType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="atto" type="aida:anagraficaBaseType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="ufficioTitolare" type="aida:ufficioType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="modulo" type="aida:modelloType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="copie" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="ambito" type="aida:ambitoType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="iter" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="specifiche" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="adempimenti" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="idProcedimentoPadre" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="eliminato" type="xs:boolean" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="noteCompilazione" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="destinazione" type="xs:boolean" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="formatoAllegati" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="obbligoFirmaDigitale" type="xs:boolean" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="descrizioneProcesso" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="oneroso" type="xs:boolean" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="numeroMarche" type="xs:short" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="valoreMarca" type="xs:decimal" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="dirittiSegreteria" type="xs:decimal" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="dirittiIstruttoriaSUAP" type="xs:decimal" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="dirittiIstruttoriaEnte" type="xs:decimal" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="contributiOneri" type="xs:decimal" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="sedeUfficioTitolare" type="aida:sedeUfficioType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="creazioneRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="modificaRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:complexType name="materiaType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="id" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element name="nome" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="descrizione" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="creazioneRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="modificaRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="settore" type="aida:anagraficaBaseType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:complexType name="areeType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="area" type="aida:areaType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:complexType name="areaType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="id" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element name="nome" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="descrizione" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="ambito" type="aida:ambitoType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="creazioneRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="modificaRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:complexType name="allegatoProcedimentoType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="id" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element name="idProcedimento" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="ufficioConcedente" type="aida:ufficioType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="modello" type="aida:modelloType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="copie" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="noteCompilazione" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="obbligatorio" type="xs:boolean" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="formatoAllegati" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="posizione" type="xs:integer" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="sedeUfficioConcedente" type="aida:sedeUfficioType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="creazioneRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="modificaRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:complexType name="ufficioRichiedenteAllegatoType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="id" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element name="idAllegato" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="ufficioRichiedente" type="aida:ufficioType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="copie" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="competenza" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="atto" type="aida:anagraficaBaseType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="sedeUfficioRichiedente" type="aida:sedeUfficioType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="creazioneRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="modificaRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:complexType name="ufficioRichiedenteModuloType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="id" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="idProcedimento" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="ufficioRichiedente" type="aida:ufficioType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="copie" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="competenza" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="atto" type="aida:anagraficaBaseType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="sedeUfficioRichiedente" type="aida:sedeUfficioType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="creazioneRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="modificaRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:complexType name="servizioType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="id" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element name="nome" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="descrizione" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="flagDomandaUnica" type="xs:boolean" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="categoria" type="aida:anagraficaBaseType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="sottocategoria" type="aida:sottocategoriaType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="ambito" type="aida:ambitoType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="prerequisiti" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="descrizioneAdempimenti" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="descrizioneNormative" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element name="idServizioPadre" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="flagScia" type="xs:boolean" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="creazioneRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="modificaRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:complexType name="sottocategoriaType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="id" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element name="nome" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="descrizione" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="categoria" type="aida:anagraficaBaseType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="creazioneRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="modificaRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:complexType name="procedimentoServizioType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="id" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element name="idProcedimento" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="flagObbligatorio" type="xs:boolean" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="creazioneRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="modificaRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:complexType name="normativaServizioType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="id" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="idServizio" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="normativa" type="aida:normativaType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="creazioneRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="modificaRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:complexType name="normativaType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="id" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element name="nome" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="url" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="numero" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="dataPromulgazione" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="dataPubblicazione" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="autoritaEmittente" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="tipoProvvedimento" type="aida:tipoProvvedimentoType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="ambito" type="aida:ambitoType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="testo" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="note" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element name="documento" type="aida:documentoType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="creazioneRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="modificaRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:complexType name="tipoProvvedimentoType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="id" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element name="nome" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="descrizione" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="giurisdizione" type="aida:anagraficaBaseType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="creazioneRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="modificaRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:complexType name="allegatoNormativaType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="id" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="idNormativa" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="testo" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="documento" type="aida:documentoType" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:complexType name="anagraficaBaseType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="id" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element name="nome" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="descrizione" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="creazioneRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="modificaRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:complexType name="baseDatiType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element name="id" type="xs:int" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="creazioneRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <xs:element minOccurs="0" name="modificaRecord" type="xs:dateTime" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+    </wsdl:types>
+    
+    <wsdl:message name="getPraticaRequest" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        <wsdl:part element="sch:getPraticaRequest" name="getPraticaRequest" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        </wsdl:part>
+    </wsdl:message>
+
+    <wsdl:message name="getPraticaResponse" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        <wsdl:part element="sch:getPraticaResponse" name="getPraticaResponse" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        </wsdl:part>
+    </wsdl:message>
+
+    <wsdl:message name="getIstanzaRequest" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        <wsdl:part element="sch:getIstanzaRequest" name="getIstanzaRequest" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        </wsdl:part>
+    </wsdl:message>
+
+    <wsdl:message name="getIstanzaResponse" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        <wsdl:part element="sch:getIstanzaResponse" name="getIstanzaResponse" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        </wsdl:part>
+    </wsdl:message>
+
+    <wsdl:message name="getAdempimentiPraticaRequest" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        <wsdl:part element="sch:getAdempimentiPraticaRequest" name="getAdempimentiPraticaRequest" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        </wsdl:part>
+    </wsdl:message>
+
+    <wsdl:message name="getAdempimentiPraticaResponse" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        <wsdl:part element="sch:getAdempimentiPraticaResponse" name="getAdempimentiPraticaResponse" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        </wsdl:part>
+    </wsdl:message>
+
+    <wsdl:message name="getAllegatiAdempimentoResponse" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        <wsdl:part element="sch:getAllegatiAdempimentoResponse" name="getAllegatiAdempimentoResponse" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        </wsdl:part>
+    </wsdl:message>
+    
+    <wsdl:message name="getAllegatiAdempimentoRequest" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        <wsdl:part element="sch:getAllegatiAdempimentoRequest" name="getAllegatiAdempimentoRequest" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        </wsdl:part>
+    </wsdl:message>
+
+    <wsdl:message name="getPraticheDaTrasferireRequest" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        <wsdl:part element="sch:getPraticheDaTrasferireRequest" name="getPraticheDaTrasferireRequest" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        </wsdl:part>
+    </wsdl:message>
+    
+    <wsdl:message name="getPraticheDaTrasferireResponse" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        <wsdl:part element="sch:getPraticheDaTrasferireResponse" name="getPraticheDaTrasferireResponse" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        </wsdl:part>
+    </wsdl:message>
+    
+    <wsdl:message name="setPraticheTrasferiteRequest" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        <wsdl:part element="sch:setPraticheTrasferiteRequest" name="setPraticheTrasferiteRequest" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        </wsdl:part>
+    </wsdl:message>
+
+    <wsdl:message name="setPraticheTrasferiteResponse" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        <wsdl:part element="sch:setPraticheTrasferiteResponse" name="setPraticheTrasferiteResponse" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        </wsdl:part>
+    </wsdl:message>
+
+    <wsdl:message name="addStatoAvanzamentoRequest" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        <wsdl:part element="sch:addStatoAvanzamentoRequest" name="addStatoAvanzamentoRequest" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        </wsdl:part>
+    </wsdl:message>
+
+    <wsdl:message name="addStatoAvanzamentoResponse" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        <wsdl:part element="sch:addStatoAvanzamentoResponse" name="addStatoAvanzamentoResponse" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        </wsdl:part>
+    </wsdl:message>
+
+    <wsdl:message name="addStatoPraticaEsternaRequest" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        <wsdl:part element="sch:addStatoPraticaEsternaRequest" name="addStatoPraticaEsternaRequest" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        </wsdl:part>
+    </wsdl:message>
+
+    <wsdl:message name="addStatoPraticaEsternaResponse" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        <wsdl:part element="sch:addStatoPraticaEsternaResponse" name="addStatoPraticaEsternaResponse" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        </wsdl:part>
+    </wsdl:message>
+    
+    <wsdl:message name="setProtocolloPraticaRequest" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        <wsdl:part element="sch:setProtocolloPraticaRequest" name="setProtocolloPraticaRequest" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        </wsdl:part>
+    </wsdl:message>
+    
+    <wsdl:message name="setProtocolloPraticaResponse" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        <wsdl:part element="sch:setProtocolloPraticaResponse" name="setProtocolloPraticaResponse" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        </wsdl:part>
+    </wsdl:message>
+    
+    <wsdl:message name="setProtocolloAdempimentoRequest" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        <wsdl:part element="sch:setProtocolloAdempimentoRequest" name="setProtocolloAdempimentoRequest" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        </wsdl:part>
+    </wsdl:message>
+
+    <wsdl:message name="setProtocolloAdempimentoResponse" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        <wsdl:part element="sch:setProtocolloAdempimentoResponse" name="setProtocolloAdempimentoResponse" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        </wsdl:part>
+    </wsdl:message>
+    
+    <wsdl:portType name="pratiche" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        <wsdl:operation name="getPratica" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            <wsdl:input message="tns:getPraticaRequest" name="getPraticaRequest" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            </wsdl:input>
+            <wsdl:output message="tns:getPraticaResponse" name="getPraticaResponse" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            </wsdl:output>
+        </wsdl:operation>
+        
+        <wsdl:operation name="getIstanza" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            <wsdl:input message="tns:getIstanzaRequest" name="getIstanzaRequest" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            </wsdl:input>
+            <wsdl:output message="tns:getIstanzaResponse" name="getIstanzaResponse" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="getAdempimentiPratica" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            <wsdl:input message="tns:getAdempimentiPraticaRequest" name="getAdempimentiPraticaRequest" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            </wsdl:input>
+            <wsdl:output message="tns:getAdempimentiPraticaResponse" name="getAdempimentiPraticaResponse" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="getAllegatiAdempimento" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            <wsdl:input message="tns:getAllegatiAdempimentoRequest" name="getAllegatiAdempimentoRequest" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            </wsdl:input>
+            <wsdl:output message="tns:getAllegatiAdempimentoResponse" name="getAllegatiAdempimentoResponse" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="setPraticheTrasferite" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            <wsdl:input message="tns:setPraticheTrasferiteRequest" name="setPraticheTrasferiteRequest" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            </wsdl:input>
+            <wsdl:output message="tns:setPraticheTrasferiteResponse" name="setPraticheTrasferiteResponse" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="getPraticheDaTrasferire" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            <wsdl:input message="tns:getPraticheDaTrasferireRequest" name="getPraticheDaTrasferireRequest" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            </wsdl:input>
+            <wsdl:output message="tns:getPraticheDaTrasferireResponse" name="getPraticheDaTrasferireResponse" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            </wsdl:output>
+        </wsdl:operation>
+        
+        <wsdl:operation name="addStatoAvanzamento" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            <wsdl:input message="tns:addStatoAvanzamentoRequest" name="addStatoAvanzamentoRequest" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            </wsdl:input>
+            <wsdl:output message="tns:addStatoAvanzamentoResponse" name="addStatoAvanzamentoResponse" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="addStatoPraticaEsterna" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            <wsdl:input message="tns:addStatoPraticaEsternaRequest" name="addStatoPraticaEsternaRequest" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            </wsdl:input>
+            <wsdl:output message="tns:addStatoPraticaEsternaResponse" name="addStatoPraticaEsternaResponse" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="setProtocolloPratica" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            <wsdl:input message="tns:setProtocolloPraticaRequest" name="setProtocolloPraticaRequest" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            </wsdl:input>
+            <wsdl:output message="tns:setProtocolloPraticaResponse" name="setProtocolloPraticaResponse" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="setProtocolloAdempimento" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            <wsdl:input message="tns:setProtocolloAdempimentoRequest" name="setProtocolloAdempimentoRequest" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            </wsdl:input>
+            <wsdl:output message="tns:setProtocolloAdempimentoResponse" name="setProtocolloAdempimentoResponse" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            </wsdl:output>
+        </wsdl:operation>
+        
+    </wsdl:portType>
+    
+    <wsdl:binding name="praticheSoap11" type="tns:pratiche" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+        <wsp:PolicyReference URI="#praticheSoap11Policy"/>
+
+        <wsdl:operation name="getPratica" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            <soap:operation soapAction="" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+            <wsdl:input name="getPraticaRequest" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+                <soap:body use="literal" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+                <wsp:PolicyReference URI="#praticheSoap11_request_Policy"/>
+            </wsdl:input>
+            <wsdl:output name="getPraticaResponse" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+                <soap:body use="literal" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+                <wsp:PolicyReference URI="#praticheSoap11_response_Policy"/>
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="getIstanza" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            <soap:operation soapAction="" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+            <wsdl:input name="getIstanzaRequest" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+                <soap:body use="literal" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+                <wsp:PolicyReference URI="#praticheSoap11_request_Policy"/>
+            </wsdl:input>
+            <wsdl:output name="getIstanzaResponse" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+                <soap:body use="literal" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+                <wsp:PolicyReference URI="#praticheSoap11_response_Policy"/>
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="getAdempimentiPratica" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            <soap:operation soapAction="" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+            <wsdl:input name="getAdempimentiPraticaRequest" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+                <soap:body use="literal" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+                <wsp:PolicyReference URI="#praticheSoap11_request_Policy"/>
+            </wsdl:input>
+            <wsdl:output name="getAdempimentiPraticaResponse" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+                <soap:body use="literal" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+                <wsp:PolicyReference URI="#praticheSoap11_response_Policy"/>
+            </wsdl:output>
+        </wsdl:operation>
+        
+        <wsdl:operation name="getAllegatiAdempimento" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            <soap:operation soapAction="" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+            <wsdl:input name="getAllegatiAdempimentoRequest" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+                <soap:body use="literal" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+                <wsp:PolicyReference URI="#praticheSoap11_request_Policy"/>
+            </wsdl:input>
+            <wsdl:output name="getAllegatiAdempimentoResponse" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+                <soap:body use="literal" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+                <wsp:PolicyReference URI="#praticheSoap11_response_Policy"/>
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="setPraticheTrasferite" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            <soap:operation soapAction="" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+            <wsdl:input name="setPraticheTrasferiteRequest" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+                <soap:body use="literal" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+                <wsp:PolicyReference URI="#praticheSoap11_request_Policy"/>
+            </wsdl:input>
+            <wsdl:output name="setPraticheTrasferiteResponse" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+                <soap:body use="literal" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+                <wsp:PolicyReference URI="#praticheSoap11_response_Policy"/>
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="getPraticheDaTrasferire" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            <soap:operation soapAction="" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+            <wsdl:input name="getPraticheDaTrasferireRequest" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+                <soap:body use="literal" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+                <wsp:PolicyReference URI="#praticheSoap11_request_Policy"/>
+            </wsdl:input>
+            <wsdl:output name="getPraticheDaTrasferireResponse" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+                <soap:body use="literal" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+                <wsp:PolicyReference URI="#praticheSoap11_response_Policy"/>
+            </wsdl:output>
+        </wsdl:operation>
+    
+        <wsdl:operation name="addStatoAvanzamento" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            <soap:operation soapAction="" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+            <wsdl:input name="addStatoAvanzamentoRequest" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+                <soap:body use="literal" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+                <wsp:PolicyReference URI="#praticheSoap11_request_Policy"/>
+            </wsdl:input>
+            <wsdl:output name="addStatoAvanzamentoResponse" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+                <soap:body use="literal" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+                <wsp:PolicyReference URI="#praticheSoap11_response_Policy"/>
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="addStatoPraticaEsterna" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            <soap:operation soapAction="" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+            <wsdl:input name="addStatoPraticaEsternaRequest" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+                <soap:body use="literal" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+                <wsp:PolicyReference URI="#praticheSoap11_request_Policy"/>
+            </wsdl:input>
+            <wsdl:output name="addStatoPraticaEsternaResponse" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+                <soap:body use="literal" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+                <wsp:PolicyReference URI="#praticheSoap11_response_Policy"/>
+            </wsdl:output>
+        </wsdl:operation>
+    
+        <wsdl:operation name="setProtocolloPratica" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            <soap:operation soapAction="" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+            <wsdl:input name="setProtocolloPraticaRequest" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+                <soap:body use="literal" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+                <wsp:PolicyReference URI="#praticheSoap11_request_Policy"/>
+            </wsdl:input>
+            <wsdl:output name="setProtocolloPraticaResponse" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+                <soap:body use="literal" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+                <wsp:PolicyReference URI="#praticheSoap11_response_Policy"/>
+            </wsdl:output>
+        </wsdl:operation>
+    
+        <wsdl:operation name="setProtocolloAdempimento" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            <soap:operation soapAction="" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+            <wsdl:input name="setProtocolloAdempimentoRequest" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+                <soap:body use="literal" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+                <wsp:PolicyReference URI="#praticheSoap11_request_Policy"/>
+            </wsdl:input>
+            <wsdl:output name="setProtocolloAdempimentoResponse" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+                <soap:body use="literal" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+                <wsp:PolicyReference URI="#praticheSoap11_response_Policy"/>
+            </wsdl:output>
+        </wsdl:operation>
+    
+    </wsdl:binding>
+    
+    <wsdl:service name="praticheService" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        <wsdl:port binding="tns:praticheSoap11" name="praticheSoap11" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            <soap:address location="https://aidasvil.comune.livorno.it:443/aidaWS/pratiche" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+        </wsdl:port>
+    </wsdl:service>
+
+    <wsp:Policy wsu:Id="praticheSoap11Policy">
+        <wsp:ExactlyOne>
+            <wsp:All>
+                <sp:AsymmetricBinding>
+                    <wsp:Policy>
+                        <sp:InitiatorToken>
+                            <wsp:Policy>
+                                <sp:X509Token sp:IncludeToken="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702/IncludeToken/AlwaysToRecipient">
+                                    <wsp:Policy>
+                                        <sp:WssX509V3Token10/>
+                                    </wsp:Policy>
+                                </sp:X509Token>
+                            </wsp:Policy>
+                        </sp:InitiatorToken>
+                        <sp:RecipientToken>
+                            <wsp:Policy>
+                                <sp:X509Token sp:IncludeToken="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702/IncludeToken/Never">
+                                    <wsp:Policy>
+                                        <sp:WssX509V3Token10/>
+                                    </wsp:Policy>
+                                </sp:X509Token>
+                            </wsp:Policy>
+                        </sp:RecipientToken>
+                        <sp:Layout>
+                            <wsp:Policy>
+                                <sp:Strict/>
+                            </wsp:Policy>
+                        </sp:Layout>
+                        <sp:OnlySignEntireHeadersAndBody/>
+                        <sp:AlgorithmSuite>
+                            <wsp:Policy>
+                                <sp:Basic128/>
+                            </wsp:Policy>
+                        </sp:AlgorithmSuite>
+                    </wsp:Policy>
+                </sp:AsymmetricBinding>
+                <sp:Wss10>
+                    <wsp:Policy>
+                        <sp:MustSupportRefIssuerSerial/>
+                    </wsp:Policy>
+                </sp:Wss10>
+            </wsp:All>
+        </wsp:ExactlyOne>
+    </wsp:Policy>
+    <wsp:Policy wsu:Id="praticheSoap11_request_Policy">
+        <wsp:ExactlyOne>
+            <wsp:All>
+                <sp:SignedParts>
+                    <sp:Body/>
+                </sp:SignedParts>
+            </wsp:All>
+        </wsp:ExactlyOne>
+    </wsp:Policy>
+    <wsp:Policy wsu:Id="praticheSoap11_response_Policy">
+        <wsp:ExactlyOne>
+            <wsp:All/>
+        </wsp:ExactlyOne>
+    </wsp:Policy>
+    
+</wsdl:definitions>

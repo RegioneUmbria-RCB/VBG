@@ -1,0 +1,232 @@
+﻿@page "/{IdComune}/{Software}/admin/configuration"
+@using Init.Sigepro.FrontEnd.AppLogic.Configurazione.V2
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.DesignComuni.NavScroll
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+@using VBG.BlazorComponentsLibrary.EditFormComponents
+@inherits BasePage
+
+<style type="text/css">
+
+    /* Per ridurre i margini laterali e rendere la tabella più leggibile */
+    .container {
+        max-width: 90%;
+    }
+</style>
+
+@if (UtenteTester)
+{
+    <h2>Configurazioni</h2>
+
+    <VbgForm Id="form-filtro-parametri" Model="@nomeParametro" OnValidSubmit="@(() => FiltraParametri(nomeParametro))" CssClass="align-items-end">
+        <div class="mt-3 mb-1 w-25">
+            <TextInputForm Label="Filtra per nome"
+                           Value="@nomeParametro"
+                           ValueChanged="(string s) => nomeParametro = s"
+                           ValueExpression="() => nomeParametro">
+            </TextInputForm>
+        </div>
+        
+    </VbgForm>
+
+    @if (listaParametriFiltrati.Values != null && listaParametriFiltrati.Values.Any())
+    {
+        <div class="d-flex">
+            <table class="table table-hover">
+                @foreach (var key in listaParametriFiltrati.Keys)
+                {
+                    <thead>
+                        <tr class="table-info">
+                            <td class="fw-bold" colspan="3">@key</td>
+                        </tr>
+                        <tr>
+                            <th scope="col" class="col-2">Nome</th>
+                            <th scope="col" class=col-2>Tipo</th>
+                            <th scope="col" class="col-8">Valore</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var param in listaParametriFiltrati[key])
+                        {
+                            <tr>
+                                <td class="text-break">@param.Nome</td>
+                                <td class="text-break">@param.Tipo</td>
+                                <td class="text-break">@param.Valore</td>
+                            </tr>
+                        }
+                    </tbody>
+                }
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info" role="alert">
+            La ricerca non ha restituito alcun risultato
+        </div>
+    }
+    
+}
+else
+{
+    <h2>Errore</h2>
+    <p>Impossibile visualizzare la pagina perchè non si dispone dei permessi necessari.</p>
+    <p>Clicca <span><a href="" @onclick:preventDefault @onclick="@(() => GotoAsync("home"))">qui</a></span> per tornare alla homepage. </p>
+}
+
+
+
+
+@code {
+    public class ProprietaParametro
+    {
+        public readonly string Nome;
+        public readonly string Tipo;
+        public readonly string Valore;
+
+        public ProprietaParametro(string nome, string tipo, string valore)
+        {
+            this.Nome = nome;
+            this.Tipo = tipo;
+            this.Valore = valore;
+        }
+    }
+
+
+    [Inject]
+    public IConfigurazione<ParametriAspetto> CfgAspetto { get; set; } = default!;
+
+    [Inject]
+    public IConfigurazione<ParametriDatiCatastali> CfgDatiCatastali { get; set; } = default!;
+
+    [Inject]
+    public IConfigurazione<ParametriInvio> CfgInvio { get; set; } = default!;
+
+    [Inject]
+    public IConfigurazione<ParametriLogin> CfgLogin { get; set; } = default!;
+
+    [Inject]
+    public IConfigurazione<ParametriMenuV2> CfgMenu { get; set; } = default!;
+
+    [Inject]
+    public IConfigurazione<ParametriStc> CfgStc { get; set; } = default!;
+
+    [Inject]
+    public IConfigurazione<ParametriVisura> CfgVisura { get; set; } = default!;
+
+    [Inject]
+    public IConfigurazione<ParametriWorkflow> CfgWorkflow { get; set; } = default!;
+
+    [Inject]
+    public IConfigurazione<ParametriScadenzario> CfgScadenzario { get; set; } = default!;
+
+    [Inject]
+    public IConfigurazione<ParametriRegistrazione> CfgRegistrazione { get; set; } = default!;
+
+    [Inject]
+    public IConfigurazione<ParametriSigeproSecurity> CfgSigeproSecurity { get; set; } = default!;
+
+    [Inject]
+    public IConfigurazione<ParametriSchedaCittadiniExtracomunitari> CfgSchedaCittadiniExtracomunitari { get; set; } = default!;
+
+    [CascadingParameter(Name = "Layout")]
+    public MainLayout Layout { get; set; } = default!;
+
+    private Dictionary<string, IEnumerable<ProprietaParametro>> listaParametri = default!;
+
+    private Dictionary<string, IEnumerable<ProprietaParametro>> listaParametriFiltrati = default!;
+
+    private string nomeParametro = "";
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var baseUrl = $"{_navigationManager.BaseUri}{IdComune}/{Software}";
+        var breadcrumbItems = new List<BreadcrumbsItem>()
+            {
+                new BreadcrumbsItem()
+                {
+                    Label = "Funzioni amministrative",
+                    Url = $"{baseUrl}/admin",
+                },
+                 new BreadcrumbsItem()
+                {
+                    Label = "Configurazioni",
+                    Url = $"{baseUrl}/admin/configuration",
+                    Active = true
+                }
+            };
+
+        this.Layout.SetBreadcrumbItems(breadcrumbItems);
+
+        LoadData();
+
+        await base.OnInitializedAsync();
+    }
+
+    private void LoadData()
+    {
+        listaParametri = new Dictionary<string, IEnumerable<ProprietaParametro>>
+        {
+            {"Aspetto",Analizza( CfgAspetto.Parametri )},
+            {"DatiCatastali",Analizza( CfgDatiCatastali.Parametri )},
+            {"Invio",Analizza( CfgInvio.Parametri )},
+            {"Login",Analizza( CfgLogin.Parametri )},
+            {"Menu",Analizza( CfgMenu.Parametri )},
+            {"Registrazione",Analizza( CfgRegistrazione.Parametri )},
+            {"Scadenzario",Analizza( CfgScadenzario.Parametri )},
+            {"SchedaCittadiniExtracomunitari",Analizza( CfgSchedaCittadiniExtracomunitari.Parametri )},
+            {"SigeproSecurity",Analizza( CfgSigeproSecurity.Parametri )},
+            {"Stc",Analizza( CfgStc.Parametri )},
+            {"Visura",Analizza( CfgVisura.Parametri )},
+            {"Workflow",Analizza( CfgWorkflow.Parametri )}/*,
+            {"Pagamenti MIP",Analizza( CfgPagamentiMIP.Parametri )},*/
+		};
+
+        FiltraParametri(string.Empty);
+    }
+
+    private IEnumerable<ProprietaParametro> Analizza(object parametri)
+    {
+        var fields = parametri.GetType().GetFields();
+
+        foreach (var prop in fields)
+        {
+            var value = "{null}";
+            var objVal = prop.GetValue(parametri);
+
+            if (objVal != null)
+                value = objVal.ToString();
+
+            yield return new ProprietaParametro("[F] " + prop.Name, prop.FieldType.ToString(), value);
+        }
+
+        var props = parametri.GetType().GetProperties();
+
+        foreach (var prop in props)
+        {
+            var value = "{null}";
+            var objVal = prop.GetValue(parametri, null);
+
+            if (objVal != null)
+                value = objVal.ToString();
+
+            yield return new ProprietaParametro("[P] " + prop.Name, prop.PropertyType.ToString(), value);
+        }
+    }
+
+    private void FiltraParametri(string filtro)
+    {
+        listaParametriFiltrati = new Dictionary<string, IEnumerable<ProprietaParametro>>();
+        var parametriResult = new ProprietaParametro[] { };
+
+        foreach (var key in listaParametri.Keys)
+        {
+            parametriResult = listaParametri[key].Where(x => x.Nome.ToLower().Contains(filtro.ToLower())).ToArray();
+
+            if(parametriResult != null && parametriResult.Any())
+                listaParametriFiltrati.Add(key, parametriResult);
+        }
+    }
+
+}

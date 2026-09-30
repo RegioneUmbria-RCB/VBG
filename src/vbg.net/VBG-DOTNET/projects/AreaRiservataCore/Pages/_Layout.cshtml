@@ -1,0 +1,99 @@
+﻿@using Microsoft.AspNetCore.Components.Web
+@namespace AreaRiservataCore.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="~/" />
+    <link rel="stylesheet" href="css/font-awesome-4.6.3/css/font-awesome.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="css/ionicons-2.0.1/css/ionicons.min.css" asp-append-version="true" />
+    @* <link rel="stylesheet" href="css/area-riservata/area-riservata.css" asp-append-version="true" /> *@
+    <link rel="stylesheet" href="css/area-riservata/ar-core-fixes.css" asp-append-version="true" />
+    <link rel="stylesheet" href="css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="css/reconnect-modal.css" asp-append-version="true" />
+    <link rel="stylesheet" href="AreaRiservataCore.styles.css" asp-append-version="true" />
+
+    <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
+
+</head>
+
+<body id="bodyTop" class="areariservata">
+    <a href="#main" style="position: absolute;left: -1000px;" aria-hidden="false">Vai al contenuto principale</a>
+
+    @RenderBody()
+
+    <div id="components-reconnect-modal" >
+        <div class="components-reconnect-overlay">
+            <div class="components-reconnect-dialog components-reconnect-attempts" role="alert">
+                <div class="components-rejoining-animation">
+                    <div></div>
+                    <div></div>
+                </div>
+                <p>
+                    Connessione al server perduta... riconnessione in corso<br/>
+                    <small>
+                        Tentativo 
+                            <span id="components-reconnect-current-attempt"></span> /
+                            <span id="components-reconnect-max-retries"></span>
+                    </small>
+                    <br />
+                    <small class="components-reconnect-retry">Tentativo di riconnessione in corso...</small>
+                </p>
+                <button style="display: none;">Retry</button>
+            </div>
+
+            <div class="components-reconnect-dialog connection-restore-failed" role="alert">
+                <p>
+                    Impossibile ripristinare la connessione.<br />Prova ad aggiornare la pagina corrente.
+                </p>
+                <p>
+                    <button role="button" class="btn btn-primary" onclick="javascript:document.location.reload()">Aggiorna</button>
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="blazor-error-ui">
+        <environment include="Staging,Production">
+            An error has occurred. This application may no longer respond until reloaded.
+        </environment>
+        <environment include="Development">
+            An unhandled exception has occurred. See browser dev tools for details.
+        </environment>
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+    <div id="splash-screen">
+        <div>
+            <h2>Caricamento in corso...</h2>
+            <div>
+                <div class="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/_framework/blazor.server.js" autostart="false"></script>
+    <script src="js/jsLoader.js"></script>
+    @* <script src="js/SpinnerJS.js"></script> *@
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js" integrity="sha512-6UofPqm0QupIL0kzS/UIzekR73/luZdC6i/kXDbWnLOJoqwklBK6519iUnShaYceJ0y4FaiPtX/hRnV/X/xlUQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>*@
+    <script src="_content/VBG.BlazorComponentsLibrary/lib/bootstrap-italia/js/bootstrap-italia.bundle.min.js"></script>
+    <script src="js/helper.js"></script>
+    <script src="js/avviaPagamento.js"></script>
+    <script src="js/indicatore-caricamento-pagina.js"></script>
+    @* <script src="_content/Vbg.CoreControls/js/AutocompleteForm.js"></script> *@
+    <script>
+        bootstrap.loadFonts('_content/VBG.BlazorComponentsLibrary/lib/bootstrap-italia/fonts');
+
+        Blazor.start().then(function () {
+            const el = document.getElementById('splash-screen')
+            el.style.display = 'none';
+        });
+
+    </script>
+</body>
+
+</html>

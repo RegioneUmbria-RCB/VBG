@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="pragma" content="no-cache" />
+	<title>Firma Web</title>
+	<!-- css -->
+	<link rel="stylesheet" href="css/bootstrap.min.css" />
+	<link rel="stylesheet" href="css/style.css" />
+	<link rel="stylesheet" href="css/jquery.fileupload.css" />
+	<link rel="stylesheet" href="css/jquery.fileupload-ui.css" />
+	<!-- scripts -->
+	<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+	<script type="text/javascript" src="js/jquery.ui.widget.js"></script>
+	<script type="text/javascript" src="js/jquery.iframe-transport.js"></script>
+	<script type="text/javascript" src="js/jquery.fileupload.js"></script>
+	<script type="text/javascript" src="js/deployJava.js"></script>		
+</head>
+<body>
+	<label class="titolo">Firma Web</label>
+	<form enctype="multipart/form-data" action="uploadFileToSign" method=POST>
+	<div id="container">
+		<div class="blocco">
+		    <!-- The fileinput-button span is used to style the file input field as button -->
+		    <span class="btn btn-success fileinput-button">
+		        <i class="glyphicon glyphicon-plus"></i>
+		        <span>Seleziona file</span>
+		        <input id="sessionId" type="hidden" name="sessionId">
+		        <!-- The file input field used as target for the file upload widget -->
+		        <input id="fileupload" type="file" name="files[]">
+		    </span>
+		    <button type="button" class="btn btn-primary start" onclick="signJWS()">
+		        <i class="glyphicon glyphicon-upload"></i>
+		        <span>Firma JWS</span>
+		    </button>
+		    <button type="button" class="btn btn-danger delete" onclick="startNewSignSession()">
+		        <i class="glyphicon glyphicon-trash"></i>
+		        <span>Cancella</span>
+		    </button>
+		    <br>
+		    <br>
+		    <!-- The global progress bar -->
+		    <div id="progress" class="progress" style="width: 450px">
+		        <div class="progress-bar progress-bar-success"></div>
+		    </div>
+		    <!-- The container for the uploaded files -->
+	    	<div id="files" class="files"></div>
+	    </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Note</h3>
+        </div>
+        <div class="panel-body">
+            <ul>
+                <li>La dimensione massima del totale dei file caricati è di <strong>100 MB</strong>.</li>           
+                <li>I file caricati saranno eliminati dopo <strong>1 ora</strong>.</li>
+                <li>Possono essere caricati più file da firmare contemporaneamente.</li>
+                <li>I file possono essere caricati anche trascinandoli sul riquadro di firma.</li>
+            </ul>
+        </div>
+    </div> 
+	</form>
+	<script type="text/javascript">
+	var sessionIdVar = '';
+	var listaCodiciOggetto = '';
+	
+	getUploadedFiles();
+	
+	$(function () {
+	    'use strict';
+	    var url = 'uploadFileToSign';
+	    $('#fileupload').fileupload({
+	        url: url,
+	        dataType: 'json',
+	        start: function(e){
+	        	$('#fileupload').prop('disabled', true);	  
+	        	$('#progress .progress-bar').removeClass('progress-bar-error');
+	        	$('#progress .progress-bar').removeClass('progress-bar-success');
+	        },
+	        done: function (e, data) {
+	        	$('#progress .progress-bar').addClass('progress-bar-success');
+	        	$('#progress .progress-bar').text('100%');
+	        	setSessionId(data.result.sessionId);
+	        	getUploadedFiles();
+	        	$('#fileupload').prop('disabled', false);
+	        },
+	        progressall: function (e, data) {
+	            var progress = parseInt(data.loaded / data.total * 100, 10);
+	            $('#progress .progress-bar').css('width',progress + '%');
+	            $('#progress .progress-bar').text(progress - 1 + '%');
+	        },
+	        fail: function (e, data) {
+	        	$('#progress .progress-bar').addClass('progress-bar-error');
+	        	$('#progress .progress-bar').text('100%');
+	        	$('#fileupload').prop('disabled', false);
+	        	alert('Errore durante il caricamento del file.');
+	        }
+	    }).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled');
+	});
+	
+	function setSessionId(sId){
+		$('#sessionId').val(sId);
+		sessionIdVar = sId;
+	}
+	
+	function signJWS(){
+		var _sessionId = getFirmaSessionId();
+		var _fileId = getListaCodiciOggetto();
+		location.href="signApp?sessionId="+_sessionId+"&fileId="+_fileId+"&debug=true";
+	}
+	
+
+	function startNewSignSession(){	
+		setSessionId('');
+		listaCodiciOggetto = '';
+		$('#files').html('');
+		
+		// $('#signAppletElement').remove();
+		$('#progress .progress-bar').css('width','0%');
+        $('#progress .progress-bar').text('');
+	}
+	
+	
+	
+	function getUploadedFiles(){
+		listaCodiciOggetto = '';
+		$.ajax({
+			  url: "downloadFileToSignList",
+			  data: {sessionId : sessionIdVar},
+			  dataType: "json",
+			  cache: false
+		}).done(function( data ) {
+			$('#files').html('');	        	
+        	$.each(data.files, function (index, file) { 
+                var link = $('<a/>').attr('href','downloadSignedFile?sessionId='+file.sessionId+'&fileId='+file.fileId).attr('target','_blank').text(file.fileName);
+                $('<p/>').attr('id',file.otFid).append(link).appendTo('#files');
+                listaCodiciOggetto += file.fileId + ",";
+            });
+        	listaCodiciOggetto.slice(0,-1);
+		}).fail(function() {
+			alert( "Errore durante il recupero dei file caricati." );
+		});
+		setTimeout(getUploadedFiles,5000);
+	}
+	
+	function getListaCodiciOggetto(){
+		return listaCodiciOggetto;
+	}
+	
+	function getFirmaSessionId(){
+		return sessionIdVar;
+	}
+	
+	function setEsitoFirma(codiceoggetto, codice, messaggio){
+		if(codice == 'OK'){
+			getUploadedFiles();
+		}
+	}
+	
+	
+	function docWriteWrapper(func) {
+		var writeTo = document.createElement('div'),oldwrite = document.write,content = '';
+		writeTo.id = "signAppletElement";
+		writeTo.className = "blocco";
+		document.write = function(text) {content += text;}
+		func();
+		writeTo.innerHTML += content;
+		document.write = oldwrite;
+		//document.body.appendChild(writeTo);
+		document.getElementById("container").appendChild(writeTo);
+	}
+	
+    </script>
+	
+</body>
+</html>

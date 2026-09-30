@@ -1,0 +1,415 @@
+openapi: 3.0.1
+info:
+  title: Sistema di integrazione cartografica
+  description: Componente di integrazione con i sistemi di integrazione cartografica
+  version: 1.0.0
+servers:
+  - url: REDACTED
+    description: Local Environment
+  - url: REDACTED
+    description: Test Environment
+  - url: REDACTED
+    description: Production Environment
+
+security:
+  - bearerAuth: []
+  
+paths:
+  /{software}/attivita/innesco:
+    post:
+      summary: Metodo di innesco a partire da una lista di ATTIVITà
+      description: Serve a recuperare la url del cartografico
+      parameters:
+        - in: path
+          name: software
+          schema:
+            type: string
+          required: true
+          description: Codice software
+      requestBody:
+        description: Parametri per ottenere la url di innesco
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InnescoAttivitaRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InnescoResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+  /{software}/autorizzazioni/innesco:
+    post:
+      summary: Metodo di innesco a partire da una lista di autorizzazioni
+      description: Serve a recuperare la url del cartografico
+      parameters:
+        - in: path
+          name: software
+          schema:
+            type: string
+          required: true
+          description: Codice software
+      requestBody:
+        description: Parametri per ottenere la url di innesco
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InnescoAutorizzazioniRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InnescoResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+  /{software}/istanze/innesco-uuid:
+    post:
+      summary: Metodo di innesco a partire da una lista di istanze
+      description: Serve a recuperare la url del cartografico
+      parameters:
+        - in: path
+          name: software
+          schema:
+            type: string
+          required: true
+          description: Codice software
+      requestBody:
+        description: Parametri per ottenere la url di innesco
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InnescoIstanzeUUidRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InnescoResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+  /{software}/istanze/innesco:
+    post:
+      summary: Metodo di innesco 
+      description: Serve a recuperare la url del cartografico
+      parameters:
+        - in: path
+          name: software
+          schema:
+            type: string
+          required: true
+          description: Codice software
+      requestBody:
+        description: Parametri per ottenere la url di innesco
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InnescoIstanzeRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InnescoResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+  /{software}/parametri/{uuid}:
+    get:
+      summary: Metodo per recuperare i parametri salvati durante la lavorazione sul cartografico
+      description: Serve a recuperare le informazioni di quanto rappresentato sul cartografico
+      parameters:
+        - in: path
+          name: software
+          schema:
+            type: string
+          required: true
+          description: Codice software
+        - in: path
+          name: uuid
+          schema:
+            type: string
+          required: true
+          description: Id della sessione di editing da cui recuperare i parametri
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ParametriResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+  /{software}/info:
+    get:
+      summary: Recupero delle informazioni in merito al connettore configurato
+      description: Recupero delle informazioni in merito al connettore configurato
+      parameters:
+        - in: path
+          name: software
+          schema:
+            type: string
+          required: true
+          description: Codice software
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseInfo"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  responses:
+    BadRequest:
+      description: Bad Request
+      content:
+        application/problem+json:
+          schema:
+            $ref: "#/components/schemas/Errore"
+  schemas:
+    Errore:
+      type: object
+      properties:
+        codice:
+          type: string
+          example: "400"
+        messaggio:
+          type: string
+          example: "Parametro URL_SERVIZIO non valorizzato nella configurazione E256-TT"
+        dettaglio:
+          type: string
+          example: "Stack dell'errore o qualsiasi log applicativo utile"
+    InnescoIstanzeRequest:
+      type: object
+      properties:
+        chiamante:
+          type: string
+        utilizzo:
+          type: string
+          enum:
+            - INSERIMENTO
+            - MODIFICA
+            - ELENCO
+        comune:
+          $ref: "#/components/schemas/Comune"
+        callback:
+          $ref: "#/components/schemas/Callback"
+        localizzazioni:
+          type: array
+          items:
+            $ref: "#/components/schemas/Localizzazione"
+    InnescoAttivitaRequest:
+      type: object
+      properties:
+        chiamante:
+          type: string
+        utilizzo:
+          type: string
+          enum:
+            - INSERIMENTO
+            - MODIFICA
+            - ELENCO
+        comune:
+          $ref: "#/components/schemas/Comune"
+        callback:
+          $ref: "#/components/schemas/Callback"
+        idAttivita:
+          type: array
+          items:
+            type: integer
+    InnescoAutorizzazioniRequest:
+      type: object
+      properties:
+        chiamante:
+          type: string
+        utilizzo:
+          type: string
+          enum:
+            - INSERIMENTO
+            - MODIFICA
+            - ELENCO
+        comune:
+          $ref: "#/components/schemas/Comune"
+        callback:
+          $ref: "#/components/schemas/Callback"
+        localizzazioni:
+          type: array
+          items:
+            $ref: "#/components/schemas/Localizzazione"
+    InnescoIstanzeUUidRequest:
+      type: object
+      properties:
+        chiamante:
+          type: string
+        utilizzo:
+          type: string
+          enum:
+            - INSERIMENTO
+            - MODIFICA
+            - ELENCO
+        comune:
+          $ref: "#/components/schemas/Comune"
+        callback:
+          $ref: "#/components/schemas/Callback"
+        uuidIstanze:
+          type: array
+          items:
+            type: string
+    InnescoResponse:
+      type: object
+      properties:
+        url:REDACTED
+          type: string
+        method:
+          type: string
+          enum:
+            - GET
+            - POST
+        body:
+         type: array
+         items:
+           $ref: "#/components/schemas/BodyItem"
+        esito:
+          $ref: '#/components/schemas/Esito'
+    BodyItem:
+      type: object
+      properties:
+        chiave:
+          type: string
+        valore:
+          type: string
+    Esito:
+      type: object
+      properties:
+        esito:
+          type: string
+          enum:
+            - OK
+            - KO
+        exceptions:
+          type: array
+          items:
+            type: string
+    ParametriResponse:
+      type: object
+      properties:
+        parametri:
+          type: array
+          items:
+            $ref: '#/components/schemas/ParametroResponse'
+        esito:
+          $ref: '#/components/schemas/Esito'
+    ParametroResponse:
+      type: object
+      properties:
+        geojson:
+          $ref: '#/components/schemas/GeoJSON'
+        additionalInfo:
+          type: array
+          items:
+            $ref: '#/components/schemas/Parametro'
+    GeoJSON:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        type:
+          type: string
+        geometry:
+          $ref: '#/components/schemas/Geometry'
+        properties: {}
+    Parametro:
+      type: object
+      properties:
+        chiave:
+          type: string
+        valore:
+          type: string
+    ResponseInfo:
+      type: object
+      properties:
+        connettore:
+          type: string
+        utilizzo:
+          $ref: "#/components/schemas/Utilizzo"
+    Comune:
+      type: object
+      properties:
+        nome:
+          type: string
+        codiceIstat:
+          type: string
+    Callback:
+      type: object
+      properties:
+        callbackURL:REDACTED
+          type: string
+        cancelURL:REDACTED
+          type: string
+    Localizzazione:
+      type: object
+      properties:
+        uuid:
+          type: string
+        identificativo:
+          type: string
+        codViario:
+          type: string
+        descrizione:
+          type: string
+        civico:
+          type: string
+        km:
+          type: string
+        latitudine:
+          type: string
+        longitudine:
+          type: string
+    Geometry:
+      type: object
+      properties:
+        type:
+          type: string
+        coordinates:
+          type: array
+          items:
+            $ref: "#/components/schemas/Coordinata"
+    Coordinata:
+      type: array
+      items:
+        type: number
+    Utilizzo:
+      type: object
+      properties:
+        istanze:
+          $ref: "#/components/schemas/Metodi"
+        autorizzazioni:
+          $ref: "#/components/schemas/Metodi"
+        attivita:
+          $ref: "#/components/schemas/Metodi"
+    Metodi:
+      type: object
+      properties:
+        inserimento:
+          type: boolean
+        modifica:
+          type: boolean
+        elenco:
+          type: boolean

@@ -1,0 +1,107 @@
+﻿@using Microsoft.AspNetCore.Components.Forms;
+@using System.Globalization;
+@typeparam TValue
+@inherits InputBase<TValue>
+
+<div class="@GetFormCheckClass()">
+    <input type="radio" id="@Id" name="@GroupName" value="@SelectedValue" checked="@(SelectedValue.Equals(Value))" @onchange="OnChange" disabled="@(!Enabled)">
+    <label for="@Id" class="@GetDisabledClass()">@Label</label>
+    @if (!string.IsNullOrEmpty(HelperText))
+    {
+        <small id="@($"{Id}-help")" class="form-text d-block">@HelperText</small>
+    }
+</div>
+
+@code {
+    /// <summary>
+    /// The radioButton id
+    /// </summary>
+    [Parameter, EditorRequired]
+    public string Id { get; set; }
+
+    /// <summary>
+    /// The componet label
+    /// </summary>
+    [Parameter]
+    public string Label { get; set; }
+
+    /// <summary>
+    /// A small description displayed under the Label
+    /// </summary>
+    [Parameter]
+    public string HelperText { get; set; }
+
+    /// <summary>
+    /// Use the same GroupName to group RadioButton controls inside the page
+    /// </summary>
+    [Parameter]
+    public string GroupName { get; set; } = "groupName";
+
+    /// <summary>
+    /// Value of RadioButton if checked
+    /// </summary>
+    [Parameter]
+    public TValue SelectedValue { get; set; }
+
+    /// <summary>
+    /// Set to true to change the default vertical display orientation and use the orizonthal orientation
+    /// </summary>
+    [Parameter]
+    public bool DisplayOrizonthally { get; set; } = false;
+
+    /// <summary>
+    /// Set to true if you want to display the Checkbox on the right of the Label
+    /// NOTE: doesn't work if DisplayOrizonthally = true
+    /// </summary>
+    [Parameter]
+    public bool DisplayOnTheRightSide { get; set; } = false;
+
+    /// <summary>
+    /// Set to false to disable the radioButton
+    /// </summary>
+    [Parameter]
+    public bool Enabled { get; set; } = true;
+
+    private string GetDisabledClass()
+    {
+        return Enabled ? "" : "disabled";
+    }
+
+    private string GetFormCheckClass()
+    {
+        string formCheck = "form-check";
+
+        if (DisplayOrizonthally)
+            formCheck += " form-check-inline";
+        else if (DisplayOnTheRightSide)
+            formCheck += " form-check-right";
+
+        return formCheck;
+    }
+
+    private void OnChange(ChangeEventArgs args)
+    {
+        CurrentValueAsString = args.Value.ToString();
+    }
+
+    protected override bool TryParseValueFromString(string value,
+        out TValue result, out string errorMessage)
+    {
+        var success = BindConverter.TryConvertTo<TValue>(
+            value, CultureInfo.CurrentCulture, out var parsedValue);
+        if (success)
+        {
+            result = parsedValue;
+            errorMessage = null;
+
+            return true;
+        }
+        else
+        {
+            result = default;
+            errorMessage = $"{FieldIdentifier.FieldName} field isn't valid.";
+
+            return false;
+        }
+    }
+}

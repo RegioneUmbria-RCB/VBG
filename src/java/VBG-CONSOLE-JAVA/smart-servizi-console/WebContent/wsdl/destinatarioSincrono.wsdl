@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions 
+	targetNamespace="http://www.suap.regione.toscana.it/DestinatarioSincrono/service"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+	xmlns:proc="http://www.suap.regione.toscana.it/sem/types/procedimento"
+	xmlns:tns="http://www.suap.regione.toscana.it/DestinatarioSincrono/service"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://www.suap.regione.toscana.it/DestinatarioSincrono/service">
+			<xsd:import namespace="http://www.suap.regione.toscana.it/sem/types/procedimento"
+				schemaLocation="../Schema/procedimentiSuap.xsd" />
+		</xsd:schema>
+	</wsdl:types>
+
+	<!-- MESSAGES -->
+
+	<wsdl:message name="riceviStimoloRequest">
+		<wsdl:part name="parameters" element="proc:riceviStimoloRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="riceviStimoloResponse">
+		<wsdl:part name="parameters" element="proc:riceviStimoloResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="riceviConfermaRicezioneRequest">
+		<wsdl:part name="parameters" element="proc:riceviConfermaRicezioneRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="riceviConfermaRicezioneResponse">
+		<wsdl:part name="parameters" element="proc:riceviConfermaRicezioneResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="riceviSegnalazioneCompletezzaRequest">
+		<wsdl:part name="parameters" element="proc:segnalazioneCompletezzaRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="riceviSegnalazioneCompletezzaResponse">
+		<wsdl:part name="parameters" element="proc:segnalazioneCompletezzaResponse"></wsdl:part>
+	</wsdl:message>
+
+	<!-- PORTS -->
+
+	<wsdl:portType name="DestinatarioSincronoPort">
+		<wsdl:operation name="riceviStimolo">
+			<wsdl:input message="tns:riceviStimoloRequest"></wsdl:input>
+			<wsdl:output message="tns:riceviStimoloResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="riceviConfermaRicezione">
+			<wsdl:input message="tns:riceviConfermaRicezioneRequest"></wsdl:input>
+			<wsdl:output message="tns:riceviConfermaRicezioneResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="riceviSegnalazioneCompletezza">
+			<wsdl:input message="tns:riceviSegnalazioneCompletezzaRequest"></wsdl:input>
+			<wsdl:output message="tns:riceviSegnalazioneCompletezzaResponse"></wsdl:output>
+		</wsdl:operation>
+	</wsdl:portType>
+
+
+	<!-- BINDINGS -->
+
+	<wsdl:binding name="DestinatarioSincronoBinding" type="tns:DestinatarioSincronoPort">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="riceviStimolo">
+			<soap:operation soapAction="http://www.suap.regione.toscana.it/DestinatarioSincrono/service/riceviStimolo" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="riceviConfermaRicezione">
+			<soap:operation soapAction="http://www.suap.regione.toscana.it/DestinatarioSincrono/service/riceviConfermaRicezione" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="riceviSegnalazioneCompletezza">
+			<soap:operation soapAction="http://www.suap.regione.toscana.it/DestinatarioSincrono/service/riceviSegnalazioneCompletezza" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+
+
+	<wsdl:service name="DestinatarioSincronoService">
+		<wsdl:port name="DestinatarioSincronoPort" binding="tns:DestinatarioSincronoBinding">
+			<soap:address location="http://servizi.suap.toscana.it/DestinatarioSincrono/DestinatarioSincronoService" />
+		</wsdl:port>
+	</wsdl:service>
+
+</wsdl:definitions>

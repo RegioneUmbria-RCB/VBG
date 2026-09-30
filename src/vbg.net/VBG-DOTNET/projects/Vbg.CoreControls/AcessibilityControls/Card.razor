@@ -1,0 +1,179 @@
+﻿<div class="@GetCardWrapperClass()">
+    <div class="@GetCardClass()">
+        @if (ShowCardImage || ShowCardCalendar)
+        {
+            @if (ShowCardImage)
+            {
+                <div class="img-responsive-wrapper">
+                    <div class="img-responsive">
+                        <figure class="img-wrapper">
+                            <img src="@CardImageURL" title="@CardImageDescription" alt="@CardImageDescription">
+                        </figure>
+                        @if (ShowCardCalendar)
+                        {
+                            <div class="card-calendar d-flex flex-column justify-content-center">
+                                <span class="card-date">@CardCalendarDay</span>
+                                <span class="card-day">@CardCalendarMonth</span>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+            else if (ShowCardCalendar)
+            {
+                <div class="card-calendar d-flex flex-column justify-content-center">
+                    <span class="card-date">@CardCalendarDay</span>
+                    <span class="card-day">@CardCalendarMonth</span>
+                </div>
+            }
+        }
+        <div class="card-body">
+            @if (Header != null)
+            {
+                <div class="card-header">
+                    @Header
+                </div>
+            }
+
+            @if (!string.IsNullOrEmpty(Title))
+            {
+                <h3 class="card-title big-heading h5">@Title</h3>
+            }
+
+            @if (!string.IsNullOrEmpty(Subtitle))
+            {
+                <h4 class="card-subtitle mb-2 text-muted">@Subtitle</h4>
+            }
+                
+            <p class="card-text">@Body</p>            
+
+            <div class="it-card-footer">
+                @if (!string.IsNullOrEmpty(Signature))
+                {
+                    <span class="card-signature">@Signature</span>
+                }
+
+                @if (ShowReadMoreLink)
+                {
+                    <a class="read-more" href="#">
+                        <span class="text">Leggi di più</span>
+                        <span class="visually-hidden">@Title</span>
+                        <svg class="icon">
+                            <use href="@($"{SvgFilePath}#{SvgReadMoreIcon}")"></use>
+                        </svg>
+                    </a>
+                }
+
+                @if (Footer != null)
+                {
+                    <div class="it-card-footer-custom">
+                        @Footer
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] 
+    public string Title { get; set; }
+
+    [Parameter] 
+    public string Subtitle { get; set; }
+
+    [Parameter]
+    public RenderFragment Header { get; set; }
+
+    [Parameter]
+    public RenderFragment Body { get; set; }
+
+    [Parameter]
+    public RenderFragment Footer { get; set; }
+
+    [Parameter]
+    public string Signature { get; set; }
+
+    [Parameter]
+    public bool ShowReadMoreLink { get; set; } = false;
+
+    [Parameter]
+    public bool ShowCardShadow { get; set; } = false;
+
+    [Parameter]
+    public bool UseBigSize { get; set; } = false;
+
+    [Parameter]
+    public string CardImageURL { get; set; }
+
+    [Parameter]
+    public string CardImageDescription { get; set; }
+
+    [Parameter]
+    public bool UsePanoramicCardImage { get; set; } = false;
+
+    [Parameter]
+    public int? CardCalendarDay { get; set; }
+
+    [Parameter]
+    public string CardCalendarMonth { get; set; }
+
+    /// <summary>
+    /// The icon to use among sprites.svg file
+    /// </summary>
+    [Parameter]
+    public string SvgReadMoreIcon { get; set; } = "it-arrow-right";
+
+    /// <summary>
+    /// The sprites.svg file path used for icons
+    /// </summary>
+    [Parameter]
+    public string SvgFilePath { get; set; } = "css/bootstrap-italia/svg/sprites.svg";
+
+    private bool ShowCardImage
+    {
+        get { return !string.IsNullOrEmpty(CardImageURL); }
+    }
+    private bool ShowCardCalendar
+    {
+        get { return !string.IsNullOrEmpty(CardCalendarMonth) && CardCalendarDay != null; }
+    }
+
+
+    private string GetCardClass()
+    {
+        string cssClass = "card";
+
+        if (ShowCardShadow)
+            cssClass += " card-bg";
+
+        if (UseBigSize)
+            cssClass += " card-big";
+
+        if (ShowCardImage)
+            cssClass += " card-img";
+
+        return cssClass;
+    }
+
+    private string GetCardWrapperClass()
+    {
+        string cssClass = "card-wrapper";
+
+        if (ShowCardShadow)
+            cssClass += " card-space";
+
+        return cssClass;
+    }
+
+    private string Get()
+    {
+        string cssClass = "img-responsive";
+
+        if (UsePanoramicCardImage)
+            cssClass += " img-responsive-panoramic";
+
+        return cssClass;
+    }
+
+}

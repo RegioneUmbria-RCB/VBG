@@ -1,0 +1,473 @@
+﻿<html lang="it">
+<head>
+    <title>Riepilogo domanda</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <style media="all">
+
+        :root {
+            --size-sm: 10px;
+            --size-m: 15px;
+            --size-lg: 24px;
+            --size-xl: 32px;
+            --docsearch-logo-color: var(--bd-violet);
+        }
+
+        h1 {
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        .etichetta {
+            background-color: #efefef;
+            font-size: 11px;
+        }
+
+        .dato {
+            font-weight: bold;
+        }
+
+        .nomeFile {
+            font-size: 10px;
+        }
+
+        pre {
+            font-size: 10px;
+        }
+
+        h3 {
+            font-size: 14px;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        * {
+            font-family: Verdana, sans-serif;
+            box-sizing: border-box;
+            font-size: var(--size-sm);
+        }
+
+        body {
+            background-color: #ffffff;
+        }
+
+        .d-flex {
+            display: flex;
+        }
+
+        .flex-fill {
+            flex: 1 1 auto !important;
+        }
+
+        .border {
+            border: 1px solid #0f0f0f;
+        }
+
+        .bold {
+            font-weight: bold;
+        }
+
+        /*LARGHEZZE*/
+        .w-25 {
+            width: 25% !important;
+        }
+
+        .w-50 {
+            width: 50% !important;
+        }
+
+        .w-100 {
+            width: 100% !important;
+        }
+        /* PADDING */
+        .p1 {
+            padding: var(--size-sm);
+        }
+
+        .p2 {
+            padding: var(--size-m);
+        }
+
+        .p3 {
+            padding: var(--size-lg);
+        }
+
+        .p4 {
+            padding: var(--size-xl);
+        }
+
+        /* MARGINI */
+        .m1 {
+            margin: var(--size-sm);
+        }
+
+        .mt1 {
+            margin-top: var(--size-sm);
+        }
+
+        .mb1 {
+            margin-bottom: var(--size-sm);
+        }
+
+        .m2 {
+            margin: var(--size-m);
+        }
+
+        .mt2 {
+            margin-top: var(--size-m);
+        }
+
+        .mb2 {
+            margin-bottom: var(--size-m);
+        }
+
+        .m3 {
+            margin: var(--size-lg);
+        }
+
+        .mt3 {
+            margin-top: var(--size-lg);
+        }
+
+        .mb3 {
+            margin-bottom: var(--size-lg);
+        }
+
+        .m4 {
+            margin: var(--size-xl);
+        }
+
+        .mt4 {
+            margin-top: var(--size-xl);
+        }
+
+        .mb4 {
+            margin-bottom: var(--size-xl);
+        }
+
+        /* TABELLE */
+        td {
+            padding: var(--size-sm);
+            font-size: inherit;
+        }
+
+            td.dato {
+                font-weight: bold;
+            }
+
+        th {
+            font-size: inherit;
+            background-color: #efefef;
+            text-align: left;
+            padding: var(--size-sm);
+        }
+    </style>
+
+</head>
+<body>
+    <h1>
+        Presentazione Pratica Telematica
+    </h1>
+
+    <xsl:if test="(/Istanze/Natura != '')">
+        <div class="mb2">
+
+            Natura istanza: <xsl:value-of select="/Istanze/Natura" /> <!-- Riporta il testo della natura dell'istanza es: "scia", "ordinario", "comunicazione"-->
+        </div>
+    </xsl:if>
+
+    <div class="d-flex mb4">
+        <div class="p3 border bold" style="width:50%">
+            <span class="dato"><xsl:value-of select="/Istanze/ConfigurazioneComune/DENOMINAZIONE" /></span>
+        </div>
+        <div class="p3 border bold" style="width:50%">
+            <span>
+                Pratica n.
+                <xsl:value-of select="/Istanze/NUMEROISTANZA" />
+            </span>
+        </div>
+    </div>
+
+    <xsl:if test="count(/Istanze/Professionista) &gt; 0">
+
+        <xsl:variable name="anagrafe" select="/Istanze/Professionista" />
+
+        <table class="w-100 mb2">
+            <tr>
+                <th class="w-25">Il sottoscritto</th>
+                <td class="dato w-25">
+                    <xsl:value-of select="/Istanze/Professionista/NOMINATIVO" />&#160;
+                    <xsl:value-of select="/Istanze/Professionista/NOME" />
+                </td>
+                <th class="w-25">Codice Fiscale</th>
+                <td class="dato w-25">
+                    <xsl:value-of select="/Istanze/Professionista/CODICEFISCALE" />
+                </td>
+            </tr>
+
+            <tr>
+                <th class="w-25">Nato/a a</th>
+                <td class="dato w-25">
+                    <xsl:value-of select="/Istanze/Professionista/ComuneNascita/COMUNE" />
+                </td>
+                <th class="w-25">Il</th>
+                <td class="dato w-25">
+                    <xsl:call-template name="FormatDate">
+                        <xsl:with-param name="DateTime" select="/Istanze/Professionista/DATANASCITA" />
+                    </xsl:call-template>
+                </td>
+            </tr>
+
+
+            <tr>
+                <th class="w-25">Residente in</th>
+                <td class="dato w-25">
+                    <xsl:value-of select="/Istanze/Professionista/ComuneResidenza/COMUNE" />
+                </td>
+                <th class="w-25">Prov.</th>
+                <td class="dato w-25">
+                    <xsl:value-of select="/Istanze/Professionista/PROVINCIA" />
+                </td>
+            </tr>
+
+            <tr>
+                <th class="w-25">Via/Loc.</th>
+                <td colspan="3" class="dato">
+                    <xsl:value-of select="/Istanze/Professionista/INDIRIZZO" />
+                </td>
+            </tr>
+
+            <tr>
+                <th class="w-25">E-mail</th>
+                <td colspan="3" class="dato">
+                    <xsl:value-of select="/Istanze/Professionista/EMAIL" />
+                </td>
+            </tr>
+        </table>
+
+        <div class="bold mb2">In qualit&#224; di Procuratore Speciale di</div>
+    </xsl:if>
+
+    <!-- RICHIEDENTE -->
+    <xsl:if test="count(/Istanze/Richiedente) &gt; 0">
+
+        <xsl:variable name="anagrafe" select="/Istanze/Richiedente" />
+
+        <table class="w-100 mb2">
+            <tr>
+                <xsl:if test="count(/Istanze/Professionista) &gt; 0">
+                    <th class="w-25">Nominativo</th>
+                </xsl:if>
+
+                <xsl:if test="count(/Istanze/Professionista) = 0">
+                    <th class="w-25">Il sottoscritto</th>
+                </xsl:if>
+
+                <td class="dato w-25">
+                    <xsl:value-of select="/Istanze/Richiedente/NOMINATIVO" />&#160;
+                    <xsl:value-of select="/Istanze/Richiedente/NOME" />
+                </td>
+                <th class="w-25">Codice Fiscale</th>
+                <td class="dato w-25">
+                    <xsl:value-of select="/Istanze/Richiedente/CODICEFISCALE" />
+                </td>
+            </tr>
+
+            <tr>
+                <th class="w-25">Nato/a a</th>
+                <td class="dato w-25">
+                    <xsl:value-of select="/Istanze/Richiedente/ComuneNascita/COMUNE" />
+                </td>
+                <th class="w-25">Il</th>
+                <td class="dato w-25">
+                    <xsl:call-template name="FormatDate">
+                        <xsl:with-param name="DateTime" select="/Istanze/Richiedente/DATANASCITA" />
+                    </xsl:call-template>
+                </td>
+            </tr>
+
+            <tr>
+                <th class="w-25">Residente in</th>
+                <td class="dato w-25">
+                    <xsl:value-of select="/Istanze/Richiedente/ComuneResidenza/COMUNE" />
+                </td>
+                <th class="w-25">Prov.</th>
+                <td class="dato w-25">
+                    <xsl:value-of select="/Istanze/Richiedente/PROVINCIA" />
+                </td>
+            </tr>
+
+            <tr>
+                <th class="w-25">Via/Loc.</th>
+                <td colspan="3" class="dato">
+                    <xsl:value-of select="/Istanze/Richiedente/INDIRIZZO" />
+                </td>
+            </tr>
+
+            <tr>
+                <th class="w-25">E-mail</th>
+                <td colspan="3" class="dato">
+                    <xsl:value-of select="/Istanze/Richiedente/EMAIL" />
+                </td>
+            </tr>
+        </table>
+
+        <div class="bold mb2"><xsl:value-of select="/Istanze/TipoSoggetto/TIPOSOGGETTO" /></div>
+    </xsl:if>
+
+
+    <!-- Azienda -->
+
+    <xsl:if test="count(/Istanze/AziendaRichiedente) &gt; 0">
+        <table class="w-100 mb2">
+            <tr>
+                <th class="w-25">Di</th>
+                <td class="dato w-25">
+                    <xsl:value-of select="/Istanze/AziendaRichiedente/NOMINATIVO" />
+                </td>
+                <th class="w-25">C.F./P.IVA</th>
+                <td class="dato w-25">
+                    <xsl:value-of select="/Istanze/AziendaRichiedente/CODICEFISCALE" /> -
+                    <xsl:value-of select="/Istanze/AziendaRichiedente/PARTITAIVA" />
+                </td>
+            </tr>
+            <tr>
+                <th class="w-25">Con sede in</th>
+                <td class="dato w-25">
+                    <xsl:value-of select="/Istanze/AziendaRichiedente/ComuneResidenza/COMUNE" />
+                </td>
+                <th class="w-25">Via/Loc.</th>
+                <td class="dato w-25">
+                    <xsl:value-of select="/Istanze/AziendaRichiedente/INDIRIZZO" />
+                </td>
+            </tr>
+        </table>
+    </xsl:if>
+
+    <xsl:if test="count(/Istanze/Azienda) &gt; 0">
+        <table class="w-100 mb2">
+            <xsl:for-each select="Istanze/Stradario/IstanzeStradario">
+                <tr>
+                    <td class="dato" colspan="2">
+                        <xsl:value-of select="Stradario/PREFISSO" />
+                        &#160;
+                        <xsl:value-of select="Stradario/DESCRIZIONE" />
+                        &#160;
+                        <xsl:value-of select="CIVICO" />
+                        &#160;
+                        <xsl:value-of select="ESPONENTE" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="w-25">Note</th>
+                    <td class="dato"><xsl:value-of select="NOTE" />&#160;</td>
+                </tr>
+            </xsl:for-each>
+        </table>
+    </xsl:if>
+
+    <table class="w-100 mb2">
+        <tr>
+            <th class="w-25">Inoltra la domanda per</th>
+            <td class="dato">
+                <pre><xsl:value-of select="/Istanze/LAVORI" /></pre>
+            </td>
+        </tr>
+    </table>
+    <hr />
+    <schedeDinamiche />
+
+    <br />
+    <br />
+    <xsl:if test="count(/Istanze/DocumentiIstanza/DocumentiIstanza) != 0">
+        <div style="text-align:center">
+            <h3>
+                Allegati dell'intervento
+            </h3>
+        </div>
+
+        <ul>
+            <xsl:for-each select="/Istanze/DocumentiIstanza/DocumentiIstanza">
+                <li>
+                    <div class="dato">
+                        <xsl:value-of select="DOCUMENTO" />&#160;
+                    </div><div class="nomeFile"><xsl:value-of select="Oggetto/NOMEFILE" /></div>
+                </li>
+            </xsl:for-each>
+        </ul>
+    </xsl:if>
+
+    <xsl:for-each select="Istanze/EndoProcedimenti/IstanzeProcedimenti">
+        <xsl:if test="count(IstanzeAllegati[PRESENTE = '1']) > 0">
+
+            <div style="text-align:center">
+                <h3>
+                    Allegati dell'endoprocedimento
+                    <xsl:value-of select="Endoprocedimento/Procedimento" />
+                </h3>
+            </div>
+
+            <ul>
+                <xsl:for-each select="IstanzeAllegati">
+                    <xsl:if test="PRESENTE != '0'">
+                        <li>
+                            <div class="dato">
+                                <xsl:value-of select="ALLEGATOEXTRA" />
+                            </div>
+                            <div class="nomeFile">
+                                <xsl:value-of select="Oggetto/NOMEFILE" />
+                            </div>
+                        </li>
+                    </xsl:if>
+                </xsl:for-each>
+            </ul>
+        </xsl:if>
+    </xsl:for-each>
+
+    <br />
+    <br />
+
+
+    <div class="center">
+        <h3>Tutto cio' premesso la pratica risulta sottoscritta da</h3>
+    </div>
+
+    <ul>
+        <xsl:for-each select="Istanze/Richiedenti/IstanzeRichiedenti">
+            <xsl:if test="count(Procuratore) = 0">
+                <xsl:variable name="codiceFiscaleAnagrafica" select="Richiedente/CODICEFISCALE" />
+                <xsl:if test="count(../IstanzeRichiedenti/Procuratore/CODICEFISCALE[.=$codiceFiscaleAnagrafica]) != 0">
+                    <li>
+                        <div class="nomeFile">
+                            <xsl:value-of select="Richiedente/NOMINATIVO" />&#160;
+                            <xsl:value-of select="Richiedente/NOME" />
+                        </div>
+                    </li>
+                </xsl:if>
+            </xsl:if>
+        </xsl:for-each>
+
+        <xsl:for-each select="Istanze/Richiedenti/IstanzeRichiedenti">
+            <xsl:if test="count(Procuratore) = 0">
+                <xsl:variable name="codicefiscaleRic" select="Richiedente/CODICEFISCALE" />
+                <xsl:if test="count(../IstanzeRichiedenti/Procuratore/CODICEFISCALE[.=$codicefiscaleRic]) = 0">
+                    <xsl:if test="TipoSoggetto/TIPODATO = 'R' and TipoSoggetto/TIPODATO != 'T'">
+                        <li>
+                            <div class="nomeFile">
+                                <xsl:value-of select="Richiedente/NOMINATIVO" />&#160;
+                                <xsl:value-of select="Richiedente/NOME" />
+                            </div>
+                        </li>
+                    </xsl:if>
+                </xsl:if>
+            </xsl:if>
+        </xsl:for-each>
+    </ul>
+
+</body>
+
+</html>

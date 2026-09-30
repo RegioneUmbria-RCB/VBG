@@ -1,0 +1,25 @@
+﻿@using Init.Sigepro.FrontEnd.AppLogic.Autenticazione.Vbg.AutenticazioneUtente
+@using Init.Sigepro.FrontEnd.CoreServices.GestionePresentazioneDomanda.Admin
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+
+@inherits BaseSharedPage
+
+@if (UtenteTester)
+{
+    <a href="@this.GetNavigationPathTo(_goToButtonService.GotoUrl)" target="_blank"  title="Apri workflow intervento" aria-hidden="true" tabindex="-1" class="gotoWorkflowButton bg-primary @(_goToButtonService.DisabledClass)" data-focus-mouse="false">
+        <SvgIcon IconId="it-external-link" CssClass="icon-light"></SvgIcon>
+    </a>
+}
+
+@code {
+    [Inject]
+    public GoToWorkflowButtonService _goToButtonService { get; set; } = default!;
+
+    // private async Task GotoUrl()
+    // {
+    //     if (_goToButtonService.InterventoSelezionato)
+    //     {
+    //         await Goto(true, _goToButtonService.GotoUrl);
+    //     }        
+    // }
+}

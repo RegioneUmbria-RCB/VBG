@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://gruppoinit.it/pal/gp/backoffice/schemas/messages/responsabili" elementFormDefault="qualified"
+	xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://gruppoinit.it/pal/gp/backoffice/schemas/messages/responsabili">
+	<element name="ResponsabiliInsertRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string" />
+				<element name="dettaglio" type="tns:Responsabili" />
+			</sequence>
+		</complexType>
+	</element>
+	<element name="ResponsabiliInsertResponse">
+		<complexType>
+			<sequence>
+				<element name="id" type="integer" />
+			</sequence>
+		</complexType>
+	</element>
+	<element name="ResponsabiliUpdateRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string" />
+				<element name="dettaglio" type="tns:Responsabili" />
+			</sequence>
+		</complexType>
+	</element>
+	<element name="ResponsabiliUpdateResponse">
+		<complexType>
+			<sequence>
+				<element name="id" type="integer" />
+			</sequence>
+		</complexType>
+	</element>
+	<complexType name="Responsabili">
+		<sequence>
+			<element name="responsabile" type="string" />
+			<element name="userid" type="string" />
+			<element name="password" type="string" minOccurs="0" maxOccurs="1" />
+			<element name="useridCopiaPermessi" type="string" minOccurs="0" maxOccurs="1" />
+			<element name="amministratore" type="boolean" minOccurs="0" maxOccurs="1" />
+			<element name="amministratoresoftware" type="boolean" minOccurs="0" maxOccurs="1" />
+			<element name="softwareAbilitati" type="tns:SoftwareAblilitati" minOccurs="0" maxOccurs="1" />
+			<element name="comuniAssociati" type="tns:ComuniAssociati" minOccurs="0" maxOccurs="1" />
+			<element name="readonly" type="boolean" minOccurs="0" maxOccurs="1" />
+			<element name="disabilitato" type="boolean" minOccurs="0" maxOccurs="1" />
+			<element name="anagrafe" type="tns:Anagrafe" minOccurs="0" maxOccurs="1" />
+		</sequence>
+	</complexType>
+	<complexType name="SoftwareAblilitati">
+		<sequence>
+			<element name="software" type="string" minOccurs="1" maxOccurs="unbounded" />
+		</sequence>
+	</complexType>
+	<complexType name="Anagrafe">
+		<sequence>
+			<element name="titolo" type="string" minOccurs="0" maxOccurs="1" />
+			<element name="qualifica" type="string" minOccurs="0" maxOccurs="1" />
+			<element name="matricola" type="string" minOccurs="0" maxOccurs="1" />
+			<element name="codicefiscale" type="string" minOccurs="0" maxOccurs="1" />
+			<element name="datanascita" type="date" minOccurs="0" maxOccurs="1" />
+			<element name="indirizzo" type="string" minOccurs="0" maxOccurs="1" />
+			<element name="citta" type="string" minOccurs="0" maxOccurs="1" />
+			<element name="cap" type="string" minOccurs="0" maxOccurs="1" />
+			<element name="provincia" type="string" minOccurs="0" maxOccurs="1" />
+			<element name="telefonolavoro" type="string" minOccurs="0" maxOccurs="1" />
+			<element name="telefonoabitazione" type="string" minOccurs="0" maxOccurs="1" />
+			<element name="telefonocellulare" type="string" minOccurs="0" maxOccurs="1" />
+			<element name="fax" type="string" minOccurs="0" maxOccurs="1" />
+			<element name="email" type="string" minOccurs="0" maxOccurs="1" />
+		</sequence>
+	</complexType>
+	<complexType name="ComuniAssociati">
+		<sequence>
+			<element name="codiceComune" type="string" minOccurs="1" maxOccurs="unbounded" />
+		</sequence>
+	</complexType>
+</schema>	

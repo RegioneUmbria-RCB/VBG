@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans default-lazy-init="true"
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+	
+	
+	
+	<context:annotation-config/>
+	
+	<bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping">
+		 <property name="interceptors">
+		 	<list>
+				<ref bean="localeChangeInterceptor" />
+				<ref bean="themeChangeInterceptor" />
+				<ref bean="openSessionInViewInterceptor" />
+			</list>
+		 </property>
+		 <property name="order" value="1"></property>
+	</bean>
+	
+	<bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+    	<property name="paramName" value="lang" />
+	</bean>
+	
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+		<property name="defaultLocale" value="it" />
+	</bean>
+	
+	<bean class="org.springframework.web.servlet.view.XmlViewResolver" 
+		p:location="/WEB-INF/views.xml" 
+		p:order="1" />
+	
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" 
+		p:prefix="/WEB-INF/jsp/"
+		p:suffix=".jsp" />		
+		
+	
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+	
+	<bean id="themeChangeInterceptor" class="org.springframework.web.servlet.theme.ThemeChangeInterceptor" />	
+	
+	<bean id="themeResolver" class="org.springframework.web.servlet.theme.CookieThemeResolver" />
+	
+	<aop:aspectj-autoproxy />
+	
+	<!-- LISTA DEI CONTROLLER ABILITATI PER IL DEBUG -->
+	
+	<!-- CONTROLLER DI BASE (NON DISABILITARE) -->
+	
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.WelcomeController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.MenuController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.AjaxController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.JSONController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.HistoryController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.AdminController" />
+	
+	<!-- CONTROLLER DI BUSINESS (AGGIUNGERE QUELLI NECESSARI) -->
+	<!--  
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.AccertamentiController" />	
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.AlberoCausaliController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.AlberoContiController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.AlberoprocAtecoController" />
+	-->
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.AlberoprocController" />
+	<!-- 
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.AlberoprocDocumenticatController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.AlberoprocpeoplehrefController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.AlberoprocpeopleoperController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.AlboCategorieController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.AlboPubblicazioniAllegatiController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.AlboPubblicazioniController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.AmministrazioniController" />
+	-->
+	
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.AnagrafeController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.Anagrafedyn2datiController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.AnagrafeinterdettiController" />
+	<!-- 
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.AnagrafemercatipresenzeController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.Aree2Controller" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.AreeController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.AreedettagliController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.AtecoController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.AttivitaController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.AutorizzazioniController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.AutorizzazioniSubentriController" />
+	
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.BachecalavorocercaController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.BachecalavoroconfigurazioneController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.BachecalavorooffroController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.BandiAllegatiController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.BandiController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.BaseController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.BatchScadenzarioController" />
+	
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CalcolatriceController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CalendariomercatoController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CanoniCategorieController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CanoniCoefficientiController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CanoniConfigareeController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CanoniConfigurazioneController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CanoniRiduzioniController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CanoniRiduzioniomiController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CanoniTipisuperficiController" />
+	-->
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CartController" />
+	<!-- 
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CategoriaaffissioniController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CategorieeventibaseController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CcBasetipocalcoloController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CcCausaliriduzionirController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CcCausaliriduzionitController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CcClassisuperficiController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CcCoeffcontribAttivitaController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CcCoeffcontributoController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CcCondizioniAttivitaController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CcConfigurazioneController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CcDestinazioniController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CcDetermtipocalcoloController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CcDettaglisuperficieController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CcIcalcoliController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CcIcalcoliDettagliorController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CcIcalcoliDettagliotController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CcIcalcoloDcontribattivController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CcIcalcoloDcontributoController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CcIcalcoloTcontributoController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CcIcalcolotcontributoRiduzController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CcIcalcolototController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CcItabella1Controller" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CcItabella2Controller" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CcItabella3Controller" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CcItabella4Controller" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CcTabella3Controller" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CcTabellaCaratteristController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CcTabellaClassiedificioController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CcTipisuperficieController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CcTipointerventoController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CcValiditacoefficientiController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CdsattiController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CdsController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CdsconvocazioniController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.Cdsinvitati2Controller" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CdsinvitatiController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.ChiusureistanzaController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CollaudoController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CollaudoverificheController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CommedilizieAllegatiController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CommedilizieAppelloController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CommedilizieCaricaController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CommedilizieConvocazioniController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CommedilizieTipologieController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CommedilizieTipopareriController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.CommissioniedilizieTController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.ConcessionicausaliController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.ConcessionitipiController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.ConcessioniusoController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.ConfigurazioneController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.ConfigurazioneutenteController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.ContabilitamercatiController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.ContiController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.ControlloController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.ControlloverificheController" />
+	-->
+	
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.DocumentiistanzaController" />
+	<!-- 
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.DocumentMergeController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.DomandefrontalberoController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.DomandefrontController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.DomandefrontEndoController" />
+	-->
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.DomandestcController" />
+	<!-- 
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.Dyn2CampiController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.Dyn2ModellidController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.Dyn2ModellitController" />
+	
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.EndoCausaliController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.EndoContiController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.ExternalResourceController" />
+	
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.FaqclassiController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.FaqController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.FidejussionestatiController" />
+	-->
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.FileController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.FirmaDigitaleController" />
+	<!-- 
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.FoArconfigurazioneController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.FormegiuridicheController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.ForumController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.FoVisuraCampiController" />
+	
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.GestionepresenzeController" />
+	
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.HelpController" />
+	-->
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.IAttivitaController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.IAttivitadyn2datiController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.IAttivitadyn2modellitController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.ImpiantiController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.ImportExportSIVBGController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.InfoCameraController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.InfoController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.InfosuapController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.InventarioprocedimentiController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.IstanzeaffissioniassegnazioniController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.IstanzeaffissioniController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.IstanzeallegatiController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.IstanzeareeController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.IstanzeattivitaController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.IstanzecalcolocanoniDController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.IstanzecalcolocanoniOController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.IstanzecalcolocanoniTController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.IstanzecollegateController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.IstanzeController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.Istanzedyn2datiController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.IstanzeeventiController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.IstanzefidejussioniController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.IstanzefrontofficeController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.IstanzelavoriDController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.IstanzelavoriTController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.IstanzemappaliController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.IstanzeoneriController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.IstanzeoneriDettaglioController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.IstanzepeopledController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.IstanzepeopletController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.IstanzeprocedimentiController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.IstanzeprocureController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.IstanzerichiedentiController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.IstanzestradarioController" />
+	
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.JSONMailController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.JSONRicercheController" />
+	<!-- 
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.LavoricategorieController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.LavoritipiCausalioneriController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.LavoritipiController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.LeggiController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.LeggitipiController" />
+	-->
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.LetteretipoController" />
+	<!-- 
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.LinkutiliController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.LottiController" />
+	
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.MailConfigController" />
+	-->
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.MailtipoController" />
+	<!-- 
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.MappatureController" />	
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.MenufoController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.MenuinfoController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.MercatiConfigurazioneController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.MercatiContiController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.MercatiController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.MercatiDContiController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.MercatiDController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.MercatidLettureController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.MercatipresenzeStoricoController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.MessaggicfgController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.ModelliController" />
+	-->
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.MovimentiallegatiController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.MovimentiController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.MovimentimailController" />
+	<!-- 
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.NaturaendoController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.NewsController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.NormativeController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.NormegeneraliController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.NotificheAuslController" />
+	
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.OCausaliriduzionirController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.OCausaliriduzionitController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.OClassiaddettiController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.OConfigurazioneController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.OConfigurazionetipionereController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.ODestinazioniController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.OggettiFileSystemController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.OggettiinfoController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.OIcalcolocontribrController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.OIcalcolocontribrRiduzController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.OIcalcolocontribtBtoController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.OIcalcolocontribtController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.OIcalcoloDettagliorController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.OIcalcoloDettagliotController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.OIcalcolototController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.OIndiciterritorialiController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.OInterventiController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.OnericomportamentoController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.OneritipirateizzazioneController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.OrariaperturatestataController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.OTabellaabcController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.OTabelladController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.OTipioneriController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.OValiditacoefficientiController" />
+	-->
+	<!-- 
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.ParametriSTCController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.ParteLocaleSchedaEndoTipo1Controller" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.ParteLocaleSchedaEndoTipo2Controller" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.PasswordController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.PermistanzeController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.PertinenzeCoefficientiController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.PosteggitipospazioController" />
+	-->
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.ProtocollazioneController" />
+	<!-- 
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.ProtocolloController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.PuFormatiController" />
+	
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.QuesitiController" />
+	
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.RaggruppamentocausalioneriController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.RangeRateizzazioniController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.RegistrazioniCausaliController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.RegistrazioniController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.RegistrazioniInOutController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.RegistrazionimercatoController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.RegistrazioniUtil" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.ReportController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.ResponsabiliController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.RssFeedController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.RuoliController" />
+	
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.SchedaContabileController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.SettoriController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.SorteggiCategorieController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.SorteggidettagliomovimentiController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.SorteggitestataController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.StatiistanzaController" />
+	-->
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.StcController" />
+	
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.StpController" />
+	<!-- 
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.StradariocoloreController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.StradarioController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.StradariozoneController" />
+	
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.TaskschedulerController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.TempificazioniController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.TestController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.TipiaffissioniController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.TipiaffissioniformatiController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.TipiaperturaController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.TipiarchivioistanzeController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.TipiareeController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.TipibandocampigraduatController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.TipibandoController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.TipibandoinputController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.TipibandooutputController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.TipicausalioneriController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.TipidocumentoController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.TipiendoController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.TipifamiglieendoController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.TipigraduatorietController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.TipimodalitapagamentoController" />
+	-->
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.TipimovimentoController" />
+	<!-- 
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.TipiorarioController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.TipiprocedureController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.TipiresponsabiliController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.TipisoggettoController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.TipisoggettopeopleController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.TipiunitamisuraController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.TipologiaistanzaController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.TipologiaregistriController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.TipologieoggettoController" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.TitoliController" />
+	-->
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.VerticalizzazionibaseController" />
+	<!-- 
+	<bean class="it.gruppoinit.pal.gp.backoffice.web.VwConcessionilistaController" />
+	-->
+</beans>

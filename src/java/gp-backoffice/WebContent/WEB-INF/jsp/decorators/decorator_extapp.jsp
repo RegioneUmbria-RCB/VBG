@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%@ include file="../includes/taglibs.jsp" %>
+<%@ page session="false" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="it.gruppoinit.pal.gp.core.security.LoggedUser"%>
+<%@ page import="org.springframework.security.context.SecurityContextHolder"%>
+<%@ page import="org.springframework.security.context.SecurityContext"%>
+<%@ page import="org.springframework.security.userdetails.UserDetails"%>
+<%@ page import="it.gruppoinit.pal.gp.core.constants.WebConstants"%>
+<%@ page import="java.util.Date"%>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="it">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="pragma" content="no-cache" />
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<title><fmt:message key="label.appname"/> - <decorator:title default=""/></title>
+	<link rel="shortcut icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon" /> 
+	<link rel="icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon" />
+	<%
+		SecurityContext sc = SecurityContextHolder.getContext();
+		UserDetails ud = (UserDetails)sc.getAuthentication().getPrincipal();
+		LoggedUser user = (LoggedUser)ud;
+		String stileBO = (String)user.getImpostazioniUtente().get(WebConstants.CSS_USER_PREF_STYLE);
+	%>
+	<link type="text/css" rel="stylesheet" media="all" href="${pageContext.request.contextPath}/css/layouts/layout.css" />
+	<link type="text/css" rel="stylesheet" media="all" href="${pageContext.request.contextPath}/css/styles/<%=stileBO %>" />
+	<!-- Java script per il calendario -->
+	<!-- ####################################################################################################### -->
+	<link type="text/css" rel="stylesheet" media="all" href="${pageContext.request.contextPath}/calendar/css/jscal2.css" />
+    <link type="text/css" rel="stylesheet" media="all" href="${pageContext.request.contextPath}/calendar/css/border-radius.css" />
+    <!-- ####################################################################################################### -->
+	<!--[if lt IE 7]>
+	<style type="text/css">
+		table {
+			font-size: 1em;
+		}
+	</style>
+	<![endif]-->
+	
+	<script type="text/javascript" src="${pageContext.request.contextPath}/scripts/dojo/dojo/dojo.js" djConfig="parseOnLoad:true, isDebug:false"></script>	
+	<script type="text/javascript">
+	  	dojo.require("dojo.data.ItemFileReadStore");
+	  	dojo.require("dojo.parser");
+	  	dojo.require("dijit.Tree");
+	  	dojo.require("dijit.Menu");
+	  	dojo.require("dijit.Dialog");
+	  	dojo.require("dijit.layout.ContentPane");
+	  	dojo.require("dijit.Tooltip");
+	</script>
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/scripts/dojo/dijit/themes/nihilo/nihilo.css" />
+	
+	<script type="text/javascript" src="${pageContext.request.contextPath}/scripts/jquery-1.3.2.min.js"></script>
+	<script type='text/javascript' src="${pageContext.request.contextPath}/scripts/prototype.js"></script>
+	<script type='text/javascript' src="${pageContext.request.contextPath}/scripts/scriptaculous/scriptaculous.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/scripts/jquery.jmesa.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/scripts/jmesa.min.js"></script>
+	<!-- Java script per il calendario -->
+	<!-- ####################################################################################################### -->
+	<script type="text/javascript" src="${pageContext.request.contextPath}/calendar/js/jscal2.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/calendar/js/unicode-letter.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/calendar/js/lang/it.js"></script>
+    <!-- ####################################################################################################### -->
+	<script type="text/javascript" src="${pageContext.request.contextPath}/scripts/gruppoinit.js"></script>
+	
+	<script type="text/javascript" src="${pageContext.request.contextPath}/scripts/jquery.mousewheel.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/scripts/jScrollPane-1.2.3.min.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/scripts/ajaxupload.js"></script>
+	
+	<%-- TinyMCE Editor --%>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/scripts/jscripts/tiny_mce/tiny_mce.js"></script>
+	
+	<script type="text/javascript">
+		<!--
+		function searchAll(inputField,evt,minChars){
+			if(checkMinChars(inputField,minChars)){
+				var charCode = (evt.which) ? evt.which : event.keyCode;
+				if (charCode == '<fmt:message key="ajax.searchall.key" />'){
+					inputField.value='%';
+				}
+			}
+		}	
+		function checkMinChars(inputField,minChars){	
+			if(inputField.value.length + 1 < minChars){
+				return false;
+			}
+			return true;
+		}	
+		//-->
+	</script>
+	<style type="text/css">
+		body {
+		  	padding: 35px;
+		}
+		
+		.inputfile {
+			width: 0.1px;
+			height: 0.1px;
+			opacity: 0;
+			overflow: hidden;
+			position: absolute;
+			z-index: -1;
+		}
+		
+		.inputfile + label {
+			font-size: 1.25em;
+			font-weight: 700;
+		    color: white;
+		    background-color: black;
+		    display: inline-block;
+		    margin-right: 0.30em;
+		    /* padding-right: 0.30em; */
+		    padding: 0.50em;
+		}
+		
+		.inputfile + label {
+			cursor: pointer;
+		}
+		
+		.inputfile:focus + label, .inputfile + label:hover {
+    		background-color: #b61218;
+		}
+		
+		.inputfile:focus + label {
+			outline: 1px dotted #000;
+			outline: -webkit-focus-ring-color auto 5px;
+		}
+		
+		.inputfile + label * {
+			pointer-events: none;
+		}
+		
+		.inputfile + label svg {
+		 	width: 2em;
+		 	height: 1em;
+		    vertical-align: middle;
+		    fill: currentColor;
+		    margin-top: -0.25em;
+		    /* 4px */
+		    margin-right: 0.30em;
+		    /* 4px */
+		}
+		
+		/* .inputfile + label {
+		
+		 	width: 10em;
+		    height: 2em;
+		    /* vertical-align: middle;
+		    fill: currentColor;
+		    margin-top: -0.25em;
+		    /* 4px */
+		    /* margin-right: 0.25em;
+		} */
+		
+		.inputfile-1 + label {
+    		color: #f1e5e6;
+		    background-color: #d3394c;
+		}
+
+		.inputfile-1:focus + label,
+		.inputfile-1.has-focus + label,
+		.inputfile-1 + label:hover {
+		    background-color: #722040;
+		}
+		
+		.disabled {
+			/* pointer-events: none; */
+		}
+		
+		.upload_title {
+			padding: 0px 0px 45px 0px;
+	    	font-size: 16px;
+	    	font-weight: bold;
+	    	color: #696969;
+	    	display: inline;
+		}
+		
+		#pageTitle {
+			font-size: 24px;
+		}
+		
+		.contenuto_cella {
+			width: 250px;
+		    display: inline-block;
+		    float: right;
+		    text-align: left;
+		} 
+		
+		/* input:invalid {
+		  border: 2px solid black;
+		} */
+		
+		
+	</style>
+</head>
+<body>
+
+	<div id="content" class="container">
+  		<decorator:body/>
+	</div>
+	
+</body>
+</html>

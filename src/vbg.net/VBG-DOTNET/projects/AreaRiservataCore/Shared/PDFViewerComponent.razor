@@ -1,0 +1,71 @@
+﻿@using AreaRiservataCore.Utils
+@using Init.Sigepro.FrontEnd.AppLogic.GenerazioneDocumentiDomanda.GenerazioneRiepilogoDomanda
+
+@using Init.Sigepro.FrontEnd.AppLogic.Utils.DatiDomanda
+@using Microsoft.Extensions.Logging
+@using Microsoft.JSInterop
+@using VBG.BlazorComponentsLibrary
+@using VBG.BlazorComponentsLibrary.DesignComuni.Utils.JsImport
+@using log4net
+@inject IJSRuntime _jsRuntime
+@inject IJsImportedModuleFactory _jsModule;
+@inject GenerazioneRiepilogoDomandaService _generazioneRiepilogoDomandaService
+
+<div class="bwc-DropDown mb-3" id="@_uniqueID">
+    <iframe id="@PdfViewerId" src="js/pdfjs/web/viewer.html" title="Riepilogo in formato PDF" style="width:100%; height: 70vh"></iframe>
+</div>
+
+@code {
+    [Parameter]
+    public int IdDomanda { get; set; }
+
+    [Parameter]
+    public bool AggiungiPdfSchedeAListaAllegati { get; set; }
+
+    [Parameter]
+    public bool DumpXml { get; set; }
+    [Inject]
+    protected FileDownloadHelper _fileDownloadHelper { get; set; } = default!;
+    [Inject]
+    public DatiDomandaDumper _datiDomandaDumper { get; set; } = default!;
+
+    private string _uniqueID = "";
+
+    private string PdfViewerId => $"{_uniqueID}_canvas";
+
+    protected ILog _log = LogManager.GetLogger(typeof(PDFViewerComponent));
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        this._uniqueID = $"pdfviewer_{Guid.NewGuid()}";
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var pdfViewerUrl = "./js/PDFViewer.js";
+            //var loadJs = await _jsRuntime.InvokeAsync<bool>("loadJs", pdfViewerUrl);
+            var jsmodule = _jsModule.CreateJsImportedModule(pdfViewerUrl);
+
+            if (jsmodule != null)
+            {
+                try
+                {
+                    if(DumpXml)
+                    {
+                        await _datiDomandaDumper.DumpDatiDomandaAsync(IdDomanda);
+                    }
+                    var riepilogo = await this._generazioneRiepilogoDomandaService.GeneraRiepilogoDomandaAsync(IdDomanda, AggiungiPdfSchedeAListaAllegati);
+                    await jsmodule.InvokeVoidAsync("loadPdfInIFrame", PdfViewerId, Convert.ToBase64String(riepilogo.FileContent));
+                }
+                catch (Exception ex)
+                {
+                    _log.Error($"Errore durante la generazione del riepilogo: {ex.Message}");
+                }
+            }
+        }
+    }
+}

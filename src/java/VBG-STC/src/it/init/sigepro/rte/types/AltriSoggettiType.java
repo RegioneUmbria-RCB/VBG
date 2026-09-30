@@ -1,0 +1,117 @@
+
+package it.init.sigepro.rte.types;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
+
+
+/**
+ * <p>Java class for AltriSoggettiType complex type.
+ * 
+ * <p>The following schema fragment specifies the expected content contained within this class.
+ * 
+ * <pre>
+ * &lt;complexType name="AltriSoggettiType">
+ *   &lt;complexContent>
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *       &lt;sequence>
+ *         &lt;element name="tipoRapporto" type="{http://sigepro.init.it/rte/types}RuoloType"/>
+ *         &lt;element name="soggetto" type="{http://sigepro.init.it/rte/types}AnagrafeType"/>
+ *         &lt;element name="anagraficaCollegata" type="{http://sigepro.init.it/rte/types}AnagrafeType" minOccurs="0"/>
+ *       &lt;/sequence>
+ *     &lt;/restriction>
+ *   &lt;/complexContent>
+ * &lt;/complexType>
+ * </pre>
+ * 
+ * 
+ */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "AltriSoggettiType", propOrder = {
+    "tipoRapporto",
+    "soggetto",
+    "anagraficaCollegata"
+})
+public class AltriSoggettiType {
+
+    @XmlElement(required = true)
+    protected RuoloType tipoRapporto;
+    @XmlElement(required = true)
+    protected AnagrafeType soggetto;
+    protected AnagrafeType anagraficaCollegata;
+
+    /**
+     * Gets the value of the tipoRapporto property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link RuoloType }
+     *     
+     */
+    public RuoloType getTipoRapporto() {
+        return tipoRapporto;
+    }
+
+    /**
+     * Sets the value of the tipoRapporto property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link RuoloType }
+     *     
+     */
+    public void setTipoRapporto(RuoloType value) {
+        this.tipoRapporto = value;
+    }
+
+    /**
+     * Gets the value of the soggetto property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link AnagrafeType }
+     *     
+     */
+    public AnagrafeType getSoggetto() {
+        return soggetto;
+    }
+
+    /**
+     * Sets the value of the soggetto property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link AnagrafeType }
+     *     
+     */
+    public void setSoggetto(AnagrafeType value) {
+        this.soggetto = value;
+    }
+
+    /**
+     * Gets the value of the anagraficaCollegata property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link AnagrafeType }
+     *     
+     */
+    public AnagrafeType getAnagraficaCollegata() {
+        return anagraficaCollegata;
+    }
+
+    /**
+     * Sets the value of the anagraficaCollegata property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link AnagrafeType }
+     *     
+     */
+    public void setAnagraficaCollegata(AnagrafeType value) {
+        this.anagraficaCollegata = value;
+    }
+
+}

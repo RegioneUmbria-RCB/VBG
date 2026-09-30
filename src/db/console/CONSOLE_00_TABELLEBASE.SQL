@@ -15276,7 +15276,22 @@ insert  into `verticalizzazioniparametribase`(`MODULO`,`PARAMETRO`,`DESCRIZIONE`
 insert  into `verticalizzazioniparametribase`(`MODULO`,`PARAMETRO`,`DESCRIZIONE`) values ('WS_IMPORTAZIONEISTANZA','STATOISTANZA','Imposta lo stato dell\'istanza in base al codice indicato nel parametro. I possibili valori sono quelli contenuti in STATIISTANZA');
 insert  into `verticalizzazioniparametribase`(`MODULO`,`PARAMETRO`,`DESCRIZIONE`) values ('WS_LOGIN','USERID_OPERATORE','User Id dell\'operatore');
 
-INSERT INTO VERSIONE (VERSIONE) VALUES('3.19');
+
+INSERT INTO VERTICALIZZAZIONIBASE (MODULO, DESCRIZIONE, FLAG_GESTCOMUNE)
+VALUES ('SIT_CONSOLE', 'Integrazione dalla console ai vari SIT dei comuni che fanno parte della console', 1);
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO, PARAMETRO, DESCRIZIONE)
+VALUES ('SIT_CONSOLE', 'URL_WSSIT', 'Url del servizio SIT per l''installazione aspnet di backend per il comune comunelocale. Es.
+https://devel3.vbg.community/aspnet/webservices/wssigepro/wssit.asmx');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO, PARAMETRO, DESCRIZIONE)
+VALUES ('SIT_CONSOLE', 'ALIAS_BACKEND_LOCALE', 'Alias da utilizzare per interrogare il comune locale. Es. E256');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO, PARAMETRO, DESCRIZIONE)
+VALUES ('SIT_CONSOLE', 'REDIRECT_TO_SIT_PAGE', 'Se impostato a 1 e se la verticalizzazione è attiva permette il redirect automatico dallo step GestioniLocalizzazioni allo step GestioniLocalizzazioniSit.');
+
+
+INSERT INTO VERSIONE (VERSIONE) VALUES('3.21');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

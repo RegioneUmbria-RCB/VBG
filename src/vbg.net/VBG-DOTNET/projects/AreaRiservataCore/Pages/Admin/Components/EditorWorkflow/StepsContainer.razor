@@ -1,0 +1,266 @@
+﻿@using AreaRiservataCore.Utils
+@using System.Reflection
+@using Init.Sigepro.FrontEnd.AppLogic.PresentazioneIstanze.Workflow
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.DesignComuni.Spinner
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards.CardButtons
+@using static AreaRiservataCore.Utils.RoutesHelper
+
+
+@if (ListaStepBase != null && ListaStepBase.Any())
+{
+    <h3> Workflow base</h3>
+    <div class="mt-3">
+        <p>Di seguito è riportata la lista degli step ereditata dal workflow base.</p>
+
+        @foreach (var step in ListaStepBase)
+        {
+            <StepItem Step="@step" ReadOnly="true"></StepItem>
+        }
+    </div>
+    
+    <br/>
+    <br />
+}
+
+<h3>@Titolo</h3>
+
+@if (ListaStep.Any())
+{
+    <div class="d-flex justify-content-between mt-3 mb-3">
+        <p>Di seguito è riportata la lista degli step del workflow selezionato.</p>
+        <div class="d-flex gap-3">
+            <StepButton Text="Aggiungi step" OnClick="() => _aggiungiStep = true" Icon="StepButtonIcons.PlusCircle"></StepButton>
+        </div>
+    </div>
+
+    @foreach(var step in ListaStep)
+    {
+        <div id="@step.Id" @key="@($"key-{step.Id}")"              
+                style="cursor:grab"
+                draggable="true"
+                @ondragstart="@((e) => OnDragStart(e, step))"
+                @ondrop="@((e) => OnDrop(e, step))"
+                @ondragover="@((e) => OnDragOver(e, step))"
+                @ondragover:preventDefault
+                @ondragleave="@((e) => OnDragLeave(e, step))">
+
+            <StepItem Step="@step" OnElimina="@ShowModalEliminazione" OnModifica="@ShowModalModifiche" CssClass="@GetCssClass(step)" NuovoStep="@(!this._listaStepOld.Any(x => x.Id == step.Id))"></StepItem>
+        </div>
+    }
+}
+else
+{
+    <div class="alert alert-info" role="alert">
+        Non ci sono step configurati per questo intervento.
+    </div>
+
+    <button type="button" class="btn btn-primary" @onclick="() => _aggiungiStep = true">Aggiungi step</button>
+}
+
+
+@if (this._aggiungiStep)
+{
+    <ModalAggiungiStep OnClose="() => this._aggiungiStep = false" OnSave="@AggiungiStep" ListaStep="@_listaStep"></ModalAggiungiStep>
+}
+
+@if (this._modificaStep)
+{
+    <ModalModificaStep Step="@_stepDaModificare" OnSave="SalvaModificheStep" OnClose="() => CloseModalModifiche()" ListaRoutes="@_listaRoutes"></ModalModificaStep>
+}
+
+<ConfirmationModal Titolo="Vuoi procedere con l'eliminazione?" Visible="_showConfermaEliminazione" ConfermaClick="@EliminaStep" AnnullaClick="() => _showConfermaEliminazione = false">
+    <ModalBody>
+        Cliccare su "Conferma" per procedere con l'eliminazione dello step "@_stepDaEliminare?.Title".
+    </ModalBody>
+</ConfirmationModal>
+
+@code {
+    public class StepDaAggiungere
+    {
+        public Step StepInfo { get; set; } = new Step();
+        public int Posizione { get; set; }
+    }
+
+    [Parameter]
+    public List<Step> ListaStep  { get; set; } = new List<Step>();
+
+    [Parameter]
+    public EventCallback<List<Step>> ListaStepChanged { get; set; }
+
+    [Parameter]
+    public List<Step> ListaStepBase { get; set; } = new List<Step>();
+
+    [Parameter]
+    public string Titolo { get; set; } = "";
+
+    [CascadingParameter]
+    public MessageContainer messageContainer { get; set; } = default!;
+
+    [Inject]
+    public IJSRuntime _js { get; set; } = default!;
+
+    [Inject]
+    protected SpinnerService _spinnerService { get; set; } = default!;
+
+    private List<Step> _listaStep = new List<Step>();
+    private List<Step> _listaStepOld = new List<Step>();
+    private bool _aggiungiStep;
+    private List<RouteInfo> _listaRoutes = new List<RouteInfo>();
+    private Step _stepDaAggiungere = new Step();
+    private Step? _elementoTrascinato;
+    private bool _modificaStep;
+    private Step? _stepDaModificare = new Step();
+    private Step? _stepDaEliminare = new Step();
+    private bool _showConfermaEliminazione;
+    private Step? _elementoHovered;
+    private bool _dropCompletato;
+    private string _cssClass = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        this._listaRoutes = RoutesHelper.GetRoutesInserimentoDomanda(Assembly.GetExecutingAssembly());
+
+        foreach (var step in ListaStep)
+        {
+            this._listaStep.Add(step);
+            this._listaStepOld.Add(step);
+        }
+    }
+
+    private async Task AggiungiStep(StepDaAggiungere stepDaAggiungere)
+    {
+        await _spinnerService.ShowSpinnerAsync(async() =>
+        {
+            ResetStili();
+            this._stepDaAggiungere = stepDaAggiungere.StepInfo;
+            this._listaStep.Insert(stepDaAggiungere.Posizione, this._stepDaAggiungere);
+            await ListaStepChanged.InvokeAsync(this._listaStep);
+            messageContainer.AddAlert("I cambiamenti sono stati eseguiti correttamente. Per salvare in maniera definitiva le modifiche cliccare sul bottone \"Salva modifiche\"");
+            await _js.InvokeVoidAsync("scrollTo", this._stepDaAggiungere.Id);
+        });
+    }
+
+    private async Task EliminaStep()
+    {
+        var stepDaEliminare = this._listaStep.FirstOrDefault(x => x.Id == this._stepDaEliminare?.Id);
+
+        if (stepDaEliminare != null)
+        {
+            this._listaStep.Remove(stepDaEliminare);
+        }
+
+        await ListaStepChanged.InvokeAsync(this._listaStep);
+        this._showConfermaEliminazione = false;
+        messageContainer.AddAlert($"Lo step \"{stepDaEliminare?.Title}\" è stato eliminato correttamente. Per salvare in maniera definitiva le modifiche cliccare sul bottone \"Salva modifiche\"");
+    }
+
+    private void OnDragStart(DragEventArgs e, Step item)
+    {
+        ResetStili();
+        this._elementoTrascinato = item;
+    }
+
+
+    private async Task OnDrop(DragEventArgs e, Step step)
+    {
+        if (this._elementoTrascinato is null || this._elementoTrascinato == step)
+            return;
+
+        int posizioneOld = _listaStep.IndexOf(this._elementoTrascinato);
+        int posizioneNew = _listaStep.IndexOf(step);
+
+        if (posizioneOld >= 0 && posizioneNew >=0)
+        {
+            this._listaStep.RemoveAt(posizioneOld);
+            this._listaStep.Insert(posizioneNew, this._elementoTrascinato);
+        }
+
+        await ListaStepChanged.InvokeAsync(this._listaStep);
+        this._elementoHovered = null;
+        this._dropCompletato = true;
+    }
+
+    private void OnDragOver(DragEventArgs e, Step step)
+    {
+        if (step != this._elementoTrascinato)
+        {
+            this._elementoHovered = step;
+        }
+    }
+
+    private void OnDragLeave(DragEventArgs e, Step step)
+    {
+        if (this._elementoHovered == step)
+        {
+            this._elementoHovered = null;
+        }
+    }
+
+    private string GetCssClass(Step step)
+    {
+        this._cssClass = "";
+
+        if (step == this._stepDaAggiungere)
+        {
+            this._cssClass = "new-step";
+        }
+
+        if (step == this._elementoTrascinato)
+        {
+            this._cssClass = "dragged-element";
+
+            if (this._dropCompletato)
+            {
+                this._cssClass += " dropped";
+            }
+        }
+        else if (step == this._elementoHovered)
+        {
+            this._cssClass = "hovered-element";
+        }
+
+        return this._cssClass;
+    }
+
+    private void CloseModalModifiche()
+    {
+        this._stepDaModificare = new Step();
+        this._modificaStep = false;
+    }
+
+    private void ShowModalModifiche(Step step)
+    {
+        this._stepDaModificare = step;
+        this._modificaStep = true;
+    }
+
+    private async Task SalvaModificheStep(Step step)
+    {
+        if (this._stepDaModificare != null)
+        {
+            var indice = this._listaStep.IndexOf(this._stepDaModificare);
+            this._listaStep[indice] = step;
+        }
+
+        await ListaStepChanged.InvokeAsync(this._listaStep);
+        messageContainer.AddAlert("I cambiamenti sono stati eseguiti correttamente. Per salvare in maniera definitiva le modifiche cliccare sul bottone \"Salva modifiche\"");
+    }
+
+    private void ShowModalEliminazione(Step step)
+    {
+        this._stepDaEliminare = step;
+        this._showConfermaEliminazione = true;
+    }
+
+    private void ResetStili()
+    {
+        this._dropCompletato = false;
+        this._stepDaAggiungere = default!;
+        this._elementoTrascinato = null;
+        this._elementoHovered = null;
+    }
+}

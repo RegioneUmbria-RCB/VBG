@@ -1,0 +1,300 @@
+﻿@using Init.SIGePro.Manager.DTO.Common
+@using Init.SIGePro.Manager.DTO.Endoprocedimenti
+@using Init.Sigepro.FrontEnd.AppLogic.Autenticazione.Vbg.AutenticazioneUtente
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneEndoprocedimenti
+@using Init.Sigepro.FrontEnd.AppLogic.Repositories.AmbitoRicercaIntervento
+@using VBG.BlazorComponentsLibrary.DesignComuni.Download
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.DesignComuni.Spinner
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards.CardButtons
+@using VBG.BlazorComponentsLibrary.RisorseTestuali
+
+
+<BasicModal @ref="_modal" CssClass="modal-lg dettaglio-intervento" OnClose="() => _modal?.Hide()">
+	<ModalHeader Titolo="Scheda procedimento">
+	</ModalHeader>
+	<ModalBody>
+		<StepCard Titolo="">
+			<h3><RisorsaTestuale IdRisorsa="popup-endo.titolo.informazioni">Informazioni</RisorsaTestuale></h3>
+
+			<StepCardItem>
+				<StepCardInfo Titolo="Nome procedimento">
+					@Endo!.Descrizione
+				</StepCardInfo>
+
+				@if (Endo!.UltimoAggiornamento.HasValue)
+				{
+					<StepCardInfo Titolo="Data aggiornamento">
+						@Endo.UltimoAggiornamento.Value.ToString("dd/MM/yyyy")
+					</StepCardInfo>
+				}
+
+				@if (!String.IsNullOrEmpty(Endo.Tipologia))
+				{
+					<StepCardInfo Titolo="Tipologia">
+						@Endo.Tipologia
+					</StepCardInfo>
+				}
+
+				@if (!String.IsNullOrEmpty(Endo.Natura))
+				{
+					<StepCardInfo Titolo="Natura del procedimento">
+						@Endo.Natura
+					</StepCardInfo>
+				}
+
+				@if (!String.IsNullOrEmpty(Endo.Amministrazione))
+				{
+					<StepCardInfo Titolo="Amministrazione competente">
+						@Endo.Amministrazione
+					</StepCardInfo>
+				}
+			</StepCardItem>
+
+			@if (!String.IsNullOrEmpty(Endo!.DatiGenerali))
+			{
+				<StepCardItem>
+					<div>
+						<h3>
+							<RisorsaTestuale IdRisorsa="popup-endo.titolo.descrizione">Descrizione</RisorsaTestuale>
+						</h3>
+						<div>
+							@((MarkupString)Endo.DatiGenerali)
+						</div>
+					</div>
+				</StepCardItem>
+			}
+
+			@if (!String.IsNullOrEmpty(Endo.Applicazione))
+			{
+				<StepCardItem>
+					<div>
+						<h3>
+							<RisorsaTestuale IdRisorsa="popup-endo.titolo.requisiti">Requisiti</RisorsaTestuale>
+						</h3>
+						<div>
+							@((MarkupString)Endo.Applicazione)
+						</div>
+					</div>
+				</StepCardItem>				
+			}
+
+			@if (!String.IsNullOrEmpty(Endo.NormativaUE))
+			{
+				<StepCardItem>
+					<div>
+						<h3>
+							<RisorsaTestuale IdRisorsa="popup-endo.titolo.normativaue">Normativa UE</RisorsaTestuale>
+						</h3>
+						<div>
+							@((MarkupString)Endo.NormativaUE)
+						</div>
+					</div>
+				</StepCardItem>					
+			}
+
+			@if (!String.IsNullOrEmpty(Endo.NormativaNazionale))
+			{
+				<StepCardItem>
+					<div>
+						<h3>
+							<RisorsaTestuale IdRisorsa="popup-endo.titolo.normativanazionale">Normativa nazionale</RisorsaTestuale>
+						</h3>
+						<div>
+							@((MarkupString)Endo.NormativaNazionale)
+						</div>
+					</div>
+				</StepCardItem>				
+			}
+
+			@if (!String.IsNullOrEmpty(Endo.NormativaRegionale))
+			{
+				<StepCardItem>
+					<div>
+						<h3>
+							<RisorsaTestuale IdRisorsa="popup-endo.titolo.normativaregionale">Normativa regionale</RisorsaTestuale>
+						</h3>
+						<div>
+							@((MarkupString)Endo.NormativaRegionale)
+						</div>
+					</div>
+				</StepCardItem>				
+			}
+
+			@if (!String.IsNullOrEmpty(Endo.Regolamenti))
+			{
+				<StepCardItem>
+					<div>
+						<h3>
+							<RisorsaTestuale IdRisorsa="popup-endo.titolo.regolamenti">Regolamenti</RisorsaTestuale>
+						</h3>
+						<div>
+							@((MarkupString)Endo.Regolamenti)
+						</div>
+					</div>
+				</StepCardItem>					
+			}
+
+			@if (!String.IsNullOrEmpty(Endo.Adempimenti))
+			{
+				<StepCardItem>
+					<div>
+						<h3>
+							<RisorsaTestuale IdRisorsa="popup-endo.titolo.adempimenti">Adempimenti</RisorsaTestuale>
+						</h3>
+						<div>
+							@((MarkupString)Endo.Adempimenti)
+						</div>
+					</div>
+				</StepCardItem>					
+			}	
+		</StepCard>
+
+		@if (Endo!.Normative != null && Endo.Normative.Any())
+		{
+			<StepCard Titolo="">
+				<h3><RisorsaTestuale IdRisorsa="popup-endo.titolo.normativa">Normativa</RisorsaTestuale></h3>
+
+				@foreach (var n in Endo.Normative)
+				{
+					<StepCardItem>
+						<StepCardInfo Titolo="Descrizione">
+							@n.Descrizione
+						</StepCardInfo>
+
+						<StepCardInfo Titolo="Tipologia">
+							@n.Categoria
+						</StepCardInfo>
+
+						@if (!String.IsNullOrEmpty(n.Link))
+						{
+							<StepCardInfo Titolo="Link">
+								<a href="@n.Link" target="_blank">@n.Link</a>
+							</StepCardInfo>
+						}
+
+						@if (n.CodiceOggetto != null)
+						{
+							<StepDownloadButton Titolo="Download" CodiceOggetto="@n.CodiceOggetto.Value"></StepDownloadButton>
+						}
+					</StepCardItem>
+				}
+			</StepCard>
+		}
+
+		@if (Endo.TestiEstesi != null && Endo.TestiEstesi.Any())
+		{
+			<StepCard Titolo="">
+				<h3><RisorsaTestuale IdRisorsa="popup-endo.titolo.testi-estesi">Testi estesi</RisorsaTestuale></h3>
+
+				@foreach (var t in Endo.TestiEstesi)
+				{
+					<StepCardItem>
+						<StepCardInfo Titolo="Testi estesi">
+							@t.Descrizione
+						</StepCardInfo>
+
+						<StepCardInfo Titolo="Normativa">
+							@t.Normativa
+						</StepCardInfo>
+
+						@if (!String.IsNullOrEmpty(t.Link))
+						{
+							<StepCardInfo Titolo="Link">
+								<a href="@t.Link" target="_blank">@t.Link</a>
+							</StepCardInfo>
+						}
+
+						@if (t.CodiceOggetto != null)
+						{
+							<StepDownloadButton Titolo="Download" CodiceOggetto="@t.CodiceOggetto.Value"></StepDownloadButton>
+						}
+
+					</StepCardItem>
+				}
+			</StepCard>
+		}
+
+		@if (Endo.Oneri is not null && Endo.Oneri.Any())
+		{
+			<StepCard Titolo="">
+				<h3><RisorsaTestuale IdRisorsa="popup-endo.titolo.oneri">Oneri</RisorsaTestuale></h3>
+
+				@foreach (var onere in Endo.Oneri)
+				{
+					<StepCardItem>
+						<StepCardInfo Titolo="Causale d'onere">
+							@((MarkupString)onere.Descrizione)
+						</StepCardInfo>
+
+						<StepCardInfo Titolo="Importo (€)">
+							@onere.Importo.ToString("N2")
+						</StepCardInfo>
+
+					</StepCardItem>
+				}
+			</StepCard>
+		}
+
+		@if (Endo.Allegati != null && Endo.Allegati.Any())
+		{
+			<StepCard Titolo="">
+				<h3><RisorsaTestuale IdRisorsa="popup-endo.titolo.allegati">Allegati</RisorsaTestuale></h3>
+						
+				@foreach (var t in Endo.Allegati)
+				{
+					<StepCardItem>
+						<StepCardInfo Titolo="Allegato">
+							@t.Descrizione
+						</StepCardInfo>
+
+						@if (!String.IsNullOrEmpty(t.Link))
+						{
+							<StepCardInfo Titolo="Link">
+								<a href="@t.Link" target="_blank">@t.Link</a>
+							</StepCardInfo>
+						}
+
+						@if (t.CodiceOggetto != null)
+						{
+							<StepDownloadButton Titolo="Download" CodiceOggetto="@t.CodiceOggetto.Value"></StepDownloadButton>
+						}
+
+					</StepCardItem>
+
+				}								
+			</StepCard>
+		}
+	</ModalBody>
+	<ModalFooter CancelText="Chiudi"></ModalFooter>
+</BasicModal>
+
+
+@code {
+	[Inject]
+	IEndoprocedimentiService _endoprocedimentiRepository { get; set; } = default!;
+	[Inject]
+	SpinnerService _spinnerService { get; set; } = default!;
+	[Inject]
+	IAuthenticationDataResolver _authData { get; set; } = default!;
+
+	[Parameter]
+	public EndoprocedimentoDto? Endo { get; set; } = null;
+
+	private BasicModal? _modal;
+
+	public async Task MostraDettagli(int idEndo)
+	{
+		await _spinnerService.ShowSpinnerAsync(() =>
+			{
+				this.Endo = _endoprocedimentiRepository.GetById(idEndo, AmbitoRicerca.AreaRiservata);
+
+				if (this.Endo is not null)
+				{
+					_modal?.Show();
+					this.StateHasChanged();
+				}				
+			});
+	}
+}

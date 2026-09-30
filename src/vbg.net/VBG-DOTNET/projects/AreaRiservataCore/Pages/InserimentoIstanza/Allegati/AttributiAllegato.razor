@@ -1,0 +1,92 @@
+﻿@if (Leggenda)
+{
+    <div class="attributi-allegato legenda">
+        <div>
+            <div class="help-block">
+                <i class="fa fa-exclamation allegato-obbligatorio"></i> = Allegato obbligatorio
+            </div>
+            <div class="help-block">
+                <i class="fa fa-pencil allegato-richiede-firma"></i> = L'allegato richiede l'apposizione di una firma digitale
+            </div>
+            @if (!NascontiNoteCompilazioneInLegenda)
+            {
+                <div class="help-block">
+                    <i class="fa fa-question allegato-contiene-note"></i> = L'allegato contiene note per la compilazione, fare click per visualizzarle
+                </div>
+            }
+
+            @if (StaccoDoppio)
+            {
+                <br />
+            }           
+        </div>
+    </div>
+}
+else
+{
+    <div class="contenitore-attributi-allegato" style="white-space: nowrap">
+        <span class="attributi-allegato">
+            @if (Obbligatorio)
+            {
+                <i class="fa fa-exclamation allegato-obbligatorio" title="Allegato obbligatorio"></i>
+            }
+            else
+            {
+                <i style="display:inline-block; width:16px;"></i>
+            }
+        </span>
+        <span class="attributi-allegato">
+            @if (RichiedeFirma)
+            {
+                <i class="fa fa-pencil allegato-richiede-firma" title="L'allegato richiede l'apposizione di una firma digitale"></i>
+            }
+            else
+            {
+                <i style="display:inline-block; width:16px;"></i>
+            }
+        </span>
+        <span class="attributi-allegato">
+            @if (ContieneNote)
+            {
+                <i class="fa fa-question allegato-contiene-note" title="L'allegato contiene note per la compilazione, fare click per visualizzarle" data-idallegato="@IdAllegato" @onclick="OnOpenNoteAsync" @onclick:preventDefault></i>
+            }
+            else
+            {
+                <i style="display:inline-block; width:16px;"></i>
+            }
+        </span>
+    </div>
+}
+
+
+@code {
+    [Parameter]
+    public bool Obbligatorio { get; set; } = false;
+
+    [Parameter]
+    public bool RichiedeFirma { get; set; } = false;
+
+    [Parameter]
+    public bool ContieneNote { get; set; } = false;
+
+    [Parameter]
+    public bool Leggenda { get; set; } = false;
+
+    [Parameter]
+    public int IdAllegato { get; set; } = -1;
+
+    [Parameter]
+    public bool NascontiNoteCompilazioneInLegenda { get; set; } = false;
+
+    [Parameter]
+    public bool StaccoDoppio { get; set; } = true;
+
+    [Parameter]
+    public EventCallback<int> OnOpenNote { get; set; }
+
+    private async Task OnOpenNoteAsync()
+    {
+        if (OnOpenNote.HasDelegate)
+            await OnOpenNote.InvokeAsync(IdAllegato);
+    }
+}

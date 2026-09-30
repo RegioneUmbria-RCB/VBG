@@ -1,0 +1,1 @@
+package it.gruppoinit.pal.gp.pay.connector.mip.ws.schema;

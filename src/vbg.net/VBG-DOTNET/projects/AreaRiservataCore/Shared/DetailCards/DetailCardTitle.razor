@@ -1,0 +1,19 @@
+﻿@using AreaRiservataCore.Shared.Utils
+
+<h3 @attributes=UnmatchedAttributes class="@_computedClass">@ChildContent</h3>
+
+@code {
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object> UnmatchedAttributes { get; set; } = new();
+
+    private string _computedClass = "";
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        _computedClass = UnmatchedAttributeUtils.ExtractCssClass(this.UnmatchedAttributes, "h4 mb-0 pb-0");
+    }
+}

@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<link type="text/css" href="../css/facct.css" rel="stylesheet"></link>
+<link type="text/css" href="../css/dettagliIntervento.css" rel="stylesheet"></link>
+
+<script type="text/javascript">
+$(document).ready(function(){	
+		$( "#accordion" ).accordion(
+				 {
+				      heightStyle: "content"
+				    }
+		);
+	}
+);
+</script>
+	
+<div>
+		<div id="accordion" class="popupDettagliEndo inputForm dettagliIntervento">
+			
+				<h3><a href="#">Attività selezionata</a></h3>
+				<div>
+					<fieldset>
+					<ul>
+						#foreach( $cdb in $helper.Descrizionis )
+								<li>$!cdb.Codice</li>						
+						#end						
+					</ul>
+					</fieldset>
+				</div>
+				<h3><a href="#">Informazioni varie</a></h3>
+				<div>
+					#foreach( $cdb in $helper.Descrizionis )
+						#if ( $cdb.Descrizione != '')
+							<fieldset>
+								<legend>$!cdb.Codice</legend>
+									$!cdb.Descrizione
+							</fieldset>
+						#end							
+					#end
+				</div>
+				#if ($helper.AlberoprocLeggis.size() > 0 )
+				<h3><a href="#">Normativa</a></h3>
+				<div>
+					<table>		
+					<tr>
+						<th>Descrizione</th>
+						<th>Tipologia</th>
+					</tr>	
+					#foreach( $lex in $helper.AlberoprocLeggis )
+										
+								<tr>
+									<td>$!lex.Legge.LeDescrizione</td>
+									<td>$!lex.Legge.Leggitipi.LtDescrizione</td>
+								</tr>										
+					#end		
+					</table>					
+				</div>			
+				#end
+				
+				#if ($helper.AlberoprocDocumentis.size() > 0 )
+				<h3><a href="#">Modulistica</a></h3>
+				<div>
+					<table>		
+					<tr>
+						<th>descrizione</th>
+					</tr>	
+					#foreach( $doc in $helper.AlberoprocDocumentis )
+					
+						#if ( !$doc.FlgDomandafo )
+							#if ( !$doc.Pubblica > 0 )
+							
+								<tr>
+									<td>$!doc.Descrizione </td>
+								</tr>
+							#end
+						#end	
+					#end
+					
+					</table>				
+				</div>			
+			 	#end
+			 	
+				<h3><a href="#">Procedimenti</a></h3>
+				
+				<div>
+					<div>
+					
+				#set( $elenchiEndo = $endos )
+				#set( $endoCART = $elenchiEndo.EndoCart )
+				#set( $endoNecessari = $elenchiEndo.EndoNecessari )	
+				#set( $endoRicorrenti = $elenchiEndo.EndoRicorrenti )
+				#set( $altriEndo = $elenchiEndo.AltriEndo )
+				
+			    	
+		#if( $endoCART  && $endoCART.EndosPerFamigliaCategoria.size() > 0 )
+		
+	    <div class="alberoEndo" id="elencoEndoId" style="">
+			<div class="elenco-endo-title">Endoprocedimenti Attivabili</div>
+			
+			#set( $famiglieIter = $endoCART.FamiglieKeySet.iterator() )
+			
+			#foreach ( $famiglia in $famiglieIter )
+			
+		
+	    	<ul>
+	    		<li class="famigliaEndo">	    		
+	    		$!famiglia
+	    		
+	    		#set( $categorieIter = $endoCART.getCategorieKeySetPerFamiglia($famiglia).iterator() )
+	    		#foreach(  $categoria in $categorieIter )
+	    			#set( $elencoEndo = $endoCART.getElencoEndoPerFamigliaCategoria( $famiglia, $categoria ) )
+	    		
+	    			<ul>
+	    			
+	    			<li class="tipoEndo">$!categoria
+	    			
+			    		<ul>
+			    		#foreach($endo in $elencoEndo)							
+						<li class="endo">
+							<dl>
+								<dd>									
+									$!endo.Descrizione									
+								</dd>
+							</dl>
+						</li>
+						#end
+				    	</ul>
+				    </li>			    	
+			    	</ul>
+			  
+			    #end
+			    </li>
+			</ul>
+		    
+		    #end
+			</div> 
+		#end
+	    
+	    #if( $endoNecessari  && $endoNecessari.EndosPerFamigliaCategoria.size() > 0 )
+	           
+	     
+	    <div class="alberoEndo" id="elencoEndoNecessari">
+   			<div class="elenco-endo-title">Endoprocedimenti Necessari</div>
+			#set( $famiglieIter = $endoNecessari.FamiglieKeySet.iterator() )
+			
+			#foreach ( $famiglia in $famiglieIter )
+			<ul>
+	    	<li class="famigliaEndo">
+	    		$!famiglia
+	    		#set( $categorieIter = $endoNecessari.getCategorieKeySetPerFamiglia($famiglia).iterator() )
+	    		#foreach(  $categoria in $categorieIter )
+	    			#set( $elencoEndo = $endoNecessari.getElencoEndoPerFamigliaCategoria( $famiglia, $categoria ) )
+	    		<ul>
+	    			<li class="tipoEndo">
+	    			$!categoria
+				    	<ul>
+							#foreach($endo in $elencoEndo)							
+							<li class="endo">
+								<dl>
+									<dd>									
+										$!endo.Descrizione									
+									</dd>
+								</dl>
+							</li>
+							#end			   
+			    		</ul>
+			    	</li>
+			    </ul>
+			    #end
+		    </li>
+		    </ul>
+			#end
+		</div>
+	    #end
+	    
+	    #if( $endoRicorrenti  && $endoRicorrenti.EndosPerFamigliaCategoria.size() > 0 )
+
+
+	    <div class="alberoEndo" id="elencoEndoRicorrenti">
+   			<div class="elenco-endo-title">Endoprocedimenti Ricorrenti</div>
+			#set( $famiglieIter = $endoRicorrenti.FamiglieKeySet.iterator() )
+			
+			#foreach ( $famiglia in $famiglieIter )
+			<ul>
+	    	<li class="famigliaEndo">
+	    		$!famiglia
+	    		#set( $categorieIter = $endoRicorrenti.getCategorieKeySetPerFamiglia($famiglia).iterator() )
+	    		#foreach(  $categoria in $categorieIter )
+	    			#set( $elencoEndo = $endoRicorrenti.getElencoEndoPerFamigliaCategoria( $famiglia, $categoria ) )
+	    		<ul>
+	    		<li class="tipoEndo">
+	    			$!categoria
+		    		<ul>
+			    		#foreach($endo in $elencoEndo)							
+						<li class="endo">
+							<dl>
+								<dd>									
+									$!endo.Descrizione									
+								</dd>
+							</dl>
+						</li>
+						#end		
+		    		</ul>
+			    </li>
+			    </ul>
+				#end
+		    </li>
+		    </ul>
+			#end
+		</div>
+	    #end
+	    
+	    
+	    #if( $altriEndo && $altriEndo.EndosPerFamigliaCategoria.size() > 0 )     	
+
+	    <div class="alberoEndo" id="elencoAltriEndo">
+   			<div class="elenco-endo-title">Altri Endoprocedimenti</div>
+			#set( $famiglieIter = $endoCART.FamiglieKeySet.iterator() )
+			
+			#foreach ( $famiglia in $famiglieIter )
+			<ul>
+	    	<li class="famigliaEndo">
+	    		$!famiglia
+	    		#set( $categorieIter = $altriEndo.getCategorieKeySetPerFamiglia($famiglia).iterator() )
+	    		#foreach(  $categoria in $categorieIter )
+	    			#set( $elencoEndo = $altriEndo.getElencoEndoPerFamigliaCategoria( $famiglia, $categoria ) )
+	    		<ul>
+	    			<li class="tipoEndo">
+	    			$!categoria
+				    	<ul>
+							#foreach($endo in $elencoEndo)							
+							<li class="endo">
+								<dl>
+									<dd>									
+										$!endo.Descrizione									
+									</dd>
+								</dl>
+							</li>
+							#end		
+			    		</ul>
+			    	</li>
+			    </ul>
+			    #end
+		    </li>
+		    </ul>
+			#end
+		</div>
+		#end
+	         	
+			</div>
+		</div>
+
+</div>
+
+</div>	
+

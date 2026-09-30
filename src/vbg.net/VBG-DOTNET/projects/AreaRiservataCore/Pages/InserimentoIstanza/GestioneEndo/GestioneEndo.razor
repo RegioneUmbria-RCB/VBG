@@ -1,0 +1,221 @@
+﻿@page "/{IdComune}/{Software}/inserimento-istanza/gestione-endo/{idDomanda:int}/{stepId:int}"
+@using Init.SIGePro.Manager.DTO.Endoprocedimenti
+@using Init.Sigepro.FrontEnd.AppLogic.Configurazione.V2
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneEndoprocedimenti
+@using Init.Sigepro.FrontEnd.Infrastructure.StepsDomanda.Attributi
+@using AreaRiservataCore.Pages.InserimentoIstanza.GestioneEndo.Components
+@using Init.Utils
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@inherits IstanzeStepPage
+
+<div id="alberoEndo" class="gestione-endo">
+	<GrigliaEndo MostraInformazioniEndo="@MostraInformazioniEndo" ModificaProcedimentiProposti="@ModificaProcedimentiProposti" MostraFamiglieEndo="@MostraFamiglieEndo" Titolo="@TitoloEndoPrincipale" DataSource="@_endoPrincipali" OnGetDettagliEndo="MostraDettagliEndo"></GrigliaEndo>
+	<GrigliaEndo MostraInformazioniEndo="@MostraInformazioniEndo" ModificaProcedimentiProposti="@ModificaProcedimentiProposti" MostraFamiglieEndo="@MostraFamiglieEndo" Titolo="@TitoloEndoAttivati" DataSource="@_endoAttivati" OnGetDettagliEndo="MostraDettagliEndo"></GrigliaEndo>
+	<GrigliaEndo MostraInformazioniEndo="@MostraInformazioniEndo" MostraFamiglieEndo="@MostraFamiglieEndo" Titolo="@TitoloEndoAttivabili" DataSource="@_endoAttivabili" OnGetDettagliEndo="MostraDettagliEndo"></GrigliaEndo>
+	<GrigliaEndo MostraInformazioniEndo="@MostraInformazioniEndo" MostraFamiglieEndo="@MostraFamiglieEndo" Titolo="@TestoSezioneEditAltriEndo" DataSource="@_altriEndoAttivabili" OnGetDettagliEndo="MostraDettagliEndo"></GrigliaEndo>
+</div>
+
+<PopupDettaglioEndo @ref="_popupEndo"></PopupDettaglioEndo>
+
+
+<BasicModal @ref="_modalErroreSubendo" Size="ModalSizeEnum.Small" OnClose="() => _modalErroreSubendo?.Hide()">
+	<ModalHeader Titolo="Selezioni mancanti">
+	</ModalHeader>
+	<ModalBody>
+		Per proseguire è necessario selezionare una delle voci dell'endoprocedimento <span class="fw-bold">"@_erroreSubendoNonSelezionati"</span>
+	</ModalBody>
+	<ModalFooter CancelText="Chiudi"></ModalFooter>
+</BasicModal>
+
+
+
+@code {
+
+	[Inject]
+	public IEndoprocedimentiService _endoService { get; set; } = default!;
+	[Inject]
+	public IConfigurazione<ParametriVisura> _configVisura { get; set; } = default!;
+
+	#region properties lette da workflow
+	[StepProperty("Titolo della sezione \"Endo principale\"")]
+	public string TitoloEndoPrincipale { get; set; } = "Procedimento principale";
+	[StepProperty("Titolo della sezione \"Endo attivati\"")]
+	public string TitoloEndoAttivati { get; set; } = "Procedimenti attivati";
+	[StepProperty("Titolo della sezione \"Endo attivabili\"")]
+	public string TitoloEndoAttivabili { get; set; } = "Procedimenti attivabili";
+	[StepProperty("Se impostato a true mostra l'albero degli endo a partire dalle famiglie", ValoreDefault = "true")]
+	public bool MostraFamiglieEndo { get; set; } = true;
+	[StepProperty("Se impostato a true permette di modificare la lista degli" +
+	"endoprocedimenti proposti deselezionando gli endo spuntati di default",
+	ValoreDefault = "false")]
+	public bool ModificaProcedimentiProposti { get; set; } = false;
+	[StepProperty("Titolo della sezione \"Altri endoprocedimenti attivabili\"")]
+	public string TestoSezioneAltriEndo { get; set; } = "Altri endoprocedimenti attivati";
+	[StepProperty("Testo del bottone \"Altri endoprocedimenti\"")]
+	public string TestoBottoneAltriEndo { get; set; } = "Altri endoprocedimenti";
+	[StepProperty("Testo del bottone \"Torna alla lista degli endoprocedimenti\"")]
+	public string TestoBottoneTornaAListaEndoEndo { get; set; } = "Torna alla lista degli endoprocedimenti";
+	[StepProperty("Titolo della sezione \"Altri endoprocedimenti attivabili\"")]
+	public string TestoSezioneEditAltriEndo { get; set; } = "Altri endoprocedimenti attivabili";
+	[StepProperty("Se impostato a true ignora eventuali incompatibilità tra gli endoprocedimenti", ValoreDefault = "true")]
+	public bool IgnoraIncompatibilitaEndoprocedimenti { get; set; } = true;
+	[StepProperty("Se impostato a true è obbligatorio selezionare almeno un endoprocedimento della lista per poter proseguire allo step succcessivo", ValoreDefault = "false")]
+	public bool SelezionareAlmenoUnEndo { get; set; } = false;
+	[StepProperty("Testo dell'errore da mostrare se nella lista degli endo non è stato selezionato nessun endo. Dipende dal parametro \"SelezionareAlmenoUnEndo\"",
+	ValoreDefault = "Selezionare almeno un elemento della lista")]
+	public string MessaggioErroreSelezionareAlmenoUnEndo { get; set; } = "Selezionare almeno un elemento della lista";
+	[StepProperty("Se impostato a true è possibile selezionare un solo endo per volta. La selezione di un endo deselezionerà altri endo già selezionati")]
+	public bool SelezioneEsclusivaEndoAttivabili { get; set; } = false;
+    [StepProperty("Se impostato a false nasconderà il punto interrogativo che permette di visualizzare il popup di informazioni dell'endo (default=true)")]
+    public bool MostraInformazioniEndo{get;set;} = true;
+	#endregion
+
+
+	private EndoprocedimentiAreaRiservataDto? _dataSource = null;
+	private IEnumerable<FamigliaEndoBindingItem>? _endoPrincipali = null;
+	private IEnumerable<FamigliaEndoBindingItem>? _endoAttivati = null;
+	private IEnumerable<FamigliaEndoBindingItem>? _endoAttivabili = null;
+	private IEnumerable<FamigliaEndoBindingItem>? _altriEndoAttivabili = null;
+	private List<IEndoBindingItem> _cacheEndo = new List<IEndoBindingItem>();
+
+	private PopupDettaglioEndo? _popupEndo = null;
+
+	string _erroreSubendoNonSelezionati = String.Empty;
+	bool _canEnterStep = false;
+
+	private BasicModal? _modalErroreSubendo;
+
+	protected override void OnInitializeStep()
+	{
+		var codIntervento = DomandaCorrente.AltriDati.Intervento?.Codice;
+		var codiceComune = DomandaCorrente.AltriDati.CodiceComune;
+
+		if (codIntervento == null)
+		{
+			this._canEnterStep = false;
+			return;
+		}			
+
+		var dataSource = this._endoService.GetListaEndoDaIdIntervento(codiceComune, codIntervento.Value);
+		var endoSelezionati = DomandaCorrente.Endoprocedimenti.Endoprocedimenti.Select(x => x.Codice).ToArray();
+
+		this._cacheEndo = new List<IEndoBindingItem>();
+		this._endoPrincipali = PreparaEndoAggiungiCache(dataSource.Principali, endoSelezionati);
+		this._endoAttivati = PreparaEndoAggiungiCache(dataSource.Richiesti, endoSelezionati);
+		this._endoAttivabili = PreparaEndoAggiungiCache(dataSource.Ricorrenti, endoSelezionati);
+		this._altriEndoAttivabili = PreparaEndoAggiungiCache(dataSource.Altri, endoSelezionati);
+
+		this._canEnterStep = dataSource is not null && (
+								dataSource.Principali.Any() ||
+								dataSource.Altri.Any() ||
+								dataSource.Richiesti.Any() ||
+								dataSource.Ricorrenti.Any()
+							);
+	}
+
+	protected override bool CanEnterStep()
+	{
+		return _canEnterStep;
+	}
+
+	IEnumerable<FamigliaEndoBindingItem> PreparaEndoAggiungiCache(List<FamigliaEndoprocedimentoDto> famiglia, IEnumerable<int> endoSelezionati)
+	{
+		return famiglia.Select(x => new FamigliaEndoBindingItem
+			{
+				Descrizione = x.Descrizione,
+				Tipi = x.TipiEndoprocedimenti.Select(y => new TipoEndoBindingItem
+				{
+					Descrizione = y.Descrizione,
+					Endo = y.Endoprocedimenti.Select(z =>
+					{
+						var endo = new EndoBindingItem
+						{
+							Id = z.Codice,
+							Descrizione = z.Descrizione,
+							Selezionato = z.Principale || z.Richiesto || endoSelezionati.Contains(z.Codice)
+						};
+
+						endo.SubEndo = z.SubEndo.SelectMany(k => k.ListaEndo.Select(sub => new SubendoBindingItem(endo)
+						{
+							Id = sub.Codice,
+							Descrizione = sub.Descrizione,
+							Selezionato = (endo.Selezionato && sub.Richiesto) || endoSelezionati.Contains(sub.Codice),
+							Richiesto = sub.Richiesto
+						})).ToArray();
+
+						this._cacheEndo.Add(endo);
+						this._cacheEndo.AddRange(endo.SubEndo);
+
+						return endo;
+					}).ToArray()
+				}).ToArray()
+			}).ToArray();
+	}
+
+	protected override void OnBeforeExitStep()
+	{
+		var endoSelezionati = this._cacheEndo.Where(x => x.Selezionato).Select(x => new SubEndoprocedimentoSelezionato(x.Id, x.IdPadre)).ToList();
+
+		this._endoService.SalvaEndoSelezionati(this.IdDomanda.Value, endoSelezionati);
+	}
+
+	protected override bool CanExitStep()
+	{
+
+		var endoConSubNonSelezionati = this._cacheEndo.Where(x => x.Selezionato && x is EndoBindingItem)
+																.Select(x => (EndoBindingItem)x)
+																.Where(x => x.SubEndo.Count() > 0 && !x.SubEndo.Any(y => y.Selezionato))
+																.FirstOrDefault();
+
+		if (endoConSubNonSelezionati is not null)
+		{
+			this._erroreSubendoNonSelezionati = endoConSubNonSelezionati.Descrizione;
+			_modalErroreSubendo?.Show();
+			this.StateHasChanged();
+
+			return false;
+		}
+
+
+		var idDomanda = this.IdDomanda.Value;
+
+		MessageContainer.ClearErrors();
+
+		if (this.SelezionareAlmenoUnEndo && !this._endoService.AlmenoUnEndoPresente(idDomanda))
+		{
+			MessageContainer.AddError(this.MessaggioErroreSelezionareAlmenoUnEndo);
+
+			return false;
+		}
+
+		if (this.SelezioneEsclusivaEndoAttivabili && !this._endoAttivabili.SelectMany(x => x.IdEndoSelezionati).Any())
+		{
+			MessageContainer.AddError(this.MessaggioErroreSelezionareAlmenoUnEndo);
+
+			return false;
+		}
+
+		if (this.SelezioneEsclusivaEndoAttivabili && this._endoAttivabili.SelectMany(x => x.IdEndoSelezionati).Count() > 1)
+		{
+			MessageContainer.AddError($"Selezionare un solo elemento nella sezione \"{this.TitoloEndoAttivabili}\"");
+
+			return false;
+		}
+
+		var endoIncompatibili = this._endoService.GetEndoprocedimentiIncompatibili(idDomanda);
+
+		if (endoIncompatibili.Count() == 0 || this.IgnoraIncompatibilitaEndoprocedimenti)
+		{
+			return true;
+		}
+
+		MessageContainer.AddError(endoIncompatibili.Select(x => x.ToString()));
+
+		return false;
+	}
+
+	private void MostraDettagliEndo(IEndoBindingItem endo)
+	{
+		this._popupEndo?.MostraDettagli(endo.Id);
+	}
+}

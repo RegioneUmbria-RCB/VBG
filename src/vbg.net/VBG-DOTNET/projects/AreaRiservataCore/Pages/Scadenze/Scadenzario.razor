@@ -1,0 +1,99 @@
+﻿@page "/{IdComune}/{Software}/scadenzario"
+@page "/{IdComune}/{Software}/scadenzario/{Pagina:int?}"
+
+@using AreaRiservataCore.Pages.Scadenze.Componenti
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.DesignComuni.NavScroll
+@inherits BasePage
+
+@* <TitoloPagina>Lista Scadenze</TitoloPagina> *@
+<PageTitle>Le mie scadenze</PageTitle>
+
+@* <style>
+    h4 {
+        font-size: 16px;
+        margin-bottom: 0;
+        margin-top: 0;
+        font-weight: bold;
+    }
+
+    .soggetto-pratica {
+        margin-bottom: 16px;
+    }
+</style> *@
+<div class="row">
+    <NavScrollComponent Title="Indice di pagina">
+        <NavScrollComponentItem Label="Le mie scadenze" Id="scadenze">
+            <div class="cmp-card">
+                <div class="card">
+                    <div class="card-header border-0 p-0 mb-lg-30 m-0">
+                        <FiltriScadenze Id="filtri-scadenze" 
+                                        Title="Le mie scadenze"
+                                        OrdinaChanged="OrdinaListaScadenze" 
+                                        FiltraChanged="FiltraScadenze" 
+                                        ListaRichiedenti="@_listaRichiedenti" 
+                                        ListaStati="@_listaStati"
+                                        Disabled="@(_isLoading || !gridDataSource.Any())"></FiltriScadenze>
+                    </div>
+                    <div class="card-body p-0">
+                        @if (_isLoading)
+                        {
+                            <AccordionContainer>
+                                @for (int i = 0; i < _elementiPerPagina; i++)
+                                {
+                                    <div id="@($"sk_{i}")">
+                                        <AccordionItem CollapsibleElementId="@($"sk_{i}")" StartingCollapsed="false">
+                                            <div class="skeleton">
+                                                <div class="skeleton-text-bold bg-primary"></div>
+                                                <div class="skeleton-text"></div>
+                                                <br />
+                                                <div class="skeleton-rectangle"></div>
+                                                <br />
+                                                <button type="button" class="btn btn-primary justify-content-center skeleton-button" data-focus-mouse="false" disabled>
+                                                    Effettua movimento
+                                                </button>
+                                            </div>
+                                        </AccordionItem>
+                                    </div>
+                                }
+                            </AccordionContainer>
+                        }
+                        else
+                        {
+                            if (listaScadenzeFiltrata == null || !listaScadenzeFiltrata.Any())
+                            {
+                                <Card Shadow="Card.CardShadow.Small">
+                                    <Body>
+                                        Non sono presenti scadenze
+                                    </Body>
+                                </Card>
+                            }
+                            else
+                            {
+                                <AccordionContainer>
+                                    @foreach (var item in _scadenzePaginate)
+                                    {
+                                        <ScadenzaItem Item="@item"></ScadenzaItem>
+                                    }
+                                </AccordionContainer>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+
+
+            @if (listaScadenzeFiltrata is not null && listaScadenzeFiltrata.Any())
+            {
+                <NavigationPager PaginaCorrente="this.Pagina.Value"
+                                 TotalePagine="@_totalePagine"
+                                 PaginaChanged="GetListaScadenzePaginata"
+                                 Disabled="this._isLoading"
+                                 ScrollOnPaginaChanged="NavigationPager.ScrollTo.PageBottom">
+                </NavigationPager>
+            }
+
+        </NavScrollComponentItem>
+    </NavScrollComponent>
+</div>
+

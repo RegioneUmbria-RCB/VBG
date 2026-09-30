@@ -1,0 +1,169 @@
+package it.gruppoinit.pal.gp.core.features.comunicazioni.massive.eventi;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.stereotype.Service;
+
+import it.gruppoinit.pal.gp.core.features.amministrazioni.eventi.EventoEmailAmministrazioneAggiornata;
+import it.gruppoinit.pal.gp.core.features.anagrafica.eventi.EventoEmailAnagrafeAggiornata;
+import it.gruppoinit.pal.gp.core.features.buslightyear.EventBusModule;
+import it.gruppoinit.pal.gp.core.features.buslightyear.interfaces.IEventPublisher;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.bollettazione.sottoscrittori.SottoscrittoreEventoAllegatiDelDettaglioElaboratiServiceImpl;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.bollettazione.sottoscrittori.SottoscrittoreEventoAllegatiFissiElaboratiServiceImpl;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.bollettazione.sottoscrittori.SottoscrittoreEventoAvvisiPagamentoElaboratiServiceImpl;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.bollettazione.sottoscrittori.SottoscrittoreEventoComunicazioneFirmataServiceImpl;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.bollettazione.sottoscrittori.SottoscrittoreEventoComunicazioneInviataServiceImpl;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.bollettazione.sottoscrittori.SottoscrittoreEventoComunicazioneProntaAllInvioServiceImpl;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.bollettazione.sottoscrittori.SottoscrittoreEventoComunicazioneProntaPerProtocollazioneServiceImpl;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.bollettazione.sottoscrittori.SottoscrittoreEventoComunicazioneProtocollataServiceImpl;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.bollettazione.sottoscrittori.SottoscrittoreEventoDocumentiComunicazioneFirmatiServiceImpl;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.bollettazione.sottoscrittori.SottoscrittoreEventoFirmaComunicazioneAvviata;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.bollettazione.sottoscrittori.SottoscrittoreEventoFirmaDocumentiNonNecessariaServiceImpl;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.bollettazione.sottoscrittori.SottoscrittoreEventoProtocollazioneComunicazioneNonNecessariaServiceImpl;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.commissioni.sottoscrittori.SottoscrittoreCommissioniEventoAllegatiDelDettaglioElaboratiServiceImpl;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.commissioni.sottoscrittori.SottoscrittoreCommissioniEventoAllegatiFissiElaboratiServiceImpl;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.commissioni.sottoscrittori.SottoscrittoreCommissioniEventoComunicazioneFirmataServiceImpl;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.commissioni.sottoscrittori.SottoscrittoreCommissioniEventoComunicazioneInviataServiceImpl;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.commissioni.sottoscrittori.SottoscrittoreCommissioniEventoComunicazioneProntaAllInvioServiceImpl;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.commissioni.sottoscrittori.SottoscrittoreCommissioniEventoComunicazioneProntaPerProtocollazioneServiceImpl;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.commissioni.sottoscrittori.SottoscrittoreCommissioniEventoComunicazioneProtocollataServiceImpl;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.commissioni.sottoscrittori.SottoscrittoreCommissioniEventoDocumentiComunicazioneFirmatiServiceImpl;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.commissioni.sottoscrittori.SottoscrittoreCommissioniEventoElaboraAllegatiFissiServiceImpl;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.commissioni.sottoscrittori.SottoscrittoreCommissioniEventoFirmaComunicazioneAvviata;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.commissioni.sottoscrittori.SottoscrittoreCommissioniEventoFirmaDocumentiNonNecessariaServiceImpl;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.commissioni.sottoscrittori.SottoscrittoreCommissioniEventoProtocollazioneComunicazioneNonNecessariaServiceImpl;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.eventi.sottoscrittori.SottoscrittoreEventoDocumentoDaFirmareModificatoServiceImpl;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.eventi.sottoscrittori.SottoscrittoreEventoEmailAmministrazioniAggiornataComServiceImpl;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.eventi.sottoscrittori.SottoscrittoreEventoEmailAnagrafeAggiornataServiceImpl;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.eventi.sottoscrittori.SottoscrittoreEventoEmailResponsabileAggComServiceImpl;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.gen.eventi.EventoAppIoSchedulata;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.gen.eventi.EventoAppIoStatoCoda;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.gen.eventi.EventoInviaAppIo;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.gen.subscr.SottoscrittoreGenEventoAllegatiDelDettaglioElaboratiServiceImpl;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.gen.subscr.SottoscrittoreGenEventoAllegatiFissiElaboratiServiceImpl;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.gen.subscr.SottoscrittoreGenEventoAppIoSchedulataServiceImpl;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.gen.subscr.SottoscrittoreGenEventoAppIoStatoCodaServiceImpl;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.gen.subscr.SottoscrittoreGenEventoComunicazioneInviataServiceImpl;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.gen.subscr.SottoscrittoreGenEventoComunicazioneProtocollataServiceImpl;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.gen.subscr.SottoscrittoreGenEventoElaboraAllegatiFissiServiceImpl;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.gen.subscr.SottoscrittoreGenEventoFirmaComunicazioneAvviata;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.gen.subscr.SottoscrittoreGenEventoFirmaDocumentiNonNecessariaServiceImpl;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.gen.subscr.SottoscrittoreGenEventoInviaAppIoServiceImpl;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.gen.subscr.SottoscrittoreGenEventoMovimentiInseritiServiceImpl;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.gen.subscr.SottoscrittoreGenEventoProtocollazioneComunicazioneNonNecessariaServiceImpl;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.gen.subscr.SottoscrittoreGenEventoRielaboraServiceImpl;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.manifestazioni.eventi.sottoscrittori.SottoscrittoreEventoGiornataChiusaServiceImpl;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.manifestazioni.eventi.sottoscrittori.SottoscrittoreEventoGiornataRiapertaServiceImpl;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.manifestazioni.eventi.sottoscrittori.SottoscrittoreEventoPosizioneDebitoriaPerCreditoInsufficienteServiceImpl;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.manifestazioni.eventi.sottoscrittori.SottoscrittoreManifestazioniEventoComunicazioneInviataServiceImpl;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.manifestazioni.eventi.sottoscrittori.SottoscrittoreManifestazioniEventoComunicazioneProntaAllInvioServiceImpl;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.manifestazioni.eventi.sottoscrittori.SottoscrittoreManifestazioniEventoComunicazioneProtocollataServiceImpl;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.manifestazioni.eventi.sottoscrittori.SottoscrittoreManifestazioniEventoProtocollazioneComunicazioneNonNecessariaServiceImpl;
+import it.gruppoinit.pal.gp.core.features.comunicazioni.massive.manifestazioni.eventi.sottoscrittori.SottoscrittoreMassiveManifestazioneEventoPagamentoStornatoServiceImpl;
+import it.gruppoinit.pal.gp.core.features.firmadigitale.EventoDocumentoDaFirmareModificato;
+import it.gruppoinit.pal.gp.core.features.manifestazioni.calendario.eventi.EventoGiornataChiusa;
+import it.gruppoinit.pal.gp.core.features.manifestazioni.calendario.eventi.EventoGiornataRiaperta;
+import it.gruppoinit.pal.gp.core.features.manifestazioni.pagamenti.eventi.EventoPagamentoStornato;
+import it.gruppoinit.pal.gp.core.features.manifestazioni.pagamenti.eventi.EventoPosizioneDebitoriaPerCreditoInsufficiente;
+import it.gruppoinit.pal.gp.core.features.responsabili.eventi.EventoEmailResponsabiliAggiornata;
+
+@Service
+public class EventiMassiveModuleServiceImpl extends EventBusModule {
+
+    @Autowired
+    public EventiMassiveModuleServiceImpl(IEventPublisher eventPublisher) {
+
+	super(eventPublisher);
+    }
+
+    @Override
+    public void load(IEventPublisher eventPublisher) {
+
+	this.registraSottoscrittoriBollettazione(eventPublisher);
+	this.registraSottoscrittoriCommissioni(eventPublisher);
+	this.registraSottoscrittoriComuni(eventPublisher);
+	this.registraSottoscrittoriManifestazioni(eventPublisher);
+	this.registraSottoscrittoriGen(eventPublisher);
+    }
+
+    private void registraSottoscrittoriComuni(IEventPublisher eventPublisher) {
+
+	eventPublisher.add(EventoDocumentoDaFirmareModificato.class, SottoscrittoreEventoDocumentoDaFirmareModificatoServiceImpl.class);
+	eventPublisher.add(EventoEmailAnagrafeAggiornata.class, SottoscrittoreEventoEmailAnagrafeAggiornataServiceImpl.class);
+	eventPublisher.add(EventoEmailAmministrazioneAggiornata.class, SottoscrittoreEventoEmailAmministrazioniAggiornataComServiceImpl.class);
+	eventPublisher.add(EventoEmailResponsabiliAggiornata.class, SottoscrittoreEventoEmailResponsabileAggComServiceImpl.class);
+    }
+
+    private void registraSottoscrittoriBollettazione(IEventPublisher eventPublisher) {
+
+	eventPublisher.add(EventoAvvisiPagamentoElaborati.class, SottoscrittoreEventoAvvisiPagamentoElaboratiServiceImpl.class);
+	eventPublisher.add(EventoAllegatiFissiElaborati.class, SottoscrittoreEventoAllegatiFissiElaboratiServiceImpl.class);
+	eventPublisher.add(EventoAllegatiDelDettaglioElaborati.class, SottoscrittoreEventoAllegatiDelDettaglioElaboratiServiceImpl.class);
+	eventPublisher.add(EventoFirmaComunicazioneAvviata.class, SottoscrittoreEventoFirmaComunicazioneAvviata.class);
+	eventPublisher.add(EventoFirmaDocumentiNonNecessaria.class, SottoscrittoreEventoFirmaDocumentiNonNecessariaServiceImpl.class);
+	eventPublisher.add(EventoComunicazioneFirmata.class, SottoscrittoreEventoComunicazioneFirmataServiceImpl.class);
+	eventPublisher.add(EventoComunicazioneProntaPerProtocollazione.class,
+		SottoscrittoreEventoComunicazioneProntaPerProtocollazioneServiceImpl.class);
+	eventPublisher.add(EventoComunicazioneProtocollata.class, SottoscrittoreEventoComunicazioneProtocollataServiceImpl.class);
+	eventPublisher.add(EventoDocumentiComunicazioneFirmati.class, SottoscrittoreEventoDocumentiComunicazioneFirmatiServiceImpl.class);
+	eventPublisher.add(EventoProtocollazioneComunicazioneNonNecessaria.class,
+		SottoscrittoreEventoProtocollazioneComunicazioneNonNecessariaServiceImpl.class);
+	eventPublisher.add(EventoComunicazioneProntaAllInvio.class, SottoscrittoreEventoComunicazioneProntaAllInvioServiceImpl.class);
+	eventPublisher.add(EventoComunicazioneInviata.class, SottoscrittoreEventoComunicazioneInviataServiceImpl.class);
+    }
+
+    private void registraSottoscrittoriCommissioni(IEventPublisher eventPublisher) {
+
+	eventPublisher.add(EventoAllegatiFissiElaborati.class, SottoscrittoreCommissioniEventoAllegatiFissiElaboratiServiceImpl.class);
+	eventPublisher.add(EventoAllegatiDelDettaglioElaborati.class, SottoscrittoreCommissioniEventoAllegatiDelDettaglioElaboratiServiceImpl.class);
+	eventPublisher.add(EventoFirmaComunicazioneAvviata.class, SottoscrittoreCommissioniEventoFirmaComunicazioneAvviata.class);
+	eventPublisher.add(EventoFirmaDocumentiNonNecessaria.class, SottoscrittoreCommissioniEventoFirmaDocumentiNonNecessariaServiceImpl.class);
+	eventPublisher.add(EventoComunicazioneFirmata.class, SottoscrittoreCommissioniEventoComunicazioneFirmataServiceImpl.class);
+	eventPublisher.add(EventoComunicazioneProntaPerProtocollazione.class,
+		SottoscrittoreCommissioniEventoComunicazioneProntaPerProtocollazioneServiceImpl.class);
+	eventPublisher.add(EventoComunicazioneProtocollata.class, SottoscrittoreCommissioniEventoComunicazioneProtocollataServiceImpl.class);
+	eventPublisher.add(EventoDocumentiComunicazioneFirmati.class, SottoscrittoreCommissioniEventoDocumentiComunicazioneFirmatiServiceImpl.class);
+	eventPublisher.add(EventoProtocollazioneComunicazioneNonNecessaria.class,
+		SottoscrittoreCommissioniEventoProtocollazioneComunicazioneNonNecessariaServiceImpl.class);
+	eventPublisher.add(EventoComunicazioneProntaAllInvio.class, SottoscrittoreCommissioniEventoComunicazioneProntaAllInvioServiceImpl.class);
+	eventPublisher.add(EventoComunicazioneInviata.class, SottoscrittoreCommissioniEventoComunicazioneInviataServiceImpl.class);
+	eventPublisher.add(EventoElaboraAllegatiFissi.class, SottoscrittoreCommissioniEventoElaboraAllegatiFissiServiceImpl.class);
+    }
+
+    private void registraSottoscrittoriManifestazioni(IEventPublisher eventPublisher) {
+
+	eventPublisher.add(EventoProtocollazioneComunicazioneNonNecessaria.class,
+		SottoscrittoreManifestazioniEventoProtocollazioneComunicazioneNonNecessariaServiceImpl.class);
+	eventPublisher.add(EventoComunicazioneProtocollata.class, SottoscrittoreManifestazioniEventoComunicazioneProtocollataServiceImpl.class);
+	eventPublisher.add(EventoComunicazioneProntaAllInvio.class, SottoscrittoreManifestazioniEventoComunicazioneProntaAllInvioServiceImpl.class);
+	eventPublisher.add(EventoComunicazioneInviata.class, SottoscrittoreManifestazioniEventoComunicazioneInviataServiceImpl.class);
+	eventPublisher.add(EventoGiornataRiaperta.class, SottoscrittoreEventoGiornataRiapertaServiceImpl.class);
+	eventPublisher.add(EventoGiornataChiusa.class, SottoscrittoreEventoGiornataChiusaServiceImpl.class);
+	eventPublisher.add(EventoPosizioneDebitoriaPerCreditoInsufficiente.class,
+		SottoscrittoreEventoPosizioneDebitoriaPerCreditoInsufficienteServiceImpl.class);
+	eventPublisher.add(EventoPagamentoStornato.class, SottoscrittoreMassiveManifestazioneEventoPagamentoStornatoServiceImpl.class);
+    }
+
+    private void registraSottoscrittoriGen(IEventPublisher eventPublisher) {
+
+	eventPublisher.add(EventoElaboraAllegatiFissi.class, SottoscrittoreGenEventoElaboraAllegatiFissiServiceImpl.class);
+	eventPublisher.add(EventoAllegatiDelDettaglioElaborati.class, SottoscrittoreGenEventoAllegatiDelDettaglioElaboratiServiceImpl.class);
+	eventPublisher.add(EventoAllegatiFissiElaborati.class, SottoscrittoreGenEventoAllegatiFissiElaboratiServiceImpl.class);
+	//eventPublisher.add(EventoComunicazioneFirmata.class, SottoscrittoreGenEventoComunicazioneFirmataServiceImpl.class);
+	eventPublisher.add(EventoComunicazioneInviata.class, SottoscrittoreGenEventoComunicazioneInviataServiceImpl.class);
+	//eventPublisher.add(EventoComunicazioneProntaAllInvio.class, SottoscrittoreGenEventoComunicazioneProntaAllInvioServiceImpl.class);
+	//eventPublisher.add(EventoComunicazioneProntaPerProtocollazione.class, SottoscrittoreGenEventoComunicazioneProntaPerProtocollazioneServiceImpl.class);
+	eventPublisher.add(EventoComunicazioneProtocollata.class, SottoscrittoreGenEventoComunicazioneProtocollataServiceImpl.class);
+	//eventPublisher.add(EventoDocumentiComunicazioneFirmati.class, SottoscrittoreGenEventoDocumentiComunicazioneFirmatiServiceImpl.class);
+	eventPublisher.add(EventoFirmaComunicazioneAvviata.class, SottoscrittoreGenEventoFirmaComunicazioneAvviata.class);
+	eventPublisher.add(EventoFirmaDocumentiNonNecessaria.class, SottoscrittoreGenEventoFirmaDocumentiNonNecessariaServiceImpl.class);
+	eventPublisher.add(EventoProtocollazioneComunicazioneNonNecessaria.class,
+		SottoscrittoreGenEventoProtocollazioneComunicazioneNonNecessariaServiceImpl.class);
+	eventPublisher.add(EventoMovimentiInseriti.class, SottoscrittoreGenEventoMovimentiInseritiServiceImpl.class);
+	eventPublisher.add(EventoInviaAppIo.class, SottoscrittoreGenEventoInviaAppIoServiceImpl.class);
+	eventPublisher.add(EventoAppIoSchedulata.class, SottoscrittoreGenEventoAppIoSchedulataServiceImpl.class);
+	eventPublisher.add(EventoAppIoStatoCoda.class, SottoscrittoreGenEventoAppIoStatoCodaServiceImpl.class);
+	eventPublisher.add(EventoRielabora.class, SottoscrittoreGenEventoRielaboraServiceImpl.class);
+
+    }
+}

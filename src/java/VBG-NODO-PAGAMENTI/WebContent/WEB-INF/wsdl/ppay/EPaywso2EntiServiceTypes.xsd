@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema
+	targetNamespace="http://www.csi.it/epay/epaywso/epaywso2enti/types"
+	xmlns="http://www.w3.org/2001/XMLSchema"
+	xmlns:cmn="http://www.csi.it/epay/epaywso/types"
+	xmlns:tns="http://www.csi.it/epay/epaywso/epaywso2enti/types" 
+	elementFormDefault="qualified">
+	
+	<annotation>
+		<documentation>Trasmissione Notifiche ed Esiti </documentation>
+		<documentation>XSD versione 1.0.0</documentation>
+    </annotation>
+	
+	<import schemaLocation="EPaywsoCommonTypes.xsd" namespace="http://www.csi.it/epay/epaywso/types" />
+	
+	<element name="TrasmettiNotifichePagamentoRequest">
+		<complexType>
+			<sequence>
+				<element name="Testata" type="tns:TestataNotifichePagamentoType" />
+				<element name="CorpoNotifichePagamento" type="tns:CorpoNotifichePagamentoType" />
+			</sequence>
+		</complexType>
+	</element>
+
+	<element name="TrasmettiAvvisiScadutiRequest">
+		<complexType>
+			<sequence>
+				<element name="Testata" type="tns:TestataAvvisiScadutiType" />
+				<element name="CorpoAvvisiScaduti" type="tns:CorpoAvvisiScadutiType" />
+			</sequence>
+		</complexType>
+	</element>
+
+	<complexType name="TestataNotifichePagamentoType">
+		<sequence>
+			<element name="IdMessaggio" type="cmn:String35Type" />
+			<element name="CFEnteCreditore" type="cmn:String35Type" />
+			<element name="CodiceVersamento" type="cmn:CodiceVersamentoType" />
+			<element name="PagamentiSpontanei" type="boolean" />
+			<element name="NumeroPagamenti" type="cmn:Numero6CifreType" />
+			<element name="ImportoTotalePagamenti" type="cmn:ImportoType" />
+		</sequence>
+	</complexType>
+	
+	<complexType name="TestataAvvisiScadutiType">
+		<sequence>
+			<element name="IdMessaggio" type="cmn:String35Type" />
+			<element name="CFEnteCreditore" type="cmn:String35Type" />
+			<element name="CodiceVersamento" type="cmn:CodiceVersamentoType" />
+			<element name="NumeroAvvisiScaduti" type="cmn:Numero6CifreType" />
+			<element name="ImportoTotaleAvvisiScaduti" type="cmn:ImportoType" />
+		</sequence>
+	</complexType>
+	
+	<complexType name="CorpoNotifichePagamentoType">
+		<sequence>
+			<element name="ElencoNotifichePagamento">
+				<complexType>
+					<sequence>
+						<element name="NotificaPagamento" minOccurs="1" maxOccurs="1000" type="tns:NotificaPagamentoType"/>
+					</sequence>
+				</complexType>
+			</element>
+		</sequence>
+	</complexType>
+	
+	<complexType name="CorpoAvvisiScadutiType">
+		<sequence>
+			<element name="ElencoAvvisiScaduti">
+				<complexType>
+					<sequence>
+						<element name="AvvisoScaduto" minOccurs="1" maxOccurs="1000" type="tns:AvvisoScadutoType"/>
+					</sequence>
+				</complexType>
+			</element>
+		</sequence>
+	</complexType>
+
+	<complexType name="NotificaPagamentoType">
+		<sequence>
+			<element name="IdPosizioneDebitoria" type="cmn:String50Type" minOccurs="0"/>
+			<element name="AnnoDiRiferimento" type="cmn:AnnoType" minOccurs="0"/>
+			<element name="IUV" type="cmn:String35Type"/>
+			<element name="ImportoPagato" type="cmn:ImportoType"/>
+			<element name="DataScadenza" type="date" minOccurs="0"/>
+			<element name="DescrizioneCausaleVersamento" type="cmn:String140Type" minOccurs="0"/>
+			<element name="DataEsitoPagamento" type="date" />
+			<element name="SoggettoDebitore" type="cmn:SoggettoType"/>
+			<element name="SoggettoVersante" type="cmn:SoggettoType" minOccurs="0"/>
+			<element name="DatiTransazionePSP" type="tns:DatiTransazionePSPType" />
+			<element name="DatiSpecificiRiscossione" type="cmn:String140Type" minOccurs="0"/>
+			<element name="Note" type="cmn:String2000Type" minOccurs="0"/>
+			<element name="CodiceAvviso" type="cmn:String35Type" minOccurs="0"/>
+		</sequence>
+	</complexType>
+	
+	<complexType name="AvvisoScadutoType">
+		<sequence>
+			<element name="IUV" type="cmn:String35Type"/>
+			<element name="DataScadenza" type="date" minOccurs="0"/>
+			<element name="Importo" type="cmn:ImportoType"/>
+		</sequence>
+	</complexType>
+
+	<complexType name="DatiTransazionePSPType">
+		<sequence>
+			<element name="IdPSP" type="cmn:String35Type"/>
+			<element name="RagioneSocialePSP" type="cmn:String250Type" minOccurs="0"/>
+			<element name="TipoVersamento" type="tns:TipoVersamentoType" minOccurs="0"/>
+			<element name="IdFlussoRendicontazionePSP" type="cmn:String35Type" minOccurs="0"/>
+			<element name="DataOraAvvioTransazione" type="dateTime"/>
+			<element name="IUR" type="cmn:String35Type" />
+			<element name="DataOraAutorizzazione" type="dateTime" minOccurs="0"/>
+			<element name="TipoSicurezza" type="cmn:String50Type" minOccurs="0"/>
+			<element name="ImportoTransato" type="cmn:ImportoType" minOccurs="0"/>
+			<element name="ImportoCommissioni" type="cmn:ImportoType" minOccurs="0"/>
+		</sequence>
+	</complexType>
+	
+	<simpleType name="TipoVersamentoType">
+		<restriction base="string">
+			<minLength value="1"/>
+			<maxLength value="4"/>
+		</restriction>
+	</simpleType>
+	
+	<complexType name="DettaglioVociType">
+		<sequence>
+			<element name="DettaglioVoce">
+				<complexType>
+					<sequence>
+						<element name="Tipo" type="tns:TipoDettaglioVoce"/>
+						<element name="Descrizione" type="cmn:String100Type" minOccurs="0"/>
+						<element name="Importo" type="cmn:ImportoType"/>
+					</sequence>
+				</complexType>
+			</element>
+		</sequence>
+	</complexType>
+	
+	<simpleType name="TipoDettaglioVoce">
+		<restriction base="string">
+			<enumeration value="IMPORTO_TRANSATO"/>
+			<enumeration value="IMPORTO_AUTORIZZATO"/>
+			<enumeration value="IMPORTO_COMMISSIONI"/>
+		</restriction>
+	</simpleType>
+
+	<element name="EsitoInserimentoListaDiCaricoRequest">
+		<complexType>
+			<complexContent>
+				<extension base="cmn:ResponseType">
+					<sequence>
+						<element name="TestataEsito" type="tns:TestataEsitoType"/>
+						<element name="EsitoInserimento" type="cmn:EsitoInserimentoType" minOccurs="0"/>
+					</sequence>
+				</extension>
+			</complexContent>
+		</complexType>
+	</element>
+	
+	<element name="EsitoAggiornaPosizioniDebitorieRequest">
+		<complexType>
+			<complexContent>
+				<extension base="cmn:ResponseType">
+					<sequence>
+						<element name="TestataEsito" type="tns:TestataEsitoType"/>
+						<element name="EsitoAggiornamento" type="cmn:EsitoAggiornamentoType" minOccurs="0"/>
+					</sequence>
+				</extension>
+			</complexContent>
+		</complexType>
+	</element>
+	
+	<complexType name="TestataEsitoType">
+		<sequence>
+			<element name="IdMessaggio" type="cmn:String35Type" />
+			<element name="CFEnteCreditore" type="cmn:String35Type" />
+			<element name="CodiceVersamento" type="cmn:CodiceVersamentoType" />
+		</sequence>
+	</complexType>
+	
+</schema>

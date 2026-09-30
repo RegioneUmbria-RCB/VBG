@@ -1,0 +1,51 @@
+
+
+	#set($table = $item.Tabella)
+	$rowIndex.incrementaLivello($table)
+	#set($rowValues = $helper.getListOfRows($item,$rowIndex,false))
+	#set($tableId = $helper.getIdTabella(${table},${helper.countUniqueIds("tabella_${table.Id}")},$rowIndex))
+	#if($table.Titolo)
+		<h5 >
+			$table.Titolo
+        </h5>
+	#end
+	<fieldset width="98%">
+		
+            <div>
+    		#foreach($column in $table.Colonna)
+    			<span>$!column.Titolo</span>
+			#end
+			#if(!$pdfOutput)
+				<span></span>
+			#end
+            </div>
+       
+		
+			$helper.pushContainerInStack($item,$tableId)
+			#foreach($row in $rowValues) ##ciclo sulle righe di dati effettivamente trasmesse durante la compilazione del modulo
+    			<div>
+        		#foreach($column in $table.Colonna)
+        			##<span >
+    					##<div>
+        				#set($item = $column.Cella)
+                		#set($numCols = $helper.countColumnsForItem($item, $rowIndex))
+                		#if($numCols > 0)
+							#parse("/cart/elemento_figlio_pdf.vm")
+						#end
+    					##</div>
+    				##</span>
+				#end
+                </div>
+                $rowIndex.incrementaIndice()
+				#set($item = $precItem)
+				#set($table = $item.Tabella)
+			#end ##fine loop sulle righe
+ 			#set($itemWrap = ${helper.popContainerFromStack()})
+			#set($item = ${itemWrap.Container})
+			#set($table = $item.Tabella)
+			#set($tableId = ${itemWrap.getContainerId()})
+        
+    </fieldset>
+	#set($table = false)
+	#set($foo = $rowIndex.decrementaLivello())
+

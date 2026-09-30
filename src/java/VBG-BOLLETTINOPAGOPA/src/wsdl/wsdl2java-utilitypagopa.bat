@@ -1,0 +1,1 @@
+D:\SVILUPPO\apache-cxf-3.3.3\bin\wsdl2java.bat -p it.gruppoinit.schemas.messages.utilitypagopa -all -frontend  jaxws21 utilitypagopa.wsdl

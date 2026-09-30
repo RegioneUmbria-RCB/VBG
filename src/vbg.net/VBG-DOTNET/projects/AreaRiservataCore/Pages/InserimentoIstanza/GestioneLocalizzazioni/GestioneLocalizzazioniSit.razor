@@ -1,0 +1,586 @@
+﻿@page "/{IdComune}/{Software}/inserimento-istanza/gestione-localizzazioni-sit/{idDomanda:int}/{stepId:int}"
+@using AreaRiservataCore.Shared.Localizzazioni
+@using VBG.BlazorComponentsLibrary.DesignComuni.Forms
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards.CardButtons
+@using VBG.BlazorComponentsLibrary.EditFormComponents
+@using VBG.BlazorComponentsLibrary.EditFormComponents.DropDown
+@using VBG.BlazorComponentsLibrary.RisorseTestuali
+@inherits IstanzeStepPage
+
+<style>
+    .icona-mappa {
+        width: 20px;
+        height: 20px;
+        vertical-align: bottom;
+        margin-bottom: 2px;
+        cursor: pointer;
+    }
+</style>
+
+@if (_gridDataSource != null)
+{
+    <StepCard Titolo="">
+        @foreach (var item in _gridDataSource)
+        {
+            <StepCardItem>
+                @if (!string.IsNullOrEmpty(UrlLocalizzazioneDaIndirizzo))
+                {
+                    <img src="images/map-icon-small.png" class="icona-mappa me-2"
+                         @onclick='() => WindowOpenAsync(
+                            GetFormattedUrl(UrlLocalizzazioneDaIndirizzo, item),
+                            "sit",
+                            "height=500, width=700, menubar=no, resizable=yes,scrollbars=yes,status=no,toolbar=no"
+                            )'
+                    @onclick:preventDefault />
+                }
+                <StepCardButtonGroup EditClick="() => OnRowEdit(item)" DeleteVisible="true" DeleteClick="() => OnIniziaEliminazione(item)"></StepCardButtonGroup>
+                <StepCardItemTitle Titolo="@item.Indirizzo"></StepCardItemTitle>
+
+                <StepCollapsibleContent>
+                    <StepCollapsibleContentItem>
+                        <StepCardInfo Titolo="Colore" Visible="@_formLocalizzazioni.Colore.Visibile">@item.Colore</StepCardInfo>
+                        <StepCardInfo Titolo="Scala" Visible="@_formLocalizzazioni.Scala.Visibile">@item.Scala</StepCardInfo>
+                        <StepCardInfo Titolo="Piano" Visible="@_formLocalizzazioni.Piano.Visibile">@item.Piano</StepCardInfo>
+                        <StepCardInfo Titolo="Interno" Visible="@_formLocalizzazioni.Interno.Visibile">@item.Interno</StepCardInfo>
+                        <StepCardInfo Titolo="Esponente interno" Visible="@_formLocalizzazioni.EsponenteInterno.Visibile">@item.EsponenteInterno</StepCardInfo>
+                        <StepCardInfo Titolo="Fabbricato" Visible="@_formLocalizzazioni.Fabbricato.Visibile">@item.Fabbricato</StepCardInfo>
+                        <StepCardInfo Titolo="Km" Visible="@_formLocalizzazioni.Km.Visibile">@item.Km</StepCardInfo>
+                        <StepCardInfo Titolo="Note" Visible="@_formLocalizzazioni.Note.Visibile">@item.Note</StepCardInfo>
+                    </StepCollapsibleContentItem>
+
+                    @if (_formLocalizzazioni.Longitudine.Visibile)
+                    {
+                        <StepCollapsibleContentItem Titolo="Coordinate">
+                            <div class="row">
+                                <div class="col-6">
+                                    <StepCardInfo Titolo="Longitudine" CapitalizeText="true">@item.Longitudine</StepCardInfo>
+                                </div>
+                                <div class="col-6">
+                                    <StepCardInfo Titolo="Latitudine" CapitalizeText="true">@item.Latitudine</StepCardInfo>
+                                </div>
+                            </div>
+                        </StepCollapsibleContentItem>
+                    }
+
+                    <StepCollapsibleContentItem Titolo="Riferimento Catastale">
+                        @if (!string.IsNullOrEmpty(UrlLocalizzazioneDaMappali))
+                        {
+                            <img src="images/map-icon-small.png" class="icona-mappa me-2"
+                                 @onclick='() => WindowOpenAsync(
+                                                GetFormattedUrl(UrlLocalizzazioneDaMappali, item),
+                                                "sit",
+                                                "height=500, width=700, menubar=no, resizable=yes,scrollbars=yes,status=no,toolbar=no"
+                                            )'
+                            @onclick:preventDefault />
+                        }
+                        <StepCardInfo Titolo="">@item.PrimoRiferimentoCatastale</StepCardInfo>
+
+                    </StepCollapsibleContentItem>
+
+                </StepCollapsibleContent>
+            </StepCardItem>
+        }
+
+        <StepButton Text="Aggiungi un indirizzo" OnClick="OnNewRow" Icon="StepButtonIcons.PlusCircle"></StepButton>
+
+    </StepCard>
+}
+
+<ConfirmationModal Titolo="Conferma eliminazione indirizzo" Visible="@(_deletingItem != null)" ConfermaClick="OnRowDeleteAsync" AnnullaClick="OnAnnullaEliminazione">
+    <ModalBody>
+        <div>
+            Sei sicuro di voler rimuovere l'indirizzo selezionato?
+        </div>
+    </ModalBody>
+</ConfirmationModal>
+
+@switch (currentStep)
+{
+    case Constants.DETAILS_VIEW:
+        <BasicModal AlwaysVisible="true" OnClose="@OnAnnullaClick">
+            <ModalHeader Titolo="Modifica indirizzo">
+                <span class="fst-italic">I campi contrassegnati con * sono obbligatori</span>
+            </ModalHeader>
+            <ModalBody>
+                <VbgForm @ref="myForm" Id="localizzazioniForm" Model="@model" OnValidSubmit="@OnBtnConfirm">
+                    <div class="row">
+                        <AutocompleteForm Id="acIndirizzo"
+                                          Label="Indirizzo"
+                                          TItem="AutocompleteStradarioResultItem" TValue="AutocompleteFormResult"
+                                          SearchMethod="@GetStradarioDataItemsAsync"
+                                          MinimumLength="3"
+                                          ConvertMethod="@IndirizzoConvertMethod"
+                                          Value="model.Indirizzo"
+                                          ValueChanged="@(EventCallback.Factory.Create(this, (AutocompleteFormResult r) => { model.Indirizzo = r; myForm.ClearValidationMessage(new FieldIdentifier(model, "Indirizzo")); }))"
+                                          ValueExpression="() => model.Indirizzo"
+                                          TextField="@nameof(AutocompleteStradarioResultItem.Descrizione)"
+                                          ValidationFor="() => model.Indirizzo"
+                                          Required="true">
+                        </AutocompleteForm>
+                    </div>
+                    <div class="row">
+                        @if (_formLocalizzazioni.Civico.Visibile)
+                        {
+                            <div class="col-md-4">
+                                <AutocompleteForm Id="txtCivico"
+                                                  Label="@_formLocalizzazioni.Civico.Etichetta"
+                                                  TItem="string" TValue="string"
+                                                  SearchMethod="@GetCivicoDataItemsAsync"
+                                                  MinimumLength="0"
+                                                  ConvertMethod="(string x) => x"
+                                                  Value="model.Civico"
+                                                  ValueChanged="@(EventCallback.Factory.Create(this, (string s) => {
+                                        model.Civico = s;
+                                        myForm.ClearValidationMessage(new FieldIdentifier(model, "Civico"));
+                                        if (!string.IsNullOrEmpty(model.Civico)) { ValidaCampo("Civico"); }
+                                  }))"
+                                                  ValueExpression="() => model.Civico"
+                                                  ValidationFor="() => model.Civico"
+                                                  Required="@_formLocalizzazioni.Civico.Obbligatorio"
+                                                  RegEx="@_formLocalizzazioni.Civico.EspressioneRegolare"
+                                                  ValoreMin="@_formLocalizzazioni.Civico.ValoreMin"
+                                                  ValoreMax="@_formLocalizzazioni.Civico.ValoreMax">
+                                </AutocompleteForm>
+                            </div>
+                            
+                        }
+                        @if (_formLocalizzazioni.Esponente.Visibile)
+                        {
+                            <div class="col-md-4">
+                                <AutocompleteForm Id="txtEsponente"
+                                                  Label="@_formLocalizzazioni.Esponente.Etichetta"
+                                                  TItem="string" TValue="string"
+                                                  SearchMethod="@GetEsponenteDataItemsAsync"
+                                                  MinimumLength="0"
+                                                  ConvertMethod="(string x) => x"
+                                                  Value="model.Esponente"
+                                                  ValueChanged="@(EventCallback.Factory.Create(this, (string s) => {
+                                        model.Esponente = s;
+                                        myForm.ClearValidationMessage(new FieldIdentifier(model, "Esponente"));
+                                        if (!string.IsNullOrEmpty(model.Esponente)) { ValidaCampo("Esponente"); }
+                                  }))"
+                                                  ValueExpression="() => model.Esponente"
+                                                  ValidationFor="() => model.Esponente"
+                                                  Required="@_formLocalizzazioni.Esponente.Obbligatorio"
+                                                  RegEx="@_formLocalizzazioni.Esponente.EspressioneRegolare"
+                                                  ValoreMin="@_formLocalizzazioni.Esponente.ValoreMin"
+                                                  ValoreMax="@_formLocalizzazioni.Esponente.ValoreMax">
+                                </AutocompleteForm>
+                            </div>
+                            
+                        }
+                        @if (_formLocalizzazioni.Colore.Visibile)
+                        {
+                            @*<DropDownForm Id="ddlColore" Required="@_formLocalizzazioni.Colore.Obbligatorio"
+                Label="@_formLocalizzazioni.Colore.Etichetta"
+                Value="model.Colore"
+                TItem="DropDownItem"
+                OnChanged="EventCallback.Factory.Create(this, (DropDownItem i) => { model.Colore = i; })"
+                Selector="(x) => x.Text"
+                ValueExpression="() => model.Colore"
+                CssClassContainer="has-feedback col-md-4"
+                ValueField="Value" TextField="Text"
+                Items="@comuniDataItems"
+                ShowEmptyItem="true" EmptyItemText="" EmptyItemValue="0"
+                ValidationFor="() => model.Colore"
+                Required="true">
+                </DropDownForm>*@
+                        }
+                    </div>
+                    <div class="row">
+                        @if (_formLocalizzazioni.Scala.Visibile)
+                        {
+                            <div class="col-md-4">
+                                <AutocompleteForm Id="txtScala"
+                                                  Label="@_formLocalizzazioni.Scala.Etichetta"
+                                                  TItem="string" TValue="string"
+                                                  SearchMethod="@GetScalaDataItemsAsync"
+                                                  MinimumLength="0"
+                                                  ConvertMethod="(string x) => x"
+                                                  Value="model.Scala"
+                                                  ValueChanged="@(EventCallback.Factory.Create(this, (string s) => {
+                                        model.Scala = s;
+                                        myForm.ClearValidationMessage(new FieldIdentifier(model, "Scala"));
+                                        if (!string.IsNullOrEmpty(model.Scala)) { ValidaCampo("Scala"); }
+                                  }))"
+                                                  ValueExpression="() => model.Scala"
+                                                  ValidationFor="() => model.Scala"
+                                                  Required="@_formLocalizzazioni.Scala.Obbligatorio"
+                                                  RegEx="@_formLocalizzazioni.Scala.EspressioneRegolare"
+                                                  ValoreMin="@_formLocalizzazioni.Scala.ValoreMin"
+                                                  ValoreMax="@_formLocalizzazioni.Scala.ValoreMax">
+                                </AutocompleteForm>
+                            </div>
+                            
+                        }
+                        @if (_formLocalizzazioni.Piano.Visibile)
+                        {
+                            <div class="col-md-4">
+                                <AutocompleteForm Id="txtPiano"
+                                                  Label="@_formLocalizzazioni.Piano.Etichetta"
+                                                  TItem="string" TValue="string"
+                                                  SearchMethod="@GetPianoDataItemsAsync"
+                                                  MinimumLength="0"
+                                                  ConvertMethod="(string x) => x"
+                                                  Value="model.Piano"
+                                                  ValueChanged="@(EventCallback.Factory.Create(this, (string s) => {
+                                        model.Piano = s;
+                                        myForm.ClearValidationMessage(new FieldIdentifier(model, "Piano"));
+                                        if (!string.IsNullOrEmpty(model.Piano)) { ValidaCampo("Piano"); }
+                                  }))"
+                                                  ValueExpression="() => model.Piano"
+                                                  ValidationFor="() => model.Piano"
+                                                  Required="@_formLocalizzazioni.Piano.Obbligatorio"
+                                                  RegEx="@_formLocalizzazioni.Piano.EspressioneRegolare"
+                                                  ValoreMin="@_formLocalizzazioni.Piano.ValoreMin"
+                                                  ValoreMax="@_formLocalizzazioni.Piano.ValoreMax">
+                                </AutocompleteForm>
+                            </div>
+                            
+                        }
+                        @if (_formLocalizzazioni.Interno.Visibile)
+                        {
+                            <div class="col-md-4">
+                                <AutocompleteForm Id="txtInterno"
+                                                  Label="@_formLocalizzazioni.Interno.Etichetta"
+                                                  TItem="string" TValue="string"
+                                                  SearchMethod="@GetInternoDataItemsAsync"
+                                                  MinimumLength="0"
+                                                  ConvertMethod="(string x) => x"
+                                                  Value="model.Interno"
+                                                  ValueChanged="@(EventCallback.Factory.Create(this, (string s) => {
+                                        model.Interno = s;
+                                        myForm.ClearValidationMessage(new FieldIdentifier(model, "Interno"));
+                                        if (!string.IsNullOrEmpty(model.Interno)) { ValidaCampo("Interno"); }
+                                  }))"
+                                                  ValueExpression="() => model.Interno"
+                                                  ValidationFor="() => model.Interno"
+                                                  Required="@_formLocalizzazioni.Interno.Obbligatorio"
+                                                  RegEx="@_formLocalizzazioni.Interno.EspressioneRegolare"
+                                                  ValoreMin="@_formLocalizzazioni.Interno.ValoreMin"
+                                                  ValoreMax="@_formLocalizzazioni.Interno.ValoreMax">
+                                </AutocompleteForm>
+                            </div>
+                            
+                        }
+                    </div>
+                    <div class="row">
+                        @if (_formLocalizzazioni.EsponenteInterno.Visibile)
+                        {
+                            <div class="col-md-4">
+                                <AutocompleteForm Id="txtEsponenteInterno"
+                                                  Label="@_formLocalizzazioni.EsponenteInterno.Etichetta"
+                                                  TItem="string" TValue="string"
+                                                  SearchMethod="@GetEsponenteInternoDataItemsAsync"
+                                                  MinimumLength="0"
+                                                  ConvertMethod="(string x) => x"
+                                                  Value="model.EsponenteInterno"
+                                                  ValueChanged="@(EventCallback.Factory.Create(this, (string s) => {
+                                        model.EsponenteInterno = s;
+                                        myForm.ClearValidationMessage(new FieldIdentifier(model, "EsponenteInterno"));
+                                        if (!string.IsNullOrEmpty(model.EsponenteInterno)) { ValidaCampo("EsponenteInterno"); }
+                                  }))"
+                                                  ValueExpression="() => model.EsponenteInterno"
+                                                  ValidationFor="() => model.EsponenteInterno"
+                                                  Required="@_formLocalizzazioni.EsponenteInterno.Obbligatorio"
+                                                  RegEx="@_formLocalizzazioni.EsponenteInterno.EspressioneRegolare"
+                                                  ValoreMin="@_formLocalizzazioni.EsponenteInterno.ValoreMin"
+                                                  ValoreMax="@_formLocalizzazioni.EsponenteInterno.ValoreMax">
+                                </AutocompleteForm>
+                            </div>
+                            
+                        }
+                        @if (_formLocalizzazioni.Fabbricato.Visibile)
+                        {
+                            <div class="col-md-4">
+                                <AutocompleteForm Id="txtFabbricato"
+                                                  Label="@_formLocalizzazioni.Fabbricato.Etichetta"
+                                                  TItem="string" TValue="string"
+                                                  SearchMethod="@GetFabbricatoDataItemsAsync"
+                                                  MinimumLength="0"
+                                                  ConvertMethod="(string x) => x"
+                                                  Value="model.Fabbricato"
+                                                  ValueChanged="@(EventCallback.Factory.Create(this, (string s) => {
+                                        model.Fabbricato = s;
+                                        myForm.ClearValidationMessage(new FieldIdentifier(model, "Fabbricato"));
+                                        if (!string.IsNullOrEmpty(model.Fabbricato)) { ValidaCampo("Fabbricato"); }
+                                  }))"
+                                                  ValueExpression="() => model.Fabbricato"
+                                                  ValidationFor="() => model.Fabbricato"
+                                                  Required="@_formLocalizzazioni.Fabbricato.Obbligatorio"
+                                                  RegEx="@_formLocalizzazioni.Fabbricato.EspressioneRegolare"
+                                                  ValoreMin="@_formLocalizzazioni.Fabbricato.ValoreMin"
+                                                  ValoreMax="@_formLocalizzazioni.Fabbricato.ValoreMax">
+                                </AutocompleteForm>
+                            </div>
+                            
+                        }
+                        @if (_formLocalizzazioni.Km.Visibile)
+                        {
+                            <div class="col-md-4">
+                                <AutocompleteForm Id="txtKm"
+                                                  Label="@_formLocalizzazioni.Km.Etichetta"
+                                                  TItem="string" TValue="string"
+                                                  SearchMethod="@GetKmDataItemsAsync"
+                                                  MinimumLength="0"
+                                                  ConvertMethod="(string x) => x"
+                                                  Value="model.Km"
+                                                  ValueChanged="@(EventCallback.Factory.Create(this, (string s) => {
+                                        model.Km = s;
+                                        myForm.ClearValidationMessage(new FieldIdentifier(model, "Km"));
+                                        if (!string.IsNullOrEmpty(model.Km)) { ValidaCampo("Km"); }
+                                  }))"
+                                                  ValueExpression="() => model.Km"
+                                                  ValidationFor="() => model.Km"
+                                                  Required="@_formLocalizzazioni.Km.Obbligatorio"
+                                                  RegEx="@_formLocalizzazioni.Km.EspressioneRegolare"
+                                                  ValoreMin="@_formLocalizzazioni.Km.ValoreMin"
+                                                  ValoreMax="@_formLocalizzazioni.Km.ValoreMax">
+                                </AutocompleteForm>
+                            </div>
+                            
+                        }
+                    </div>
+                    <div class="row">
+                        @if (_formLocalizzazioni.AccessoTipo.Visibile)
+                        {
+                            <div class="col-md-3">
+                                <AutocompleteForm Id="txtAccessoTipo"
+                                                  Label="@_formLocalizzazioni.AccessoTipo.Etichetta"
+                                                  TItem="string" TValue="string"
+                                                  SearchMethod="@GetAccessoTipoDataItemsAsync"
+                                                  ConvertMethod="(string x) => x"
+                                                  Value="model.AccessoTipo"
+                                                  ValueChanged="@(EventCallback.Factory.Create(this, (string s) => {
+                                        model.AccessoTipo = s;
+                                        myForm.ClearValidationMessage(new FieldIdentifier(model, "AccessoTipo"));
+                                        if (!string.IsNullOrEmpty(model.AccessoTipo)) { ValidaCampo("AccessoTipo"); }
+                                  }))"
+                                                  ValueExpression="() => model.AccessoTipo"
+                                                  ValidationFor="() => model.AccessoTipo"
+                                                  Required="@_formLocalizzazioni.AccessoTipo.Obbligatorio"
+                                                  RegEx="@_formLocalizzazioni.AccessoTipo.EspressioneRegolare"
+                                                  ValoreMin="@_formLocalizzazioni.AccessoTipo.ValoreMin"
+                                                  ValoreMax="@_formLocalizzazioni.AccessoTipo.ValoreMax">
+                                </AutocompleteForm>
+                            </div>
+                            
+                        }
+                        @if (_formLocalizzazioni.AccessoNumero.Visibile)
+                        {
+                            <div class="col-md-3">
+                                <AutocompleteForm Id="txtAccessoNumero"
+                                                  Label="@_formLocalizzazioni.AccessoNumero.Etichetta"
+                                                  TItem="string" TValue="string"
+                                                  SearchMethod="@GetAccessoNumeroDataItemsAsync"
+                                                  ConvertMethod="(string x) => x"
+                                                  Value="model.AccessoNumero"
+                                                  ValueChanged="@(EventCallback.Factory.Create(this, (string s) => {
+                                        model.AccessoNumero = s;
+                                        myForm.ClearValidationMessage(new FieldIdentifier(model, "AccessoNumero"));
+                                        if (!string.IsNullOrEmpty(model.AccessoNumero)) { ValidaCampo("AccessoNumero"); }
+                                  }))"
+                                                  ValueExpression="() => model.AccessoNumero"
+                                                  ValidationFor="() => model.AccessoNumero"
+                                                  Required="@_formLocalizzazioni.AccessoNumero.Obbligatorio"
+                                                  RegEx="@_formLocalizzazioni.AccessoNumero.EspressioneRegolare"
+                                                  ValoreMin="@_formLocalizzazioni.AccessoNumero.ValoreMin"
+                                                  ValoreMax="@_formLocalizzazioni.AccessoNumero.ValoreMax">
+                                </AutocompleteForm>
+                            </div>
+                            
+                        }
+                        @if (_formLocalizzazioni.AccessoDescrizione.Visibile)
+                        {
+                            <div class="col-md-6">
+                                <AutocompleteForm Id="txtAccessoDescrizione"
+                                                  Label="@_formLocalizzazioni.AccessoDescrizione.Etichetta"
+                                                  TItem="string" TValue="string"
+                                                  SearchMethod="@GetAccessoDescrizioneDataItemsAsync"
+                                                  ConvertMethod="(string x) => x"
+                                                  Value="model.AccessoDescrizione"
+                                                  ValueChanged="@(EventCallback.Factory.Create(this, (string s) => {
+                                    model.AccessoDescrizione = s;
+                                    myForm.ClearValidationMessage(new FieldIdentifier(model, "AccessoDescrizione"));
+                                    if (!string.IsNullOrEmpty(model.AccessoDescrizione)) { ValidaCampo("AccessoDescrizione"); }
+                                  }))"
+                                                  ValueExpression="() => model.AccessoDescrizione"
+                                                  ValidationFor="() => model.AccessoDescrizione"
+                                                  Required="@_formLocalizzazioni.AccessoDescrizione.Obbligatorio"
+                                                  RegEx="@_formLocalizzazioni.AccessoDescrizione.EspressioneRegolare"
+                                                  ValoreMin="@_formLocalizzazioni.AccessoDescrizione.ValoreMin"
+                                                  ValoreMax="@_formLocalizzazioni.AccessoDescrizione.ValoreMax">
+                                </AutocompleteForm>
+                            </div>
+                            
+                        }
+                    </div>
+                    <div class="row">
+                        @if (_formLocalizzazioni.Note.Visibile)
+                        {
+                            <TextInputForm Id="txtNote"
+                                           @bind-Value="@model.Note"
+                                           MaxLength="3000"
+                                           Label="@_formLocalizzazioni.Note.Etichetta"
+                                           IsMultiline="true"
+                                           ValidationFor="() => model.Note"
+                                           Required="@_formLocalizzazioni.Note.Obbligatorio"
+                                           RegEx="@_formLocalizzazioni.Note.EspressioneRegolare"
+                                           ValoreMin="@_formLocalizzazioni.Note.ValoreMin"
+                                           ValoreMax="@_formLocalizzazioni.Note.ValoreMax" />
+                        }
+                    </div>
+                    <div class="row">
+                        @if (_formLocalizzazioni.Longitudine.Visibile)
+                        {
+                            <div class="col-md-6">
+                                <TextInputForm Id="txtLongitudine"
+                                               Value="@model.Longitudine"
+                                               MaxLength="50"
+                                               Label="@_formLocalizzazioni.Longitudine.Etichetta"
+                                               ValueChanged="@((string s) => { model.Longitudine = s; myForm.ClearValidationMessage(new FieldIdentifier(model, "Longitudine")); if (!string.IsNullOrEmpty(model.Longitudine)) { ValidaCampo("Longitudine"); }})"
+                                               ValueExpression="() => model.Longitudine"
+                                               IsMultiline="true"
+                                               ValidationFor="() => model.Longitudine"
+                                               Required="@_formLocalizzazioni.Longitudine.Obbligatorio"
+                                               RegEx="@_formLocalizzazioni.Longitudine.EspressioneRegolare"
+                                               ValoreMin="@_formLocalizzazioni.Longitudine.ValoreMin"
+                                               ValoreMax="@_formLocalizzazioni.Longitudine.ValoreMax" />
+                            </div>
+                            
+                        }
+                        @if (_formLocalizzazioni.Latitudine.Visibile)
+                        {
+                            <div class="col-md-6">
+                                <TextInputForm Id="txtLatitudine"
+                                               Value="@model.Latitudine"
+                                               MaxLength="50"
+                                               Label="@_formLocalizzazioni.Latitudine.Etichetta"
+                                               ValueChanged="@((string s) => { model.Latitudine = s; myForm.ClearValidationMessage(new FieldIdentifier(model, "Latitudine")); if (!string.IsNullOrEmpty(model.Latitudine)) { ValidaCampo("Latitudine"); }})"
+                                               ValueExpression="() => model.Latitudine"
+                                               IsMultiline="true"
+                                               ValidationFor="() => model.Latitudine"
+                                               Required="@_formLocalizzazioni.Latitudine.Obbligatorio"
+                                               RegEx="@_formLocalizzazioni.Latitudine.EspressioneRegolare"
+                                               ValoreMin="@_formLocalizzazioni.Latitudine.ValoreMin"
+                                               ValoreMax="@_formLocalizzazioni.Latitudine.ValoreMax" />
+                            </div>
+                            
+                        }
+                    </div>
+
+
+                    @if (DatiCatastaliVisibili)
+                    {
+                        <fieldset>
+                            <legend>
+                                <RisorsaTestuale>
+                                    <ChildContent>
+                                        Riferimenti catastali
+                                    </ChildContent>
+                                </RisorsaTestuale>
+                            </legend>
+                            <div class="row">
+                                @if (_formLocalizzazioni.TipoCatasto.Visibile)
+                                {
+                                    <DropDownForm Id="ddlTipoCatasto"
+                                                  Label="@_formLocalizzazioni.TipoCatasto.Etichetta"
+                                                  @bind-Value="@model.TipoCatasto"
+                                                  TItem="DropDownItem"
+                                                  OnChanged="@(EventCallback.Factory.Create(this, (DropDownItem i) => { model.TipoCatasto = i; if (!string.IsNullOrEmpty(model.TipoCatasto.Value)) ValidaCampo("TipoCatasto"); }))"
+                                                  Items="@tipoCatastoDataItems"
+                                                  ShowEmptyItem="false"
+                                                  ValidationFor="() => model.TipoCatasto"
+                                                  Required="@_formLocalizzazioni.TipoCatasto.Obbligatorio"
+                                                  RegEx="@_formLocalizzazioni.TipoCatasto.EspressioneRegolare">
+                                    </DropDownForm>
+                                }
+                                @if (_formLocalizzazioni.Foglio.Visibile)
+                                {
+                                    <div class="col-md-3">
+                                        <AutocompleteForm Id="txtFoglio"
+                                                          Label="@_formLocalizzazioni.Foglio.Etichetta"
+                                                          TItem="string" TValue="string"
+                                                          SearchMethod="@GetFoglioDataItemsAsync"
+                                                          MinimumLength="0"
+                                                          ConvertMethod="(string x) => x"
+                                                          Value="model.Foglio"
+                                                          ValueChanged="@(EventCallback.Factory.Create(this, (string s) => {
+                                            model.Foglio = s;
+                                            myForm.ClearValidationMessage(new FieldIdentifier(model, "Foglio"));
+                                            if (!string.IsNullOrEmpty(model.Foglio)) { ValidaCampo("Foglio"); }
+                                        }))"
+                                                          ValueExpression="() => model.Foglio"
+                                                          ValidationFor="() => model.Foglio"
+                                                          Required="@_formLocalizzazioni.Foglio.Obbligatorio"
+                                                          RegEx="@_formLocalizzazioni.Foglio.EspressioneRegolare"
+                                                          ValoreMin="@_formLocalizzazioni.Foglio.ValoreMin"
+                                                          ValoreMax="@_formLocalizzazioni.Foglio.ValoreMax">
+                                        </AutocompleteForm>
+                                    </div>
+                                    
+                                }
+                                @if (_formLocalizzazioni.Particella.Visibile)
+                                {
+                                    <div class="col-md-3">
+                                        <AutocompleteForm Id="txtParticella"
+                                                          Label="@_formLocalizzazioni.Particella.Etichetta"
+                                                          TItem="string" TValue="string"
+                                                          SearchMethod="@GetParticellaDataItemsAsync"
+                                                          MinimumLength="0"
+                                                          ConvertMethod="(string x) => x"
+                                                          Value="model.Particella"
+                                                          ValueChanged="@(EventCallback.Factory.Create(this, (string s) => {
+                                            model.Particella = s;
+                                            myForm.ClearValidationMessage(new FieldIdentifier(model, "Particella"));
+                                            if (!string.IsNullOrEmpty(model.Particella)) { ValidaCampo("Particella"); }
+                                        }))"
+                                                          ValueExpression="() => model.Particella"
+                                                          ValidationFor="() => model.Particella"
+                                                          Required="@_formLocalizzazioni.Particella.Obbligatorio"
+                                                          RegEx="@_formLocalizzazioni.Particella.EspressioneRegolare"
+                                                          ValoreMin="@_formLocalizzazioni.Particella.ValoreMin"
+                                                          ValoreMax="@_formLocalizzazioni.Particella.ValoreMax">
+                                        </AutocompleteForm>
+                                    </div>
+                                    
+                                }
+                                @if (_formLocalizzazioni.Sub.Visibile)
+                                {
+                                    <div class="col-md-3">
+                                        <AutocompleteForm Id="txtSub"
+                                                          Label="@_formLocalizzazioni.Sub.Etichetta"
+                                                          TItem="string" TValue="string"
+                                                          SearchMethod="@GetSubDataItemsAsync"
+                                                          MinimumLength="0"
+                                                          ConvertMethod="(string x) => x"
+                                                          Value="model.Sub"
+                                                          ValueChanged="@(EventCallback.Factory.Create(this, (string s) => {
+                                            model.Sub = s;
+                                            myForm.ClearValidationMessage(new FieldIdentifier(model, "Sub"));
+                                            if (!string.IsNullOrEmpty(model.Sub)) { ValidaCampo("Sub"); }
+                                        }))"
+                                                          ValueExpression="() => model.Sub"
+                                                          ValidationFor="() => model.Sub"
+                                                          Required="@_formLocalizzazioni.Sub.Obbligatorio"
+                                                          RegEx="@_formLocalizzazioni.Sub.EspressioneRegolare"
+                                                          ValoreMin="@_formLocalizzazioni.Sub.ValoreMin"
+                                                          ValoreMax="@_formLocalizzazioni.Sub.ValoreMax">
+                                        </AutocompleteForm>
+                                    </div>
+                                    
+                                }
+                            </div>
+                        </fieldset>
+                    }
+
+                </VbgForm>
+            </ModalBody>
+            <ModalFooter>
+                <FormSubmitButton Form="localizzazioniForm"></FormSubmitButton>
+            </ModalFooter>
+        </BasicModal>
+        break;
+}

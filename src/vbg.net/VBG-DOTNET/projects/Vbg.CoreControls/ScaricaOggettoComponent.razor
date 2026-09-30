@@ -1,0 +1,127 @@
+﻿@using Init.Sigepro.FrontEnd.AppLogic.GestioneConversioneFiles
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneOggetti
+@using Microsoft.JSInterop
+@using VBG.BlazorComponentsLibrary.DesignComuni.Spinner
+@using log4net;
+@inject IOggettiService _oggettiService
+@inject IJSRuntime _jsRuntime
+@inject FileConverterService _fileConverterService
+
+@if (CodiceOggetto.HasValue)
+{
+    @if (ChildContent != null)
+    {
+        <a href="#" class="@CssClass" style="overflow-x: hidden;white-space: nowrap;text-overflow: ellipsis;max-width: 100%;" title="download" @onclick="@OnDownloadFile" @onclick:preventDefault target="_blank">@ChildContent</a>
+    }
+    else
+    {
+        <a href="#" class="@CssClass" style="overflow-x: hidden;white-space: nowrap;text-overflow: ellipsis;max-width: 100%;" title="@Text" @onclick="@OnDownloadFile" @onclick:preventDefault target="_blank">@Text</a>
+    }
+}
+else
+{
+    @if (ChildContent != null)
+    {
+        <span class="@CssClass" style="overflow-x: hidden;white-space: nowrap;text-overflow: ellipsis;max-width: 100%;">@ChildContent</span>
+    }
+    else
+    {
+        <span class="@CssClass" style="overflow-x: hidden;white-space: nowrap;text-overflow: ellipsis;max-width: 100%;">@Text</span>
+    }
+}
+
+@code {
+    [Parameter]
+    public int? CodiceOggetto { get; set; }
+
+    [Parameter]
+    public string Text {
+        get => _text;
+        set{
+            this._text = value;
+            this._textImpostatoEsplicitamente = true;
+        }            
+    }
+    [Inject]
+    public SpinnerService _spinnerService { get; set; } = default!;
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public string? CssClass { get; set; }
+
+    [Parameter]
+    public Func<bool>? IfCanDownload { get; set; }
+
+    [Parameter]
+    public Action? IfCanDownloadFailed { get; set; }
+
+    [Parameter]
+    public Func<int>? GetCodiceOggetto { get; set; }
+
+    [Parameter]
+    public FormatoConversioneEnum? ConversionFormat { get; set; }
+
+    private string _text = "Mostra file";
+    private bool _textImpostatoEsplicitamente = false;
+    private ILog _log = LogManager.GetLogger(typeof(ScaricaOggettoComponent));
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        if (!_textImpostatoEsplicitamente && this.CodiceOggetto.HasValue)
+        {
+            this._text = this._oggettiService.GetNomeFile(this.CodiceOggetto.Value);
+        }
+    }
+
+    private async Task OnDownloadFile()
+    {
+        bool checkCondition = true;
+
+        if (IfCanDownload != null)
+            checkCondition = IfCanDownload();
+
+        if (!checkCondition)
+        {
+            if (IfCanDownloadFailed != null)
+                IfCanDownloadFailed();
+
+            return;
+        }
+
+        await _spinnerService.ShowSpinnerAsync(async () =>
+            {
+                try
+                {
+                    var codiceOggetto = this.CodiceOggetto;
+
+                    if (!codiceOggetto.HasValue && GetCodiceOggetto != null)
+                        codiceOggetto = GetCodiceOggetto();
+
+                    if (!codiceOggetto.HasValue)
+                    {
+                        throw new ArgumentNullException("ScaricaOggettoComponent: Tentativo di scaricare un oggetto senza impostare un codiceOggetto");
+                    }
+
+                    BinaryFile f = _oggettiService.GetById(codiceOggetto.Value);
+
+                    if (ConversionFormat != null)
+                    {
+                        f = _fileConverterService.Converti(f, ConversionFormat.Value);
+                    }
+
+                    using var fileStream = new MemoryStream(f.FileContent);
+                    var streamRef = new DotNetStreamReference(fileStream);
+
+                    await _jsRuntime.InvokeVoidAsync("downloadFileFromStream", f.FileName, streamRef);
+                }
+                catch (Exception ex)
+                {
+                    this._log.Error($"Errore in OnDownloadFile: {ex}");
+                }
+            });
+    }
+}

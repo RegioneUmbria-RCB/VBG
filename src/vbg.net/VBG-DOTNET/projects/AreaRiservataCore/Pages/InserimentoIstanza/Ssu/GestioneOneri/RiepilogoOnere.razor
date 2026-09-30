@@ -1,0 +1,117 @@
+﻿@using AreaRiservataCore.Pages.InserimentoIstanza.GestioneOneri.v2
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneOneri
+@using VBG.BlazorComponentsLibrary.DesignComuni.Messaggi
+
+@if (Onere is not null)
+{
+    <div class="p-2">
+        <div class="d-flex">
+            <div class="w-75">
+                <h4>@Onere.Causale</h4>
+                <span class="mb-2 text-muted">@Onere.Note</span>
+            </div>
+
+            @if (!SolaLettura)
+            {
+                <div class="w-25 d-flex justify-content-end me-4 pe-2">
+                    <div>
+                        <button class="btn btn-outline-primary" type="button" @onclick="@Edit">
+                            Modifica
+                        </button>
+                    </div>
+                </div>
+            }
+            
+        </div>
+
+        <div class="mt-4">
+            @foreach (var error in Onere.Errori)
+            {
+                <ErrorMessage>@error</ErrorMessage>
+            }
+        </div>
+
+        <div class="it-list-wrapper mb-4 p-2">
+            <ul class="it-list">
+                <li>
+                    <div class="list-item">
+                        <div class="it-right-zone">
+                            <div>
+                                <h4 class="text m-0">Importo dovuto </h4>
+                                <span class="fs-6 mb-2 text-muted">€ @Onere.ImportoPagato.ToString("N2")</span>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                @if (!Onere.ModalitaPagamentoNonImpostata)
+                {
+                    <li>
+                        <div class="list-item">
+                            <div class="it-right-zone">
+                                <div>
+                                    <h4 class="text m-0">Modalità di pagamento </h4>
+                                    <span class="fs-6 mb-2 text-muted">@Onere.ModalitaPagamento?.Text</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                }
+
+                @if (Onere.ModalitaPagamentoAsEnum == ModalitaPagamentoOnereEnum.GiaPagato)
+                {
+                    <li>
+                        <div class="list-item">
+                            <div class="it-right-zone">
+                                <div>
+                                    <h4 class="text m-0">Tipo pagamento </h4>
+                                    <span class="fs-6 mb-2 text-muted">@Onere.TipoPagamento?.Descrizione</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li>
+                        <div class="list-item">
+                            <div class="it-right-zone">
+                                <div>
+                                    <h4 class="text m-0">Data pagamento </h4>
+                                    <span class="fs-6 mb-2 text-muted">@Onere.DataPagamento?.ToString("dd/MM/yyyy")</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li>
+                        <div class="list-item">
+                            <div class="it-right-zone">
+                                <div>
+                                    <h4 class="text m-0">Riferimenti pagamento </h4>
+                                    <span class="fs-6 mb-2 text-muted">@Onere.RiferimentoPagamento</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
+        
+    </div>
+}
+
+
+@code {
+    [Parameter, EditorRequired]
+    public GrigliaOneriItem? Onere { get; set; }
+
+    [Parameter, EditorRequired]
+    public EventCallback<GrigliaOneriItem> OnEdit { get; set; }
+
+    [Parameter]
+    public bool SolaLettura { get; set; }
+
+    async Task Edit()
+    {
+        await this.OnEdit.InvokeAsync(this.Onere);
+    }
+}

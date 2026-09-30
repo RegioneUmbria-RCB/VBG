@@ -1,0 +1,68 @@
+﻿@using VBG.AppLogic.SSU.APICatalogoServizi.Client
+@using VBG.AppLogic.SSU.GestioneTipologie
+@using VBG.BlazorComponentsLibrary.EditFormComponents
+
+
+<AutocompleteForm Label="Tipologia"
+                  TValue="AutocompleteFormResult"
+                  TItem="Tipologia"
+                  SearchMethod="@FindTipologia"
+                  ConvertMethod="ToAutocompleteFormResult"
+                  Value="this._currentValue"
+                  ValueChanged="OnValueChanged"
+                  ValueExpression="() => this._currentValue"
+                  TextField="@nameof(Tipologia.Descrizione)"
+                  Required="false">
+</AutocompleteForm>
+
+@code {
+    [Inject]
+    public SsuTipologieService _tipologieService { get; set; } = default!;
+
+    [CascadingParameter(Name = "IdDomanda")]
+    public int? IdDomanda { get; set; }
+
+    [Parameter]
+    public int? Value { get; set; }
+    [Parameter]
+    public EventCallback<int?> ValueChanged { get; set; }
+
+    private AutocompleteFormResult? _currentValue { get; set; }
+
+
+    private async Task<IEnumerable<Tipologia>> FindTipologia(string value)
+    {
+        var tipologie = await this._tipologieService.GetTipologieAsync(IdDomanda.Value, value);
+
+        if (tipologie.TotalCount == 0)
+        {
+            await this.InvokeAsync(async () =>  await this.OnValueChanged(null));
+        }
+
+        if (tipologie.Items?.Count > 0)
+        {
+            return tipologie.Items.Select(x => new Tipologia
+                {
+                    Id = x.Id,
+                    Descrizione = x.Descrizione
+                });
+        }
+        else
+        {
+            return Array.Empty<Tipologia>();     
+        }
+
+    }
+
+    private AutocompleteFormResult? ToAutocompleteFormResult(Tipologia? risultato)
+    {
+        return risultato is null ? null : new AutocompleteFormResult(risultato.Id.ToString(), risultato.Descrizione);
+    }
+
+    private async Task OnValueChanged(AutocompleteFormResult? result)
+    {
+        var changeArgs = result == null ? (int?)null : Convert.ToInt32(result.Value);
+
+        await this.ValueChanged.InvokeAsync(changeArgs);
+    }
+}

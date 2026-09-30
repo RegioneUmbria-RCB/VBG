@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	xsi:schemaLocation="http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
+	 	http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+	
+
+	
+	
+	
+	
+	<context:component-scan base-package="it"/>
+	
+	<!--  
+	
+	<bean id="nlaPort" class="it.init.sigepro.rte.definitions.NlaSoap11Impl" />
+	
+	<jaxws:endpoint xmlns:tns="http://sigepro.init.it/rte/definitions"
+		id="nla" implementor="#nlaPort"
+		wsdlLocation="wsdl/Nla.wsdl" endpointName="tns:NlaSoap11" serviceName="tns:NlaService"
+		address="/NlaSoap11">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+	</jaxws:endpoint>
+	-->
+	
+	<!--  
+	<bean id="utilititypagopa11Impl" class="it.gruppoinit.schemas.messages.utilitypagopa.Utilititypagopa11Impl" />
+	<jaxws:endpoint id="utilititypagopa" implementor="#utilititypagopa11Impl" address="/utilititypagopa">
+		<jaxws:properties>
+			<entry key="schema-validation-enabled" value="true" />
+		</jaxws:properties>
+	</jaxws:endpoint>
+	-->
+	
+	<bean id="utilititypagopaWS" class="it.gruppoinit.ws.UtilititypagopaWS" />
+	<!-- l'attributo address va specificato altrimenti un bug di cxf non avvia la webapp!!! -->
+	<jaxws:endpoint id="utilititypagopa" implementor="#utilititypagopaWS" address="/utilititypagopa">
+		<jaxws:properties>
+			<entry key="schema-validation-enabled" value="true" />
+		</jaxws:properties>
+	</jaxws:endpoint>
+	
+	
+	<bean id="logInbound" class="org.apache.cxf.interceptor.LoggingInInterceptor">
+		<property name="prettyLogging" value="false" />
+		<property name="limit" value="10240" />
+	</bean>
+	<bean id="logOutbound" class="org.apache.cxf.interceptor.LoggingOutInterceptor">
+		<property name="prettyLogging" value="false" />
+		<property name="limit" value="10240" />
+	</bean>
+	<bean id="cxf" class="org.apache.cxf.bus.spring.SpringBus">
+		<property name="inInterceptors">
+			<list>
+				<ref bean="logInbound" />
+			</list>
+		</property>
+		<property name="outInterceptors">
+			<list>
+				<ref bean="logOutbound" />
+			</list>
+		</property>
+		<property name="outFaultInterceptors">
+			<list>
+				<ref bean="logOutbound" />
+			</list>
+		</property>
+		<property name="inFaultInterceptors">
+			<list>
+				<ref bean="logInbound" />
+			</list>
+		</property>
+	</bean>
+	
+</beans>

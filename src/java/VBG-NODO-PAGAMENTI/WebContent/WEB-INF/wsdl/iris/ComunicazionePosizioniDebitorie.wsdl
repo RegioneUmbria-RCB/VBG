@@ -1,0 +1,123 @@
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:idpAP="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpAllineamentoPendenze" xmlns:idpAPE="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpEsito" xmlns="http://www.cart.rete.toscana.it/servizi/iris_1_1/proxy" xmlns:h="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpHeader" xmlns:i="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpInclude" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" targetNamespace="http://www.cart.rete.toscana.it/servizi/iris_1_1/proxy">
+	<wsdl:types> 
+		<xsd:schema targetNamespace="http://www.cart.rete.toscana.it/servizi/iris_1_1/proxy">
+			<xsd:import namespace="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpAllineamentoPendenze" schemaLocation="./Schemi/IdP.AllineamentoPendenze.xsd"/>
+			<xsd:import namespace="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpEsito" schemaLocation="./Schemi/IdP.Esito.xsd"/>
+			<xsd:element name="IdpAllineamentoPendenzeEnte">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element ref="idpAP:IdpAllineamentoPendenze"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="IdpAllineamentoPendenzeEnte.Esito">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element ref="idpAPE:IdpEsito"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="IdpAllineamentoPendenzeEnteOTF">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element ref="idpAP:IdpAllineamentoPendenzeOTF"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="IdpAllineamentoPendenzeEnteOTF.Esito">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element ref="idpAPE:IdpEsitoOTF"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="IdpAllineamentoPendenzeMultiEnteOTF">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element ref="idpAP:IdpAllineamentoPendenzeMultiOTF"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="IdpAllineamentoPendenzeMultiEnteOTF.Esito">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element ref="idpAPE:IdpMultiEsitoOTF"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="AllineamentoPendenzeEnteMessage">
+		<wsdl:part name="AllineamentoPendenze" element="IdpAllineamentoPendenzeEnte"/>
+	</wsdl:message>
+	<wsdl:message name="AllineamentoPendenzeEnte.EsitoMessage">
+		<wsdl:part name="AllineamentoPendenzeEnte.Esito" element="IdpAllineamentoPendenzeEnte.Esito"/>
+	</wsdl:message>
+	<wsdl:message name="AllineamentoPendenzeEnteOTFMessage">
+		<wsdl:part name="AllineamentoPendenzeOTF" element="IdpAllineamentoPendenzeEnteOTF"/>
+	</wsdl:message>
+	<wsdl:message name="AllineamentoPendenzeEnteOTF.EsitoMessage">
+		<wsdl:part name="AllineamentoPendenzeEnteOTF.Esito" element="IdpAllineamentoPendenzeEnteOTF.Esito"/>
+	</wsdl:message>
+	<wsdl:message name="AllineamentoPendenzeMultiEnteOTFMessage">
+		<wsdl:part name="AllineamentoPendenzeOTF" element="IdpAllineamentoPendenzeMultiEnteOTF"/>
+	</wsdl:message>
+	<wsdl:message name="AllineamentoPendenzeMultiEnteOTF.EsitoMessage">
+		<wsdl:part name="AllineamentoPendenzeEnteOTF.Esito" element="IdpAllineamentoPendenzeMultiEnteOTF.Esito"/>
+	</wsdl:message>
+	<wsdl:portType name="ComunicazionePosizioniDebitorie">
+		<wsdl:operation name="IdpAllineamentoPendenzeEnte">
+			<wsdl:input message="AllineamentoPendenzeEnteMessage" name="AllineamentoPendenzeEnteMessage"/>
+		</wsdl:operation>
+	</wsdl:portType>	
+	<wsdl:portType name="ComunicazionePosizioniDebitorieOTF">
+		<wsdl:operation name="IdpAllineamentoPendenzeEnteOTF">
+			<wsdl:input name="AllineamentoPendenzeEnteOTFMessage" message="AllineamentoPendenzeEnteOTFMessage"/>
+			<wsdl:output name="AllineamentoPendenzeEnteOTF.EsitoMessage" message="AllineamentoPendenzeEnteOTF.EsitoMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="IdpAllineamentoPendenzeMultiEnteOTF">
+			<wsdl:input name="AllineamentoPendenzeMultiEnteOTFMessage" message="AllineamentoPendenzeMultiEnteOTFMessage"/>
+			<wsdl:output name="AllineamentoPendenzeMultiEnteOTF.EsitoMessage" message="AllineamentoPendenzeMultiEnteOTF.EsitoMessage"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="ComunicazionePosizioniDebitorieBinding" type="ComunicazionePosizioniDebitorie">
+		<soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="IdpAllineamentoPendenzeEnte">
+			<soap:operation soapAction="IdpAllineamentoPendenzeEnte" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+		</wsdl:operation>
+	</wsdl:binding>	
+	<wsdl:binding name="ComunicazionePosizioniDebitorieOTFBinding" type="ComunicazionePosizioniDebitorieOTF">
+		<soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="IdpAllineamentoPendenzeEnteOTF">
+			<soap:operation soapAction="IdpAllineamentoPendenzeEnteOTF" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="IdpAllineamentoPendenzeMultiEnteOTF">
+			<soap:operation soapAction="IdpAllineamentoPendenzeMultiEnteOTF" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="ComunicazionePosizioniDebitorieService">
+		<wsdl:port binding="ComunicazionePosizioniDebitorieBinding" name="ComunicazionePosizioniDebitorieBinding">
+			<soap:address location="http://pdd/portadelegata"/>
+		</wsdl:port>
+	</wsdl:service>
+	<wsdl:service name="ComunicazionePosizioniDebitorieOTFService">
+		<wsdl:port name="ComunicazionePosizioniDebitorieOTFPort" binding="ComunicazionePosizioniDebitorieOTFBinding">
+			<soap:address location="http://pdd/portadelegata"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

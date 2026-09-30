@@ -1,0 +1,407 @@
+﻿@using Init.SIGePro.Manager.DTO.Comuni
+@using Init.SIGePro.Manager.DTO.TabelleDiBase
+@using Init.Sigepro.Frontend.AppLogic.WsComuniService
+@using VBG.BlazorComponentsLibrary.DesignComuni.Forms
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+@using VBG.BlazorComponentsLibrary.EditFormComponents
+@using VBG.BlazorComponentsLibrary.EditFormComponents.DropDown
+@using VBG.BlazorComponentsLibrary.RisorseTestuali
+
+
+<FormModal AlwaysVisible="true" Size="ModalSizeEnum.Large" OnClose="async() => await this.OnClose.InvokeAsync()" Model="@model" FormId="editor-persona-giuridica-form" OnValidSubmit="OnValidSubmitAsync">
+    <ModalHeader Titolo="Modifica soggetto">
+        <small class="text-muted">
+            I campi contrassegnati con <sup>*</sup> sono obbligatori
+        </small>
+    </ModalHeader>
+    <ModalBody>
+        <ContenitoreRisorseTestuali Nome="editor-persona-giuridica">
+            <DropDownForm Id="tipoSoggetto"
+                          Label="In qualità di"
+                          Value="model.TipoSoggetto"
+                          TItem="DropDownItem"
+                          OnChanged="EventCallback.Factory.Create(this, (DropDownItem i) => { model.TipoSoggetto = i; VerificaTipoSoggetto(model.TipoSoggetto == null ? string.Empty : model.TipoSoggetto.Value); })"
+                          ValueExpression="() => model.TipoSoggetto"
+                          Items="@SoggettiDataItems"
+                          ShowEmptyItem="true"
+                          EmptyItemValue=""
+                          ValidationFor="() => model.TipoSoggetto"
+                          IsDisabled="@(!PermettiModificaTipoSoggetto)"
+                          Required="true">
+            </DropDownForm>
+
+            @if (showDescrizioneEstesa)
+            {
+                <TextInputForm Id="txtDescrizioneEstesa"
+                               @bind-Value="privateDescrizioneEstesa"
+                               Label="Specificare"
+                               IsMultiline="true"
+                               ValidationFor="() => privateDescrizioneEstesa"
+                               Required="true" />
+            }
+
+            @if (this.maxOccorrenzeRaggiunte)
+            {
+                <div class="alert alert-warning mt-3" role="alert">
+                    <RisorsaTestuale IdRisorsa="dettagli-anagrafica.pf.max-occorrenze-raggiunte">
+                        Attenzione: non è possibile aggiungere altre anagrafiche di questo tipo.
+                    </RisorsaTestuale>
+                </div>
+            }
+            else
+            {
+
+                <h4 class="title-large-semi-bold">
+                    <RisorsaTestuale IdRisorsa="dettagli-anagrafica.pg.titolo.dati-soggetto">
+                        Dati del soggetto
+                    </RisorsaTestuale>
+                </h4>
+
+                <TextInputForm Id="nominativo"
+                               @bind-Value="model.RagioneSociale"
+                               Label="Ragione sociale" ResourceId="dettagli-anagrafica.pg.ragione-sociale"
+                               ValidationFor="() => model.RagioneSociale"
+                               Required="true" />
+
+                <DropDownForm Id="CodiceFormaGiuridica"
+                              Label="Forma giuridica" ResourceId="dettagli-anagrafica.pg.forma-giuridica"
+                              Value="model.FormaGiuridica"
+                              TItem="DropDownItem"
+                              OnChanged="EventCallback.Factory.Create(this, (DropDownItem i) => model.FormaGiuridica = i)"
+                              ValueExpression="() => model.FormaGiuridica"
+                              Items="@FormeGiuridicheDataItems"
+                              ShowEmptyItem="true" EmptyItemText="Selezionare..." EmptyItemValue=""
+                              ValidationFor="() => model.FormaGiuridica"
+                              Required="true">
+                </DropDownForm>
+
+                <TextInputForm Id="codiceFiscale"
+                               @bind-Value="model.CodiceFiscale"
+                               Label="Codice fiscale impresa" ResourceId="dettagli-anagrafica.pg.cf-impresa"
+                               ValidationFor="() => model.CodiceFiscale"
+                               IsDisabled="@(!PermettiModificaDatiAnagrafici)"
+                               Required="true" />
+
+                @if (PartitaIvaVisibile)
+                {
+                    <TextInputForm Id="partitaIva"
+                                   @bind-Value="model.PartitaIva"
+                                   Label="Partita Iva" ResourceId="dettagli-anagrafica.pg.pi-impresa"
+                                   ValidationFor="() => model.PartitaIva"
+                                   IsDisabled="@(!PermettiModificaDatiAnagrafici)"
+                                   Required="@PartitaIvaObbligatoria" />
+                }
+
+                @if (DataCostituzioneVisibile)
+                {
+                    <DateInputForm Id="dataNominativo"
+                                   Label="Data di costituzione" ResourceId="dettagli-anagrafica.pg.data-costituzione"
+                                   Value="@model.DataNominativo"
+                                   ValueExpression="() => model.DataNominativo"
+                                   ValueChanged="EventCallback.Factory.Create(this, (DateTime? d) => model.DataNominativo = d)"
+                                   ValidationFor="() => model.DataNominativo"
+                                   Required="@DataCostituzioneObbligatoria">
+                    </DateInputForm>
+                }
+
+                @if (SedeLegaleVisibile)
+                {
+                    <h4 class="title-large-semi-bold">
+                        <RisorsaTestuale IdRisorsa="dettagli-anagrafica.pg.titolo.sede-legale">
+                            Sede legale
+                        </RisorsaTestuale>
+                    </h4>
+
+                    <AutocompleteForm Id="acComuneSedeLegale"
+                                      Label="Comune" ResourceId="dettagli-anagrafica.pg.sede-legale-comune"
+                                      TItem="DatiComuneCompatto" TValue="AutocompleteFormResult"
+                                      SearchMethod="GetComuniAsync" ConvertMethod="ComuneConvertMethod"
+                                      Value="model.ComuneSedeLegale"
+                                      ValueChanged="EventCallback.Factory.Create(this, (AutocompleteFormResult r) => model.ComuneSedeLegale = r)"
+                                      ValueExpression="() => model.ComuneSedeLegale"
+                                      ItemFormatExpression="@((item) => $"{item.Comune} ({item.SiglaProvincia})")"
+                                      ValidationFor="() => model.ComuneSedeLegale"
+                                      Required="@SedeLegaleObbligatoria">
+                    </AutocompleteForm>
+
+                    <TextInputForm Id="indirizzo"
+                                   @bind-Value="model.Indirizzo"
+                                   Label="Indirizzo" ResourceId="dettagli-anagrafica.pg.sede-legale-indirizzo"
+                                   ValidationFor="() => model.Indirizzo"
+                                   Required="@SedeLegaleObbligatoria" />
+
+                    <TextInputForm Id="citta"
+                                   @bind-Value="model.Citta"
+                                   Label="Località" ResourceId="dettagli-anagrafica.pg.sede-legale-localita"
+                                   ValidationFor="() => model.Citta"
+                                   Required="@SedeLegaleObbligatoria" />
+
+                    <TextInputForm Id="cap"
+                                   @bind-Value="model.CAP"
+                                   Label="Cap" ResourceId="dettagli-anagrafica.pg.sede-legale-cap"
+                                   ValidationFor="() => model.CAP"
+                                   Required="@SedeLegaleObbligatoria" />
+                }
+
+                @if (CciaaVisibile)
+                {
+                    <h4 class="title-large-semi-bold mb-4">
+                        <RisorsaTestuale IdRisorsa="dettagli-anagrafica.pg.titolo.cciaa">
+                            CCIAA
+                        </RisorsaTestuale>
+                    </h4>
+
+                    <TextInputForm Id="regDitte"
+                                   @bind-Value="model.CCIAANumero"
+                                   Label="Numero" ResourceId="dettagli-anagrafica.pg.cciaa-numero"
+                                   ValidationFor="() => model.CCIAANumero"
+                                   Required="@CciaaObbligatoria" />
+
+                    <DateInputForm Id="dataRegDitte"
+                                   Label="Data" ResourceId="dettagli-anagrafica.pg.cciaa-data"
+                                   Value="@model.CCIAAData"
+                                   ValueExpression="() => model.CCIAAData"
+                                   ValueChanged="EventCallback.Factory.Create(this, (DateTime? d) => model.CCIAAData = d)"
+                                   Required="@CciaaObbligatoria">
+                    </DateInputForm>
+
+                    <AutocompleteForm Id="acProvinciaCCIAA"
+                                      Label="Comune" ResourceId="dettagli-anagrafica.pg.cciaa-provincia"
+                                      TItem="DatiComuneCompatto" TValue="AutocompleteFormResult"
+                                      SearchMethod="GetComuniAsync" ConvertMethod="ComuneConvertMethod"
+                                      Value="model.CCIAAComune"
+                                      ValueChanged="EventCallback.Factory.Create(this, (AutocompleteFormResult r) => model.CCIAAComune = r)"
+                                      ValueExpression="() => model.CCIAAComune"
+                                      ItemFormatExpression="@((item) => $"{item.Comune} ({item.SiglaProvincia})")"
+                                      Required="@CciaaObbligatoria">
+                    </AutocompleteForm>
+                }
+
+                @if (RegTribVisibile)
+                {
+                    <h4 class="title-large-semi-bold">
+                        <RisorsaTestuale IdRisorsa="dettagli-anagrafica.pg.titolo.reg-trib">
+                            Reg. Trib.
+                        </RisorsaTestuale>
+                    </h4>
+
+                    <TextInputForm Id="regTrib"
+                                   @bind-Value="model.RegTribNumero"
+                                   Label="Numero" ResourceId="dettagli-anagrafica.pg.reg-trib-numero"
+                                   ValidationFor="() => model.RegTribNumero"
+                                   Required="@RegTribObbligatorio" />
+
+                    <DateInputForm Id="regTribData"
+                                   Label="Data" ResourceId="dettagli-anagrafica.pg.reg-trib-data"
+                                   Value="@model.RegTribData"
+                                   ValueExpression="() => model.RegTribData"
+                                   ValueChanged="EventCallback.Factory.Create(this, (DateTime? d) => model.RegTribData = d)"
+                                   Required="@RegTribObbligatorio">
+                    </DateInputForm>
+
+                    <AutocompleteForm Id="acComuneRegTrib"
+                                      Label="Comune" ResourceId="dettagli-anagrafica.pg.reg-trib-comune"
+                                      TItem="DatiComuneCompatto" TValue="AutocompleteFormResult"
+                                      SearchMethod="GetComuniAsync" ConvertMethod="ComuneConvertMethod"
+                                      Value="model.RegTribComune"
+                                      ValueChanged="EventCallback.Factory.Create(this, (AutocompleteFormResult r) => model.RegTribComune = r)"
+                                      ValueExpression="() => model.RegTribComune"
+                                      ItemFormatExpression="@((item) => $"{item.Comune} ({item.SiglaProvincia})")"
+                                      Required="@RegTribObbligatorio">
+                    </AutocompleteForm>
+                }
+
+                @if (ReaVisibile)
+                {
+                    <h4 class="title-large-semi-bold">
+                        <RisorsaTestuale IdRisorsa="dettagli-anagrafica.pg.titolo.rea">
+                            REA
+                        </RisorsaTestuale>
+                    </h4>
+
+                    <TextInputForm Id="numIscrREA"
+                                   @bind-Value="model.REANumero"
+                                   Label="Numero" ResourceId="dettagli-anagrafica.pg.rea-numero"
+                                   ValidationFor="() => model.REANumero"
+                                   Required="@ReaObbligatoria" />
+
+                    <DateInputForm Id="dataIscrREA"
+                                   Label="Data" ResourceId="dettagli-anagrafica.pg.rea-data"
+                                   Value="@model.READata"
+                                   ValueExpression="() => model.READata"
+                                   ValueChanged="EventCallback.Factory.Create(this, (DateTime? d) => model.READata = d)"
+                                   Required="@ReaObbligatoria">
+                    </DateInputForm>
+
+                    <AutocompleteForm Id="acProvinciaREA"
+                                      Label="Provincia" ResourceId="dettagli-anagrafica.pg.rea-comune"
+                                      TItem="DatiProvinciaCompatto" TValue="AutocompleteFormResult"
+                                      SearchMethod="GetProvincieAsync" ConvertMethod="ProvinciaConvertMethod"
+                                      Value="model.REAComune"
+                                      ValueChanged="EventCallback.Factory.Create(this, (AutocompleteFormResult r) => model.REAComune = r)"
+                                      ValueExpression="() => model.REAComune"
+                                      ItemFormatExpression="@((item) => $"{item.Provincia} ({item.SiglaProvincia})")"
+                                      Required="@ReaObbligatoria">
+                    </AutocompleteForm>
+                }
+
+                @if (InpsVisibile)
+                {
+                    <h4 class="title-large-semi-bold">
+                        <RisorsaTestuale IdRisorsa="dettagli-anagrafica.pg.titolo.inps">
+                            INPS
+                        </RisorsaTestuale>
+                    </h4>
+
+                    <TextInputForm Id="txtNumeroInps"
+                                   @bind-Value="model.INPSNumero"
+                                   Label="Numero" ResourceId="dettagli-anagrafica.pg.inps-numero"
+                                   ValidationFor="() => model.INPSNumero"
+                                   Required="@InpsObbligatoria" />
+
+                    <AutocompleteForm Id="acSedeINPS"
+                                      Label="Sede" ResourceId="dettagli-anagrafica.pg.inps-sede"
+                                      TItem="SedeInpsDto" TValue="AutocompleteFormResult"
+                                      SearchMethod="GetSediInpsAsync" ConvertMethod="InpsConvertMethod"
+                                      Value="model.INPSComune"
+                                      ValueChanged="EventCallback.Factory.Create(this, (AutocompleteFormResult r) => model.INPSComune = r)"
+                                      ValueExpression="() => model.INPSComune"
+                                      ItemFormatExpression="@((item) => item.Descrizione)"
+                                      Required="@InpsObbligatoria">
+                    </AutocompleteForm>
+                }
+
+                @if (InailVisibile)
+                {
+                    <h4 class="title-large-semi-bold">
+                        <RisorsaTestuale IdRisorsa="dettagli-anagrafica.pg.titolo.inail">
+                            INAIL
+                        </RisorsaTestuale>
+                    </h4>
+
+                    <TextInputForm Id="txtNumeroINAIL"
+                                   @bind-Value="model.INAILNumero"
+                                   Label="Numero" ResourceId="dettagli-anagrafica.pg.inail-numero"
+                                   ValidationFor="() => model.INAILNumero"
+                                   Required="@InailObbligatoria" />
+
+                    <AutocompleteForm Id="acSedeINAIL"
+                                      Label="Sede" ResourceId="dettagli-anagrafica.pg.inail-sede"
+                                      TItem="SedeInailDto" TValue="AutocompleteFormResult"
+                                      SearchMethod="GetSediInailAsync" ConvertMethod="InailConvertMethod"
+                                      Value="model.INAILComune"
+                                      ValueChanged="EventCallback.Factory.Create(this, (AutocompleteFormResult r) => model.INAILComune = r)"
+                                      ValueExpression="() => model.INAILComune"
+                                      ItemFormatExpression="@((item) => item.Descrizione)"
+                                      Required="@InailObbligatoria">
+                    </AutocompleteForm>
+                }
+
+                @if (TelefonoVisible || CellulareVisible || FaxVisible || EmailVisible || PecVisible)
+                {
+                    <h4 class="title-large-semi-bold">
+                        <RisorsaTestuale IdRisorsa="dettagli-anagrafica.pg.titolo.contatti">
+                            <ChildContent>
+                                Contatti
+                            </ChildContent>
+                        </RisorsaTestuale>
+                    </h4>
+                    @if (TelefonoVisible || CellulareVisible || FaxVisible)
+                    {
+                        @if (TelefonoVisible)
+                        {
+                            <TextInputForm Id="telefono"
+                                           @bind-Value="model.Telefono"
+                                           Label="Telefono" ResourceId="dettagli-anagrafica.pg.contatti-telefono"
+                                           ValidationFor="() => model.Telefono"
+                                           Required="@TelefonoObbligatorio" />
+                        }
+                        @if (CellulareVisible)
+                        {
+                            <TextInputForm Id="telefonoCellulare"
+                                           @bind-Value="model.Cellulare"
+                                           Label="Cellulare" ResourceId="dettagli-anagrafica.pg.contatti-cellulare"
+                                           ValidationFor="() => model.Cellulare"
+                                           Required="@CellulareObbligatorio" />
+                        }
+                        @if (FaxVisible)
+                        {
+                            <TextInputForm Id="fax"
+                                           @bind-Value="model.Fax"
+                                           Label="Fax" ResourceId="dettagli-anagrafica.pg.contatti-fax"
+                                           ValidationFor="() => model.Fax"
+                                           Required="@FaxObbligatorio" />
+                        }
+                        @if (EmailVisible || PecVisible)
+                        {
+                            @if (EmailVisible)
+                            {
+                                <TextInputForm Id="email"
+                                               @bind-Value="model.EMail"
+                                               Label="E-Mail" ResourceId="dettagli-anagrafica.pg.contatti-email"
+                                               ValidationFor="() => model.EMail"
+                                               Required="@EmailObbligatoria" />
+                            }
+                            @if (PecVisible)
+                            {
+                                <TextInputForm Id="emailPec"
+                                               @bind-Value="model.EMailPEC"
+                                               Label="PEC" ResourceId="dettagli-anagrafica.pg.contatti-pec"
+                                               ValidationFor="() => model.EMailPEC"
+                                               Required="@PecObbligatoria" />
+                            }
+                        }
+                    }
+                }
+                @if (CorrispondenzaVisibile)
+                {
+                    <h4 class="title-large-semi-bold">
+                        <RisorsaTestuale IdRisorsa="dettagli-anagrafica.pg.titolo.corrispondenza">
+                            Indirizzo per la corrispondenza
+                        </RisorsaTestuale>
+                    </h4>
+
+                    @if (SedeLegaleVisibile)
+                    {
+
+                        <a id="copiaResidenza" href="#" @onclick="@OnCopiaResidenza" @onclick:preventDefault>Copia da indirizzo di residenza</a>
+                    }
+
+                    <AutocompleteForm Id="acComuneCorrispondenza"
+                                      Label="Comune" ResourceId="dettagli-anagrafica.pg.corrispondenza-comune"
+                                      TItem="DatiComuneCompatto" TValue="AutocompleteFormResult"
+                                      SearchMethod="GetComuniAsync" ConvertMethod="ComuneConvertMethod"
+                                      Value="model.ComuneCorrispondenza"
+                                      ValueChanged="EventCallback.Factory.Create(this, (AutocompleteFormResult r) => model.ComuneCorrispondenza = r)"
+                                      ValueExpression="() => model.ComuneCorrispondenza"
+                                      ItemFormatExpression="@((item) => $"{item.Comune} ({item.SiglaProvincia})")"
+                                      Required="@CorrispondenzaObbligatoria">
+                    </AutocompleteForm>
+
+                    <TextInputForm Id="indirizzoCorrispondenza"
+                                   @bind-Value="model.IndirizzoCorrispondenza"
+                                   Label="Indirizzo" ResourceId="dettagli-anagrafica.pg.corrispondenza-indirizzo"
+                                   ValidationFor="() => model.IndirizzoCorrispondenza"
+                                   Required="@CorrispondenzaObbligatoria" />
+
+                    <TextInputForm Id="cittaCorrispondenza"
+                                   @bind-Value="model.CittaCorrispondenza"
+                                   Label="Località" ResourceId="dettagli-anagrafica.pg.corrispondenza-localita"
+                                   ValidationFor="() => model.CittaCorrispondenza"
+                                   Required="@CorrispondenzaObbligatoria" />
+
+                    <TextInputForm Id="capCorrispondenza"
+                                   @bind-Value="model.CAPCorrispondenza"
+                                   Label="CAP" ResourceId="dettagli-anagrafica.pg.corrispondenza-cap"
+                                   ValidationFor="() => model.CAPCorrispondenza"
+                                   Required="@CorrispondenzaObbligatoria" />
+                }
+            }
+        </ContenitoreRisorseTestuali>
+    </ModalBody>
+    <ModalFooter>
+        <FormSubmitButton Form="editor-persona-giuridica-form" IsButtonDisabled="false"></FormSubmitButton>
+    </ModalFooter>
+</FormModal>
+

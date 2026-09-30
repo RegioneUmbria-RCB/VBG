@@ -1,0 +1,81 @@
+﻿@using Init.Sigepro.FrontEnd.CoreServices.GestionePresentazioneDomanda
+@using VBG.AppLogic.SSU.GestioneProcedimenti
+@using VBG.AppLogic.SSU.GestioneRichiesteIntegrazioni
+@using VBG.BlazorComponentsLibrary.DesignComuni.Download
+
+@if (_integrazione is not null)
+{
+    <div class="alert alert-warning" role="alert">
+        <h4>Richieste integrazioni</h4>
+
+        <h5>@_integrazione.Amministrazione.Descrizione</h5>
+
+        <div class="ms-2">
+            @foreach (var procedimento in _integrazione.Procedimenti)
+            {
+                <div class="mb-3">
+                    <span>Procedimento: </span><strong>@procedimento.Descrizione</strong>
+
+                    @if (procedimento.Richieste.Any())
+                    {
+                        <ul class="ms-4">
+                            @foreach (var richiesta in procedimento.Richieste)
+                            {
+                                <li>@richiesta</li>
+                            }
+                        </ul>
+                    }
+                </div>
+            }
+        </div>
+
+        @if (_integrazione.Allegati.CodiciOggetto.Any())
+        {
+            <div class="mb-3">
+                <strong>Allegati richiesti</strong>
+
+                <ul>
+                    @foreach (var codiceOggetto in _integrazione.Allegati.CodiciOggetto)
+                    {
+                        <li>
+                            <DownloadButton CodiceOggetto="@codiceOggetto"></DownloadButton>
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
+    </div>
+}
+
+@code {
+
+    [Inject]
+    public IGestioneRichiestaIntegrazioniService _integrazioniSsuService { get; set; } = default!;
+    [Inject]
+    public IdDomandaResolver _idDomandaResolver { get; set; } = default!;
+    [Inject]
+    public SsuProcedimentiService _ssuProcedimentiService { get; set; } = default!;
+
+    [Parameter]
+    public int? IdDomanda { get; set; } = default!;
+
+    public record class CorrezioniModel(string Procedimento, IEnumerable<string> Correzioni);
+
+    SsuRichiestaIntegrazione? _integrazione = null;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+
+        if (IdDomanda is not null)
+        {
+            await RicaricaListaIntegrazioni(IdDomanda!.Value);
+        }
+    }
+
+    private async Task RicaricaListaIntegrazioni(int idDomanda)
+    {
+        _integrazione = _integrazioniSsuService.GetListaIntegrazioniDaFare(idDomanda);
+    }
+
+}

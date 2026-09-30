@@ -1,0 +1,297 @@
+﻿@using Init.Sigepro.FrontEnd.AppLogic.GestioneOggetti;
+@using Init.Sigepro.FrontEnd.CoreServices.GestioneOggetti;
+@using Microsoft.AspNetCore.Components.Forms
+@using System.Diagnostics.CodeAnalysis
+@using VBG.BlazorComponentsLibrary.DesignComuni.Spinner
+@using Vbg.CoreControls
+@using System.Linq.Expressions
+@using System.Globalization
+@inherits MyBaseFormComponent<string>
+@inject SpinnerService _spinnerJs
+
+<div class="bwc-Upload mb-3 @CssClassContainer" id="@UniqueID">
+    @if (ShowLabel)
+    {            
+        <Vbg.CoreControls.LabelContainerComponent RelativeControlId="@this.Id" ResourceId="@this.ResourceId" Value="@this.Label" Required="@this.Required" CanEditResourceText="@this.CanEditResourceText"></Vbg.CoreControls.LabelContainerComponent>
+    }
+    <div style="position:relative;">
+        @*if (!CodiceOggetto.HasValue)
+        {
+            <div class="input-group">
+                <span class="input-group-text"><i class="fa fa-cloud-upload"></i></span>
+                <InputFile OnChange="@LoadFiles" class="@_class" accept="@AcceptedFileTypes" customValue="@this.CurrentValueAsString"
+                           aria-label="@getAriaLabel()"
+                           aria-describedby="@(string.IsNullOrEmpty(HelpText) ? "" : $"{this.Id}_HelpDescription")">
+                </InputFile>          
+            </div>
+        }
+        else
+        {
+            <div class="input-group">
+                <span class="input-group-text"><i class="fa fa-cloud-download"></i></span>
+                <ScaricaOggettoComponent CodiceOggetto="@CodiceOggetto" CssClass="form-control"></ScaricaOggettoComponent>
+                @if (ShowDeleteButton)
+                {
+                    <button class="btn btn-light rounded-right" type="button" @onclick="() => ClearSelection()" @onclick:preventDefault>
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                        Elimina
+                    </button>
+                }
+            </div>
+        }*@
+
+        <InputFile OnChange="@LoadFiles" id="@Id" class="@_class" accept="@AcceptedFileTypes" customValue="@this.CurrentValueAsString"
+            aria-label="@getAriaLabel()"
+            aria-describedby="@(string.IsNullOrEmpty(HelpText) ? "" : $"{this.Id}_HelpDescription")">
+        </InputFile>
+        <label for="@Id">
+            <svg class="icon icon-sm" aria-hidden="true"><use href="@($"{svgFilePath}#it-upload")"></use></svg>
+            <span>Carica</span>
+        </label>
+    </div>
+    @if (!string.IsNullOrEmpty(HelpText))
+    {
+        <small id="@($"{this.Id}_HelpDescription")" class="help-block">
+            @HelpText
+        </small>
+    }
+    @if (ValidationFor != null)
+    {
+        <div class="form-control-validation help-block">
+            <ValidationMessage For="@ValidationFor" />
+        </div>
+    }
+    @if (!string.IsNullOrEmpty(CurrentValueAsString))
+    {
+        <ul class="upload-file-list">
+            <li class="upload-file success">
+                <svg class="icon icon-sm" aria-hidden="true"><use href="@($"{svgFilePath}#it-file")"></use></svg>
+                <p>
+                    <span class="visually-hidden">File caricato:</span>
+                    <ScaricaOggettoComponent CodiceOggetto="@CodiceOggetto" CssClass="@((IsValid.HasValue && IsValid.Value) ? "is-valid" : "is-invalid")" Text="@CurrentValueAsString"></ScaricaOggettoComponent>
+                </p>
+                @if (ShowDeleteButton)
+                {
+                    <button class="btn btn-light text-primary shadow-none" type="button" @onclick="() => ClearSelection()" @onclick:preventDefault>
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                        Elimina
+                    </button>
+                }
+            </li>
+        </ul>
+    }
+</div>
+
+
+@code {
+    /// <summary>
+    /// The sprites.svg file path used for icons
+    /// </summary>
+    [Parameter]
+    public string svgFilePath { get; set; } = "css/bootstrap-italia/svg/sprites.svg";
+
+    /// <summary>
+    /// Show the delete button to delete the uploaded file and upload another file
+    /// Default: true
+    /// </summary>
+    [Parameter]
+    public bool ShowDeleteButton { get; set; } = true;
+
+    /// <summary>
+    /// If present the uploader is hidden and a link to download the file is showed instead
+    /// </summary>
+    [Parameter]
+    public int? CodiceOggetto { get; set; } = null;
+
+    /// <summary>
+    /// Set a comma separated list of accepted file types
+    /// </summary>
+    [Parameter]
+    public string AcceptedFileTypes { get; set; } = "";
+
+    /// <summary>
+    /// Set SpecificationFlags to check the possible files to be uploaded
+    /// like: MaxSize, Required, Signed...
+    /// </summary>
+    [Parameter]
+    public IValidPostedFileSpecificationAsync? PostedFileSpecifications { get; set; }
+
+    /// <summary>
+    /// Function executed before OnChanged is fired
+    /// </summary>
+    [Parameter]
+    public Action? OnChangeStart { get; set; }
+
+    /// <summary>
+    /// Function to be executed after OnValidFileUploadCompleted event
+    /// </summary>
+    [Parameter]
+    public EventCallback<UploadInputFormResult> OnChanged { get; set; }
+
+    /// <summary>
+    /// Function executed after OnChanged is fired
+    /// </summary>
+    [Parameter]
+    public Action? OnChangeEnd { get; set; }
+
+    /// <summary>
+    /// Function to be executed after file uploaded validated
+    /// </summary>
+    [Parameter]
+    public EventCallback<BinaryFile> OnValidFileUploadCompleted { get; set; }
+
+    /// <summary>
+    /// Function to be executed as file uploaded is validated
+    /// </summary>
+    [Parameter]
+    public EventCallback<UploadInputFormValidationArgs> OnValiationStateChanged{ get; set; }
+
+    /// <summary>
+    /// Function executed before OnDelete is fired
+    /// </summary>
+    [Parameter]
+    public Action? OnDeleteStart { get; set; }
+
+    /// <summary>
+    /// Function containing the deleting file action
+    /// </summary>
+    [Parameter]
+    public EventCallback OnDelete { get; set; }
+
+    /// <summary>
+    /// Function executed after OnDelete is fired
+    /// </summary>
+    [Parameter]
+    public Action? OnDeleteEnd { get; set; }
+
+    /// <summary>
+    /// Set to true if you want to block UI while uploading
+    /// Default: true
+    /// </summary>
+    [Parameter]
+    public bool UseBlockingSpinnerOnLoading { get; set; } = true;
+
+    private string _class 
+    {
+        get => $"upload {this.cssErrorClass}";
+    }
+
+    //private bool _isLoading = false;
+    private string _lastError = "";
+
+    protected override bool TryParseValueFromString(string? value, [MaybeNullWhen(false)] out string result, [NotNullWhen(false)] out string? validationErrorMessage)
+    {
+        if (IsValid.HasValue && !IsValid.Value)
+        {
+            validationErrorMessage = this._lastError ?? "File non valido";
+            result = "";
+            return false;
+        }
+
+        result = value?.ToString() ?? "";
+        validationErrorMessage = null;
+
+        return true;
+    }
+
+    private async Task LoadFiles(InputFileChangeEventArgs e)
+    {
+        try
+        {
+            _lastError = "";
+
+            await _spinnerJs.ShowSpinnerAsync(async () =>
+            {
+                if (OnChangeStart != null)
+                    OnChangeStart.Invoke();
+
+                this.IsValid = await ValidaFile(e.File);
+
+                this.CurrentValueAsString = e.File.Name;
+
+                if (this.IsValid.Value && OnValidFileUploadCompleted.HasDelegate)
+                {
+                    // TODO: per via della valiazione preceente non è necessario passare di nuovo la specification solo che il
+                    // file al momento viene caricato in memoria due volte: una per la validazione della specification e una per
+                    // la conversione in BinaryFile. Valutare una soluzione che abbia un impatto minore sulla memoria
+                    var file = await e.File.ToBinaryFile(new NullValidPostedFileSpecificationAsync());
+                    await OnValidFileUploadCompleted.InvokeAsync(file);
+                }
+
+                if (OnChanged.HasDelegate)
+                    await OnChanged.InvokeAsync(new UploadInputFormResult() { file = e.File, IsValid = IsValid });
+
+                if (OnChangeEnd != null)
+                    OnChangeEnd.Invoke();
+            });
+        }
+        catch (Exception ex)
+        {
+
+        }
+    }
+
+    private async Task ClearSelection()
+    {
+        try
+        {
+            if (OnDeleteStart != null)
+                OnDeleteStart.Invoke();
+
+            await _spinnerJs.ShowSpinnerAsync(async () =>
+            {
+                IsValid = null;
+                CurrentValueAsString = string.Empty;
+                CodiceOggetto = null;
+
+                if (OnDelete.HasDelegate)
+                    await OnDelete.InvokeAsync();
+
+                if (OnDeleteEnd != null)
+                    OnDeleteEnd.Invoke();
+            });
+        }
+        catch(Exception ex)
+        {
+            
+        }
+    }
+
+    private async Task<bool> ValidaFile(IBrowserFile? file)
+    {
+        if (this.Required && file == null)
+        {
+            this._lastError = "Il file è obbligatorio";
+            return false;
+        }
+
+        if (PostedFileSpecifications != null && !await PostedFileSpecifications.IsSatisfiedByAsync(file))
+        {
+            this._lastError = PostedFileSpecifications.ErrorMessage;
+            return false;
+        }
+
+        if (this.OnValiationStateChanged.HasDelegate)
+        {
+            var args = new UploadInputFormValidationArgs(file);
+
+            await this.OnValiationStateChanged.InvokeAsync(args);
+
+            if (!args.Success)
+            {
+                this._lastError = args.ErrorMessage;
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private string getAriaLabel()
+    {
+        if (ShowLabel && !string.IsNullOrEmpty(Label))
+            return Label;
+        else
+            return "upload file";
+    }
+}

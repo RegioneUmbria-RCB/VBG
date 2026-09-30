@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://gruppoinit.it/fileconverter"
+	elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema"
+	xmlns:tns="http://gruppoinit.it/fileconverter">
+
+	<element name="ConvertRequest">
+		<complexType>
+			<sequence>
+				<element name="token" minOccurs="1" nillable="false">
+					<simpleType>
+						<restriction base="string">
+							<minLength value="1"></minLength>
+						</restriction>
+					</simpleType>
+				</element>
+				<element name="content" minOccurs="1" nillable="false">
+					<simpleType>
+						<restriction base="string">
+							<minLength value="1"></minLength>
+						</restriction>
+					</simpleType>
+				</element>
+				<element name="contentType" minOccurs="1" nillable="false">
+					<simpleType>
+						<restriction base="string">
+							<minLength value="1"></minLength>
+						</restriction>
+					</simpleType>
+				</element>
+				<element name="conversionType" minOccurs="1" nillable="false">
+					<simpleType>
+						<restriction base="string">
+							<minLength value="1"></minLength>
+						</restriction>
+					</simpleType>
+				</element>
+
+			</sequence>
+		</complexType>
+	</element>
+	<element name="ConvertResponse">
+		<complexType>
+			<sequence>
+				<element name="mimeType" type="string" minOccurs="1" />
+				<element name="binaryData" type="base64Binary" minOccurs="1" />
+				<element name="fileName" type="string" minOccurs="1" />
+			</sequence>
+		</complexType>
+	</element>
+	<element name="ConvertBinaryRequest">
+		<complexType>
+			<sequence>
+				<element name="token" minOccurs="1" nillable="false">
+					<simpleType>
+						<restriction base="string">
+							<minLength value="1"></minLength>
+						</restriction>
+					</simpleType>
+				</element>
+				<element name="binaryData" minOccurs="1">
+					<simpleType>
+						<restriction base="base64Binary">
+							<minLength value="1"></minLength>
+						</restriction>
+					</simpleType>
+				</element>
+				<element name="contentType" minOccurs="1" nillable="false">
+					<simpleType>
+						<restriction base="string">
+							<minLength value="1"></minLength>
+						</restriction>
+					</simpleType>
+				</element>
+				<element name="conversionType" minOccurs="1" nillable="false">
+					<simpleType>
+						<restriction base="string">
+							<minLength value="1"></minLength>
+						</restriction>
+					</simpleType>
+				</element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="ConvertBinaryResponse">
+		<complexType>
+			<sequence>
+				<element name="mimeType" type="string" minOccurs="1" />
+				<element name="binaryData" type="base64Binary" minOccurs="1" />
+				<element name="fileName" type="string" minOccurs="1" />
+			</sequence>
+		</complexType>
+	</element>
+	<element name="MergeDataRequest">
+		<complexType>
+			<sequence>
+				<element name="token" minOccurs="1" nillable="false">
+					<simpleType>
+						<restriction base="string">
+							<minLength value="1"></minLength>
+						</restriction>
+					</simpleType>
+				</element>
+				<element name="rtfBinaryData" minOccurs="1">
+					<simpleType>
+						<restriction base="base64Binary">
+							<minLength value="1"></minLength>
+						</restriction>
+					</simpleType>
+				</element>
+				<element name="xmlBinaryData" minOccurs="1">
+					<simpleType>
+						<restriction base="base64Binary">
+							<minLength value="1"></minLength>
+						</restriction>
+					</simpleType>
+				</element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="MergeDataResponse">
+		<complexType>
+			<sequence>
+				<element name="mimeType" type="string" minOccurs="1" />
+				<element name="binaryData" type="base64Binary" minOccurs="1" />
+				<element name="fileName" type="string" minOccurs="1" />
+			</sequence>
+		</complexType>
+	</element>
+	<element name="MergeDataAndConvertRequest">
+		<complexType>
+			<sequence>
+				<element name="token" minOccurs="1" nillable="false">
+					<simpleType>
+						<restriction base="string">
+							<minLength value="1"></minLength>
+						</restriction>
+					</simpleType>
+				</element>
+				<element name="rtfBinaryData" minOccurs="1">
+					<simpleType>
+						<restriction base="base64Binary">
+							<minLength value="1"></minLength>
+						</restriction>
+					</simpleType>
+				</element>
+				<element name="xmlBinaryData" minOccurs="1">
+					<simpleType>
+						<restriction base="base64Binary">
+							<minLength value="1"></minLength>
+						</restriction>
+					</simpleType>
+				</element>
+				<element name="conversionType" minOccurs="1" nillable="false">
+					<simpleType>
+						<restriction base="string">
+							<minLength value="1"></minLength>
+						</restriction>
+					</simpleType>
+				</element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="MergeDataAndConvertResponse">
+		<complexType>
+			<sequence>
+				<element name="mimeType" type="string" minOccurs="1" />
+				<element name="binaryData" type="base64Binary" minOccurs="1" />
+				<element name="fileName" type="string" minOccurs="1" />
+			</sequence>
+		</complexType>
+	</element>
+	
+	
+	<element name="MergeAndConvertRequest">
+		<complexType>
+			<sequence>
+				<element name="token" minOccurs="1" nillable="false">
+					<simpleType>
+						<restriction base="string">
+							<minLength value="1"></minLength>
+						</restriction>
+					</simpleType>
+				</element>
+				<element name="data" minOccurs="1">
+					<simpleType>
+						<restriction base="base64Binary">
+							<minLength value="1"></minLength>
+						</restriction>
+					</simpleType>
+				</element>
+				<element name="dataType" minOccurs="1" nillable="false">
+					<simpleType>
+						<restriction base="string">
+							<minLength value="1"></minLength>
+						</restriction>
+					</simpleType>
+				</element>
+				<element name="model" minOccurs="0">
+					<simpleType>
+						<restriction base="base64Binary">
+							<minLength value="1"></minLength>
+						</restriction>
+					</simpleType>
+				</element>
+				<element name="modelType" minOccurs="0">
+					<simpleType>
+						<restriction base="string">
+							<minLength value="1"></minLength>
+						</restriction>
+					</simpleType>
+				</element>
+				<element name="conversionType" minOccurs="1" nillable="false">
+					<simpleType>
+						<restriction base="string">
+							<minLength value="1"></minLength>
+						</restriction>
+					</simpleType>
+				</element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="MergeAndConvertResponse">
+		<complexType>
+			<sequence>
+				<element name="mimeType" type="string" minOccurs="1" />
+				<element name="binaryData" type="base64Binary" minOccurs="1" />
+				<element name="fileName" type="string" minOccurs="1" />
+			</sequence>
+		</complexType>
+	</element>
+	
+</schema>

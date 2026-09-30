@@ -1,0 +1,159 @@
+﻿@using Init.Sigepro.FrontEnd.AppLogic.GestioneOneri
+@using Init.Sigepro.FrontEnd.AppLogic.Pagamenti.NodoPagamenti
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.DesignComuni.Forms
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.EditFormComponents
+@using VBG.BlazorComponentsLibrary.EditFormComponents.DropDown
+
+@if (Endo is not null)
+{
+    <FormModal OnClose="OnCancelEdit" AlwaysVisible="true" Size="ModalSizeEnum.Large" Model="@Endo" FormId="formEndo" OnValidSubmit="OnValidEdit" ValidationCallBack="ValidationCallback">
+        <ModalHeader Titolo="@Endo.Descrizione"></ModalHeader>
+        <ModalBody>
+            <div class="form-check mb-5">
+                <InputCheckbox id="@($"chk{Endo.CodiceInventario}")" @bind-Value="@Endo.Presente" @onclick="() => Endo.Presente = !Endo.Presente" disabled="@Endo.TipoTitoloObbligatorio" />
+                <label for="@($"chk{Endo.CodiceInventario}")">
+                    @TestoCheckPossessoTitolo
+                </label>
+            </div>
+
+            <div class="clearfix"></div>
+
+            @if (Endo.Presente)
+            {
+                <DropDownForm Label="@LabelTipoTitolo"
+                                ResourceId="gestione-endo-presenti.tipo-titolo"
+                                @bind-Value="Endo.SelectedTipoTitoloItem"
+                                Items="@Endo.TipiTitolo"
+                                ValidationFor="() => Endo.SelectedTipoTitoloItem"
+                                ShowEmptyItem="true" 
+                                IsDisabled="!Endo.Presente"
+                                Required="true">
+                </DropDownForm>
+
+                @if (Endo.SelectedTipoTitoloItem is not null)
+                {
+                    <div class="help-block mb-4 @(Endo.IsValid ? "" : "is-invalid")">@GetStringaCampiRichiesti(Endo.SelectedTipoTitoloItemFlags)</div>
+
+                    @if (Endo.SelectedTipoTitoloItemFlags.Numero)
+                    {
+                        <TextInputForm Label="Numero"
+                                        ResourceId="gestione-endo-presenti.numero-atto"
+                                        @bind-Value="Endo.NumeroAtto"
+                                        ValidationFor="() => Endo.NumeroAtto"
+                                        Required="true">
+                        </TextInputForm>
+                    }
+
+                    @if (Endo.SelectedTipoTitoloItemFlags.Data)
+                    {
+                        <DateInputForm Label="Del"
+                                        ResourceId="gestione-endo-presenti.data-atto"
+                                        @bind-Value="Endo.DataAtto"
+                                        ValidationFor="() => Endo.DataAtto"
+                                        Required="true">
+                        </DateInputForm>
+                    }
+
+                    @if (Endo.SelectedTipoTitoloItemFlags.RilasciatoDa)
+                    {
+                        <TextInputForm Label="Rilasciato da"
+                                        ResourceId="gestione-endo-presenti.rilasciato-da"
+                                        @bind-Value="Endo.RilasciatoDa"
+                                        ValidationFor="() => Endo.RilasciatoDa"
+                                        Required="true">
+                        </TextInputForm>
+                    }
+
+                    <TextInputForm Label="Note"
+                                    @bind-Value="Endo.Note"
+                                    ResourceId="gestione-endo-presenti.note"
+                                    IsMultiline="true"
+                                    ValidationFor="() => Endo.Note">
+                    </TextInputForm>
+
+                    @if (Endo.SelectedTipoTitoloItemFlags.Allegato)
+                    {
+                        <FormUpload Label="Documento comprovante il possesso del titolo"
+                                    @bind-Value="Endo.CodiceOggetto"
+                                    ValidationFor="() => Endo.CodiceOggetto"
+                                    VerificaFirmaDigitale="@Endo.SelectedTipoTitoloItemFlags.VerificaFirmaAllegato"
+                                    Obbligatorio="@Endo.SelectedTipoTitoloItemFlags.AllegatoObbligatorio">
+                        </FormUpload>
+                    }
+                }
+            }
+        </ModalBody>
+        <ModalFooter>
+            <FormSubmitButton Form="formEndo"></FormSubmitButton>
+        </ModalFooter>
+    </FormModal>
+}
+
+@code {
+    [Parameter, EditorRequired]
+    public EndoPresenteBindingItem? Endo { get; set; }
+
+    [Parameter, EditorRequired]
+    public EventCallback OnCancelEdit { get; set; }
+    [Parameter, EditorRequired]
+    public EventCallback<EndoPresenteBindingItem> OnAcceptEdit { get; set; }
+
+    [Parameter]
+    public string TestoCheckPossessoTitolo { get; set; } = "Sono in possesso dell'autorizzazione/titolo abilitativo";
+
+    [Parameter]
+    public string LabelTipoTitolo { get; set; } = "Tipo titolo";
+
+    void ValidationCallback(FormMessageStore msg)
+    {
+        if (this.Endo == null)
+        {
+            return;
+        }
+    }
+
+    async Task OnValidEdit()
+    {
+        await this.OnAcceptEdit.InvokeAsync(this.Endo);
+    }
+
+    private string GetToggleLabel(bool inPossesso)
+    {
+        return inPossesso ? "Sono in possesso dell'autorizzazione/titolo abilitativo" : "Non sono in possesso dell'autorizzazione/titolo abilitativo";
+    }
+
+    private MarkupString GetStringaCampiRichiesti(TipoTitoloFlags? flags)
+    {
+        if (flags is null)
+            return new MarkupString(string.Empty);
+
+        var campi = this.GetCampiRichiesti(flags);
+
+        if (!campi.Any())
+            return new MarkupString(string.Empty);
+
+        if (campi.Count() == 1)
+            return new MarkupString($"Il campo <span class=\"fw-bold\">{campi.First()}</span> è obbligatorio");
+
+        var requiredFields = $"<span class=\"fw-bold\">{String.Join(", ", campi.Take(campi.Count() - 1))}</span> e <span class=\"fw-bold\">{campi.Last()}</span>";
+        return new MarkupString($"I campi {requiredFields} sono obbligatori");
+    }
+
+    private IEnumerable<string> GetCampiRichiesti(TipoTitoloFlags flags)
+    {
+        if (flags.Numero)
+            yield return "Numero";
+
+        if (flags.Data)
+            yield return "Data";
+
+        if (flags.RilasciatoDa)
+            yield return "Rilasciato da";
+
+        if (flags.AllegatoObbligatorio)
+            yield return "Documento";
+    }
+
+}

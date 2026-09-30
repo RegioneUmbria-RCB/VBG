@@ -1,0 +1,108 @@
+@if (intervento) {
+  <div class="scheda-intervento">
+    <h2>{{ intervento.nome }}</h2>
+    <h3>
+      <ul>
+        <li>
+          <a [routerLink]="returnTo" [queryParams]="{ open: '-1' }">
+            <i class="glyphicon glyphicon-home" aria-hidden="true"></i>
+            <span style="display: none" aria-hidden="false">Torna alla lista di procedimenti</span>
+          </a>
+        </li>
+        @for (step of intervento.percorso.slice(0, -1); track step) {
+          <li>
+            <a [routerLink]="returnTo" [queryParams]="{ open: step.id }">
+              {{ step.descrizione }}
+            </a>
+          </li>
+        }
+      </ul>
+    </h3>
+    <div class="row">
+      <div class="col-md-3 menu-laterale" cdkScrollable>
+        <div appAffix>
+          <app-menu-laterale [dataSource]="listaSezioni" [sezioneAttiva]="sezioneAttiva"></app-menu-laterale>
+          <div class="btn btn-primary" (click)="onTornaIndietro()">
+            <i class="glyphicon glyphicon-chevron-left"></i> Torna
+            indietro
+          </div>
+          @if (permetteDownloadModello) {
+            <div class="btn btn-primary" (click)="onScaricaModello(intervento.id)">
+              <i class="glyphicon glyphicon-download-alt"></i> Scarica il
+              modello
+            </div>
+          }
+          @if (
+            intervento.presentabileOnline &&
+            isUrlVaiAServizioPresente
+            ) {
+            <div class="btn btn-primary" (click)="onVaiAServizio(intervento.id)">
+              <i class="glyphicon glyphicon-new-window"></i>
+              {{ this.labelBtnVaiAServizio }}
+            </div>
+          }
+        </div>
+      </div>
+      <div class="col-md-9" appScrollSpy [spiedTags]="'H3'" (sectionChange)="onSectionChange($event)">
+        <app-sezione-intervento titolo="Informazioni varie"
+          [visibileSe]="(intervento.informazioni?.length || 0) > 0">
+          <p [innerHtml]="intervento.informazioni"></p>
+        </app-sezione-intervento>
+        <app-sezione-intervento titolo="Informazioni" [visibileSe]="(intervento.note?.length || 0) > 0">
+          @for (n of intervento.note; track n) {
+            <p [innerHtml]="n"></p>
+          }
+        </app-sezione-intervento>
+        <app-sezione-intervento titolo="Scheda regionale" [visibileSe]="(intervento.schedaRegionale || '') !== ''">
+          <p [innerHtml]="intervento.schedaRegionale"></p>
+        </app-sezione-intervento>
+        <app-sezione-intervento titolo="Oneri" [visibileSe]="(intervento.oneri?.length || 0) > 0">
+          <app-griglia-oneri [dataSource]="intervento.oneri"></app-griglia-oneri>
+        </app-sezione-intervento>
+        <app-sezione-intervento titolo="Normativa" [visibileSe]="(intervento.normativa?.length || 0) > 0">
+          <app-griglia-normativa [dataSource]="intervento.normativa" (download)="onDownload($event)">
+          </app-griglia-normativa>
+        </app-sezione-intervento>
+        <app-sezione-intervento titolo="Fasi attuative" [visibileSe]="(intervento.fasiAttuative?.length || 0) > 0">
+          <app-intervento-fasi-attuative [dataSource]="intervento.fasiAttuative"></app-intervento-fasi-attuative>
+        </app-sezione-intervento>
+        <app-sezione-intervento titolo="Modulistica" [visibileSe]="(intervento.modulistica?.length || 0) > 0">
+          <app-griglia-modulistica [dataSource]="intervento.modulistica" (download)="onDownload($event)">
+          </app-griglia-modulistica>
+        </app-sezione-intervento>
+        <app-sezione-intervento titolo="Interventi locali"
+          [visibileSe]="(intervento.interventiLocali?.length || 0) > 0">
+          <app-intervento-lista-interventi-locali [dataSource]="intervento.interventiLocali"
+                    (endoprocedimentoSelezionato)="
+                        onEndoprocedimentoSelezionato($event)
+                    ">
+          </app-intervento-lista-interventi-locali>
+        </app-sezione-intervento>
+            <app-sezione-intervento titolo="Procedimenti necessari" [visibileSe]="
+                    (intervento.procedimentiNecessari?.length || 0) > 0
+                ">
+          <app-intervento-griglia-endo [dataSource]="intervento.procedimentiNecessari"
+                    (endoprocedimentoSelezionato)="
+                        onEndoprocedimentoSelezionato($event)
+                    "></app-intervento-griglia-endo>
+        </app-sezione-intervento>
+            <app-sezione-intervento titolo="Procedimenti ricorrenti" [visibileSe]="
+                    (intervento.procedimentiRicorrenti?.length || 0) > 0
+                ">
+          <app-intervento-griglia-endo [dataSource]="intervento.procedimentiRicorrenti"
+                    (endoprocedimentoSelezionato)="
+                        onEndoprocedimentoSelezionato($event)
+                    "></app-intervento-griglia-endo>
+        </app-sezione-intervento>
+            <app-sezione-intervento titolo="Procedimenti eventuali" [visibileSe]="
+                    (intervento.procedimentiEventuali?.length || 0) > 0
+                ">
+          <app-intervento-griglia-endo [dataSource]="intervento.procedimentiEventuali"
+                    (endoprocedimentoSelezionato)="
+                        onEndoprocedimentoSelezionato($event)
+                    "></app-intervento-griglia-endo>
+        </app-sezione-intervento>
+      </div>
+    </div>
+  </div>
+}

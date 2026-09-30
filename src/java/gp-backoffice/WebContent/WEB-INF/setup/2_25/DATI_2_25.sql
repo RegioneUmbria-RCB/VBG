@@ -1,0 +1,50 @@
+INSERT INTO VERTICALIZZAZIONIBASE (MODULO, DESCRIZIONE, FLAG_GESTCOMUNE) VALUES ('PROTOCOLLO_PADOC', 'E'' il protocollo gestito e creato dal Comune di Padova e gestito dalla ditta im-tech, il protocollo si chiama P@Doc, e, i web service hanno la particolarità di lavorare in maniera asincrona, ossia la risposta non avviene subito, (a meno che non venga generato un errore durante la chiamata), ma successivamente dopo l''avvio di un processo schedulato da parte del server. Altra particolarità è che il web service non lavora con il protocollo SOAP, ma la richiesta viene inviata in POST ad un indirizzo http.', '1');
+
+INSERT INTO verticalizzazioniparametribase(modulo, parametro, descrizione) VALUES ('SIT_SILVERBROWSER','MAP_ZOOM_DA_PUNTO_BO', 'Url da chiamare nel BO per evidenziare un punto nel sistema cartografico. Es. http://demo.silverbrowser.it/prg?point={CODCIVICO}');
+INSERT INTO verticalizzazioniparametribase(modulo, parametro, descrizione) VALUES ('SIT_SILVERBROWSER','MAP_ZOOM_DA_PARTICELLA_BO', 'Url da chiamare nel BO per evidenziare una particella nel sistema cartografico. Es. http://demo.silverbrowser.it/prg?particella={PARTICELLA}sezione={SEZIONE}');
+insert into VERTICALIZZAZIONIPARAMETRIBASE (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('TARES_BARI', 'URL_SERVIZIO_AGEV_IMU','Url del servizio di agevolazioni IMU');
+
+INSERT INTO SOFTWARE (CODICE, DESCRIZIONE,MODULOOPZIONALE,DESCRIZIONELUNGA,ACCESSORAPIDO,ORDINE) VALUES ('TO','Servizi tributi ai cittadini',1,'Modulo per i servizi tributi ai cittadini',0,99);
+
+insert into VERTICALIZZAZIONIPARAMETRIBASE (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('AIDA', 'TIPO_MOV_INTEGRAZIONI','Codice del tipo movimento da utilizzare per inserire in una istanza un movimento di integrazione');
+insert into VERTICALIZZAZIONIPARAMETRIBASE (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('AIDA', 'TIPO_MOV_INIZIO_LAVORI','Codice del tipo movimento da utilizzare per inserire in una istanza un movimento di inizio lavori');
+insert into VERTICALIZZAZIONIPARAMETRIBASE (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('AIDA', 'TIPO_MOV_FINE_LAVORI','Codice del tipo movimento da utilizzare per inserire in una istanza un movimento di fine lavori');
+
+INSERT INTO verticalizzazioniparametribase (modulo,parametro,descrizione) VALUES ('TARES_BARI','CF_CAF_FITTIZIO','Codice fiscale fittizio da utilizzare per le chiamate ai ws tributi nel caso non fosse un caf a presentare la domanda ma un privato cittadino');
+INSERT INTO verticalizzazioniparametribase (modulo,parametro,descrizione) VALUES ('TARES_BARI','EMAIL_CAF_FITTIZIO','Email fittizia da utilizzare per le chiamate ai ws tributi nel caso non fosse un caf a presentare la domanda ma un privato cittadino');
+INSERT INTO verticalizzazioniparametribase (modulo,parametro,descrizione) VALUES ('TARES_BARI','NOMINATIVO_CAF_FITTIZIO','Nominativo fittizio da utilizzare per le chiamate ai ws tributi nel caso non fosse un caf a presentare la domanda ma un privato cittadino');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('PROTOCOLLO_PADOC', 'URL_RESPONSE_SERVICE', 'Url che indica la servlet che il sistema di protocollo va ad invocare restituendo i propri dati dati dopo la protocollazione (numero, anno....). Questo tipo di dato è parziale, nel senso che viene completato durante il processo che viene effettuato nei componenti .net e che andranno a completare l''url in base al fatto che si tratti di un errore in fase di protocollazione o meno, in questi casi infatti l''indirizzo della servlet cambia.');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('PROTOCOLLO_PADOC', 'DOMINIO', 'Dominio entro cui è stato generato il documento, ad esempio al comune di Livorno corrisponde a webvbgdue.comuneli.local');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('PROTOCOLLO_PADOC', 'CODICE_AMMINISTRAZIONE', 'Codice dell''amministrazione che utilizza il sistema di protocollo, ad esempio per il comune di Livorno è COMLIV');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('PROTOCOLLO_PADOC', 'CODICE_AOO', 'Codice Aoo che utilizza il sistema di protocollo, ad esempio al Comune di Livorno il valore è aoocli');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('PROTOCOLLO_PADOC', 'URL_PROTO', 'Indiricare l''url del servizio rest che è messo a disposizione per poter protocollare.');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('PROTOCOLLO_HALLEY', 'INVIA_CF', '(Facoltativo) Se valorizzato a 1 consente di inviare anche il codice fiscale / partita iva dell''anagrafica mittente / destinatario, questo serve per evitare gli errori -108 e -112 che si presentano spesso e volentieri e che riguardano il fatto che una stessa anagrafica è presente più volte nel protocollo non riuscendo quindi ad individuarla univocamente visto che il confronto avviane per denominazione (COGNOME NOME). Se valorizzato ad 1 quindi verrà inviata una anagrafica come ad esempio: MARIO ROSSI [MRIRSS....]');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('PROTOCOLLO_EGRAMMATA2', 'URL_PROTOALLEGATI', 'Indicare qui l''url del web service VBG sviluppato lato java che farà poi la chiamata al web service egrammata di protocollazione. Questo servizio si è reso necessario in quanto i file non possono essere inviati via mime (come richiesto dal web service di egrammata) con componenti .net, quindi viene invocato un web service ponte sviluppato in java che svolge questa funzionalità e invoca il web service di protocollazione.');
+
+UPDATE ALBEROPROC_ENDO SET FLAG_RICHIESTO_BO=1 WHERE (FLAG_RICHIESTO=1 OR FLAG_PRINCIPALE=1) and FLAG_RICHIESTO_BO is null;
+
+INSERT INTO VERTICALIZZAZIONIBASE (MODULO, DESCRIZIONE, FLAG_GESTCOMUNE) VALUES ('PROTOCOLLO_SIDUMBRIA', 'E'' il protocollo gestito dalla Regione Umbria con intermediario webred.', '1');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('PROTOCOLLO_SIDUMBRIA', 'TOKEN', 'Il Token è uno dei due dati relativi all''autenticazione al web service (l''altro è il Service), deve essere fornito dal fornitore di protocollo, in alternativa dal cliente, sarebbe il codice di autorizzazione.');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('PROTOCOLLO_SIDUMBRIA', 'SERVICE', 'Il Service è uno dei due dati relativi all''autenticazione al web service (l''altro è il Token), deve essere fornito dal fornitore di protocollo, in alternativa dal cliente, sarebbe il codice servizio abilitato, in teoria una specie di Registro.');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('PROTOCOLLO_SIDUMBRIA', 'URL', 'In questo parametro va indicato l''url del web service sidumbria, è possibile indicare anche l''indirizzo del wsdl.');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('PROTOCOLLO_SIDUMBRIA', 'DESTINATARIO_CC', 'In questo parametro va indicato il codice presente nella MODALITA'' di TRASMISSIONE che fa riferimento al destinatario per conoscenza, la tabella di riferimento è PROTOCOLLO_MODALITAINVIO. In questa tabella saranno presenti due valori che saranno poi associati ai destinatari per i protocolli in partenza (questo dato viene ignorato per i protocolli in entrata), se al destinatario viene associato lo stesso codice presente in questo parametro allora significherà che quel determinato destinatario, il protocollo, è per conoscenza.');
+
+
+INSERT INTO VERTICALIZZAZIONIBASE(MODULO, DESCRIZIONE,FLAG_GESTCOMUNE) VALUES ('ALLEGATI_PEC','Gestisce le regole per l''invio degli allegati di una PEC come singlo documennto contente i link da dove è possibile recuperare l''alegato',0);
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO, PARAMETRO, DESCRIZIONE) VALUES ('ALLEGATI_PEC','INVIA_DOC_COME_LINK_IN_PROT', 'Se configurato permette di mostrare nel pannello di protocollazione la possiblità di inviare gli allegati come un unico documento contenente i link degli allegati selezionati. Può assumero i valori 0: Invia documenti nella modalità standard, 1: Invia documenti come link');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO, PARAMETRO, DESCRIZIONE) VALUES ('ALLEGATI_PEC','URL_SERVIZIO_RECUPERO_DOC', 'Indica l''url del servizio esposto che permette di fare il download degli allegati');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('PEOPLE', 'ANAGRAFE_UPPERCASE', 'Se posto a 1 questo parametro, i nomi e cognomi delle anagrafiche provenienti da People vengono salvate in maiuscoletto, se posto a 2 vengono salvate in maiuscolo, se posto a 0 o non viene valorizzato, vengono salvate in VBG senza nessuna trasformazione');
+INSERT INTO FO_ARJ_STEPS_PARAMS_BASE (ID,CHIAVE,DESCRIZIONE,FK_FO_ARJ_STEP_BASE) VALUES (5,'RICEVUTA_NON_FIRMATA','Disabilita il controllo della firma digitale sul file della ricevuta. Inserire il valore 1.','ONERI');
+
+INSERT INTO MASTERKEY (TABLENAME,COLUMNNAME) VALUES ('TIPOLOGIEOGGETTO','CODICETIPOLOGIA');
+INSERT INTO MASTERKEY (TABLENAME,COLUMNNAME) VALUES ('OGGETTIINFO','CODICEOGGETTO');
+INSERT INTO MASTERKEY (TABLENAME,COLUMNNAME) VALUES ('OGGETTI_METADATI','CODICEOGGETTO');
+
+
+INSERT INTO COMUNI(CODICECOMUNE, COMUNE, SIGLAPROVINCIA, PROVINCIA, REGIONE, CF, CODICEISTATREGIONE) VALUES ('A404', 'ARIENZO SANFELICE', 'NA', 'NAPOLI', 'CAMPANIA', 'A404', '15');
+INSERT INTO COMUNI(CODICECOMUNE, COMUNE, SIGLAPROVINCIA, PROVINCIA, REGIONE, CF, CODICEISTATREGIONE) VALUES ('B775', 'CARIDA''', 'RC', 'RREGGIO CALABRIA', 'CALABRIA', 'B775', '18');
+INSERT INTO COMUNI(CODICECOMUNE, COMUNE, SIGLAPROVINCIA, PROVINCIA, CF) VALUES ('Z136', 'GEORGIA', 'EE', 'STATIESTERI', 'Z136');
+INSERT INTO COMUNI(CODICECOMUNE, COMUNE, SIGLAPROVINCIA, PROVINCIA, CF) VALUES ('Z143', 'UZBEKISTAN', 'EE', 'STATIESTERI', 'Z143');
+INSERT INTO COMUNI(CODICECOMUNE, COMUNE, SIGLAPROVINCIA, PROVINCIA, CF) VALUES ('Z152', 'KAZAKISTAN', 'EE', 'STATIESTERI', 'Z152');

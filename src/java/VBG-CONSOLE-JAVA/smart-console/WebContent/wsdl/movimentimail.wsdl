@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:sch="http://gruppoinit.it/sigepro/schemas/messages/movimentimail" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://gruppoinit.it/sigepro/definitions/movimentimail" targetNamespace="http://gruppoinit.it/sigepro/definitions/movimentimail">
+	<wsdl:types>
+		<schema xmlns="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://gruppoinit.it/sigepro/schemas/messages/movimentimail" schemaLocation="movimentimail.xsd" />
+		</schema>
+	</wsdl:types>
+	<wsdl:message name="MovimentiMailRequest">
+		<wsdl:part element="sch:MovimentiMailRequest" name="MovimentiMailRequest" />
+	</wsdl:message>
+	<wsdl:message name="MovimentiMailResponse">
+		<wsdl:part element="sch:MovimentiMailResponse" name="MovimentiMailResponse" />
+	</wsdl:message>
+	<wsdl:portType name="MovimentiMail">
+		<wsdl:operation name="MovimentiMail">
+			<wsdl:input message="tns:MovimentiMailRequest" name="MovimentiMailRequest" />
+			<wsdl:output message="tns:MovimentiMailResponse" name="MovimentiMailResponse" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="MovimentiMailSoap11" type="tns:MovimentiMail">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="MovimentiMail">
+			<soap:operation soapAction="movimentiMail" />
+			<wsdl:input name="MovimentiMailRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="MovimentiMailResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="MovimentiMailService">
+		<wsdl:port binding="tns:MovimentiMailSoap11" name="MovimentiMailSoap11">
+			<soap:address location="http://devel9:8080/vbg/services/" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

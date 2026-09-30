@@ -1,0 +1,14 @@
+insert into VERTICALIZZAZIONIPARAMETRIBASE (DESCRIZIONE,MODULO,PARAMETRO) values ('Id del nodo NLA CHE IDENTICA IL PROTOCOLLO SIGEPRO registrato su STC (utilizzato per individuare le chiamate provenienti da protocollo sigepro)','STC','NLA_IDNODO_PROTOCOLLOSIGEPRO');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('AREA_RISERVATA', 'VERIFICA_HASH_FILES_FIRMATI', 'Valori ammessi: 0 e 1. Se == 1 allora verrà verificato l''hash dei files firmati digitalmente durante gli step di firma dei riepiloghi dei dati dinamici, firma del riepilogo degli allegati presentati e firma del riepilogo della domanda ');
+INSERT INTO SOFTWARE(CODICE, DESCRIZIONE, MODULOOPZIONALE, DESCRIZIONELUNGA, ACCESSORAPIDO, ORDINE) VALUES ('GL', 'Giochi Leciti',1, 'Sale gioco e giochi leciti',0,46);
+UPDATE CLMENU_JAVA SET PAGINA = 'mappature/create.htm?software=TT', JSP = 'JAVA' WHERE ID=892;
+UPDATE CLMENU_JAVA SET PAGINA = 'mappature/create.htm?software=SOFTWARE', JSP = 'JAVA' WHERE ID=987;
+Insert Into VERTICALIZZAZIONIPARAMETRIBASE (MODULO,PARAMETRO,DESCRIZIONE) values ('SIT_CTC','URLCARTMAPPALE','E'' l''url da utilizzare per richiamare l''applicativo cartografico a partire da sezione, foglio e particella');
+Insert Into VERTICALIZZAZIONIPARAMETRIBASE (MODULO,PARAMETRO,DESCRIZIONE) values ('SIT_QUAESTIOFLORENZIA','URLCARTMAPPALE','E'' l''url da utilizzare per richiamare l''applicativo cartografico a partire da sezione, foglio e particella');
+Insert Into VERTICALIZZAZIONIPARAMETRIBASE (MODULO,PARAMETRO,DESCRIZIONE) values ('SIT_QUAESTIOFLORENZIA','URLCARTSTRADARIO','E'' l''url da utilizzare per richiamare l''applicativo cartografico a partire da colore e civico');
+Insert Into VERTICALIZZAZIONIPARAMETRIBASE (MODULO,PARAMETRO,DESCRIZIONE) values ('SIT_INITMAPGUIDE','URLCARTSTRADARIO','E'' l''url da utilizzare per richiamare l''applicativo cartografico a partire da codice viario e civico');
+Insert Into VERTICALIZZAZIONIPARAMETRIBASE (MODULO,PARAMETRO,DESCRIZIONE) values ('SIT_7DBTL','URLCARTSTRADARIO','E'' l''url da utilizzare per richiamare l''applicativo cartografico a partire da codice viario e civico');
+Insert Into VERTICALIZZAZIONIPARAMETRIBASE (MODULO,PARAMETRO,DESCRIZIONE) values ('SIT_7DBTL','URLCARTMAPPALE','E'' l''url da utilizzare per richiamare l''applicativo cartografico a partire da sezione, foglio e particella');
+UPDATE DOMANDESTC SET CODICEISTANZAPRENOTATA=CODICEISTANZA;
+UPDATE DOMANDESTC SET CODICEISTANZA=NULL WHERE CODICEISTANZA=-1;
+UPDATE DOMANDESTC SET CODICEISTANZA=NULL WHERE FLAG_IMPORT=0;

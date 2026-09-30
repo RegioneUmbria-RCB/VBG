@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:sch="http://gruppoinit.it/cart/dizionario" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://gruppoinit.it/cart/dizionario" targetNamespace="http://gruppoinit.it/cart/dizionario">
+	<wsdl:types>
+		<schema xmlns="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://gruppoinit.it/cart/dizionario" schemaLocation="upload_dizionario.xsd" />
+		</schema>
+	</wsdl:types>
+	<wsdl:message name="UploadDizionarioRequest">
+		<wsdl:part element="sch:UploadDizionarioRequest" name="UploadDizionarioRequest" />
+	</wsdl:message>	
+	<wsdl:message name="UploadDizionarioResponse">
+		<wsdl:part element="sch:UploadDizionarioResponse" name="UploadDizionarioResponse" />
+	</wsdl:message>	
+	<wsdl:portType name="Dizionario">
+		<wsdl:operation name="UploadDizionario">
+			<wsdl:input message="tns:UploadDizionarioRequest" name="UploadDizionarioRequest" />
+			<wsdl:output message="tns:UploadDizionarioResponse" name="UploadDizionarioResponse" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="UploadDizionarioSoap11" type="tns:Dizionario">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />		
+		<wsdl:operation name="UploadDizionario">
+			<soap:operation soapAction="uploadDizionario" />
+			<wsdl:input name="UploadDizionarioRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="UploadDizionarioResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="DizionarioService">
+		<wsdl:port binding="tns:UploadDizionarioSoap11" name="UploadDizionarioSoap11">
+			<soap:address location="http://devel9:8080/backend/services/" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

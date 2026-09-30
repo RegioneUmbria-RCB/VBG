@@ -1,0 +1,448 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;WSE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\</OutputPath>
+	  <DefineConstants>TRACE;WSE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	  <OutputType>Library</OutputType>
+  </PropertyGroup>
+  <ItemGroup>
+	  <!--
+    <Reference Include="log4net, Version=3.3.0.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\log4net.3.3.0\lib\net462\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=10.0.0.8, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Bcl.AsyncInterfaces.10.0.8\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Extensions.Configuration, Version=10.0.0.7, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Extensions.Configuration.10.0.7\lib\net462\Microsoft.Extensions.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.Abstractions, Version=10.0.0.7, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Extensions.Configuration.Abstractions.10.0.7\lib\net462\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=10.0.0.8, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.10.0.8\lib\net462\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Primitives, Version=10.0.0.7, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Extensions.Primitives.10.0.7\lib\net462\Microsoft.Extensions.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Services2, Version=2.0.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <HintPath>..\..\packages\Microsoft.Web.Services2.2.0.3.0\lib\net11\Microsoft.Web.Services2.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.13.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Buffers, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Buffers.4.6.1\lib\net462\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Memory, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Memory.4.6.3\lib\net462\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics.Vectors, Version=4.1.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Numerics.Vectors.4.6.1\lib\net462\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Runtime.CompilerServices.Unsafe.6.1.2\lib\net462\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization.Primitives, Version=4.1.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Runtime.Serialization.Primitives.4.3.0\lib\net46\System.Runtime.Serialization.Primitives.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.4.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Threading.Tasks.Extensions.4.6.3\lib\net462\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Configuration" />
+	-->
+	  <Reference Include="Microsoft.Web.Services2">
+	    <HintPath>..\..\Legacy\libraries\Microsoft.Web.Services2.dll</HintPath>
+	  </Reference>
+	  <Reference Include="System.ServiceModel" />
+	  <Reference Include="System.Web.Services" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Connected Services\AcarisBackofficeServicePort\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference1.cs</LastGenOutput>
+    </None>
+    <None Update="Connected Services\AcarisDocumentServicePort\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference1.cs</LastGenOutput>
+    </None>
+    <None Update="Connected Services\AcarisManagementServicePort\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference1.cs</LastGenOutput>
+    </None>
+    <None Update="Connected Services\AcarisNavigationServicePort\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference1.cs</LastGenOutput>
+    </None>
+    <None Update="Connected Services\AcarisObjectServicePort\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference1.cs</LastGenOutput>
+    </None>
+    <None Update="Connected Services\AcarisOfficialBookServicePort\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference1.cs</LastGenOutput>
+    </None>
+    <None Update="Connected Services\AcarisRelationshipsServicePort\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference1.cs</LastGenOutput>
+    </None>
+    <None Update="Connected Services\AcarisRepositoryServicePort\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference1.cs</LastGenOutput>
+    </None>
+    <None Update="Connected Services\InvioPecAdsService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference1.cs</LastGenOutput>
+    </None>
+    <None Update="Connected Services\LeggiAnagraficheEGrammata2Service\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference1.cs</LastGenOutput>
+    </None>
+    <None Update="Connected Services\LeggiProtocolloEGrammata2Service\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference1.cs</LastGenOutput>
+    </None>
+    <Content Include="Connected Services\InvioPecAdsService\Init.SIGePro.Protocollo.InvioPecAdsService.ParametriUscita.datasource" />
+    <Content Include="Connected Services\ProtocollaAllegatiEGrammata2\Init.SIGePro.Protocollo.ProtocollaAllegatiEGrammata2.ProtocollaAllegatiResponseType.datasource" />
+    <None Update="Connected Services\ProtocollaAllegatiEGrammata2\ProtocollaAllegatiWsService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Connected Services\ProtocolloDocErFascicolazioneService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference1.cs</LastGenOutput>
+    </None>
+    <None Update="Connected Services\ProtocolloDocErGestioneDocumentaleService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference1.cs</LastGenOutput>
+    </None>
+    <None Update="Connected Services\ProtocolloDocErLoginService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference1.cs</LastGenOutput>
+    </None>
+    <None Update="Connected Services\ProtocolloDocErPecService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference1.cs</LastGenOutput>
+    </None>
+    <None Update="Connected Services\ProtocolloDocErProtocolloService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference1.cs</LastGenOutput>
+    </None>
+    <None Update="Connected Services\ProtocolloDocErRegistrazioneParticolareService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference1.cs</LastGenOutput>
+    </None>
+    <None Update="Connected Services\ProtocolloMicrosisServiceProxy\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference1.cs</LastGenOutput>
+    </None>
+    <None Update="Connected Services\ProtocollaAllegatiEGrammata2\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference1.cs</LastGenOutput>
+    </None>
+    <None Update="Connected Services\ProtocolloSigedoQueryService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference1.cs</LastGenOutput>
+    </None>
+    <Content Include="EGrammata2\Wsdl\WSProtocollazioneAllegati.xml" />
+    <Content Include="EGrammata\Wsdl\WSNuovaUD.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Connected Services\AcarisBackofficeServicePort\Reference1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Update="Connected Services\AcarisDocumentServicePort\Reference1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Update="Connected Services\AcarisManagementServicePort\Reference1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Update="Connected Services\AcarisNavigationServicePort\Reference1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Update="Connected Services\AcarisObjectServicePort\Reference1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Update="Connected Services\AcarisOfficialBookServicePort\Reference1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Update="Connected Services\AcarisRelationshipsServicePort\Reference1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Update="Connected Services\AcarisRepositoryServicePort\Reference1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Update="Connected Services\InvioPecAdsService\Reference1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Update="Connected Services\LeggiAnagraficheEGrammata2Service\Reference1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Update="Connected Services\LeggiProtocolloEGrammata2Service\Reference1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Update="Connected Services\ProtocollaAllegatiEGrammata2\Reference1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Update="Connected Services\ProtocolloDocErFascicolazioneService\Reference1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Update="Connected Services\ProtocolloDocErGestioneDocumentaleService\Reference1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Update="Connected Services\ProtocolloDocErLoginService\Reference1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Update="Connected Services\ProtocolloDocErPecService\Reference1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Update="Connected Services\ProtocolloDocErProtocolloService\Reference1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Update="Connected Services\ProtocolloDocErRegistrazioneParticolareService\Reference1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Update="Connected Services\ProtocolloMicrosisServiceProxy\Reference1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Update="Connected Services\ProtocolloSigedoQueryService\Reference1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Update="EGrammata2\LeggiProtocollo\Segnatura\RicercaProtocollo.cs">
+      <DependentUpon>RicercaProtocollo.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="EGrammata2\LeggiProtocollo\Segnatura\RisultatoRicerca.cs">
+      <DependentUpon>RisultatoRicerca.xsd</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Connected Services\AcarisBackofficeServicePort\backofficeWS.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Connected Services\AcarisBackofficeServicePort\backofficeWS1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Connected Services\AcarisBackofficeServicePort\backofficeWS2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Connected Services\AcarisBackofficeServicePort\Init.SIGePro.Protocollo.AcarisBackofficeServicePort.getDescendantsResponse.datasource" />
+    <Content Include="Connected Services\AcarisBackofficeServicePort\Init.SIGePro.Protocollo.AcarisBackofficeServicePort.getDettaglioAOOResponse.datasource" />
+    <Content Include="Connected Services\AcarisBackofficeServicePort\Init.SIGePro.Protocollo.AcarisBackofficeServicePort.getDettaglioStrutturaResponse.datasource" />
+    <Content Include="Connected Services\AcarisBackofficeServicePort\Init.SIGePro.Protocollo.AcarisBackofficeServicePort.getPropertiesResponse.datasource" />
+    <Content Include="Connected Services\AcarisBackofficeServicePort\Init.SIGePro.Protocollo.AcarisBackofficeServicePort.ObjectMetadataType.datasource" />
+    <Content Include="Connected Services\AcarisBackofficeServicePort\Init.SIGePro.Protocollo.AcarisBackofficeServicePort.ObjectResponseType.datasource" />
+    <Content Include="Connected Services\AcarisBackofficeServicePort\Init.SIGePro.Protocollo.AcarisBackofficeServicePort.PrincipalExtResponseType.datasource" />
+    <Content Include="Connected Services\AcarisBackofficeServicePort\Init.SIGePro.Protocollo.AcarisBackofficeServicePort.PrincipalResponseType.datasource" />
+    <Content Include="Connected Services\AcarisBackofficeServicePort\Init.SIGePro.Protocollo.AcarisBackofficeServicePort.QueryableObjectType.datasource" />
+    <Content Include="Connected Services\AcarisBackofficeServicePort\Init.SIGePro.Protocollo.AcarisBackofficeServicePort.queryResponse.datasource" />
+    <Content Include="Connected Services\AcarisBackofficeServicePort\Init.SIGePro.Protocollo.AcarisBackofficeServicePort.RelazioniStrutturaPropertiesType.datasource" />
+    <None Update="Connected Services\AcarisDocumentServicePort\ACARIS-Archive.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Connected Services\AcarisDocumentServicePort\ACARIS-Common.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Connected Services\AcarisDocumentServicePort\ACARIS-Document.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Connected Services\AcarisDocumentServicePort\ACARIS-DocumentMessaging.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Connected Services\AcarisDocumentServicePort\Init.SIGePro.Protocollo.AcarisDocumentServicePort.creaDocumentoFisicoInDocumentRootResponse.datasource" />
+    <Content Include="Connected Services\AcarisDocumentServicePort\Init.SIGePro.Protocollo.AcarisDocumentServicePort.creaDocumentoResponse.datasource" />
+    <Content Include="Connected Services\AcarisDocumentServicePort\Init.SIGePro.Protocollo.AcarisDocumentServicePort.getRappresentazioneDocumentoResponse.datasource" />
+    <Content Include="Connected Services\AcarisDocumentServicePort\Init.SIGePro.Protocollo.AcarisDocumentServicePort.IdentificazioneTrasformazione.datasource" />
+    <Content Include="Connected Services\AcarisDocumentServicePort\Init.SIGePro.Protocollo.AcarisDocumentServicePort.ObjectResponseType.datasource" />
+    <Content Include="Connected Services\AcarisDocumentServicePort\Init.SIGePro.Protocollo.AcarisDocumentServicePort.uploadContenutoFisicoResponse.datasource" />
+    <Content Include="Connected Services\AcarisManagementServicePort\Init.SIGePro.Protocollo.AcarisManagementServicePort.addAnnotazioniResponse.datasource" />
+    <Content Include="Connected Services\AcarisManagementServicePort\Init.SIGePro.Protocollo.AcarisManagementServicePort.VitalRecordCodeType.datasource" />
+    <None Update="Connected Services\AcarisManagementServicePort\managementWS.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Connected Services\AcarisManagementServicePort\managementWS1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Connected Services\AcarisManagementServicePort\managementWS2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Connected Services\AcarisNavigationServicePort\Init.SIGePro.Protocollo.AcarisNavigationServicePort.getChildrenResponse.datasource" />
+    <Content Include="Connected Services\AcarisNavigationServicePort\Init.SIGePro.Protocollo.AcarisNavigationServicePort.getDescendantsResponse.datasource" />
+    <Content Include="Connected Services\AcarisNavigationServicePort\Init.SIGePro.Protocollo.AcarisNavigationServicePort.getFolderParentResponse.datasource" />
+    <Content Include="Connected Services\AcarisNavigationServicePort\Init.SIGePro.Protocollo.AcarisNavigationServicePort.ObjectResponseType.datasource" />
+    <None Update="Connected Services\AcarisNavigationServicePort\navigationWS.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Connected Services\AcarisNavigationServicePort\navigationWS1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Connected Services\AcarisNavigationServicePort\navigationWS2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Connected Services\AcarisObjectServicePort\Init.SIGePro.Protocollo.AcarisObjectServicePort.acarisContentStreamType.datasource" />
+    <Content Include="Connected Services\AcarisObjectServicePort\Init.SIGePro.Protocollo.AcarisObjectServicePort.addRenditionStreamResponse.datasource" />
+    <Content Include="Connected Services\AcarisObjectServicePort\Init.SIGePro.Protocollo.AcarisObjectServicePort.closeFolderResponse.datasource" />
+    <Content Include="Connected Services\AcarisObjectServicePort\Init.SIGePro.Protocollo.AcarisObjectServicePort.createAssociativeDocumentResponse.datasource" />
+    <Content Include="Connected Services\AcarisObjectServicePort\Init.SIGePro.Protocollo.AcarisObjectServicePort.createDocumentResponse.datasource" />
+    <Content Include="Connected Services\AcarisObjectServicePort\Init.SIGePro.Protocollo.AcarisObjectServicePort.createFolderResponse.datasource" />
+    <Content Include="Connected Services\AcarisObjectServicePort\Init.SIGePro.Protocollo.AcarisObjectServicePort.createRelationshipResponse.datasource" />
+    <Content Include="Connected Services\AcarisObjectServicePort\Init.SIGePro.Protocollo.AcarisObjectServicePort.getPropertiesResponse.datasource" />
+    <Content Include="Connected Services\AcarisObjectServicePort\Init.SIGePro.Protocollo.AcarisObjectServicePort.moveDocumentResponse.datasource" />
+    <Content Include="Connected Services\AcarisObjectServicePort\Init.SIGePro.Protocollo.AcarisObjectServicePort.ObjectResponseType.datasource" />
+    <Content Include="Connected Services\AcarisObjectServicePort\Init.SIGePro.Protocollo.AcarisObjectServicePort.queryResponse.datasource" />
+    <Content Include="Connected Services\AcarisObjectServicePort\Init.SIGePro.Protocollo.AcarisObjectServicePort.setContentStreamResponse.datasource" />
+    <Content Include="Connected Services\AcarisObjectServicePort\Init.SIGePro.Protocollo.AcarisObjectServicePort.updatePropertiesResponse.datasource" />
+    <None Update="Connected Services\AcarisObjectServicePort\objectWS.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Connected Services\AcarisObjectServicePort\objectWS1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Connected Services\AcarisObjectServicePort\objectWS2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Connected Services\AcarisOfficialBookServicePort\Init.SIGePro.Protocollo.AcarisOfficialBookServicePort.creaAnnotazioneOBResponse.datasource" />
+    <Content Include="Connected Services\AcarisOfficialBookServicePort\Init.SIGePro.Protocollo.AcarisOfficialBookServicePort.creaRegistrazioneResponse.datasource" />
+    <Content Include="Connected Services\AcarisOfficialBookServicePort\Init.SIGePro.Protocollo.AcarisOfficialBookServicePort.getPropertiesResponse.datasource" />
+    <Content Include="Connected Services\AcarisOfficialBookServicePort\Init.SIGePro.Protocollo.AcarisOfficialBookServicePort.getRegistriesResponse.datasource" />
+    <Content Include="Connected Services\AcarisOfficialBookServicePort\Init.SIGePro.Protocollo.AcarisOfficialBookServicePort.importaRegistrazioneResponse.datasource" />
+    <Content Include="Connected Services\AcarisOfficialBookServicePort\Init.SIGePro.Protocollo.AcarisOfficialBookServicePort.inviaSegnaturaResponse.datasource" />
+    <Content Include="Connected Services\AcarisOfficialBookServicePort\Init.SIGePro.Protocollo.AcarisOfficialBookServicePort.ObjectResponseType.datasource" />
+    <Content Include="Connected Services\AcarisOfficialBookServicePort\Init.SIGePro.Protocollo.AcarisOfficialBookServicePort.queryResponse.datasource" />
+    <Content Include="Connected Services\AcarisOfficialBookServicePort\Init.SIGePro.Protocollo.AcarisOfficialBookServicePort.updatePropertiesResponse.datasource" />
+    <None Update="Connected Services\AcarisOfficialBookServicePort\officialbookWS.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Connected Services\AcarisOfficialBookServicePort\officialbookWS1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Connected Services\AcarisOfficialBookServicePort\officialbookWS2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Connected Services\AcarisOfficialBookServicePort\officialbookWS3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Connected Services\AcarisRelationshipsServicePort\Init.SIGePro.Protocollo.AcarisRelationshipsServicePort.RelationshipPropertiesType.datasource" />
+    <None Update="Connected Services\AcarisRelationshipsServicePort\relationshipsWS.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Connected Services\AcarisRelationshipsServicePort\relationshipsWS1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Connected Services\AcarisRelationshipsServicePort\relationshipsWS2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Connected Services\AcarisRepositoryServicePort\Init.SIGePro.Protocollo.AcarisRepositoryServicePort.acarisRepositoryEntryType.datasource" />
+    <Content Include="Connected Services\AcarisRepositoryServicePort\Init.SIGePro.Protocollo.AcarisRepositoryServicePort.getRepositoryInfoResponse.datasource" />
+    <None Update="Connected Services\AcarisRepositoryServicePort\repositoryWS.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Connected Services\AcarisRepositoryServicePort\repositoryWS1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Connected Services\AcarisRepositoryServicePort\repositoryWS2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Connected Services\ProtocolloDocErGestioneDocumentaleService\Init.SIGePro.Protocollo.ProtocolloDocErGestioneDocumentaleService.HistoryItem.datasource" />
+    <Content Include="Connected Services\ProtocolloDocErGestioneDocumentaleService\Init.SIGePro.Protocollo.ProtocolloDocErGestioneDocumentaleService.KeyValuePair.datasource" />
+    <Content Include="Connected Services\ProtocolloDocErGestioneDocumentaleService\Init.SIGePro.Protocollo.ProtocolloDocErGestioneDocumentaleService.LockStatus.datasource" />
+    <Content Include="Connected Services\ProtocolloDocErGestioneDocumentaleService\Init.SIGePro.Protocollo.ProtocolloDocErGestioneDocumentaleService.SearchItem.datasource" />
+    <Content Include="Connected Services\ProtocolloDocErGestioneDocumentaleService\Init.SIGePro.Protocollo.ProtocolloDocErGestioneDocumentaleService.StreamDescriptor.datasource" />
+    <Content Include="Connected Services\ProtocolloDocErLoginService\Init.SIGePro.Protocollo.ProtocolloDocErLoginService.DefaultKeyValue.datasource" />
+    <Content Include="Connected Services\ProtocolloSigedoQueryService\Init.SIGePro.Protocollo.ProtocolloSigedoQueryService.ricercaResponse.datasource" />
+    <Content Include="Connected Services\ProtocolloSigedoQueryService\Init.SIGePro.Protocollo.ProtocolloSigedoQueryService.RisultatoRicerca.datasource" />
+    <None Update="EGrammata2\LeggiProtocollo\Segnatura\RicercaProtocollo.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="EGrammata2\LeggiProtocollo\Segnatura\RisultatoRicerca.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="EGrammata\Xsd\BaseOutput_WS.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="EGrammata\Xsd\Input_GetDatiUD.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="EGrammata\Xsd\Input_NuovaUD.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="EGrammata\Xsd\Output_DatiUD.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="EGrammata\Xsd\Output_NuovaUD.xsd">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PersonalLib2\PersonalLib2.csproj" />
+    <ProjectReference Include="..\SIGePro.Data\SIGePro.Data.csproj" />
+    <ProjectReference Include="..\SIGePro.Manager.Authentication\SIGePro.Manager.Authentication.csproj" />
+    <ProjectReference Include="..\SIGePro.Manager.Utils\SIGePro.Manager.Utils.csproj" />
+    <ProjectReference Include="..\SIGePro.Manager.Validator\SIGePro.Manager.Validator.csproj" />
+    <ProjectReference Include="..\SIGePro.Manager.VerticalizzazioniBase\SIGePro.Manager.VerticalizzazioniBase.csproj" />
+    <ProjectReference Include="..\SIGePro.Manager\SIGePro.Manager.csproj" />
+    <ProjectReference Include="..\VBG.Backend.Protocollo.AppLogic.Shared\VBG.Backend.Protocollo.AppLogic.Shared.csproj" />
+    <ProjectReference Include="..\VBG.Backend.Protocollo.Verticalizzazioni.Legacy\VBG.Backend.Protocollo.Verticalizzazioni.Legacy.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Services\" />
+  </ItemGroup>
+  <!--<ItemGroup>
+    <PackageReference Include="netstandard2" Version="0" />
+  </ItemGroup>-->
+</Project>

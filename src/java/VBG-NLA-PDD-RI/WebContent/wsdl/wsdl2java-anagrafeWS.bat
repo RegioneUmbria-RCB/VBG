@@ -1,0 +1,1 @@
+C:\sviluppo\apache-cxf-2.5.1\bin\wsdl2java.bat -p it.gruppoinit.wsanagrafe2.schema -all -frontend jaxws21 WsAnagrafe2.wsdl

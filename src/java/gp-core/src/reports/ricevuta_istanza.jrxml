@@ -1,0 +1,491 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ricevuta_istanza" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="dataprotocollo" class="java.util.Date">
+		<fieldDescription><![CDATA[dataprotocollo]]></fieldDescription>
+	</field>
+	<field name="data" class="java.util.Date">
+		<fieldDescription><![CDATA[data]]></fieldDescription>
+	</field>
+	<field name="comune" class="java.lang.String">
+		<fieldDescription><![CDATA[comune.comune]]></fieldDescription>
+	</field>
+	<field name="codice" class="java.lang.Integer">
+		<fieldDescription><![CDATA[id.codice]]></fieldDescription>
+	</field>
+	<field name="lavori" class="java.lang.String">
+		<fieldDescription><![CDATA[lavori]]></fieldDescription>
+	</field>
+	<field name="localizzazioneTransient" class="java.lang.String">
+		<fieldDescription><![CDATA[localizzazioneTransient]]></fieldDescription>
+	</field>
+	<field name="descrizioneRichiedente" class="java.lang.String">
+		<fieldDescription><![CDATA[richiedente.descrizioneRichiedente]]></fieldDescription>
+	</field>
+	<field name="descrizioneResidenza" class="java.lang.String">
+		<fieldDescription><![CDATA[richiedente.descrizioneResidenza]]></fieldDescription>
+	</field>
+	<field name="telefono" class="java.lang.String">
+		<fieldDescription><![CDATA[richiedente.telefono]]></fieldDescription>
+	</field>
+	<field name="telefonocellulare" class="java.lang.String">
+		<fieldDescription><![CDATA[richiedente.telefonocellulare]]></fieldDescription>
+	</field>
+	<field name="descrizione_software" class="java.lang.String">
+		<fieldDescription><![CDATA[software.descrizione]]></fieldDescription>
+	</field>
+	<field name="numeroistanza" class="java.lang.String">
+		<fieldDescription><![CDATA[numeroistanza]]></fieldDescription>
+	</field>
+	<field name="responsabile" class="java.lang.String">
+		<fieldDescription><![CDATA[responsabile.responsabile]]></fieldDescription>
+	</field>
+	<field name="descrizione_tecnico" class="java.lang.String">
+		<fieldDescription><![CDATA[professionista.descrizioneRichiedente]]></fieldDescription>
+	</field>
+	<field name="numeroprotocollo" class="java.lang.String">
+		<fieldDescription><![CDATA[numeroprotocollo]]></fieldDescription>
+	</field>
+	<field name="transientRichiedenteQualitaAzienda" class="java.lang.String">
+		<fieldDescription><![CDATA[transientRichiedenteQualitaAzienda]]></fieldDescription>
+	</field>
+	<field name="fax_richiedente" class="java.lang.String">
+		<fieldDescription><![CDATA[richiedente.fax]]></fieldDescription>
+	</field>
+	<field name="procedimento_scDescrizione" class="java.lang.String">
+		<fieldDescription><![CDATA[alberoproc.vwAlberoproc.scDescrizione]]></fieldDescription>
+	</field>
+	<field name="procedura" class="java.lang.String">
+		<fieldDescription><![CDATA[procedura.procedura]]></fieldDescription>
+	</field>
+	<field name="transientLocalizzazionePrimario" class="java.lang.String">
+		<fieldDescription><![CDATA[transientLocalizzazionePrimario]]></fieldDescription>
+	</field>
+	<field name="password" class="java.lang.String">
+		<fieldDescription><![CDATA[password]]></fieldDescription>
+	</field>
+	<field name="responsabile_procedimento" class="java.lang.String">
+		<fieldDescription><![CDATA[responsabileProcedimento.responsabile]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="20" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="71" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="12" width="100" height="20"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{comune}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="32" width="100" height="20"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{descrizione_software}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd MMMMM yyyy">
+				<reportElement x="0" y="51" width="100" height="20"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement x="0" y="0" width="555" height="30" backcolor="#CCCCCC"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="30"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ricevuta di Presentazione Istanza]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="518" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="10" width="76" height="20"/>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Codice Istanza]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="86" y="10" width="107" height="20"/>
+				<textElement>
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{numeroistanza}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="277" y="10" width="98" height="20"/>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Operatore sportello]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="386" y="10" width="169" height="20"/>
+				<textElement>
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{responsabile}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="30" width="76" height="20"/>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Presentazione	 ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="86" y="30" width="107" height="20"/>
+				<textElement>
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{data}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="277" y="30" width="98" height="20"/>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tecnico                     ]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="386" y="30" width="169" height="20"/>
+				<textElement>
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{descrizione_tecnico}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="60" width="76" height="20"/>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Protocollo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="277" y="60" width="98" height="20"/>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Data]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="386" y="60" width="169" height="20"/>
+				<textElement>
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{dataprotocollo}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="86" y="60" width="107" height="20"/>
+				<textElement>
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{numeroprotocollo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="80" width="76" height="20"/>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Richiedente]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="86" y="128" width="191" height="20"/>
+				<textElement>
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{descrizioneResidenza}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="86" y="80" width="191" height="20"/>
+				<textElement>
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{transientRichiedenteQualitaAzienda}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="181" width="76" height="20"/>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Lavori]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="86" y="201" width="469" height="35"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{lavori}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="236" width="76" height="20"/>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tipo intervento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="61" y="161" width="25" height="20"/>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tel.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="86" y="161" width="82" height="20"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{telefono}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="168" y="161" width="25" height="20"/>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cell.]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="193" y="161" width="99" height="20"/>
+				<textElement>
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{telefonocellulare}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="317" y="161" width="115" height="20"/>
+				<textElement>
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{fax_richiedente}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="292" y="161" width="25" height="20"/>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fax]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="86" y="236" width="469" height="20"/>
+				<textElement>
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{procedimento_scDescrizione}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="256" width="76" height="20"/>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Procedura]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="86" y="256" width="469" height="20"/>
+				<textElement>
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{procedura}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="276" width="157" height="20"/>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Identificazione dell'ubicazione]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="86" y="296" width="469" height="20"/>
+				<textElement>
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{transientLocalizzazionePrimario}]]></textFieldExpression>
+			</textField>
+			<rectangle radius="10">
+				<reportElement x="0" y="326" width="555" height="51"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="326" width="555" height="28"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<text><![CDATA[Il Codice e la Password sottoportati sono necessari per l'accesso, tramite internet, allo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="354" width="555" height="23"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<text><![CDATA[ allo stato di avanzamento della sua istanza]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="221" y="385" width="56" height="20"/>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Codice]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="221" y="405" width="56" height="20"/>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Password]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="277" y="385" width="209" height="20"/>
+				<textElement>
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{numeroistanza}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="431" width="555" height="20"/>
+				<textElement textAlignment="Justified">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<text><![CDATA[Note per l'accesso tramite internet: dal ns indirizzo web selezionare la voce "SERVIZI" quindi l'area di interesse indicata sulla sinistra (Es. Attività produttive,ecc ...), alla voce "Interrogazione stato dell'istanza" sarà possibile digitare Codice e Password indicati sopra]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="37" y="478" width="100" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<text><![CDATA[L'operatore]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="498" width="169" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{responsabile}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="356" y="478" width="178" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<text><![CDATA[Il responsabile del procedimento]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="277" y="405" width="209" height="20"/>
+				<textElement>
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{password}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="76" y="10" width="10" height="20"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="76" y="30" width="10" height="20"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="76" y="60" width="10" height="20"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="76" y="80" width="10" height="20"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="376" y="10" width="10" height="20"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="376" y="30" width="10" height="20"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="376" y="60" width="10" height="20"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="76" y="181" width="10" height="20"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="76" y="236" width="10" height="20"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="159" y="276" width="10" height="20"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="76" y="256" width="10" height="20"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="328" y="498" width="227" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{responsabile_procedimento}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

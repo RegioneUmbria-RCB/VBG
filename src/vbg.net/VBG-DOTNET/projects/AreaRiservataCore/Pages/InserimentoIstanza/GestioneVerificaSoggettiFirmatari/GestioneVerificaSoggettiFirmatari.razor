@@ -1,0 +1,56 @@
+﻿@page "/{IdComune}/{Software}/inserimento-istanza/gestione-verifica-soggetti-firmatari/{idDomanda:int}/{stepId:int}"
+@using Init.Sigepro.FrontEnd.AppLogic.Exceptions
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneComuni
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneDatiExtra
+@using Init.Sigepro.FrontEnd.AppLogic.Services.Domanda
+@using Init.Sigepro.FrontEnd.Infrastructure.StepsDomanda.Attributi
+
+@inherits IstanzeStepPage
+
+<div class="inputForm validazione-soggetti-firmatari">
+    <div class='alert @(this.Bloccante ? "alert-danger" : "alert-warning")' role="alert">
+        @if (this.EsitoVerifica != null)
+        {
+            <ul class="icone">
+                @foreach (var errore in this.EsitoVerifica.SoggettiNonTrovati)
+                {
+                    <li>
+                        Il documento <span class="fw-bold">"@errore.NomeDocumento"</span> deve essere firmato da almeno uno dei seguenti soggetti:
+                        <ul>
+                            @foreach (var soggetto in errore.TipiSoggettoRichiesti)
+                            {
+                                <li>@soggetto</li>
+                            }
+                        </ul>
+                        Ma nessuno di tali soggetti è stato trovato all'interno della pratica
+                    </li>
+                }
+
+                @foreach (var errore in this.EsitoVerifica.DocumentiNonPresenti)
+                {
+                    <li>
+                        Il documento <span class="fw-bold">"@errore.NomeDocumento"</span> non è stato caricato
+                    </li>
+                }
+
+                @foreach (var errore in this.EsitoVerifica.VerificheFallite)
+                {
+                    <li>
+                        Il documento <span class="fw-bold">"@errore.NomeDocumento"</span>
+                        <span class="fst-italic">
+                            (@errore.NomeFile)
+                        </span>
+                        non risulta essere firmato da almeno uno dei seguenti soggetti:
+
+                        <ul>
+                            @foreach (var soggetto in errore.FirmatariRichiestiPresenti)
+                            {
+                                <li>@soggetto</li>
+                            }
+                        </ul>
+                    </li>
+                }
+            </ul>
+        }
+    </div>
+</div>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:sch="http://gruppoinit.it/sigepro/schemas/messages/eventi" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://gruppoinit.it/sigepro/definitions/eventi" targetNamespace="http://gruppoinit.it/sigepro/definitions/eventi">
+	<wsdl:types>
+		<schema xmlns="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://gruppoinit.it/sigepro/schemas/messages/eventi" schemaLocation="eventi.xsd" />
+		</schema>
+	</wsdl:types>
+	<wsdl:message name="EventoIstanzaInsertRequest">
+		<wsdl:part element="sch:EventoIstanzaInsertRequest" name="EventoIstanzaInsertRequest" />
+	</wsdl:message>
+	<wsdl:message name="EventoMovimentoInsertRequest">
+		<wsdl:part element="sch:EventoMovimentoInsertRequest" name="EventoMovimentoInsertRequest" />
+	</wsdl:message>
+	<wsdl:message name="EventoBackofficeInsertRequest">
+		<wsdl:part element="sch:EventoBackofficeInsertRequest" name="EventoBackofficeInsertRequest" />
+	</wsdl:message>	
+	<wsdl:message name="EventoInsertResponse">
+		<wsdl:part element="sch:EventoInsertResponse" name="EventoInsertResponse" />
+	</wsdl:message>
+	<wsdl:portType name="Eventi">
+		<wsdl:operation name="EventoIstanzaInsert">
+			<wsdl:input message="tns:EventoIstanzaInsertRequest" name="EventoIstanzaInsertRequest" />
+			<wsdl:output message="tns:EventoInsertResponse" name="EventoIstanzaInsertResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="EventoMovimentoInsert">
+			<wsdl:input message="tns:EventoMovimentoInsertRequest" name="EventoMovimentoInsertRequest" />
+			<wsdl:output message="tns:EventoInsertResponse" name="EventoMovimentoInsertResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="EventoBackofficeInsert">
+			<wsdl:input message="tns:EventoBackofficeInsertRequest" name="EventoBackofficeInsertRequest" />
+			<wsdl:output message="tns:EventoInsertResponse" name="EventoBackofficeInsertResponse" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="EventiSoap11" type="tns:Eventi">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="EventoIstanzaInsert">
+			<soap:operation soapAction="EventoIstanzaInser" />
+			<wsdl:input name="EventoIstanzaInsertRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="EventoIstanzaInsertResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="EventoMovimentoInsert">
+			<soap:operation soapAction="EventoMovimentoInsert" />
+			<wsdl:input name="EventoMovimentoInsertRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="EventoMovimentoInsertResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="EventoBackofficeInsert">
+			<soap:operation soapAction="EventoBackofficeInsert" />
+			<wsdl:input name="EventoBackofficeInsertRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="EventoBackofficeInsertResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="EventiWsService">
+		<wsdl:port binding="tns:EventiSoap11" name="EventiSoap11">
+			<soap:address location="http://devel9:8080/vbg/services/" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

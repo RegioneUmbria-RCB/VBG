@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://firma.pal.gruppoinit.it/ws/schema" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema"
+	xmlns:xmime="http://www.w3.org/2005/05/xmlmime">
+
+	<element name="SetFileToSignRequest">
+		<complexType>
+			<sequence>
+				<element name="sessionId" type="string" />
+				<element name="clientFileId" type="string" />
+				<element name="fileName" type="string" />
+				<element name="binaryData" type="base64Binary" xmime:expectedContentTypes="application/octet-stream" />
+			</sequence>
+		</complexType>
+	</element>
+	<element name="SetFileToSignResponse">
+		<complexType>
+			<sequence>
+				<element name="sessionId" type="string" />
+				<element name="fileId" type="string" />
+			</sequence>
+		</complexType>
+	</element>
+
+	<element name="GetSignedFileRequest">
+		<complexType>
+			<sequence>
+				<element name="sessionId" type="string" />
+				<element name="fileId" type="string" />
+			</sequence>
+		</complexType>
+	</element>
+	<element name="GetSignedFileResponse">
+		<complexType>
+			<sequence>
+				<element name="clientFileId" type="string" />
+				<element name="fileName" type="string" />
+				<element name="isSigned" type="boolean" />
+				<element name="binaryData" type="base64Binary" xmime:expectedContentTypes="application/octet-stream" />
+			</sequence>
+		</complexType>
+	</element>
+</schema>

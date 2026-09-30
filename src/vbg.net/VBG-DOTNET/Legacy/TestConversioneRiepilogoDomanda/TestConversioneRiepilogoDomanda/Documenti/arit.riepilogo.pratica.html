@@ -1,0 +1,527 @@
+﻿<html>
+<head>
+	<style media="all">
+		html,pre
+		{
+			font-family: Verdana;
+		}
+	
+		.etichetta
+		{
+			background-color: #ffffff;
+			border: 0px;
+		}
+		.dato
+		{
+			font-weight: bold;
+			border: 0px;
+		}
+		
+		.intestazione1
+		{
+			font-family: Verdana;
+			font-size: 14px;
+			font-weight: normal;
+		}
+		
+		.intestazione2
+		{
+			font-family: Verdana;
+			font-size: 12px
+			font-weight: normal;
+		}
+		
+		.titoloQuadro
+		{
+			font-family: Verdana;
+			font-size: 10px
+			font-weight: normal;
+		}
+		
+		H2
+		{
+			font-family: Verdana;
+			font-size: 12px
+		}
+		
+		.segnalaDichiara
+		{
+			font-family: Verdana;
+			font-size: 12px;
+			text-decoration: underline;
+			font-weight: bold;
+		}
+		
+		.box
+		{
+			border: 1px solid #000000;
+			padding: 10px;
+		}
+		
+	</style>
+</head>
+<body style="font-family: Verdana; font-size: 12px; background-color: #ffffff">
+	<!-- intestazione -->
+	<div id="intestazione">
+		<center>
+			<div class="intestazione1">
+				REGIONE ABRUZZO<br />
+				Comune di <xsl:value-of select="/Istanze/ComuneIstanza/COMUNE" />
+			</div>
+			<div class="intestazione2">
+				Servizio S.U.A.P. - Sportello Unico per le Attività Produttive
+			</div>
+		</center>
+
+		<br />
+
+		<center>
+			<h2>
+				SEGNALAZIONE CERTIFICATA DI INIZIO ATTIVITA' - S.C.I.A.
+			</h2>
+		</center>
+
+		<div class="box">
+			in attuazione dell’art. 19 della L. 241/90, delle disposizioni previste dal D.Lgs n. 112/1998 e del relativo
+			regolamento approvato con DPR 160/2010, nei loro testi vigenti così come aggiornati e modificati
+		</div>
+
+		<br />
+		<h2>Metadato token</h2>
+		<xsl:value-of select="/Istanze/Metadati/IstanzeMetadati/Chiave[text()='IDENTIFICATIVO_DIGITALE_PRESENTATORE']/../Valore" />
+
+		<div class="box">
+			<h2>
+				Al COMUNE di <xsl:value-of select="/Istanze/ComuneIstanza/COMUNE" /><br />
+				Servizio S.U.A.P. - SPORTELLO UNICO ATTIVITA'PRODUTTIVE<br />
+			</h2>
+
+			indirizzo: 	<xsl:value-of select="/Istanze/ConfigurazioneComune/INDIRIZZO" /> -
+			<xsl:value-of select="/Istanze/ConfigurazioneComune/CAP" /> -
+			<xsl:value-of select="/Istanze/ConfigurazioneComune/COMUNE" /> ( <xsl:value-of select="/Istanze/ConfigurazioneComune/PROVINCIA" /> )
+			<br />
+			telefono: 	<xsl:value-of select="/Istanze/ConfigurazioneComune/TELEFONO" /> <br />
+			e.mail: 	<xsl:value-of select="/Istanze/ConfigurazioneComune/EMAILRESPONSABILE" /> <br />
+			e.mail certificata: 	... <br />
+			sito web:	...
+
+		</div>
+
+		<br />
+	</div>
+	
+	<div id="anagrafiche">
+		il sottoscritto, così come identificato nel successivo <b>quadro A</b><br />
+		
+		<br />
+		
+		<div class="box">
+			<xsl:for-each select="/Istanze/Richiedenti/IstanzeRichiedenti">
+					<xsl:if test="count(Procuratore) &gt; 0" >
+						<table width="100%" cellpadding="0" cellspacing="0">
+							<tr>
+								<td width="25%" class="etichetta">Cognome / nome</td>
+								<td class="dato" width="25%">
+									<xsl:value-of select="Procuratore/NOMINATIVO"/>&#160;
+									<xsl:value-of select="Procuratore/NOME" />
+								</td>
+								<td width="25%" class="etichetta">Codice Fiscale</td>
+								<td class="dato" width="25%">
+									<xsl:value-of select="Procuratore/CODICEFISCALE" />
+								</td>
+							</tr>
+
+							<tr>
+								<td width="25%" class="etichetta">Nato/a a</td>
+								<td class="dato" width="25%">
+									<xsl:value-of select="Procuratore/ComuneNascita/COMUNE" />
+								</td>
+								<td width="25%" class="etichetta">Il</td>
+								<td class="dato" width="25%">
+									<xsl:call-template name="FormatDate">
+										<xsl:with-param name="DateTime" select="Procuratore/DATANASCITA"/>
+									</xsl:call-template>
+								</td>
+							</tr>
+
+
+							<tr>
+								<td width="25%" class="etichetta">Residente in</td>
+								<td class="dato" width="25%">
+									<xsl:value-of select="Procuratore/ComuneResidenza/COMUNE" />
+								</td>
+								<td width="25%" class="etichetta">Prov.</td>
+								<td class="dato" width="25%">
+									<xsl:value-of select="Procuratore/PROVINCIA" />
+								</td>
+							</tr>
+
+							<tr>
+								<td width="25%" class="etichetta">Via/Loc.</td>
+								<td colspan="3" class="dato" width="75%">
+									<xsl:value-of select="Procuratore/ComuneResidenza/COMUNE" />
+								</td>
+							</tr>
+
+							<tr>
+								<td width="25%" class="etichetta">E-mail</td>
+								<td colspan="3" class="dato" width="75%">
+									<xsl:value-of select="Procuratore/EMAIL" />
+								</td>
+							</tr>
+
+							<xsl:variable name="codicefiscaleParam" select="Procuratore/CODICEFISCALE"/>
+							<xsl:variable name="tipodatoParam" select="../IstanzeRichiedenti/Richiedente/CODICEFISCALE[.=$codicefiscaleParam]/../../TipoSoggetto/TIPODATO"/>
+
+							<tr>
+								<td colspan="4" width="100%" class="etichetta">
+									<xsl:if test="$tipodatoParam = 'T'" >
+										In qualit&#224; di <span class="dato">Procuratore Speciale </span> di
+									</xsl:if>
+									<xsl:if test="$tipodatoParam !='T'" >
+										In qualit&#224; di <span class="dato">
+											<xsl:value-of select="../IstanzeRichiedenti/Richiedente/CODICEFISCALE[.=$codicefiscaleParam]/../../DESCRSOGGETTO" />
+										</span>
+									</xsl:if>
+									<xsl:if test="$tipodatoParam =''" >
+										di
+									</xsl:if>
+								</td>
+							</tr>
+							<xsl:if test="(../IstanzeRichiedenti/Richiedente/CODICEFISCALE[.=$codicefiscaleParam]/../../AnagrafeCollegata/NOMINATIVO != '')" >
+								<tr>
+									<td width="25%" class="etichetta">Di</td>
+									<td class="dato" width="25%">
+										<xsl:value-of select="../IstanzeRichiedenti/Richiedente/CODICEFISCALE[.=$codicefiscaleParam]/../../AnagrafeCollegata/NOMINATIVO"/>
+									</td>
+									<td width="25%" class="etichetta">C.F./P.IVA</td>
+									<td class="dato" width="25%">
+										<xsl:value-of select="../IstanzeRichiedenti/Richiedente/CODICEFISCALE[.=$codicefiscaleParam]/../../AnagrafeCollegata/CODICEFISCALE"/>
+										<xsl:value-of select="../IstanzeRichiedenti/Richiedente/CODICEFISCALE[.=$codicefiscaleParam]/../../AnagrafeCollegata/PARTITAIVA"/>
+									</td>
+								</tr>
+								<tr>
+									<td width="25%" class="etichetta">Con sede in</td>
+									<td class="dato" width="25%">
+										<xsl:value-of select="../IstanzeRichiedenti/Richiedente/CODICEFISCALE[.=$codicefiscaleParam]/../../AnagrafeCollegata/ComuneResidenza/COMUNE"/>
+									</td>
+									<td width="25%" class="etichetta">Via/Loc.</td>
+									<td class="dato" width="25%">
+										<xsl:value-of select="../IstanzeRichiedenti/Richiedente/CODICEFISCALE[.=$codicefiscaleParam]/../../AnagrafeCollegata/INDIRIZZO"/>
+									</td>
+								</tr>
+							</xsl:if>
+
+							<xsl:if test="$tipodatoParam !='T' and $tipodatoParam !=''">
+								<tr>
+									<td colspan="4" width="100%" class="etichetta">e <span class="dato">Procuratore Speciale</span></td>
+								</tr>
+							</xsl:if>
+
+							<tr>
+								<td width="25%" class="etichetta">Cognome/Nome</td>
+								<td class="dato" width="25%">
+									<xsl:value-of select="Richiedente/NOMINATIVO"/>&#160;
+									<xsl:value-of select="Richiedente/NOME" />
+								</td>
+								<td width="25%" class="etichetta">Codice Fiscale</td>
+								<td class="dato" width="25%">
+									<xsl:value-of select="Richiedente/CODICEFISCALE" />
+								</td>
+							</tr>
+
+							<tr>
+								<td width="25%" class="etichetta">Nato/a a</td>
+								<td class="dato" width="25%">
+									<xsl:value-of select="Richiedente/ComuneNascita/COMUNE" />
+								</td>
+								<td width="25%" class="etichetta">Il</td>
+								<td class="dato" width="25%">
+									<xsl:call-template name="FormatDate">
+										<xsl:with-param name="DateTime" select="Richiedente/DATANASCITA"/>
+									</xsl:call-template>
+								</td>
+							</tr>
+
+							<tr>
+								<td width="25%" class="etichetta">Residente in</td>
+								<td class="dato" width="75%" colspan="3">
+									<xsl:value-of select="Richiedente/ComuneResidenza/COMUNE" />
+								</td>
+							</tr>
+
+							<tr>
+								<td width="25%" class="etichetta">Via/Loc. </td>
+								<td colspan="3" class="dato" width="75%">
+									<xsl:value-of select="Richiedente/INDIRIZZO"/>
+								</td>
+							</tr>
+
+							<tr>
+								<td width="25%" class="etichetta">E-mail </td>
+								<td colspan="3" class="dato" width="75%">
+									<xsl:value-of select="Richiedente/EMAIL" />
+								</td>
+							</tr>
+
+							<xsl:if test="(AnagrafeCollegata/NOMINATIVO != '')" >
+								<tr>
+									<td colspan="4" width="100%" class="etichetta">
+										In qualit&#224; di <span class="dato"><xsl:value-of select="DESCRSOGGETTO" /></span>
+									</td>
+								</tr>
+
+								<tr>
+									<td width="25%" class="etichetta">Di</td>
+									<td class="dato" width="25%">
+										<xsl:value-of select="AnagrafeCollegata/NOMINATIVO"/>
+									</td>
+									<td width="25%" class="etichetta">C.F./P.IVA</td>
+									<td class="dato" width="25%">
+										<xsl:value-of select="AnagrafeCollegata/CODICEFISCALE"/>
+										<xsl:value-of select="AnagrafeCollegata/PARTITAIVA"/>
+									</td>
+								</tr>
+
+								<tr>
+									<td width="25%" class="etichetta">Con sede in </td>
+									<td class="dato" width="25%">
+										<xsl:value-of select="AnagrafeCollegata/ComuneResidenza/COMUNE"/>
+									</td>
+									<td width="25%" class="etichetta">Via/Loc.</td>
+									<td class="dato" width="25%">
+										<xsl:value-of select="AnagrafeCollegata/INDIRIZZO"/>
+									</td>
+								</tr>
+
+							</xsl:if>
+						</table>
+					</xsl:if>
+
+
+
+					<xsl:if test="count(Procuratore) = 0" >
+						<xsl:variable name="codicefiscaleRic" select="Richiedente/CODICEFISCALE"/>
+						<xsl:if test="count(../IstanzeRichiedenti/Procuratore/CODICEFISCALE[.=$codicefiscaleRic]) = 0" >
+							<xsl:if test="TipoSoggetto/TIPODATO = 'R' and TipoSoggetto/TIPODATO != 'T' and CODICETIPOSOGGETTO != 9" >
+								<table width="100%"  cellpadding="0" cellspacing="0">
+									<tr>
+										<td width="25%" class="etichetta">Cognome / nome</td>
+										<td width="25%" class="dato">
+											<xsl:value-of select="Richiedente/NOMINATIVO"/>&#160;
+											<xsl:value-of select="Richiedente/NOME" />
+										</td>
+										<td width="25%" class="etichetta">Codice Fiscale</td>
+										<td width="25%" class="dato">
+											<xsl:value-of select="Richiedente/CODICEFISCALE" />
+										</td>
+
+									</tr>
+
+									<tr>
+										<td width="25%" class="etichetta">Nato/a a</td>
+										<td width="25%" class="dato">
+											<xsl:value-of select="Richiedente/ComuneNascita/COMUNE" />
+										</td>
+										<td width="25%" class="etichetta">Il </td>
+										<td width="25%" class="dato">
+											<xsl:call-template name="FormatDate">
+												<xsl:with-param name="DateTime" select="Richiedente/DATANASCITA"/>
+											</xsl:call-template>
+										</td>
+
+									</tr>
+
+									<tr>
+										<td width="25%" class="etichetta">Residente in</td>
+										<td width="75%" class="dato" colspan="3">
+											<xsl:value-of select="Richiedente/ComuneResidenza/COMUNE" />
+										</td>
+
+									</tr>
+
+									<tr>
+										<td width="25%" class="etichetta">Via/Loc.</td>
+										<td width="75%" colspan="3" class="dato">
+											<xsl:value-of select="Richiedente/INDIRIZZO"/>
+										</td>
+									</tr>
+
+									<tr>
+										<td width="25%" class="etichetta">E-mail</td>
+										<td width="75%" colspan="3" class="dato">
+											<xsl:value-of select="Richiedente/EMAIL" />
+										</td>
+									</tr>
+
+									<tr>
+										<td width="100%" colspan="4" class="etichetta">
+											In qualit&#224; di <span class="dato"><xsl:value-of select="DESCRSOGGETTO" /></span> 
+										</td>
+									</tr>
+									<xsl:if test="(AnagrafeCollegata/NOMINATIVO != '')" >
+										<tr>
+											<td width="25%" class="etichetta">Di</td>
+											<td width="25%" class="dato">
+												<xsl:value-of select="AnagrafeCollegata/NOMINATIVO"/>
+											</td>
+											<td width="25%" class="etichetta">C.F./P.IVA</td>
+											<td width="25%" class="dato">
+												<xsl:value-of select="AnagrafeCollegata/CODICEFISCALE"/>
+												<xsl:value-of select="AnagrafeCollegata/PARTITAIVA"/>
+											</td>
+										</tr>
+
+										<tr>
+											<td width="25%" class="etichetta">Con sede in</td>
+											<td width="25%" class="dato">
+												<xsl:value-of select="AnagrafeCollegata/ComuneResidenza/COMUNE"/>
+											</td>
+											<td width="25%" class="etichetta">Via/Loc.</td>
+											<td width="25%" class="dato">
+												<xsl:value-of select="AnagrafeCollegata/INDIRIZZO"/>
+											</td>
+										</tr>
+
+									</xsl:if>
+								</table>
+							</xsl:if>
+						</xsl:if>
+					</xsl:if>
+			</xsl:for-each>
+				
+		</div>		
+				
+		<br />
+	</div>
+	
+	<div class="dichiarazioni">
+		consapevole:
+		<ul>
+			<li>che le false dichiarazioni, la falsità negli atti e l’uso di atti falsi comportano l’applicazione delle sanzioni penali previste dall’art. 76 del D.P.R. 445/2000 e la decadenza dai benefici conseguenti;</li>
+			<li>che il presente procedimento attiene a quanto specificatamente previsto nel comma 1 dell'art. 19 della legge 241/90 nel suo vigente testo;</li>
+			<li>che il presente procedimento non attiene ad attività produttive espressamente escluse, come specificatamente indicate dal comma 5 del predetto art. 19;</li>
+		</ul>
+		
+		ai sensi del medesimo art. 19 della L. n. 241/90 e del D.P.R. 160/10, nei loro testi vigenti così come modificati ed integrati,<br />
+		
+		<br />
+		
+		<center>
+			<div class="segnalaDichiara">S E G N A L A</div>
+		</center>
+		
+		<br />
+		
+		che nell’impianto produttivo (locali di attività) situato in questo comune, come di seguito indicato nel successivo quadro B, inizierà l’esercizio dell’attività di seguito selezionata nel succesivo quadro C
+		
+		<br />
+		
+		<br />
+		
+		<div class="titoloQuadro">
+			quadro <b>C/0</b>: classifificazione in macroaree delle attività soggette a S.C.I.A.
+		</div>
+		
+		<div class="box">
+			<b>
+				<pre>
+					<xsl:value-of select="/Istanze/LAVORI" />
+				</pre>
+			</b>
+		</div>
+		
+		<br />
+		
+		il sottoscritto inoltre
+		
+		<br />
+		
+		<center>
+			<div class="segnalaDichiara">D I C H I A R A</div>
+		</center>
+		
+		<br />
+		
+		per quanto riguarda tutti gli stati, le qualità personali e i fatti previsti negli artt. 46 e 47 del testo unico di cui al decreto del Presidente della Repubblica 28 dicembre 2000, n.445:
+		
+		<br />
+	</div>
+	
+	<br />
+	
+	--------------- SEGNAPOSTO SCHEDE DINAMICHE ------------------------<br />
+	<schedeDinamiche />
+	
+	<br />
+	
+	<div id="finePagina">
+		Per quanto riguarda il/i tecnico/i incaricato/i, con le attestazioni e asseverazioni richieste dalle relative norme di settore in relazione agli endoprocedimenti attivati, si comunica che tali attestazioni e asseverazioni sono accompagnate, laddove occorre, da elaborati tecnici necessari per consentire le verifiche di competenza di ogni singola amministrazione coinvolta nel procedimento unico.
+		<br />
+		<br />
+		<b>Dichiara</b>, infine, di essere a conoscenza del contenuto dell'art. 19 della L. n. 241/90 nel suo testo vigente e, nello specifico, di tutte le altre normative richiamate nella presente segnalazione di cerificazione di inizio attività e nei modelli e documentazioni comunque alla stessa allegati.<br />
+		
+		<br />
+		
+		<xsl:value-of select="/Istanze/ComuneIstanza/COMUNE" />, lì 
+		<xsl:call-template name="FormatDate">
+			<xsl:with-param name="DateTime" select="/Istanze/DATA"/>
+		</xsl:call-template>
+	</div>
+	
+	
+	<br />
+	<br />
+	<br />
+	<br />
+	
+	<div id="allegati">
+		<center>
+			<h2>
+			Il sottoscritto allega alla presente S.C.I.A. la seguente documentazione:
+			</h2>
+		</center>
+
+		<ul>
+			<xsl:for-each select="Istanze/DocumentiIstanza/DocumentiIstanza">
+				<li>
+					<div class="dato">
+						<b>
+							<xsl:value-of select="DOCUMENTO"/>
+						</b>
+					</div>
+					<xsl:value-of select="Oggetto/NOMEFILE"/>
+				</li>
+			</xsl:for-each>
+		</ul>
+
+		<xsl:for-each select="Istanze/EndoProcedimenti/IstanzeProcedimenti">
+			<xsl:if test="count(IstanzeAllegati/IstanzeAllegati[PRESENTE = '1']) > 0">
+
+				<br />
+				<br />
+				<center>
+					<h2>
+						Allegati dell'endoprocedimento 
+						<xsl:value-of select="Endoprocedimento/Procedimento"/>
+					</h2>
+				</center>
+				<ul>
+					<xsl:for-each select="IstanzeAllegati/IstanzeAllegati">
+						<xsl:if test="PRESENTE != '0'">
+							<li>
+								<div class="dato">
+									<b>
+										<xsl:value-of select="ALLEGATOEXTRA"/>
+									</b>
+								</div>
+								<xsl:value-of select="Oggetto/NOMEFILE"/>
+							</li>
+						</xsl:if>
+					</xsl:for-each>
+				</ul>	
+			</xsl:if>
+		</xsl:for-each>
+	</div>
+</body>
+</html>

@@ -1,0 +1,54 @@
+﻿@using AreaRiservataCore.Shared.DetailCards
+
+@if (DataSource != null && DataSource.Any())
+{
+    <DetailCardGroup Title="Soggetti">
+
+        <DetailCardList Items="DataSource">
+            <ItemTemplate Context="item">
+                <DetailCardTitle class="text-capitalize">@item.Nominativo</DetailCardTitle>
+
+                @if (!String.IsNullOrEmpty(item.InQualitaDi))
+                {
+                    <DetailCardSubtitle>@item.InQualitaDi</DetailCardSubtitle>
+                }
+
+                @if (!String.IsNullOrEmpty(item.NominativoCollegato))
+                {
+                    <DetailCardInfo Title="Anagrafica collegata">@item.NominativoCollegato</DetailCardInfo>
+                }
+                @if (!String.IsNullOrEmpty(item.Procuratore))
+                {
+                    <DetailCardInfo Title="Procuratore">@item.Procuratore</DetailCardInfo>
+                }
+            </ItemTemplate>
+        </DetailCardList>
+    </DetailCardGroup>
+
+    @*  <StepCard Titolo="Soggetti">
+        @foreach (VisuraSoggettiListItem item in DataSource)
+        {
+            <StepCardItem>
+                <StepCardItemTitle Titolo="@item.Nominativo" CapitalizeText="true"></StepCardItemTitle>
+                @if (!String.IsNullOrEmpty(item.InQualitaDi))
+                {
+                    <StepCardSubtitle>@item.InQualitaDi</StepCardSubtitle>
+                }
+
+                @if (!String.IsNullOrEmpty(item.NominativoCollegato))
+                {
+                    <StepCardInfo Titolo="Anagrafica collegata">@item.NominativoCollegato</StepCardInfo>
+                }
+                @if (!String.IsNullOrEmpty(item.Procuratore))
+                {
+                    <StepCardInfo Titolo="Procuratore">@item.Procuratore</StepCardInfo>
+                }
+            </StepCardItem>
+        }
+    </StepCard> *@
+
+}
+
+@code {
+
+}

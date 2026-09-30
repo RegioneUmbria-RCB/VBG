@@ -1,0 +1,11 @@
+ATTENZIONE: Se si dovessero verificare errori durante l’attivazione della chiave utilizzare il seguente script per bonificare i records:
+ATTENZIONEATTENZIONE: lo script non elimina gli oggetti referenziati in fo_domande_oggetti,  eseguire questo passaggio a parte o lasciare gli oggetti nel db (potrebbero essere in uso in qualche istanza)
+
+SELECT
+  'DELETE FROM fo_domande_oggetti where idcomune= ''' || fo_domande_oggetti.idcomune || ''' and iddomanda = ' || fo_domande_oggetti.iddomanda || ';'
+FROM 
+  fo_domande_oggetti left outer join fo_domande ON 
+    fo_domande.idcomune = fo_domande_oggetti.idcomune AND
+    fo_domande.id = fo_domande_oggetti.iddomanda  
+WHERE
+  fo_domande.id IS NULL;

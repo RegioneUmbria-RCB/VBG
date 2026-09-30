@@ -1,0 +1,39 @@
+#if($modelloHelper.isRenderForPrint())
+	<b>$val</b>
+#else
+	#set($valoriString = $campo.getProprietaCampo("ElementiLista",""))
+	#set($valoriListaTemp = $valoriString.split(";"))
+	#set($valoriLista = [])
+	#foreach($valoreTemp in $valoriListaTemp)
+		#set($foo = $valoriLista.add($valoreTemp))
+	#end
+	#set($ivb = $campo.getProprietaCampo("IgnoraErroriBinding","true"))
+	#if($ivb == "true" && !$isTemplate && !$modelloHelper.isContestoIndefinito())
+		#set($selValueFound = false)
+		#foreach($valorelista in $valoriLista)
+			#if($val == $valorelista)
+				#set($selValueFound = true)
+			#end
+		#end
+		#if(!$selValueFound)
+			#set($foo = $valoriLista.add($val))
+		#end
+	#end
+	<div>
+	#foreach($valoreRadio in $valoriLista)
+		#set($checked = "")
+		#if($valoreRadio.equalsIgnoreCase($val) && !$isTemplate)
+			#set($checked = "checked='checked'")
+		#end
+		#set($radioIndex = $velocityCount - 1)
+		#if($radioIndex > 0)
+			<br/>
+		#end
+		<div class="check-radio-wrap" align="center" class="$classeCampo">
+			<input type="radio" name="${nameAttr}" id="${nameAttr}_ID_${radioIndex}"
+			value="$valoreRadio" $checked/>
+		</div>
+		<label for="${nameAttr}_ID_${radioIndex}">$valoreRadio</label>
+	#end
+	</div>
+#end

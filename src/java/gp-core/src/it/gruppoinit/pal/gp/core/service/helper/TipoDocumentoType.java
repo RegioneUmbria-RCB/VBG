@@ -1,0 +1,87 @@
+package it.gruppoinit.pal.gp.core.service.helper;
+
+import javax.xml.bind.annotation.XmlEnum;
+import javax.xml.bind.annotation.XmlEnumValue;
+import javax.xml.bind.annotation.XmlType;
+
+/**
+ * <p>
+ * Java class for TipoDocumentoType.
+ * 
+ * <p>
+ * The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * 
+ * <pre>
+ * &lt;simpleType name="TipoDocumentoType">
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+ *     &lt;enumeration value="RiepilogoDomanda"/>
+ *     &lt;enumeration value="RiepilogoAllegati"/>
+ *     &lt;enumeration value="Procura"/>
+ *     &lt;enumeration value="Altro"/>
+ *     &lt;enumeration value="SUAP-ZIP"/>
+ *     &lt;enumeration value="SUAP-PDF"/>
+ *     &lt;enumeration value="SUAP-XML"/>
+ *     &lt;enumeration value="MDA-PDF"/>
+ *     &lt;enumeration value="MDA-XML"/>
+ *   &lt;/restriction>
+ * &lt;/simpleType>
+ * </pre>
+ * 
+ */
+@XmlType(name = "TipoDocumentoType")
+@XmlEnum
+public enum TipoDocumentoType {
+    @XmlEnumValue("RiepilogoDomanda")
+    RIEPILOGO_DOMANDA("RiepilogoDomanda"), //  
+    @XmlEnumValue("RiepilogoAllegati")
+    RIEPILOGO_ALLEGATI("RiepilogoAllegati"), // 
+    @XmlEnumValue("Procura")
+    PROCURA("Procura"), // 
+    @XmlEnumValue("Altro")
+    ALTRO("Altro"),
+    /**
+     * il tipo SUAP-ZIP rappresenta la pratica suap nella sua interezza cosi' come definita dalla specifica
+     * 
+     */
+    @XmlEnumValue("SUAP-ZIP")
+    SUAP_ZIP("SUAP-ZIP"),
+    /**
+     * il tipo SUAP-PDF rappresenta la distinta del modello di riepilogo
+     * 
+     */
+    @XmlEnumValue("SUAP-PDF")
+    SUAP_PDF("SUAP-PDF"),
+    /**
+     * il tipo SUAP-XML rappresenta il modello di riepilogo della pratica SUAP
+     * 
+     */
+    @XmlEnumValue("SUAP-XML")
+    SUAP_XML("SUAP-XML"), // 
+    @XmlEnumValue("MDA-PDF")
+    MDA_PDF("MDA-PDF"), // 
+    @XmlEnumValue("MDA-XML")
+    MDA_XML("MDA-XML");
+
+    private final String value;
+
+    TipoDocumentoType(String v) {
+
+	value = v;
+    }
+
+    public String value() {
+
+	return value;
+    }
+
+    public static TipoDocumentoType fromValue(String v) {
+
+	for (TipoDocumentoType c : TipoDocumentoType.values()) {
+	    if (c.value.equals(v)) {
+		return c;
+	    }
+	}
+	throw new IllegalArgumentException(v);
+    }
+}

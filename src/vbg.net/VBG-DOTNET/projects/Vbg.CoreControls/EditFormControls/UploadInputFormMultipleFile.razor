@@ -1,0 +1,158 @@
+﻿@using Init.Sigepro.FrontEnd.CoreServices.GestioneOggetti
+@using Microsoft.AspNetCore.Components.Forms
+@using System.Diagnostics.CodeAnalysis
+@using Vbg.CoreControls
+@using System.Linq.Expressions
+@using System.Globalization
+@*@inherits MyBaseFormComponent<string>*@
+
+@*<div class="bwc-Upload form-group @CssClassContainer" id="@UniqueID">
+    @if (ShowLabel)
+    {
+        <Vbg.CoreControls.LabelContainerComponent RelativeControlId="@this.Id" ResourceId="@this.ResourceId" Value="@this.Label" Required="@this.Required" CanEditResourceText="@this.CanEditResourceText"></Vbg.CoreControls.LabelContainerComponent>
+    }
+    <div style="position:relative;">
+        
+        @if (isLoading)
+        {
+            <div style="position: absolute; top: 25%; left: 50%;" class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+        }
+        <InputFile id='@this.Id' OnChange="@LoadFiles" class="form-control" accept="@AcceptedFileTypes" customValue="@this.CurrentValueAsString" aria-label="@getAriaLabel()" multiple></InputFile>
+
+        @if (multiple != null)
+        {
+            <div class="dropdown">
+
+                <button class="btn btn-light dropdown-toggle" type="button" id="@($"toggle_{Id}")" data-toggle="dropdown" aria-haspopup="true">
+                    <i class="glyphicon glyphicon-file"></i>
+                    <span class="caret"></span>
+                </button>
+
+                <ul class="dropdown-menu" aria-labelledby="@($"toggle_{Id}")">
+                    @foreach (var d in Data)
+                    {
+                        if (d.IsValid)
+                        {
+                            <Vbg.CoreControls.ScaricaOggettoComponent CodiceOggetto="@d.CodiceOggetto" Text="@d.File.Name"></Vbg.CoreControls.ScaricaOggettoComponent>
+                            <a href="#" title="elimina" style="margin-left:2em;" @onclick="() => ClearSelection(d)" @onclick:preventDefault><i class="fa fa-trash" aria-hidden="true" style="cursor:pointer"></i> Elimina</a>
+                        }
+                        else if (!string.IsNullOrEmpty(d.File.Name))
+                        {
+                            <li>Errore per il file: @d.File.Name</li>
+                        }
+                        else
+                        {
+                            <li></li>
+                        }
+                    }
+                </ul>
+            </div>
+        }
+    </div>
+    <div class="form-control-validation help-block">
+        <ValidationMessage For="@ValidationFor" />
+    </div>
+</div>*@
+
+
+@code {
+
+    // questo controllo non viene usato
+
+    //[Parameter]
+    //public string AcceptedFileTypes { get; set; } = "";
+
+    //[Parameter]
+    //public UploadInputFormMultipleFileData[] Data { get; set; }
+
+    //[Parameter]
+    //public IValidPostedFileSpecificationAsync PostedFileSpecifications { get; set; }
+
+    //[Parameter]
+    //public EventCallback<UploadInputFormMultipleFileResult> OnMultipleFilesChanged { get; set; }
+
+    //[Parameter]
+    //public EventCallback<int> OnDelete { get; set; }
+
+    //bool isValid;
+    //bool isLoading;
+    //UploadInputFormMultipleFileResult multiple = null;
+
+    //protected override bool TryParseValueFromString(string value, [MaybeNullWhen(false)] out string result, [NotNullWhen(false)] out string validationErrorMessage)
+    //{
+    //    if (Required && string.IsNullOrEmpty(value))
+    //    {
+    //        validationErrorMessage = "This element is required";
+    //        result = "";
+    //        return false;
+    //    }
+
+    //    if (!isValid)
+    //    {
+    //        validationErrorMessage = PostedFileSpecifications.ErrorMessage;
+    //        result = value;
+    //        return false;
+    //    }
+
+    //    result = value;
+    //    validationErrorMessage = null;
+    //    return true;
+    //}
+
+    //private async Task LoadFiles(InputFileChangeEventArgs e)
+    //{
+    //    isLoading = true;        
+    //    multiple = new UploadInputFormMultipleFileResult();
+    //    int count = 0;
+
+    //    foreach (var file in e.GetMultipleFiles(e.FileCount))
+    //    {
+    //        multiple.results[count].IsValid = await ValidaFile(PostedFileSpecifications, file);
+    //        multiple.results[count].file = file;
+
+    //        count++;
+
+    //        await InvokeAsync(StateHasChanged);
+    //    }
+
+    //    isValid = multiple.results.All(x => x.IsValid.Value);
+
+    //    CurrentValueAsString = "done";
+
+    //    if (OnMultipleFilesChanged.HasDelegate)
+    //        await OnMultipleFilesChanged.InvokeAsync(multiple);
+
+
+    //    EditContext?.NotifyFieldChanged(FieldIdentifier);
+    //    isLoading = false;
+    //}
+
+    //private async Task ClearSelection(UploadInputFormMultipleFileData d)
+    //{
+    //    if (OnDelete.HasDelegate)
+    //        await OnDelete.InvokeAsync(d.CodiceOggetto.Value);
+
+    //    d.IsValid = false;
+    //    d.File = null;
+    //    d.CodiceOggetto = null;
+    //}
+
+    //public async Task<bool> ValidaFile(IValidPostedFileSpecificationAsync validPostedFileSpecification, IBrowserFile file)
+    //{
+    //    if (Required && file == null)
+    //        return false;
+
+    //    if (file != null)
+    //        return await validPostedFileSpecification.IsSatisfiedByAsync(file);
+
+    //    return true;
+    //}
+
+    //private string getAriaLabel()
+    //{
+    //    if (ShowLabel && !string.IsNullOrEmpty(Label))
+    //        return Label;
+    //    else
+    //        return "upload file";
+    //}
+}

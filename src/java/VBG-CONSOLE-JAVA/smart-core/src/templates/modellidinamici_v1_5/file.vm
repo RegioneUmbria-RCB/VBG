@@ -1,0 +1,97 @@
+#set($idSemantico = ${campo.getNomeCampo()})
+#if($modelloHelper.isRenderForPrint())
+	#set($uploadedFiles = $helper.getUploadedFiles($idSemantico, $rowIndex))
+	#foreach($attachment in $uploadedFiles)
+		<div class="boldchar" style="width: 400px; word-wrap: break-word;">
+		 $attachment.NomeFile
+        </div>
+	#end
+	#if($uploadedFiles.size() == 0)
+		<span >_____________________________________</span>
+	#end
+	
+#else
+	#set($extsString = $campo.getProprietaCampo("AllowedExtensions",""))
+	#set($extsString = ${helper.buildFileTypeRestrictionsFromDynUpload($item.File.Tipo)})
+	#set($dsRequired = $campo.getProprietaCampo("DigitalSignatureRequired","false"))
+	##set($jsonFragment = "digitalSignatureRequired: $dsRequired, accept: '$extsString', classeBottoneElimina: '$classeCampo', classeBottoneUpload: '$classeCampo'")
+	#set($readonly = $campo.getProprietaCampo("ReadOnly",""))
+	#if($readonly && $readonly == "true")
+		#set($readonly = "readonly='readonly'")
+	#else
+		#set($readonly = "")
+	#end
+	#if($classeCampo == "mandatory")
+		#set($classeCampo = "campo-cart-container-obbligatorio")
+	#end
+	#set($maxUploadAttribute = "0")
+	##<input type="text" name="${nameAttr}" id="${nameAttr}_ID" value="$val" $readonly class="$classeCampo" id-sem="$campo.NomeCampo" starid='${idStar}'/>
+	
+	<div id="fileupload-$idStar" name="$nameAttr" class="campo-file-cart $classeCampo">
+		<label for="fileupload-$idStar" class="mandatory-star mandatory-file-star" style="display:none;">*</label>
+        <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
+        <div class="row fileupload-buttonbar">
+            <div class="span7">
+                <!-- The fileinput-button span is used to style the file input field as button -->
+                <span class="btn btn-success fileinput-button">
+                    <i class="icon-plus icon-white"></i>
+                    <span>Carica files...</span>
+                    <input type="file" name="files[]" multiple>
+                </span>
+            </div>
+            <div>
+	 			<span class="icon-firmadigitale" title="I files caricati devono essere firmati digitalmente">
+					<label >(!)</label>
+		        </span>
+		    </div>
+            <!-- The global progress information -->
+            <div class="span5 fileupload-progress fade">
+                <!-- The global progress bar -->
+                <div class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                    <div class="bar" style="width:0%;"></div>
+                </div>
+                <!-- The extended global progress information -->
+                <div class="progress-extended">&nbsp;</div>
+            </div>
+        </div>
+        <br>
+        <!-- The table listing the files available for upload/download -->
+        <table role="presentation" class="table table-striped file-list">
+        	<tbody class="files" data-toggle="modal-gallery" data-target="#modal-gallery"></tbody>
+        </table>
+        <!-- Display error and warning icons -->
+		<div class="campo-cart-icons">
+			#if($tooltiptext.length() > 0)
+				<span class="help_image" id="${idStar}_help" title="${helper.escapeValueForHtmlAttribute($tooltiptext)}">
+					<label >(?)</label>
+	            </span>
+			#end
+			<span class="error_image" style="display:none;" title="">
+				<label >(!)</label>
+	        </span>
+			<span class="warning_image" style="display:none;" title="">
+				<label >(!)</label>
+	        </span>
+	    </div>
+        <input type="hidden" name="$nameAttr" id="empty-$idStar" value="" />
+    </div>
+
+	#set($dbFilesArray = ${helper.buildUploadedFilesAsJsonObjectArray($idSemantico,$rowIndex,$contextPath,${helper.getRiferimentoModulo($helper.modulo)})})
+	#if(!$isTemplate)
+		<script>
+		//$(document).ready(function(){
+		$(function(){ 
+			#set($uploadParamsJson =${helper.buildFileUploadAdditionalParamsJson($idSemantico,$dsRequired.equalsIgnoreCase("true"),$rowIndex)})
+			##scrittura dello script che crea il controllo MultiFile e ne imposta le proprietà che definiscono il comportamento
+			initializeMultiFile('$idStar',"$extsString",$maxUploadAttribute,$dbFilesArray,$uploadParamsJson);
+		});
+		</script>	
+	#else
+		#set($placeholder = "'' + newBlockIndex + ''")
+		#set($placeholder = ${helper.buildIndexingSuffixWhithPlaceholder($rowIndex,$placeholder,0)})
+		#set($indexPlaceholder = ${helper.getIndexAsStringWithPlaceholder($rowIndex,"newBlockIndex",0)})
+		#set($uploadParamsJson = ${helper.buildFileUploadAdditionalParamsJson($idSemantico,$dsRequired.equalsIgnoreCase("true"),$indexPlaceholder)})
+		$blocco.addScript("initializeMultiFile('[${idSemantico}${placeholder}]${d2md.Id.Codice}','$extsString',$maxUploadAttribute,undefined,$uploadParamsJson);")
+	#end		
+	
+#end

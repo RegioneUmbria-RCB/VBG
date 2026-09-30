@@ -1,0 +1,22 @@
+﻿@page "/{IdComune}/{Software}/inserimento-istanza/gestione-files-excel/{idDomanda:int}/{stepId:int}"
+
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneFilesExcel;
+@inherits IstanzeStepPage
+
+
+@code {
+    /* LO STEP NON FA NULLA, RECUPERA SOLAMENTE LE INFORMAZIONI DAI FILES EXCEL E LE RIPORTA NEI DATI DINAMICI*/
+
+    [Inject]
+    protected IDatiDinamiciExcelService ExcelService { get; set; } = default!;
+
+    protected override void OnInitializeStep()
+    {
+        ExcelService.EstraiDatiDinamiciDaFilesExcel(IdDomanda.Value);
+    }
+
+    protected override bool CanEnterStep()
+    {
+        return false;
+    }
+}

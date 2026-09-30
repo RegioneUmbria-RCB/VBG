@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:sch="http://pa-evolution.com/schemas/messages/aurigaProxy" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://pa-evolution.com/definitions/aurigaProxy" xmlns:p="http://www.w3.org/2001/XMLSchema" targetNamespace="http://pa-evolution.com/definitions/aurigaProxy" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <p:schema xmlns="http://www.w3.org/2001/XMLSchema">
+      <p:import schemaLocation="AurigaProxyWsService.xsd" namespace="http://pa-evolution.com/schemas/messages/aurigaProxy" />
+    </p:schema>
+  </wsdl:types>
+  <wsdl:message name="AurigaProxyRequest">
+    <wsdl:part name="AurigaProxyRequest" element="sch:AurigaProxyRequest" />
+  </wsdl:message>
+  <wsdl:message name="AurigaProxyResponse">
+    <wsdl:part name="AurigaProxyResponse" element="sch:AurigaProxyResponse" />
+  </wsdl:message>
+  <wsdl:portType name="AurigaProxy">
+    <wsdl:operation name="AurigaProxy">
+      <wsdl:input name="AurigaProxyRequest" message="tns:AurigaProxyRequest" />
+      <wsdl:output name="AurigaProxyResponse" message="tns:AurigaProxyResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="AurigaProxyWs" type="tns:AurigaProxy">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="AurigaProxy">
+      <soap:operation soapAction="AurigaProxy" />
+      <wsdl:input name="AurigaProxyRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="AurigaProxyResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="AurigaProxyWsService">
+    <wsdl:port name="AurigaProxyWs" binding="tns:AurigaProxyWs">
+      <soap:address location="http://sviluppo-nb5:8080/EGrammataWsProxy/services/AurigaProxyWsService/" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

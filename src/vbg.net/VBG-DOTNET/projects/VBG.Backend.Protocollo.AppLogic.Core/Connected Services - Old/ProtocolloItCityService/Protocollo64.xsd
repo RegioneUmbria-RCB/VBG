@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/protocollo.service.contract.dto.output" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/protocollo.service.contract.dto.output" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="Protocollo61.xsd" namespace="http://schemas.datacontract.org/2004/07/protocollo.shared.contract.dto" />
+  <xs:import schemaLocation="Protocollo65.xsd" namespace="http://schemas.datacontract.org/2004/07/protocollo.service.contract.dto" />
+  <xs:complexType name="ProtocolloOutput">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ExitMessage" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Exitcode" type="xs:int" />
+      <xs:element minOccurs="0" name="Log" nillable="true" type="tns:Log" />
+      <xs:element minOccurs="0" name="PathAllegatiProtocollo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Protocollo" nillable="true" type="tns:Protocollo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ProtocolloOutput" nillable="true" type="tns:ProtocolloOutput" />
+  <xs:complexType name="Log">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Voci" nillable="true" type="tns:ArrayOfVoceLog" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Log" nillable="true" type="tns:Log" />
+  <xs:complexType name="ArrayOfVoceLog">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="VoceLog" nillable="true" type="tns:VoceLog" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfVoceLog" nillable="true" type="tns:ArrayOfVoceLog" />
+  <xs:complexType name="VoceLog">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Contenuto" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TipoContenuto" type="tns:VoceLog.ContentType" />
+      <xs:element minOccurs="0" name="Titolo" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="VoceLog" nillable="true" type="tns:VoceLog" />
+  <xs:simpleType name="VoceLog.ContentType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="text-plain" />
+      <xs:enumeration value="base64" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="VoceLog.ContentType" nillable="true" type="tns:VoceLog.ContentType" />
+  <xs:complexType name="Protocollo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AnnoProtocollo" nillable="true" type="xs:string" />
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/protocollo.shared.contract.dto" minOccurs="0" name="ChiaveUOAssegnataria" nillable="true" type="q1:RecapitoInterno.ChiaveAlternativa" />
+      <xs:element minOccurs="0" name="DataProtocollo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DesUOAssegnataria" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Destinatari" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Fascicolo" nillable="true" type="tns:Fascicolo" />
+      <xs:element minOccurs="0" name="FlagCopiaAnnullata" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="FlagEvidenza" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="FlagRegistrazioneAnnullata" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="FlagRiservato" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="FlagScartato" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="IdDocumento" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Mittenti" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="NumCopia" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="NumeroProtocollo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Oggetto" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="RegistrazioneSecondaria" nillable="true" type="tns:RegistrazioneSecondaria" />
+      <xs:element minOccurs="0" name="Sigla" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TipoRegistrazione" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Protocollo" nillable="true" type="tns:Protocollo" />
+  <xs:complexType name="Fascicolo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Anno" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Classe" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DataApertura" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DataArchiviazione" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DataChiusura" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Numero" type="xs:int" />
+      <xs:element minOccurs="0" name="NumeroSottofascicolo" type="xs:int" />
+      <xs:element minOccurs="0" name="Oggetto" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Segnatura" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Sottoclasse" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Titolo" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Fascicolo" nillable="true" type="tns:Fascicolo" />
+  <xs:complexType name="RegistrazioneSecondaria">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Anno" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Numero" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Sigla" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RegistrazioneSecondaria" nillable="true" type="tns:RegistrazioneSecondaria" />
+  <xs:complexType name="RicercaFascicoloOutput">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ExitCode" type="xs:int" />
+      <xs:element minOccurs="0" name="ExitMessage" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Fascicoli" nillable="true" type="tns:ArrayOfFascicolo" />
+      <xs:element minOccurs="0" name="Log" nillable="true" type="tns:Log" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RicercaFascicoloOutput" nillable="true" type="tns:RicercaFascicoloOutput" />
+  <xs:complexType name="ArrayOfFascicolo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Fascicolo" nillable="true" type="tns:Fascicolo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfFascicolo" nillable="true" type="tns:ArrayOfFascicolo" />
+  <xs:complexType name="RicercaProtocolloOutput">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ExitMessage" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Exitcode" type="xs:int" />
+      <xs:element minOccurs="0" name="Log" nillable="true" type="tns:Log" />
+      <xs:element minOccurs="0" name="Protocollo" nillable="true" type="tns:ArrayOfProtocollo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RicercaProtocolloOutput" nillable="true" type="tns:RicercaProtocolloOutput" />
+  <xs:complexType name="ArrayOfProtocollo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Protocollo" nillable="true" type="tns:Protocollo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfProtocollo" nillable="true" type="tns:ArrayOfProtocollo" />
+  <xs:complexType name="RicercaUOOutput">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ExitCode" type="xs:int" />
+      <xs:element minOccurs="0" name="ExitMessage" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Log" nillable="true" type="tns:Log" />
+      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/protocollo.shared.contract.dto" minOccurs="0" name="UO" nillable="true" type="q2:ArrayOfRecapitoInterno" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RicercaUOOutput" nillable="true" type="tns:RicercaUOOutput" />
+  <xs:complexType name="CoordinateTitolazioneOutput">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ExitCode" type="xs:int" />
+      <xs:element minOccurs="0" name="ExitMessage" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Log" nillable="true" type="tns:Log" />
+      <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/protocollo.service.contract.dto" minOccurs="0" name="Titolazione" nillable="true" type="q3:CoordinateTitolazione" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CoordinateTitolazioneOutput" nillable="true" type="tns:CoordinateTitolazioneOutput" />
+  <xs:complexType name="BaseOutput">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ExitMessage" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Exitcode" type="xs:int" />
+      <xs:element minOccurs="0" name="Log" nillable="true" type="tns:Log" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BaseOutput" nillable="true" type="tns:BaseOutput" />
+</xs:schema>

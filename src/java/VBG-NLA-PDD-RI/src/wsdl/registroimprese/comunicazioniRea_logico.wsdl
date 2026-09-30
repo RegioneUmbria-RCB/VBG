@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name='ProtocolloSUAPWS' targetNamespace='http://www.impresainungiorno.gov.it/schema/suap/ri' xmlns='http://schemas.xmlsoap.org/wsdl/' xmlns:soap='http://schemas.xmlsoap.org/wsdl/soap/'
+	xmlns:tns1='http://www.impresainungiorno.gov.it/schema/suap/ri' xmlns:tns='http://ejb.protocollo.infocamere.it/' xmlns:ri='http://www.impresainungiorno.gov.it/schema/suap/ri/spc'
+	xmlns:xsd='http://www.w3.org/2001/XMLSchema' xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+	<types>
+		<xs:schema version='1.0' xmlns:tns='http://ejb.protocollo.infocamere.it/' xmlns:xs='http://www.w3.org/2001/XMLSchema'>
+			<xs:import namespace="http://ejb.protocollo.infocamere.it/" schemaLocation="comunicazioni_rea.xsd" />
+		</xs:schema>
+		<xs:schema version='1.0' xmlns:ri='http://www.impresainungiorno.gov.it/schema/suap/ri/spc' xmlns:xs='http://www.w3.org/2001/XMLSchema'>
+			<xs:import namespace="http://www.impresainungiorno.gov.it/schema/suap/ri/spc" schemaLocation="interazioni-ri-1.0.1.xsd" />
+		</xs:schema>
+	</types>
+	<message name='ProtocolloSUAPException'>
+		<part element='tns:ProtocolloSUAPException' name='ProtocolloSUAPException'></part>
+	</message>
+	<message name='ProtocolloSUAP_comunicazioneREAResponse'>
+		<part element='tns:comunicazioneREAResponse' name='comunicazioneREAResponse'></part>
+	</message>
+	<message name='ProtocolloSUAP_comunicazioneREA'>
+		<part element='tns:comunicazioneREA' name='comunicazioneREA'></part>
+	</message>
+	<message name="ProtocolloSUAP_comunicazioneREAStd">
+		<part element="tns:comunicazioneREAStd"
+			name="comunicazioneREAStd">
+		</part>
+	</message>
+	<message name="ProtocolloSUAP_comunicazioneREAStdResponse">
+		<part element="tns:comunicazioneREAStdResponse"
+			name="comunicazioneREAStdResponse">
+		</part>
+	</message>	
+	<message name='PraticaSUAPException'>
+		<part element='tns:PraticaSUAPException' name='PraticaSUAPException'></part>
+	</message>
+	<message name='IscrizioneImpresaRiSpcRequest'>
+		<part element='ri:IscrizioneImpresaRiSpcRequest' name='IscrizioneImpresaRiSpcRequest'></part>
+	</message>
+	<message name='IscrizioneImpresaRiSpcResponse'>
+		<part element='ri:IscrizioneImpresaRiSpcResponse' name='IscrizioneImpresaRiSpcResponse'></part>
+	</message>
+	<portType name='ProtocolloSUAP'>
+		<wsdl:operation name="dettaglioImpresa" parameterOrder='comunicazioneREA'>
+			<input message='tns1:ProtocolloSUAP_comunicazioneREA' name="ComunicazioneREARequestOpe"></input>
+			<output message='tns1:ProtocolloSUAP_comunicazioneREAResponse' name="ComunicazioneREAResponseOpe"></output>
+			<fault message='tns1:PraticaSUAPException' name='PraticaSUAPExceptionOpe'></fault>
+			<fault message='tns1:ProtocolloSUAPException' name='ProtocolloSUAPExceptionOpe'></fault>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="comunicazioneREA" parameterOrder='comunicazioneREAStd'>
+			<input message='tns1:ProtocolloSUAP_comunicazioneREAStd' name="ComunicazioneREAStdRequestOpe"></input>
+			<output message='tns1:ProtocolloSUAP_comunicazioneREAStdResponse' name="ComunicazioneREAStdResponseOpe"></output>
+			<fault message='tns1:PraticaSUAPException' name='PraticaSUAPExceptionOpe'></fault>
+			<fault message='tns1:ProtocolloSUAPException' name='ProtocolloSUAPExceptionOpe'></fault>
+		</wsdl:operation>		
+		
+		
+		<wsdl:operation name="comunicazioneREAStd" parameterOrder='comunicazioneREAStd'>
+			<input message='tns1:ProtocolloSUAP_comunicazioneREAStd' name="ComunicazioneREAStdRequestOpe"></input>
+			<output message='tns1:ProtocolloSUAP_comunicazioneREAStdResponse' name="ComunicazioneREAStdResponseOpe"></output>
+			<fault message='tns1:PraticaSUAPException' name='PraticaSUAPExceptionOpe'></fault>
+			<fault message='tns1:ProtocolloSUAPException' name='ProtocolloSUAPExceptionOpe'></fault>
+		</wsdl:operation>		
+	</portType>
+	<portType name='RichiestaIscrizioneImpresaRiSPC'>
+		<operation name='IscrizioneImpresaRiSpc'>
+			<input message='tns1:IscrizioneImpresaRiSpcRequest' name='IscrizioneImpresaRiSpcRequest'></input>
+			<output message='tns1:IscrizioneImpresaRiSpcResponse' name='IscrizioneImpresaRiSpcResponse'></output>
+		</operation>
+	</portType>
+	<wsdl:binding name="RichiestaIscrizioneBinding" type="tns1:RichiestaIscrizioneImpresaRiSPC">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="IscrizioneImpresaRiSpc">
+			<soap:operation soapAction="" />
+			<wsdl:input name="IscrizioneImpresaRiSpcRequest"></wsdl:input>
+			<wsdl:output name="IscrizioneImpresaRiSpcResponse"></wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:binding name="ProtocolloSUAPBinding" type="tns1:ProtocolloSUAP">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="dettaglioImpresa">
+			<soap:operation soapAction="" />
+			<wsdl:input name="ComunicazioneREARequestOpe"></wsdl:input>
+			<wsdl:output name="ComunicazioneREAResponseOpe"></wsdl:output>
+			<wsdl:fault name="PraticaSUAPExceptionOpe"></wsdl:fault>
+			<wsdl:fault name="ProtocolloSUAPExceptionOpe"></wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="comunicazioneREA">
+			<soap:operation soapAction="" />
+			<wsdl:input name="ComunicazioneREAStdRequestOpe"></wsdl:input>
+			<wsdl:output name="ComunicazioneREAStdResponseOpe"></wsdl:output>
+			<wsdl:fault name="PraticaSUAPExceptionOpe"></wsdl:fault>
+			<wsdl:fault name="ProtocolloSUAPExceptionOpe"></wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="comunicazioneREAStd">
+			<soap:operation soapAction="" />
+			<wsdl:input name="ComunicazioneREAStdRequestOpe"></wsdl:input>
+			<wsdl:output name="ComunicazioneREAStdResponseOpe"></wsdl:output>
+			<wsdl:fault name="PraticaSUAPExceptionOpe"></wsdl:fault>
+			<wsdl:fault name="ProtocolloSUAPExceptionOpe"></wsdl:fault>
+		</wsdl:operation>		
+		
+	</wsdl:binding>
+	<wsdl:service name="interazioniService">
+		<!-- <wsdl:port name="IscrizioneImpreseService" binding="tns1:RichiestaIscrizioneBinding"> <soap:address location="http://nica-test.lepida.it/pddEnti/PD/SPCComuneRavenna/SPCPAGenericaPortaleImprese/SPCinterazioni-ri/richiesta-iscrizione-impresa-RI" 
+			/> </wsdl:port> <wsdl:port name="ProtocolloSUAPService" binding="tns1:ProtocolloSUAPBinding"> <soap:address location="http://nica-test.lepida.it/pddEnti/PD/SPCComuneRavenna/SPCPAGenericaPortaleImprese/SPCinterazioni-ri/richiesta-dettaglio-impresa-RI" 
+			/> </wsdl:port> -->
+		<wsdl:port name="IscrizioneImpreseService" binding="tns1:RichiestaIscrizioneBinding">
+			<soap:address location="http://localhost:8081/pddEnti/PD/SPCComuneRavenna/SPCPAGenericaPortaleImprese/SPCinterazioni-ri/richiesta-iscrizione-impresa-RI" />
+		</wsdl:port>
+		<wsdl:port name="ProtocolloSUAPService" binding="tns1:ProtocolloSUAPBinding">			
+			<soap:address location="http://localhost:8081/pddEnti/PD/SPCComuneRavenna/SPCPAGenericaPortaleImprese/SPCinterazioni-ri/richiesta-dettaglio-impresa-RI" />
+		</wsdl:port>
+	</wsdl:service>
+</definitions>

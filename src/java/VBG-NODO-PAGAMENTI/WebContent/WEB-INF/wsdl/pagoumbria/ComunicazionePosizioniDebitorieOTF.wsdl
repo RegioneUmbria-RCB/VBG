@@ -1,0 +1,704 @@
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns1="http://www.cart.rete.toscana.it/servizi/iris_1_1/proxy" name="ComunicazionePosizioniDebitorieOTF" targetNamespace="http://www.cart.rete.toscana.it/servizi/iris_1_1/proxy">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns3="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpEsito" xmlns:ns2="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpAllineamentoPendenze" xmlns:ns1="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpHeader" elementFormDefault="qualified" targetNamespace="http://www.cart.rete.toscana.it/servizi/iris_1_1/proxy" version="1.0">
+
+  <xs:import namespace="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpHeader"/>
+
+  <xs:import namespace="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpAllineamentoPendenze"/>
+
+  <xs:import namespace="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpEsito"/>
+
+  <xs:element name="IdpAllineamentoPendenzeEnte">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="IdpAllineamentoPendenze" type="ns2:IdpAllineamentoPendenze"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="IdpAllineamentoPendenzeEnte.Esito">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="IdpEsito" type="ns3:IdpEsito"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="IdpAllineamentoPendenzeEnteOTF">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="ns2:IdpAllineamentoPendenzeOTF"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="IdpAllineamentoPendenzeEnteOTF.Esito">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="IdpEsitoOTF" type="ns3:IdpEsitoOTF"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="IdpAllineamentoPendenzeMultiEnteOTF">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="ns2:IdpAllineamentoPendenzeMultiOTF"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="IdpAllineamentoPendenzeMultiEnteOTF.Esito">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="IdpMultiEsitoOTF" type="ns3:IdpMultiEsitoOTF"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpInclude" elementFormDefault="qualified" targetNamespace="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpInclude" version="1.0">
+
+  <xs:complexType name="CIP">
+    <xs:sequence>
+      <xs:element name="Codice" type="xs:string"/>
+    </xs:sequence>
+    <xs:attribute name="Tipo" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="Allegato">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Titolo" type="xs:string"/>
+      <xs:element name="Codifica" type="tns:MIMETypeCode"/>
+      <xs:element name="Contenuto" type="xs:base64Binary"/>
+      <xs:element minOccurs="0" name="IdAntifalsificazione" type="xs:string"/>
+    </xs:sequence>
+    <xs:attribute name="Tipo" type="tns:ContentType" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="CoordinateBancarie">
+    <xs:sequence>
+      <xs:element name="CodiceIBAN" type="xs:string"/>
+      <xs:element name="Beneficiario" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="DettaglioCanalePagamento">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Filiale" type="xs:string"/>
+      <xs:element minOccurs="0" name="Sportello" type="xs:string"/>
+      <xs:element minOccurs="0" name="IdTerminale" type="xs:string"/>
+      <xs:element minOccurs="0" name="IdOperazione" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="stTipoSoggetto">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="F"/>
+      <xs:enumeration value="G"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="StatoPendenza">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Aperta"/>
+      <xs:enumeration value="Chiusa"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Divisa">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="EUR"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="StatoPagamento">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Non Pagato"/>
+      <xs:enumeration value="Pagato"/>
+      <xs:enumeration value="Non Pagabile"/>
+      <xs:enumeration value="Pagamento Irregolare"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="MIMETypeCode">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="GIF_"/>
+      <xs:enumeration value="HTML"/>
+      <xs:enumeration value="JPEG"/>
+      <xs:enumeration value="LNK_"/>
+      <xs:enumeration value="MSWD"/>
+      <xs:enumeration value="MSEX"/>
+      <xs:enumeration value="MSPP"/>
+      <xs:enumeration value="PDF_"/>
+      <xs:enumeration value="PNG_"/>
+      <xs:enumeration value="TEXT"/>
+      <xs:enumeration value="XML_"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ContentType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Documento"/>
+      <xs:enumeration value="Ricevuta"/>
+      <xs:enumeration value="Quietanza"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="TipoPagamento">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Pagamento a Rate"/>
+      <xs:enumeration value="Pagamento Unico"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="TipoOperazioneUpdateStatus">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Insert"/>
+      <xs:enumeration value="Update"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="TipoDestinatario">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Cittadino"/>
+      <xs:enumeration value="Delegato"/>
+      <xs:enumeration value="Altro"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="TipoOperazione">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Insert"/>
+      <xs:enumeration value="UpdateStatus"/>
+      <xs:enumeration value="UpdateMassivo"/>
+      <xs:enumeration value="Replace"/>
+      <xs:enumeration value="Delete"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpHeader" xmlns:ns1="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpInclude" elementFormDefault="qualified" targetNamespace="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpHeader" version="1.0">
+
+  <xs:import namespace="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpInclude"/>
+
+  <xs:element name="IdpHeader" type="tns:IdpHeader"/>
+
+  <xs:element name="IdpOTF">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="URL_BACK" type="xs:string"/>
+        <xs:element name="URL_CANCEL" type="xs:string"/>
+        <xs:element minOccurs="0" name="OFFLINE_PAYMENT_METHODS" type="xs:boolean"/>
+        <xs:element minOccurs="0" name="ID_PSP" type="xs:string"/>
+        <xs:element minOccurs="0" name="DATI_VERSANTE" type="tns:DATI_VERSANTE_Type"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="IdpHeader">
+    <xs:sequence>
+      <xs:element name="TRT" type="tns:HeaderTRT"/>
+      <xs:element name="E2E" type="tns:HeaderE2E"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="HeaderTRT">
+    <xs:sequence>
+      <xs:element name="ServiceName" type="tns:ServiceName"/>
+      <xs:element name="MsgId" type="xs:string"/>
+      <xs:element name="XMLCrtDt" type="xs:anySimpleType"/>
+      <xs:element name="Sender" type="tns:TRTSender"/>
+      <xs:element name="Receiver" type="tns:TRTReceiver"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="TRTSender">
+    <xs:sequence>
+      <xs:element name="SenderId" type="xs:string"/>
+      <xs:element name="SenderSys" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="TRTReceiver">
+    <xs:sequence>
+      <xs:element name="ReceiverId" type="xs:string"/>
+      <xs:element name="ReceiverSys" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="HeaderE2E">
+    <xs:sequence>
+      <xs:element name="E2ESrvcNm" type="xs:string"/>
+      <xs:element name="E2EMsgId" type="xs:string"/>
+      <xs:element name="XMLCrtDt" type="xs:anySimpleType"/>
+      <xs:element name="Sender" type="tns:E2ESender"/>
+      <xs:element name="Receiver" type="tns:E2EReceiver"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="E2ESender">
+    <xs:sequence>
+      <xs:element name="E2ESndrId" type="xs:string"/>
+      <xs:element name="E2ESndrSys" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="E2EReceiver">
+    <xs:sequence>
+      <xs:element name="E2ERcvrId" type="xs:string"/>
+      <xs:element name="E2ERcvrSys" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="DATI_VERSANTE_Type">
+    <xs:sequence>
+      <xs:element name="TIPO_SOGGETTO" type="ns1:stTipoSoggetto"/>
+      <xs:element name="ID_FISCALE" type="xs:string"/>
+      <xs:element name="ANAGRAFICA" type="xs:string"/>
+      <xs:element minOccurs="0" name="E_MAIL" type="xs:string"/>
+      <xs:element minOccurs="0" name="INDIRIZZO" type="xs:string"/>
+      <xs:element minOccurs="0" name="NUMERO_CIVICO" type="xs:string"/>
+      <xs:element minOccurs="0" name="CAP" type="xs:string"/>
+      <xs:element minOccurs="0" name="LOCALITA" type="xs:string"/>
+      <xs:element minOccurs="0" name="PROVINCIA" type="xs:string"/>
+      <xs:element minOccurs="0" name="NAZIONE" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="ServiceName">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="IdpAllineamentoPendenze"/>
+      <xs:enumeration value="IdpInformativaPagamento"/>
+      <xs:enumeration value="IdpRendicontazioneEnti"/>
+      <xs:enumeration value="IdpConfigurazioneEnte"/>
+      <xs:enumeration value="IdpAutorizzazioneDiPagamento"/>
+      <xs:enumeration value="IdpEstrattoContoDebitorio"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpEsito" xmlns:ns1="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpHeader" elementFormDefault="qualified" targetNamespace="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpEsito" version="1.0">
+
+  <xs:import namespace="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpHeader"/>
+
+  <xs:element name="IdpEsito" type="tns:IdpEsito"/>
+
+  <xs:element name="IdpEsitoOTF" type="tns:IdpEsitoOTF"/>
+
+  <xs:element name="IdpMultiEsitoOTF" type="tns:IdpMultiEsitoOTF"/>
+
+  <xs:complexType name="IdpEsitoOTF">
+    <xs:sequence>
+      <xs:element ref="ns1:IdpHeader"/>
+      <xs:element minOccurs="0" name="IdpOTF" type="tns:IdpOTFType"/>
+      <xs:element name="IdpBody" type="tns:IdpBodyType"/>
+    </xs:sequence>
+    <xs:attribute name="Versione" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="IdpOTFType">
+    <xs:sequence>
+      <xs:element name="IdSessioneGW" type="xs:string"/>
+      <xs:element name="UrlGW" type="xs:anyURI"/>
+    </xs:sequence>
+    <xs:attribute name="Versione" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="IdpBodyType">
+    <xs:sequence>
+      <xs:element name="InfoMessaggio" type="tns:InfoMessaggio"/>
+      <xs:element minOccurs="0" name="InfoDettaglio" type="tns:InfoDettaglio"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="InfoMessaggio">
+    <xs:sequence>
+      <xs:element name="Stato" type="tns:StatoMessaggio"/>
+      <xs:element minOccurs="0" name="Esiti" type="tns:Esiti"/>
+      <xs:element minOccurs="0" name="Note" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Esiti">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" name="Esito" type="tns:Esito"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Esito">
+    <xs:sequence>
+      <xs:element name="Codice" type="xs:string"/>
+      <xs:element name="Descrizione" type="xs:string"/>
+      <xs:element minOccurs="0" name="Elemento" type="xs:string"/>
+      <xs:element minOccurs="0" name="Note" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="InfoDettaglio">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" name="Dettaglio" type="tns:Dettaglio"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Dettaglio">
+    <xs:sequence>
+      <xs:element name="Id" type="xs:string"/>
+      <xs:element name="Stato" type="tns:StatoDettaglio"/>
+      <xs:element minOccurs="0" name="Esiti" type="tns:Esiti"/>
+      <xs:element minOccurs="0" name="Note" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="IdpMultiEsitoOTF">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="IdpOTF" type="tns:IdpOTFType"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="IdpEsitoOTF" type="tns:IdpMultiEsitoOTFElement"/>
+    </xs:sequence>
+    <xs:attribute name="Versione" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="IdpMultiEsitoOTFElement">
+    <xs:sequence>
+      <xs:element name="E2EMsgId" type="xs:string"/>
+      <xs:element name="IdpBody" type="tns:IdpBodyType"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="IdpEsito">
+    <xs:sequence>
+      <xs:element ref="ns1:IdpHeader"/>
+      <xs:element name="IdpBody" type="tns:IdpBodyType"/>
+    </xs:sequence>
+    <xs:attribute name="Versione" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:simpleType name="StatoMessaggio">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Elaborato Correttamente"/>
+      <xs:enumeration value="Elaborato con Errori"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="StatoDettaglio">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Scartato"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpAllineamentoPendenze" xmlns:ns2="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpInclude" xmlns:ns1="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpHeader" elementFormDefault="qualified" targetNamespace="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpAllineamentoPendenze" version="1.0">
+
+  <xs:import namespace="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpHeader"/>
+
+  <xs:import namespace="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpInclude"/>
+
+  <xs:element name="IdpAllineamentoPendenze" type="tns:IdpAllineamentoPendenze"/>
+
+  <xs:element name="IdpAllineamentoPendenzeMultiOTF">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="HeaderTRT" type="ns1:HeaderTRT"/>
+        <xs:element ref="ns1:IdpOTF"/>
+        <xs:element minOccurs="0" name="Parametri" type="tns:IdpAllineamentoPendenzeMultiOTFParametriType"/>
+        <xs:element maxOccurs="unbounded" name="IdpAllineamentoPendenzeOTF" type="tns:IdpAllineamentoPendenzeMultiOTFElementType"/>
+      </xs:sequence>
+      <xs:attribute name="Versione" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="IdpAllineamentoPendenzeOTF">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="IdpHeader" type="ns1:IdpHeader"/>
+        <xs:element minOccurs="0" ref="ns1:IdpOTF"/>
+        <xs:element name="IdpBody" type="tns:IdpBody"/>
+      </xs:sequence>
+      <xs:attribute name="Versione" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="IdpBody">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" name="Pendenza" type="tns:Pendenza"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Pendenza">
+    <xs:complexContent>
+      <xs:extension base="tns:HeadPendenza">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Insert" type="tns:Pendenza.InsertReplace"/>
+          <xs:element minOccurs="0" name="UpdateMassivo" type="tns:Pendenza.UpdateMassivo"/>
+          <xs:element minOccurs="0" name="UpdateStatus" type="tns:Pendenza.UpdateStatus"/>
+          <xs:element minOccurs="0" name="Replace" type="tns:Pendenza.InsertReplace"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="HeadPendenza">
+    <xs:sequence>
+      <xs:element name="IdPendenza" type="xs:string"/>
+      <xs:element name="Mittente" type="tns:Mittente"/>
+      <xs:element name="Destinatari" type="tns:Destinatari"/>
+      <xs:element minOccurs="0" name="CartellaDiPagamento" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="Note" type="xs:string"/>
+    </xs:sequence>
+    <xs:attribute name="TipoPendenza" type="xs:string" use="required"/>
+    <xs:attribute name="TipoOperazione" type="ns2:TipoOperazione" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="Pendenza.InsertReplace">
+    <xs:sequence>
+      <xs:element name="DescrizioneCausale" type="xs:string"/>
+      <xs:element minOccurs="0" name="Riscossore" type="tns:Riscossore"/>
+      <xs:element name="DataCreazione" type="xs:anySimpleType"/>
+      <xs:element name="DataEmissione" type="xs:anySimpleType"/>
+      <xs:element name="DataPrescrizione" type="xs:anySimpleType"/>
+      <xs:element name="AnnoRiferimento" type="xs:gYear"/>
+      <xs:element minOccurs="0" name="DataModificaEnte" type="xs:anySimpleType"/>
+      <xs:element name="Stato" type="ns2:StatoPendenza"/>
+      <xs:element name="ImportoTotale" type="xs:decimal"/>
+      <xs:element name="Divisa" type="ns2:Divisa"/>
+      <xs:element maxOccurs="unbounded" name="InfoPagamento">
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:extension base="tns:InfoPagamento.InsertReplace">
+              <xs:sequence>
+                <xs:element maxOccurs="unbounded" name="DettaglioPagamento" type="tns:DettaglioPagamento.InsertReplace"/>
+              </xs:sequence>
+            </xs:extension>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="Allegato" type="ns2:Allegato"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Riscossore">
+    <xs:sequence>
+      <xs:element name="Id" type="xs:string"/>
+      <xs:element name="Riferimento" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="DettaglioPagamento.InsertReplace">
+    <xs:sequence>
+      <xs:element name="IdPagamento" type="xs:string"/>
+      <xs:element minOccurs="0" name="CIP" type="ns2:CIP"/>
+      <xs:element name="DataScadenza" type="xs:anySimpleType"/>
+      <xs:element minOccurs="0" name="DataInizioValidita" type="xs:anySimpleType"/>
+      <xs:element name="DataFineValidita" type="xs:anySimpleType"/>
+      <xs:element name="Stato" type="ns2:StatoPagamento"/>
+      <xs:element name="Importo" type="xs:decimal"/>
+      <xs:element minOccurs="0" name="DettaglioImporto" type="tns:DettaglioImporto"/>
+      <xs:element minOccurs="0" name="DettaglioTransazione" type="tns:DettaglioTransazione"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="Allegato" type="ns2:Allegato"/>
+      <xs:element minOccurs="0" name="CausalePagamento" type="xs:string"/>
+      <xs:element minOccurs="0" name="AccreditoPagamento" type="ns2:CoordinateBancarie"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="DettaglioImporto">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" name="Voce" type="tns:VoceImporto"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="VoceImporto">
+    <xs:sequence>
+      <xs:element name="Codice" type="xs:string"/>
+      <xs:element name="Descrizione" type="xs:string"/>
+      <xs:element name="Importo" type="xs:decimal"/>
+      <xs:element minOccurs="0" name="CapitoloBilancio" type="xs:string"/>
+      <xs:element minOccurs="0" name="Accertamento" type="xs:string"/>
+    </xs:sequence>
+    <xs:attribute name="Tipo" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="DettaglioTransazione">
+    <xs:sequence>
+      <xs:element name="DataPagamento" type="xs:anySimpleType"/>
+      <xs:element name="CanalePagamento" type="xs:string"/>
+      <xs:element minOccurs="0" name="MezzoPagamento" type="xs:string"/>
+      <xs:element minOccurs="0" name="ImportoPagamento" type="xs:decimal"/>
+      <xs:element minOccurs="0" name="NotePagamento" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="InfoPagamento.InsertReplace">
+    <xs:sequence/>
+    <xs:attribute name="TipoPagamento" type="ns2:TipoPagamento" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="Pendenza.UpdateMassivo">
+    <xs:sequence>
+      <xs:element name="DescrizioneCausale" type="xs:string"/>
+      <xs:element minOccurs="0" name="Riscossore" type="tns:Riscossore"/>
+      <xs:element name="DataCreazione" type="xs:anySimpleType"/>
+      <xs:element name="DataEmissione" type="xs:anySimpleType"/>
+      <xs:element name="DataPrescrizione" type="xs:anySimpleType"/>
+      <xs:element name="AnnoRiferimento" type="xs:gYear"/>
+      <xs:element minOccurs="0" name="DataModificaEnte" type="xs:anySimpleType"/>
+      <xs:element name="Stato" type="ns2:StatoPendenza"/>
+      <xs:element name="ImportoTotale" type="xs:decimal"/>
+      <xs:element name="Divisa" type="ns2:Divisa"/>
+      <xs:element maxOccurs="unbounded" name="InfoPagamento">
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:extension base="tns:InfoPagamento.InsertReplace">
+              <xs:sequence>
+                <xs:element maxOccurs="unbounded" name="DettaglioPagamento" type="tns:DettaglioPagamento.InsertReplace"/>
+              </xs:sequence>
+            </xs:extension>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="Allegato" type="ns2:Allegato"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Pendenza.UpdateStatus">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Riscossore" type="tns:Riscossore"/>
+      <xs:element minOccurs="0" name="DataModificaEnte" type="xs:anySimpleType"/>
+      <xs:element minOccurs="0" name="Stato" type="ns2:StatoPendenza"/>
+      <xs:element minOccurs="0" name="ImportoTotale" type="xs:decimal"/>
+      <xs:element maxOccurs="unbounded" name="InfoPagamento">
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:extension base="tns:InfoPagamento.UpdateStatus">
+              <xs:sequence>
+                <xs:element maxOccurs="unbounded" name="DettaglioPagamento" type="tns:DettaglioPagamento.UpdateStatus"/>
+              </xs:sequence>
+            </xs:extension>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="Allegato" type="ns2:Allegato"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="DettaglioPagamento.UpdateStatus">
+    <xs:sequence>
+      <xs:element name="IdPagamento" type="xs:string"/>
+      <xs:element minOccurs="0" name="CIP" type="ns2:CIP"/>
+      <xs:element minOccurs="0" name="DataScadenza" type="xs:anySimpleType"/>
+      <xs:element minOccurs="0" name="DataInizioValidita" type="xs:anySimpleType"/>
+      <xs:element minOccurs="0" name="DataFineValidita" type="xs:anySimpleType"/>
+      <xs:element name="Stato" type="ns2:StatoPagamento"/>
+      <xs:element minOccurs="0" name="Importo" type="xs:decimal"/>
+      <xs:element minOccurs="0" name="DettaglioImporto" type="tns:DettaglioImporto"/>
+      <xs:element minOccurs="0" name="DettaglioTransazione" type="tns:DettaglioTransazione"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="Allegato" type="ns2:Allegato"/>
+      <xs:element minOccurs="0" name="CausalePagamento" type="xs:string"/>
+      <xs:element minOccurs="0" name="AccreditoPagamento" type="ns2:CoordinateBancarie"/>
+      <xs:element default="Update" minOccurs="0" name="TipoOperazione" type="ns2:TipoOperazioneUpdateStatus"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="InfoPagamento.UpdateStatus">
+    <xs:sequence/>
+    <xs:attribute name="TipoPagamento" type="ns2:TipoPagamento" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="Mittente">
+    <xs:sequence>
+      <xs:element name="Id" type="xs:string"/>
+      <xs:element minOccurs="0" name="Descrizione" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Destinatari">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" name="Destinatario" type="tns:Destinatario"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Destinatario">
+    <xs:sequence>
+      <xs:element name="Id" type="xs:string"/>
+      <xs:element minOccurs="0" name="Descrizione" type="xs:string"/>
+      <xs:element minOccurs="0" name="DatiDestinatario" type="tns:DatiDestinatarioType"/>
+      <xs:element minOccurs="0" name="IdentificativoAlternativo" type="tns:IdentificativoAlternativoType"/>
+    </xs:sequence>
+    <xs:attribute name="Tipo" type="ns2:TipoDestinatario" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="DatiDestinatarioType">
+    <xs:sequence>
+      <xs:element name="TipoSoggetto" type="ns2:stTipoSoggetto"/>
+      <xs:element name="Anagrafica" type="xs:string"/>
+      <xs:element minOccurs="0" name="EMail" type="xs:string"/>
+      <xs:element minOccurs="0" name="Indirizzo" type="xs:string"/>
+      <xs:element minOccurs="0" name="NumeroCivico" type="xs:string"/>
+      <xs:element minOccurs="0" name="Cap" type="xs:string"/>
+      <xs:element minOccurs="0" name="Localita" type="xs:string"/>
+      <xs:element minOccurs="0" name="Provincia" type="xs:string"/>
+      <xs:element minOccurs="0" name="Nazione" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="IdentificativoAlternativoType">
+    <xs:sequence>
+      <xs:element name="TipoCodiceIdenficativoAlternativo" type="xs:string"/>
+      <xs:element name="CodiceIdenficativoAlternativo" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="IdpAllineamentoPendenzeMultiOTFParametriType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AnnullaPagamentiInCorso" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="IdpAllineamentoPendenzeMultiOTFElementType">
+    <xs:sequence>
+      <xs:element name="E2ESender" type="ns1:E2ESender"/>
+      <xs:element name="E2EMsgId" type="xs:string"/>
+      <xs:element name="IdpBody" type="tns:IdpBody"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="IdpAllineamentoPendenze">
+    <xs:sequence>
+      <xs:element ref="ns1:IdpHeader"/>
+      <xs:element name="IdpBody" type="tns:IdpBody"/>
+    </xs:sequence>
+    <xs:attribute name="Versione" type="xs:string" use="required"/>
+  </xs:complexType>
+
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="IdpAllineamentoPendenzeEnteOTFResponse">
+    <wsdl:part element="ns1:IdpAllineamentoPendenzeEnteOTF.Esito" name="AllineamentoPendenzeEnteOTF.Esito">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="IdpAllineamentoPendenzeMultiEnteOTFResponse">
+    <wsdl:part element="ns1:IdpAllineamentoPendenzeMultiEnteOTF.Esito" name="AllineamentoPendenzeEnteOTF.Esito">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="IdpAllineamentoPendenzeMultiEnteOTF">
+    <wsdl:part element="ns1:IdpAllineamentoPendenzeMultiEnteOTF" name="AllineamentoPendenzeOTF">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="IdpAllineamentoPendenzeEnteOTF">
+    <wsdl:part element="ns1:IdpAllineamentoPendenzeEnteOTF" name="AllineamentoPendenzeOTF">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="ComunicazionePosizioniDebitorieOTF">
+    <wsdl:operation name="IdpAllineamentoPendenzeEnteOTF">
+      <wsdl:input message="ns1:IdpAllineamentoPendenzeEnteOTF" name="IdpAllineamentoPendenzeEnteOTF">
+    </wsdl:input>
+      <wsdl:output message="ns1:IdpAllineamentoPendenzeEnteOTFResponse" name="IdpAllineamentoPendenzeEnteOTFResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IdpAllineamentoPendenzeMultiEnteOTF">
+      <wsdl:input message="ns1:IdpAllineamentoPendenzeMultiEnteOTF" name="IdpAllineamentoPendenzeMultiEnteOTF">
+    </wsdl:input>
+      <wsdl:output message="ns1:IdpAllineamentoPendenzeMultiEnteOTFResponse" name="IdpAllineamentoPendenzeMultiEnteOTFResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>

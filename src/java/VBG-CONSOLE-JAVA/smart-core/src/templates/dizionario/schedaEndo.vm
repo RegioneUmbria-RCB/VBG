@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<div id="ctl00_ContentPlaceHolder1_pnlDatiEndo">
+
+		<div id="accordion" class="popupDettagliEndo inputForm dettagliIntervento">
+			<div>
+					<h3><a href="#">Informazioni</a></h3>
+				<div>
+					<fieldset>
+						<div>
+							<div class='etichetta'>
+								Nome procedimento</div>
+							<span id="ctl00_ContentPlaceHolder1_Literal1">
+							#if ( $descrizioneEndo != '' )
+									$descrizioneEndo 
+							#else
+								$!endo.Procedimento
+							#end
+							</span>
+						</div>						
+						<div>
+							<div class='etichetta'>
+								Tipologia</div>
+							<span id="ctl00_ContentPlaceHolder1_ltrTipologia">
+								#if ( $endo.Tipoendo.Tipifamiglieendo.Tipo != '' )
+									$!endo.Tipoendo.Tipifamiglieendo.Tipo - 
+								#end
+								#if ($endo.Tipoendo.Tipo != '' )
+									$!endo.Tipoendo.Tipo
+								#end
+								</span>
+						</div>
+						#if ($endo.naturaendo !='' )
+							<div>
+								<div class='etichetta'>
+									Natura del procedimento</div>
+								<span id="ctl00_ContentPlaceHolder1_ltrNatura">$!endo.Naturaendo.Natura</span>
+							</div>
+						#end
+						#if ( $endo.Amministrazioni !='' )
+							<div>
+								<div class='etichetta'>
+									Amministrazione competente</div>
+								<span id="ctl00_ContentPlaceHolder1_ltrAmministrazione">$!endo.Amministrazioni.Amministrazione</span>
+							</div>
+						#end
+					</fieldset>
+				</div>
+			</div>
+			#if ($endo.Datigenerali != '' )
+				<div>
+					<h3>
+						<a href="#">Descrizione</a></h3>
+					<div>
+						$!endo.Datigenerali
+					</div>
+				</div>
+			#end
+			#if ($endo.Campoapplicazione != '' )
+				<div>
+					<h3>								
+					<a href="#"><fmt:message key="label.requisiti" /></a></h3>
+					<div>
+						$!endo.Campoapplicazione
+					</div>
+				</div>
+			#end
+			
+			
+			#if ( $endo.Adempimenti != '' )
+				<div>
+					<h3>
+						<a href="#">Adempimenti</a></h3>
+					<div>
+						$!endo.Adempimenti					
+					</div>
+				</div>
+			#end
+
+			
+			#if ( $endo.Allegatis.size() > 0 )
+			
+				#set( $almenouno = false )
+				
+				#foreach( $doc in $endo.Allegatis )
+								
+								#if ($doc.pubblica == 1 or $doc.pubblica == 2 )	
+									#if( $codiceComune == $doc.Comune.Codicecomune or $!doc.Comune.CodiceComune  )	
+										#set( $almenouno = true )
+									#end					
+								#end
+								
+				#end
+			
+			
+				#if ( $almenouno )
+			
+					<div>
+						<h3>
+							<a href="#">Modulistica</a></h3>
+						<div>
+						<table>
+							<tr>
+								<td>Descrizione</td>
+								<td>Visualizza/download</td>
+							</tr>
+							#foreach( $doc in $endo.Allegatis )
+								
+								#if ($doc.pubblica == 1 or $doc.pubblica == 2 )	
+									#if( $codiceComune == $doc.Comune.Codicecomune or $!doc.Comune.CodiceComune  )																	
+									<tr>
+										<td>$!doc.Allegato</td>
+										<td>
+											#if ( $doc.Oggetti.Id.Codice )
+											
+												#set($qstr = ("id=" + $doc.Oggetti.Id.Codice+"&idComuneOggetto=" + $doc.Oggetti.Id.idcomune+"&ts_="+$Utilities.generaPassword( 8 ) ))
+																																							
+												#set( $qsDownloadFile = $Utilities.getLinkForFile( $qstr ) )
+																			
+												<a href="../ajax/download.htm?$qsDownloadFile" target="_blank"
+													 title="scarica file"><img src="../images/download16x16.png" border="0"></a>
+											&nbsp;
+											#end
+											
+											#if ( $doc.Indirizzoweb )
+												<a class="linkEsterno" href="$doc.Indirizzoweb" target="_blank" 
+													title="Visualizza il riferimento esterno"></a>	
+											#end
+										</td>
+									</tr>	
+									#end					
+								#end
+								
+							#end
+							</table>						
+						</div>
+					</div>
+				#end
+			#end
+			#if ($endo.InventarioprocLeggis.size() > 0 )
+				<div>
+					<h3>
+						<a href="#">Normativa</a></h3>
+					<div>
+					<table>
+						<tr>
+							<td>Descrizione</td>
+							<td>Tipologia</td>
+							<td>&nbsp;</td>
+						</tr>
+						#foreach ($doc in $endo.InventarioprocLeggis )
+								<tr>
+									<td>$!doc.Leggi.LeDescrizione</td>
+									<td>$!doc.Leggi.Leggitipi.LtDescrizione</td>
+									<td>
+										#if ( $doc.Leggi.Oggetto.Id.Codice )
+											
+											
+											#set($qstr = ("id=" +  $doc.Leggi.Oggetto.Id.Codice +"&idComuneOggetto=" + $doc.Leggi.Oggetto.Id.idcomune + "&ts_="+$Utilities.generaPassword( 8 ) ))
+																																						
+											#set( $qsDownloadFile = $Utilities.getLinkForFile( $qstr ) )
+																		
+											
+											
+											<a href="../ajax/download.htm?$qsDownloadFile" target="_blank"
+												 title="scarica file"><img src="/images/download16x16.png" border="0"></a>
+										&nbsp;
+										#end
+										
+										#if ( $doc.leggi.leLink ) 
+											<a class="linkEsterno" href="$doc.Leggi.LeLink" target="_blank" 
+												title="Visualizza il riferimento esterno"></a>	
+										#end
+									</td>
+								</tr>						
+							
+						#end
+						</table>						
+					</div>
+				</div>
+			#end		
+		</div>
+</div>

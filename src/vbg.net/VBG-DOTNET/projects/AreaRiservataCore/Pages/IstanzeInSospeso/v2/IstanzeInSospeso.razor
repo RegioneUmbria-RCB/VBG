@@ -1,0 +1,56 @@
+﻿@page "/{IdComune}/{Software}/istanze-in-sospeso"
+@page "/{IdComune}/{Software}/istanze-in-sospeso/{Pagina:int}"
+@using AreaRiservataCore.Pages.IstanzeInSospeso.v2.Componenti
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneInterventi
+@using Init.Sigepro.FrontEnd.AppLogic.GestionePresentazioneDomanda
+@using Init.Sigepro.FrontEnd.AppLogic.Services.Domanda
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.DesignComuni.NavScroll
+@using log4net
+
+@inherits BasePage
+
+<PageTitle>Pratiche in sospeso</PageTitle>
+
+<div class="row">
+    <NavScrollComponent Title="Indice di pagina">
+        <NavScrollComponentItem Label="Pratiche in sospeso" Id="pratiche">
+            <Contenitore Pagina="Pagina!.Value" PratichePerPagina="10"></Contenitore>
+        </NavScrollComponentItem>
+    </NavScrollComponent>
+</div>
+
+@code {
+    [Parameter]
+    public int? Pagina { get; set; } = 1;
+
+    [CascadingParameter(Name = "Layout")]
+    public MainLayout Layout { get; set; } = default!;
+
+    protected override void OnParametersSet()
+    {
+        if (!Pagina.HasValue)
+        {
+            Pagina = 1;
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        var baseUrl = $"{_navigationManager.BaseUri}{_authenticationDataResolver.DatiAutenticazione.Alias}/{Software}";
+        var breadcrumbItems = new List<BreadcrumbsItem>()
+            {
+                new BreadcrumbsItem()
+                {
+                    Label = "Pratiche in sospeso",
+                    Url = $"{baseUrl}/istanze-in-sospeso",
+                    Active = true
+                }
+            };
+
+        this.Layout.SetBreadcrumbItems(breadcrumbItems);
+
+        base.OnInitialized();
+    }
+}

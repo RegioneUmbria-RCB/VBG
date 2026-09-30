@@ -1,0 +1,43 @@
+#if($modelloHelper.isRenderForPrint())
+	<b>$decodedVal</b>
+#else
+	#set($size = $campo.getProprietaCampo("Columns","10"))
+	#set($maxLength = $campo.getProprietaCampo("MaxLength",""))
+	#if($maxLength)
+		#set($maxLength = "maxlength='$maxLength'")
+	#else
+		#set($maxLength = "")
+	#end
+	#set($maxValue = $campo.getProprietaCampo("ValidationMaxValue","undefined"))
+##	#if($maxValue == false)
+##		#set($maxValue = "undefined")
+##	#end
+	#set($minValue = $campo.getProprietaCampo("ValidationMinValue","undefined"))
+##	#if($minValue == false)
+##		#set($minValue = "undefined")
+##	#end
+	#set($readonly = $campo.getProprietaCampo("ReadOnly",""))
+	#if($readonly && $readonly == "true")
+		#set($readonly = "readonly='readonly'")
+	#else
+		#set($readonly = "")
+	#end
+	#set($maxDecimali = 0)
+	#if($isDecimal)
+		#set($maxDecimali = 2)
+	#end
+	<input type="text" name="${nameAttr}" id="${nameAttr}_ID" value="$decodedVal" $readonly 
+	size="$size" style="text-align: right;" $maxLength class="$classeCampo" />
+	#if(!$isTemplate)
+	<script type="text/javascript">
+		jQuery(document).ready(function(){
+			##passato -999999999999.99 come vMin per consentyire i numeri negativi e undefined come vmax per non impedire l'input dell'utente
+			##i veri limiti ValidationMaxValue e ValidationMinValue del campo sono gestiti solo in fase di validazione
+			initializeNumericField('${nameAttr}_ID',$maxDecimali,-999999999999.99,undefined);
+		});
+	</script>
+	#else
+		#set($script = "initializeNumericField('FLD_${idCampo}_${campo.Indice}_' + newBlockIndex + '_ID',$maxDecimali,-999999999999.99,undefined);")
+		$blocco.addScript($script)
+	#end
+#end

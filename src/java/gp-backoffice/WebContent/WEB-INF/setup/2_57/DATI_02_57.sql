@@ -1,0 +1,2 @@
+INSERT INTO verticalizzazioniparametribase (modulo, parametro, descrizione) VALUES ('SIT_JESI', 'URL_PUNTO_DA_INDIRIZZO', 'Url per aprire la cartografia sul SIT, di default è https://jesi.qmap.cloud/cs/#Mappa-qmp_e388_acc_pc_01_030104_4d-id_acc_pc-fkstrada%3D$CODVIARIO$ and ncivico%3D$CIVICO$-E38Z');
+INSERT INTO verticalizzazioniparametribase (modulo,parametro,descrizione) VALUES ('STC', 'PRAT_COL_INS_STESSO_ISTRUTTO', 'In caso di pratiche collegate se specificato S allora verrà assegnato l''istruttore prensente nella pratica padre. valori Ammessi S o N (default N)');

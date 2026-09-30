@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:xs="http://www.w3.org/2001/XMLSchema"
+				  xmlns:apachesoap="http://xml.apache.org/xml-soap"
+				  xmlns:tns="http://schemi.informatica.maggioli.it/ws/pagopa/Notify"
+				  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+				  xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/"
+				  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+				  xmlns:ns="http://schemas.xmlsoap.org/soap/encoding/"
+				  targetNamespace="http://schemi.informatica.maggioli.it/ws/pagopa/Notify">
+	<wsdl:types>
+		<xs:schema targetNamespace="http://schemi.informatica.maggioli.it/ws/pagopa/Notify" elementFormDefault="qualified">
+			<xs:element name="NotificaPagamentoDebitoRequest" type="tns:RichiestaStandard"/>
+			<xs:element name="NotificaPagamentoDebitoResponse" type="tns:RispostaStandard"/>
+
+			<xs:element name="NotificaStatoDebitoRequest" type="tns:RichiestaStandard"/>
+			<xs:element name="NotificaStatoDebitoResponse" type="tns:RispostaStandard"/>
+
+			<xs:complexType name="RichiestaStandard">
+				<xs:sequence>
+					<xs:element name="CodiceIPA" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Codice IPA dell'ente che presenta la richiesta
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="CodiceServizio" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Codice servizio che sta effettuando la chiamata version JCG-PagoPA</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="IDOperazione" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Codice identificativo della richiesta</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="DataRichiesta" type="xs:dateTime">
+						<xs:annotation>
+							<xs:documentation>La Data e ora in cui è avvenuta la richiesta (esempio: 2006-12-31T20:45:06Z)</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Versione" type="xs:string" minOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Versione della richiesta</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="DatiDettaglioRichiesta" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Un campo stringa con i dati relativi allo specifico servizio invocato</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="RispostaStandard">
+				<xs:sequence>
+					<xs:element name="CodiceIPA" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Codice IPA dell'ente che fornisce la risposta</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="IDOperazione" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Codice identificativo della risposta</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="DataRisposta" type="xs:dateTime">
+						<xs:annotation>
+							<xs:documentation>La Data e ora in cui è stata fornita la risposta (esempio: 2006-12-31T20:45:06Z)</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="EsitoOperazione">
+						<xs:annotation>
+							<xs:documentation>Restituisce l'esito dell'elaborazione, i valori restituiti possono essere OK o  Error</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:enumeration value="OK"/>
+								<xs:enumeration value="Error"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="Messaggi" minOccurs="0">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Messaggio" maxOccurs="unbounded">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element name="Codice" type="xs:string">
+												<xs:annotation>
+													<xs:documentation>Codice Messaggio di errore</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+											<xs:element name="Descrizione" type="xs:string">
+												<xs:annotation>
+													<xs:documentation>Descrizione Messaggio di errore</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="DatiDettaglioRisposta" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Oggetto di risposta</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+		</xs:schema>
+	</wsdl:types>
+
+	<wsdl:message name="NotificaPagamentoDebitoRequest">
+		<xs:annotation>
+			<xs:documentation></xs:documentation>
+		</xs:annotation>
+		<wsdl:part name="NotificaPagamentoDebitoRequest" element="tns:NotificaPagamentoDebitoRequest"/>
+	</wsdl:message>
+	<wsdl:message name="NotificaPagamentoDebitoResponse">
+		<xs:annotation>
+			<xs:documentation></xs:documentation>
+		</xs:annotation>
+		<wsdl:part name="NotificaPagamentoDebitoResponse" element="tns:NotificaPagamentoDebitoResponse"/>
+	</wsdl:message>
+	<wsdl:message name="NotificaStatoDebitoRequest">
+		<xs:annotation>
+			<xs:documentation></xs:documentation>
+		</xs:annotation>
+		<wsdl:part name="NotificaStatoDebitoRequest" element="tns:NotificaStatoDebitoRequest"/>
+	</wsdl:message>
+	<wsdl:message name="NotificaStatoDebitoResponse">
+		<xs:annotation>
+			<xs:documentation></xs:documentation>
+		</xs:annotation>
+		<wsdl:part name="NotificaStatoDebitoResponse" element="tns:NotificaStatoDebitoResponse"/>
+	</wsdl:message>
+
+	<wsdl:portType name="PagoPANotifyEndpoint">
+		<wsdl:operation name="NotificaPagamentoDebito">
+			<wsdl:input name="NotificaPagamentoDebitoRequest" message="tns:NotificaPagamentoDebitoRequest"/>
+			<wsdl:output name="NotificaPagamentoDebitoResponse" message="tns:NotificaPagamentoDebitoResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="NotificaStatoDebito">
+			<wsdl:input name="NotificaStatoDebitoRequest" message="tns:NotificaStatoDebitoRequest"/>
+			<wsdl:output name="NotificaStatoDebitoResponse" message="tns:NotificaStatoDebitoResponse"/>
+		</wsdl:operation>
+	</wsdl:portType>
+
+	<wsdl:binding name="PagoPANotifyBinding" type="tns:PagoPANotifyEndpoint">
+		<wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="NotificaPagamentoDebito">
+			<wsdlsoap:operation soapAction="http://schemi.informatica.maggioli.it/ws/pagopa/Notify/NotificaPagamentoDebito"/>
+			<wsdl:input name="NotificaPagamentoDebitoRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="NotificaPagamentoDebitoResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="NotificaStatoDebito">
+			<wsdlsoap:operation soapAction="http://schemi.informatica.maggioli.it/ws/pagopa/Notify/NotificaStatoDebito"/>
+			<wsdl:input name="NotificaStatoDebitoRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="NotificaStatoDebitoResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+	</wsdl:binding>
+
+	<wsdl:service name="PagoPANotifyService">
+		<wsdl:port name="PagoPANotifyPort" binding="tns:PagoPANotifyBinding">
+			<wsdlsoap:address location="http://localhost:57080/ws/pagopa-ws-notify"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

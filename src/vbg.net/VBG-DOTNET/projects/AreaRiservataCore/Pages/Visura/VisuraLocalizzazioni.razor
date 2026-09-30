@@ -1,0 +1,99 @@
+﻿@using AreaRiservataCore.Shared.DetailCards
+@using Init.Sigepro.FrontEnd.AppLogic.WebServiceReferences.IstanzeService
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+
+@if (DataSource?.HasData ?? false)
+{
+    @if (DataSource.Stradario?.Any() ?? false)
+    {
+        <DetailCardGroup Title="Localizzazioni">
+
+            <DetailCardList Items="DataSource.Stradario">
+                <ItemTemplate Context="item">
+                    <DetailCardTitle>
+                        @item.Stradario.PREFISSO @item.Stradario.DESCRIZIONE
+                        @(String.IsNullOrEmpty(item.CIVICO) ? "" : $" {item.CIVICO}")
+                        @(String.IsNullOrEmpty(item.ESPONENTE) ? "" : $"/{item.ESPONENTE}")
+                    </DetailCardTitle>
+                    <DetailCardSubtitle>
+                        @item.ComuneLocalizzazione @item.Stradario.LOCFRAZ
+                    </DetailCardSubtitle>
+
+                    @if (MostraDatiCatastaliEstesi)
+                    {
+                        <div class="row">
+                            @if (!String.IsNullOrEmpty(item.COLORE))
+                            {
+                                <DetailCardInfo Title="Colore" class="col">@item.COLORE</DetailCardInfo>
+                            }
+                            @if (!String.IsNullOrEmpty(item.SCALA))
+                            {
+                                <DetailCardInfo Title="Scala" class="col">@item.SCALA</DetailCardInfo>
+                            }
+                            @if (!String.IsNullOrEmpty(item.Piano))
+                            {
+                                <DetailCardInfo Title="Piano" class="col">@item.Piano</DetailCardInfo>
+                            }
+                            @if (!String.IsNullOrEmpty(item.INTERNO))
+                            {
+                                <DetailCardInfo Title="Interno" class="col">@item.INTERNO</DetailCardInfo>
+                            }
+                        </div>
+                    }
+
+                    @if (!String.IsNullOrEmpty(item.ESPONENTEINTERNO))
+                    {
+                        <DetailCardInfo Title="Esponente interno">@item.ESPONENTEINTERNO</DetailCardInfo>
+                    }
+                    @if (!String.IsNullOrEmpty(item.FABBRICATO))
+                    {
+                        <DetailCardInfo Title="Fabbricato">@item.FABBRICATO</DetailCardInfo>
+                    }
+                    @if (!String.IsNullOrEmpty(item.INTERNO))
+                    {
+                        <DetailCardInfo Title="Interno">@item.INTERNO</DetailCardInfo>
+                    }
+                    @if (!String.IsNullOrEmpty(item.Km))
+                    {
+                        <DetailCardInfo Title="Km">@item.Km</DetailCardInfo>
+                    }
+                </ItemTemplate>
+            </DetailCardList>
+        </DetailCardGroup>
+    }
+
+    @if (DataSource.Mappali?.Any() ?? false)
+    {
+        <DetailCardGroup Title="Mappali">
+
+            <DetailCardList Items="DataSource.Mappali">
+                <ItemTemplate Context="item">
+                    <DetailCardTitle>@item.Catasto.DESCRIZIONE</DetailCardTitle>
+                    <DetailCardSubtitle>
+                        @if (!String.IsNullOrEmpty(item.Foglio))
+                        {
+                            <span>Foglio @item.Foglio</span>
+                        }
+                        @if (!String.IsNullOrEmpty(item.Particella))
+                        {
+                            <span>, Particella @item.Particella</span>
+                        }
+                        @if (!String.IsNullOrEmpty(item.Sub))
+                        {
+                            <span>, Sub @item.Sub</span>
+                        }
+                    </DetailCardSubtitle>
+                </ItemTemplate>
+            </DetailCardList>
+
+        </DetailCardGroup>
+
+    }
+
+}
+
+
+
+@code {
+
+}

@@ -1,0 +1,172 @@
+﻿@if (this.DataSource != null && this.DataSource.Any())
+{
+    <div class="pannello-endo albero-endo">
+
+        @if (!String.IsNullOrEmpty(this.Titolo))
+        {
+            <h2 class="h4">
+                @Titolo
+            </h2>
+        }
+
+        @if (MostraFamiglieEndo)
+        {
+            <ul>
+                @foreach (var famiglia in DataSource)
+                {
+                    <li class="@(famiglia.Espansa ? "albero-aperto" : "albero-chiuso")">
+                        <span @onclick="() => famiglia.Toggle()" style="margin-left: var(--padding-small);">@famiglia.Descrizione</span>
+
+                        <ul>
+                            @foreach (var tipo in famiglia.Tipi)
+                            {
+                                <li class="@(tipo.Espanso ? "albero-aperto" : "albero-chiuso")">
+                                    <span @onclick="() => tipo.Toggle()" style="margin-left: var(--padding-small);">@tipo.Descrizione</span>
+
+                                    <ul>
+                                        @foreach (var endo in tipo.Endo)
+                                        {
+
+                                            <li>
+                                                <div class="form-check">
+                                                    <input type="checkbox" id="@($"cb{endo.Id}")" @bind="@endo.Selezionato" disabled="@(!ModificaProcedimentiProposti)">
+                                                    <label for="@($"cb{endo.Id}")" class="label-endo">
+                                                        @endo.Descrizione
+                                                        @if (MostraInformazioniEndo)
+                                                        {
+                                                            <button @onclick="() => DettaglioEndo(endo)" aria-label="Dettagli"><i class='fa fa-question'></i></button>
+                                                        }
+                                                    </label>
+                                                </div>
+
+
+                                                @if (endo.SubEndo.Any())
+                                                {
+                                                    <ul>
+                                                        @foreach (var subendo in endo.SubEndo)
+                                                        {
+                                                            <li>
+                                                                <div class="form-check">
+                                                                    <input id="@($"se{subendo.Id}")" type="checkbox" @bind="@subendo.Selezionato">
+                                                                    <label for="@($"se{subendo.Id}")" class="label-endo">
+                                                                        @subendo.Descrizione
+                                                                        @if (subendo.Richiesto)
+                                                                        {
+                                                                            <sup>*</sup>
+                                                                        }
+                                                                        @if (MostraInformazioniEndo)
+                                                                        {
+                                                                            <button @onclick="() => DettaglioEndo(subendo)" aria-label="Dettagli"><i class='fa fa-question'></i></button>
+                                                                        }
+                                                                    </label>
+                                                                </div>
+                                                            </li>
+                                                        }
+                                                    </ul>
+                                                }
+                                            </li>
+                                        }
+                                    </ul>
+                                </li>
+                            }
+                        </ul>
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <ul>
+                @foreach (var famiglia in DataSource)
+                {
+                    @foreach (var tipo in famiglia.Tipi)
+                    {
+                        @foreach (var endo in tipo.Endo)
+                        {
+
+                            <li>
+                                <div class="form-check">
+                                    <input type="checkbox" id="@($"cb{endo.Id}")" @bind="@endo.Selezionato" disabled="@(!ModificaProcedimentiProposti)">
+                                    <label for="@($"cb{endo.Id}")" class="label-endo">
+                                        @endo.Descrizione
+                                        @if (MostraInformazioniEndo)
+                                        {
+                                            <button @onclick="() => DettaglioEndo(endo)" aria-label="Dettagli"><i class='fa fa-question'></i></button>
+                                        }
+                                    </label>
+                                </div>
+
+
+                                @if (endo.SubEndo.Any())
+                                {
+                                    <ul>
+                                        @foreach (var subendo in endo.SubEndo)
+                                        {
+                                            <li>
+                                                <div class="form-check">
+                                                    <input id="@($"se{subendo.Id}")" type="checkbox" @bind="@subendo.Selezionato">
+                                                    <label for="@($"se{subendo.Id}")" class="label-endo">
+                                                        @subendo.Descrizione
+                                                        @if (subendo.Richiesto)
+                                                        {
+                                                            <sup>*</sup>
+                                                        }
+                                                        @if (MostraInformazioniEndo)
+                                                        {
+                                                            <button @onclick="() => DettaglioEndo(subendo)" aria-label="Dettagli"><i class='fa fa-question'></i></button>
+                                                        }
+                                                    </label>
+
+                                                </div>
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+                            </li>
+                        }
+                    }
+                }
+            </ul>
+        }
+
+    </div>
+}
+
+
+@code {
+    private record class EndoSelezionato(int Id, string Descrizione);
+
+    [Parameter]
+    public bool MostraFamiglieEndo { get; set; } = true;
+    [Parameter]
+    public string Titolo { get; set; } = "";
+    [Parameter]
+    public bool ModificaProcedimentiProposti { get; set; } = true;
+    [Parameter]
+    public IEnumerable<FamigliaEndoBindingItem> DataSource { get; set; } = Enumerable.Empty<FamigliaEndoBindingItem>();
+    [Parameter]
+    public bool SelezioneEsclusivaEndoAttivabili { get; set; } = false;
+    [Parameter]
+    public EventCallback<IEndoBindingItem> OnGetDettagliEndo { get; set; }
+    [Parameter]
+    public bool MostraInformazioniEndo { get; set; } = true;
+
+    IEnumerable<int> EndoSelezionati => DataSource.SelectMany(x => x.IdEndoSelezionati).ToList();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        foreach (var famiglia in this.DataSource != null ? this.DataSource : Enumerable.Empty<FamigliaEndoBindingItem>())
+        {
+            foreach (var tipo in famiglia.Tipi)
+            {
+                tipo.Espanso = famiglia.Espansa = tipo.IdEndoSelezionati.Any();
+            }
+        }
+        await base.OnParametersSetAsync();
+    }
+
+    void DettaglioEndo(IEndoBindingItem endo)
+    {
+        this.OnGetDettagliEndo.InvokeAsync(endo);
+    }
+}

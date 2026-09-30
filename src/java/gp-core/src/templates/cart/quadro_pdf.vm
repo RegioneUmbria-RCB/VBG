@@ -1,0 +1,22 @@
+
+	<h4 >
+		Quadro $quadro.Codice
+		#if($quadro.Titolo)
+			- $quadro.Titolo
+		#end
+    </h4>
+    #if($helper.isUltimoQuadro($quadro))
+    	#set($pagebreak = "avoid")
+    #else
+    	#set($pagebreak = "always")
+    #end
+	<br />
+	#foreach($item in $quadro.Item)
+		#set($numCols = $helper.countColumnsForItem($item, $rowIndex))
+		#if($numCols > 0)
+			
+			#parse("/cart/elemento_figlio_pdf.vm")
+            
+		#end
+	#end
+	

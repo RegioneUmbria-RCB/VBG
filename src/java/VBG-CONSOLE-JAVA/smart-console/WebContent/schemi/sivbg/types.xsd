@@ -1,0 +1,1207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://vbg.init.it/rte/types" xmlns:tns="http://vbg.init.it/rte/types" elementFormDefault="qualified">
+
+	<element name="ContenutoBusta">
+		<complexType>
+			<sequence>
+				<element name="interventi" type="tns:InterventiType"></element>
+				<element name="procedimenti" type="tns:ProcedimentiType"></element>
+			</sequence>
+		</complexType>
+	</element>
+
+
+	<complexType name="ProcedimentiType">
+		<annotation>
+    		<documentation>Lista dei procedimenti</documentation>
+    	</annotation>
+    	<sequence>
+	    	<element name="procedimento" type="tns:ProcedimentoType" minOccurs="1" maxOccurs="unbounded"></element>
+    	</sequence>
+	</complexType>
+	<complexType name="InterventiType">
+		<annotation>
+    		<documentation>Lista degli interventi</documentation>
+    	</annotation>
+    	<sequence>
+	    	<element name="intervento" type="tns:InterventoType" minOccurs="1" maxOccurs="unbounded"></element>
+    	</sequence>
+	</complexType>
+
+    <complexType name="InterventoType">
+        <annotation>
+        	<documentation>Gerarchia dei tipi di pratica/interventi presenti nel dizionario regionale. Un servizio SUAP conterrà una gerarchia di livello superiore che possiamo definire "attività" (Es. commercio-sede fissa-vicinato) ed una gerarchia di ultimo livello o foglia che possiamo definire "intervento" (es. avvio-subingresso-trasferimento...). In un servizio edilizia la gerarchia può definire i tipi di pratica (es. permesso a costruire, SCIA edilizia...)</documentation>
+        </annotation>
+        <sequence>
+        	<element name="id" type="string">
+        		<annotation>
+        			<documentation>
+        				Identificativo univoco regionale
+        			</documentation>
+        		</annotation>
+        	</element>
+        	<element name="codice" type="string">
+        		<annotation>
+        			<documentation>
+        				Rappresenta l'ordine gerarchico descritto su
+        				livelli di due caratteri ciascuno Es. 01
+        				Commercio 0101 In sede fissa 0102 su suolo
+        				pubblico 010101 esercizi di vicinato 010102
+        				medie strutture di vendita
+        			</documentation>
+        		</annotation>
+        	</element>
+        	<element name="descrizione" type="string"></element>
+        	<element name="note" type="string" minOccurs="0"
+        		maxOccurs="1">
+        	</element>
+        	<element name="ordine" type="string" minOccurs="0"
+        		maxOccurs="1">
+        	</element>
+        	<element name="procedura" type="tns:ProceduraType"
+        		minOccurs="0" maxOccurs="1">
+        	</element>
+        	<element name="disabilitato" type="boolean" maxOccurs="1"
+        		minOccurs="0">
+        		<annotation>
+        			<documentation>
+        				Se 1 significa che è voce è dismessa.
+        			</documentation>
+        		</annotation>
+        	</element>
+        	<element name="documenti" type="tns:InterventoDocumentiType"
+        		maxOccurs="unbounded" minOccurs="0">
+        	</element>
+        	<element name="schedeDinamiche"
+        		type="tns:InterventoSchedeType" maxOccurs="unbounded"
+        		minOccurs="0">
+        	</element>
+        	<element name="leggi" type="tns:LeggeType"
+        		maxOccurs="unbounded" minOccurs="0">
+        	</element>
+        	<element name="adempimenti" type="tns:AdempimentoType"
+        		maxOccurs="unbounded" minOccurs="0">
+        	</element>
+        	<element name="figli" type="tns:InterventiType"
+        		maxOccurs="1" minOccurs="0">
+        	</element>
+        	<element name="pubblica" type="tns:pubblicaDocumentoType"
+        		maxOccurs="1" minOccurs="0">
+        	</element>
+        </sequence>
+    </complexType>
+
+    <complexType name="ProceduraType">
+    	<annotation>
+    		<documentation>
+    			E' la definizione delle fasi attuative che permettono la
+    			gestione/rilascio del procedimento istanziato
+    			(AlberoprocType).
+    		</documentation>
+    	</annotation>
+    	<sequence>
+    		<element name="id" type="string">
+    			<annotation>
+    				<documentation>
+    					Identificativo univoco
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="procedura" type="string"></element>
+    		<element name="note" type="string" minOccurs="0"
+    			maxOccurs="1">
+    		</element>
+    		<element name="durata" type="int"></element>
+    		<element name="prevedeAtto" type="boolean" maxOccurs="1"
+    			minOccurs="0">
+    			<annotation>
+    				<documentation>
+    					true=prevede atto di rilascio (procedimento di
+    					natura ordinario) false=non prevede atti da
+    					rilasciare (procedimento SCIA)
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="natura" type="tns:NaturaType" minOccurs="0"
+    			maxOccurs="1">
+    		</element>
+    		<element name="prevedeCDS" type="boolean" maxOccurs="1"
+    			minOccurs="0">
+    			<annotation>
+    				<documentation>
+    					true=prevede conferenza di servizi
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="determinazioneInizioIstanza" minOccurs="0"
+    			maxOccurs="1">
+    			<annotation>
+    				<documentation>
+    					Indica la data dalla quale inizia il conteggio
+    					dei giorni necessari all'istruttoria della
+    					pratica (definiti per legge). PD=data
+    					Presentazione Domanda, UT=data dell'Ultima
+    					Trasmissione atti agli enti coinvolti (per
+    					attivazione endo), PG=data Protocollo Generale
+    				</documentation>
+    			</annotation>
+    			<simpleType>
+    				<restriction base="string">
+    					<enumeration value="PD"></enumeration>
+    					<enumeration value="PG"></enumeration>
+    					<enumeration value="UT"></enumeration>
+    				</restriction>
+    			</simpleType>
+    		</element>
+    		<element name="determinazioneEfficacia" minOccurs="0"
+    			maxOccurs="1" type="string">
+    			<annotation>
+    				<documentation>
+    					Indica quale è la data per cui è efficace la
+    					domanda, in caso di SCIA l'efficacia è
+    					immediata, in caso di procedimento ordinario
+    					l'efficacia è al momento del rilascio di un
+    					atto. MA=data presentazione, movimento di avvio,
+    					DP=data presentazione + durata procedimento,
+    					NC=non calcolabile, MS=data del movimento
+    					specificato in "determinazioneMovimento" in caso
+    					di esito specificato in "determinazioneEsito"
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="determinazioneMovimento"
+    			type="tns:TipoMovimentoType" maxOccurs="1"
+    			minOccurs="0">
+    		</element>
+    		<element name="determinazioneEsito" maxOccurs="1"
+    			minOccurs="0" type="tns:determinazioneEsitoType">
+    			<annotation>
+    				<documentation>
+    					Vedi detrminazioneEfficacia
+    				</documentation>
+    			</annotation>
+
+    		</element>
+    		<element name="movimentiAvvio" type="tns:ProcedureAvvioType" maxOccurs="unbounded" minOccurs="0"></element>
+    	</sequence>
+    </complexType>
+
+	<simpleType name="determinazioneEsitoType">
+		<restriction base="string">
+			<enumeration value="positivo" />
+			<enumeration value="negativo" />
+			<enumeration value="qualsiasi" />
+		</restriction>
+	</simpleType>
+
+    <complexType name="NaturaType">
+    	<annotation>
+    		<documentation>
+    			Natura dei procedimenti: SCIA, ORDINARIO, SEMPLIFICATO,
+    			COMUNICAZIONE
+    		</documentation>
+    	</annotation>
+    	<sequence>
+    		<element name="id" type="string"></element>
+    		<element name="natura" type="string"></element>
+    		<element name="compatibilita" type="int" maxOccurs="1" minOccurs="0">
+    			<annotation>
+    				<documentation>Indica la compatibilità tra diverse nature Es. supponendo di avere tre nature diverse "1-Ordinaria","2-SCIA","4-Comunicazione"  quando una pratica viene attivata con procedura che ha natura di tipo "SCIA" significa che in quella pratica non possono essere attivati procedimenti di natura "ORDINARIA" e possono essere attivati procedimenti di natura "Comunicazione" per ottenere questo risultato le tre nature avranno una compatibilita così definita: "1-Ordinaria"(7),"2-SCIA"(6),"4-Comunicazione"(4) dove (6) significa appunto 2+4.</documentation>
+    			</annotation></element>
+    	</sequence>
+    </complexType>
+    
+    <complexType name="ProcedureAvvioType">
+    	<sequence>
+    		<element name="tipoMovimento" type="tns:TipoMovimentoType" ></element>
+    		<element name="defaultsn" type="boolean"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="TipoMovimentoType">
+        <annotation>
+        	<documentation>Indica un passaggio del workflow, un blocco del diagramma a blocchi.</documentation>
+        </annotation>
+        <sequence>
+        	<element name="id" type="string">
+        		<annotation>
+        			<documentation>
+        				Identificativo univoco
+        			</documentation>
+        		</annotation>
+        	</element>
+        	<element name="descrizione" type="string">
+        		<annotation>
+        			<documentation>
+        				Descrizione del blocco di workflow. Es.
+        				resentazione domanda, controllo documentale,
+        				rilascio di un atto.
+        			</documentation>
+        		</annotation>
+        	</element>
+        	<element name="flagSospensione" type="boolean" maxOccurs="1"
+        		minOccurs="0">
+        		<annotation>
+        			<documentation>
+        				true=indica che il blocco quando verrà eseguito
+        				all'interno di un'istanza sospenderà i termini
+        				riprendendo il conteggio alla data del blocco
+        				che interrompe una sospensione e/o una
+        				interruzione.
+        			</documentation>
+        		</annotation>
+        	</element>
+        	<element name="flagInterruzione" type="boolean"
+        		maxOccurs="1" minOccurs="0">
+        	</element>
+        	<element name="tipologiaEsito" type="string" maxOccurs="1"
+        		minOccurs="0">
+        		<annotation>
+        			<documentation>
+        				0=non prevede esito; 1=Esito positivo; 2=Esito
+        				Negativo. Quando all'interno di un'istanza il
+        				movimento viene eseguito se prevede un esito
+        				verrà visualizzata la possibilità di indicare un
+        				esito al movimento con l'esito impostato come
+        				specificato nel tipomovimento (1 o 2).
+        			</documentation>
+        		</annotation>
+        	</element>
+        	<element name="flagProroga" type="boolean" maxOccurs="1"
+        		minOccurs="0">
+        		<annotation>
+        			<documentation>
+        				True=il blocco indica una proroga rispetto al
+        				tempo totale definito per l'istanza.
+        			</documentation>
+        		</annotation>
+        	</element>
+        	<element name="ggProroga" type="int" maxOccurs="1"
+        		minOccurs="0">
+        		<annotation>
+        			<documentation>
+        				Se flagProroga=true allora indica il numero di
+        				giorni di proroga.
+        			</documentation>
+        		</annotation>
+        	</element>
+        	<element name="flagCds" type="boolean" maxOccurs="1"
+        		minOccurs="0">
+        		<annotation>
+        			<documentation>
+        				true=il tipomovimento indica che deve attivare
+        				una Conferenza Di Servizi
+        			</documentation>
+        		</annotation>
+        	</element>
+        	<element name="flagPubblicaMovimento" type="boolean"
+        		maxOccurs="1" minOccurs="0">
+        		<annotation>
+        			<documentation>
+        				true=indica che quando viene utilizzato
+        				all'interno di un'istanza per default il
+        				movimento dell'istanza è pubblicato sul'area
+        				riservata del cittadino. false=movimento istanza
+        				non pubblicato per default
+        			</documentation>
+        		</annotation>
+        	</element>
+        	<element name="flagPubblicaParere" type="boolean"
+        		maxOccurs="1" minOccurs="0">
+        		<annotation>
+        			<documentation>
+        				true=indica che quando viene utilizzato
+        				all'interno di un'istanza per default il parere
+        				del movimento dell'istanza è pubblicato sul'area
+        				riservata del cittadino. false=parere movimento
+        				istanza non pubblicato per default
+        			</documentation>
+        		</annotation>
+        	</element>
+        	<element name="flagPubblicaAllegati" type="boolean"
+        		maxOccurs="1" minOccurs="0">
+        		<annotation>
+        			<documentation>
+        				true=indica che quando viene utilizzato
+        				all'interno di un'istanza per default gli
+        				allegati del movimento dell'istanza sono
+        				pubblicati sul'area riservata del cittadino.
+        				false=allegati movimento istanza non pubblicati
+        				per default
+        			</documentation>
+        		</annotation>
+        	</element>
+        	<element name="movimentiCollegati"
+        		type="tns:TipoContromovimentoType" maxOccurs="unbounded"
+        		minOccurs="0">
+        	</element>
+        </sequence>
+    </complexType>
+
+    <complexType name="InterventoDocumentiType">
+    	<sequence>
+    		<element name="id" type="string"></element>
+    		<element name="descrizione" type="string"></element>
+    		<element name="allegato" type="tns:AllegatoType"
+    			maxOccurs="1" minOccurs="0">
+    		</element>
+    		<element name="note" type="string" maxOccurs="1"
+    			minOccurs="0">
+    		</element>
+    		<element name="pubblica" type="tns:pubblicaDocumentoType" maxOccurs="1"
+    			minOccurs="0">
+                <annotation>
+                	<documentation></documentation>
+                </annotation>
+    		</element>
+    		<element name="necessario" type="boolean" maxOccurs="1"
+    			minOccurs="0">
+    			<annotation>
+    				<documentation>
+    					true=il documento deve essere presentato in fase
+    					di domanda
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="ordine" type="string" maxOccurs="1"
+    			minOccurs="0">
+    			<annotation>
+    				<documentation>
+    					Ordine di visualizzazione
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="richiedeFirma" type="boolean" maxOccurs="1"
+    			minOccurs="0">
+    			<annotation>
+    				<documentation>
+    					true=richiede firma digitale
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="tipoDownload" type="string" maxOccurs="1" minOccurs="0">
+    			<annotation>
+    				<documentation>Può contiene una stringa con i formati in cui è possibile scaricare l’allegato, separati da virgola: pdf,doc</documentation>
+    			</annotation></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="AllegatoType">
+    	<sequence>
+    		<element name="id" type="string"></element>
+    		<element name="allegato" type="string"></element>
+    	</sequence>
+    </complexType>
+
+    <simpleType name="pubblicaDocumentoType">
+        <annotation>
+        	<documentation>Indica dove deve essere pubblicato il documento. Possibili valori: Non pubblicare, Pubblica su internet nella parte informativa accedibile senza autenticazione, Pubblica nell'area riservata durante la presentazione della domanda on-line.</documentation>
+        </annotation>
+        <restriction base="string">
+			<enumeration value="NON_PUBBLICARE" />
+			<enumeration value="PUBBLICA_INFO_E_AREARISERVATA" />
+			<enumeration value="PUBBLICA_INFO" />
+			<enumeration value="PUBBLICA_AREARISERVATA" />
+		</restriction>
+	</simpleType>
+    
+<complexType name="SchedaType">
+		<sequence>
+			<element name="id" type="string"></element>
+			<element name="codice" type="string"></element>
+			<element name="nome" type="string"></element>
+			<element name="campi" type="tns:CampoSchedaType"
+				maxOccurs="unbounded" minOccurs="0">
+			</element>
+		</sequence>
+</complexType>
+	<complexType name="CampoSchedaType">
+		<sequence>
+			<element name="codice" type="string"></element>
+			<element name="descrizione" type="string"></element>
+			<element name="posizione" type="tns:PosizioneCampoType"></element>
+			<choice>
+				<element name="campoDinamico" type="tns:CampoDinamicoType" maxOccurs="1" minOccurs="0"></element>
+				<element name="campoStatico" type="tns:CampoStaticoType" maxOccurs="1" minOccurs="0"></element>
+			</choice>
+		</sequence>
+	</complexType>
+	<complexType name="CampoStaticoType">
+		<sequence>
+			<element name="codice" type="string"></element>
+			<element name="tipoCampo" type="tns:TipoCampoStaticoType"/>
+			<element name="testoFisso" type="string"/>
+		</sequence>
+	</complexType>
+	<complexType name="CampoDinamicoType">
+		<sequence>
+			<element name="codice" type="string"></element>
+			<element name="nome" type="string"></element>
+			<element name="descrizione" type="string"></element>
+			<element name="etichetta" type="string"></element>
+			<element name="proprieta" type="tns:ProprietaCampoDinamicoType"
+				minOccurs="0" maxOccurs="1" />
+			<element name="valoreUtente" type="tns:ParametroType"
+				minOccurs="1" maxOccurs="1" />
+		</sequence>
+	</complexType>
+	<complexType name="ProprietaCampoDinamicoType">
+		<sequence>
+			<element name="tipoCampo" type="tns:TipoCampoDinamicoType"
+				minOccurs="1" maxOccurs="1" />
+			<element name="posizione" type="tns:PosizioneCampoType"
+				minOccurs="1" maxOccurs="1" />
+			<element name="obbligatorio" type="boolean" />
+			<element name="multiplo" type="boolean" />
+			<element name="lunghezza" minOccurs="0" maxOccurs="1">
+				<simpleType>
+					<restriction base="integer">
+						<minInclusive value="0" />
+						<maxInclusive value="9999" />
+					</restriction>
+				</simpleType>
+			</element>
+			<element name="cifreDecimali" minOccurs="0" maxOccurs="1">
+				<simpleType>
+					<restriction base="integer">
+						<minInclusive value="0" />
+						<maxInclusive value="9" />
+					</restriction>
+				</simpleType>
+			</element>
+			<element name="valoreLista" type="tns:ValoreParametroType"
+				minOccurs="0" maxOccurs="unbounded" />
+			<element name="valoriCheckBox" type="tns:ValoriCampoCheckboxType"
+				minOccurs="0" maxOccurs="1" />
+		</sequence>
+	</complexType>
+	<simpleType name="TipoCampoStaticoType">
+		<restriction base="string">
+			<enumeration value="Titolo" />
+			<enumeration value="TestoEsteso" />
+		</restriction>
+	</simpleType>
+	<simpleType name="TipoCampoDinamicoType">
+		<restriction base="string">
+			<enumeration value="Checkbox" />
+			<enumeration value="Data" />
+			<enumeration value="Lista" />
+			<enumeration value="Testo" />
+			<enumeration value="NumericoIntero" />
+			<enumeration value="NumericoDouble" />
+		</restriction>
+	</simpleType>
+	<complexType name="ValoriCampoCheckboxType">
+		<sequence>
+			<element name="valoreSelezionato" type="string" minOccurs="1"
+				maxOccurs="1" />
+			<element name="valoreNonSelezionato" type="string" minOccurs="1"
+				maxOccurs="1" />
+		</sequence>
+	</complexType>
+	<complexType name="PosizioneCampoType">
+		<annotation>
+			<documentation>Rappresenta la posizione di un campo all'interno di
+				una scheda dinamica, la posizione verticale può essere compresa tra
+				0 e 9999 mentre la posizione orizzontale può essere compresa tra 0 e
+				9</documentation>
+		</annotation>
+		<sequence>
+			<element name="riga">
+				<simpleType>
+					<restriction base="integer">
+						<minInclusive value="0" />
+						<maxInclusive value="9999" />
+					</restriction>
+				</simpleType>
+			</element>
+			<element name="colonna">
+				<simpleType>
+					<restriction base="integer">
+						<minInclusive value="0" />
+						<maxInclusive value="9" />
+					</restriction>
+				</simpleType>
+			</element>
+		</sequence>
+	</complexType>
+	<complexType name="ValoreParametroType">
+		<sequence>
+			<element name="codice" type="string" />
+			<element name="descrizione" type="string" minOccurs="0"
+				maxOccurs="1" />
+		</sequence>
+	</complexType>
+	<complexType name="ParametroType">
+		<annotation>
+			<documentation> Sono dei dati aggiuntivi che permettono di integrare
+				lo scambio di informazioni
+				tra i backoffice.</documentation>
+		</annotation>
+		<sequence>
+			<element name="nome" type="string"></element>
+			<element name="valore" type="tns:ValoreParametroType"
+				minOccurs="1" maxOccurs="unbounded"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="InterventoSchedeType">
+		<sequence>
+			<element name="scheda" type="tns:SchedaType"></element>
+			<element name="pubblica" type="tns:PubblicaType" maxOccurs="1" minOccurs="0"></element>
+			<element name="tipoFirma" type="tns:TipoFirmaType" maxOccurs="1" minOccurs="0"></element>
+			<element name="necessaria" type="boolean" maxOccurs="1" minOccurs="0"></element>
+		</sequence>
+	</complexType>
+
+
+	<simpleType name="PubblicaType">
+		<restriction base="string">
+			<enumeration value="NonPubblicare"></enumeration>
+			<enumeration value="PubblicaNeiServiziOnLine"></enumeration>
+			<enumeration value="PubblicaNellaParteInformativa"></enumeration>
+			<enumeration value="PubblicaOnLineeInformativa"></enumeration>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="TipoFirmaType">
+        <annotation>
+        	<documentation>La firma a blocchi significa che la scheda prevede ad esempio la dichiarazione di più persone le quali dovranno firmare ognuna la parte di competenza, si tratta del rendering di documenti separati.</documentation>
+        </annotation>
+        <restriction base="string">
+			<enumeration value="LaSchedaNonNecessitaDiFirma"></enumeration>
+			<enumeration value="LaSchedaRichiedeLaFirma"></enumeration>
+			<enumeration value="LaSchedaVaFirmataABlocchi"></enumeration>
+		</restriction>
+	</simpleType>
+
+	<complexType name="AdempimentoType">
+		<sequence>
+			<element name="codiceProcedimento" type="string">
+				<annotation>
+					<documentation>
+						Fa riferimento ad un codice procedimento che si
+						riferisce ad una struttura ProcedimentoType.
+					</documentation>
+				</annotation>
+			</element>
+			<element name="necessario" type="boolean" maxOccurs="1"
+				minOccurs="0">
+			</element>
+			<element name="azione" type="tns:AzioniType" maxOccurs="1"
+				minOccurs="0">
+			</element>
+			<element name="disabilitato" type="boolean" maxOccurs="1"
+				minOccurs="0">
+				<annotation>
+					<documentation>
+						true=cancellazione logica
+					</documentation>
+				</annotation>
+			</element>
+			<element name="principale" type="boolean" maxOccurs="1" minOccurs="0"></element>
+		</sequence>
+	</complexType>
+
+
+	<simpleType name="AzioniType">
+        <annotation>
+        	<documentation>Utilizzato nella gestione di backoffice, serve ad indicare se un procedimento attivato all'interno di una pratica è significativo per il conteggio delle attività / esercizi sul territorio.</documentation>
+        </annotation>
+        <restriction base="string">
+			<enumeration value="+"></enumeration>
+			<enumeration value="-"></enumeration>
+			<enumeration value="="></enumeration>
+		</restriction>
+	</simpleType>
+
+	<complexType name="ProcedimentoType">
+        <annotation>
+        	<documentation>Il procedimento amministrativo è una "sequenza" di atti amministrativi orientati all'emanazione di un atto finale o ad una certificazione. Con il termine procedimento si identifica si la "sequenza" in capo all'ente ricevente (es. SUAP) che la "sequenza" riferita ad altri enti (generalmente chiamato endo-procedimento). Un procedimento è in capo ad un ente ed un ufficio che ne ha la competenza, è tutelato da leggi e normative e, all'atto della presentazione, è composto di domanda, dichiarazioni, asseverazioni ed allegati.</documentation>
+        </annotation>
+        <sequence>
+			<element name="codice" type="string">
+				<annotation>
+					<documentation>E' l'identificativo univoco del procedimento.</documentation>
+				</annotation></element>
+			<element name="procedimento" type="string">
+				<annotation>
+					<documentation>E' il nome del procedimento (Es. Prevenzione incendi, Sub-ingresso in esercizio di vicinato, Notifica sanitaria)</documentation>
+				</annotation></element>
+			<element name="amministrazione"
+				type="tns:AmministrazioneType">
+                <annotation>
+                	<documentation>E' l'aministrazione compentente</documentation>
+                </annotation>
+			</element>
+			<element name="infoGenerali" type="string" maxOccurs="1"
+				minOccurs="0">
+                <annotation>
+                	<documentation>Informazioni generali relative al procedimento</documentation>
+                </annotation>
+			</element>
+			<element name="infoRequisiti" type="string" maxOccurs="1"
+				minOccurs="0">
+                <annotation>
+                	<documentation>E' la descrizione dei requisiti necessari per l'attivazione del procedimento (Es. requisiti morali)</documentation>
+                </annotation>
+			</element>
+			<element name="infoAdempimenti" type="string" maxOccurs="1"
+				minOccurs="0">
+                <annotation>
+                	<documentation>Sono gli adempimenti necessari alla presentazione del procedimento (Es. il procedimento può essere presentato on-line previa autenticazione o in mora tramite l'indirizzo PEC del SUAP...)</documentation>
+                </annotation>
+			</element>
+			<element name="tipologia"
+				type="tns:TipologiaProcedimentoType" maxOccurs="1" minOccurs="0">
+                <annotation>
+                	<documentation>E’ la classificazione del procedimento. (ES. Ambiente, sicurezza…)</documentation></annotation>
+			</element>
+			<element name="movimentoAttivazione"
+				type="tns:TipoMovimentoType" maxOccurs="1" minOccurs="0">
+				<annotation>
+					<documentation>
+						E' il movimento che deve essere attivato verso
+						l'amministrazione che gestisce il procedimento
+						Es. "Trasmissione atti"
+					</documentation>
+				</annotation>
+			</element>
+			<element name="natura" type="tns:NaturaType" maxOccurs="1"
+				minOccurs="0">
+                <annotation>
+                	<documentation>La natura di un procedimento può essere SCIA, ORDINARIA/AUTORIZZATIVA, COMUNICAZIONE...</documentation>
+                </annotation>
+			</element>
+			<element name="tipoTitolo" type="tns:TipoTitoloType"
+				maxOccurs="unbounded" minOccurs="0">
+				<annotation>
+					<documentation>
+						Se presente indica la lista delle tipologie di
+						titolo/atto che possono essere indicate in fase
+						di presentazione domanda in alternativa alla
+						presentazione della documentazione necessaria
+						all'attestazione dei requisiti del procedimento.
+						Es. in un procedimento "agibilità dei locali"
+						saranno indicati come tipotitolo "estremi
+						rilascio agibilità" e/o "estremi protocollo
+						agibilità" per cui il richiedente ha facoltà di
+						indicare gli estremi qualora in possesso anzichè
+						allegare l'asseverazione firmata da un tecnico
+						abilitato.
+					</documentation>
+				</annotation>
+			</element>
+			<element name="allegati" type="tns:ProcedimentoAllegatiType"
+				maxOccurs="unbounded" minOccurs="0">
+                <annotation>
+                	<documentation>E’ la lista degli allegati necessari per la presentazione del procedimento.</documentation></annotation>
+			</element>
+
+			<element name="schedeDinamiche"
+				type="tns:ProcedimentoSchedeType" maxOccurs="unbounded"
+				minOccurs="0">
+                <annotation>
+                	<documentation>E’ la lista delle form che è necessario compilare per la domanda on-line</documentation></annotation>
+			</element>
+
+			<element name="oneri" type="tns:ProcedimentoOneriType"
+				maxOccurs="unbounded" minOccurs="0">
+                <annotation>
+                	<documentation>E’ la lista degli oneri dovuti all’atto di presentazione domanda.</documentation></annotation>
+			</element>
+			<element name="leggi" type="tns:ProcedimentoLeggeType" maxOccurs="unbounded" minOccurs="0">
+				<annotation>
+					<documentation>Sono le leggi e le normative che regolamentano il procedimento.</documentation></annotation></element>
+		</sequence>
+	</complexType>
+	
+	<complexType name="TipoTitoloType">
+		<sequence>
+        	<element name="id" type="string">
+            	<annotation>
+            		<documentation>Identificativo univoco</documentation>
+            	</annotation></element>
+            <element name="descrizione" type="string">
+            	<annotation>
+            		<documentation>Nome del tipo titolo.</documentation>
+            	</annotation>
+            </element>
+    	</sequence>
+	</complexType>
+
+	<complexType name="LeggeType">
+        <annotation>
+        	<documentation>Contiene una legge con relativo riferimento ad un allegato (testo di legge) o un link ad un portale che detiene la legge</documentation>
+        </annotation>
+        <sequence>
+        	<element name="id" type="string">
+        		<annotation>
+        			<documentation>
+        				Identificativo univoco della legge.
+        			</documentation>
+        		</annotation>
+        	</element>
+        	<element name="tipoLegge" type="tns:LeggiTipiType"
+        		maxOccurs="1" minOccurs="0">
+        		<annotation>
+        			<documentation>
+        				Serve a classificare la legge. (ES. commercio,
+        				edilizia pubblica...)
+        			</documentation>
+        		</annotation>
+        	</element>
+        	<element name="tipoNormativa" type="tns:NormativaType"
+        		maxOccurs="1" minOccurs="0">
+        		<annotation>
+        			<documentation>
+        				Indica il tipo di nomativa a cui appartiene la
+        				legge. (Es. Nomativa Comunitaria, Normativa
+        				Nazionale, Normativa Regionale, Normativa
+        				Comunale)
+        			</documentation>
+        		</annotation>
+        	</element>
+        	<element name="descrizione" type="string">
+        		<annotation>
+        			<documentation>
+        				E' la definizione della legge (Es. DL 114/98)
+        			</documentation>
+        		</annotation>
+        	</element>
+        	<element name="link" type="string" maxOccurs="1"
+        		minOccurs="0">
+        		<annotation>
+        			<documentation>
+        				Eventuale link dove è pubblicata la legge (Es.
+        				"http://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.legge:1998;114")
+        			</documentation>
+        		</annotation>
+        	</element>
+        	<element name="allegato" type="tns:AllegatoType"
+        		maxOccurs="1" minOccurs="0">
+        		<annotation>
+        			<documentation>
+        				E' l'allegato (pdf,doc...) dove è riportata la
+        				legge.
+        			</documentation>
+        		</annotation>
+        	</element>
+        </sequence>
+	</complexType>
+
+
+	<complexType name="CausaliOneriType">
+    	<sequence>
+            <element name="id" type="string"></element>
+            <element name="descrizione" type="string"></element>
+    	</sequence>
+    </complexType>
+    
+    <complexType name="InterventoOneriType">
+    	<sequence>
+    		<element name="causale" type="tns:CausaliOneriType"
+    			maxOccurs="1" minOccurs="0">
+    		</element>
+    		<element name="importo" type="float"></element>
+    		<element name="richiesto" type="boolean" maxOccurs="1"
+    			minOccurs="0">
+    		</element>
+    		<element name="disabilitato" type="boolean" maxOccurs="1" minOccurs="0">
+    			<annotation>
+    				<documentation>True=indica che l'onere non va più richiesto</documentation>
+    			</annotation></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="AmministrazioneType">
+        <annotation>
+        	<documentation>Indica un ente o un ufficio.</documentation>
+        </annotation>
+        <sequence>
+            <element name="id" type="string">
+            	<annotation>
+            		<documentation>Identificativo univoco</documentation>
+            	</annotation></element>
+            <element name="amministrazione" type="string">
+            	<annotation>
+            		<documentation>Nome dell'amministrazione.</documentation>
+            	</annotation></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="TipologiaProcedimentoType">
+        <annotation>
+        	<documentation>E’ la classificazione del procedimento. (ES. Ambiente, sicurezza…)</documentation></annotation>
+        <sequence>
+        	<element name="id" type="string">
+        		<annotation>
+        			<documentation>
+        				Identificativo univoco
+        			</documentation>
+        		</annotation>
+        	</element>
+        	<element name="tipo" type="string">
+        		<annotation>
+        			<documentation>
+        				E’ descrizione della tipologia del procedimento.
+        				(ES. Ambiente, sicurezza…)
+        			</documentation>
+        		</annotation>
+        	</element>
+        	<element name="note" type="string" maxOccurs="1"
+        		minOccurs="0">
+        	</element>
+        	<element name="ordine" type="string" maxOccurs="1"
+        		minOccurs="0">
+        		<annotation>
+        			<documentation>
+        				Indica l'ordine di visualizzazione nella parte
+        				informativa del front-end.
+        			</documentation>
+        		</annotation>
+        	</element>
+        	<element name="famiglia" type="tns:FamigliaProcedimentoType"
+        		maxOccurs="1" minOccurs="0">
+        		<annotation>
+        			<documentation>
+        				Ogni tipologia di procedimento può far parte di
+        				una famiglia. Es procedimenti del commercio,
+        				procedimenti artigianato, procedimenti tecnici
+        				(Ambiente, sicurezza, edilizia, sanità...)
+        			</documentation>
+        		</annotation>
+        	</element>
+        </sequence>
+    </complexType>
+
+
+    <complexType name="ProcedimentoAllegatiType">
+        <annotation>
+        	<documentation>Contiene la defiizione degli allegati collegati al procedimenti.</documentation>
+        </annotation>
+        <sequence>
+        	<element name="id" type="string">
+        		<annotation>
+        			<documentation>
+        				Identificativo univoco
+        			</documentation>
+        		</annotation>
+        	</element>
+        	<element name="descrizione" type="string">
+        		<annotation>
+        			<documentation>
+        				Descrizione dell'allegato
+        			</documentation>
+        		</annotation>
+        	</element>
+        	<element name="link" type="string" maxOccurs="1"
+        		minOccurs="0">
+        		<annotation>
+        			<documentation>
+        				Può essere usato per indicare il link dal quale
+        				scaricare l'allegato
+        			</documentation>
+        		</annotation>
+        	</element>
+        	<element name="allegato" type="tns:AllegatoType"
+        		maxOccurs="1" minOccurs="0">
+        		<annotation>
+        			<documentation>
+        				E' l'allegato fisico corrispondente alla
+        				descrizione (pdf,doc...)
+        			</documentation>
+        		</annotation>
+        	</element>
+        	<element name="pubblica" type="tns:pubblicaDocumentoType"
+        		maxOccurs="1" minOccurs="0">
+        	</element>
+        	<element name="richiesto" type="boolean" maxOccurs="1"
+        		minOccurs="0">
+        		<annotation>
+        			<documentation>
+        				Indica se il documenti è necessario durante la
+        				presentazione della domanda on-line.
+        			</documentation>
+        		</annotation>
+        	</element>
+        	<element name="ordine" type="string" maxOccurs="1"
+        		minOccurs="0">
+        		<annotation>
+        			<documentation>
+        				Se specificato indica l'ordine con il quale
+        				mostrare l'elenco degli allegati di un
+        				procedimento.
+        			</documentation>
+        		</annotation>
+        	</element>
+        	<element name="richiedeFirma" type="boolean" maxOccurs="1"
+        		minOccurs="0">
+        		<annotation>
+        			<documentation>
+        				True=durante la presentazione della domanda
+        				on-line l'allegato deve essere ricaricato con
+        				firma digitale.
+        			</documentation>
+        		</annotation>
+        	</element>
+        	<element name="tipoDownload" maxOccurs="1" minOccurs="0" type="string">
+                <annotation>
+                	<documentation>Contiene la lista dei formati in cui è possibile scaricare l’allegato, la lista dei formati è separata da virgola. Es. pdf, rtf, odt. Per utilizzare questo elemento il front-office deve essere in grado di trasformare un'origine html o rtf nei formati specificati.</documentation>
+                </annotation>
+        	</element>
+        </sequence>
+    </complexType>
+
+
+    <complexType name="ProcedimentoSchedeType">
+        <annotation>
+        	<documentation>Contiene le schede collegate al procedimento.</documentation>
+        </annotation>
+        <sequence>
+        	<element name="scheda" type="tns:SchedaType">
+        		<annotation>
+        			<documentation>
+        				E' la scheda collegata al procedimento.
+        			</documentation>
+        		</annotation>
+        	</element>
+        	<element name="pubblica" type="boolean" maxOccurs="1"
+        		minOccurs="0">
+        		<annotation>
+        			<documentation>
+        				true=pubblica. Una scheda di un procedimento può
+        				essere pubblicata solo durante la compilazione
+        				della domanda on-line.
+        			</documentation>
+        		</annotation>
+        	</element>
+        	<element name="tipoFirma" type="int" maxOccurs="1"
+        		minOccurs="0">
+        		<annotation>
+        			<documentation>
+        				Indica se la scheda, durante la domanda on-line,
+        				deve essere firmata dal richiedente. 0=non
+        				necessita di firma; 1=firma l'intero modello;
+        				2=firma per singolo blocco. In presenza di
+        				blocchi multipli la scheda può produrre un pdf
+        				per ogni blocco ed ogni pdf può essere firmato
+        				separatamente.
+        			</documentation>
+        		</annotation>
+        	</element>
+
+        	<element name="facoltativa" type="boolean" maxOccurs="1"
+        		minOccurs="0">
+        		<annotation>
+        			<documentation>
+        				true=non è necessaria la compilazione durante la
+        				domanda on-line.
+        			</documentation>
+        		</annotation>
+        	</element>
+        	<element name="ordine" type="string" maxOccurs="1" minOccurs="0">
+        		<annotation>
+        			<documentation>Durante la domanda on-line indica l'ordine di presentazione rispetto alle altre schede del procedimento.</documentation>
+        		</annotation></element>
+        </sequence>
+    </complexType>
+
+
+    <complexType name="ProcedimentoOneriType">
+    	<sequence>
+    		<element name="id" type="string">
+    			<annotation>
+    				<documentation>
+    					Identificativo univoco
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="causale" type="tns:CausaliOneriType"></element>
+    		<element name="importo" type="double"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="ProcedimentoLeggeType">
+    	<sequence>
+    		<element name="id" type="string"></element>
+    		<element name="legge" type="tns:LeggeType"></element>
+    		<element name="riferimenti" type="string" maxOccurs="1" minOccurs="0"></element>
+    	</sequence>
+    </complexType>
+    
+    <complexType name="LeggiTipiType">
+    	<annotation>
+    		<documentation>
+    			Contiene la classificare la legge. (ES. commercio,
+    			edilizia pubblica...)
+    		</documentation>
+    	</annotation>
+    	<sequence>
+    		<element name="id" type="string">
+    			<annotation>
+    				<documentation>Identificativo univoco</documentation>
+    			</annotation></element>
+    		<element name="descrizione" type="string">
+    			<annotation>
+    				<documentation>Descrizione del tipo di legge</documentation>
+    			</annotation></element>
+    	</sequence>
+    </complexType>
+    
+    <complexType name="NormativaType">
+        <annotation>
+        	<documentation>Contiene il tipo di nomativa a cui appartiene la legge. (Es. Nomativa Comunitaria, Normativa Nazionale, Normativa Regionale, Normativa Comunale)</documentation>
+        </annotation>
+        <sequence>
+        	<element name="id" type="string">
+        		<annotation>
+        			<documentation>
+        				Identificativo univoco
+        			</documentation>
+        		</annotation>
+        	</element>
+        	<element name="normativa" type="string">
+        		<annotation>
+        			<documentation>E' la descrizione della normativa.</documentation>
+        		</annotation></element>
+        </sequence>
+    </complexType>
+
+    <complexType name="FamigliaProcedimentoType">
+        <annotation>
+        	<documentation>Ogni tipologia di procedimento può far parte di una famiglia. Es procedimenti del commercio, procedimenti artigianato, procedimenti tecnici (Ambiente, sicurezza, edilizia, sanità...)</documentation></annotation>
+        <sequence>
+        	<element name="id" type="string">
+        		<annotation>
+        			<documentation>
+        				Identificativo univoco
+        			</documentation>
+        		</annotation>
+        	</element>
+        	<element name="famiglia" type="string">
+        		<annotation>
+        			<documentation>Descrizione</documentation>
+        		</annotation>
+        	</element>
+        	<element name="ordine" type="string" maxOccurs="1"
+        		minOccurs="0">
+        		<annotation>
+        			<documentation>
+        				Ordine di visualizzazione nel front-end
+        			</documentation>
+        		</annotation>
+        	</element>
+        	<element name="note" type="string" maxOccurs="1" minOccurs="0">
+        		<annotation>
+        			<documentation>Note relative alla famiglia</documentation>
+        		</annotation></element>
+        </sequence>
+    </complexType>
+
+    <complexType name="TipoContromovimentoType">
+        <annotation>
+        	<documentation>Contiene i tipimovimento (blocchi o passi del workflow) che vengono scatenati dal tipomovimento a cui sono collegati.</documentation>
+        </annotation>
+        <sequence>
+        	<element name="id" type="string">
+        		<annotation>
+        			<documentation>
+        				Identificativo univoco
+        			</documentation>
+        		</annotation>
+        	</element>
+        	<element name="tipoContromovimento"
+        		type="tns:TipoMovimentoType">
+        		<annotation>
+        			<documentation>
+        				E' in relazione con TipoMovimento.id (la
+        				relazione non è esplicitata nello schema.
+        			</documentation>
+        		</annotation>
+        	</element>
+        	<element name="amministrazioneMovimento"
+        		type="tns:AmministrazioneType" maxOccurs="1" minOccurs="0">
+        		<annotation>
+        			<documentation>
+        				Indica che il passo farà parte del workflow
+        				della specifica istanza (pratica) solo se il
+        				passo precedente (a cui è collegato) è stato
+        				effettuato dall'amministrazione (ufficio)
+        				specificata.
+        			</documentation>
+        		</annotation>
+        	</element>
+        	<element name="amministrazioneControMovimento"
+        		type="tns:AmministrazioneType" maxOccurs="1" minOccurs="0">
+        		<annotation>
+        			<documentation>
+        				Indica l'amministrazione che può effettuare il contromovimento
+        			</documentation>
+        		</annotation>
+        	</element>
+        	<element name="obbligatorio" type="boolean" maxOccurs="1"
+        		minOccurs="0">
+        		<annotation>
+        			<documentation>
+        				Indica che nell'istanza il passo non può essere
+        				non eseguito.
+        			</documentation>
+        		</annotation>
+        	</element>
+        	<element name="comportamento" type="int" maxOccurs="1"
+        		minOccurs="0">
+        		<annotation>
+        			<documentation>
+        				0=Mostra il passo sempre; 1=mostra il passo solo
+        				se il passo precedente ha esito negativo;
+        				2=mostra il passo solo se il passo precedente ha
+        				esito positivo
+        			</documentation>
+        		</annotation>
+        	</element>
+        	<element name="procedura" type="tns:ProceduraType"
+        		maxOccurs="1" minOccurs="0">
+        		<annotation>
+        			<documentation>
+        				Indica la procedura per la quale deve essere
+        				mostrato il passo all'interno di un'istanza.
+        			</documentation>
+        		</annotation>
+        	</element>
+        	<element name="comportamentoSTC" type="int" maxOccurs="1"
+        		minOccurs="0">
+        		<annotation>
+        			<documentation>
+        				Come per l'elemento "comportamento" ma vale nel
+        				caso in cui l'istanza sia stata generata da STC
+        			</documentation>
+        		</annotation>
+        	</element>
+        	<element name="dataInizioValidita" type="date" maxOccurs="1"
+        		minOccurs="0">
+        		<annotation>
+        			<documentation>
+        				Il passo viene attivato solo per le istanze dove
+        				il blocco è necessario in data successiva
+        				all'attivazione.
+        			</documentation>
+        		</annotation>
+        	</element>
+        	<element name="comportamentoNonDuplicare" type="boolean"
+        		maxOccurs="1" minOccurs="0">
+        		<annotation>
+        			<documentation>
+        				true=significa che se nell'istanza il passo
+        				esiste come già eseguito non deve essere
+        				riproposto. false=anche se un passo esiste deve
+        				essere riproposto se ha scadenza diversa a
+        				quello esistente (è il caso di un passo che a
+        				seguito di controllo negativo deve essere
+        				rifatto)..
+        			</documentation>
+        		</annotation>
+        	</element>
+        </sequence>
+    </complexType>
+</schema>

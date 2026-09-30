@@ -1,0 +1,95 @@
+﻿@page "/{IdComune}/{Software}/entiterzidettagliopratica/{UuidIstanza}/{GoBackUrl}"
+@using AreaRiservataCore.Pages.Visura
+@using VBG.BlazorComponentsLibrary
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+
+@inherits BasePage
+
+<TitoloPagina>Dettaglio Pratica</TitoloPagina>
+
+@if (_istanza is not null)
+{
+    <TabComponent>
+
+        <TabPageComponent Text="@TabsPagina.Tabs[0].Descrizione" Id="TabsPagina.Tabs[0].Id" Badge="TabsPagina.Tabs[0].Badge">
+            @if (_divProcessedVisible)
+            {
+                <div class="alert alert-info" role="alert">
+                    Pratica contrassegnata come elaborata
+                </div>
+            }
+
+            <DatiGenerali MostraDatiProtocollo="true" DataSource="@_visuraDatiGeneraliDataSource" UtenteTester="@this.UtenteTester"></DatiGenerali>
+            <VisuraSoggetti DataSource="@_visuraSoggettiDataSource"></VisuraSoggetti>
+            <VisuraMovimenti DataSource="@_visuraMovimentiDataSource" MostraPraticheCollegate="false"></VisuraMovimenti>
+        </TabPageComponent>
+
+        @if (_visuraLocalizzazioniDataSource is not null)
+        {
+            <TabPageComponent Text="@TabsPagina.Tabs[1].Descrizione" Id="TabsPagina.Tabs[1].Id" Badge="TabsPagina.Tabs[1].Badge">
+                <VisuraLocalizzazioni DataSource="@_visuraLocalizzazioniDataSource" MostraDatiCatastaliEstesi="false"></VisuraLocalizzazioni>
+            </TabPageComponent>
+        }
+
+        @if (_titoliModelli?.Any() ?? false)
+        {
+            <TabPageComponent Text="@TabsPagina.Tabs[2].Descrizione" Id="TabsPagina.Tabs[2].Id" Badge="TabsPagina.Tabs[2].Badge">
+                <VisuraSchedeDinamiche DataSource="@_titoliModelli" Istanza="@_istanza"></VisuraSchedeDinamiche>
+            </TabPageComponent>
+        }
+
+        @if (_visuraDocumentiDataSource.Any())
+        {
+            <TabPageComponent Text="@TabsPagina.Tabs[3].Descrizione" Id="TabsPagina.Tabs[3].Id" Badge="TabsPagina.Tabs[3].Badge">
+                <VisuraDocumenti DataSource="@_visuraDocumentiDataSource"></VisuraDocumenti>
+            </TabPageComponent>
+        }
+
+        @if (_scadenzeDataSource?.Any() ?? false)
+        {
+            <TabPageComponent Text="@TabsPagina.Tabs[4].Descrizione" Id="TabsPagina.Tabs[4].Id" Badge="TabsPagina.Tabs[4].Badge">
+                <StepCard Titolo="Scadenze">
+
+                    @foreach (var item in _scadenzeDataSource)
+                    {
+                        <StepCardItem>
+                            <StepCardItemTitle Titolo="@item.DescrMovimentoDaFare"></StepCardItemTitle>
+                            @if (item.DataScadenza != null)
+                            {
+                                <StepCardInfo Titolo="Scadenza">@item.DataScadenza.Value.ToShortDateString()</StepCardInfo>
+                            }
+                            <StepCardInfo Titolo="">
+                                <button type="button" class="btn btn-primary btn-sm" 
+                                        aria-labelledby="@($"buttonPerfezionaLaRichiesta-{item.UuidMovimentoDaFare}")" 
+                                        data-focus-mouse="false" 
+                                        @onclick="@(() => GotoAsync($"effettuamovimento/{item.CodiceScadenza}/0/entiterzidettagliopratica/{UuidIstanza}"))">
+                                    <span id="@($"buttonPerfezionaLaRichiesta-{item.UuidMovimentoDaFare}")" class="text-button-sm">Perfeziona la richiesta</span>
+                                </button>
+                            </StepCardInfo>
+                        </StepCardItem>
+                    }
+
+                </StepCard>
+
+            </TabPageComponent>
+        }
+    </TabComponent>
+
+    <div class="buttonContainer">
+        <button class="btn btn-light" @onclick="OnBtnCloseAsync">Chiudi</button>
+
+        @if (_btnSetNotProcessedVisible)
+        {
+            <button class="btn btn-primary" @onclick="OnBtnSetNotProcessedAsync">Contrassegna come non elaborata</button>
+        }
+
+        @if (_btnSetProcessedVisible)
+        {
+            <button class="btn btn-primary" @onclick="OnBtnSetProcessedAsync">Contrassegna come elaborata</button>
+        }
+    </div>
+}
+
+@code {
+
+}

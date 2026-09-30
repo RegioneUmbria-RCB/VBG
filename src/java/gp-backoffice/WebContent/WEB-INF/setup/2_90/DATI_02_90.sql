@@ -1,0 +1,1 @@
+update verticalizzazioniparametribase set descrizione ='Utilizzato per la generazione della busta CAdES in formato DER. Può assumere i valori 0 o 1. 0: Busta CAdES in formato BER; 1: Busta CAdES in formato DER (default)' where MODULO ='FIRMA_REMOTA_ARUBA' and PARAMETRO='RETURN_DER';

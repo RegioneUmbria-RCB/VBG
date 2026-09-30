@@ -1,0 +1,7 @@
+Insert into VERTICALIZZAZIONIBASE (MODULO,DESCRIZIONE,FLAG_GESTCOMUNE) values ('NODO_PAGAMENTI','Attiva la gestione dei pagamenti mediante il nodo pagamenti','1');
+Insert into VERTICALIZZAZIONIPARAMETRIBASE (MODULO,PARAMETRO,DESCRIZIONE) values ('NODO_PAGAMENTI','AR_COD_FISC_ENTE_CREDITORE','Usato da area riservata: Codice fiscale dell''ente creditore');
+Insert into VERTICALIZZAZIONIPARAMETRIBASE (MODULO,PARAMETRO,DESCRIZIONE) values ('NODO_PAGAMENTI','AR_URL_RITORNO','Usato da area riservata: Url di ritorno quando per comunicare l''esito di un pagamento terminato (es. ~/Reserved/InserimentoIstanza/pagamenti/VerificaStatoPagamentiNodoPagamenti.aspx)');
+INSERT INTO verticalizzazioniparametribase (modulo, parametro, descrizione) VALUES ('NODO_PAGAMENTI','AR_URL_BACK','Usato da area riservata: Url di ritorno quando l''utente interrompe il pagamento e ritorna alla presentazione della pratica (es. ~/Reserved/InserimentoIstanza/GestionePagamentiNodoPagamenti.aspx)');
+
+Insert into VERTICALIZZAZIONIPARAMETRIBASE (MODULO,PARAMETRO,DESCRIZIONE) values ('NODO_PAGAMENTI','ID_MODALITA_PAGAMENTO','Valorizzare con il codice identificativo dellà modalità di pagamento che indica il pagamento avvenuto On-Line. Le modalità di pagamento sono gestite dalla voce di menù Archivi -> Archivi di base -> Tabelle -> Modalità di pagamento');
+Insert into VERTICALIZZAZIONIPARAMETRIBASE (MODULO,PARAMETRO,DESCRIZIONE) values ('NODO_PAGAMENTI','URL_WS','indirizzo del wsdl del webservice  del nodo dei pagamenti es: http://devel9:8084/nodo-pagamenti/services/pagamentiSOAP?wsdl');

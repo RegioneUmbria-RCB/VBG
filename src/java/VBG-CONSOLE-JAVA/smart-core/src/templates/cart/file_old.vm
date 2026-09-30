@@ -1,0 +1,114 @@
+
+#set($idCampo = "campo_$item.File.Id")
+#set($idCampo = $helper.getUniqueId(${idCampo},${item.File}))
+###set($numDuplicati = $helper.countUniqueIds(${idCampo}))
+###if($rowIndex < 1 && !$isTableTemplate)
+##	#set($idCampo = $helper.getUniqueId(${idCampo}))
+###elseif($rowIndex > 0 && $numDuplicati > 0)
+##	#set($uidSep = $helper.getUniqueIdSeparator())
+##	#set($idCampo = "${idCampo}${uidSep}${numDuplicati}")
+###end
+#set($idSemantico = $item.File.IdSemantico)
+#set($idInput = $idSemantico)
+#if($isTableTemplate)
+	#set($idCampo = "${idCampo}_row_${index}")
+	#set($idInput = "${idInput}_row_${index}")
+#elseif($rowIndex > -1)
+	#set($idCampo = "${idCampo}_row_${rowIndex}")
+	#set($idInput = "${idInput}_row_${rowIndex}")
+#end
+#if($item.File.MaxUpload == "unbounded")
+	#set($maxUploadAttribute = "0")
+#else
+	#set($maxUploadAttribute = $item.File.MaxUpload)
+#end
+<div id="$idCampo" class="campo-cart-container">
+	#set($tooltiptext = ${helper.getFileHelp($item.File)})
+	#set($classeDivCampo = "campo-cart-right")
+	#if($helper.renderFormLayout($item,$quadro))
+        <div class="label-cart" >
+        	$!item.File.Titolo&nbsp;
+        </div>
+	#else
+		#set($classeDivCampo = "campo-cart-left")
+	#end
+##	#if($item.File.Titolo && $item.File.Titolo.length() > 0)
+##    <div class="label-cart">
+##    	$!item.File.Titolo
+##    </div>
+##	#elseif($table || $isTableTemplate)
+##		#set($classeDivCampo = "campo-cart-left")
+##	#else
+##		<div class="label-cart" >
+##        	&nbsp;&nbsp;
+##        </div>
+##	#end
+	<div class="campo-cart $classeDivCampo">
+    	<input type="file" id="$idInput" name="$idInput" class="campo-file-cart"/>
+		<label for="$idInput" class="mandatory-star mandatory-file-star" style="display:none;">*</label>
+		<div class="campo-cart-icons">
+			#if($tooltiptext.length() > 0)
+				<span class="help_image" id="${idInput}_help" title="${helper.escapeValueForHtmlAttribute($tooltiptext)}">
+					<label >(?)</label>
+	            </span>
+			#end
+			<span class="error_image" style="display:none;" title="">
+				<label >(!)</label>
+	        </span>
+			<span class="warning_image" style="display:none;" title="">
+				<label >(!)</label>
+	        </span>
+	    </div>
+		#set($idInputEscaped = $helper.escapeForCssSelector($idInput))
+		#set($fileTypes = "")
+		#if($item.File.Tipo)
+			#set($fileTypes =${helper.buildFileTypeRestrictionsString($item.File.Tipo)})
+		#end
+		#set($dbFilesArray = ${helper.buildUploadedFilesAsJsonObjectArray($item.File.IdSemantico,$rowIndex)})
+		#if(!$isTableTemplate)
+    	<script>
+		$(document).ready(function(){
+			##scrittura dello script che crea il controllo MultiFile e ne imposta le proprietà che definiscono il comportamento
+			initializeMultiFile('$idInputEscaped',"$fileTypes",$maxUploadAttribute,$dbFilesArray);
+		});
+    	</script>	
+		#else
+			##set($idInputEscaped = $helper.escapeForCssSelector($idInput))
+			$helper.addScriptToCache("initializeMultiFile('$helper.escapeForCssSelector(${item.File.IdSemantico})_row_' + newRowIndex,'$fileTypes',$maxUploadAttribute,[]);")
+    	#end		
+    	#set($attivo = $helper.evaluateExpression($item.File.Attivo,$rowIndex))
+    	#if(!$attivo || $helper.isEspressioneDinamica($item.File.Attivo))
+			#if(!$isTableTemplate)
+				#set($jsScript = $helper.buildJavascriptToDynamicallyEnableElement($idCampo,$item.File.Attivo,2))
+            	<script>
+    			$(document).ready(function(){
+                	##scrittura dello script che attiva e disattiva il campo dinamicamente in base ai valori assunti da altri campi
+            		$jsScript
+    			});
+            	</script>
+			#else
+				#set($jsScript = $helper.buildJavascriptToDynamicallyEnableElement($helper.getUniqueId("campo_$item.File.Id", ${item.File}),$item.File.Attivo,"_row_' + newRowIndex + '",2))
+				#if($jsScript != "")
+					$helper.addScriptToCache($jsScript)
+				#end
+    		#end
+		#end
+    	#set($mandatory = $helper.evaluateExpression($item.File.Obbligatorio,$rowIndex))
+    	#if($mandatory || $helper.isEspressioneDinamica($item.File.Obbligatorio))
+			#if(!$isTableTemplate)
+				#set($jsScript = $helper.buildJavascriptToDynamicallySetMandatoryElement($idInput,$item.File.Obbligatorio,2))
+            	<script>
+    			$(document).ready(function(){
+                	##scrittura dello script che rende il campo obbligatorio dinamicamente in base ai valori assunti da altri campi
+            		$jsScript
+    			});
+            	</script>
+			#else
+				#set($jsScript = $helper.buildJavascriptToDynamicallySetMandatoryElement($item.File.IdSemantico,$item.File.Obbligatorio,"_row_' + newRowIndex + '",2))
+				#if($jsScript != "")
+					$helper.addScriptToCache($jsScript)
+				#end
+    		#end
+		#end
+    </div>
+</div>

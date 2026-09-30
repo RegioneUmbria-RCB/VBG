@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="WsRicercaPraticheService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://localhost:2640/sigepro.net/WebServices/WsAreaRiservata/WcfServices/RicercaPratiche/WsRicercaPraticheService.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://localhost:2640/sigepro.net/WebServices/WsAreaRiservata/WcfServices/RicercaPratiche/WsRicercaPraticheService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost:2640/sigepro.net/WebServices/WsAreaRiservata/WcfServices/RicercaPratiche/WsRicercaPraticheService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/Init.SIGePro.Manager.Logic.RicercaPratiche" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IWsRicercaPraticheService_RicercaPraticaDaNumeroIstanza_InputMessage">
+    <wsdl:part name="parameters" element="tns:RicercaPraticaDaNumeroIstanza" />
+  </wsdl:message>
+  <wsdl:message name="IWsRicercaPraticheService_RicercaPraticaDaNumeroIstanza_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RicercaPraticaDaNumeroIstanzaResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWsRicercaPraticheService_RicercaPraticaDaEstremiProtocollo_InputMessage">
+    <wsdl:part name="parameters" element="tns:RicercaPraticaDaEstremiProtocollo" />
+  </wsdl:message>
+  <wsdl:message name="IWsRicercaPraticheService_RicercaPraticaDaEstremiProtocollo_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RicercaPraticaDaEstremiProtocolloResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IWsRicercaPraticheService">
+    <wsdl:operation name="RicercaPraticaDaNumeroIstanza">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWsRicercaPraticheService/RicercaPraticaDaNumeroIstanza" message="tns:IWsRicercaPraticheService_RicercaPraticaDaNumeroIstanza_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWsRicercaPraticheService/RicercaPraticaDaNumeroIstanzaResponse" message="tns:IWsRicercaPraticheService_RicercaPraticaDaNumeroIstanza_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RicercaPraticaDaEstremiProtocollo">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWsRicercaPraticheService/RicercaPraticaDaEstremiProtocollo" message="tns:IWsRicercaPraticheService_RicercaPraticaDaEstremiProtocollo_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWsRicercaPraticheService/RicercaPraticaDaEstremiProtocolloResponse" message="tns:IWsRicercaPraticheService_RicercaPraticaDaEstremiProtocollo_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IWsRicercaPraticheService" type="tns:IWsRicercaPraticheService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="RicercaPraticaDaNumeroIstanza">
+      <soap:operation soapAction="http://tempuri.org/IWsRicercaPraticheService/RicercaPraticaDaNumeroIstanza" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RicercaPraticaDaEstremiProtocollo">
+      <soap:operation soapAction="http://tempuri.org/IWsRicercaPraticheService/RicercaPraticaDaEstremiProtocollo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="WsRicercaPraticheService">
+    <wsdl:port name="BasicHttpBinding_IWsRicercaPraticheService" binding="tns:BasicHttpBinding_IWsRicercaPraticheService">
+      <soap:address location="http://localhost:2640/sigepro.net/WebServices/WsAreaRiservata/WcfServices/RicercaPratiche/WsRicercaPraticheService.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

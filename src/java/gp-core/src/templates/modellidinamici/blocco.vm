@@ -1,0 +1,71 @@
+##		#if($modelloHelper.isRenderForPrint())
+##		</td>
+##	</tr>
+##</table>
+##		#else
+			#set($idBlocco = "BLOCK_${riga.NumRiga}_$indiceBlocco")
+			#if($isTemplate)
+				#set($idBlocco = "BLOCK_${riga.NumRiga}_${indicePh}")
+			#end
+			<div id="$idBlocco" class="divBlocco" style="margin-bottom: 3px; margin-top: 3px;border: 1px solid #000000">
+##			#if($velocityCount > 1)
+##				<div class="divEliminazioneBlocco">
+##					<a style="font-weight: bold;text-align: right; padding-right: 2px;" href="javascript:eliminaBlocco('${riga.getNumRiga()}');">
+##					Elimina
+##					</a>
+##				</div>
+##			#end
+##		#end
+
+#set($righeTab = $blocco.getRighe())
+#set($maxColonneTab = $blocco.getMaxColonne())
+#if($righeTab && $righeTab.size() > 0)
+	<table cellpadding="0" cellspacing="2" width="100%" border="0">
+		#foreach($rigaTab in $righeTab)
+		<tr class="rigaBlocco">
+			#set($primaRigaBlocco = $velocityCount == 1)
+			#set($colonneTab = $rigaTab.getColonne())
+			#set($deltaColonne = $maxColonneTab - $colonneTab.size())
+			##set($numCampiTab = $rigaTab.contaColonneCampo())
+			##$modelloHelper.debug($colonneTab)
+			#foreach($colonnaTab in $colonneTab)
+				#set($lastColonna = $velocityCount == $colonneTab.size())
+				#set($d2md = false)
+				#set($d2md = $colonnaTab.Dyn2Modellid)
+				#set($campo = $colonnaTab.getCampo())
+				#set($tabelleTab = $colonnaTab.getTabelle())
+				#set($testo = $colonnaTab.getTesto())
+				#set($testoEsteso = $colonnaTab.getTestoesteso())
+				#if($tabelleTab)
+					##tabelle annidate non supportate
+				#else
+					#parse("modellidinamici/dyn2md.vm")
+				#end
+			#end
+			#set($colonnaTab = false)
+			#if($primaRigaBlocco && !$modelloHelper.isRenderForPrint())
+				#set($rowspanBlocco = $righeTab.size())
+				#set($eliminaBloccoArgument = ${indiceBlocco})
+				#if($isTemplate)
+					#set($eliminaBloccoArgument = "${indicePh}")
+				#end
+				<td rowspan="$rowspanBlocco" width="10%">
+					<div class="divEliminazioneBlocco">
+						<input type="button" onclick="javascript:eliminaBlocco_${riga.getNumRiga()}('${riga.getNumRiga()}',$eliminaBloccoArgument);" value="Elimina">
+					</div>
+				</td>
+			#end
+		</tr>
+		#end
+	</table>
+#end
+
+##		#if($modelloHelper.isRenderForPrint())
+##<br/>
+##<table>
+##	<tr>
+##		<td>
+##		#else
+			</div>
+##		#end
+#set($righeTab = false)

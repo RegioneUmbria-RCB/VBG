@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns2="http://services.sia.eu/head" xmlns:ns1="http://services.sia.eu/" name="gestorePosizioni" targetNamespace="http://services.sia.eu/">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://services.sia.eu/head" version="1.0">
+
+  <xs:element name="gestorePosizioniHeader">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="user" type="xs:string"/>
+        <xs:element name="password" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://services.sia.eu/" targetNamespace="http://services.sia.eu/" version="1.0">
+
+  <xs:element name="inserimentoPosizioneRequest" type="tns:inserimentoPosizioneRequest"/>
+
+  <xs:element name="inserimentoPosizioneResponse" type="tns:inserimentoPosizioneResponse"/>
+
+  <xs:complexType name="inserimentoPosizioneRequest">
+    <xs:sequence>
+      <xs:element name="inserimentoPosizioneInput" type="tns:inserimentoPosizioneInputType"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="inserimentoPosizioneInputType">
+    <xs:sequence>
+      <xs:element name="identificativo_beneficiario" type="xs:string"/>
+      <xs:element name="codice_servizio" type="xs:int"/>
+      <xs:element name="tipo_riferimento_creditore" type="xs:string"/>
+      <xs:element name="codice_riferimento_creditore" type="xs:string"/>
+      <xs:element minOccurs="0" name="codice_identificativo_presentazione" type="xs:string"/>
+      <xs:element minOccurs="0" name="identificativo_univoco_versamento" type="xs:string"/>
+      <xs:element minOccurs="0" name="data_scadenza_pagamento" type="xs:date"/>
+      <xs:element name="importo" type="xs:decimal"/>
+      <xs:element name="causale" type="xs:string"/>
+      <xs:element name="tipo_id_debitore" type="xs:string"/>
+      <xs:element minOccurs="0" name="identificativo_debitore" type="xs:string"/>
+      <xs:element minOccurs="0" name="anagrafica_debitore" type="xs:string"/>
+      <xs:element minOccurs="0" name="indirizzo_debitore" type="xs:string"/>
+      <xs:element minOccurs="0" name="civico_debitore" type="xs:string"/>
+      <xs:element minOccurs="0" name="cap_debitore" type="xs:string"/>
+      <xs:element minOccurs="0" name="localita_debitore" type="xs:string"/>
+      <xs:element minOccurs="0" name="provincia_debitore" type="xs:string"/>
+      <xs:element minOccurs="0" name="nazione_debitore" type="xs:string"/>
+      <xs:element minOccurs="0" name="email_debitore" type="xs:string"/>
+      <xs:element minOccurs="0" name="savv" type="xs:string"/>
+      <xs:element minOccurs="0" name="ckey_5" type="xs:string"/>
+      <xs:element minOccurs="0" name="ckey_6" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="inserimentoPosizioneResponse">
+    <xs:sequence>
+      <xs:element name="inserimentoPosizioneOutput" type="tns:inserimentoPosizioneOutputType"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="inserimentoPosizioneOutputType">
+    <xs:sequence>
+      <xs:element name="esito" type="xs:string"/>
+      <xs:element minOccurs="0" name="codiceErrore" type="xs:string"/>
+      <xs:element minOccurs="0" name="descrizione" type="xs:string"/>
+      <xs:element minOccurs="0" name="identificativo_univoco_versamento" type="xs:string"/>
+      <xs:element minOccurs="0" name="codice_identificativo_presentazione" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="inserimentoPosizione">
+    <wsdl:part element="ns2:gestorePosizioniHeader" name="header">
+    </wsdl:part>
+    <wsdl:part element="ns1:inserimentoPosizioneRequest" name="bodyrichiesta">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="inserimentoPosizioneResponse">
+    <wsdl:part element="ns1:inserimentoPosizioneResponse" name="bodyrisposta">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="gestorePosizioni">
+    <wsdl:operation name="inserimentoPosizione">
+      <wsdl:input message="ns1:inserimentoPosizione" name="inserimentoPosizione">
+    </wsdl:input>
+      <wsdl:output message="ns1:inserimentoPosizioneResponse" name="inserimentoPosizioneResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>

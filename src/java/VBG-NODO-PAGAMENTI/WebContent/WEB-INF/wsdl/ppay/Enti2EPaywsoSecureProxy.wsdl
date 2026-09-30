@@ -1,0 +1,140 @@
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:cmn="http://www.csi.it/epay/epaywso/types" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:srv="http://www.csi.it/epay/epaywso/enti2epaywso/types" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://www.csi.it/epay/epaywso/enti2epaywsosrv" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="http://www.csi.it/epay/epaywso/enti2epaywsosrv">
+   <wsp:Policy xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" wsu:Id="UTOverTransport">
+      <wsp:ExactlyOne>
+         <wsp:All>
+            <sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+               <wsp:Policy>
+                  <sp:TransportToken>
+                     <wsp:Policy>
+                        <sp:HttpsToken RequireClientCertificate="false"/>
+                     </wsp:Policy>
+                  </sp:TransportToken>
+                  <sp:AlgorithmSuite>
+                     <wsp:Policy>
+                        <sp:Basic256/>
+                     </wsp:Policy>
+                  </sp:AlgorithmSuite>
+                  <sp:Layout>
+                     <wsp:Policy>
+                        <sp:Lax/>
+                     </wsp:Policy>
+                  </sp:Layout>
+                  <sp:IncludeTimestamp/>
+               </wsp:Policy>
+            </sp:TransportBinding>
+            <sp:SignedSupportingTokens xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+               <wsp:Policy>
+                  <sp:UsernameToken sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient"/>
+               </wsp:Policy>
+            </sp:SignedSupportingTokens>
+            <sec:CarbonSecConfig xmlns:sec="http://www.wso2.org/products/carbon/security">
+               <sec:Authorization>
+                  <sec:property name="org.wso2.carbon.security.allowedroles">EPAYClient</sec:property>
+               </sec:Authorization>
+            </sec:CarbonSecConfig>
+         </wsp:All>
+      </wsp:ExactlyOne>
+   </wsp:Policy>
+   <wsdl:types>
+      <xsd:schema attributeFormDefault="unqualified" elementFormDefault="unqualified">
+         <xsd:import namespace="http://www.csi.it/epay/epaywso/types" schemaLocation="EPaywsoCommonTypes.xsd"/>
+         <xsd:import namespace="http://www.csi.it/epay/epaywso/enti2epaywso/types" schemaLocation="Enti2EPaywsoServiceTypes.xsd"/>
+      </xsd:schema>
+   </wsdl:types>
+   <wsdl:message name="InserisciListaDiCaricoRequest">
+      <wsdl:part name="parameters" element="srv:InserisciListaDiCaricoRequest"/>
+   </wsdl:message>
+   <wsdl:message name="InserisciListaDiCaricoResponse">
+      <wsdl:part name="parameters" element="cmn:EPaywsoServiceResponse"/>
+   </wsdl:message>
+   <wsdl:message name="AggiornaPosizioniDebitorieRequest">
+      <wsdl:part name="parameters" element="srv:AggiornaPosizioniDebitorieRequest"/>
+   </wsdl:message>
+   <wsdl:message name="AggiornaPosizioniDebitorieResponse">
+      <wsdl:part name="parameters" element="cmn:EPaywsoServiceResponse"/>
+   </wsdl:message>
+   <wsdl:portType xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" name="Enti2EPaywsoSecureProxyPortType" wsp:PolicyURIs="#UTOverTransport">
+      <wsdl:operation name="InserisciListaDiCarico">
+         <wsdl:input message="tns:InserisciListaDiCaricoRequest" wsaw:Action="http://www.csi.it/epay/epaywso/service/InserisciListaDiCarico"/>
+         <wsdl:output message="tns:InserisciListaDiCaricoResponse" wsaw:Action="http://www.csi.it/epay/epaywso/enti2epaywsosrv/Enti2EPaywsoService/InserisciListaDiCaricoResponse"/>
+      </wsdl:operation>
+      <wsdl:operation name="AggiornaPosizioniDebitorie">
+         <wsdl:input message="tns:AggiornaPosizioniDebitorieRequest" wsaw:Action="http://www.csi.it/epay/epaywso/service/AggiornaPosizioniDebitorie"/>
+         <wsdl:output message="tns:AggiornaPosizioniDebitorieResponse" wsaw:Action="http://www.csi.it/epay/epaywso/enti2epaywsosrv/Enti2EPaywsoService/AggiornaPosizioniDebitorieResponse"/>
+      </wsdl:operation>
+   </wsdl:portType>
+   <wsdl:binding name="Enti2EPaywsoSecureProxySoap11Binding" type="tns:Enti2EPaywsoSecureProxyPortType">
+      <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+      <wsdl:operation name="InserisciListaDiCarico">
+         <soap:operation soapAction="http://www.csi.it/epay/epaywso/service/InserisciListaDiCarico" style="document"/>
+         <wsdl:input>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+      </wsdl:operation>
+      <wsdl:operation name="AggiornaPosizioniDebitorie">
+         <soap:operation soapAction="http://www.csi.it/epay/epaywso/service/AggiornaPosizioniDebitorie" style="document"/>
+         <wsdl:input>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+      </wsdl:operation>
+   </wsdl:binding>
+   <wsdl:binding name="Enti2EPaywsoSecureProxySoap12Binding" type="tns:Enti2EPaywsoSecureProxyPortType">
+      <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+      <wsdl:operation name="InserisciListaDiCarico">
+         <soap12:operation soapAction="http://www.csi.it/epay/epaywso/service/InserisciListaDiCarico" style="document"/>
+         <wsdl:input>
+            <soap12:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap12:body use="literal"/>
+         </wsdl:output>
+      </wsdl:operation>
+      <wsdl:operation name="AggiornaPosizioniDebitorie">
+         <soap12:operation soapAction="http://www.csi.it/epay/epaywso/service/AggiornaPosizioniDebitorie" style="document"/>
+         <wsdl:input>
+            <soap12:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap12:body use="literal"/>
+         </wsdl:output>
+      </wsdl:operation>
+   </wsdl:binding>
+   <wsdl:binding name="Enti2EPaywsoSecureProxyHttpBinding" type="tns:Enti2EPaywsoSecureProxyPortType">
+      <http:binding verb="POST"/>
+      <wsdl:operation name="InserisciListaDiCarico">
+         <http:operation location="InserisciListaDiCarico"/>
+         <wsdl:input>
+            <mime:content type="text/xml" part="parameters"/>
+         </wsdl:input>
+         <wsdl:output>
+            <mime:content type="text/xml" part="parameters"/>
+         </wsdl:output>
+      </wsdl:operation>
+      <wsdl:operation name="AggiornaPosizioniDebitorie">
+         <http:operation location="AggiornaPosizioniDebitorie"/>
+         <wsdl:input>
+            <mime:content type="text/xml" part="parameters"/>
+         </wsdl:input>
+         <wsdl:output>
+            <mime:content type="text/xml" part="parameters"/>
+         </wsdl:output>
+      </wsdl:operation>
+   </wsdl:binding>
+   <wsdl:service name="Enti2EPaywsoSecureProxy">
+      <wsdl:port name="Enti2EPaywsoSecureProxyHttpsSoap11Endpoint" binding="tns:Enti2EPaywsoSecureProxySoap11Binding">
+         <soap:address location="https://tu-exp-srv-paywso.sistemapiemonte.it:443/wso001/services/Enti2EPaywsoSecureProxy.Enti2EPaywsoSecureProxyHttpsSoap11Endpoint"/>
+      </wsdl:port>
+      <wsdl:port name="Enti2EPaywsoSecureProxyHttpsSoap12Endpoint" binding="tns:Enti2EPaywsoSecureProxySoap12Binding">
+         <soap12:address location="https://tu-exp-srv-paywso.sistemapiemonte.it:443/wso001/services/Enti2EPaywsoSecureProxy.Enti2EPaywsoSecureProxyHttpsSoap12Endpoint"/>
+      </wsdl:port>
+      <wsdl:port name="Enti2EPaywsoSecureProxyHttpsEndpoint" binding="tns:Enti2EPaywsoSecureProxyHttpBinding">
+         <http:address location="https://tu-exp-srv-paywso.sistemapiemonte.it:443/wso001/services/Enti2EPaywsoSecureProxy.Enti2EPaywsoSecureProxyHttpsEndpoint"/>
+      </wsdl:port>
+   </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,23 @@
+<app-page-layout>
+  <div class="home-page">
+    <app-cosa-puoi-fare-v2></app-cosa-puoi-fare-v2>
+
+    @if (homeConfig.primoPianoVisible) {
+      <app-home-in-primo-piano
+      ></app-home-in-primo-piano>
+    }
+
+    <!-- l'utilizzo un ng-container è un hack per permettere di mantenere la zebratura tra le sezioni-->
+    @if (homeConfig.newsVisible && newsPresenti) {
+      <app-home-news [(newsPresenti)]="newsPresenti"></app-home-news>
+    }
+
+    @if (homeConfig.faqVisible && faqPresenti) {
+      <app-home-faq [(faqPresenti)]="faqPresenti"></app-home-faq>
+    }
+
+    @if (homeConfig.infoVisible && infoPresenti) {
+      <app-home-info [(infoPresenti)]="infoPresenti"></app-home-info>
+    }
+  </div>
+</app-page-layout>

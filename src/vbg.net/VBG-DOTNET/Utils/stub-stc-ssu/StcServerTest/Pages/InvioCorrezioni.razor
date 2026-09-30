@@ -1,0 +1,305 @@
+﻿@page "/InvioCorrezioni"
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Components.Forms
+@using System.Text.Json.Serialization
+@using System.Text.Json
+@using System.Text
+@using ServiceReference1
+
+
+<style type="text/css">
+    .validation-message{
+        color:red;
+    }    
+
+    .bottone-invia{
+        background-color:green;
+        color:white;
+        padding-right:1rem;
+        padding-left: 1rem;
+        padding-top: 0.25rem;
+        padding-bottom: 0.25rem;
+    }
+
+    .bottone-aggiungi {
+        background-color: mediumblue;
+        color: white;
+        padding-right: 1rem;
+        padding-left: 1rem;
+        padding-top: 0.25rem;
+        padding-bottom: 0.25rem;
+    }
+
+    button.bottone-invia:disabled {
+        color: #ccc;
+        cursor: not-allowed;
+        opacity: 0.5; 
+    }
+
+    .toast {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 5px;
+    }
+
+    .toast.success {
+        background: green;
+    }
+
+    .toast.error {
+        background: red;
+    }
+</style>
+
+<h3>Invia correzioni</h3>
+<p>Questa pagina consente di simulare l'invio di una <i>REQUEST_CORRECTION</i>.</p>
+
+
+        
+<EditForm Model="correzioneDaAggiungere" OnValidSubmit="@AggiungiCorrezione">
+
+    <DataAnnotationsValidator />
+
+    @if (!string.IsNullOrEmpty(erroreInvioDomanda))
+    {
+        <div class="validation-message">
+            @erroreInvioDomanda
+        </div>
+    }
+
+    <div style="margin-top: 1.5rem; margin-bottom: 1.5rem;">
+        <label for="idDomanda">Id domanda:</label>
+        <InputText id="idDomanda" style="width:500px" @bind-Value="@model.IdDomanda" oninput="@((ChangeEventArgs e) => ValidaIdDomanda(e))"></InputText>
+
+        @if (!string.IsNullOrEmpty(erroreIdDomanda))
+        {
+            <div class="validation-message">
+                @erroreIdDomanda
+            </div>
+        }
+    </div>
+
+    <div style="margin-top: 1.5rem; margin-bottom: 1.5rem;">
+        <label for="IdProcedimento">Id procedimento:</label>
+        <InputNumber id="IdProcedimento" style="width:500px" @bind-Value="@correzioneDaAggiungere.IdProcedimento"></InputNumber>
+        <ValidationMessage For="@(() => correzioneDaAggiungere.IdProcedimento)"></ValidationMessage>
+    </div>
+
+    <div style="margin-bottom: 1.5rem; display: flex;">
+        <label for="testoCorrezione">Testo correzione:</label>
+        <InputTextArea id="testoCorrezione" rows="10" cols="150" @bind-Value="@correzioneDaAggiungere.TestoCorrezione"></InputTextArea>
+        <ValidationMessage For="@(() => correzioneDaAggiungere.TestoCorrezione)"></ValidationMessage>
+    </div>
+
+    <p>Numero di correzioni in coda: <b>@model.ListaCorrezioni.Count()</b></p>
+
+    <button type="submit" class="bottone-aggiungi">Aggiungi correzione</button>
+    <button type="button" class="bottone-invia" onclick="@Invia" disabled="@(model.ListaCorrezioni.Count() == 0)">Invia</button>
+
+</EditForm>
+
+
+@if (showToast)
+{
+    <div class="toast @toastCssClass">
+        @message
+    </div>
+}
+
+
+
+
+@code {
+    public class Model
+    {
+        [Required(ErrorMessage = "Campo obbligatorio")]
+        public string IdDomanda { get; set; } = "";
+
+        public List<Correzione> ListaCorrezioni { get; set; } = new List<Correzione>();
+    }
+
+    public class Correzione
+    {
+        [Range(1, int.MaxValue, ErrorMessage = "Il valore deve essere maggiore di 0")]
+        public int IdProcedimento { get; set; }
+
+        [Required(ErrorMessage = "Campo obbligatorio")]
+        [MaxLength(2000, ErrorMessage = "La lunghezza massima consentita è di 2000 caratteri.")]
+        public string TestoCorrezione { get; set; } = "";
+    }
+
+    public class CorrezioneJson
+    {
+        [JsonPropertyName("codice")]
+        public int Codice { get; set; }
+
+        [JsonPropertyName("correzione")]
+        public string Correzione { get; set; } = "";
+    }
+
+    [Inject]
+    public NlaService nlaService { get; set; } = default!;
+
+    [Inject]
+    public ILogger<InvioCorrezioni> logger { get; set; } = default!;
+
+    private Model model = new Model();
+    private Correzione correzioneDaAggiungere = new Correzione();
+    private string erroreIdDomanda = "";
+    string erroreInvioDomanda = "";
+    private InserimentoAttivitaNLARequest? request;
+    private bool showToast;
+    private string message = "";
+    private string toastCssClass = "";
+
+
+    private void AggiungiCorrezione()
+    {
+        try
+        {
+            erroreInvioDomanda = "";
+            erroreIdDomanda = "";
+
+            if (string.IsNullOrEmpty(model.IdDomanda))
+            {
+                erroreIdDomanda = "Campo obbligatorio";
+                return;
+            }
+
+            model.ListaCorrezioni.Add(correzioneDaAggiungere);
+            model.ListaCorrezioni.Sort((c1, c2) => c1.IdProcedimento.CompareTo(c2.IdProcedimento));
+
+            correzioneDaAggiungere = new Correzione();
+            ShowToastMessage("Correzione inserita con succcesso", "success");
+        }
+        catch (Exception ex)
+        {
+            this.logger.LogError("Errore durante l'inserimento di una correzione: {0}", ex);
+            ShowToastMessage("Si è verificato un errore durante l'inserimento", "error");
+            throw;
+        }
+
+
+    }
+
+    private async Task Invia()
+    {
+        try
+        {
+            if (model == null || !model.ListaCorrezioni.Any())
+            {
+                erroreInvioDomanda = "Aggiungere almeno una correzione prima di inviare.";
+                return;
+            }
+
+            PreparaRequest();
+
+            var response = await nlaService.InserimentoAttivitaNLAAsync(request!);
+
+            if (response.InserimentoAttivitaNLAResponse.Items.Any(x => x is ErroreType))
+            {
+                foreach (var errore in response.InserimentoAttivitaNLAResponse.Items.OfType<ErroreType>())
+                {
+                    logger.LogError("La chiamata a InserimentoAttivitaNLAAsync ha restituito il seguente errore: numero errore {0}, descrizione: {1}", errore.numeroErrore, errore.descrizione);
+                }
+
+                ShowToastMessage("Si è verificato un errore durante l'invio", "error");
+            }
+            else
+            {
+                ShowToastMessage("Invio delle correzioni completato con successo", "success");
+            }
+
+            model = new Model();
+        }
+        catch (Exception ex)
+        {
+            ShowToastMessage("Si è verificato un errore durante l'invio", "error");
+            logger.LogError("Errore durante l'invio della richiesta di correzione: {0}", ex);
+            return;
+        }
+
+    }
+
+    private void ValidaIdDomanda(ChangeEventArgs e)
+    {
+        erroreIdDomanda = "";
+
+        if (string.IsNullOrEmpty(e.Value?.ToString()))
+        {
+            erroreIdDomanda = "Campo obbligatorio";
+        }
+    }
+
+    private void PreparaRequest()
+    {
+        request = new InserimentoAttivitaNLARequest();
+
+        var datiAttivita = new DettaglioAttivitaType();
+
+        datiAttivita.idPratica = model.IdDomanda;
+
+        datiAttivita.idAttivita = "REQUEST_CORRECTION";
+        datiAttivita.tipoAttivita = new TipoAttivitaType
+        {
+            codice = "REQUEST_CORRECTION",
+            descrizione = "REQUEST_CORRECTION"
+        };
+
+        var altriDati = new List<CorrezioneJson>();
+
+        foreach (var item in model.ListaCorrezioni)
+        {
+            altriDati.Add(new CorrezioneJson
+            {
+                Codice = item.IdProcedimento,
+                Correzione = item.TestoCorrezione
+            });
+        }
+
+        var serializedJson = JsonSerializer.Serialize(altriDati);
+        byte[] bytes = Encoding.UTF8.GetBytes(serializedJson);
+        string resultBase64 = Convert.ToBase64String(bytes);
+
+        datiAttivita.altriDati = new ParametroType[]
+        {
+            new ParametroType
+            {
+                nome = "SSU_CORREZIONI_RICHIESTE",
+                valore = new ValoreParametroType[]
+                {
+                    new ValoreParametroType
+                    {
+                        codice = resultBase64,
+                        descrizione = resultBase64
+                    }
+                }
+            }
+        };
+
+        request.sportelloMittente = nlaService.GetSportelloMittente();
+
+        request.sportelloDestinatario = nlaService.GetSportelloDestinatario();
+
+        request.datiAttivita = datiAttivita;
+    }
+
+    public void ShowToastMessage(string msg, string cssClass)
+    {
+        message = msg;
+        toastCssClass = cssClass;
+        showToast = true;
+        StateHasChanged();
+        _ = HideToastMessage();
+    }
+
+    private async Task HideToastMessage()
+    {
+        await Task.Delay(5000);
+        showToast = false;
+        StateHasChanged();
+    }
+}

@@ -1,0 +1,111 @@
+﻿@inject NavigationManager _navigationManager
+
+<div class="steppers">
+    <div class="steppers-header">
+        <ul>
+            @foreach (var item in _items)
+            {
+                _class = item.Id < _currentStep ? "confirmed" : item.Active ? "active": "";
+
+                <li class="@_class">@item.Label
+                    @if (_class == "confirmed")
+                    {
+                        <svg class="icon steppers-success"><use href="css/bootstrap-italia/svg/sprites.svg#it-check"></use></svg>
+                        <span class="visually-hidden">Confermato</span>
+                    }
+                    @if(_class == "active")
+                    {
+                        <span class="visually-hidden">Attivo</span>
+                    }
+                </li>
+            }
+        </ul>
+
+        <span class="steppers-index" aria-hidden="true">@_currentStep / @_items.Count()</span>
+    </div>
+    <div class="steppers-content" aria-live="polite">
+        @ChildContent
+    </div>
+    <nav class="steppers-nav">
+        <button type="button" class="btn btn-outline-primary btn-sm steppers-btn-prev" @onclick="GoPrev"><svg class="icon icon-primary"><use href="css/bootstrap-italia/svg/sprites.svg#it-chevron-left"></use></svg>Indietro</button>
+        <button type="button" class="btn btn-outline-primary btn-sm steppers-btn-save" @onclick="Save">Salva Richiesta</button>
+        <button type="button" class="btn btn-primary btn-sm steppers-btn-next" @onclick="GoNext">Avanti<svg class="icon icon-primary"><use href="css/bootstrap-italia/svg/sprites.svg#it-chevron-right"></use></svg></button>
+    </nav>
+</div>
+
+@code {
+    private List<SteppersItem> _items { get; set; }
+    private string _class;
+    private int _currentStep;
+
+    /// <summary>
+    /// SteppersItem.Label: the steppers label to display
+    /// SteppersItem.Active: set to true if it's the current page, false otherwise
+    /// SteppersItem.Id: the page Id
+    /// </summary>
+    [Parameter]
+    public List<SteppersItem> Items { get; set; }
+
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+
+    protected override void OnParametersSet()
+    {
+        _items = Items;
+        _currentStep = _items.Where(i => i.Active == true)
+                            .Select(i => i.Id)
+                            .FirstOrDefault();
+
+    }
+
+    private async Task GoNext()
+    {
+        if (_currentStep < _items.Count())
+        {
+            // TODO: probabilmente Active verrà gestito dalla pagina che ospita il componente, quindi andrà commentata questa parte di codice e scommentato il NavigateTo
+            foreach (var item in _items.Where(i => i.Id == _currentStep))
+            {
+                item.Active = false;
+            }
+
+            _currentStep += 1;
+
+            foreach (var item in _items.Where(i => i.Id == _currentStep))
+            {
+                item.Active = true;
+            }
+
+            //_navigationManager.NavigateTo("");
+
+        }
+    }
+
+    private async Task GoPrev()
+    {
+        if (_currentStep > 1)
+        {
+            // TODO: probabilmente Active verrà gestito dalla pagina che ospita il componente, quindi andrà commentata questa parte di codice e scommentato il NavigateTo
+            foreach (var item in _items.Where(i => i.Id == _currentStep))
+            {
+                item.Active = false;
+            }
+
+            _currentStep -= 1;
+
+            foreach (var item in _items.Where(i => i.Id == _currentStep))
+            {
+                item.Active = true;
+            }
+
+            //_navigationManager.NavigateTo("");
+
+        }
+    }
+
+    private async Task Save()
+    {
+        // TODO
+    }
+}

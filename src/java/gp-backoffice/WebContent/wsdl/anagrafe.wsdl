@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+	xmlns:sch="http://gruppoinit.it/sigepro/schemas/messages/anagrafe" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://gruppoinit.it/sigepro/definitions/anagrafe" targetNamespace="http://gruppoinit.it/sigepro/definitions/anagrafe">
+	<wsdl:types>
+		<schema xmlns="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://gruppoinit.it/sigepro/schemas/messages/anagrafe" schemaLocation="anagrafe.xsd" />
+		</schema>
+	</wsdl:types>
+	<wsdl:message name="InserimentoAnagrafeResponse">
+		<wsdl:part element="sch:InserimentoAnagrafeResponse" name="InserimentoAnagrafeResponse" />
+	</wsdl:message>
+	<wsdl:message name="InserimentoAnagrafeRequest">
+		<wsdl:part element="sch:InserimentoAnagrafeRequest" name="InserimentoAnagrafeRequest" />
+	</wsdl:message>
+	<wsdl:message name="InserimentoPersonaGiuridicaRequest">
+		<wsdl:part element="sch:InserimentoPersonaGiuridicaRequest" name="InserimentoPersonaGiuridicaRequest" />
+	</wsdl:message>
+	<wsdl:message name="InserimentoPersonaGiuridicaResponse">
+		<wsdl:part element="sch:InserimentoAnagrafeResponse" name="InserimentoAnagrafeResponse" />
+	</wsdl:message>
+	<wsdl:portType name="Anagrafe">
+		<wsdl:operation name="InserimentoAnagrafe">
+			<wsdl:input message="tns:InserimentoAnagrafeRequest" name="InserimentoAnagrafeRequest" />
+			<wsdl:output message="tns:InserimentoAnagrafeResponse" name="InserimentoAnagrafeResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="InserimentoPersonaGiuridica">
+			<wsdl:input message="tns:InserimentoPersonaGiuridicaRequest" name="InserimentoPersonaGiuridicaRequest" />
+			<wsdl:output message="tns:InserimentoPersonaGiuridicaResponse" name="InserimentoPersonaGiuridicaResponse" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="AnagrafeSoap11" type="tns:Anagrafe">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="InserimentoAnagrafe">
+			<soap:operation soapAction="inserimentoAnagrafe" />
+			<wsdl:input name="InserimentoAnagrafeRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="InserimentoAnagrafeResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="InserimentoPersonaGiuridica">
+			<soap:operation soapAction="InserimentoPersonaGiuridica" />
+			<wsdl:input name="InserimentoPersonaGiuridicaRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="InserimentoPersonaGiuridicaResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="AnagrafeService">
+		<wsdl:port binding="tns:AnagrafeSoap11" name="AnagrafeSoap11">
+			<soap:address location="http://devel9:8080/vbg/services/" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,55 @@
+﻿@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+
+@if (IsLoading)
+{
+    <AccordionContainer>
+        @for (int i = 0; i < PratichePerPagina; i++)
+        {
+            <div id="@($"sk_{i}")">
+                <AccordionItem CollapsibleElementId="@($"sk_{i}")" StartingCollapsed="false">
+                    <div class="skeleton">
+                        <div class="skeleton-text-bold bg-primary"></div>
+                        <div class="skeleton-text"></div>
+                        <br />
+                        <div class="skeleton-rectangle"></div>
+                    </div>
+                </AccordionItem>
+            </div>
+        }
+    </AccordionContainer>
+}
+else
+{
+    if (Items.Any())
+    {
+        <AccordionContainer>
+            @foreach (var item in Items)
+            {
+                <ListaDomandeItemComponent Item="@item" TipoLista="TipoLista"></ListaDomandeItemComponent>
+            }
+        </AccordionContainer>
+    }
+    else
+    {
+        <Card Shadow="Card.CardShadow.Small">
+            <Body>
+                Nessuna pratica disponibile
+            </Body>
+        </Card>
+    }
+}
+
+@code {
+    [Parameter, EditorRequired]
+    public IEnumerable<ListaDomandeItem> Items { get; set; } = default!;
+
+    [Parameter]
+    public int PratichePerPagina { get; set; } = 5;
+
+    [Parameter]
+    public bool IsLoading { get; set; } = true;
+
+    [Parameter]
+    public ListaDomandeTypeEnum TipoLista { get; set; } = ListaDomandeTypeEnum.Correzioni;
+}

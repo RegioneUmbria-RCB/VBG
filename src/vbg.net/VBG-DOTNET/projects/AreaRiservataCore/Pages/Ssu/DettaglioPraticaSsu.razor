@@ -1,0 +1,51 @@
+﻿@page "/{IdComune}/{Software}/ssu/dettaglio-pratica/{IdDomanda:int}"
+@using AreaRiservataCore.Pages.InserimentoIstanza.Ssu
+@using AreaRiservataCore.Pages.Visura
+@using Init.Sigepro.FrontEnd.AppLogic.SalvataggioDomanda
+@using Init.Sigepro.FrontEnd.AppLogic.Adapters
+@using Init.Sigepro.FrontEnd.AppLogic.Autenticazione.Vbg.AutenticazioneUtente
+@using Init.Sigepro.FrontEnd.AppLogic.WebServiceReferences.IstanzeService
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneVisuraIstanza
+@inherits BasePage
+
+@if (_istanza is not null)
+{
+    
+    <VisuraExCtrl Istanza="@_istanza" IdComune="@_aliasSoftwareResolver.AliasComune" Software="@_aliasSoftwareResolver.Software" LivelloAccessoVisura="LivelloAccessoVisura.Completo">
+        <ListaCorrezioniSsu IdDomanda="IdDomanda"></ListaCorrezioniSsu>
+    </VisuraExCtrl>
+}
+
+@code {
+    [Inject]
+    public ISalvataggioDomandaStrategy _caricamentoDomandaStrategy{get; set; } = default!;
+    [Inject]
+    private IIstanzaSigeproAdapterService _istanzaSigeproAdapterService { get; set; } = default!;
+    [Inject]
+    private IAuthenticationDataResolver _authDataResolver { get; set; } = default!;
+    [Inject]
+    private IAliasSoftwareResolver _aliasSoftwareResolver { get; set; } = default!;
+
+
+    [Parameter]
+    public int IdDomanda { get; set; }
+
+    private Istanze? _istanza;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        var domanda = await _caricamentoDomandaStrategy.GetByIdAsync(IdDomanda);
+
+        if (domanda is null || domanda.DataKey.CodiceUtente != _authDataResolver.DatiAutenticazione?.DatiUtente?.Codicefiscale)
+        {
+            // Gestire il caso in cui la domanda non esiste o l'utente non è autorizzato
+            await GotoAsync("/");
+            return;
+        }
+
+        this._istanza = _istanzaSigeproAdapterService.ToIstanzaBackoffice(domanda.ReadInterface);
+    }
+
+}

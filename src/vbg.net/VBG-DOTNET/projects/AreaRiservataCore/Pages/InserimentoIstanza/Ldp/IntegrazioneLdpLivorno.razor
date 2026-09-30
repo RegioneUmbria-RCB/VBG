@@ -1,0 +1,54 @@
+﻿@page "/{IdComune}/{Software}/inserimento-istanza/integrazione-ldp-livorno/{idDomanda:int}/{stepId:int}"
+@page "/{IdComune}/{Software}/inserimento-istanza/integrazione-ldp-livorno/{idDomanda:int}/{stepId:int}/{ReturningFromCallingPage}"
+@using AreaRiservataCore.Pages.InserimentoIstanza.Components
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneIntegrazioneLDP.AreeUsoPubblicoLivorno;
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneIntegrazioneLDP.PraticheEdilizieSiena
+@using Init.Sigepro.FrontEnd.CoreServices.GestionePresentazioneDomanda.Paginatore
+@inherits IstanzeStepPage
+
+<SplashCaricamento></SplashCaricamento>
+
+@code {
+    [Inject]
+    protected IAreeUsoPubblicoLivornoService _ldpService { get; set; } = default!;
+    [CascadingParameter]
+    private PaginatoreStateService _paginatoreStateService { get; set; } = default!;
+
+    [Parameter] public int IdCampoDataInizio { get; set; } = -1;
+
+    [Parameter] public int IdCampoOraInizio { get; set; } = -1;
+
+    [Parameter] public int IdCampoDataFine{get;set;} = -1;
+
+    [Parameter] public int IdCampoOraFine{get;set;} = -1;
+
+    [Parameter] public int IdCampoDescrizioneOccupazione{get;set;} = -1;
+    
+    [Parameter] public int IdCampoFrequenzaOccupazione{get;set;} = -1;
+
+    [Parameter]
+    public string ReturningFromCallingPage { get; set; } = "";
+
+    protected override async Task OnLoadStepAsync()
+    {
+        this._paginatoreStateService.NascondiBottoneAvanti();
+
+        if (String.IsNullOrEmpty(ReturningFromCallingPage))
+        {
+            var redirUrl = this._ldpService.GetUrlCompilazioneDomanda(this.IdDomanda.Value);
+
+            _navigationManager.NavigateTo(redirUrl);
+
+            return;
+        }
+
+        var campiInizio = new AggiornaDatiOccupazioneCommand.CampiIntervallo(this.IdCampoDataInizio, this.IdCampoOraInizio);
+        var campiFine = new AggiornaDatiOccupazioneCommand.CampiIntervallo(this.IdCampoDataFine, this.IdCampoOraFine);
+
+        var cmd = new AggiornaDatiOccupazioneCommand(this.IdDomanda.Value, campiInizio, campiFine, this.IdCampoDescrizioneOccupazione, this.IdCampoFrequenzaOccupazione);
+
+        this._ldpService.AggiornaDatiOccupazione(cmd);
+
+        await this._paginatoreStateService.GoToNextStepAsync();
+    }
+}

@@ -1,0 +1,22 @@
+﻿@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.Pagamenti.NodoPagamenti.Verifica
+
+@switch (Stato)
+{
+    case StatoPagamentoEnum.PagamentoRiuscito:
+        <SvgIcon IconId="it-check-circle" CssClass="icon-success"></SvgIcon>
+        break;
+
+    case StatoPagamentoEnum.PagamentoFallito:
+        <SvgIcon IconId="it-close-circle" CssClass="icon-danger"></SvgIcon>
+        break;
+
+    case StatoPagamentoEnum.PagamentoInCorso:
+        <SvgIcon IconId="it-clock" CssClass="icon-secondary"></SvgIcon>
+        break;
+}
+
+@code {
+    [Parameter, EditorRequired]
+    public StatoPagamentoEnum Stato { get; set; } = StatoPagamentoEnum.StatoSconosciuto;
+}

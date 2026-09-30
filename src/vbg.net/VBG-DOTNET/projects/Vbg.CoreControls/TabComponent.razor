@@ -1,0 +1,70 @@
+﻿@inherits MyBaseComponentMin
+@inject Init.Sigepro.FrontEnd.CoreServices.Spinner.SpinnerService _spinnerService
+
+<style>
+    .nav .tabText {
+        margin: 0 0.5rem;
+    }
+</style>
+
+<CascadingValue Value="this">
+    <div class="tabs-container @_cssClasses" id="@UniqueID">
+        <ul class="nav nav-tabs" role="tablist">
+            @foreach (TabPageComponent tabPage in Pages)
+            {
+                <li role="presentation" class="nav-item">
+                    <a href="@($"#{tabPage.Id}")" id="@($"{tabPage.Id}-tab")" class="nav-link @GetClass(tabPage)" @onclick=@( () => ActivatePage(tabPage) ) @onclick:preventDefault role="tab" data-toggle="tab" aria-expanded="@(GetClass(tabPage) == "active" ? "true" : "false")">
+                        <span class="tabText">@tabPage.Text</span>
+
+                        @if (tabPage.Badge > 0)
+                        {
+                            <span class="badge text-bg-primary">@tabPage.Badge</span>
+                        }                        
+                    </a>
+                </li>
+            }
+        </ul>
+        <div class="tab-content">
+            @ChildContent
+        </div>
+    </div>
+</CascadingValue>
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public int SelectedPageIndex { get; set; } = 1;
+
+    internal TabPageComponent ActivePage { get; set; }
+
+    List<TabPageComponent> Pages = new List<TabPageComponent>();
+
+    internal void AddPage(TabPageComponent tabPage)
+    {
+        Pages.Add(tabPage);
+
+        if (Pages.Count == 1 || tabPage.Active)
+            ActivePage = tabPage;
+
+        StateHasChanged();
+    }
+
+    string GetClass(TabPageComponent page)
+    {
+        return page == ActivePage ? "active" : "";
+    }
+
+    void ActivatePage(TabPageComponent page)
+    {
+        _spinnerService?.ShowAsync();
+
+        ActivePage = page;
+    }
+
+    public void OnTabPageLoaded()
+    {
+        _spinnerService?.HideAsync();
+    }
+}

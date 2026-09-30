@@ -1,0 +1,113 @@
+<div id="quadro_${helper.getIdQuadroDinamico($quadro)}" class="quadro-cart" style="display: inline;">
+	#if($quadro.Titolo)
+	<h4 class="quadro-cart-title titoloquadro">
+		$quadro.Titolo
+    </h4>
+	#end
+	#set($idFormQuadro = "conferma_${helper.getIdModulo()}_${helper.getIdQuadroDinamico($quadro)}")
+	<form action="/confermaQuadro.htm?disableMR=1" name="$idFormQuadro" id="$idFormQuadro" method="post" enctype="multipart/form-data">
+		<input type="hidden" name="CART_ID_MODULO" value="$helper.getIdModulo()"/>
+		<input type="hidden" name="CART_ID_QUADRO" value="${helper.getIdQuadroDinamico($quadro)}"/>
+
+#set($modelloHelper = $quadro)
+#set($tabellaHelper = $modelloHelper.getTabella())
+##per ora le schede multiple non sono gestite => gli indici in tutta la scheda valgono sempre 0
+#set($indiceScheda = 0)
+#set($regoleHelper = $modelloHelper.getRegoleHelper())
+#set($righe = $tabellaHelper.getRighe())
+#set($maxColonne = $tabellaHelper.getMaxColonne())
+#if($righe.size() > 0)
+<table cellpadding="0" cellspacing="2" width="100%" border="0">
+	#foreach($riga in $righe)
+		#set($indiceRiga = $velocityCount - 1)
+		#set($regolaAttRiga = false)
+		#set($regolaAttRiga = $riga.getRegolaAttivazioneUnica())
+		#set($regolaHandle = "")
+		#set($handleAttrs = "")
+		#if($regolaAttRiga)
+			#set($regolaHandle = "REG_${regolaAttRiga.getId().getCodice()}")
+			#set($handleAttrs = "dynid='${regolaHandle}' dynidx='0' dynidxm='-1'")
+		#end
+	<tr id="TR_${riga.getNumRiga()}" class="rigaModello" $handleAttrs>
+		#set($colonne = $riga.getColonne())
+		#set($deltaColonne = $maxColonne - $colonne.size())
+		##set($numCampi = $riga.contaColonneCampo())
+		#foreach($colonna in $colonne)
+			#set($lastColonna = ($velocityCount == $colonne.size()))
+			#set($d2md = false)
+			#set($d2md = $colonna.Dyn2Modellid)
+			#set($campo = false)
+			#set($campo = $colonna.getCampo())
+			#set($blocchi = false)
+			#set($blocchi = $colonna.getTabelle())
+			#set($testo = false)
+			#set($testo = $colonna.getTesto())
+			#set($testoEsteso = false)
+			#set($testoEsteso = $colonna.getTestoesteso())
+			#set($indiceBlocco = 0)
+			#if(!$blocchi)
+				#parse("/modellidinamici_v1_5/dyn2md.vm")
+			#else
+				#set($colspanLeft = $maxColonne * 2)
+				<td id="TD_${colonna.getNumColonna()}" colspan="$colspanLeft">
+				#if($blocchi.size() > 0)
+					##$modelloHelper.debug($blocchi)
+					<div id="BLOCK_${helper.getIdQuadroDinamico($quadro)}_${riga.NumRiga}">
+					#foreach($blocco in $blocchi)
+						##$modelloHelper.debug($blocco)
+						#parse("/modellidinamici_v1_5/blocco.vm")
+					#end
+					</div>
+					#if(!$modelloHelper.isRenderForPrint())
+					<div id="functions">
+						<input type="button" onclick="javascript:aggiungiBlocco('${riga.getNumRiga()}', '${helper.getIdQuadroDinamico($quadro)}');" value="Aggiungi blocco">
+					</div>
+						#set($blocco = $blocchi.get(0))
+						##$modelloHelper.debug($blocco)
+						#if($blocco)
+						<script id="template_blocco_${helper.getIdQuadroDinamico($quadro)}_${riga.getNumRiga()}" type="text/x-jquery-tmpl">
+							#set($isTemplate = true)
+							#parse("/modellidinamici_v1_5/blocco.vm")
+							#set($isTemplate = false)
+						</script>
+						<script type="text/javascript">
+							var attivaNuovaRiga_${helper.escapeForJsVariableName(${helper.getIdQuadroDinamico($quadro)})}_$riga.NumRiga = function(newBlockIndex){
+							#foreach($js in $blocco.getScripts())
+								$js
+							#end
+							};
+
+							var eliminaBlocco_${helper.escapeForJsVariableName(${helper.getIdQuadroDinamico($quadro)})}_$riga.NumRiga = function(blockId,deleteBlockIndex){
+								eliminaBlocco(blockId,'${helper.getIdQuadroDinamico($quadro)}',deleteBlockIndex);
+								#set($delScripts = $blocco.getScripts("eliminazione"))
+								#foreach($delScript in $delScripts)
+									$delScript
+								#end
+							};
+							$blocco.clearScripts()
+						</script>
+						#end
+					#end
+				#end
+				</td>
+			#end
+		#end
+	</tr>
+	#end
+</table>
+#else
+<span>Nessun campo presente nella scheda dinamica</span>
+#end
+
+    </form>
+    #if($preview)
+	<script >
+		jQuery(document).ready(function(){
+			jQuery('#$helper.escapeForCssSelector($idFormQuadro)').submit(function(){
+				goToNextQuadro();
+				return false;
+			});
+		});
+    </script>
+    #end 
+</div>

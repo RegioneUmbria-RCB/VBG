@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://gruppoinit.it/sigepro/schemas/messages"
+	elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema"
+	xmlns:tns="http://gruppoinit.it/sigepro/schemas/messages">
+	<element name="MovimentiMailRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string" />
+				<element name="software" type="string" />
+				<element name="codicemovimento" type="string" minOccurs="0" maxOccurs="1" />
+				<element name="messageId" type="string" minOccurs="0" maxOccurs="1" />
+				<element name="mittente" type="string" />
+				<element name="destinatario" type="string" />
+				<element name="destinatariocc" type="string" minOccurs="0" maxOccurs="1" />
+				<element name="destinatariobcc" type="string" minOccurs="0" maxOccurs="1" />
+				<element name="oggetto" type="string" />
+				<element name="corpo" type="string" />
+				<element name="allegati" type="tns:AllegatoType" minOccurs="0" maxOccurs="unbounded" />
+			</sequence>
+		</complexType>
+	</element>
+	<element name="MovimentiMailResponse">
+		<complexType>
+			<sequence>
+				<element name="id" type="integer" />
+			</sequence>
+		</complexType>
+	</element>
+	<complexType name="AllegatoType">
+		<sequence>
+			<element name="id" type="integer" minOccurs="0" maxOccurs="1" />
+			<element name="descrizione" type="string" minOccurs="0" maxOccurs="1" />
+			<element name="fileName" type="string" />
+			<element name="mimeType" type="string" minOccurs="0" maxOccurs="1" />
+			<element name="binaryData" type="base64Binary" minOccurs="0" maxOccurs="1" />
+		</sequence>
+	</complexType>
+</schema>

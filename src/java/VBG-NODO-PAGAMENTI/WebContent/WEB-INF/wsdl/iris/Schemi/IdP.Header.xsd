@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+****                          TAS S.p.A.
+**** - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+****
+**** Project. . : IRIS
+****
+**** Nome . . . : IdpHeader
+**** Versione . : 01.03-02 Draft 01
+****
+**** Descrizione: Header Standard
+****
+**** - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<xs:schema xmlns="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpHeader" xmlns:i="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpInclude" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpHeader" elementFormDefault="qualified">
+	<xs:import namespace="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpInclude" schemaLocation="IdP.Include.xsd"/>
+	<xs:element name="IdpOTF">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="URL_BACK">
+					<xs:annotation>
+						<xs:documentation xml:lang="it">
+							URL di ritorno all&#39;Ente al termine del
+							pagamento (sia in caso di successo che di
+							fallimento)
+						</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:anyURI">
+							<xs:maxLength value="512" />
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="URL_CANCEL">
+					<xs:annotation>
+						<xs:documentation xml:lang="it">
+							URL di ritorno all&#39;Ente in caso di
+							annullamento del pagamento da parte
+							dell&#39;utente
+						</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:anyURI">
+							<xs:maxLength value="512" />
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="OFFLINE_PAYMENT_METHODS"
+					type="xs:boolean" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation xml:lang="it">
+							Richiede ad IRIS di abilitare anche forme di
+							pagamento offline delle pendenze
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+
+				<xs:element name="ID_PSP" type="i:Max100Text"
+					maxOccurs="1" minOccurs="0">
+				</xs:element>
+				<xs:element name="DATI_VERSANTE"
+					type="DATI_VERSANTE_Type" maxOccurs="1" minOccurs="0">
+				</xs:element>
+				
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="IdpHeader" type="IdpHeader"/>
+	<!-- Definizione dell'Header -->
+	<xs:complexType name="IdpHeader">
+		<xs:sequence>
+			<xs:element name="TRT" type="HeaderTRT"/>
+			<xs:element name="E2E" type="HeaderE2E"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- Definizione dell'Header di Tratta -->
+	<xs:complexType name="HeaderTRT">
+		<xs:sequence>
+			<xs:element name="ServiceName" type="ServiceName"/>
+			<xs:element name="MsgId" type="MsgId"/>
+			<xs:element name="XMLCrtDt" type="i:IdPDateTime"/>
+			<xs:element name="Sender" type="TRTSender"/>
+			<xs:element name="Receiver" type="TRTReceiver"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TRTSender">
+		<xs:sequence>
+			<xs:element name="SenderId" type="i:Max35Text"/>
+			<xs:element name="SenderSys" type="i:Max35Text"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TRTReceiver">
+		<xs:sequence>
+			<xs:element name="ReceiverId" type="i:Max35Text"/>
+			<xs:element name="ReceiverSys" type="i:Max35Text"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- Definizione dell'Header End to End -->
+	<xs:complexType name="HeaderE2E">
+		<xs:sequence>
+			<xs:element name="E2ESrvcNm" type="i:Max60Text"/>
+			<xs:element name="E2EMsgId" type="MsgId"/>
+			<xs:element name="XMLCrtDt" type="i:IdPDateTime"/>
+			<xs:element name="Sender" type="E2ESender"/>
+			<xs:element name="Receiver" type="E2EReceiver"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="E2ESender">
+		<xs:sequence>
+			<xs:element name="E2ESndrId" type="i:Max35Text"/>
+			<xs:element name="E2ESndrSys" type="i:Max35Text"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="E2EReceiver">
+		<xs:sequence>
+			<xs:element name="E2ERcvrId" type="i:Max35Text"/>
+			<xs:element name="E2ERcvrSys" type="i:Max35Text"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="MsgId">
+		<xs:restriction base="i:Max44Text">
+			<xs:pattern value="[a-zA-Z0-9._]{1,44}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ServiceName">
+		<xs:restriction base="i:Max60Text">
+			<xs:enumeration value="IdpAllineamentoPendenze"/>
+			<xs:enumeration value="IdpInformativaPagamento"/>
+			<xs:enumeration value="IdpRendicontazioneEnti"/>
+			<xs:enumeration value="IdpConfigurazioneEnte"/>
+			<xs:enumeration value="IdpAutorizzazioneDiPagamento"/>
+			<xs:enumeration value="IdpEstrattoContoDebitorio"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+    <xs:complexType name="DATI_VERSANTE_Type">
+        		<xs:sequence>
+        			<xs:element name="TIPO_SOGGETTO"
+        				type="i:stTipoSoggetto" maxOccurs="1" minOccurs="1">
+        			</xs:element>
+        			<xs:element name="ID_FISCALE"
+        				type="i:IdentificativoIdp" maxOccurs="1" minOccurs="1">
+        			</xs:element>
+        			<xs:element name="ANAGRAFICA"
+        				type="i:Max70Text" maxOccurs="1" minOccurs="1">
+        			</xs:element>
+        			<xs:element name="E_MAIL"
+        				type="i:Max256Text" maxOccurs="1" minOccurs="0">
+        			</xs:element>
+        			<xs:element name="INDIRIZZO"
+        				type="i:Max70Text" maxOccurs="1" minOccurs="0">
+        			</xs:element>
+        			<xs:element name="NUMERO_CIVICO"
+        				type="i:Max16Text" maxOccurs="1" minOccurs="0">
+        			</xs:element>
+        			<xs:element name="CAP" type="i:Max16Text"
+        				maxOccurs="1" minOccurs="0">
+        			</xs:element>
+        			<xs:element name="LOCALITA" type="i:Max35Text"
+        				maxOccurs="1" minOccurs="0">
+        			</xs:element>
+        			<xs:element name="PROVINCIA" type="i:Max35Text"
+        				maxOccurs="1" minOccurs="0">
+        			</xs:element>
+            		<xs:element name="NAZIONE" type="i:stNazione" maxOccurs="1" minOccurs="0"></xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+
+</xs:schema>

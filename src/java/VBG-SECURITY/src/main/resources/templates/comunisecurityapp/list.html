@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+     th:replace="~{decorator_main :: layout(~{::title}, ~{::section})}">
+<head>
+	<title th:text="#{label.applicazioni_autorizzate}">label.applicazioni_autorizzate</title>
+</head>
+<body>
+   <section 
+   	class="section section-muted" 
+	th:attr="aria-describedby=titleSection">
+   
+   <div class="container">
+    <!-- contenuto di esempio START -->
+
+    <h1 id="titleSection" th:text="#{label.applicazioni_autorizzate}">label.applicazioni_autorizzate</h1>
+
+
+					<form name="inviodati" method="post">
+					
+					<div th:replace="~{fragments/lists :: list-common-parts}" />
+					
+						<div class="table-responsive">
+							<table class="table table-sm table-striped table-hover table-bordered">
+							    <thead>
+							        <tr>
+							        	<th scope="col" th:text="#{label.codice}" class="table-filterable-header" data-filter-name="id" />
+							        	<th scope="col" th:text="#{label.alias}" width="20%" />
+							            <th scope="col" th:text="#{label.admin}"  width="2%" />
+							        </tr>
+							    </thead>
+							    <tbody>
+							        <tr th:each="dato, iStat : ${dataList.content}">
+							        	<td><a class="detail-link-action" href="#" th:attr="data-id=${dato.id}" th:text="${dato.id}"></a></td>
+							        	<td th:text="${dato.comunisecurity != null ? dato.comunisecurity.descrizione + ' ('+dato.comunisecurity.id+ ')' :''}"/>
+							            <td th:text="${dato.admin}" />
+							        </tr>
+							    </tbody>
+							</table>
+						</div>
+					</form>
+				
+					
+					
+					<div th:replace="~{fragments/lists :: list-pagination(${dataList})}" />		
+
+				
+					<button type="button" id="nuovo" class="btn btn-primary" 								
+						th:onclick="location.href=[[@{create.htm}]]"
+						th:text="#{button.new}">button.new</button>
+					<button type="button" id="back" class="btn btn-secondary" 								
+						th:onclick="location.href=[[@{/}]]"
+						th:text="#{button.back}">button.back</button>
+										
+
+  </div>	  	
+  
+
+   
+
+  
+   
+  <script  th:replace="~{fragments/lists :: script-list-pagination}"  />
+
+    
+  
+  </section>
+</body>
+</html>

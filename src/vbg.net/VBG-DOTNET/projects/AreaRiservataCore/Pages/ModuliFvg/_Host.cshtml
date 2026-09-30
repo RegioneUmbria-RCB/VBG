@@ -1,0 +1,73 @@
+﻿@page "/modulifvg/"
+@using AreaRiservataCore;
+@using AreaRiservataCore.Pages.ModuliFvg;
+@using Init.Sigepro.FrontEnd.CoreServices.Autenticazione;
+@using Microsoft.AspNetCore.Components.Web;
+@using log4net;
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+
+@{
+    //Layout = "_FVGLayout";
+
+    ILog log = LogManager.GetLogger(this.GetType());
+
+    var pathParts = Request.Path.ToString().Split("/").Where(x => x.Length > 0);
+
+    // {root}/modulifvg/FVGSOL/SS/compila/11111111/B1W?copia-da=22222222
+    if (!pathParts.Any())
+    {
+        throw new InvalidOperationException("Alias e software non impostati, impossibile avviare l'applicazione");
+    }
+    var alias = pathParts.ElementAt(1);
+    var software = pathParts.ElementAt(2);
+
+    var appState = new InitialApplicationState
+            {
+                Token = "",
+                Alias = alias,
+                Software = software,
+                UserAuthenticationResult = new Init.Sigepro.FrontEnd.AppLogic.Autenticazione.Vbg.UserAuthenticationResult()
+            };
+}
+
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="~/" />
+    <link rel="stylesheet" href="css/bootstrap-5.2.3-dist/css/bootstrap.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="css/font-awesome-4.6.3/css/font-awesome.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="css/ionicons-2.0.1/css/ionicons.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="css/area-riservata/area-riservata.css" asp-append-version="true" />
+    <link rel="stylesheet" href="css/area-riservata/ar-core-fixes.css" asp-append-version="true" />
+    <link rel="stylesheet" href="css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="css/reconnect-modal.css" asp-append-version="true" />
+    <link rel="stylesheet" href="AreaRiservataCore.styles.css" />
+
+    <component type="typeof(HeadOutlet)" render-mode="Server" />
+</head>
+
+<body id="bodyTop" class="areariservata">
+    <component type="typeof(FVGApp)" render-mode="Server" param-InitialApplicationState="appState" />
+
+    <div id="components-reconnect-modal" role="alert">
+        There was a problem with the connection!
+        (Current reconnect attempt:
+        <span id="components-reconnect-current-attempt"></span> /
+        <span id="components-reconnect-max-retries"></span>)
+    </div>
+
+
+    <script src="css/bootstrap-5.2.3-dist/js/bootstrap.min.js"></script>
+    <script src="_framework/blazor.server.js"></script>
+    <script src="js/helper.js"></script>
+    <script src="js/avviaPagamento.js"></script>
+    <script src="js/indicatore-caricamento-pagina.js"></script>
+    @* <script src="js/SpinnerJS.js"></script> *@
+</body>
+
+
+</html>

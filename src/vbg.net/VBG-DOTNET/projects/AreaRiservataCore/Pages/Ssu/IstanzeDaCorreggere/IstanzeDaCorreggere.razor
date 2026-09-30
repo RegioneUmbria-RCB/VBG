@@ -1,0 +1,70 @@
+﻿@page "/{IdComune}/{Software}/ssu/istanze-da-correggere"
+@page "/{IdComune}/{Software}/ssu/istanze-da-correggere/{Pagina:int}"
+@using AreaRiservataCore.Pages.Ssu.Shared
+@using AreaRiservataCore.Pages.InserimentoIstanza
+@using VBG.AppLogic.SSU.DataAccess
+@using VBG.AppLogic.SSU.DataAccess.Dto
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.DesignComuni.NavScroll
+
+@inherits BasePage
+
+<PageTitle>Pratiche da correggere</PageTitle>
+
+<div class="row">
+    <NavScrollComponent Title="Indice di pagina">
+        <NavScrollComponentItem Label="Pratiche da correggere" Id="pratiche">
+            <ListaDomandeSsu Titolo="Pratiche da correggere" Pagina="@Pagina.GetValueOrDefault(1)" Domande="_domande"
+                             ActionButtonText="Correggi" OnActionButtonClicked="OnItemClicked" TipoLista="ListaDomandeTypeEnum.Correzioni"></ListaDomandeSsu>
+        </NavScrollComponentItem>
+    </NavScrollComponent>
+</div>
+
+@code {
+
+    [Inject]
+    public IDomandeSsuRepository _datiDomandaService { get; set; } = default!;
+
+    [Inject]
+    public ISoftwareResolver _softwareResolver { get; set; } = default!;
+
+    [Parameter]
+    public int? Pagina { get; set; }
+
+    [CascadingParameter(Name = "Layout")]
+    public MainLayout Layout { get; set; } = default!;
+
+    IEnumerable<ElementoListaDomandeSsuDto> _domande = Enumerable.Empty<ElementoListaDomandeSsuDto>();
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        var baseUrl = $"{_navigationManager.BaseUri}{_authenticationDataResolver.DatiAutenticazione.Alias}/{Software}";
+        var breadcrumbItems = new List<BreadcrumbsItem>()
+            {
+                new BreadcrumbsItem()
+                {
+                    Label = "Pratiche da correggere",
+                    Url = $"{baseUrl}/istanze-da-correggere",
+                    Active = true
+                }
+            };
+
+        this.Layout.SetBreadcrumbItems(breadcrumbItems);
+
+        CaricaListaDomande();
+    }
+
+    void CaricaListaDomande()
+    {
+        var codiceAnagrafe = _authenticationDataResolver.DatiAutenticazione!.DatiUtente!.Codiceanagrafe!.Value;
+        _domande = _datiDomandaService.GetDomandeByIdStato(codiceAnagrafe, this._softwareResolver.Software, StatiDomandaSsuEnum.DaCorreggere);
+    }
+
+    async Task OnItemClicked(ListaDomandeItem item)
+    {
+        var url = $"{String.Join("/", InserimentoIstanzaConstants.UrlPaginaInizialePresentazioneDomanda, item.Id, "0")}";
+        await GotoAsync(url);
+    }
+}

@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://init.sigepro.it"
+  attributeFormDefault="unqualified"
+  elementFormDefault="qualified"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="http://init.sigepro.it">
+	<xs:element name="DatiProtocolloFascicolato">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Fascicolato">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="si" />
+							<xs:enumeration value="no" />
+							<xs:enumeration value="nondefinito" />
+							<xs:enumeration value="warning" />
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="NumeroFascicolo" type="xs:string" />
+				<xs:element name="DataFascicolo" type="data" />
+				<xs:element name="AnnoFascicolo" type="xs:string" />
+				<xs:element name="NoteFascicolo" type="xs:string" />
+        <xs:element name="Classifica" type="xs:string" />
+        <xs:element name="Oggetto" type="xs:string" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:simpleType name="data">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="10"/>
+			<xs:whiteSpace value="collapse"/>
+			<xs:pattern value="[0]{0}|[0-9]{2,2}/[0-9]{2,2}/[0-9]{4,4}"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2005 rel. 3 U (http://www.altova.com) by Gianluca Ruta (Webred S.p.a.) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="Repertorio" id="REPOSITORY">
+		<xs:annotation>
+			<xs:documentation>ROOT del documento XML di interscambio</xs:documentation>
+		</xs:annotation>
+		<xs:complexType id="IndiceContenuti">
+			<xs:sequence>
+				<xs:element name="dataCreazione" type="xs:string"/>
+				<xs:element name="noteVersione" type="xs:string"/>
+				<xs:element name="servizio" type="xs:string"/>
+				<xs:element name="IndiceContenuti">
+					<xs:complexType>
+						<xs:complexContent>
+							<xs:extension base="IndiceContenuti"/>
+						</xs:complexContent>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Contenuto" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="IndiceContenuti">
+		<xs:annotation>
+			<xs:documentation>Qui vanno inseriti la lista dei procedimenti che dovranno essere gestiti dal gestore del repository e versionati</xs:documentation>
+		</xs:annotation>
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element name="ElementoRepertorio" type="ElementoRepertorio" maxOccurs="unbounded"/>
+			<xs:element name="ElementoAggregazione" type="ElementoAggregazione" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ElementoRepertorio">
+		<xs:annotation>
+			<xs:documentation>Singole elemento del repertorio che deve essere versionato</xs:documentation>
+		</xs:annotation>
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element name="id" type="xs:string"/>
+			<xs:element name="xpath" type="xs:string" minOccurs="0"/>
+			<xs:element name="nome" type="xs:string"/>
+			<xs:element name="descrizione" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ElementoAggregazione">
+		<xs:annotation>
+			<xs:documentation>Elememnto utilizzato per descrivere le macro aggregazioni fra gli elementiRepertorio e fra elementi di tipo ElementoAggregazione</xs:documentation>
+		</xs:annotation>
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element name="id" type="xs:string"/>
+			<xs:element name="xpath" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Questo campo serve per estrarre la lista dei sotto elementi che verranno elencati nel file system</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="nome" type="xs:string"/>
+			<xs:element name="descrizione" type="xs:string"/>
+			<xs:element name="ElementoAggregazione" type="ElementoAggregazione" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

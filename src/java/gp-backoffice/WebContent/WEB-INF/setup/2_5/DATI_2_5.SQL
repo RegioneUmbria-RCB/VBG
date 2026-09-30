@@ -1,0 +1,2 @@
+INSERT INTO SOFTWARE (CODICE, DESCRIZIONE, MODULOOPZIONALE, DESCRIZIONELUNGA, ACCESSORAPIDO, ORDINE) VALUES ('A1', 'ARPA', '1', 'Agenzia Regionale Protezione Ambiente', '0', '40');
+INSERT INTO layouttestibase(codicetesto,testo,software) VALUES('BUTTON.CANCELLADOCUMENTI','Cancella documenti','TT'); 

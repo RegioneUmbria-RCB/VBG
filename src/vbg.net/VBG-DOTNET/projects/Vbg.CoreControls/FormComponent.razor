@@ -1,0 +1,258 @@
+﻿@* @using Init.SIGePro.DatiDinamici *@
+@using Vbg.CoreControls
+@using Microsoft.AspNetCore.Components.Forms
+@using System.Linq.Expressions
+
+@inject Vbg.CoreControls.ComponentCallback componentCallback
+@*
+<h4>Modello: @ModelliDinamici.Titolo</h4>
+
+
+<table>
+@foreach (RigaModelloDinamico r in ModelliDinamici.Righe)
+{
+    int colonna = 1;
+
+    @if (r..IsEmpty)
+    {
+        <tr><td>&nbsp;</td></tr>
+    }
+    else
+    {
+        <tr>
+        @foreach (CampoDinamico campo in r.Campi)
+        {
+            @if(r.RigaMultipla)
+            {                
+                <td>                        
+                    <table class="table table-bordered table-responsive-md table-striped text-center">
+                        <thead class="thead-dark">
+                            <tr>
+                                @for (int col=0; col < @r.IndiceUltimaColonna; col++)
+                                {
+                                    <th scope="col" class="text-center">
+                                        @r.Campi[@col].Etichetta
+                                    </th>
+                                }
+                                <th><a href="#" class="text-success" @onclick="@(e => @OnAddNewRow(@r))" @onclick:preventDefault><i class="fa fa-plus fa-2x" aria-hidden="true"></i></a></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @for (int row=0; row<@r.NumeroMassimoValori; row++)
+                        {
+                            <tr>
+                                @for (int col=0; col < r.IndiceUltimaColonna; col++)
+                                {
+                                    <td scope="row" class="pt-3-half">
+                                        <DynamicComponent Type="@GetTipoCampo(@r.Campi[@col].Tipo)" Parameters="@GetCampoParameters(@r.Campi[@col], @row)"></DynamicComponent>
+                                    </td>
+                                }
+
+                                <td>
+                                    <span class="table-remove">
+                                    @{int tempRow = row;}
+                                        <button type="button" class="btn btn-danger btn-sm my-0" @onclick=@(e => @OnDeleteRow(@r, @tempRow))>Remove</button>
+                                    </span>
+                                </td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </td>
+                break;
+            }
+            else
+            {
+                while (campo.Colonna != colonna)
+                {
+                    <td></td>
+                    colonna++;
+                }                
+
+                <td>                            
+                    <DynamicComponent Type="@GetTipoCampo(campo.Tipo)" Parameters="@GetCampoParameters(campo, 0)"></DynamicComponent>
+                </td>
+
+                colonna++;
+            }
+        }
+        </tr>
+    }
+}
+</table>
+*@
+
+@code {
+
+    //private int childComponentId;
+    //private int childComponentIndiceMolteplicita;
+    //private object? childComponentValue;
+
+    //[Parameter, EditorRequired]
+    //spublic ModelloDinamico ModelliDinamici { get; set; }
+
+    //private Type GetTipoCampo(TipoCampo t)
+    //{
+    //    Type retVal = null;
+
+    //    switch (t)
+    //    {
+    //        case TipoCampo.Testo:
+    //            retVal = typeof(InputComponent);
+    //            break;
+    //        case TipoCampo.ListaValori:
+    //            retVal = typeof(DropDownComponent);
+    //            break;
+    //    }
+
+    //    return retVal;
+    //}
+
+
+    //private Dictionary<string, object> GetCampoParameters(CampoDinamico c, int multiValueIndex)
+    //{
+    //    Dictionary<string, object> retVal = new Dictionary<string, object>();
+
+    //    switch (c.Tipo)
+    //    {
+    //        case TipoCampo.Testo:
+    //            int maxLength; 
+    //            int.TryParse(c.Proprieta.Find(x => x.Nome == "MaxLength")?.Valore, out maxLength);
+    //            int rows; 
+    //            int.TryParse(c.Proprieta.Find(x => x.Nome == "Righe")?.Valore, out rows);
+    //            bool disabled = false;
+    //            bool.TryParse(c.Proprieta.Find(x => x.Nome == "ReadOnly")?.Valore, out disabled);
+    //            int inputTypeNum;
+    //            int.TryParse(c.Proprieta.Find(x => x.Nome == "InputType")?.Valore, out inputTypeNum);
+    //            InputComponent.InputType inputType = (InputComponent.InputType)inputTypeNum;
+
+    //            //var expressionBody = Expression.Constant(ModelliDinamici.GetValoreCampo(c.Id, multiValueIndex)?.Valore);
+    //            //var valueExpression = Expression.Lambda(typeof(Func<string>), expressionBody);
+
+    //            retVal.Add(nameof(InputComponent.Id), c.Id);
+    //            retVal.Add(nameof(InputComponent.MultiValueIndex), multiValueIndex);
+    //            retVal.Add(nameof(InputComponent.Label), c.Etichetta);
+    //            retVal.Add(nameof(InputComponent.ShowLabel), !c.MultiValore);
+    //            retVal.Add(nameof(InputComponent.Hidden), !ModelliDinamici.GetValoreCampo(c.Id, multiValueIndex)?.Visibile);
+    //            retVal.Add(nameof(InputComponent.MaxLength),  maxLength);
+    //            retVal.Add(nameof(InputComponent.Value), ModelliDinamici.GetValoreCampo(c.Id, multiValueIndex)?.Valore);
+    //            retVal.Add(nameof(InputComponent.IsMultiline), c.Proprieta.Find(x => x.Nome == "Multiriga")?.Valore == "1");
+    //            retVal.Add(nameof(InputComponent.Rows), rows);
+    //            retVal.Add(nameof(InputComponent.IsDisabled), disabled);
+    //            retVal.Add(nameof(InputComponent.LimitaInput), inputType);
+    //            retVal.Add(nameof(InputComponent.Pattern), c.Proprieta.Find(x => x.Nome == "Pattern")?.Valore);
+    //            //retVal.Add(nameof(InputComponent.ValueExpression), valueExpression);
+    //            retVal.Add(nameof(InputComponent.ValueChanged), EventCallback.Factory.Create<Dictionary<string, object>>(this, HandleCallback));
+
+    //            break;
+    //        case TipoCampo.ListaValori:
+    //            string[] tmp = c.Proprieta.Find(x => x.Nome == "Valori").Valore.Split(';');
+    //            Dictionary<string, string> vals = tmp.Select(item => item.Split('$')).ToDictionary(s => s[0], s => s[1]);
+    //            List<DropDownItem> Items = new List<DropDownItem>();
+
+    //            foreach (KeyValuePair<string, string> kvp in vals)
+    //            {
+    //                Items.Add(new DropDownItem(kvp));
+    //            }               
+
+    //            retVal.Add(nameof(DropDownComponent.Id), c.Id);
+    //            retVal.Add(nameof(DropDownComponent.MultiValueIndex), multiValueIndex);
+    //            retVal.Add(nameof(DropDownComponent.Label), c.Etichetta);
+    //            retVal.Add(nameof(DropDownComponent.ShowLabel), !c.MultiValore);
+    //            retVal.Add(nameof(DropDownComponent.Hidden), !ModelliDinamici.GetValoreCampo(c.Id, multiValueIndex)?.Visibile);
+    //            retVal.Add(nameof(DropDownComponent.Value), ModelliDinamici.GetValoreCampo(c.Id, multiValueIndex)?.Valore);
+    //            retVal.Add(nameof(DropDownComponent.Items), Items);
+    //            retVal.Add(nameof(DropDownComponent.ValueChanged), EventCallback.Factory.Create<Dictionary<string, object>>(this, HandleCallback));
+
+    //            break;
+    //    }
+
+    //    return retVal;
+    //}
+
+    ////protected override Task OnInitializedAsync()
+    ////{
+    ////    componentCallback.ActionWithParameters = HandleCallback;
+    ////    //var o = Model;
+
+    ////    return base.OnInitializedAsync();
+    ////}
+
+    //private async void HandleCallback(Dictionary<string, object> dictionaryParams)
+    //{
+    //    foreach (var param in dictionaryParams)
+    //    {
+
+    //        if (param.Key == "SenderId")
+    //            childComponentId = Convert.ToInt32(param.Value);
+
+    //        if (param.Key == "MultiValueIndex")
+    //            childComponentIndiceMolteplicita = Convert.ToInt32(param.Value);
+
+    //        if (param.Key == "ReceivedValue")
+    //            childComponentValue = param.Value;
+    //    }
+
+    //    ModelliDinamici.CampoModificato(childComponentId, childComponentIndiceMolteplicita, childComponentValue?.ToString());
+
+    //    CodiceCampo codiceCampo = ModelliDinamici.GetScriptCampo(childComponentId, childComponentIndiceMolteplicita);
+
+    //    if (codiceCampo != null)
+    //    {
+    //        List<Method> methods = new List<Method>();
+
+    //        methods.Add(codiceCampo.Method);
+
+    //        MyClassBuilder2 myClassBuilder = new MyClassBuilder2(
+    //            "NomeClasse",
+    //            methods
+    //        );
+
+    //        myClassBuilder.InvokeMethod(codiceCampo.Method.Name);
+    //    }
+
+    //    await InvokeAsync(StateHasChanged); // forza refresh del parent
+    //}
+
+    //private void OnAddNewRow(RigaModello r)
+    //{
+    //    int indiceMolteplicita = r.NumeroMassimoValori;
+
+    //    foreach (CampoDinamico campo in r.Campi)
+    //    {
+    //        ModelliDinamici.CampoModificato(campo.Id, indiceMolteplicita, "");
+    //    }
+
+    //    this.StateHasChanged();
+    //}
+
+    //private void OnDeleteRow(RigaModello r, int indiceMolteplicita)
+    //{
+    //    ModelliDinamici.EliminaRigaValori(r, indiceMolteplicita);
+
+    //    this.StateHasChanged();
+    //}
+
+    ////private async Task OnToggle()
+    ////{
+    ////    int id = 0;
+    ////    int indiceMolteplicita = 0;
+
+    ////    if (!int.TryParse(txtVisibilityId, out id) ||
+    ////        !int.TryParse(txtVisibilityIndiceMolteplicita, out indiceMolteplicita))
+    ////        return;
+
+    ////    if (id <= 0)
+    ////        return;
+
+    ////    ValoreCampo valoreCampo = ModelliDinamici.GetValoreCampo(id, indiceMolteplicita);
+
+    ////    if (valoreCampo.Visibile)
+    ////        ModelliDinamici.NascondiCampo(id, indiceMolteplicita);
+    ////    else            
+    ////        ModelliDinamici.MostraCampo(id, indiceMolteplicita);
+
+    ////    this.StateHasChanged();
+        
+    ////}
+}

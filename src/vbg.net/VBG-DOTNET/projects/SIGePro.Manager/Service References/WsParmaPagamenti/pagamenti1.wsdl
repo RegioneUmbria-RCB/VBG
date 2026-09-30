@@ -1,0 +1,1402 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:s1="http://microsoft.com/wsdl/types/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:import namespace="http://microsoft.com/wsdl/types/" />
+      <s:element name="InserisciEmissioni">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="emissioni" type="tns:ArrayOfEmissione" />
+            <s:element minOccurs="1" maxOccurs="1" name="codSettore" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="codServizio" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="idUtenteBack" nillable="true" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="utenteInserimento" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="fonte" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfEmissione">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Emissione" nillable="true" type="tns:Emissione" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Emissione">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumeroRuolo" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataEmissione" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="CodPartita" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="AnnoRiferimento" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NaturaGiur" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Cognome" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Nome" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Sesso" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataNascita" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="CodComuneNascita" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DenominazioneSociale" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Codfispiva" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Indirizzo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Civico" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Cap" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CodComuneResidenza" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DesComune" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CodServizio" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="CodEmissione" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="ChiusuraPartita" nillable="true" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="Importo" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="Descrizione" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Periodo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TipoAtto" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Fascicolo" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="AnnoFascicolo" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Sottofascicolo" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="ProtocolloDomanda" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="AnnoProtocolloDomanda" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="ProtocolloAutorizzazione" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="AnnoProtocolloAutorizzazione" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumeroRepertorio" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Rate" type="tns:ArrayOfRata" />
+          <s:element minOccurs="0" maxOccurs="1" name="Righe" type="tns:ArrayOfRiga" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfRata">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Rata" nillable="true" type="tns:Rata" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Rata">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Id" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="CodServizio" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="CodPartita" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="AnnoRiferimento" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumeroRata" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Importo" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataScadenza" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="AnnoRiferimentoRata" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="ChiusuraRata" nillable="true" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfRiga">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Riga" nillable="true" type="tns:Riga" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Riga">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Id" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="CodServizio" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="CodPartita" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="AnnoRiferimento" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="CausaleRiga" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Codicetributo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Descrizione" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Imponibile" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="Imposta" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="AnnoRiferimento2" nillable="true" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="InserisciEmissioniResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="InserisciEmissioniResult" type="tns:DtoOutInserimentoEmissioni" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="DtoOutInserimentoEmissioni">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="DettaglioOut" type="tns:ArrayOfEsitoInserimentoEmissioni" />
+          <s:element minOccurs="1" maxOccurs="1" name="Code" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfEsitoInserimentoEmissioni">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="EsitoInserimentoEmissioni" nillable="true" type="tns:EsitoInserimentoEmissioni" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="EsitoInserimentoEmissioni">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Partita" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Anno" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Servizio" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Errore" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Emissioni" type="tns:EmiDocumenti" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="EmiDocumenti">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumeroRuolo" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataEmissione" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="CodPartita" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="AnnoRiferimento" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NaturaGiur" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Cognome" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Nome" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Sesso" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataNascita" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="CodComuneNascita" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DenominazioneSociale" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Codfispiva" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Indirizzo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Civico" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Cap" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CodComuneResidenza" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DesComune" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CodServizio" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="CodEmissione" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="ChiusuraPartita" nillable="true" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="Importo" nillable="true" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="Riscosso" nillable="true" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="Descrizione" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Periodo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TipoAtto" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="InviatoPge" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="ErroreInvio" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="IdUtenteBack" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Utente" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Fonte" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataInserimento" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="Annullata" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="IdUtenteAnnullamento" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataAnnullamento" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="NoteAnnullamento" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CodiceRelazione" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Singola" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="Fascicolo" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="AnnoFascicolo" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Sottofascicolo" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="ProtocolloDomanda" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="AnnoProtocolloDomanda" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="ProtocolloAutorizzazione" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="AnnoProtocolloAutorizzazione" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumeroRepertorio" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Spese" nillable="true" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="IdentificativoFlussoSIG" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="GuidDbp" nillable="true" type="s1:guid" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="InserisciEmissioniByCodiceAnno">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="emissioni" type="tns:ArrayOfEmissione" />
+            <s:element minOccurs="0" maxOccurs="1" name="codiceIdentificativo" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="anno" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="idUtente" nillable="true" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="utenteInserimento" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="fonte" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InserisciEmissioniByCodiceAnnoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="InserisciEmissioniByCodiceAnnoResult" type="tns:DtoOutInserimentoEmissioni" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InserisciMetodoPagamento">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="codicePartia" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="annoRiferimento" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="codiceServizio" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="metodoPagamento" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="numeroPagamento" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InserisciMetodoPagamentoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="InserisciMetodoPagamentoResult" type="tns:DtoOutGeneric" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="DtoOutGeneric">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="DettaglioOut" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Code" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="InvioEmissioniPge">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="emissioni" type="tns:ArrayOfEmissione" />
+            <s:element minOccurs="1" maxOccurs="1" name="codSettore" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="codServizio" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="utenteInserimento" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InvioEmissioniPgeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="InvioEmissioniPgeResult" type="tns:DtoOutInserimentoEmissioni" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RendicontazioniDecadali">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="riepilogo" type="tns:DtoRendicontazioneDecadale" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="DtoRendicontazioneDecadale">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="CodiceAttivita" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="DescrizioneAttivita" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Descrizione" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Data" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="AnnoRiferimento" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="MeseRiferimento" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="DecadeRiferimento" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="CodiceSettore" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="DescrizioneSettore" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CodiceServizio" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="DescrizioneServizio" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumeroPratiche" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="ImportoGestito" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="NomeFile" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="RendicontazioniDecadaliResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RendicontazioniDecadaliResult" type="tns:DtoOutGeneric" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RistrutturazioneDebito">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="riepilogo" type="tns:DtoRistrutturazioneDebito" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="DtoRistrutturazioneDebito">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="CodiceAttivita" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="DescrizioneAttivita" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Descrizione" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Data" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="AnnoRiferimento" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="MeseRiferimento" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="DecadeRiferimento" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="CodiceSettore" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="DescrizioneSettore" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CodiceServizio" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="DescrizioneServizio" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumeroPratiche" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="ImportoGestito" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="NomeFile" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="RistrutturazioneDebitoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RistrutturazioneDebitoResult" type="tns:DtoOutGeneric" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PraticheRuolo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="riepilogo" type="tns:DtoPraticheRuolo" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="DtoPraticheRuolo">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="CodiceAttivita" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="DescrizioneAttivita" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Descrizione" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Data" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="AnnoRiferimento" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="MeseRiferimento" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="DecadeRiferimento" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="CodiceSettore" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="DescrizioneSettore" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CodiceServizio" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="DescrizioneServizio" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumeroPratiche" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="ImportoGestito" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="NomeFilePartite" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="NomeFileRighe" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="NomeFileRate" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="PraticheRuoloResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="PraticheRuoloResult" type="tns:DtoOutGeneric" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RendicontazioniRuoli">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="riepilogo" type="tns:DtoRendicontazioneRuoli" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="DtoRendicontazioneRuoli">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="CodiceAttivita" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="DescrizioneAttivita" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Descrizione" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Data" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="AnnoRiferimento" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="MeseRiferimento" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="DecadeRiferimento" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="CodiceSettore" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="DescrizioneSettore" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CodiceServizio" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="DescrizioneServizio" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumeroPratiche" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="ImportoGestito" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="NomeFile" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="RendicontazioniRuoliResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RendicontazioniRuoliResult" type="tns:DtoOutGeneric" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TestConnection">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="prova" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TestConnectionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="TestConnectionResult" type="tns:DtoOutGeneric" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InserisciEmissioneAvvisoPagoPa">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="emissione" type="tns:Emissione" />
+            <s:element minOccurs="1" maxOccurs="1" name="codiceIdentificativo" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="anno" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="idUtente" nillable="true" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="utenteInserimento" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="fonte" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InserisciEmissioneAvvisoPagoPaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="InserisciEmissioneAvvisoPagoPaResult" type="tns:DtoEsitoPagameti" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="DtoEsitoPagameti">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="idChiamata" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="identificativoFlussoSIG" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="dataOraInserimento" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="avviso" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="hashAvviso" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="rt" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="hashRt" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="dataGenerazione" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="dataRicezione" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="formatoRichiesto" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="codiceRisposta" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="descrizione" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="chiamata" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Esito" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="IdDbp" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="GuidDbp" nillable="true" type="s1:guid" />
+          <s:element minOccurs="0" maxOccurs="1" name="Url" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="InserisciEmissionePagoPa">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="emissione" type="tns:Emissione" />
+            <s:element minOccurs="1" maxOccurs="1" name="codiceIdentificativo" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="anno" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="idUtente" nillable="true" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="utenteInserimento" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="fonte" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InserisciEmissionePagoPaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="InserisciEmissionePagoPaResult" type="tns:DtoEsitoPagameti" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InserisciFlussoEmissionePagoPa">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="emissioni" type="tns:ArrayOfEmissione" />
+            <s:element minOccurs="1" maxOccurs="1" name="codSettore" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="codServizio" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="idUtenteBack" nillable="true" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="utenteInserimento" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="fonte" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InserisciFlussoEmissionePagoPaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="InserisciFlussoEmissionePagoPaResult" type="tns:DtoEsitoPagameti" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AvvisoPagoPa">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="codiceAvviso" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AvvisoPagoPaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AvvisoPagoPaResult" type="tns:DtoEsitoPagameti" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AvvisoPagoPaById">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AvvisoPagoPaByIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AvvisoPagoPaByIdResult" type="tns:DtoEsitoPagameti" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AvvisoPagoPaByGuid">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="guid" type="s1:guid" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AvvisoPagoPaByGuidResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AvvisoPagoPaByGuidResult" type="tns:DtoEsitoPagameti" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RicevutaTelematicaPagoPa">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="codiceAvviso" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="tipo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RicevutaTelematicaPagoPaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RicevutaTelematicaPagoPaResult" type="tns:DtoEsitoPagameti" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InserisciFlussoMassivoPagoPa">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="IdEmiMassiva" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="codSettore" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="codServizio" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="idUtenteBack" nillable="true" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="utenteInserimento" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="fonte" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InserisciFlussoMassivoPagoPaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="InserisciFlussoMassivoPagoPaResult" type="tns:DtoEsitoPagameti" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DatiEmissioneById">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="IdEmissione" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DatiEmissioneByIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="DatiEmissioneByIdResult" type="tns:DtoEmissionePagoPa" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="DtoEmissionePagoPa">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Emissione" type="tns:EmissionePagoPa" />
+          <s:element minOccurs="1" maxOccurs="1" name="Code" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="EmissionePagoPa">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumeroRuolo" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataEmissione" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="CodPartita" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="AnnoRiferimento" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NaturaGiur" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Cognome" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Nome" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Sesso" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataNascita" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="CodComuneNascita" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DenominazioneSociale" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Codfispiva" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Indirizzo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Civico" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Cap" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CodComuneResidenza" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DesComune" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CodServizio" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="CodEmissione" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="ChiusuraPartita" nillable="true" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="Importo" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="Descrizione" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Periodo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TipoAtto" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Fascicolo" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="AnnoFascicolo" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Sottofascicolo" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="ProtocolloDomanda" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="AnnoProtocolloDomanda" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="ProtocolloAutorizzazione" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="AnnoProtocolloAutorizzazione" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumeroRepertorio" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Spese" nillable="true" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="IdentificativoFlussoSIG" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="GuidDbp" nillable="true" type="s1:guid" />
+          <s:element minOccurs="0" maxOccurs="1" name="Iuv" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CodiceAvviso" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Stato" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Rate" type="tns:ArrayOfRataPagoPa" />
+          <s:element minOccurs="0" maxOccurs="1" name="Righe" type="tns:ArrayOfRigaPagoPa" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfRataPagoPa">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="RataPagoPa" nillable="true" type="tns:RataPagoPa" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="RataPagoPa">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Id" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="CodServizio" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="CodPartita" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="AnnoRiferimento" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumeroRata" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Importo" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataScadenza" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="AnnoRiferimentoRata" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="ChiusuraRata" nillable="true" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="Iuv" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CodiceAvviso" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Stato" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfRigaPagoPa">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="RigaPagoPa" nillable="true" type="tns:RigaPagoPa" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="RigaPagoPa">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Id" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="CodServizio" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="CodPartita" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="AnnoRiferimento" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="CausaleRiga" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Codicetributo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Descrizione" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Imponibile" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="Imposta" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="AnnoRiferimento2" nillable="true" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="DatiEmissioneByGuid">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="guid" type="s1:guid" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DatiEmissioneByGuidResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="DatiEmissioneByGuidResult" type="tns:DtoEmissionePagoPa" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PendenzaByCodiceAvviso">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CodiceAvviso" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="cfIva" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PendenzaByCodiceAvvisoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="PendenzaByCodiceAvvisoResult" type="tns:DtoPendenzaPagoPa" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="DtoPendenzaPagoPa">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Pendenza" type="tns:PendenzaPagoPa" />
+          <s:element minOccurs="1" maxOccurs="1" name="Code" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PendenzaPagoPa">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="CodicePartita" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Ambito" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Servizio" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CodiceServizio" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Cognome" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Nome" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RagioneSociale" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CfIva" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumeroRata" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Importo" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="Iuv" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CodiceAvviso" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Stato" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="IdDbp" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="GuidDbp" nillable="true" type="s1:guid" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="EmissioniByCf">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="cf" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="EmissioniByCfResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="EmissioniByCfResult" type="tns:DtoEmissioniPagoPa" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="DtoEmissioniPagoPa">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Emissioni" type="tns:ArrayOfEmissionePagoPa" />
+          <s:element minOccurs="1" maxOccurs="1" name="Code" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfEmissionePagoPa">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="EmissionePagoPa" nillable="true" type="tns:EmissionePagoPa" />
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://microsoft.com/wsdl/types/">
+      <s:simpleType name="guid">
+        <s:restriction base="s:string">
+          <s:pattern value="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}" />
+        </s:restriction>
+      </s:simpleType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="InserisciEmissioniSoapIn">
+    <wsdl:part name="parameters" element="tns:InserisciEmissioni" />
+  </wsdl:message>
+  <wsdl:message name="InserisciEmissioniSoapOut">
+    <wsdl:part name="parameters" element="tns:InserisciEmissioniResponse" />
+  </wsdl:message>
+  <wsdl:message name="InserisciEmissioniByCodiceAnnoSoapIn">
+    <wsdl:part name="parameters" element="tns:InserisciEmissioniByCodiceAnno" />
+  </wsdl:message>
+  <wsdl:message name="InserisciEmissioniByCodiceAnnoSoapOut">
+    <wsdl:part name="parameters" element="tns:InserisciEmissioniByCodiceAnnoResponse" />
+  </wsdl:message>
+  <wsdl:message name="InserisciMetodoPagamentoSoapIn">
+    <wsdl:part name="parameters" element="tns:InserisciMetodoPagamento" />
+  </wsdl:message>
+  <wsdl:message name="InserisciMetodoPagamentoSoapOut">
+    <wsdl:part name="parameters" element="tns:InserisciMetodoPagamentoResponse" />
+  </wsdl:message>
+  <wsdl:message name="InvioEmissioniPgeSoapIn">
+    <wsdl:part name="parameters" element="tns:InvioEmissioniPge" />
+  </wsdl:message>
+  <wsdl:message name="InvioEmissioniPgeSoapOut">
+    <wsdl:part name="parameters" element="tns:InvioEmissioniPgeResponse" />
+  </wsdl:message>
+  <wsdl:message name="RendicontazioniDecadaliSoapIn">
+    <wsdl:part name="parameters" element="tns:RendicontazioniDecadali" />
+  </wsdl:message>
+  <wsdl:message name="RendicontazioniDecadaliSoapOut">
+    <wsdl:part name="parameters" element="tns:RendicontazioniDecadaliResponse" />
+  </wsdl:message>
+  <wsdl:message name="RistrutturazioneDebitoSoapIn">
+    <wsdl:part name="parameters" element="tns:RistrutturazioneDebito" />
+  </wsdl:message>
+  <wsdl:message name="RistrutturazioneDebitoSoapOut">
+    <wsdl:part name="parameters" element="tns:RistrutturazioneDebitoResponse" />
+  </wsdl:message>
+  <wsdl:message name="PraticheRuoloSoapIn">
+    <wsdl:part name="parameters" element="tns:PraticheRuolo" />
+  </wsdl:message>
+  <wsdl:message name="PraticheRuoloSoapOut">
+    <wsdl:part name="parameters" element="tns:PraticheRuoloResponse" />
+  </wsdl:message>
+  <wsdl:message name="RendicontazioniRuoliSoapIn">
+    <wsdl:part name="parameters" element="tns:RendicontazioniRuoli" />
+  </wsdl:message>
+  <wsdl:message name="RendicontazioniRuoliSoapOut">
+    <wsdl:part name="parameters" element="tns:RendicontazioniRuoliResponse" />
+  </wsdl:message>
+  <wsdl:message name="TestConnectionSoapIn">
+    <wsdl:part name="parameters" element="tns:TestConnection" />
+  </wsdl:message>
+  <wsdl:message name="TestConnectionSoapOut">
+    <wsdl:part name="parameters" element="tns:TestConnectionResponse" />
+  </wsdl:message>
+  <wsdl:message name="InserisciEmissioneAvvisoPagoPaSoapIn">
+    <wsdl:part name="parameters" element="tns:InserisciEmissioneAvvisoPagoPa" />
+  </wsdl:message>
+  <wsdl:message name="InserisciEmissioneAvvisoPagoPaSoapOut">
+    <wsdl:part name="parameters" element="tns:InserisciEmissioneAvvisoPagoPaResponse" />
+  </wsdl:message>
+  <wsdl:message name="InserisciEmissionePagoPaSoapIn">
+    <wsdl:part name="parameters" element="tns:InserisciEmissionePagoPa" />
+  </wsdl:message>
+  <wsdl:message name="InserisciEmissionePagoPaSoapOut">
+    <wsdl:part name="parameters" element="tns:InserisciEmissionePagoPaResponse" />
+  </wsdl:message>
+  <wsdl:message name="InserisciFlussoEmissionePagoPaSoapIn">
+    <wsdl:part name="parameters" element="tns:InserisciFlussoEmissionePagoPa" />
+  </wsdl:message>
+  <wsdl:message name="InserisciFlussoEmissionePagoPaSoapOut">
+    <wsdl:part name="parameters" element="tns:InserisciFlussoEmissionePagoPaResponse" />
+  </wsdl:message>
+  <wsdl:message name="AvvisoPagoPaSoapIn">
+    <wsdl:part name="parameters" element="tns:AvvisoPagoPa" />
+  </wsdl:message>
+  <wsdl:message name="AvvisoPagoPaSoapOut">
+    <wsdl:part name="parameters" element="tns:AvvisoPagoPaResponse" />
+  </wsdl:message>
+  <wsdl:message name="AvvisoPagoPaByIdSoapIn">
+    <wsdl:part name="parameters" element="tns:AvvisoPagoPaById" />
+  </wsdl:message>
+  <wsdl:message name="AvvisoPagoPaByIdSoapOut">
+    <wsdl:part name="parameters" element="tns:AvvisoPagoPaByIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="AvvisoPagoPaByGuidSoapIn">
+    <wsdl:part name="parameters" element="tns:AvvisoPagoPaByGuid" />
+  </wsdl:message>
+  <wsdl:message name="AvvisoPagoPaByGuidSoapOut">
+    <wsdl:part name="parameters" element="tns:AvvisoPagoPaByGuidResponse" />
+  </wsdl:message>
+  <wsdl:message name="RicevutaTelematicaPagoPaSoapIn">
+    <wsdl:part name="parameters" element="tns:RicevutaTelematicaPagoPa" />
+  </wsdl:message>
+  <wsdl:message name="RicevutaTelematicaPagoPaSoapOut">
+    <wsdl:part name="parameters" element="tns:RicevutaTelematicaPagoPaResponse" />
+  </wsdl:message>
+  <wsdl:message name="InserisciFlussoMassivoPagoPaSoapIn">
+    <wsdl:part name="parameters" element="tns:InserisciFlussoMassivoPagoPa" />
+  </wsdl:message>
+  <wsdl:message name="InserisciFlussoMassivoPagoPaSoapOut">
+    <wsdl:part name="parameters" element="tns:InserisciFlussoMassivoPagoPaResponse" />
+  </wsdl:message>
+  <wsdl:message name="DatiEmissioneByIdSoapIn">
+    <wsdl:part name="parameters" element="tns:DatiEmissioneById" />
+  </wsdl:message>
+  <wsdl:message name="DatiEmissioneByIdSoapOut">
+    <wsdl:part name="parameters" element="tns:DatiEmissioneByIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="DatiEmissioneByGuidSoapIn">
+    <wsdl:part name="parameters" element="tns:DatiEmissioneByGuid" />
+  </wsdl:message>
+  <wsdl:message name="DatiEmissioneByGuidSoapOut">
+    <wsdl:part name="parameters" element="tns:DatiEmissioneByGuidResponse" />
+  </wsdl:message>
+  <wsdl:message name="PendenzaByCodiceAvvisoSoapIn">
+    <wsdl:part name="parameters" element="tns:PendenzaByCodiceAvviso" />
+  </wsdl:message>
+  <wsdl:message name="PendenzaByCodiceAvvisoSoapOut">
+    <wsdl:part name="parameters" element="tns:PendenzaByCodiceAvvisoResponse" />
+  </wsdl:message>
+  <wsdl:message name="EmissioniByCfSoapIn">
+    <wsdl:part name="parameters" element="tns:EmissioniByCf" />
+  </wsdl:message>
+  <wsdl:message name="EmissioniByCfSoapOut">
+    <wsdl:part name="parameters" element="tns:EmissioniByCfResponse" />
+  </wsdl:message>
+  <wsdl:portType name="PagamentiSoap">
+    <wsdl:operation name="InserisciEmissioni">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Il metodo permette di inserire un elenco di Emissioni.</wsdl:documentation>
+      <wsdl:input message="tns:InserisciEmissioniSoapIn" />
+      <wsdl:output message="tns:InserisciEmissioniSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InserisciEmissioniByCodiceAnno">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Il metodo permette di inserire un elenco di Emissioni Passando il codice del procedimento e l'anno.</wsdl:documentation>
+      <wsdl:input message="tns:InserisciEmissioniByCodiceAnnoSoapIn" />
+      <wsdl:output message="tns:InserisciEmissioniByCodiceAnnoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InserisciMetodoPagamento">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Permette di inserire il metodo di pagameto utilizzato per pagare l'emissione.</wsdl:documentation>
+      <wsdl:input message="tns:InserisciMetodoPagamentoSoapIn" />
+      <wsdl:output message="tns:InserisciMetodoPagamentoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InvioEmissioniPge">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Il metodo permette di inviare emisioni a pge.</wsdl:documentation>
+      <wsdl:input message="tns:InvioEmissioniPgeSoapIn" />
+      <wsdl:output message="tns:InvioEmissioniPgeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RendicontazioniDecadali">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Metodo che recepisce le informazioni riepilogative Rendicontazione Decadale.</wsdl:documentation>
+      <wsdl:input message="tns:RendicontazioniDecadaliSoapIn" />
+      <wsdl:output message="tns:RendicontazioniDecadaliSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RistrutturazioneDebito">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Metodo che recepisce le informazioni riepilogative Ristrutturazione Debito.</wsdl:documentation>
+      <wsdl:input message="tns:RistrutturazioneDebitoSoapIn" />
+      <wsdl:output message="tns:RistrutturazioneDebitoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="PraticheRuolo">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Metodo che recepisce le informazioni riepilogative delle Pratiche a Ruolo.</wsdl:documentation>
+      <wsdl:input message="tns:PraticheRuoloSoapIn" />
+      <wsdl:output message="tns:PraticheRuoloSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RendicontazioniRuoli">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Metodo che recepisce le informazioni riepilogative Rendicontazione Ruoli.</wsdl:documentation>
+      <wsdl:input message="tns:RendicontazioniRuoliSoapIn" />
+      <wsdl:output message="tns:RendicontazioniRuoliSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TestConnection">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Il metodo permette di inserire un elenco di Emissioni.</wsdl:documentation>
+      <wsdl:input message="tns:TestConnectionSoapIn" />
+      <wsdl:output message="tns:TestConnectionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InserisciEmissioneAvvisoPagoPa">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Il metodo permette di pubblicare un'emissione ed ottenere contestualmente la generazione dell’avviso di pagamento in formato PDF.</wsdl:documentation>
+      <wsdl:input message="tns:InserisciEmissioneAvvisoPagoPaSoapIn" />
+      <wsdl:output message="tns:InserisciEmissioneAvvisoPagoPaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InserisciEmissionePagoPa">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Il servizio permette di inviare un credito slegato da un particolare flusso.</wsdl:documentation>
+      <wsdl:input message="tns:InserisciEmissionePagoPaSoapIn" />
+      <wsdl:output message="tns:InserisciEmissionePagoPaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InserisciFlussoEmissionePagoPa">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Il servizio permette di inviare un flusso di crediti a PagoPa.</wsdl:documentation>
+      <wsdl:input message="tns:InserisciFlussoEmissionePagoPaSoapIn" />
+      <wsdl:output message="tns:InserisciFlussoEmissionePagoPaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AvvisoPagoPa">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Il metodo permette di ristampare un avviso tramite il codice dell'avviso.</wsdl:documentation>
+      <wsdl:input message="tns:AvvisoPagoPaSoapIn" />
+      <wsdl:output message="tns:AvvisoPagoPaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AvvisoPagoPaById">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Il metodo permette di ristampare un avviso tramite la chiave univoca del db dei pagamenti.</wsdl:documentation>
+      <wsdl:input message="tns:AvvisoPagoPaByIdSoapIn" />
+      <wsdl:output message="tns:AvvisoPagoPaByIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AvvisoPagoPaByGuid">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Il metodo permette di ristampare un avviso tramite la chiave univoca del db dei pagamenti.</wsdl:documentation>
+      <wsdl:input message="tns:AvvisoPagoPaByGuidSoapIn" />
+      <wsdl:output message="tns:AvvisoPagoPaByGuidSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RicevutaTelematicaPagoPa">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Il metodo permette di ristampare una ricevuta telematica tramite il codice dell'avviso.</wsdl:documentation>
+      <wsdl:input message="tns:RicevutaTelematicaPagoPaSoapIn" />
+      <wsdl:output message="tns:RicevutaTelematicaPagoPaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InserisciFlussoMassivoPagoPa">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Il servizio permette di inviare un flusso di crediti partendo dal codice dell'amissione massiva presente sul Dbp.</wsdl:documentation>
+      <wsdl:input message="tns:InserisciFlussoMassivoPagoPaSoapIn" />
+      <wsdl:output message="tns:InserisciFlussoMassivoPagoPaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DatiEmissioneById">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Il servizio permette di recuperare i dati dell'emissione presente nel Dbp.</wsdl:documentation>
+      <wsdl:input message="tns:DatiEmissioneByIdSoapIn" />
+      <wsdl:output message="tns:DatiEmissioneByIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DatiEmissioneByGuid">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Il servizio permette di recuperare i dati dell'emissione presente nel Dbp.</wsdl:documentation>
+      <wsdl:input message="tns:DatiEmissioneByGuidSoapIn" />
+      <wsdl:output message="tns:DatiEmissioneByGuidSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="PendenzaByCodiceAvviso">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Il servizio permette di recuperare i dati della pendenza da pagare.</wsdl:documentation>
+      <wsdl:input message="tns:PendenzaByCodiceAvvisoSoapIn" />
+      <wsdl:output message="tns:PendenzaByCodiceAvvisoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="EmissioniByCf">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Il servizio permette di recuperare i dati delle emissioni legate ad un Codice Fiscale.</wsdl:documentation>
+      <wsdl:input message="tns:EmissioniByCfSoapIn" />
+      <wsdl:output message="tns:EmissioniByCfSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="PagamentiSoap" type="tns:PagamentiSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="InserisciEmissioni">
+      <soap:operation soapAction="http://tempuri.org/InserisciEmissioni" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InserisciEmissioniByCodiceAnno">
+      <soap:operation soapAction="http://tempuri.org/InserisciEmissioniByCodiceAnno" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InserisciMetodoPagamento">
+      <soap:operation soapAction="http://tempuri.org/InserisciMetodoPagamento" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InvioEmissioniPge">
+      <soap:operation soapAction="http://tempuri.org/InvioEmissioniPge" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RendicontazioniDecadali">
+      <soap:operation soapAction="http://tempuri.org/RendicontazioniDecadali" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RistrutturazioneDebito">
+      <soap:operation soapAction="http://tempuri.org/RistrutturazioneDebito" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PraticheRuolo">
+      <soap:operation soapAction="http://tempuri.org/PraticheRuolo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RendicontazioniRuoli">
+      <soap:operation soapAction="http://tempuri.org/RendicontazioniRuoli" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TestConnection">
+      <soap:operation soapAction="http://tempuri.org/TestConnection" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InserisciEmissioneAvvisoPagoPa">
+      <soap:operation soapAction="http://tempuri.org/InserisciEmissioneAvvisoPagoPa" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InserisciEmissionePagoPa">
+      <soap:operation soapAction="http://tempuri.org/InserisciEmissionePagoPa" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InserisciFlussoEmissionePagoPa">
+      <soap:operation soapAction="http://tempuri.org/InserisciFlussoEmissionePagoPa" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AvvisoPagoPa">
+      <soap:operation soapAction="http://tempuri.org/AvvisoPagoPa" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AvvisoPagoPaById">
+      <soap:operation soapAction="http://tempuri.org/AvvisoPagoPaById" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AvvisoPagoPaByGuid">
+      <soap:operation soapAction="http://tempuri.org/AvvisoPagoPaByGuid" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RicevutaTelematicaPagoPa">
+      <soap:operation soapAction="http://tempuri.org/RicevutaTelematicaPagoPa" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InserisciFlussoMassivoPagoPa">
+      <soap:operation soapAction="http://tempuri.org/InserisciFlussoMassivoPagoPa" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DatiEmissioneById">
+      <soap:operation soapAction="http://tempuri.org/DatiEmissioneById" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DatiEmissioneByGuid">
+      <soap:operation soapAction="http://tempuri.org/DatiEmissioneByGuid" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PendenzaByCodiceAvviso">
+      <soap:operation soapAction="http://tempuri.org/PendenzaByCodiceAvviso" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EmissioniByCf">
+      <soap:operation soapAction="http://tempuri.org/EmissioniByCf" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="PagamentiSoap12" type="tns:PagamentiSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="InserisciEmissioni">
+      <soap12:operation soapAction="http://tempuri.org/InserisciEmissioni" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InserisciEmissioniByCodiceAnno">
+      <soap12:operation soapAction="http://tempuri.org/InserisciEmissioniByCodiceAnno" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InserisciMetodoPagamento">
+      <soap12:operation soapAction="http://tempuri.org/InserisciMetodoPagamento" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InvioEmissioniPge">
+      <soap12:operation soapAction="http://tempuri.org/InvioEmissioniPge" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RendicontazioniDecadali">
+      <soap12:operation soapAction="http://tempuri.org/RendicontazioniDecadali" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RistrutturazioneDebito">
+      <soap12:operation soapAction="http://tempuri.org/RistrutturazioneDebito" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PraticheRuolo">
+      <soap12:operation soapAction="http://tempuri.org/PraticheRuolo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RendicontazioniRuoli">
+      <soap12:operation soapAction="http://tempuri.org/RendicontazioniRuoli" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TestConnection">
+      <soap12:operation soapAction="http://tempuri.org/TestConnection" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InserisciEmissioneAvvisoPagoPa">
+      <soap12:operation soapAction="http://tempuri.org/InserisciEmissioneAvvisoPagoPa" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InserisciEmissionePagoPa">
+      <soap12:operation soapAction="http://tempuri.org/InserisciEmissionePagoPa" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InserisciFlussoEmissionePagoPa">
+      <soap12:operation soapAction="http://tempuri.org/InserisciFlussoEmissionePagoPa" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AvvisoPagoPa">
+      <soap12:operation soapAction="http://tempuri.org/AvvisoPagoPa" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AvvisoPagoPaById">
+      <soap12:operation soapAction="http://tempuri.org/AvvisoPagoPaById" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AvvisoPagoPaByGuid">
+      <soap12:operation soapAction="http://tempuri.org/AvvisoPagoPaByGuid" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RicevutaTelematicaPagoPa">
+      <soap12:operation soapAction="http://tempuri.org/RicevutaTelematicaPagoPa" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InserisciFlussoMassivoPagoPa">
+      <soap12:operation soapAction="http://tempuri.org/InserisciFlussoMassivoPagoPa" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DatiEmissioneById">
+      <soap12:operation soapAction="http://tempuri.org/DatiEmissioneById" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DatiEmissioneByGuid">
+      <soap12:operation soapAction="http://tempuri.org/DatiEmissioneByGuid" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PendenzaByCodiceAvviso">
+      <soap12:operation soapAction="http://tempuri.org/PendenzaByCodiceAvviso" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EmissioniByCf">
+      <soap12:operation soapAction="http://tempuri.org/EmissioniByCf" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Pagamenti">
+    <wsdl:port name="PagamentiSoap" binding="tns:PagamentiSoap">
+      <soap:address location="http://webservicestest.comune.parma.it/Wsdbpagamenti/pagamenti.asmx" />
+    </wsdl:port>
+    <wsdl:port name="PagamentiSoap12" binding="tns:PagamentiSoap12">
+      <soap12:address location="http://webservicestest.comune.parma.it/Wsdbpagamenti/pagamenti.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

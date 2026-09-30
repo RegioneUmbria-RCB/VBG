@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="tape">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="documentClass" maxOccurs="1" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="indexValidation">
+
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="file" maxOccurs="20000" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="file">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+
+				<xs:maxLength value="128" />
+				<xs:minLength value="5" />
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="parameters">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="parameter" maxOccurs="200" />
+
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="parameter">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="parameter_st">
+					<xs:attribute name="target">
+						<xs:simpleType>
+
+							<xs:restriction base="xs:string">
+								<xs:maxLength value="100" />
+								<xs:minLength value="1" />
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+					<xs:attribute name="id" use="required">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+
+								<xs:maxLength value="100" />
+								<xs:minLength value="1" />
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="argument">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="argument_st">
+					<xs:attribute name="name" use="required">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:maxLength value="100" />
+								<xs:minLength value="1" />
+
+								<xs:enumeration value="number" />
+								<xs:enumeration value="extension" />
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="documentClass">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="transportControls" />
+				<xs:element ref="serviceValidation" />
+			</xs:sequence>
+			<xs:attribute name="id" use="optional">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+
+						<xs:maxLength value="100" fixed="true" />
+						<xs:minLength value="1" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="service" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="100" fixed="true" />
+
+						<xs:minLength value="1" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="transformer" use="optional">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="100" fixed="true" />
+						<xs:minLength value="1" />
+
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="endUserId" use="optional">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="100" fixed="true" />
+						<xs:minLength value="1" />
+					</xs:restriction>
+
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="name" use="optional">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="100" fixed="true" />
+						<xs:minLength value="1" />
+					</xs:restriction>
+				</xs:simpleType>
+
+			</xs:attribute>
+			<xs:attribute name="feedbackEmail" use="optional">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="100" fixed="true" />
+						<xs:minLength value="1" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="transportControls">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="control" maxOccurs="200" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="control">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="argument" maxOccurs="200" />
+			</xs:sequence>
+			<xs:attribute name="id" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="100" />
+
+						<xs:minLength value="1" />
+						<xs:enumeration value="numeroFileTotali" />
+						<xs:enumeration value="numeroFileIndice" />
+						<xs:enumeration value="numeroFilePerEstensione" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="serviceValidation">
+		<xs:complexType>
+			<xs:all>
+				<xs:element ref="indexValidation" />
+				<xs:element ref="parameters" minOccurs="0" />
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+	<xs:simpleType name="parameter_st">
+
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="100" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="control_st">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="100" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="argument_st">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="100" />
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

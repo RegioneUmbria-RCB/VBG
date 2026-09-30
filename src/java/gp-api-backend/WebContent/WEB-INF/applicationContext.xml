@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans default-lazy-init="false"
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:jms="http://www.springframework.org/schema/jms"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+			http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+			http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.2.xsd
+			http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms.xsd">
+
+	<context:annotation-config />
+	  
+	<bean id="cacheManager" destroy-method="shutdown" class="net.sf.ehcache.CacheManager">
+		<property name="name" value="ehchache.xml"/>
+	</bean>
+	 
+	<context:component-scan base-package="it.gruppoinit.pal.gp">
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+			<!-- 
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.ws.server.endpoint.annotation.Endpoint" />
+			 -->
+	</context:component-scan>
+	<context:component-scan base-package="it.gruppoinit.sigepro">
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+	<!-- services di UPGR4J -->
+	<context:component-scan base-package="it.gruppoinit.upgr.service" />
+	<context:component-scan base-package="it.gruppoinit.upgr.core.task" />
+	<context:component-scan base-package="it.gruppoinit.pal.gp.backoffice.upgr.tasks" />
+	<!-- services di IMPORT -->
+	<context:component-scan base-package="it.gruppoinit.dataimport.service" />
+
+	<!-- file di configurazione (se modificato, modificare anche le costanti in WebConstants)-->
+	<context:property-placeholder location="classpath:deploy.properties" />
+
+	<!-- configurazione dei messaggi di gp-backoffice -->
+	<bean id="messageSource" 
+		class="it.gruppoinit.pal.gp.core.features.infrastructure.layout.testi.LayoutTestiMessageSource">
+		<property name="parentMessageSource" ref="baseMessageSource"></property>
+		<property name="cacheSeconds" value="3600" />
+	</bean>
+	<bean id="baseMessageSource" 
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource"
+		p:basenames="classpath:messages">
+		<!-- §§§BEGIN§§§ -->
+		<property name="parentMessageSource" ref="upgrMessageSource"></property>
+		<!-- §§§END§§§ -->
+	</bean>
+	<!-- configurazione dei messaggi di upgr4j -->
+	<!-- §§§BEGIN§§§ -->
+	<bean id="upgrMessageSource" 
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource"
+		p:basename="classpath:upgr-messages" >
+		<property name="parentMessageSource" ref="importMessageSource"></property>
+	</bean>
+	<!-- configurazione dei messaggi di IMPORT -->
+	<bean id="importMessageSource" 
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource"
+		p:basename="classpath:import-messages" >		
+	</bean>
+			
+	<!-- Aggiunta configurazione del DAO di UPGR4J che in VBG usa la classe 
+	it.gruppoinit.pal.gp.core.domain.Versione per accedere alla tabella VERSIONE-->
+	<bean id="versioneDao" class="it.gruppoinit.upgr.dao.impl.VersioneDAOImpl">
+		<property name="versioneClassName" value="it.gruppoinit.pal.gp.core.domain.Versione"/>
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="upgrDao" class="it.gruppoinit.upgr.dao.impl.UpgradeProcedureDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="deleteTableServiceImpl" class="it.gruppoinit.dataimport.service.DeleteTableServiceImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="importServiceImpl" class="it.gruppoinit.dataimport.service.ImportServiceImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<!-- Configurazione VelocityEngine -->
+	<bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+		<property name="resourceLoaderPath" value="classpath:templates/"/>
+		<property name="velocityProperties">
+	    	<value>
+	      		directive.parse.max.depth=30
+	    	</value>
+	    </property>
+	</bean>
+	 <!-- Fine Configurazione VelocityEngine -->
+	 
+	<!-- §§§END§§§ -->
+	<bean id="externalDBResolver"
+		class="it.gruppoinit.pal.gp.core.utils.ExternalDBResolverWS">
+		<property name="configurationProperties">
+			<props>
+				<prop key="ws.token.url">${ws.token.url}</prop>
+				<prop key="ws.token.user">${ws.token.user}</prop>
+				<prop key="ws.token.pwd">${ws.token.pwd}</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="dataSourceContainer" class="it.gruppoinit.pal.gp.core.dao.helper.DataSourceContainer">
+		<property name="factoryWrappers">
+			<map></map>
+		</property>
+		<property name="externalDBResolver" ref="externalDBResolver" />
+		<property name="packageToScan" value="it.gruppoinit.pal.gp.core.domain" />
+		<!--
+			lasciare sempre settato l'handler per oracle. quello di default lo carica da solo
+		-->
+		<property name="lobHandler" ref="oracleLobHandler" />
+	</bean>
+
+	<bean id="sessionFactory" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="proxyInterfaces">
+			<list>
+				<value>org.hibernate.SessionFactory</value>
+			</list>
+		</property>
+		<property name="targetSource" ref="sessionFactoryTarget" />
+	</bean>
+
+	<bean id="defaultLobHandler" class="org.springframework.jdbc.support.lob.DefaultLobHandler" />
+
+	<bean id="oracleLobHandler" class="org.springframework.jdbc.support.lob.OracleLobHandler">
+		<property name="nativeJdbcExtractor" ref="nativeJdbcExtractor" />
+	</bean>
+
+	<bean id="nativeJdbcExtractor"
+		class="org.springframework.jdbc.support.nativejdbc.C3P0NativeJdbcExtractor" />
+
+	<bean id="sessionFactoryTarget"
+		class="it.gruppoinit.pal.gp.core.dao.helper.SessionFactoryTargetSource">
+		<property name="dataSourceContainer" ref="dataSourceContainer" />
+	</bean>
+	
+	<bean name="openSessionInViewInterceptor"
+		class="org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor">
+		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="singleSession" value="true" />
+	</bean>
+
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager"
+		p:sessionFactory-ref="sessionFactory" />
+		
+	<!-- ASPECTJ CONFIGURATION -->
+	<aop:aspectj-autoproxy />
+	
+	<aop:config>
+		<aop:pointcut id="webMethods"
+			expression="execution(* (@org.springframework.stereotype.Controller *..*Controller).*(..)) 
+			|| execution(* it.gruppoinit.pal.gp.backoffice.web.rest.*RestService.*(..))" />
+		<aop:pointcut id="serviceMethods"
+			expression="execution(* it.gruppoinit.pal.gp.core.service.*Service.*(..)) 
+			|| execution(* it.gruppoinit.pal.gp.core.features..*Service.*(..)) 
+			|| execution(* it.gruppoinit.pal.gp.backoffice.upgr.tasks.*.run(..)) 
+			|| execution(* it.gruppoinit.upgr.service.*Service.*(..)) || execution(* it.gruppoinit.upgr.core.task.*.run(..)) 
+			|| execution(* it.gruppoinit.dataimport.service.ImportService.importaGrafoCollegamenti(..))" />
+		<aop:pointcut id="databaseModificationOperations"
+			expression="(execution(* it.gruppoinit.pal.gp.core.service.*Service.insert*(..)) 
+			|| execution(* it.gruppoinit.pal.gp.core.service.*Service.update*(..)) 
+			|| execution(* it.gruppoinit.pal.gp.core.service.*Service.delete*(..)) 
+			|| execution(* it.gruppoinit.pal.gp.core.service.*Service.protocolla*(..)) 
+			|| execution(* it.gruppoinit.pal.gp.core.service.*Service.fascicola*(..))) 
+			and !(execution(* it.gruppoinit.pal.gp.core.service.ConfigurazioneutenteService.*(..))
+			|| execution(* it.gruppoinit.pal.gp.core.service.ResponsabiliService.updatePassword(..)))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="serviceMethods" />
+		<aop:aspect id="auditSuFileAspect" ref="auditingSuFile">
+			<aop:after-throwing method="trackServiceException" pointcut-ref="serviceMethods" throwing="exception"/>
+			<aop:before method="trackWebLayer" pointcut-ref="webMethods" />
+		</aop:aspect>
+
+		<aop:aspect id="operatoreReadOnlySecurityAspectId" ref="operatoreReadOnlySecurityAspect" >
+			<aop:before method="checkUserReadOnly" pointcut-ref="databaseModificationOperations" />			
+		</aop:aspect>
+
+
+		<aop:aspect id="movimentiSecurityAspectId" ref="movimentiSecurityAspect" >
+			<aop:pointcut id="movimentiListViewId" expression="(execution(* it.gruppoinit.pal.gp.core.service.MovimentiBaseService.find*(..)) 
+						and target(it.gruppoinit.pal.gp.core.service.MovimentiService)) 
+						|| execution(* it.gruppoinit.pal.gp.core.features.scadenzario.service.BatchScadenzarioService.find*(..))" />		
+			<aop:after-returning method="doAccessCheck" pointcut-ref="movimentiListViewId" returning="retVal" />
+			<aop:pointcut id="movimentiUpdateDataId" expression="(execution(* it.gruppoinit.pal.gp.core.service.MovimentiBaseService.insert*(..)) 
+					and target(it.gruppoinit.pal.gp.core.service.MovimentiService)) 
+					|| (execution(* it.gruppoinit.pal.gp.core.service.MovimentiBaseService.update*(..)) 
+					and target(it.gruppoinit.pal.gp.core.service.MovimentiService)) 
+					|| (execution(* it.gruppoinit.pal.gp.core.service.MovimentiBaseService.delete*(..)) 
+					and target(it.gruppoinit.pal.gp.core.service.MovimentiService)) 
+					|| execution(* it.gruppoinit.pal.gp.core.service.StcService.notificaAttivita(..))" />		
+			<aop:before method="doUpdateDataCheck" pointcut-ref="movimentiUpdateDataId" />						
+		</aop:aspect>
+		<aop:aspect id="istanzeeventiAspectId" ref="istanzeeventiAspect" >
+
+			<aop:pointcut id="inserisciEventiStcNuovaPraticaId" expression="execution(* it.gruppoinit.pal.gp.core.service.NlaService.inserimentoPratica(..))" />
+			<aop:after-returning method="inserisciEventiStcNuovaPratica" pointcut-ref="inserisciEventiStcNuovaPraticaId" returning="retVal" />					
+			<aop:pointcut id="inserisciEventiStcNuovaAttivitaId" expression="execution(* it.gruppoinit.pal.gp.core.service.NlaService.inserimentoAttivita(..))" />
+			<aop:after-returning method="inserisciEventiStcNuovaAttivita" pointcut-ref="inserisciEventiStcNuovaAttivitaId" returning="retVal" />
+			<aop:pointcut id="insertEventoMovimentoStcDaNotificareId" expression="execution(* it.gruppoinit.pal.gp.core.service.MovimentiService.insert(..))" />
+			<aop:after-returning method="insertEventoMovimentoStcDaNotificare" pointcut-ref="insertEventoMovimentoStcDaNotificareId" returning="movimento" />			
+	
+		</aop:aspect>
+
+
+	</aop:config>
+	
+	<bean class="it.gruppoinit.pal.gp.backoffice.aop.SoftwareValidationAspect" />
+	<bean class="it.gruppoinit.pal.gp.backoffice.aop.Validation" />
+	<bean id="istanzeSecurityAspect" class="it.gruppoinit.pal.gp.backoffice.aop.IstanzeSecurityAspect" />
+	<bean id="movimentiSecurityAspect" class="it.gruppoinit.pal.gp.backoffice.aop.MovimentiSecurityAspect" />	
+	<bean id="istanzeeventiAspect" class="it.gruppoinit.pal.gp.backoffice.aop.istanzeeventi.IstanzeeventiAspect" />
+	<bean id="operatoreReadOnlySecurityAspect" class="it.gruppoinit.pal.gp.backoffice.aop.OperatoreReadOnlySecurityAspect" />
+	<bean id="auditingSuFile" class="it.gruppoinit.pal.gp.backoffice.aop.AuditingSuFile" />
+	<bean id="iattivitaSnapShotAspect" class="it.gruppoinit.pal.gp.backoffice.aop.IattivitaSnapShotAspect" />
+	
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="find*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="is*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="check*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="exist*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="count*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="setVersione" propagation="REQUIRES_NEW" />
+			<tx:method name="runTaskInNewTransaction" propagation="REQUIRES_NEW" />
+			<tx:method name="importaGrafoCollegamenti" propagation="REQUIRES_NEW" />
+			<tx:method name="bindDomainObject" propagation="REQUIRED" rollback-for="java.lang.Exception" no-rollback-for="it.gruppoinit.pal.gp.core.service.exception.RecuperoDatiAnagraficaException"/>
+			<tx:method name="*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+			<tx:method name="notificaStc" propagation="REQUIRED" rollback-for="java.lang.Exception" no-rollback-for="it.gruppoinit.pal.gp.core.service.exception.STCNotificaAttivitaException" />
+			<tx:method name="operazioniAutomatiche" propagation="REQUIRED" rollback-for="java.lang.Exception" no-rollback-for="it.gruppoinit.pal.gp.core.service.exception.OperazioniAutomaticheException" />
+			<tx:method name="insertEventiCheckCodiceFiscale" propagation="REQUIRED" rollback-for="java.lang.Exception" no-rollback-for="it.gruppoinit.pal.gp.core.service.exception.OperazioniAutomaticheException" />
+			<tx:method name="updateLoadModelloIstanza" propagation="REQUIRED" rollback-for="java.lang.Exception" no-rollback-for="javax.script.ScriptException" />
+			<tx:method name="updateSaveModelloIstanza" propagation="REQUIRED" rollback-for="java.lang.Exception" no-rollback-for="javax.script.ScriptException" />
+			<tx:method name="updateLoadCampoIstanza" propagation="REQUIRED" rollback-for="java.lang.Exception" no-rollback-for="javax.script.ScriptException" />
+			<tx:method name="updateSaveCampoIstanza" propagation="REQUIRED" rollback-for="java.lang.Exception" no-rollback-for="javax.script.ScriptException" />			
+			<tx:method name="updateChangeCampoIstanza" propagation="REQUIRED" rollback-for="java.lang.Exception" no-rollback-for="javax.script.ScriptException" />
+			<tx:method name="findByRuoloType" propagation="REQUIRED" rollback-for="java.lang.Exception" no-rollback-for="it.gruppoinit.pal.gp.core.service.exception.BusinessValidationException" />
+			<tx:method name="updateAllineaStradario" propagation="REQUIRED" rollback-for="java.lang.Exception" no-rollback-for="it.gruppoinit.pal.gp.core.service.exception.EntityValidationException,org.springframework.dao.DataIntegrityViolationException" />
+			<tx:method name="inserisciPagamento" propagation="REQUIRED" rollback-for="java.lang.Exception" no-rollback-for="it.gruppoinit.pal.gp.core.service.exception.FunzioneBusinessRemotaException" />
+			<tx:method name="inviaNodoPagamenti" propagation="REQUIRED" rollback-for="java.lang.Exception" no-rollback-for="it.gruppoinit.pal.gp.core.service.exception.FunzioneBusinessRemotaException" />			
+			<tx:method name="processaMetadatiFirmaOggetto" propagation="REQUIRED"  rollback-for="java.lang.Exception"  no-rollback-for="java.lang.RuntimeException,it.gruppoinit.pal.gp.core.rest.client.DSSClientException"/> 
+			<tx:method name="generaSuapXML" propagation="REQUIRED"  no-rollback-for="java.lang.Exception, java.lang.RuntimeException, it.gruppoinit.pal.gp.core.features.suapxml.exceptions.GenerazioneSuapXmlException"/> 	
+		</tx:attributes>
+	</tx:advice>
+
+    <bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<property name="corePoolSize" value="10" />
+		<property name="maxPoolSize" value="40" />
+		<property name="queueCapacity" value="2000" />
+	</bean>
+		
+	<!-- CONFIGURAZIONE PER IL JOB SCHEDULER -->  	 
+	<bean id="jobDetail"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="jobSchedulerManagerImpl" />
+		<property name="targetMethod" value="schedulePersistentJobsForScheduler" />
+	</bean>
+	<bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="jobDetail" ref="jobDetail" />
+		<property name="startDelay" value="60000" />
+		<property name="repeatInterval" value="120000" />
+		<property name="repeatCount" value="0" />
+	</bean> 
+	<bean name="quartzSchedulerFactory"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="autoStartup" value="${scheduler.autoStartup}" />
+		<property name="waitForJobsToCompleteOnShutdown" value="true" />		
+		<property name="triggers">
+			<list>
+				<ref bean="simpleTrigger" />
+			</list>
+		</property>		
+	</bean>
+
+</beans>

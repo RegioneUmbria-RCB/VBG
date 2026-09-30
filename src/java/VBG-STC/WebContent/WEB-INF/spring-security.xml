@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans 
+		xmlns="http://www.springframework.org/schema/beans" 
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:p="http://www.springframework.org/schema/p" 
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xmlns:context="http://www.springframework.org/schema/context" 
+		xmlns:jee="http://www.springframework.org/schema/jee"
+		xmlns:tx="http://www.springframework.org/schema/tx"
+		xmlns:security="http://www.springframework.org/schema/security"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+			http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+			http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.2.xsd">
+	
+	<security:global-method-security secured-annotations="enabled" jsr250-annotations="enabled" />
+		
+	<security:http auto-config="true">
+		<security:intercept-url pattern="/css/**" filters="none" />
+		<security:intercept-url pattern="/worksheetconfigurazione/login.htm" filters="none" />
+		<security:intercept-url pattern="/images/**" filters="none" />
+		<security:intercept-url pattern="/js/**" filters="none" />
+		<security:intercept-url pattern="/services/**" filters="none" />
+		<!-- percorsi accessibili senza autenticazione di UPGR4J -->
+		<security:intercept-url pattern="/upgrade/**" filters="none" />
+		<security:intercept-url pattern="/scripts-upgr/**" filters="none" />
+		<security:intercept-url pattern="/css-upgr/**" filters="none" />
+		<!--  end UPGR4J -->
+		<security:intercept-url pattern="/**" access="ROLE_ADMIN" />
+		<security:form-login login-page="/worksheetconfigurazione/login.htm"/>
+		<security:logout />
+	</security:http>
+
+	<security:authentication-provider>
+		<security:password-encoder hash="md5" />
+		<security:user-service>
+    		<security:user name="admin" password="" authorities="ROLE_ADMIN" />
+  		</security:user-service>			
+	</security:authentication-provider>
+</beans>

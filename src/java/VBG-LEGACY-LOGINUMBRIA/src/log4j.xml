@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="false">
+	<appender name="STDOUT" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d [%t] %-5p %c %x - %m%n" />
+		</layout>
+	</appender>
+	<appender name="FILE" class="org.apache.log4j.RollingFileAppender">
+		<param name="Threshold" value="DEBUG" />
+		<param name="File" value="${catalina.home}/logs/LoginUmbria-log-AG.log" />
+		<param name="Append" value="true" />
+		<param name="MaxFileSize" value="1024KB" />
+		<param name="MaxBackupIndex" value="1" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %-5p [%c] %m%n" />
+		</layout>
+	</appender>
+	<logger name="it.federa">
+		<level value="WARN" />
+		<appender-ref ref="FILE" />
+	</logger>
+	<logger name="it.cefriel">
+		<level value="WARN" />
+		<appender-ref ref="FILE" />
+	</logger>
+	<logger name="it.gruppoinit">
+		<level value="WARN" />
+		<appender-ref ref="FILE" />
+	</logger>
+</log4j:configuration>

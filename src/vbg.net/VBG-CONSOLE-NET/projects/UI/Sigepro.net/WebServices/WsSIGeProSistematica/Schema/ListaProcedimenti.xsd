@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="Codice" type="xs:string"/>
+
+  <xs:element name="DescrizioneBreve" type="xs:string"/>
+
+  <xs:element name="DescrizioneEstesa" type="xs:string"/>
+
+  <xs:element name="ListaProcedimenti">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Procedimento" maxOccurs="unbounded" />
+      </xs:sequence>
+      <xs:attribute name="versione" type="xs:NMTOKEN" use="required" fixed="2005-04-11" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Procedimento">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Codice" />
+        <xs:element ref="DescrizioneBreve" />
+        <xs:element ref="DescrizioneEstesa" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

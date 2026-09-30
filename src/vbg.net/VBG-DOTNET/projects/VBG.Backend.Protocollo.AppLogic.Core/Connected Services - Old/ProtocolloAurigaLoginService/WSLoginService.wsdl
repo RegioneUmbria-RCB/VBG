@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:wsp="http://www.w3.org/ns/ws-policy" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:tns="http://login.webservices.repository2.auriga.eng.it" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsp1_2="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" name="WSLoginService" targetNamespace="http://login.webservices.repository2.auriga.eng.it" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="WSLoginPortBinding_MTOM_Policy">
+    <ns1:OptimizedMimeSerialization xmlns:ns1="http://schemas.xmlsoap.org/ws/2004/09/policy/optimizedmimeserialization" wsp:Optional="true">
+    </ns1:OptimizedMimeSerialization>
+  </wsp:Policy>
+  <types>
+    <xsd:schema>
+      <xsd:import schemaLocation="WSLogin.xsd" namespace="http://login.webservices.repository2.auriga.eng.it" />
+    </xsd:schema>
+  </types>
+  <message name="serviceOperation">
+    <part name="service" element="tns:service" />
+  </message>
+  <message name="serviceOperationResponse">
+    <part name="serviceResponse" element="tns:serviceResponse" />
+  </message>
+  <portType name="WSILogin">
+    <operation name="serviceOperation">
+      <input wsam:Action="http://login.webservices.repository2.auriga.eng.it/WSILogin/serviceOperationRequest" message="tns:serviceOperation" />
+      <output wsam:Action="http://login.webservices.repository2.auriga.eng.it/WSILogin/serviceOperationResponse" message="tns:serviceOperationResponse" />
+    </operation>
+  </portType>
+  <binding name="WSLoginPortBinding" type="tns:WSILogin">
+    <wsp:PolicyReference URI="#WSLoginPortBinding_MTOM_Policy">
+    </wsp:PolicyReference>
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="serviceOperation">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+  </binding>
+  <service name="WSLoginService">
+    <port name="WSLoginPort" binding="tns:WSLoginPortBinding">
+      <soap:address location="http://aurigatest.comune.genova.it:8080/AurigaBusiness/soap/WSLogin" />
+    </port>
+  </service>
+</definitions>

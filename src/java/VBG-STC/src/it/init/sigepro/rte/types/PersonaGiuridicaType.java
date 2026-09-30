@@ -1,0 +1,585 @@
+
+package it.init.sigepro.rte.types;
+
+import java.util.ArrayList;
+import java.util.List;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlSchemaType;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.datatype.XMLGregorianCalendar;
+
+
+/**
+ * <p>Java class for PersonaGiuridicaType complex type.
+ * 
+ * <p>The following schema fragment specifies the expected content contained within this class.
+ * 
+ * <pre>
+ * &lt;complexType name="PersonaGiuridicaType">
+ *   &lt;complexContent>
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *       &lt;sequence>
+ *         &lt;element name="partitaIva" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="codiceFiscale" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="ragioneSociale" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="naturaGiuridica" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="sedeLegale" type="{http://sigepro.init.it/rte/types}LocalizzazioneType" minOccurs="0"/>
+ *         &lt;element name="indirizzoCorrispondenza" type="{http://sigepro.init.it/rte/types}LocalizzazioneType" minOccurs="0"/>
+ *         &lt;element name="telefono" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="fax" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="iscrizioneCCIAA" type="{http://sigepro.init.it/rte/types}IscrizioneRegistroType" minOccurs="0"/>
+ *         &lt;element name="iscrizioneREA" type="{http://sigepro.init.it/rte/types}RegistroREAType" minOccurs="0"/>
+ *         &lt;element name="legaleRappresentante" type="{http://sigepro.init.it/rte/types}PersonaFisicaType" minOccurs="0"/>
+ *         &lt;element name="altriDati" type="{http://sigepro.init.it/rte/types}ParametroType" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="email" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="pec" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="telefonoCellulare" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="datiInps" type="{http://sigepro.init.it/rte/types}DatiInpsType" minOccurs="0"/>
+ *         &lt;element name="datiInail" type="{http://sigepro.init.it/rte/types}DatiInailType" minOccurs="0"/>
+ *         &lt;element name="datiCassaEdile" type="{http://sigepro.init.it/rte/types}DatiCassaEdileType" minOccurs="0"/>
+ *         &lt;element name="datiIscrizioneAlbo" type="{http://sigepro.init.it/rte/types}DatiIscrizioneAlboType" minOccurs="0"/>
+ *         &lt;element name="dataInizioAttivita" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/>
+ *       &lt;/sequence>
+ *     &lt;/restriction>
+ *   &lt;/complexContent>
+ * &lt;/complexType>
+ * </pre>
+ * 
+ * 
+ */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "PersonaGiuridicaType", propOrder = {
+    "partitaIva",
+    "codiceFiscale",
+    "ragioneSociale",
+    "naturaGiuridica",
+    "sedeLegale",
+    "indirizzoCorrispondenza",
+    "telefono",
+    "fax",
+    "iscrizioneCCIAA",
+    "iscrizioneREA",
+    "legaleRappresentante",
+    "altriDati",
+    "email",
+    "pec",
+    "telefonoCellulare",
+    "datiInps",
+    "datiInail",
+    "datiCassaEdile",
+    "datiIscrizioneAlbo",
+    "dataInizioAttivita"
+})
+public class PersonaGiuridicaType {
+
+    protected String partitaIva;
+    protected String codiceFiscale;
+    @XmlElement(required = true)
+    protected String ragioneSociale;
+    protected String naturaGiuridica;
+    protected LocalizzazioneType sedeLegale;
+    protected LocalizzazioneType indirizzoCorrispondenza;
+    protected String telefono;
+    protected String fax;
+    protected IscrizioneRegistroType iscrizioneCCIAA;
+    protected RegistroREAType iscrizioneREA;
+    protected PersonaFisicaType legaleRappresentante;
+    protected List<ParametroType> altriDati;
+    protected String email;
+    protected String pec;
+    protected String telefonoCellulare;
+    protected DatiInpsType datiInps;
+    protected DatiInailType datiInail;
+    protected DatiCassaEdileType datiCassaEdile;
+    protected DatiIscrizioneAlboType datiIscrizioneAlbo;
+    @XmlSchemaType(name = "date")
+    protected XMLGregorianCalendar dataInizioAttivita;
+
+    /**
+     * Gets the value of the partitaIva property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getPartitaIva() {
+        return partitaIva;
+    }
+
+    /**
+     * Sets the value of the partitaIva property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setPartitaIva(String value) {
+        this.partitaIva = value;
+    }
+
+    /**
+     * Gets the value of the codiceFiscale property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getCodiceFiscale() {
+        return codiceFiscale;
+    }
+
+    /**
+     * Sets the value of the codiceFiscale property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setCodiceFiscale(String value) {
+        this.codiceFiscale = value;
+    }
+
+    /**
+     * Gets the value of the ragioneSociale property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getRagioneSociale() {
+        return ragioneSociale;
+    }
+
+    /**
+     * Sets the value of the ragioneSociale property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setRagioneSociale(String value) {
+        this.ragioneSociale = value;
+    }
+
+    /**
+     * Gets the value of the naturaGiuridica property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getNaturaGiuridica() {
+        return naturaGiuridica;
+    }
+
+    /**
+     * Sets the value of the naturaGiuridica property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setNaturaGiuridica(String value) {
+        this.naturaGiuridica = value;
+    }
+
+    /**
+     * Gets the value of the sedeLegale property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link LocalizzazioneType }
+     *     
+     */
+    public LocalizzazioneType getSedeLegale() {
+        return sedeLegale;
+    }
+
+    /**
+     * Sets the value of the sedeLegale property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link LocalizzazioneType }
+     *     
+     */
+    public void setSedeLegale(LocalizzazioneType value) {
+        this.sedeLegale = value;
+    }
+
+    /**
+     * Gets the value of the indirizzoCorrispondenza property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link LocalizzazioneType }
+     *     
+     */
+    public LocalizzazioneType getIndirizzoCorrispondenza() {
+        return indirizzoCorrispondenza;
+    }
+
+    /**
+     * Sets the value of the indirizzoCorrispondenza property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link LocalizzazioneType }
+     *     
+     */
+    public void setIndirizzoCorrispondenza(LocalizzazioneType value) {
+        this.indirizzoCorrispondenza = value;
+    }
+
+    /**
+     * Gets the value of the telefono property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getTelefono() {
+        return telefono;
+    }
+
+    /**
+     * Sets the value of the telefono property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setTelefono(String value) {
+        this.telefono = value;
+    }
+
+    /**
+     * Gets the value of the fax property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getFax() {
+        return fax;
+    }
+
+    /**
+     * Sets the value of the fax property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setFax(String value) {
+        this.fax = value;
+    }
+
+    /**
+     * Gets the value of the iscrizioneCCIAA property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link IscrizioneRegistroType }
+     *     
+     */
+    public IscrizioneRegistroType getIscrizioneCCIAA() {
+        return iscrizioneCCIAA;
+    }
+
+    /**
+     * Sets the value of the iscrizioneCCIAA property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link IscrizioneRegistroType }
+     *     
+     */
+    public void setIscrizioneCCIAA(IscrizioneRegistroType value) {
+        this.iscrizioneCCIAA = value;
+    }
+
+    /**
+     * Gets the value of the iscrizioneREA property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link RegistroREAType }
+     *     
+     */
+    public RegistroREAType getIscrizioneREA() {
+        return iscrizioneREA;
+    }
+
+    /**
+     * Sets the value of the iscrizioneREA property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link RegistroREAType }
+     *     
+     */
+    public void setIscrizioneREA(RegistroREAType value) {
+        this.iscrizioneREA = value;
+    }
+
+    /**
+     * Gets the value of the legaleRappresentante property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link PersonaFisicaType }
+     *     
+     */
+    public PersonaFisicaType getLegaleRappresentante() {
+        return legaleRappresentante;
+    }
+
+    /**
+     * Sets the value of the legaleRappresentante property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link PersonaFisicaType }
+     *     
+     */
+    public void setLegaleRappresentante(PersonaFisicaType value) {
+        this.legaleRappresentante = value;
+    }
+
+    /**
+     * Gets the value of the altriDati property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the altriDati property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getAltriDati().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link ParametroType }
+     * 
+     * 
+     */
+    public List<ParametroType> getAltriDati() {
+        if (altriDati == null) {
+            altriDati = new ArrayList<ParametroType>();
+        }
+        return this.altriDati;
+    }
+
+    /**
+     * Gets the value of the email property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     * Sets the value of the email property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setEmail(String value) {
+        this.email = value;
+    }
+
+    /**
+     * Gets the value of the pec property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getPec() {
+        return pec;
+    }
+
+    /**
+     * Sets the value of the pec property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setPec(String value) {
+        this.pec = value;
+    }
+
+    /**
+     * Gets the value of the telefonoCellulare property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getTelefonoCellulare() {
+        return telefonoCellulare;
+    }
+
+    /**
+     * Sets the value of the telefonoCellulare property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setTelefonoCellulare(String value) {
+        this.telefonoCellulare = value;
+    }
+
+    /**
+     * Gets the value of the datiInps property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link DatiInpsType }
+     *     
+     */
+    public DatiInpsType getDatiInps() {
+        return datiInps;
+    }
+
+    /**
+     * Sets the value of the datiInps property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link DatiInpsType }
+     *     
+     */
+    public void setDatiInps(DatiInpsType value) {
+        this.datiInps = value;
+    }
+
+    /**
+     * Gets the value of the datiInail property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link DatiInailType }
+     *     
+     */
+    public DatiInailType getDatiInail() {
+        return datiInail;
+    }
+
+    /**
+     * Sets the value of the datiInail property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link DatiInailType }
+     *     
+     */
+    public void setDatiInail(DatiInailType value) {
+        this.datiInail = value;
+    }
+
+    /**
+     * Gets the value of the datiCassaEdile property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link DatiCassaEdileType }
+     *     
+     */
+    public DatiCassaEdileType getDatiCassaEdile() {
+        return datiCassaEdile;
+    }
+
+    /**
+     * Sets the value of the datiCassaEdile property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link DatiCassaEdileType }
+     *     
+     */
+    public void setDatiCassaEdile(DatiCassaEdileType value) {
+        this.datiCassaEdile = value;
+    }
+
+    /**
+     * Gets the value of the datiIscrizioneAlbo property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link DatiIscrizioneAlboType }
+     *     
+     */
+    public DatiIscrizioneAlboType getDatiIscrizioneAlbo() {
+        return datiIscrizioneAlbo;
+    }
+
+    /**
+     * Sets the value of the datiIscrizioneAlbo property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link DatiIscrizioneAlboType }
+     *     
+     */
+    public void setDatiIscrizioneAlbo(DatiIscrizioneAlboType value) {
+        this.datiIscrizioneAlbo = value;
+    }
+
+    /**
+     * Gets the value of the dataInizioAttivita property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link XMLGregorianCalendar }
+     *     
+     */
+    public XMLGregorianCalendar getDataInizioAttivita() {
+        return dataInizioAttivita;
+    }
+
+    /**
+     * Sets the value of the dataInizioAttivita property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link XMLGregorianCalendar }
+     *     
+     */
+    public void setDataInizioAttivita(XMLGregorianCalendar value) {
+        this.dataInizioAttivita = value;
+    }
+
+}

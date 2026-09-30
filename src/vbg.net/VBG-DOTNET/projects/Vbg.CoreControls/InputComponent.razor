@@ -1,0 +1,247 @@
+﻿
+@using System.Text.RegularExpressions
+@using VBG.BlazorComponentsLibrary
+@inherits MyBaseComponent
+
+
+<div class="mb-3 @_cssClasses" id="@UniqueID">
+
+    @if (ShowLabel)
+    {
+        @if(String.IsNullOrEmpty(this.ResourceId))
+        {
+            <label for="@HtmlId">@this.Label 
+                @if (Required)
+                {
+                    <sup>*</sup>
+                }
+            </label>
+        }
+        else
+        {
+            <LabelContainerComponent ResourceId="@this.ResourceId" Value="@this.Label" Required="@this.Required"></LabelContainerComponent>
+            @* <LabelContainerComponent RelativeControlId="@HtmlId" ResourceId="@this.ResourceId" Value="@this.Label" Required="@this.Required" CanEditResourceText="@this.CanEditResourceText"></LabelContainerComponent> *@
+        }
+    }
+
+    @if (IsMultiline)
+    {
+        <div class="input-group">
+            @if (BindBehaviour == BindType.OnChange)
+            {
+                <textarea id="@HtmlId" class="form-control @cssErrorClass"
+                    maxlength="@MaxLength?.ToString()" rows="@Rows?.ToString()" value="@this.Value" @onchange="@HandleInput"
+                    aria-describedby="@(string.IsNullOrEmpty(HelpText) ? "" : $"{this.Id}_HelpDescription")" 
+                    pattern="@Pattern" disabled="@IsDisabled">@this.Value</textarea>
+            }
+            else
+            {
+                <textarea id="@HtmlId" class="form-control @cssErrorClass"
+                    maxlength="@MaxLength?.ToString()" rows="@Rows?.ToString()" value="@this.Value" @oninput="@HandleInput"
+                    aria-describedby="@(string.IsNullOrEmpty(HelpText) ? "" : $"{this.Id}_HelpDescription")"
+                    pattern="@Pattern" disabled="@IsDisabled">@this.Value</textarea>
+            }
+        </div>
+    }
+    else
+    {
+        @if (LimitaInput == InputType.Data || LimitaInput == InputType.Mese || LimitaInput == InputType.Settimana)
+        {
+            <div class="input-group">
+                @*                
+                    Non necessario dalla versione 5 di bootsrap
+                <div class="input-group-addon">
+                    <span class="fa fa-calendar"></span>
+                </div>*@
+                <input type='@getInputType(LimitaInput)' id='@HtmlId' class="form-control @cssErrorClass" 
+                    maxlength='@MaxLength?.ToString()' value="@this.Value" @onchange="@HandleInput"
+                    aria-describedby="@(string.IsNullOrEmpty(HelpText) ? "" : $"{this.Id}_HelpDescription")" 
+                    pattern="@Pattern" disabled="@IsDisabled" />
+            </div>
+        }
+        else
+        {
+            <div class="input-group">
+                @if (BindBehaviour == BindType.OnChange)
+                {
+                    <input type='@getInputType(LimitaInput)' id='@HtmlId' class="form-control @cssErrorClass" 
+                        maxlength='@MaxLength?.ToString()' value="@this.Value" @onchange="@HandleInput"
+                        aria-describedby="@(string.IsNullOrEmpty(HelpText) ? "" : $"{this.Id}_HelpDescription")"
+                        pattern="@Pattern" disabled="@IsDisabled" />
+                }
+                else
+                {
+                    <input type='@getInputType(LimitaInput)' id='@HtmlId' class="form-control @cssErrorClass" 
+                        maxlength='@MaxLength?.ToString()' value="@this.Value" @oninput="@HandleInput"
+                        aria-describedby="@(string.IsNullOrEmpty(HelpText) ? "" : $"{this.Id}_HelpDescription")"
+                        pattern="@Pattern" disabled="@IsDisabled" />
+                }
+            </div>
+        }
+    }
+
+    @if (!string.IsNullOrEmpty(HelpText))
+    {
+        <small id="@($"{this.Id}_HelpDescription")" class="help-block">
+            @HelpText
+        </small>
+    }
+
+    @if (!IsValid && !string.IsNullOrEmpty(NotValidMessage))
+    {
+        <div class="bwc-validation">
+            <span class="validation-message">@NotValidMessage</span>
+        </div>
+    }
+</div>
+
+@code {
+
+    public enum BindType
+    {
+        OnChange,
+        OnInput
+    }
+
+    public enum InputType
+    {
+        Qualsiasi,
+        Testo,
+        Password,
+        NumeriInteri,
+        NumeriDecimali,
+        NumeriETesto,
+        Data,
+        Mese,
+        Settimana,
+        Email,
+        Telefono
+    }
+
+    private string _htmlId = default!;
+
+    private string HtmlId => _htmlId;
+    //{
+    //    get
+    //    {
+    //        return $"txt{Id}_{MultiValueIndex}";
+    //    }
+    //}
+
+    private string[] _inputTypeValues = new string[]
+    {
+        "text",
+        "text",
+        "password",
+        "number",
+        "number",
+        "text",
+        "date",
+        "month",
+        "week",
+        "mail",
+        "tel",
+    };
+
+    private string[] _defaultPattern = new string[]
+    {
+        "",
+        "[A-Za-z]",
+        "",
+        "^([0-9]{1,6}|)$",
+        "",
+        "[\\d\\w]",
+        "",
+        "",
+        "",
+        @"^[\w\.]+@([\w-]+\.)+[\w-]{2,}$",
+        "",
+    };
+
+    [Parameter]
+    public bool IsMultiline { get; set; }
+
+    [Parameter]
+    public int? Rows { get; set; }
+
+    private InputType _limitaInput;
+    [Parameter]
+    public InputType LimitaInput {
+        get => _limitaInput;
+        set
+        {
+            _limitaInput = value;
+
+            if (string.IsNullOrEmpty(this.Pattern))
+                this.Pattern = getDefaultPattern(value);
+        }
+    }
+
+    [Parameter]
+    public string? Pattern { get; set; }
+
+    [Parameter]
+    public string NotValidMessage { get; set; }
+
+    [Parameter]
+    public BindType BindBehaviour { get; set; } = BindType.OnChange;
+    
+    /// <summary>
+    /// A simple note to display under the control to inform the user
+    /// </summary>
+    [Parameter]
+    public string HelpText { get; set; } = "";
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        this._htmlId = $"_{Guid.NewGuid().ToString()}";
+    }
+
+    private string getInputType(InputType inputType)
+    {
+        return _inputTypeValues[(int)inputType];
+    }
+
+    private string getDefaultPattern(InputType inputType)
+    {
+        return _defaultPattern[(int)inputType];
+    }
+
+    protected async Task HandleInput(ChangeEventArgs e)
+    {
+        Value = e.Value != null ? e.Value.ToString() : string.Empty;
+
+        Validate();
+
+        if (ValueChanged.HasDelegate)
+        {
+            var dictionary = new Dictionary<string, object>()
+            {
+                { "SenderId", Id },
+                { "ReceivedValue", Value },
+                { "MultiValueIndex", MultiValueIndex },
+                { "UniqueID", UniqueID }
+            };
+
+            await ValueChanged.InvokeAsync(dictionary);
+        }   
+    }
+
+    public bool Validate()
+    {
+        _valid = string.IsNullOrEmpty(Pattern) ? true : Regex.IsMatch(Value, Pattern, RegexOptions.IgnoreCase, TimeSpan.FromSeconds(2));
+
+        if (Required)
+        {
+            _valid = !string.IsNullOrEmpty(Value);
+        }
+
+        cssErrorClass = IsValid ? "is-valid" : "is-invalid";
+
+        StateHasChanged();
+
+        return IsValid;
+    }
+}

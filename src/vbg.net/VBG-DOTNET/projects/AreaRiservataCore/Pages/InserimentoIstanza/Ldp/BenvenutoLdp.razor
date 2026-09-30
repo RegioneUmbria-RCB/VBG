@@ -1,0 +1,36 @@
+﻿@page "/{IdComune}/{Software}/inserimento-istanza/benvenuto-ldp/{idDomanda:int}/{stepId:int}"
+@page "/{IdComune}/{Software}/inserimento-istanza/benvenuto-ldp/{idDomanda:int}/{stepId:int}/{ReturningFromCallingPage}"
+@using AreaRiservataCore.Pages.InserimentoIstanza.Components
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneIntegrazioneLDP.PraticheEdilizieSiena
+@using Init.Sigepro.FrontEnd.CoreServices.GestionePresentazioneDomanda.Paginatore
+@inherits IstanzeStepPage
+
+    <SplashCaricamento></SplashCaricamento>
+
+@code {
+    [Inject]
+    protected IPraticheEdilizieSienaService _ldpService { get; set; } = default!;
+    [CascadingParameter]
+    private PaginatoreStateService _paginatoreStateService { get; set; } = default!;
+
+    [Parameter]
+    public string ReturningFromCallingPage { get; set; } = "";
+
+    protected override async Task OnLoadStepAsync()
+    {
+        this._paginatoreStateService.NascondiBottoneAvanti();
+
+        if (String.IsNullOrEmpty(ReturningFromCallingPage))
+        {
+            var redirUrl = this._ldpService.GetUrlCompilazioneDomanda(this.UserAuthenticationResult.Token, this.IdDomanda.Value);
+
+            _navigationManager.NavigateTo(redirUrl);
+
+            return;
+        }
+
+        this._ldpService.AggiornaDatiLocalizzazione(this.IdDomanda.Value);
+
+        await this._paginatoreStateService.GoToNextStepAsync();
+    }
+}

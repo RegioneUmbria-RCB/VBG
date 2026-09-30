@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>
+			Scheda di spiegazione
+	</title>
+</head>
+<body>
+
+<div id="subcontent">
+
+	<div class="sezione">
+		<div>
+			<div class="titolo2"  style="text-align: center">
+				<b>$!stpCommand.Inventarioprocedimenti.Tipoendo.Tipifamiglieendo.Tipo </b>
+			</div>
+			<div class="titolo"  style="text-align: center">
+				<b>$!stpCommand.Inventarioprocedimenti.Procedimento </b>
+			</div>
+		</div>		
+	</div>
+	
+	<div class="clear"></div>
+	<br />
+	<fieldset  style="padding: 10px;line-height: 15pt;text-align: justify;">
+	<legend>B - Chi è interessato</legend>
+	<ol>
+		<li>Interessati<br />
+			$!stpCommand.InvioSchedaEndoTipo1.ParteRegionaleSchedaEndoTipo1.Interessato
+		</li>
+	</ol>
+	</fieldset>
+	<br />
+	<fieldset  style="padding: 10px;line-height: 15pt;text-align: justify;">
+	<legend>C - Che caratteristiche o requisiti deve avere il fabbricato o l'impianto</legend>
+	<ol>
+		<li>Requisiti<br />
+			$!stpCommand.InvioSchedaEndoTipo1.ParteRegionaleSchedaEndoTipo1.Requisito 
+		</li>
+	</ol>
+	</fieldset>
+	<br />
+	<fieldset  style="padding: 10px;line-height: 15pt;text-align: justify;">
+	<legend>D - Cosa si deve fare</legend>
+		<ol>
+		
+			$!stpCommand.InvioSchedaEndoTipo1.ParteRegionaleSchedaEndoTipo1.ModalitaAperturaStandard.Value
+							
+		</ol>
+	</fieldset>
+	<br />
+	<fieldset style="padding: 10px;line-height: 15pt;text-align: justify;">
+	<legend>E - Normativa applicabile</legend>
+	<div class="jmesa">
+	<table border="0"  cellpadding="2" cellspacing="0" class="table">
+		<thead>
+			<tr class="header">
+				<td width="5%" >Adempimento</td>
+				<td width="5%" >Norme Nazionali</td>
+				<td width="10%">Norme Regionali</td>
+			</tr>
+		</thead>
+		<tbody class="tbody">
+		
+		#foreach ( $var in $stpCommand.InvioSchedaEndoTipo1.ParteRegionaleSchedaEndoTipo1.ElencoNormativeRegionaliEndoTipo1.NormativaRegionale )
+			<tr >
+				<td>					
+					$!adempimentiMap.get($!var.AdempimentoNormativa)
+				</td>
+                <td>$!var.NormaNazionale.Value</td>
+                <td>$!var.NormaRegionale.Value</td>
+			</tr>
+		#end
+		</tbody>
+	</table>
+	</div>
+	</fieldset>
+	<br />
+	<fieldset  style="padding: 10px;line-height: 15pt;text-align: justify;">
+	<legend>F - Cosa si deve fare per presentare la	documentazione</legend>
+	<ul>
+		<li>A chi si presenta la documentazione:<b>$!stpCommand.InvioSchedaEndoTipo1.ParteLocaleSchedaEndoTipo1.DocumentazioneLocale.SestinatarioDocumentazione
+		</b></li>
+		<li>Quando si può iniziare l'attività : <b>$!stpCommand.InvioSchedaEndoTipo1.ParteRegionaleSchedaEndoTipo1.DocumentazioneRegionaleEndoTipo1.QuandoIniziare</b></li>
+		<li>Tempi previsti per la conclusione del procedimento: <b>$!stpCommand.InvioSchedaEndoTipo1.ParteRegionaleSchedaEndoTipo1.DocumentazioneRegionaleEndoTipo1.TempiPrevistiConclusione</b></li>
+				
+			<li>Ulteriori annotazioni sulla documentazione: <b>$!stpCommand.InvioSchedaEndoTipo1.ParteLocaleSchedaEndoTipo1.DocumentazioneLocale.NoteDocumentazione</b></li>
+		
+	</ul>
+	</fieldset>
+	<br />
+	<fieldset style="padding: 10px;line-height: 15pt;text-align: justify;" >
+	<legend>G - Quanto e come si deve pagare</legend>
+	<ul>
+		<li>Marche da bollo: <b>$!stpCommand.InvioSchedaEndoTipo1.ParteRegionaleSchedaEndoTipo1.PagamentoRegionaleEndoTipo1.MarcheDaBollo</b></li>
+		<li>Contributi/Oneri: <b>$!stpCommand.InvioSchedaEndoTipo1.ParteLocaleSchedaEndoTipo1.PagamentoLocale.ContributiOneri
+		&nbsp;$!{stpCommand.InvioSchedaEndoTipo1.ParteLocaleSchedaEndoTipo1.PagamentoLocale.ContributiOneriValore
+		</b></li>
+		<li>Diritti di segreteria: <b>$!stpCommand.InvioSchedaEndoTipo1.ParteLocaleSchedaEndoTipo1.PagamentoLocale.DirittiSegreteria</b></li>
+		<li>Diritti di istruttoria SUAP: <b>$!stpCommand.InvioSchedaEndoTipo1.ParteLocaleSchedaEndoTipo1.PagamentoLocale.DirittiIstruttoriaSUAP
+		&nbsp;$!stpCommand.InvioSchedaEndoTipo1.ParteLocaleSchedaEndoTipo1.PagamentoLocale.DirittiIstruttoriaSUAPValore</b></li>
+		<li>Diritti di istruttoria dell'ente terzo: <b>$!stpCommand.InvioSchedaEndoTipo1.ParteRegionaleSchedaEndoTipo1.PagamentoRegionaleEndoTipo1.DirittiIstruttoriaEnteTerzo</b></li>
+		<li>Indicazioni sui pagamenti: <b>$!stpCommand.InvioSchedaEndoTipo1.ParteLocaleSchedaEndoTipo1.PagamentoLocale.NotePagamento</b>
+		</li>
+		
+	</ul>
+	</fieldset>
+	<br />
+	<fieldset style="padding: 10px;line-height: 15pt;text-align: justify;">
+	<legend>H - Flusso dell’endoprocedimento</legend>
+	<div class="jmesa">
+	<table border="0"  cellpadding="2" cellspacing="0" class="table">
+		<thead>
+			<tr class="header">
+				<td width="5%" >Descrizione del flusso</td>
+				<td width="5%" >Sub procedimento</td>
+				<td width="10%">Ente competente</td>
+			</tr>
+		</thead>
+		<tbody class="tbody">
+		
+		#foreach ($var in $stpCommand.InvioSchedaEndoTipo1.ParteRegionaleSchedaEndoTipo1.Flusso.ElencoSubprocedimentiPrevisti.Subprocedimento )
+
+			<tr>
+				<td>$!stpCommand.InvioSchedaEndoTipo1.ParteRegionaleSchedaEndoTipo1.Flusso.DescrizioneFlusso</td>
+                <td>$!var.NomeSubprocedimento</td>
+                <td>$!var.EnteCompetenteSubprocedimento}</td>
+			</tr>
+		#end	
+		</tbody>
+	</table>
+	</div>
+	</fieldset>
+	<br />
+	<fieldset  style="padding: 10px;line-height: 15pt;">
+	<legend>I - Elenco allegati da produrre e relative spiegazioni</legend>
+	<div class="jmesa">
+	<table border="0"  cellpadding="2" cellspacing="0" class="table">
+		<thead>
+			<tr class="header">
+				<td width="5%" >Adempimento</td>
+				<td width="5%" >Tipologia</td>
+				<td width="10%">Codice</td>
+				<td width="10%">Spiegazioni</td>
+			</tr>
+		</thead>
+		<tbody class="tbody">
+		#foreach ( $var in $stpCommand.InvioSchedaEndoTipo1.ParteRegionaleSchedaEndoTipo1.ElencoAllegatiRichiesti.AllegatoRichiesto)
+
+			<tr>
+				<td>$!var.AdempimentoAllegato</td>
+                <td>$!var.TipologiaAllegato</td>
+                <td>$!var.CodiceAllegato</td>
+                <td>$!var.SpiegazioniAllegato</td>
+			</tr>
+			 
+		#end
+		</tbody>
+	</table>
+	</div>
+	</fieldset>
+	<br />
+	<fieldset style="padding: 10px;line-height: 15pt;text-align: justify;">
+	<legend>L - Adempimenti successivi</legend>
+	<ol>
+		<li>
+			$!stpCommand.InvioSchedaEndoTipo1.ParteRegionaleSchedaEndoTipo1.AdempimentiSuccessiviRegionali
+		</li>
+	</ol>	
+	#if ($stpCommand.InvioSchedaEndoTipo1.ParteLocaleSchedaEndoTipo1.AdempimentiSuccessiviLocali !='' )
+		<ol>
+			<li>
+				$!stpCommand.InvioSchedaEndoTipo1.ParteLocaleSchedaEndoTipo1.AdempimentiSuccessiviLocali
+			</li>
+		</ol>	
+	#end
+	</fieldset>
+	<br />
+	<fieldset style="padding: 10px;line-height: 15pt;text-align: justify;">
+	<legend >M - Quando scade il provvedimento conclusivo dell'endoprocedimento</legend>
+	<ol>
+		<li>Indicare la data di scadenza: <b>$!stpCommand.InvioSchedaEndoTipo1.ParteRegionaleSchedaEndoTipo1.ScadenzaEndoTipo1.DataScadenza</b></li>
+		<li>Come si rinnova (indicare cosa bisogna fare per il rinnovo): <b>$!stpCommand.InvioSchedaEndoTipo1.ParteRegionaleSchedaEndoTipo1.ScadenzaEndoTipo1.ModalitaRinnovo</b></li>
+		<li>Dove si rinnova (indicare l'ente competente): <b>$!stpCommand.InvioSchedaEndoTipo1.ParteRegionaleSchedaEndoTipo1.ScadenzaEndoTipo1.EnteCompetenteRinnovo</b></li>
+	</ol>
+	</fieldset>
+	<br />
+	<fieldset style="padding: 10px;line-height: 15pt;text-align: justify;">
+	<legend>N - Note</legend>
+	<ol>
+		<li>Note regionali:<br />
+			<b>$!stpCommand.InvioSchedaEndoTipo1.ParteRegionaleSchedaEndoTipo1.NoteRegionali</b>
+		</li>
+	</ol>
+		#if ($stpCommand.InvioSchedaEndoTipo1.ParteLocaleSchedaEndoTipo1.NoteLocali !='' )
+			<ol>
+			<li>Annotazioni del comune:<br />
+				<b>$!stpCommand.InvioSchedaEndoTipo1.ParteLocaleSchedaEndoTipo1.NoteLocali</b>
+			</li>
+		</ol>			
+		</c:if>
+	</fieldset>
+	<br />
+	<fieldset style="padding: 10px;line-height: 15pt;text-align: justify;">
+	<legend>Quadri aggiuntivi</legend>
+		<fieldset style="padding: 10px;line-height: 15pt;text-align: justify;">
+		<legend>Lista di controllo standard 5</legend>
+			<div class="jmesa">
+			<table border="0"  cellpadding="2" cellspacing="0" class="table">
+				<thead>
+					<tr class="header">
+						<td width="5%" >Quadro</td>
+						<td width="5%" >Allegati</td>
+					</tr>
+				</thead>
+				<tbody class="tbody">
+				#foreach ($var in $stpCommand.InvioSchedaEndoTipo1.ParteRegionaleSchedaEndoTipo1.ElencoQuadriStandard5.Quadro )
+					<tr>
+						<td>$!var.TestoQuadro.NomeFile</td>
+		                <td>
+		                #foreach ($var_allegati in $var.ElencoAllegatiRichiestiQuadro.allegatoRichiesto )
+		                	$!var_allegati.TemplateAllegato.NomeFile
+		                #end
+		                </td>
+		            </tr>
+				#end
+				</tbody>
+			</table>
+		</div>
+		</fieldset>
+		<br />
+		<fieldset style="padding: 10px;line-height: 15pt;text-align: justify;">
+		<legend>Lista di controllo standard 6</legend>
+			<div class="jmesa">
+			<table border="0"  cellpadding="2" cellspacing="0" class="table">
+				<thead>
+					<tr class="header">
+						<td width="5%" >Quadro</td>
+						<td width="5%" >Allegati</td>
+					</tr>
+				</thead>
+				<tbody class="tbody">
+				#foreach ($var in $stpCommand.InvioSchedaEndoTipo1.ParteRegionaleSchedaEndoTipo1.ElencoQuadriStandard6.Quadro )
+					<tr >
+		                <td>$!var.TestoQuadro.NomeFile</td>
+		                <td>
+		                #foreach ( $var_allegati in $var.ElencoAllegatiRichiestiQuadro.AllegatoRichiesto )
+		                
+		                	$!var_allegati.TemplateAllegato.NomeFile</a>
+		                #end
+		                </td>
+		            </tr>					
+				#end
+				</tbody>
+			</table>
+		</div>
+		</fieldset>
+		<br />
+	</fieldset>
+	<br />
+	<fieldset style="padding: 10px;line-height: 15pt;">
+		<legend>Riepilogo validità scheda</legend>
+		<ul>
+			<li>Data inizio: <b>$stpCommand.DataInizioValidita</b></li> 
+			<li>Data fine: <b>
+			#if ( $stpCommand.DataFineValidita == '31/12/9999' )
+					in corso di validità
+			#end
+			#if ( $stpCommand.DataFineValidita != '31/12/9999' )
+				$!stpCommand.DataFineValidita}
+			#end
+			</b></li>
+		</ul>
+		</fieldset>
+	<br />
+</div>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://init.sigepro.it"
+  attributeFormDefault="unqualified"
+  elementFormDefault="qualified"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="http://init.sigepro.it">
+  <xs:element name="DatiProtocolloLetto">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Warning" type="xs:string" minOccurs="0"/>
+        <xs:element name="IdProtocollo" type="xs:string"/>
+        <xs:element name="AnnoProtocollo" type="xs:string"/>
+        <xs:element name="NumeroProtocollo" type="xs:string"/>
+        <xs:element name="DataProtocollo" type="xs:string"/>
+        <xs:element name="Oggetto" type="xs:string"/>
+        <xs:element name="Origine" type="xs:string"/>
+        <xs:element name="Classifica" type="xs:string"/>
+        <xs:element name="Classifica_Descrizione" type="xs:string"/>
+        <xs:element name="TipoDocumento" type="xs:string"/>
+        <xs:element name="TipoDocumento_Descrizione" type="xs:string"/>
+        <xs:element name="MittenteInterno" type="xs:string"/>
+        <xs:element name="MittenteInterno_Descrizione" type="xs:string"/>
+        <xs:element name="InCaricoA" type="xs:string"/>
+        <xs:element name="InCaricoA_Descrizione" type="xs:string"/>
+        <xs:element name="DocAllegati" type="xs:string"/>
+        <xs:element name="Annullato" type="xs:string"/>
+        <xs:element name="MotivoAnnullamento" type="xs:string"/>
+        <xs:element name="DataAnnullamento" type="xs:string"/>
+        <xs:element name="MittentiDestinatari" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+	      <xs:element ref="MittenteDestinatario" minOccurs="0" maxOccurs="unbounded"/>
+	    </xs:sequence>
+	  </xs:complexType>
+        </xs:element>
+        <xs:element name="NumeroPratica" type="xs:string"/>
+        <xs:element name="AnnoNumeroPratica" type="xs:string"/>
+        <xs:element name="DataInserimento" type="xs:string"/>
+        <xs:element name="NumeroProtocolloMittente" type="xs:string"/>
+        <xs:element name="DataProtocolloMittente" type="xs:string"/>
+        <xs:element name="Allegati" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+	      <xs:element ref="Allegato" minOccurs="0" maxOccurs="unbounded"/>
+	    </xs:sequence>
+	  </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="MittenteDestinatario">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="IdSoggetto" type="xs:string"/>
+        <xs:element name="CognomeNome" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Allegato">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Serial" type="xs:string"/>
+        <xs:element name="TipoFile" type="xs:string"/>
+        <xs:element name="ContentType" type="xs:string"/>
+        <xs:element name="Image" type="xs:base64Binary" minOccurs="0"/>
+        <xs:element name="Commento" type="xs:string"/>
+        <xs:element name="IDBase" type="xs:string"/>
+        <xs:element name="Versione" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,19 @@
+﻿@page "/{IdComune}/{Software}/inserimento-istanza/testo-libero/{idDomanda:int}/{stepId:int}"
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneComuni
+@using Init.Sigepro.FrontEnd.AppLogic.Services.Domanda
+@using Init.Sigepro.FrontEnd.Infrastructure.StepsDomanda.Attributi
+@inherits IstanzeStepPage
+
+@if (!String.IsNullOrEmpty(Testo?.Trim()))
+{
+	<div class="card mb-2 border">
+		<div class="card-body">
+			@((MarkupString)Testo)
+		</div>
+	</div>
+}
+
+@code {
+	[StepProperty]
+	public string Testo { get; set; } = "";
+}

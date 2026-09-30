@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="init-editdocs.makejar" default="signjar" basedir="../.">
+	<property name="jarsigner.keystore.path" value="./keystore/keystore.jks" />
+	<property name="jarsigner.keystore.password" value="changeit" />
+	<property name="jarsigner.keystore.key.alias" value="init" />
+	<property name="jarsigner.keystore.key.password" value="${jarsigner.keystore.password}" />
+	<target name="signjar" description="Create and sign init-editdocs-applet.jar" depends="modifyJarManifest">
+		<signjar jar="./build/init-editdocs-applet-unsigned.jar" alias="${jarsigner.keystore.key.alias}" keystore="${jarsigner.keystore.path}" storepass="${jarsigner.keystore.password}" keypass="${jarsigner.keystore.key.password}" storetype="jks" signedJar="./build/init-editdocs-applet.jar" verbose="true" />
+		<copy todir="./WebContent/applets">
+			<fileset file="./build/init-editdocs-applet.jar" />
+		</copy>
+		<delete file="./build/init-editdocs-applet-unsigned.jar" />
+		<delete file="./build/init-editdocs-applet.jar" />
+	</target>
+	<target name="makejar" description="Create init-editdocs-applet-unsigned.jar applet" depends="">
+		<jar includes="**/it/gruppoinit/pal/gp/backoffice/applets/** **/it/gruppoinit/pal/gp/backoffice/applets/**" destfile="./build/init-editdocs-applet-unsigned.jar" basedir="./build/classes" />
+	</target>
+	<target name="modifyJarManifest" description="Add new manifest attributes for security" depends="makejar">
+		<jar file="./build/init-editdocs-applet-unsigned.jar" update="true">
+			<manifest>
+				<attribute name="Permissions" value="all-permissions" />
+				<attribute name="Codebase" value="*" />
+				<attribute name="Application-Name" value="Edit Docs Applet" />
+			</manifest>
+		</jar>
+	</target>
+</project>

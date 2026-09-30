@@ -1,0 +1,158 @@
+
+package it.gruppoinit.pal.gp.backoffice.schemas.messages.eventi;
+
+import it.gruppoinit.pal.gp.backoffice.schemas.messages.base.CategorieEventiBaseType;
+
+import java.math.BigInteger;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
+
+/**
+ * <p>Java class for anonymous complex type.
+ * 
+ * <p>The following schema fragment specifies the expected content contained within this class.
+ * 
+ * <pre>
+ * &lt;complexType>
+ *   &lt;complexContent>
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *       &lt;sequence>
+ *         &lt;element name="token" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="categoriaEvento" type="{http://gruppoinit.it/sigepro/schemas/messages/base}CategorieEventiBaseType" minOccurs="0"/>
+ *         &lt;element name="codicemovimento" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+ *         &lt;element name="messaggio">
+ *           &lt;simpleType>
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+ *               &lt;minLength value="0"/>
+ *               &lt;maxLength value="4000"/>
+ *             &lt;/restriction>
+ *           &lt;/simpleType>
+ *         &lt;/element>
+ *       &lt;/sequence>
+ *     &lt;/restriction>
+ *   &lt;/complexContent>
+ * &lt;/complexType>
+ * </pre>
+ * 
+ * 
+ */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "", propOrder = {
+    "token",
+    "categoriaEvento",
+    "codicemovimento",
+    "messaggio"
+})
+@XmlRootElement(name = "EventoMovimentoInsertRequest")
+public class EventoMovimentoInsertRequest {
+
+    @XmlElement(required = true)
+    protected String token;
+    protected CategorieEventiBaseType categoriaEvento;
+    @XmlElement(required = true)
+    protected BigInteger codicemovimento;
+    @XmlElement(required = true)
+    protected String messaggio;
+
+    /**
+     * Gets the value of the token property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getToken() {
+        return token;
+    }
+
+    /**
+     * Sets the value of the token property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setToken(String value) {
+        this.token = value;
+    }
+
+    /**
+     * Gets the value of the categoriaEvento property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link CategorieEventiBaseType }
+     *     
+     */
+    public CategorieEventiBaseType getCategoriaEvento() {
+        return categoriaEvento;
+    }
+
+    /**
+     * Sets the value of the categoriaEvento property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link CategorieEventiBaseType }
+     *     
+     */
+    public void setCategoriaEvento(CategorieEventiBaseType value) {
+        this.categoriaEvento = value;
+    }
+
+    /**
+     * Gets the value of the codicemovimento property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link BigInteger }
+     *     
+     */
+    public BigInteger getCodicemovimento() {
+        return codicemovimento;
+    }
+
+    /**
+     * Sets the value of the codicemovimento property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link BigInteger }
+     *     
+     */
+    public void setCodicemovimento(BigInteger value) {
+        this.codicemovimento = value;
+    }
+
+    /**
+     * Gets the value of the messaggio property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getMessaggio() {
+        return messaggio;
+    }
+
+    /**
+     * Sets the value of the messaggio property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setMessaggio(String value) {
+        this.messaggio = value;
+    }
+
+}

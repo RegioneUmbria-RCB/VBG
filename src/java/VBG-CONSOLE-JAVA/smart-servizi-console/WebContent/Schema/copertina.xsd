@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema version="1.0" attributeFormDefault="unqualified"
+	elementFormDefault="qualified" 
+	targetNamespace="http://www.suap.regione.toscana.it/sem/types/copertina"
+	xmlns:copertina="http://www.suap.regione.toscana.it/sem/types/copertina" 
+	xmlns:sem="http://www.suap.regione.toscana.it/sem/types/procedimento" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	
+	<xs:import schemaLocation="procedimentiSuap.xsd" namespace="http://www.suap.regione.toscana.it/sem/types/procedimento"/>
+
+	<xs:element name="copertina" type="copertina:copertinaType" >
+		<xs:annotation>
+			<xs:documentation>
+				Contiene i dati più importanti relativi alla pratica (vedi 'copertinaType').
+			</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	
+	<xs:complexType name="copertinaType">
+		<xs:sequence>
+			<xs:element name="idDomanda" type="sem:idPraticaSUAP">
+				<xs:annotation>
+					<xs:documentation>
+						Identificativo univoco della pratica (obbligatorio, vedi 'idPraticaSuap').
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="oggettoComunicazione" type="copertina:oggettoComunicazionePresentazione" >
+				<xs:annotation>
+					<xs:documentation>
+						Tipo procedimento, azione, etc (obbligatorio, vedi 'oggettoComunicazionePresentazione').
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="presentatore" type="copertina:presentatoreType" />
+			<xs:element name="richiedente" type="copertina:richiedenteType" />
+			<xs:element name="impresa" minOccurs="0" type="copertina:impresaType" />
+			<xs:element name="impiantoProduttivo" minOccurs="0" maxOccurs="unbounded" type="copertina:impiantoProduttivoType" />
+			<xs:element name="recapiti" type="copertina:recapitiType" />
+			<xs:element name="indiceAllegati" type="copertina:indiceAllegatiType">
+				<xs:annotation>
+					<xs:documentation>
+						Elenco dei nomi dei file, caricati dall'utente, inclusi nella presentazione della pratica.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="impresaType">
+		<xs:annotation>
+			<xs:documentation>
+				Dati relativi alla sede legale dell'impresa.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="denominazione" type="sem:stringaNonVuota" />
+			<xs:element name="forma-giuridica" type="sem:stringaNonVuota" />
+			<xs:element name="sede-legale" type="copertina:sedeType" />
+			<xs:element name="codice-fiscale" type="copertina:codiceFiscaleImpresaType" /> 
+			<xs:element minOccurs="0" name="partita-iva" type="copertina:partitaIvaType" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="oggettoComunicazionePresentazione">
+		<xs:sequence>
+			<xs:element name="tipoProcedimento" type="sem:stringaNonVuota">
+				<xs:annotation>
+					<xs:documentation>Tipologia di Procedimento (es. 'automatico', 'ordinario', 'r-comunicazione').</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="azione" type="sem:stringaNonVuota">
+				<xs:annotation>
+					<xs:documentation>Tipologia di azione / intervento relativo alla pratica</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="attivita" type="sem:arrayAttivitaType" />
+			<xs:element name="endoprocedimenti" type="sem:arrayEndoTipo1Type" minOccurs="0" />
+			<xs:element name="sportelloSuap" type="copertina:amministrazioneType"/>
+			<xs:element name="comune" type="copertina:amministrazioneType"/>
+			<xs:element name="dataPresentazione" type="xs:dateTime"/>
+			<xs:element name="riferimentoPrecedente" type="sem:idPraticaSUAP" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						Indica il riferimento ad una pratica inviata in precedenza inerente la stessa attivitÃ  produttiva
+						(es. pratica di avvio / variazione / subentro / ecc.)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="richiedenteType">
+		<xs:annotation>
+			<xs:documentation>
+				Dati relativi al richiedente della pratica.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="nome" type="sem:stringaNonVuota" />
+			<xs:element name="cognome" type="sem:stringaNonVuota" /> 
+			<xs:element name="codice-fiscale" type="copertina:codiceFiscaleCittadinoType" />
+			<xs:element name="luogo-nascita" type="sem:stringaNonVuota" /> 
+			<xs:element name="data-nascita" type="xs:date" />  
+			<xs:element name="cittadinanza" type="sem:stringaNonVuota" /> 
+			<xs:element name="residenza" type="copertina:residenzaType" />
+			<xs:element name="qualita-richiedente" type="sem:stringaNonVuota" /> 
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="presentatoreType">
+		<xs:annotation>
+			<xs:documentation>
+				Dati relativi al presentatore della pratica.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="nome" type="sem:stringaNonVuota" /> 
+			<xs:element name="cognome" type="sem:stringaNonVuota" />  
+			<xs:element name="codice-fiscale" type="copertina:codiceFiscaleCittadinoType" /> 
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="recapitiType">
+		<xs:annotation>
+			<xs:documentation>
+				Recapiti a cui far pervenire le comunicazioni.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="pec" type="sem:stringaNonVuota" />   
+			<xs:element name="cellulare" minOccurs="0" type="xs:string" />
+			<xs:element name="telefono" minOccurs="0" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="residenzaType">
+		<xs:choice>
+			<xs:element name="residenza-italia" type="copertina:sedeType" />
+			<xs:element name="residenza-estero" type="copertina:sedeEsteraType" />
+		</xs:choice>
+	</xs:complexType>
+	
+	<xs:complexType name="sedeType">
+		<xs:sequence>
+			<xs:element name="comune" type="sem:stringaNonVuota" />
+			<xs:element name="codice-istat" type="copertina:codiceIstatType" />
+			<xs:element name="provincia" type="sem:stringaNonVuota" />
+			<xs:element name="indirizzo" type="sem:stringaNonVuota" />
+			<xs:element name="cap" type="copertina:capType" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="sedeEsteraType">
+		<xs:sequence>
+			<xs:element name="comune" type="sem:stringaNonVuota" />
+			<xs:element name="provincia" minOccurs="0" type="sem:stringaNonVuota" />
+			<xs:element name="indirizzo" type="sem:stringaNonVuota" />
+			<xs:element name="cap" type="sem:stringaNonVuota" />
+			<xs:element name="stato" type="sem:stringaNonVuota" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<!-- qualora non fosse presente l'indirizzo, presenta nell'omonimo tag una stringa vuota -->
+	<xs:complexType name="impiantoProduttivoType">
+		<xs:complexContent>
+			<xs:extension base="copertina:sedeType">
+				<xs:sequence>
+					<xs:element name="dati-catastali" type="copertina:datiCatastaliType" minOccurs="0" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="datiCatastaliType">
+		<xs:sequence>
+			<xs:element name="categoria" type="xs:string" />
+			<xs:element name="foglio" type="xs:string" />
+			<xs:element name="numero" type="xs:string" />
+			<xs:element name="classe" minOccurs="0" type="xs:string" />
+			<xs:element name="sezione" minOccurs="0" type="xs:string" />
+			<xs:element name="subalterno" minOccurs="0" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="indiceAllegatiType">
+		<xs:sequence>
+			<xs:element name="allegato" type="sem:fileName" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="amministrazioneType">
+		<xs:annotation>
+			<xs:documentation>
+				Codice amministrativo e nome del'amministrazione.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="codice" type="sem:codiceEnte" />
+			<xs:element name="denominazione" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+
+
+	<xs:simpleType name="codiceFiscaleCittadinoType">
+		<xs:restriction base="xs:string">
+			<xs:pattern
+				value="[A-Z]{6}[0-9LMNPQRSTUV]{2}[ABCDEHLMPRST][0-9LMNPQRSTUV]{2}[A-Z][0-9LMNPQRSTUV]{3}[A-Z]">
+			</xs:pattern>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="codiceFiscaleImpresaType">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9]{11}" />
+			<xs:pattern value="[A-Z]{6}[0-9LMNPQRSTUV]{2}[ABCDEHLMPRST][0-9LMNPQRSTUV]{2}[A-Z][0-9LMNPQRSTUV]{3}[A-Z]" />
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="partitaIvaType">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9]{11}" />
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="capType">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9]{5}" />
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="codiceIstatType">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9]{6}" />
+		</xs:restriction>
+	</xs:simpleType>
+
+</xs:schema>

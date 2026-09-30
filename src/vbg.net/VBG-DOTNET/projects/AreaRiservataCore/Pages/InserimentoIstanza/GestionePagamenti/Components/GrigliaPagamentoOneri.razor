@@ -1,0 +1,192 @@
+﻿@using Init.Sigepro.FrontEnd.AppLogic.GestioneOneri;
+@using Init.Sigepro.FrontEnd.AppLogic.GestionePresentazioneDomanda.GestioneOneri;
+@using Init.Sigepro.FrontEnd.AppLogic.Pagamenti.NodoPagamenti
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+
+@if (this.DataSource.Any())
+{
+
+    <thead>
+        <tr>
+            <th>@((MarkupString)EtichettaColonnaCausale)</th>
+            <th style="text-align: center"><i class="fa fa-question" aria-label="Note"></i></th>
+            <th style="text-align: center">Pagamento</th>
+            <th style="text-align: center">Tipo pagamento</th>
+            <th style="text-align: center">Data</th>
+            <th style="text-align: center">Riferimenti Pagamento</th>
+            <th style="text-align: center">Importo (€)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var tmp in this.DataSource)
+        {
+            var item = tmp;
+
+            <tr class="riga-onere">
+                <td>
+                    PagamentoCompletato =@item.PagamentoCompletato
+                    <span class="descrizioneCausale">@item.Causale</span>
+                    <div class="descrizioneIntervento">[@item.EndoOInterventoOrigine]</div>
+                </td>
+                <td class="helpNoteOnereRow">
+                    @if (!string.IsNullOrEmpty(item.Note))
+                    {
+                        <i class="fa fa-question" style="color:var(--font-accent-color); cursor:pointer;" title="Visualizza" @onclick="() => MostraNoteOnere(item.Note)" @onclick:preventDefault></i>
+                    }
+                </td>
+
+                @if (@item.PagamentoCompletato)
+                {
+                    <td>@item.ModalitaPagamento</td>
+                    <td>@item.DescrizioneTipoPagamento</td>
+                    <td>@item.DataPagamento?.ToString("dd/MM/yyyy HH:ss")</td>
+                    <td>@item.RiferimentoPagamento</td>
+                    <td style="text-align:right">@item.ImportoPagato.ToString("N2")</td>
+                }
+                else
+                {
+                    <td style="text-align:center;width: 140px;">
+                        <InputSelect @key="item" class="ddlPagamento form-control" @bind-Value="item.ModalitaPagamento" @oninput="(e) => ModalitaPagamentoModificata(e, item)">
+                            @foreach (var mp in this.ModalitaPagamento)
+                            {
+                                <option value="@mp.CodiceEnum">@mp.Descrizione</option>
+                            }
+                        </InputSelect>
+                    </td>
+
+                    <td style="text-align:center">
+                        @if (item.ModalitaPagamento == ModalitaPagamentoOnereEnum.GiaPagato) // Già effettuato
+                        {
+                            <InputSelect @bind-Value="item.CodiceTipoPagamento" class="estremiPagamento ddlTipoPagamento form-control">
+                                @foreach (var tipoPagamento in this.TipiPagamento)
+                                {
+                                    <option value="@tipoPagamento.Codice">@tipoPagamento.Descrizione</option>
+                                }
+                            </InputSelect>
+                        }
+                    </td>
+                    <td>
+                        @if (item.ModalitaPagamento == ModalitaPagamentoOnereEnum.GiaPagato)
+                        {
+                            <InputDate @bind-Value="item.DataPagamento" class="estremiPagamento  form-control"></InputDate>
+                            <span class="help-block valid-feedback"><ValidationMessage For="() => item.DataPagamento"></ValidationMessage></span>
+                            @item.DataPagamento
+                        }
+                    </td>
+                    <td>
+                        @if (item.ModalitaPagamento == ModalitaPagamentoOnereEnum.GiaPagato)
+                        {
+                            <InputText @bind-Value="item.RiferimentoPagamento" class="estremiPagamento  form-control"></InputText>
+                            <span class="help-block valid-feedback"><ValidationMessage For="() => item.RiferimentoPagamento"></ValidationMessage></span>
+                        }
+                    </td>
+                    <td>
+                        @if (item.ModalitaPagamento != ModalitaPagamentoOnereEnum.NonDovuto)
+                        {
+                            <InputNumber @bind-Value="item.ImportoPagato" class="estremiPagamento  form-control"
+                         ReadOnly="@(item.Importo > 0.0m)" style="width: 100px; text-align: right"></InputNumber>
+                            <span class="help-block valid-feedback"><ValidationMessage For="() => item.ImportoPagato"></ValidationMessage></span>
+                        }
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+
+}
+
+<BasicModal @ref="_modalNote" OnClose="() => _modalNote?.Hide()">
+    <ModalHeader>
+        Note onere
+    </ModalHeader>
+    <ModalBody>
+        @((MarkupString)_noteDaVisualizzare)
+    </ModalBody>
+</BasicModal>
+
+
+
+@*
+<asp:Repeater runat="server" ID="rptOneri" OnItemDataBound="rptOneri_ItemDataBound">
+    <ItemTemplate>
+        <tr class="riga-onere">
+            <td>
+                <asp:HiddenField runat="server" ID="hidIdOnere" Value='<%# Eval("CodiceCausale")%>' />
+                <asp:HiddenField runat="server" ID="hidCodiceEndoOIntervento" Value='<%# Eval("CodiceEndoOInterventoOrigine")%>' />
+                <span class="descrizioneCausale"><asp:Literal runat="server" Text='<%# Eval("Causale")%>' id="lblNomeOnere" /></span>
+                <div class="descrizioneIntervento">[<%# Eval("EndoOInterventoOrigine")%>]</div>
+            </td>
+            <td class="helpNoteOnereRow">
+                <a href="#" class="helpNoteOnere">
+                    <img src="../../../Images/help.png" alt="l'onere contiene note" />
+                </a>
+                <span class="noteOnere"><%# Eval("Note")%></span>
+            </td>
+            <td style="text-align:center;width: 140px;">
+                <asp:DropDownList runat="server" id="ddlPagamento" class="ddlPagamento form-control" data-pagamento-completato='<%#Eval("PagamentoCompletato")%>'>
+                    <asp:ListItem Value="1" Text="Online" />
+                    <asp:ListItem Value="2" Text="Effettuato" />
+                    <asp:ListItem Value="0" Text="Non dovuto" />
+                </asp:DropDownList>
+            </td>
+            <td style="text-align: center">
+                <asp:DropDownList runat="server" ID="ddlTipoPagamento" CssClass="estremiPagamento ddlTipoPagamento form-control" DataTextField="Descrizione" DataValueField="Codice" />
+                </td>
+            <td style="text-align: center">
+                <asp:TextBox runat="server" ID="txtDataPagamento" Type="date" CssClass="estremiPagamento txtDataPagamento form-control" Text='<%# Eval("DataPagamento", "{0:yyyy-MM-dd}") %>' style="line-height: unset;" />
+            </td>
+            <td><asp:TextBox runat="server" ID="txtNumeroOperazione" CssClass="estremiPagamento txtNumeroOperazione form-control" Text='<%# Eval("RiferimentoPagamento") %>' /></td>
+            <td style="text-align:right">
+                <cc1:FloatTextBox runat="server" ID="txtImporto" CssClass="importoPagato estremiPagamento form-control" ValoreFloat='<%# Convert.ToSingle(Eval("ImportoPagato"))%>' Columns="8" ReadOnly='<%# Convert.ToSingle(DataBinder.Eval(Container.DataItem,"Importo")) > 0.0f %>' />
+            </td>
+        </tr>
+    </ItemTemplate>
+</asp:Repeater>*@
+@code {
+
+
+
+    [Parameter]
+    public string EtichettaColonnaCausale { get; set; } = "Causale";
+    [Parameter]
+    public IEnumerable<GrigliaOneriItem> DataSource { get; set; } = Enumerable.Empty<GrigliaOneriItem>();
+    [Parameter]
+    public IEnumerable<TipoPagamento> TipiPagamento { get; set; } = Enumerable.Empty<TipoPagamento>();
+    [Parameter]
+    public IEnumerable<ModalitaPagamentoNodoPagamenti> ModalitaPagamento { get; set; } = Enumerable.Empty<ModalitaPagamentoNodoPagamenti>();
+
+    private BasicModal? _modalNote;
+    private string _noteDaVisualizzare = string.Empty;
+
+    void ModalitaPagamentoModificata(ChangeEventArgs e, GrigliaOneriItem item)
+    {
+        if (Enum.TryParse<ModalitaPagamentoOnereEnum>(e.Value?.ToString() ?? "", out var modalitaPagamento))
+        {
+            if (modalitaPagamento == ModalitaPagamentoOnereEnum.Online || modalitaPagamento == ModalitaPagamentoOnereEnum.NonDovuto)
+            {
+                item.RiferimentoPagamento = String.Empty;
+                item.DataPagamento = null;
+            }
+
+            if (modalitaPagamento == ModalitaPagamentoOnereEnum.NonDovuto)
+            {
+                item.ImportoPagato = 0.0m;
+            }
+
+            if (modalitaPagamento == ModalitaPagamentoOnereEnum.Online)
+            {
+                item.ImportoPagato = item.Importo;
+            }
+        }
+    }
+
+    void MostraNoteOnere(string note)
+    {
+        // this._noteModal.BodyMarkupString = note;
+        // this._noteModal.Refresh();
+        // this._noteModal.Show();
+
+        _noteDaVisualizzare = note;
+        _modalNote?.Show();
+    }
+}

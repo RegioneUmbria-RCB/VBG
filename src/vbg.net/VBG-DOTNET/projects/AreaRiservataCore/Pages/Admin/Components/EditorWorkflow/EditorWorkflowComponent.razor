@@ -1,0 +1,47 @@
+﻿@using Init.Sigepro.FrontEnd.AppLogic.PresentazioneIstanze.Workflow
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.DesignComuni.Forms
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.EditFormComponents
+
+
+<StepsContainer @bind-ListaStep="@Model.Steps" Titolo="@Titolo" ListaStepBase="@ListaStepBase"></StepsContainer>
+
+@if (Model.Steps.Any())
+{
+    <button type="button" class="btn btn-primary mt-3" @onclick="() => this._showConfermaModifiche = true">Salva modifiche</button>
+}
+
+
+<ConfirmationModal Titolo="Conferma salvataggio modifiche" Visible="_showConfermaModifiche" ConfermaClick="@SalvaWorkflow" AnnullaClick="() => _showConfermaModifiche = false">
+    <ModalBody>
+        Cliccando su "Conferma" non sarà più possibile annullare le modifiche.
+        <br />
+        Continuare?
+    </ModalBody>
+</ConfirmationModal>
+
+
+@code {
+    [Parameter]
+    public WorkflowModel Model { get; set; } = default!;
+
+    [Parameter]
+    public EventCallback<WorkflowModel> OnSave { get; set; }
+
+    [Parameter]
+    public string Titolo { get; set; } = "";
+
+    [Parameter]
+    public List<Step> ListaStepBase { get; set; } = new List<Step>();
+
+    private bool _showConfermaModifiche;
+
+
+    private async Task SalvaWorkflow()
+    {
+        await OnSave.InvokeAsync(Model);
+        this._showConfermaModifiche = false;
+    }
+
+}

@@ -1,0 +1,90 @@
+﻿@using Init.SIGePro.Manager.DTO.Scadenzario
+@using Init.Sigepro.FrontEnd.GestioneMovimenti.Persistence
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+
+@inherits BasePage
+
+@if (Item is not null)
+{
+    <div id="@($"scad-{Item.CodiceScadenza}")" @key="@($"scad-{Item.CodiceScadenza}")">
+        <AccordionItem StartingCollapsed="true"
+                       CollapsibleElementId="@($"scadenza-{Item.CodiceScadenza}")"
+                       Title="@(string.IsNullOrEmpty(Item.DescrMovimentoDaFare) ? "non definito" : Item.DescrMovimentoDaFare)"
+                       RenderTitleAsHtml="true"
+                       Sottotitolo="@($"Data scadenza: {Item.DataScadenzaStr}")"
+                       HeaderText="@Item.DescrStatoIstanza"
+                       CssTitleClass="d-block text-truncate pe-4"
+                       ButtonWrapperClass="min-width-zero"
+                       HeaderElementId="@($"header-accordion-scad-{Item.CodiceScadenza}")">
+
+            <NonCollapsingUpperChildContent>
+                @if (!string.IsNullOrEmpty(Item.DatiRichiedente))
+                {
+                    <p class="mb-2 fw-normal">
+                        Richiedente: 
+                        <span class="label fw-bold">@Item.DatiRichiedente</span>
+                    </p>
+                }           
+            </NonCollapsingUpperChildContent>
+
+            <ChildContent>
+                <p class="mb-2 fw-normal">
+                    Numero istanza:
+                    <span class="label fw-bold">@Item.NumeroIstanza</span>
+                </p>
+                
+                <p class="mb-2 fw-normal">
+                    Sportello:
+                    <span class="label fw-bold">@Item.ModuloSoftware</span>
+                </p>
+
+                <p class="mb-2 fw-normal">
+                    Movimento precendente:
+                    <span class="label fw-bold">@Item.DatiMovimento</span>
+                </p>
+
+                @if (!string.IsNullOrEmpty(Item.DatiAzienda))
+                {
+                    <p class="mb-2 fw-normal">
+                        Azienda:
+                        <span class="label fw-bold">@Item.DatiAzienda</span>
+                    </p>
+                }
+
+                @if (!string.IsNullOrEmpty(Item.DatiTecnico))
+                {
+                    <p class="mb-2 fw-normal">
+                        Tecnico:
+                        <span class="label fw-bold">@Item.DatiTecnico</span>
+                    </p>
+                }
+                
+            </ChildContent>
+            <NonCollapsingLowerChildContent>
+                <div class="buttonContainer">
+                    <button type="button" class="btn btn-primary justify-content-center" @onclick=@(async () => await GoToEffettuaMovimento()) data-focus-mouse="false">
+                        Effettua movimento
+                    </button>                   
+                </div>
+            </NonCollapsingLowerChildContent>
+        </AccordionItem>
+    </div>
+}
+
+
+
+
+@code {
+    [Parameter]
+    public ElementoListaScadenzeDto Item { get; set; } = default!;
+    
+    [Inject]
+    protected IIdMovimentoResolver _idMovimentoResolver { get; set; } = default!;
+
+    private async Task GoToEffettuaMovimento()
+    {
+        _idMovimentoResolver.SetIdMovimento(Item.CodiceScadenza);
+        await GotoAsync($"effettuamovimento/{Item.CodiceScadenza}/0/scadenzario");
+    }
+
+}

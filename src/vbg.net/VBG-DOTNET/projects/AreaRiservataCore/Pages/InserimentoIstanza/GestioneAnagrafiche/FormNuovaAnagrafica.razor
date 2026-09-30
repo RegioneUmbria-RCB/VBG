@@ -1,0 +1,200 @@
+﻿@using System.Text.RegularExpressions
+@using System.Text
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneAnagrafiche
+@using Init.Sigepro.FrontEnd.AppLogic.GestionePresentazioneDomanda.GestioneAnagrafiche
+
+@using VBG.BlazorComponentsLibrary.DesignComuni.Forms
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.DesignComuni.Spinner
+@using VBG.BlazorComponentsLibrary.EditFormComponents
+@using VBG.BlazorComponentsLibrary.EditFormComponents.DropDown
+
+
+<FormModal AlwaysVisible="true" Size="ModalSizeEnum.Large" OnClose="OnClose" Model="modelNuovaAnagrafica" FormId="editor-persona-giuridica-form" OnValidSubmit="OnBtnFindAsync">
+    <ModalHeader Titolo="Aggiungi soggetto">
+    </ModalHeader>
+    <ModalBody>
+            <div class="mb-4">
+                <DropDownForm Id="cmbTipoPersona"
+                              Label="Tipo soggetto"
+                              @bind-Value="modelNuovaAnagrafica.TipoPersona"
+                              TItem="DropDownItem"
+                              OnChanged="EventCallback.Factory.Create(this, (DropDownItem i) => { modelNuovaAnagrafica.TipoPersona = i; SetLabelVerifica(i); })"
+                              Items="@_tipoPersonaDataItems"
+                              ShowEmptyItem="false"
+                              ValidationFor="() => modelNuovaAnagrafica.TipoPersona"
+                              Required="true">
+                </DropDownForm>
+            </div>
+
+            <div class="mb-4">
+                <TextInputForm Id="txtCodiceFiscale"
+                               Label="@GetValueByLabelVerifica()"
+                               @bind-Value="modelNuovaAnagrafica.CodiceFiscale"
+                               ValidationFor="() => modelNuovaAnagrafica.CodiceFiscale"
+                               Required="true"
+                               ResourceId="@GetResourceIdByLabelVerifica()">
+                </TextInputForm>
+            </div>
+
+            @* submit button invisible inserito per eliminare errore accessibilità *@
+            @* <button type="submit" aria-hidden="true" hidden></button> *@
+    </ModalBody>
+    <ModalFooter>
+        <FormSubmitButton Form="editor-persona-giuridica-form" Text="Cerca"></FormSubmitButton>
+        @* <button class="btn btn-primary fw-bold flex-even" type="submit" form="editor-persona-giuridica-form" aria-label="Conferma" @onclick="OnBtnFindAsync">Cerca</button> *@
+    </ModalFooter>
+</FormModal>
+
+@code {
+
+    [Inject]
+    public SpinnerService _spinnerService { get; set; } = default!;
+    [Inject]
+    public IAnagraficheService AnagraficheService { get; set; } = default!;
+
+    public class Model
+    {
+        public DropDownItem? TipoPersona { get; set; }
+        public string? CodiceFiscale { get; set; }
+    }
+
+    [Parameter, EditorRequired]
+    public EventCallback OnClose { get; set; }
+    [Parameter, EditorRequired]
+    public MessageContainer? MessageContainer { get; set; }
+    [Parameter, EditorRequired]
+    public EventCallback<RichiestaNuovaAnagraficaEventArgs> OnNuovaAnagrficaRichiesta { get; set; }
+
+
+    private Model modelNuovaAnagrafica = new();
+    private string _labelVerifica = "";
+    private List<DropDownItem> _tipoPersonaDataItems { get; set; } = new List<DropDownItem>();
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        this.modelNuovaAnagrafica = new();
+        this.modelNuovaAnagrafica.TipoPersona = this._tipoPersonaDataItems.Find(x => x.Value == "F");
+        this._labelVerifica = "CFF";
+        this.modelNuovaAnagrafica.CodiceFiscale = "";
+
+        this.BindTipoPersona();
+    }
+
+    private void SetLabelVerifica(DropDownItem item)
+    {
+        if (item.AdditionalValues.TryGetValue("data-verifica", out var verifica))
+        {
+            this._labelVerifica = verifica.ToString() + item.Value;
+        }
+    }
+
+    private void BindTipoPersona()
+    {
+        if (this._tipoPersonaDataItems != null && this._tipoPersonaDataItems.Count > 0)
+            return;
+
+        Dictionary<string, object> d1 = new Dictionary<string, object>();
+        d1.Add("data-verifica", "CF");
+
+        Dictionary<string, object> d2 = new Dictionary<string, object>();
+        d2.Add("data-verifica", "PI");
+
+        Dictionary<string, object> d3 = new Dictionary<string, object>();
+        d3.Add("data-verifica", "CF");
+
+        this._tipoPersonaDataItems = new List<DropDownItem>()
+            {
+                new DropDownItem("F", "Persona fisica", d1) {},
+                new DropDownItem("G1","Società", d2) {},
+                new DropDownItem("G2", "Impresa individuale", d3) {}
+            };
+    }
+
+
+    private async Task OnBtnFindAsync()
+    {
+        this.MessageContainer?.ClearAll();
+
+
+        if (String.IsNullOrEmpty(this.modelNuovaAnagrafica.CodiceFiscale))
+        {
+            if (this.modelNuovaAnagrafica.TipoPersona.Value == "F")
+                this.MessageContainer?.AddError("Inserire un codice fiscale");
+            else
+                this.MessageContainer?.AddError("Inserire un codice fiscale o una partita iva");
+
+            return;
+        }
+
+        this.modelNuovaAnagrafica.CodiceFiscale = this.modelNuovaAnagrafica.CodiceFiscale.ToUpper();
+
+        if (!Regex.IsMatch(this.modelNuovaAnagrafica.CodiceFiscale, "^[a-zA-Z0-9]+$"))
+        {
+            var messaggioErrore = new StringBuilder();
+
+            messaggioErrore.Append(this.modelNuovaAnagrafica.TipoPersona.Value == "F" ? "Il codice fiscale immesso" : "La partita iva immessa");
+            messaggioErrore.Append(" contiene caratteri non validi. Verificare i dati immessi.");
+
+            this.MessageContainer?.AddError(messaggioErrore.ToString());
+
+            return;
+        }
+
+        var tipoPersona = this.modelNuovaAnagrafica.TipoPersona.Value == "F" ? TipoPersonaEnum.Fisica : TipoPersonaEnum.Giuridica;
+
+        await OnNuovaAnagrficaRichiesta.InvokeAsync(new RichiestaNuovaAnagraficaEventArgs(tipoPersona, this.modelNuovaAnagrafica.CodiceFiscale.ToUpper()));
+        /*
+        try
+        {
+
+
+            this.AnagraficheService.IgnoraRicercaBackofficePerPersoneFisiche = this.IgnoraRicercaBackofficePerPersoneFisiche;
+
+            var anagrafe = this.AnagraficheService.RicercaAnagrafica(this.IdDomanda.Value, tipoPersona, this.modelNuovaAnagrafica.CodiceFiscale);
+
+            this.Edit(anagrafe);
+        }
+        catch (Exception ex) // Errore di comunicazione con il web service... Come lo gestiamo?
+        {
+            this.messageContainer?.AddError("Si è verificato un errore durante la ricerca dell'anagrafica");
+            await this.ScrollToTopAsync();
+            LogManager.GetLogger(this.GetType()).Error(ex.ToString());
+            this.m_logger.ErrorFormat(ex.ToString());
+        }
+        */
+    }
+
+
+    private string GetResourceIdByLabelVerifica()
+    {
+        switch (this._labelVerifica)
+        {
+            case "CFF":
+                return "gestione-anagrafiche.ricerca.codice-fiscale";
+            case "PIG":
+                return "gestione-anagrafiche.ricerca.codice-fiscale-impresa";
+            case "CFG":
+                return "gestione-anagrafiche.ricerca.codice-fiscale-titolare";
+            default:
+                return string.Empty;
+        }
+    }
+
+    private string GetValueByLabelVerifica()
+    {
+        switch (this._labelVerifica.Substring(0, 3))
+        {
+            case "CFF":
+                return "Codice fiscale";
+            case "PIG":
+                return "Codice fiscale impresa";
+            case "CFG":
+                return "Codice fiscale titolare";
+            default:
+                return string.Empty;
+        }
+    }
+}

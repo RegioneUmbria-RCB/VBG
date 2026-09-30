@@ -1,0 +1,260 @@
+﻿<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+		<style>
+			h1{ font-family: Arial;font-size:14px; width:100%;text-align:center;}
+			h2{ font-family: Arial;font-size:12px; width:100%;text-align:center;}
+			div{ font-family: Arial;font-size:10px}
+			.testo{ font-family: Arial;font-size:10px}
+			.labelTabella{ font-family: Arial;font-size:10px;padding:0px;margin:0px;}
+			.valoreTabella{ font-family: Arial;font-size:10px;padding:0px;margin:0px;font-weight:bold}
+			.bordato{ font-family: Arial;font-size:10px;border: 1px solid #000000; padding: 10px;}
+		</style>
+	</head>
+	
+	<body>
+		<h1>
+			SCIA – SEGNALAZIONE CERTIFICATA DI INIZIO ATTIVITA’<br />
+			ESERCIZIO DI COMMERCIO AL DETTAGLIO DI VICINATO
+		</h1>
+		
+		<table width="100%" style="margin-bottom: 20px;">
+			<tr>
+				<td width="40%">
+					<div class="bordato">
+						(0) …………………………………………….<br/>
+						Riportare per il 2° invio il numero di registrazione <br /> 
+						rilasciato dal portale SUAP Regione Sicilia
+					</div>
+				</td>
+				<td width="20%">
+				</td>
+				<td width="40%">
+					<div class="testo">
+						Al Dipartimento SUAP <br /> 
+						Sportello Unico delle Attività Produttive  <br /> 
+						Comune Di Messina
+					</div>
+				</td>				
+			</tr>
+		</table>
+		
+		<br />
+		<br />
+		
+		<div class="testo">
+			<b>Il sottoscritto:</b> Ai sensi del  D.L. 114/1998 e  della  L.r. 28.dicembre 1998 n. 28 (art.6 co. 5, art.7,   
+			commi 1-2-4-5-6, art.29 comma 3 e D. L.vo 59/10 (art. 65) e s.m.i.
+		</div>
+		
+		<br />
+		<br />
+		
+		<table width="100%" style="border: 1px solid #000000">
+			<tr>
+				<td class="labelTabella" width="20%">COGNOME</td>
+				<td class="valoreTabella" width="30%">
+					<xsl:value-of select="/Istanze/Richiedente/NOMINATIVO" />&#160;
+				</td>
+				<td class="labelTabella" width="20%">NOME</td>
+				<td class="valoreTabella" width="30%">
+					<xsl:value-of select="/Istanze/Richiedente/NOME" />&#160;
+				</td>
+			</tr>
+			
+			<tr>
+				<td class="labelTabella">cittadinanza</td>
+				<td class="valoreTabella" colspan="3">
+					<xsl:value-of select="/Istanze/Richiedente/Cittadinanza/Descrizione" />&#160;
+				</td>
+
+			</tr>				
+			
+			<tr>
+				<td class="labelTabella">nato/a a </td>
+				<td class="valoreTabella">
+					<xsl:value-of select="/Istanze/Richiedente/ComuneNascita/COMUNE" />&#160;
+				</td>
+				
+				<td class="labelTabella">il</td>
+				<td class="valoreTabella">
+					<xsl:call-template name="FormatDate">
+						<xsl:with-param name="DateTime" select="/Istanze/Richiedente/DATANASCITA"/>
+					</xsl:call-template>
+				</td>
+			</tr>
+			
+			<tr>
+				<td class="labelTabella">residente nel comune di </td>
+				<td class="valoreTabella">
+					<xsl:value-of select="/Istanze/Richiedente/ComuneResidenza/COMUNE" />
+				</td>
+				
+				<td class="labelTabella">c.a.p. </td>
+				<td class="valoreTabella">
+					<xsl:value-of select="/Istanze/Richiedente/CAP" />
+				</td>
+			</tr>		
+
+			<tr>
+				<td class="labelTabella">via/piazza</td>
+				<td class="valoreTabella" colspan="3">
+					<xsl:value-of select="/Istanze/Richiedente/INDIRIZZO" />
+				</td>
+			</tr>	
+
+			<tr>
+				<td class="labelTabella">tel</td>
+				<td class="valoreTabella">
+					<xsl:value-of select="/Istanze/Richiedente/TELEFONO" />&#160;
+				</td>
+				
+				<td class="labelTabella">fax</td>
+				<td class="valoreTabella">
+					<xsl:value-of select="/Istanze/Richiedente/FAX" />&#160;
+				</td>
+			</tr>		
+
+			<tr>
+				<td class="labelTabella">email</td>
+				<td class="valoreTabella" colspan="3">
+					<xsl:value-of select="/Istanze/Richiedente/EMAIL" />&#160;
+				</td>
+			</tr>				
+		</table>
+		
+		<br />
+		
+		<div  class="testo">
+			<b>In qualità di:</b><br/>
+			<br />
+			
+			<xsl:variable name="codicefiscaleParam" select="/Istanze/Richiedente/CODICEFISCALE"/>
+			<xsl:value-of select="/Istanze/Richiedenti/IstanzeRichiedenti/Richiedente/CODICEFISCALE[.=$codicefiscaleParam]/../../DESCRSOGGETTO" />
+			
+			<xsl:if test="/Istanze/AziendaRichiedente !=''">
+				<b><xsl:value-of select="/Istanze/AziendaRichiedente/NOMINATIVO" /></b>
+				<br />
+				<br />
+			</xsl:if>
+		</div>
+		
+		<xsl:if test="/Istanze/AziendaRichiedente !=''">
+		
+			<table width="100%" style="border: 1px solid #000000">
+				<tr>
+					<td class="labelTabella" width="20%">con sede nel comune di </td>
+					<td class="valoreTabella" colspan="3" width="80%">
+						<xsl:value-of select="/Istanze/AziendaRichiedente/ComuneResidenza/COMUNE" />&#160;
+					</td>
+				</tr>
+		
+				<tr>
+					<td class="labelTabella" width="20%">via/piazza</td>
+					<td class="valoreTabella" width="30%">
+						<xsl:value-of select="/Istanze/AziendaRichiedente/INDIRIZZO" />
+					</td>
+					
+					<td class="labelTabella" width="20%">c.a.p. </td>
+					<td class="valoreTabella" width="30%">
+						<xsl:value-of select="/Istanze/AziendaRichiedente/CAP" />
+					</td>
+				</tr>					
+				
+				<tr>
+					<td class="labelTabella" width="20%">N. REA </td>
+					<td class="valoreTabella" width="30%">
+						<xsl:value-of select="/Istanze/AziendaRichiedente/NUMISCRREA" />
+					</td>
+					
+					<td class="labelTabella" width="20%">CCIAA</td>
+					<td class="valoreTabella" width="30%">
+						<xsl:value-of select="/Istanze/AziendaRichiedente/REGDITTE" /> 
+						di 
+						<xsl:value-of select="/Istanze/AziendaRichiedente/ComuneRegDitte/COMUNE" />
+					</td>
+				</tr>					
+				
+				<tr>
+					<td class="labelTabella" width="20%">C.F.</td>
+					<td class="valoreTabella" width="30%">
+						<xsl:value-of select="/Istanze/AziendaRichiedente/CODICEFISCALE" />
+					</td>
+					
+					<td class="labelTabella" width="20%">P.I.</td>
+					<td class="valoreTabella" width="30%">
+						<xsl:value-of select="/Istanze/AziendaRichiedente/PARTITAIVA" />
+					</td>
+				</tr>
+			</table>
+				
+				
+		</xsl:if>
+		
+		<h2>Segnala ai sensi  dell’art. 19 della legge 241/90 l’inizio attività relativa a:</h2>
+		
+		<pre class="testo">
+			<xsl:value-of select="/Istanze/Intervento/SC_DESCRIZIONE" />
+		</pre>
+		
+		<h2>Ai sensi e per gli effetti dell’art. 46 e 47 del DPR n. 445/2000, dichiara quanto contenuto nella rispettiva sezione: </h2>
+		
+		<br />
+		<schedeDinamiche />
+		<br />
+		<br />
+		<h2>Allega la seguente documentazione: </h2>
+
+		<div class="testo">
+		
+			<ul>
+				<xsl:for-each select="Istanze/DocumentiIstanza/DocumentiIstanza">
+					<li>
+						<div class="dato">
+							<b>
+								<xsl:value-of select="DOCUMENTO"/>
+							</b>
+						</div>
+						<xsl:value-of select="Oggetto/NOMEFILE"/>
+					</li>
+				</xsl:for-each>
+			</ul>
+
+			<xsl:for-each select="Istanze/EndoProcedimenti/IstanzeProcedimenti">
+				<xsl:if test="count(IstanzeAllegati/IstanzeAllegati[PRESENTE = '1']) > 0">
+
+					<br />
+					<br />
+					<center>
+						<h2>
+							Allegati dell'endoprocedimento 
+							<xsl:value-of select="Endoprocedimento/Procedimento"/>
+						</h2>
+					</center>
+					<ul>
+						<xsl:for-each select="IstanzeAllegati/IstanzeAllegati">
+							<xsl:if test="PRESENTE != '0'">
+								<li>
+									<div class="dato">
+										<b>
+											<xsl:value-of select="ALLEGATOEXTRA"/>
+										</b>
+									</div>
+									<xsl:value-of select="Oggetto/NOMEFILE"/>
+								</li>
+							</xsl:if>
+						</xsl:for-each>
+					</ul>	
+				</xsl:if>
+			</xsl:for-each>
+			
+			
+		
+			N.B.  Se l’esercizio di vicinato è inserito in un centro commerciale la causale del versamento dovrà essere “Diritti  
+			di istruttoria Scia – Cap. 380/03”.
+			<br />
+			N.B.  In caso di sub ingresso, trasferimento di sede  o cessazione dell’attività, l’originale della Autorizzazione Amministrativa o altro titolo abilitativo (Comunicazione o Segnalazione), dovrà essere restituita  al Dipartimento Commercio Industria Artigianato, presso  3° piano di Palazzo Satellite in  Piazza della Repubblica, Messina.  
+			<br />
+		</div>
+	</body>
+</html>

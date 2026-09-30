@@ -1,0 +1,46 @@
+<configuration>
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{360} - %msg%n</Pattern>
+		</encoder>
+	</appender>
+	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{360} - %msg%n</Pattern>
+		</encoder>
+		<File>${catalina.home}/logs/LoginUmbria-AG-logback.log</File>
+	</appender>
+	<appender name="AUDIT_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+	    <file>${catalina.home}/logs/audit/LoginUmbria-AG-audit-file.log</file>
+	    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+	      <!-- daily rollover -->
+	      <fileNamePattern>LoginUmbria-AG-audit-file-%d{yyyy-MM-dd}.txt</fileNamePattern>
+	    </rollingPolicy>	
+	    <encoder>
+	    	<pattern>%d - %msg%n</pattern>
+	    </encoder>
+	  </appender> 
+	<logger name="it.cefriel">
+		<level value="DEBUG" />
+	</logger>
+	<logger name="org">
+		<level value="WARN" />
+	</logger>
+	<logger name="it.gruppoinit">
+		<level value="WARN" />
+	</logger>
+	<logger name="it.gruppoinit.auth.util.LoggerAccessi" additivity="false">
+		<level value="DEBUG" />
+		<appender-ref ref="AUDIT_FILE" />
+	</logger>
+	<logger name="org">
+		<level value="WARN" />
+	</logger>
+	<logger name="it.gruppoinit">
+		<level value="WARN" />
+	</logger>
+	<root>
+		<appender-ref ref="FILE" />
+		<level value="WARN" />
+	</root>
+</configuration>

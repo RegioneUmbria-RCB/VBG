@@ -1,0 +1,53 @@
+﻿@using AreaRiservataCore.Pages.MiePratiche.Componenti
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+@using VBG.BlazorComponentsLibrary.EditFormComponents
+
+@inherits FiltriVisuraControlBase
+
+<VbgForm Id="mainForm" Model="@Model" OnValidSubmit="OnValidSubmitAsync">
+    <fieldset>
+        @* Aggiunto per accessibilità *@
+        <legend></legend>
+
+        @foreach (var (key, val) in SortedDictionary)
+        {
+            if (key == -1)
+                continue;
+
+            var idFiltro = val.Parameters?.FirstOrDefault(x => x.Key == "Id").Value.ToString();
+
+            if (this._nascondiFiltroRichiedente && idFiltro == "richiedente")
+                continue;
+
+            if (key == m_provider.IdStradario && contieneComuniAssociati)
+            {
+                var kvp = SortedDictionary.FirstOrDefault(x => x.Key == -1);
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <DynamicComponent Type="@kvp.Value.Type" Parameters="@kvp.Value.Parameters"></DynamicComponent>
+                    </div>
+                    <div class="col-md-6">
+                        <DynamicComponent Type="@val.Type" Parameters="@val.Parameters"></DynamicComponent>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="row">
+                    <div class="col-md-6">
+                        <DynamicComponent Type="@val.Type" Parameters="@val.Parameters"></DynamicComponent>
+
+                    </div>
+                </div>
+            }
+        }
+    </fieldset>
+
+    @* submit button nascosto per accessibilità *@
+    <button type="submit" class="d-none" aria-hidden="true"></button>
+</VbgForm>
+
+@code {
+
+}

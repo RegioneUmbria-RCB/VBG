@@ -1,0 +1,157 @@
+﻿@using VBG.AppLogic.SSU.APICatalogoServizi.Client
+@using VBG.AppLogic.SSU.GestioneFattispecie
+@using VBG.AppLogic.SSU.GestioneProcedimenti
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+
+<BasicModal AlwaysVisible="true" OnClose="OnClose">
+    <ModalHeader Size="ModalHeaderSizeEnum.Small" Titolo="Fattispecie secondarie">
+        Seleziona una o più fattispecie secondarie relative al procedimento <b>@Procedimento?.Descrizione</b>
+    </ModalHeader>
+    <ModalBody>
+        @if (_isLoading)
+        {
+            <MessaggioCaricamento></MessaggioCaricamento>
+
+        }
+        else
+        {
+            @foreach (var elemento in _fattispecie)
+            {
+                <h4>@elemento.Primaria.Descrizione</h4>
+
+                <div class="it-list-wrapper mb-4">
+                    <ul class="it-list">
+                        @foreach (var fattispecie in GetFattispecieSecondarieOrdinate(elemento.Secondarie))
+                        {
+                            <li style="cursor:pointer" @onclick="() => OnFattispecieSelezionata(fattispecie)" class="@(_listaIdFattispecieSelezionate.Contains(fattispecie.Id) ? "border border-success shadow" : "")">
+                                <div class="list-item">
+                                    <div class="it-right-zone">
+                                        <div>
+                                            @if (fattispecie.Obbligatoria)
+                                            {
+                                                <span class="badge bg-success">Obbligatoria</span>
+                                            }
+                                            <h4 class="text m-0">@fattispecie.Descrizione</h4>
+
+                                            @if (!String.IsNullOrEmpty(@fattispecie.DescrizioneEstesa))
+                                            {
+                                                <p class="small m-0">@fattispecie.DescrizioneEstesa</p>
+                                            }
+                                        </div>
+                                        <span class="it-multiple">
+                                            @if (_listaIdFattispecieSelezionate.Contains(fattispecie.Id))
+                                            {
+                                                <SvgIcon CssClass="icon-secondary" IconId="it-check-circle" AriaLabel="selezionata"></SvgIcon>
+                                            }
+                                        </span>
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            }
+        }
+    </ModalBody>
+
+    <ModalFooter>
+        <button class="btn btn-primary flex-even fw-bold" disabled="@(_listaIdFattispecieSelezionate.Count == 0)" @onclick="OnConfermaClick">Conferma</button>
+    </ModalFooter>
+</BasicModal>
+
+@code {
+    [Inject]
+    public SsuFattispecieService _service { get; set; } = default!;
+
+    [CascadingParameter(Name = "IdDomanda")]
+    public int? IdDomanda { get; set; }
+
+    [Parameter, EditorRequired]
+    public EventCallback OnClose { get; set; }
+    [Parameter, EditorRequired]
+    public EventCallback<Dictionary<int, List<Fattispecie>>> FattispecieSelezionate { get; set; }
+    [Parameter, EditorRequired]
+    public SsuProcedimentoDomanda? Procedimento { get; set; }
+
+    private bool _isLoading = false;
+
+    private List<ElementoListaFattispecieSecondarie> _fattispecie = new();
+    private List<ElementoListaFattispecieSecondarie> _fattispecieSelezionate = new();
+
+    private List<int> _listaIdFattispecieSelezionate = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        if (Procedimento is not null)
+        {
+            _isLoading = true;
+
+            try
+            {
+                var primarie = Procedimento.FattispeciePrimarie.Select(x => x.Id).ToArray();
+
+                _fattispecie = await _service.GetFattispecieSecondarieAsync(IdDomanda!.Value, primarie);
+
+                if(!_fattispecie.Any())
+                {
+                    await this.OnConfermaClick();
+                    return;
+                }
+
+                _fattispecie.SelectMany(x => x.Secondarie.Where(f2 => f2.Obbligatoria)).ToList().ForEach(fObb => ForzaSelezioneFattispecie(fObb));
+            }
+            finally
+            {
+                _isLoading = false;
+            }
+        }
+    }
+
+    void ForzaSelezioneFattispecie(Fattispecie f)
+    {
+        if (!_listaIdFattispecieSelezionate.Contains(f.Id))
+        {
+            _listaIdFattispecieSelezionate.Add(f.Id);
+        }
+    }
+
+    void OnFattispecieSelezionata(Fattispecie f)
+    {
+        var id = f.Id;
+
+        if (_listaIdFattispecieSelezionate.Contains(id))
+        {
+            if(f.Obbligatoria)
+            {
+                return;
+            }
+
+            _listaIdFattispecieSelezionate.Remove(id);
+        }
+        else
+        {
+            _listaIdFattispecieSelezionate.Add(id);
+        }
+    }
+
+    async Task OnConfermaClick()
+    {
+        var fattispecieSelezionate = _fattispecie.Select(f => new {
+            IdPrimaria = f.Primaria.Id,
+            Secondarie = f.Secondarie.Where(s => _listaIdFattispecieSelezionate.Contains(s.Id)).ToList()
+        })
+                                        .Where(x => x.Secondarie.Any())
+                                        .ToDictionary(x => x.IdPrimaria, x => x.Secondarie);
+
+        await FattispecieSelezionate.InvokeAsync(fattispecieSelezionate);
+    }
+
+    private List<Fattispecie> GetFattispecieSecondarieOrdinate(List<Fattispecie> secondarie)
+    {
+        return secondarie.OrderByDescending(x => x.Obbligatoria)
+                         .ThenBy(x => x.Descrizione)
+                         .ToList();
+    }
+}

@@ -1,0 +1,64 @@
+<?xml version="1.0" ?>
+<wsdl:definitions targetNamespace="http://gruppoinit.it/pal/gp/backoffice/definitions/getpraticasuap" 
+xmlns:sch="http://gruppoinit.it/pal/gp/backoffice/schemas/messages/getpraticasuap"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+	xmlns:tns="http://gruppoinit.it/pal/gp/backoffice/definitions/getpraticasuap" 
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+	xmlns:xmime="http://www.w3.org/2005/05/xmlmime">
+	<wsdl:types>
+		<schema xmlns="http://www.w3.org/2001/XMLSchema" 
+			attributeFormDefault="unqualified" elementFormDefault="qualified"
+			targetNamespace="http://gruppoinit.it/pal/gp/backoffice/schemas/messages/getpraticasuap">
+			<element name="CompilaPraticaSUAPXMLRequestType">
+				<complexType>
+					<sequence>
+						<element name="token" type="string" />
+						<element name="codiceistanza" type="integer" />
+					</sequence>
+				</complexType>
+			</element>
+			<element name="CompilaPraticaSUAPXMLResponseType">
+				<complexType>
+					<sequence>
+						<element name="fileName" type="string" />
+						<element name="mimeType" type="string" minOccurs="0" maxOccurs="1" />
+						<element name="binaryData" type="base64Binary" xmime:expectedContentTypes="application/octet-stream" />
+					</sequence>
+				</complexType>
+			</element>			
+		</schema>
+	</wsdl:types>
+	<wsdl:message name="CompilaPraticaSUAPXMLRequest">
+		<wsdl:part element="sch:CompilaPraticaSUAPXMLRequestType" name="CompilaPraticaSUAPXMLRequest">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="CompilaPraticaSUAPXMLResponse">
+		<wsdl:part element="sch:CompilaPraticaSUAPXMLResponseType" name="CompilaPraticaSUAPXMLResponse">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:portType name="CompilaPraticaSUAPXML">
+		<wsdl:operation name="CompilaPraticaSUAPXML">
+			<wsdl:input message="tns:CompilaPraticaSUAPXMLRequest" name="CompilaPraticaSUAPXMLRequest">
+			</wsdl:input>
+			<wsdl:output message="tns:CompilaPraticaSUAPXMLResponse" name="CompilaPraticaSUAPXMLResponse">
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="CompilaPraticaSUAPXMLSoap11" type="tns:CompilaPraticaSUAPXML">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"></soap:binding>
+		<wsdl:operation name="CompilaPraticaSUAPXML">
+			<soap:operation soapAction="CompilaPraticaSUAPXML"></soap:operation>
+			<wsdl:input name="CompilaPraticaSUAPXMLRequest">
+				<soap:body use="literal"></soap:body>
+			</wsdl:input>
+			<wsdl:output name="CompilaPraticaSUAPXMLResponse">
+				<soap:body use="literal"></soap:body>
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="CompilaPraticaSUAPXMLService">
+		<wsdl:port binding="tns:CompilaPraticaSUAPXMLSoap11" name="CompilaPraticaSUAPXMLSoap11">
+			<soap:address location="http://localhost:8080/backend/services/compilapraticaSUAPXML"></soap:address>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

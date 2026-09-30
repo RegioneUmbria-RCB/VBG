@@ -1,0 +1,113 @@
+﻿@using AreaRiservataCore.Pages.InserimentoIstanza.GestionePagamenti.v2
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneOneri
+@using VBG.BlazorComponentsLibrary.DesignComuni.Messaggi
+
+@if (Pagamento is not null)
+{
+    <div class="p-2">
+        <div class="d-flex">
+            <div class="w-75">
+                <h4>@Pagamento.Causale</h4>
+                <span class="mb-2 text-muted">@Pagamento.Note</span>
+            </div>
+            <div class="w-25 d-flex justify-content-end me-4 pe-2">
+                <div>
+                    @if (!SolaLettura)
+                    {
+                        <button class="btn btn-outline-primary" type="button" @onclick="@Edit">
+                            Modifica
+                        </button>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            @foreach (var error in Pagamento.Errori)
+            {
+                <ErrorMessage>@error</ErrorMessage>
+            }
+        </div>
+
+        <div class="it-list-wrapper mb-4 p-2">
+            <ul class="it-list">
+                <li>
+                    <div class="list-item">
+                        <div class="it-right-zone">
+                            <div>
+                                <h4 class="text m-0">Importo dovuto </h4>
+                                <span class="fs-6 mb-2 text-muted">€ @Pagamento.ImportoPagato.ToString("N2")</span>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                @if (!Pagamento.ModalitaPagamentoNonImpostata)
+                {
+                    <li>
+                        <div class="list-item">
+                            <div class="it-right-zone">
+                                <div>
+                                    <h4 class="text m-0">Modalità di pagamento </h4>
+                                    <span class="fs-6 mb-2 text-muted">@Pagamento.ModalitaPagamento?.Text</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                }
+
+                @if (Pagamento.ModalitaPagamentoAsEnum == ModalitaPagamentoOnereEnum.GiaPagato)
+                {
+                    <li>
+                        <div class="list-item">
+                            <div class="it-right-zone">
+                                <div>
+                                    <h4 class="text m-0">Tipo pagamento </h4>
+                                    <span class="fs-6 mb-2 text-muted">@Pagamento.TipoPagamento?.Descrizione</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li>
+                        <div class="list-item">
+                            <div class="it-right-zone">
+                                <div>
+                                    <h4 class="text m-0">Data pagamento </h4>
+                                    <span class="fs-6 mb-2 text-muted">@Pagamento.DataPagamento?.ToString("dd/MM/yyyy")</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li>
+                        <div class="list-item">
+                            <div class="it-right-zone">
+                                <div>
+                                    <h4 class="text m-0">Riferimenti pagamento </h4>
+                                    <span class="fs-6 mb-2 text-muted">@Pagamento.RiferimentoPagamento</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
+        
+    </div>
+}
+
+
+@code {
+    [Parameter, EditorRequired]
+    public GrigliaPagamentiItem? Pagamento { get; set; }
+    [Parameter, EditorRequired]
+    public EventCallback<GrigliaPagamentiItem> OnEdit { get; set; }
+    [Parameter]
+    public bool SolaLettura { get; set; } = false;
+
+    async Task Edit()
+    {
+        await this.OnEdit.InvokeAsync(this.Pagamento);
+    }
+}

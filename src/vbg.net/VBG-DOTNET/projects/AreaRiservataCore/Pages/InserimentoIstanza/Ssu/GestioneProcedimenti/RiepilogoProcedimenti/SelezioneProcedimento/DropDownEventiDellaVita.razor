@@ -1,0 +1,54 @@
+﻿@using Init.Sigepro.FrontEnd.CoreServices.GestionePresentazioneDomanda.Paginatore
+@using VBG.AppLogic.SSU.GestioneEventiDellaVita
+
+
+<DropDownForm ValueChanged="OnEventoVitaChanged"
+              TItem="DropDownItem"
+              ValueExpression="() => _selectedItem"
+              Label="Evento della vita"
+              ShowEmptyItem="true"
+              Items="@_eventiDellaVita"></DropDownForm>
+@code {
+    [Inject]
+    public SsuEventiDellaVitaService _eventiDellaVitaService { get; set; } = default!;
+
+    [CascadingParameter]
+    public MessageContainer messageContainer { get; set; } = default!;
+
+    [CascadingParameter(Name = "IdDomanda")]
+    public int? IdDomanda { get; set; }
+
+    [CascadingParameter]
+    public PaginatoreStateService _paginatoreStateService { get; set; } = default!;
+
+    [Parameter]
+    public EventCallback<int?> ValueChanged { get; set; }
+
+    private IEnumerable<DropDownItem> _eventiDellaVita = new List<DropDownItem>();
+    private DropDownItem? _selectedItem;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            await base.OnInitializedAsync();
+
+            var eventi = await _eventiDellaVitaService.GetEventiDellaVitaAsync(IdDomanda.Value);
+
+            this._eventiDellaVita = eventi.Select(x => new DropDownItem(x.Id.ToString(), x.Descrizione)).ToArray();
+        }
+        catch (Exception)
+        {
+            messageContainer.AddError("Errore durante il recupero degli eventi della vita");
+            this._paginatoreStateService.NascondiBottoneAvanti();
+        }
+        
+    }
+
+    private async Task OnEventoVitaChanged(DropDownItem? item)
+    {
+        this._selectedItem = item;
+        var idEvento = item is null ? (int?)null : Convert.ToInt32(item.Value);
+        await this.ValueChanged.InvokeAsync(idEvento);
+    }
+}

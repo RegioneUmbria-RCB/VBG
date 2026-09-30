@@ -1,0 +1,185 @@
+<schema targetNamespace="http://gruppoinit.it/sigepro/schemas/messages/schedeDinamiche" 
+	xmlns:tns="http://gruppoinit.it/sigepro/schemas/messages/schedeDinamiche" xmlns:base="http://gruppoinit.it/sigepro/schemas/messages/base"
+	xmlns="http://www.w3.org/2001/XMLSchema" 
+	xmlns:xmime="http://www.w3.org/2005/05/xmlmime"
+	elementFormDefault="qualified">
+	
+	<import id="oggettiBase" schemaLocation="backoffice_oggetti_base.xsd" namespace="http://gruppoinit.it/sigepro/schemas/messages/base" />
+	
+	
+	<!-- Definizioni request e response -->
+	
+	<element name="ModellitFindRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string" />
+				<element name="software" type="string" />
+				<element name="codiceScheda" type="string" />
+			</sequence>
+		</complexType>
+	</element>
+	<element name="ModellitFindResponse">
+		<complexType>
+			<sequence>
+		    	<element name="software" type="string" />
+		    	<element name="idScheda" type="string" />
+		    	<element name="codiceScheda" type="string" />
+		     	<element name="descrizioneScheda" type="string" />
+				<element maxOccurs="unbounded" minOccurs="1" name="dyn2CampiType" type="tns:Dyn2CampiType" />
+			</sequence>
+		</complexType>	
+	</element>
+	
+	<element name="StrutturaModelloTFindRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string" />
+				<element name="software" type="string" />
+				<element name="codiceScheda" type="string" />
+			</sequence>
+		</complexType>
+	</element>
+	
+	<element name="StrutturaModelloTFindResponse">
+		<complexType>
+			<sequence>
+				<element name="dyn2ModellitType" type="tns:Dyn2ModellitType" />
+				<element name="software" type="string" />
+				<element name="codiceScheda" type="string" />
+			</sequence>
+		</complexType>
+	</element>
+	
+
+	<element name="ModellitInsertRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string" />
+				<element name="dyn2ModellitType" type="tns:Dyn2ModellitType" />
+				<element name="software" type="string" />
+			</sequence>
+		</complexType>
+	</element>
+	
+	<element name="ModellitInsertResponse">
+		<complexType>
+			<sequence>
+				<element name="idModelloT" type="string"/>
+				<element name="codiceScheda" type="string" minOccurs="0"/>
+				<element name="errore" type="base:ErroreBackofficeType" maxOccurs="unbounded" minOccurs="0" />
+			</sequence>
+		</complexType>
+	</element>
+	
+	<!-- definizione oggetti complessi -->
+	
+	
+		<complexType name="Dyn2ModellitType">
+		<sequence>
+		    <!-- tipi primitivi -->
+			<element name="idModelloT" type="string"/>
+			<element name="software" type="string"/>
+			<element name="descrizione" type="string"/>
+			<!-- Dismesso 
+			<element name="scriptcode" type="string" minOccurs="0"/>
+			-->
+			<element name="modellomultiplo" type="boolean" minOccurs="0"/>
+			<element name="flgStoricizza" type="boolean" minOccurs="0"/>
+			<element name="flgReadonlyWeb" type="boolean" minOccurs="0"/>
+			<element name="modelloFrontoffice" type="boolean" minOccurs="0"/>
+			<element name="codiceScheda" type="string" minOccurs="0"/>
+			<element minOccurs="0" name="dyn2BasecontestiType" type="tns:Dyn2BasecontestiType" />
+			<!-- tipi complessi -->
+			<element maxOccurs="unbounded" minOccurs="0" name="dyn2ModellidType" type="tns:Dyn2ModellidType" />
+			<element minOccurs="0" maxOccurs="unbounded" name="dyn2ModelliTScriptType" type="tns:Dyn2ModelliTScriptType" />
+			<!--  valutare se da mettere Mappature e Dyn2ModellitValidazioni -->
+		</sequence>
+	</complexType>
+	
+	<complexType name="Dyn2ModellidType">
+		<sequence>
+		    <!-- tipi primitivi -->
+			<element name="idModelloD" type="string"/>
+			<element name="posverticale" type="integer" minOccurs="0"/>
+			<element name="posorizzontale" type="integer" minOccurs="0"/>
+			<element name="flgMultiplo" type="boolean" minOccurs="0"/>
+			<element name="flgObbligatorio" type="boolean" minOccurs="0"/>
+			<element name="scriptcode" type="string" minOccurs="0"/>
+			<!-- tipi complessi -->
+			<element minOccurs="0" name="dyn2CampiType" type="tns:Dyn2CampiType" />
+			<element minOccurs="0" name="dyn2ModellidtestiType" type="tns:Dyn2ModellidtestiType" />
+			<!--  valutare se da mettere  Dyn2ModellitValidazioni e Dyn2Regole -->
+		</sequence>
+	</complexType>	
+	
+	<complexType name="Dyn2CampiType">
+		<sequence>
+			<element name="idCampo" type="string"/>
+			<element name="software" type="string"/>
+			<element name="nomeCampo" type="string"/>
+			<element name="etichetta" type="string" minOccurs="0"/>
+			<element name="obbligatorio" type="boolean"/>
+			<element name="tipodato" type="string" minOccurs="0"/>
+			<element name="descrizione" type="string" minOccurs="0"/>
+			<!-- Dismessi 
+			<element name="scrptcode" type="string" minOccurs="0"/>
+			<element name="scriptupdatecode" type="string" minOccurs="0"/>
+			-->
+			<element minOccurs="0" name="dyn2BasecontestiType" type="tns:Dyn2BasecontestiType" />
+			<element minOccurs="0" maxOccurs="unbounded" name="dyn2CampiScriptType" type="tns:Dyn2CampiScriptType" />
+			<element minOccurs="0" maxOccurs="unbounded" name="dyn2Campiproprieta" type="tns:Dyn2CampiproprietaType" />
+		</sequence>
+	</complexType>
+	
+	
+	<complexType name="Dyn2CampiproprietaType">
+		<sequence>
+			<element name="proprieta" type="string" minOccurs="0"/>
+			<element name="valore" type="string" minOccurs="0"/>
+		</sequence>
+	</complexType>
+	
+	<complexType name="Dyn2BasecontestiType">
+		<sequence>
+			<element name="idDyn2Basecontesti" type="string"/>
+			<element name="contesto" type="string"/>
+		</sequence>
+	</complexType>	
+	
+	
+	<complexType name="Dyn2ModellidtestiType">
+		<sequence>
+		    <!-- tipi primitivi -->
+			<element name="idModellidtesti" type="string"/>
+			<element name="testo" type="string" minOccurs="0"/>
+			<!-- tipi complessi -->
+			<element minOccurs="0" name="dyn2BasetipitestoType" type="tns:Dyn2BasetipitestoType" />
+		</sequence>
+	</complexType>
+	
+	<complexType name="Dyn2BasetipitestoType">
+		<sequence>
+		    <!-- tipi primitivi -->
+			<element name="idDyn2Basetipitesto" type="string"/>
+			<element name="tipotesto" type="string" minOccurs="0"/>
+		</sequence>
+	</complexType>
+	
+	<complexType name="Dyn2CampiScriptType">
+		<sequence>
+		    <element name="evento" type="string" />
+			<element name="binaryData" type="base64Binary" xmime:expectedContentTypes="application/octet-stream" minOccurs="0"/>
+		</sequence>
+	</complexType>
+	
+	<complexType name="Dyn2ModelliTScriptType">
+		<sequence>
+		   <element name="evento" type="string" />
+			<element name="binaryData" type="base64Binary" xmime:expectedContentTypes="application/octet-stream" minOccurs="0"/>
+		</sequence>
+	</complexType>	
+	
+	
+		
+	
+</schema>

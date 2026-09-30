@@ -1,0 +1,1 @@
+D:\SVILUPPO\apache-cxf-2.5.1\bin\wsdl2java.bat -p it.gruppoinit.nlaatti.schemas.messages -client -frontend jaxws21 ws-nla-atti.wsdl

@@ -1,0 +1,14 @@
+<ul>
+  @for (sezione of dataSource; track sezione; let i = $index) {
+    <li
+      (click)="scrollTo(sezione)"
+        [ngClass]="{
+            active:
+                (sezione | slugify) === sezioneAttiva ||
+                (i === 0 && sezioneAttiva === '')
+        }"
+      >
+      {{ sezione }}
+    </li>
+  }
+</ul>

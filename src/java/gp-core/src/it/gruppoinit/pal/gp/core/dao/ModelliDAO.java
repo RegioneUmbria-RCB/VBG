@@ -1,0 +1,22 @@
+package it.gruppoinit.pal.gp.core.dao;
+
+import it.gruppoinit.pal.gp.core.domain.Modelli;
+import it.gruppoinit.pal.gp.core.domain.PkId;
+import it.gruppoinit.pal.gp.core.domain.Software;
+
+import java.util.List;
+import java.util.Set;
+
+/**
+ * 
+ * @author Luca Proietti
+ */
+public interface ModelliDAO extends BaseDAO<Modelli, PkId> {
+
+    /**
+     * Una lista di Modulistiche filtrata tramite la lista di Software abilitati per quel Responsabile e ordinata per il
+     * campo ordine ASC
+     * 
+     */
+    public List<Modelli> findByFilter(Set<Software> softwareList);
+}

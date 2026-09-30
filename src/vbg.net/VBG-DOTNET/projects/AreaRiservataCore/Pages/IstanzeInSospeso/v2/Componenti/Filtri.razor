@@ -1,0 +1,231 @@
+﻿@using AreaRiservataCore.Shared.enums
+@using VBG.BlazorComponentsLibrary
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.RisorseTestuali
+
+
+<div class="cmp-filter">
+    <div class="filter-section">
+        <h1 class="cmp-filter__title title-xxlarge">@Title</h1>
+        <div class="filter-wrapper d-flex align-items-center">
+            <button disabled="@Disabled" type="button" aria-labelledby="buttonFiltraPratiche" class="btn p-0 pe-2 shadow-none" data-bs-toggle="modal" data-bs-target="@($"#modal-{Id}")">
+                <span class="rounded-icon">
+                    <SvgIcon IconId="it-funnel" CssClass="icon-primary icon-xs me-1"></SvgIcon>
+                </span>
+                <span id="buttonFiltraPratiche">Filtra</span>
+            </button>
+            <div class="dropdown">
+                <button disabled="@Disabled" class="btn btn-dropdown dropdown-toggle shadow-none" type="button" id="@($"dropdownMenu-{Id}")" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-labelledby="buttonOrdinaPratiche" data-focus-mouse="false">
+                    <SvgIcon IconId="it-expand" CssClass="icon-expand icon-sm icon-primary"></SvgIcon>
+                    <span id="buttonOrdinaPratiche" class="dropdown__title">Ordina</span>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="@($"dropdownMenu-{Id}")" style="">
+                    <div class="link-list-wrapper">
+                        <ul class="link-list">
+                            <li>
+                                <a class="dropdown-item list-item" href="@_navigationManager.Uri" @onclick="async () => await SetOrder(OrderByDate.DataAscendente)" @onclick:preventDefault>
+                                    <span class="@(OrdinaPer switch { OrderByDate.DataDiscendente => "", OrderByDate.DataAscendente => "fw-bold"})">
+                                        <SvgIcon IconId="it-arrow-up" CssClass="icon-expand icon-sm icon-primary"></SvgIcon>Meno recente
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item list-item" href="@_navigationManager.Uri" @onclick="async () => await SetOrder(OrderByDate.DataDiscendente)" @onclick:preventDefault>
+                                    <span class="@(OrdinaPer switch { OrderByDate.DataAscendente => "", OrderByDate.DataDiscendente => "fw-bold"})">
+                                        <SvgIcon IconId="it-arrow-down" CssClass="icon-expand icon-sm icon-primary"></SvgIcon>Più recente
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="appliedFilters">
+        @if (filtri != null && filtri.FiltroPerDataImpostato())
+        {
+            <Chips Color="Enumerators.Color.PRIMARY" Text="Filtro Data" ShowCloseButton="true" OnCloseClicked="() => OnFiltroClose(TipoFiltroIstanzeInSospeso.Data)"></Chips>
+        }
+        @if (filtri != null && filtri.FiltroPerRichiedenteImpostato())
+        {
+            <Chips Color="Enumerators.Color.PRIMARY" Text="Filtro Richiedente" ShowCloseButton="true" OnCloseClicked="() => OnFiltroClose(TipoFiltroIstanzeInSospeso.Richiedente)"></Chips>
+        }
+    </div>
+    <div class="cmp-input-search">
+        <div class="form-group autocomplete-wrapper">
+            <div class="input-group">
+                <label for="@($"cerca-{Id}")" class="visually-hidden active">Cerca nel sito</label>
+                <DelayedTextInputComponent Id="@($"cerca-{Id}")" type="search" class="autocomplete form-control" placeholder="Cerca" name="pratiche"
+                                           Text="@RicercaTestuale"
+                                           RicercaChanged="RicercaChanged"
+                                           Disabled="@Disabled">
+                </DelayedTextInputComponent>
+                <ul class="autocomplete-list"></ul>
+
+                <span class="autocomplete-icon" aria-hidden="true">
+                    <SvgIcon CssClass="icon-sm" IconId="it-search"></SvgIcon>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ModalComponent Id="@($"modal-{Id}")" ShowCloseButton="true" ShowHeader="true" CssContentClass="h-100" Scrollable="true" OnModalClose="@CloseModalFiltri">
+    <HeaderTemplate>
+        <h2 class="h3">Filtri</h2>
+    </HeaderTemplate>
+    <BodyTemplate>
+        <div class="row">
+            <div class="col-md-6">
+                <DateInput Id="@($"{Id}-start-date")"
+                           Label="Dalla data"
+                           Value="@filtriSelezionati?.startDate"
+                           ValueChanged="EventCallback.Factory.Create(this, (DateTime? d) => filtriSelezionati!.startDate = d)">
+                </DateInput>
+            </div>
+            
+            <div class="col-md-6">
+                <DateInput Id="@($"{Id}-end-date")"
+                           Label="Alla data"
+                           Value="@filtriSelezionati?.endDate"
+                           ValueChanged="EventCallback.Factory.Create(this, (DateTime? d) => filtriSelezionati!.endDate = d)">
+                </DateInput>
+            </div>
+            
+        </div>
+        <div class="row">
+            <div class="col-md-12 mt-4">
+                <DropDown Id="filtro-richiedenti" Label="Richiedente"
+                          @bind-Value="filtriSelezionati.richiedente"
+                          Items="this.ListaRichiedenti">
+                </DropDown>
+            </div>
+            
+        </div>
+        <br />
+        <button class="btn btn-primary" aria-labelledby="buttonApplicaFiltriPratiche" data-bs-dismiss="modal" @onclick="@(async () => await filtriChanged())"><span id="buttonApplicaFiltriPratiche">Applica</span></button>
+        <button class="btn btn-secondary" aria-labelledby="buttonReimpostaFiltriPratiche" data-bs-dismiss="modal" @onclick="@(async () => await filtriReset())"><span id="buttonReimpostaFiltriPratiche">Reimposta</span></button>
+    </BodyTemplate>
+</ModalComponent>
+
+@code {
+    private FiltroIstanzeInSospeso filtri = new();
+    private FiltroIstanzeInSospeso filtriSelezionati = new();
+
+    /// <summary>
+    /// The component unique Id
+    /// </summary>
+    [Parameter, EditorRequired]
+    public string Id { get; set; } = default!;
+
+    /// <summary>
+    /// The Section title
+    /// </summary>
+    [Parameter]
+    public string Title { get; set; } = "";
+
+    /// <summary>
+    /// Choose the documents display order
+    /// </summary>
+    [Parameter]
+    public OrderByDate OrdinaPer { get; set; } = OrderByDate.DataDiscendente;
+
+    /// <summary>
+    /// The event connected to OrdinaPer parameter
+    /// </summary>
+    [Parameter]
+    public EventCallback<OrderByDate> OrdinaChanged { get; set; }
+
+    /// <summary>
+    /// Choose if disabled
+    /// </summary>
+    [Parameter]
+    public bool Disabled { get; set; }
+
+    [Parameter]
+    public List<string>? ListaRichiedenti { get; set; } = default!;
+
+    [Inject]
+    public NavigationManager _navigationManager { get; set; } = default!;
+
+    private async Task SetOrder(OrderByDate order)
+    {
+        OrdinaPer = order;
+
+        await OrdinaChanged.InvokeAsync(order);
+    }
+
+    /// <summary>
+    /// The string used as search parameter inside document title and body
+    /// </summary>
+    [Parameter]
+    public string RicercaTestuale { get; set; } = "";
+
+    /// <summary>
+    /// The event connected to RicercaTestuale parameter
+    /// </summary>
+    [Parameter]
+    public EventCallback<string> RicercaChanged { get; set; }
+
+    /// <summary>
+    /// The event connected to FiltriDiRicerca parameter
+    /// </summary>
+    [Parameter]
+    public EventCallback<FiltroIstanzeInSospeso> FiltriChanged { get; set; }
+
+    private async Task filtriChanged()
+    {
+        if (filtriSelezionati.startDate != filtri.startDate)
+        {
+            filtri.startDate = filtriSelezionati.startDate;
+        }
+
+        if (filtriSelezionati.endDate != filtri.endDate)
+        {
+            filtri.endDate = filtriSelezionati.endDate;
+        }
+
+        if (filtriSelezionati.richiedente != filtri.richiedente)
+        {
+            filtri.richiedente = filtriSelezionati.richiedente;
+        }
+
+        await FiltriChanged.InvokeAsync(filtri);
+    }
+
+    private async Task filtriReset()
+    {
+        filtri = new();
+        filtriSelezionati = new();
+
+        await FiltriChanged.InvokeAsync(filtri);
+    }
+
+    private async Task OnFiltroClose(TipoFiltroIstanzeInSospeso tipoFiltro)
+    {
+        switch (tipoFiltro)
+        {
+            case TipoFiltroIstanzeInSospeso.Data:
+                filtriSelezionati.startDate =
+                filtriSelezionati.endDate = null;
+                filtri.startDate = filtriSelezionati.startDate;
+                filtri.endDate = filtriSelezionati.endDate;
+
+                break;
+
+            case TipoFiltroIstanzeInSospeso.Richiedente:
+                filtriSelezionati.richiedente = null;
+                filtri.richiedente = filtriSelezionati.richiedente;
+                break;
+        }
+        await FiltriChanged.InvokeAsync(filtri);
+    }
+
+    private void CloseModalFiltri()
+    {
+        filtriSelezionati.endDate = filtri.endDate;
+        filtriSelezionati.startDate = filtri.startDate;
+        filtriSelezionati.richiedente = filtri.richiedente;
+    }
+}

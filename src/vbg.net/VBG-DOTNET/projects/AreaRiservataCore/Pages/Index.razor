@@ -1,0 +1,18 @@
+﻿@page "/{IdComune}/{Software}"
+@using Init.Sigepro.FrontEnd.AppLogic.Configurazione.V2
+@using Init.Sigepro.FrontEnd.CoreServices.GestioneUrl
+@inherits BasePage
+@attribute [Authorize];
+
+<TitoloPagina>Benvenuto nell'area riservata</TitoloPagina>
+<h2>Caricamento in corso...</h2>
+@code {
+
+	protected override async Task OnInitializedAsync()
+	{
+		await Task.Run(() => GotoAsync("home"));			
+		
+		await base.OnInitializedAsync();
+	}
+
+}

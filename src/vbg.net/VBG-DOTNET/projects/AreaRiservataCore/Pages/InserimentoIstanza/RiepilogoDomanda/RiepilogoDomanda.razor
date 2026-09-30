@@ -1,0 +1,102 @@
+﻿@page "/{IdComune}/{Software}/inserimento-istanza/riepilogo-domanda/{idDomanda:int}/{stepId:int}"
+@using Init.Sigepro.FrontEnd.AppLogic.GenerazioneDocumentiDomanda.GenerazioneRiepilogoDomanda
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneAllegatiDomanda.RiepilogoDomanda
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneOggetti
+@using Init.Sigepro.FrontEnd.AppLogic.InvioDomanda
+@using Init.Sigepro.FrontEnd.Infrastructure.StepsDomanda.Attributi
+
+@inherits IstanzeStepPage
+
+<RiepilogoDomandaMainComponent DatiConfigurazione="this._datiConfigurazione"
+                               OnClose="ReturnToHomeAsync"
+                               DomandaCorrente="this.DomandaCorrente"
+                               OnInvioRiuscito="OnInvioRiuscitoAsync"
+                               InvioDomandaService="_invioDomandaArService"
+                               ParametriInvioDomanda="_parametriInvio"
+                               GeneraRiepilogoCallback="GeneraRiepilogoAsync"></RiepilogoDomandaMainComponent>
+
+
+@code {
+    [Inject]
+    public GenerazioneRiepilogoDomandaService _generazioneRiepilogoDomandaService { get; set; } = default!;
+    [Inject]
+    public InvioDomandaAreaRiservataService _invioDomandaArService { get; set; } = default!;
+    [Inject]
+    public RiepilogoDomandaAllegatoService _riepilogoDomandaService { get; set; } = default!;
+    #region Parametri letti dal file xml
+
+    [StepProperty]
+    public string DescrizioneFaseRiepilogo { get; set; } = "";
+    [StepProperty]
+    public string TitoloFaseRiepilogo { get; set; } = "Riepilogo dei dati immessi";
+    [StepProperty]
+    public string TitoloFaseInvio { get; set; } = "Sottoscrizione e invio dell'istanza";
+    [StepProperty]
+    public bool AggiungiSchedeNonFirmateARiepilogoAllegati { get; set; } = true;
+    [StepProperty]
+    public bool MostraRiepilogoDomanda { get; set; } = true;
+    [StepProperty]
+    public string UrlRedirectInvioRiuscito { get; set; } = "inserimento-istanza/certificato-invio";
+    //StepProperty di InvioIstanza
+    [StepProperty]
+    public string SottotitoloFaseInvio { get; set; } = "Scaricare, firmare digitalmente e ricaricare il documento";
+    [StepProperty]
+    public string DescrizioneFaseInvio { get; set; } = "Descrizione fase invio";
+    [StepProperty]
+    public string TestoDichiarazione { get; set; } = "";
+    [StepProperty]
+    public string TestoCheckDichiarazione { get; set; } = "Check dichiarazione";
+    [StepProperty]
+    public string TestoBottoneTrasferisciIstanza { get; set; } = "Trasferisci l'istanza al comune";
+    [StepProperty]
+    public string TitoloGrigliaSottoscrittori { get; set; } = "L'istanza deve essere firmata da";
+    [StepProperty]
+    public string TitoloGrigliaNonSottoscrittori { get; set; } = "I soggetti che non sottoscrivono sono";
+    [StepProperty]
+    public bool MostraGrigliaSottoscrittori { get; set; } = true;
+    [StepProperty]
+    public bool MostraGrigliaNonSottoscrittori { get; set; } = true;
+    [StepProperty]
+    public bool VerificaFirmaSuRiepilogo { get; set; } = true;
+    #endregion
+
+    private DatiConfigurazioneRiepilogo? _datiConfigurazione;
+
+    private ParametriInvioDomanda? _parametriInvio;
+
+    protected override void OnInitializeStep()
+    {
+        this._riepilogoDomandaService.EliminaRiepiloghiDomandaInEccesso(this.IdDomanda!.Value);
+
+        var riepilogo = this.DomandaCorrente.Documenti.Intervento.GetRiepilogoDomanda();
+
+        this._datiConfigurazione = new DatiConfigurazioneRiepilogo
+        {
+            AggiungiSchedeNonFirmateARiepilogoAllegati = this.AggiungiSchedeNonFirmateARiepilogoAllegati,
+            DescrizioneFaseInvio = this.DescrizioneFaseInvio,
+            DescrizioneFaseRiepilogo = this.DescrizioneFaseRiepilogo,
+            MostraGrigliaNonSottoscrittori = this.MostraGrigliaNonSottoscrittori,
+            MostraGrigliaSottoscrittori = this.MostraGrigliaSottoscrittori,
+            MostraRiepilogoDomanda = this.MostraRiepilogoDomanda,
+            SottotitoloFaseInvio = this.SottotitoloFaseInvio,
+            TestoBottoneTrasferisciIstanza = this.TestoBottoneTrasferisciIstanza,
+            TestoCheckDichiarazione = this.TestoCheckDichiarazione,
+            TestoDichiarazione = this.TestoDichiarazione,
+            TitoloFaseInvio = this.TitoloFaseInvio,
+            TitoloFaseRiepilogo = this.TitoloFaseRiepilogo,
+            TitoloGrigliaNonSottoscrittori = this.TitoloGrigliaNonSottoscrittori,
+            TitoloGrigliaSottoscrittori = this.TitoloGrigliaSottoscrittori,
+            VerificaFirmaSuRiepilogo = this.VerificaFirmaSuRiepilogo,
+            RichiedeFirmaDigitale = riepilogo.RichiedeFirmaDigitale
+        };
+
+        this._parametriInvio = ParametriInvioDomanda.AreaRiservata(!riepilogo.RichiedeFirmaDigitale);
+    }
+
+    private async Task<BinaryFile> GeneraRiepilogoAsync()
+        => await this._generazioneRiepilogoDomandaService.GeneraRiepilogoDomandaAsync(this.IdDomanda!.Value, this.AggiungiSchedeNonFirmateARiepilogoAllegati);
+
+    private async Task ReturnToHomeAsync() => await this.GotoAsync("home");
+
+    private async Task OnInvioRiuscitoAsync(DatiIstanzaInviata datiIstanza) => await this.GotoAsync(this.UrlRedirectInvioRiuscito, datiIstanza.IdDomandaOnline, datiIstanza.CodiceIstanza);
+}

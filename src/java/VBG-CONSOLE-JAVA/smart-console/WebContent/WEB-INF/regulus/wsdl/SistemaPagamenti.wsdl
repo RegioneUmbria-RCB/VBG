@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<wsdl:definitions targetNamespace="http://regulus.it/gestoreincassi"
+	xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://regulus.it/gestoreincassi"
+	xmlns:intf="http://regulus.it/gestoreincassi" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<wsdl:message name="richiestaResponse">
+		<wsdl:part name="result" type="xsd:string" />
+	</wsdl:message>
+	<wsdl:message name="richiestaRequest">
+		<wsdl:part name="xmlInput" type="xsd:string" />
+	</wsdl:message>
+	<wsdl:portType name="SistemaPagamenti">
+		<wsdl:operation name="richiesta" parameterOrder="xmlInput">
+			<wsdl:input message="impl:richiestaRequest" name="richiestaRequest" />
+			<wsdl:output message="impl:richiestaResponse" name="richiestaResponse" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="SistemaPagamentiSoapBinding" type="impl:SistemaPagamenti">
+		<wsdlsoap:binding style="rpc"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="richiesta">
+			<wsdlsoap:operation soapAction="" />
+			<wsdl:input name="richiestaRequest">
+				<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="http://regulus.it/gestoreincassi" use="encoded" />
+			</wsdl:input>
+			<wsdl:output name="richiestaResponse">
+				<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="http://regulus.it/gestoreincassi" use="encoded" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="SistemaPagamentiService">
+		<wsdl:port binding="impl:SistemaPagamentiSoapBinding" name="SistemaPagamenti">
+			<wsdlsoap:address
+				location="http://localhost:8080/sigepro2dev/axisservices/SistemaPagamenti" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

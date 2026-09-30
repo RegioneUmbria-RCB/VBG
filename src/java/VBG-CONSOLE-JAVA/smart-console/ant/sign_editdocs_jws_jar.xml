@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="editdocs" default="signjar" basedir="../.">
+	<property name="jarsigner.keystore.path" value="./keystore/keystore.jks" />
+	<property name="jarsigner.keystore.password" value="changeit" />
+	<property name="jarsigner.keystore.key.alias" value="gruppoinit" />
+	<property name="jarsigner.keystore.key.password" value="${jarsigner.keystore.password}" />
+	<target name="signjar" description="Create and sign init-editdocs-jws.jar" depends="modifyJarManifest">
+		<signjar jar="./build/init-editdocs-jws-unsigned.jar" alias="${jarsigner.keystore.key.alias}" keystore="${jarsigner.keystore.path}" storepass="${jarsigner.keystore.password}" keypass="${jarsigner.keystore.key.password}" storetype="jks" signedJar="./build/init-editdocs-jws.jar" verbose="true" />
+		<copy todir="./WebContent/applets">
+			<fileset file="./build/init-editdocs-jws.jar" />
+		</copy>
+		<delete file="./build/init-editdocs-jws-unsigned.jar" />
+		<delete file="./build/init-editdocs-jws.jar" />
+	</target>
+	<target name="makejar" description="Create init-editdocs-jws-unsigned.jar" depends="">
+		<jar includes="**/it/gruppoinit/pal/gp/backoffice/jws/**" destfile="./build/init-editdocs-jws-unsigned.jar" basedir="./build/classes" />
+	</target>
+	<target name="modifyJarManifest" description="Add new manifest attributes for security" depends="makejar">
+		<jar file="./build/init-editdocs-jws-unsigned.jar" update="true">
+			<manifest>
+				<attribute name="Permissions" value="all-permissions" />
+				<attribute name="Codebase" value="*" />
+				<attribute name="Application-Name" value="Edit Docs Application" />
+				<attribute name="Main-Class" value="it.gruppoinit.pal.gp.backoffice.jws.EditDocsApplication" />
+			</manifest>
+		</jar>
+	</target>
+</project>

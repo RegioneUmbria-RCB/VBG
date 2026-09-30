@@ -1,0 +1,93 @@
+﻿@using Init.Sigepro.FrontEnd.AppLogic.Services.Domanda
+@using System.ComponentModel.DataAnnotations
+@using VBG.BlazorComponentsLibrary.DesignComuni.Forms
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.EditFormComponents
+@using VBG.BlazorComponentsLibrary.Utils
+@if (Procura is not null)
+{
+    <BasicModal OnClose="OnCancel" AlwaysVisible="true" Size="ModalSizeEnum.Small">
+        <ModalHeader Titolo="Caricamento procura"></ModalHeader>
+        <ModalBody>
+            <VbgForm Id="formUpload" Model="_model" OnValidSubmit="OnValidSubmit">
+                <FormUpload Label="@(Procura.RichiedeFirmaDigitale? "Documento di procura firmato" : "Documento di procura")"
+                            @bind-Value="_model.CodiceOggetto"
+                            Obbligatorio="true"
+                            VerificaFirmaDigitale="Procura.RichiedeFirmaDigitale"
+                            ValidationFor="() => _model.CodiceOggetto">
+                </FormUpload>
+
+                @if (Procura.RichiedeCaricamentoDocumentoIdentita)
+                {
+                    <FormUpload Label="@(Procura.RichiedeFirmaDigitale? "Documento di identità firmato" : "Documento di identità")"
+                                @bind-Value="_model.DocIdentitaCodiceOggetto"
+                                Obbligatorio="true"
+                                VerificaFirmaDigitale="Procura.RichiedeFirmaDigitale"
+                                ValidationFor="() => _model.DocIdentitaCodiceOggetto">
+                    </FormUpload>
+                }
+            </VbgForm>
+        </ModalBody>
+        <ModalFooter>
+            <FormSubmitButton Form="formUpload"></FormSubmitButton>
+        </ModalFooter>
+    </BasicModal>
+}
+
+@code {
+    [Inject]
+    public ProcureService _procureService { get; set; } = default!;
+
+
+    [Parameter]
+    public ProcuraItem Procura { get; set; }
+    [Parameter]
+    public EventCallback OnCancel { get; set; }
+    [Parameter]
+    public EventCallback OnUploadSuccesful { get; set; }
+    [Parameter]
+    public EventCallback<string> OnError { get; set; }
+
+    public class UploadModel
+    {
+        public int? CodiceOggetto { get; set; }
+
+        public int? DocIdentitaCodiceOggetto { get; set; }
+    }
+
+    private UploadModel _model = new();
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        _model = new();
+
+        if (Procura is not null)
+        {
+            _model.CodiceOggetto = Procura.CodiceOggetto;
+            _model.DocIdentitaCodiceOggetto = Procura.DocIdentitaCodiceOggetto;
+        }
+    }
+
+    private async Task OnValidSubmit()
+    {
+        if (Procura is null || 
+            !_model.CodiceOggetto.HasValue ||
+            (Procura.RichiedeCaricamentoDocumentoIdentita && !_model.DocIdentitaCodiceOggetto.HasValue))
+        {
+            return;
+        }
+
+        try
+        {
+            this._procureService.CaricaAllegatiProcura(Procura.IdDomanda.Value, Procura.CodiceFiscaleProcurato, Procura.CodiceFiscaleProcuratore, _model.CodiceOggetto.Value, _model.DocIdentitaCodiceOggetto);
+
+            await OnUploadSuccesful.InvokeAsync();
+        }
+        catch (Exception ex)
+        {
+            await OnError.InvokeAsync(ex.Message);
+        }
+    }
+}

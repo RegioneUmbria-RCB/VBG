@@ -1,0 +1,50 @@
+﻿@page "/modulifvg/{Alias}/{Software}/compila/{IdDomandaFEG:long}/{IdQuadro}/OK"
+@using AreaRiservataCore.Pages.ModuliFvg;
+@using AreaRiservataCore.Shared;
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneServiziFVG;
+
+@using VBG.BlazorComponentsLibrary.DesignComuni.Spinner
+
+
+@if (_titoloPagina != null)
+{
+    <h1>
+        @_titoloPagina
+    </h1>
+
+    <div class="alert alert-success" role="alert">
+        <i class="glyphicon glyphicon-ok"></i>
+        <span class="fw-bold">PDF creato con successo</span>, è ora possibile chiudere questa finestra per proseguire con la compilazione della domanda.
+    </div>
+}
+
+@code {
+    [Inject]
+    public ServiziFVGService _service { get; set; } = default!;
+    [Inject]
+    public SpinnerService _spinnerService { get; set; } = default!;
+    [Parameter]
+    public string Alias { get; set; } = default!;
+
+    [Parameter]
+    public string Software { get; set; } = default!;
+    [Parameter]
+    public long IdDomandaFEG { get; set; } = default!;
+
+    [Parameter]
+    public string IdQuadro { get; set; } = default!;
+    [CascadingParameter]
+    public MessageContainer MessageContainer { get; set; } = default!;
+    private string? _titoloPagina = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        await _spinnerService.ShowSpinnerAsync(() =>
+            {
+                var endoprocedimento = this._service.GetDatiModulo(Convert.ToInt64(IdDomandaFEG), this.IdQuadro);
+                this._titoloPagina = endoprocedimento.Descrizione;
+            });
+    }
+}

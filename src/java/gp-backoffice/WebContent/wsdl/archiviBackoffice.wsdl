@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:sch="http://gruppoinit.it/sigepro/schemas/messages/archiviBackoffice" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://gruppoinit.it/sigepro/definitions/archiviBackoffice" targetNamespace="http://gruppoinit.it/sigepro/definitions/archiviBackoffice">
+	<wsdl:types>
+		<schema xmlns="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://gruppoinit.it/sigepro/schemas/messages/archiviBackoffice" schemaLocation="archiviBackoffice.xsd" />
+		</schema>
+	</wsdl:types>
+	
+	<!-- DEFINIZIONE REQUEST -->
+	
+	<wsdl:message name="AlberoRequest">
+		<wsdl:part element="sch:AlberoRequest" name="AlberoRequest" />
+	</wsdl:message>
+	
+	<wsdl:message name="EndoprocedimentiRequest">
+		<wsdl:part element="sch:EndoprocedimentiRequest" name="EndoprocedimentiRequest" />
+	</wsdl:message>
+	
+	<wsdl:message name="AlberoprocEndoRequest">
+		<wsdl:part element="sch:AlberoprocEndoRequest" name="AlberoprocEndoRequest" />
+	</wsdl:message>
+	
+
+	<!-- DEFINIZIONE RESPONSE -->
+	
+	<wsdl:message name="AlberoResponse">
+		<wsdl:part element="sch:AlberoResponse" name="AlberoResponse" />
+	</wsdl:message>
+	
+	
+	<wsdl:message name="EndoprocedimentiResponse">
+		<wsdl:part element="sch:EndoprocedimentiResponse" name="EndoprocedimentiResponse" />
+	</wsdl:message>
+	
+	<wsdl:message name="AlberoprocEndoResponse">
+		<wsdl:part element="sch:AlberoprocEndoResponse" name="AlberoprocEndoResponse" />
+	</wsdl:message>
+	
+
+	
+	<!-- DEFINIZIONE OPERAZIONI -->
+		
+	<wsdl:portType name="ArchiviBackoffice">
+		<wsdl:operation name="importAlberoInterventi">
+			<wsdl:input message="tns:AlberoRequest" name="AlberoRequest" />
+			<wsdl:output message="tns:AlberoResponse" name="AlberoResponse" />
+		</wsdl:operation>
+		
+		<wsdl:operation name="importEndoprocedimenti">
+			<wsdl:input message="tns:EndoprocedimentiRequest" name="EndoprocedimentiRequest" />
+			<wsdl:output message="tns:EndoprocedimentiResponse" name="EndoprocedimentiResponse" />
+		</wsdl:operation>
+		
+		<wsdl:operation name="collegaEndoprocedimentiAdIntervento">
+			<wsdl:input message="tns:AlberoprocEndoRequest" name="AlberoprocEndoRequest" />
+			<wsdl:output message="tns:AlberoprocEndoResponse" name="AlberoprocEndoResponse" />
+		</wsdl:operation>
+		
+	</wsdl:portType>
+	
+	
+	<wsdl:binding name="ArchiviBackoffice11" type="tns:ArchiviBackoffice">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="importAlberoInterventi">
+			<soap:operation soapAction="importAlberoInterventi" />
+			<wsdl:input name="AlberoRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="AlberoResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="importEndoprocedimenti">
+			<soap:operation soapAction="importEndoprocedimenti" />
+			<wsdl:input name="EndoprocedimentiRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="EndoprocedimentiResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="collegaEndoprocedimentiAdIntervento">
+			<soap:operation soapAction="collegaEndoprocedimentiAdIntervento" />
+			<wsdl:input name="AlberoprocEndoRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="AlberoprocEndoResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+	
+	</wsdl:binding>
+	<wsdl:service name="ArchiviBackofficeService">
+		<wsdl:port binding="tns:ArchiviBackoffice11" name="ArchiviBackoffice11">
+			<soap:address location="http://devel9:8080/vbg/services/" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

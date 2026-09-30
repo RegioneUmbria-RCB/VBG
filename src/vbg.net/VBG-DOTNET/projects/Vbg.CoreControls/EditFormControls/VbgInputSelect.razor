@@ -1,0 +1,61 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+@using System.Diagnostics.CodeAnalysis
+@using System.Linq.Expressions
+@typeparam TValue
+@inherits InputBase<TValue>
+
+<div class="mb-3 @CssClass">
+	@if (!String.IsNullOrEmpty(Label))
+	{
+		<LabelContainerComponent RelativeControlId="@this.Id" ResourceId="@this.ResourceId" Value="@this.Label" Required="@this.Required" CanEditResourceText="@this.CanEditResourceText"></LabelContainerComponent>
+	}
+
+	<InputSelect id="@this.Id" TValue="TValue" Value=@this.Value ValueChanged="@OnValueChanged" class="form-control form-select" ValueExpression="@this.ValueExpression" required="@Required">
+		@ChildContent
+	</InputSelect>
+
+	@if (ValidationFor != null)
+	{
+		<div class="form-control-validation help-block">
+			<ValidationMessage For="@ValidationFor" />
+		</div>
+	}
+</div>
+
+
+@code {
+	[Parameter]	public string Label { get; set; } = "";
+	[Parameter]	public RenderFragment? ChildContent { get; set; }
+	[Parameter]	public string Id { get; set; } = "";
+	[Parameter]	public string ResourceId { get; set; } = "";
+	[Parameter]	public bool Required { get; set; } = false;
+	[Parameter]	public bool CanEditResourceText { get; set; } = false;
+	[Parameter] public Expression<Func<TValue>> ValidationFor { get; set; } = default!;
+	[Parameter] public EventCallback<TValue> ValueHasChanged { get; set; }
+
+	protected override void OnInitialized()
+	{
+		EditContext.Validate();
+		base.OnInitialized();
+	}
+
+	protected override void OnParametersSet()
+	{
+		if (String.IsNullOrEmpty(this.Id))
+		{
+			this.Id = Guid.NewGuid().ToString();
+		}
+
+		base.OnParametersSet();
+	}
+	
+	private void OnValueChanged(TValue value)
+	{
+		ValueChanged.InvokeAsync(value);
+		if (this.ValueHasChanged.HasDelegate)
+			this.ValueHasChanged.InvokeAsync(value);
+	}
+
+	protected override bool TryParseValueFromString(string value, [MaybeNullWhen(false)] out TValue result, [NotNullWhen(false)] out string validationErrorMessage)
+		=> this.TryParseSelectableValueFromString(value, out result, out validationErrorMessage);
+}

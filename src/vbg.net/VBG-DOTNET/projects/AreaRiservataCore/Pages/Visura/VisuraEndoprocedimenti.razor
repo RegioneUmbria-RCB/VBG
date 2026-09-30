@@ -1,0 +1,65 @@
+﻿@using AreaRiservataCore.Shared.DetailCards
+@using Init.Sigepro.FrontEnd.AppLogic.WebServiceReferences.IstanzeService
+@using VBG.BlazorComponentsLibrary.DesignComuni.Download
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards.CardButtons
+@using static VBG.BlazorComponentsLibrary.DesignComuni.Download.AttachmentsMenu
+
+
+@if (DataSource?.Any() ?? false)
+{
+    <DetailCardGroup Title="Endoprocedimenti">
+        <DetailCardList Items="DataSource">
+            <ItemTemplate Context="item">
+                @if (item.Allegati?.Any() ?? false && PermettiDownload)
+                {
+                    <DetailCardAction Text="@((item.Allegati.Count()) == 1 ? "Scarica" : $"{item.Allegati.Count()} Allegati")" OnClick="() => MostraAllegatiAsync(item.Allegati)"></DetailCardAction>
+                }
+                <DetailCardTitle>@item.Endoprocedimento</DetailCardTitle>
+
+                @if (false)
+                {
+                    var dataSourceAllegati = item.Allegati?.Select(x => new AllegatiData
+                    {
+                        Id = Convert.ToInt32(x.Oggetto.CODICEOGGETTO),
+                        Descrizione = x.ALLEGATOEXTRA
+                    }) ?? Enumerable.Empty<AllegatiData>();
+
+                    @if (dataSourceAllegati.Any())
+                    {
+                        <StepAttachments IdCounter="1" Titolo="Scarica" DataSource="dataSourceAllegati"></StepAttachments>
+                    }
+                }
+            </ItemTemplate>
+        </DetailCardList>
+    </DetailCardGroup>
+
+
+    @if (_allegatiScaricabili?.Any() ?? false)
+    {
+        <BasicModal OnClose="() => _allegatiScaricabili = null" AlwaysVisible="true" Size="ModalSizeEnum.Small">
+            <ModalHeader Titolo="Scarica allegati" Size="ModalHeaderSizeEnum.Small">
+            </ModalHeader>
+            <ModalBody>
+                <ul class="list-group">
+                    @foreach (var allegato in _allegatiScaricabili)
+                    {
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold">@allegato.ALLEGATOEXTRA</div>
+                            </div>
+                            <small><button @onclick="() => DownloadAttachmentAsync(Convert.ToInt32(allegato.CodiceOggetto))">Scarica</button></small>
+                        </li>
+                    }
+                </ul>
+            </ModalBody>
+            <ModalFooter CancelText="Chiudi">
+            </ModalFooter>
+        </BasicModal>
+    }
+}
+
+@code {
+
+}

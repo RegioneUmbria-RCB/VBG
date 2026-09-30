@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://www.paevolution.com/ws/pagamenti/" xmlns:pay="http://www.paevolution.com/ws/pagamenti_types/"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="pagamenti"
+	targetNamespace="http://www.paevolution.com/ws/pagamenti/">
+	
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://www.paevolution.com/ws/pagamenti/"
+			xmlns:pay="http://www.paevolution.com/ws/pagamenti_types/">
+			<xsd:import schemaLocation="pagamenti_types.xsd"
+				namespace="http://www.paevolution.com/ws/pagamenti_types/" />
+        </xsd:schema>
+	</wsdl:types>
+
+	<wsdl:message name="CaricamentoMassivoPosizioniDebitorieRequest">
+		<wsdl:part element="pay:CaricamentoMassivoPosizioniDebitorieType" name="CaricamentoMassivoPosizioniDebitorieRequest" />
+	</wsdl:message>
+	
+	<wsdl:message name="CaricamentoMassivoPosizioniDebitorieResponse">
+		<wsdl:part element="pay:OperazionePosizioniDebitorieResponseType" name="CaricamentoMassivoPosizioniDebitorieResponse" />
+	</wsdl:message>
+	
+	<wsdl:message name="InserisciPosizioniDebitorieRequest">
+		<wsdl:part element="pay:InserisciPosizioniDebitorieType" name="InserisciPosizioniDebitorieRequest" />
+	</wsdl:message>
+	<wsdl:message name="InserisciPosizioniDebitorieResponse">
+		<wsdl:part element="pay:OperazionePosizioniDebitorieResponseType" name="InserisciPosizioniDebitorieResponse" />
+	</wsdl:message>
+	<wsdl:message name="AnnullaPosizioniDebitorieRequest">
+		<wsdl:part name="AnnullaPosizioniDebitorieRequest" element="pay:AnnullaPosizioniDebitorieType"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="AnnullaPosizioniDebitorieResponse">
+		<wsdl:part name="AnnullaPosizioniDebitorieResponse" element="pay:OperazionePosizioniDebitorieResponseType"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="AttivaSessionePagamentoRequest">
+		<wsdl:part name="AttivaSessionePagamentoRequest" element="pay:AttivaSessionePagamentoType"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="AttivaSessionePagamentoResponse"> 
+		<wsdl:part name="AttivaSessionePagamentoResponse" element="pay:AttivaSessionePagamentoResponseType"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="AttivaPagamentoOnTheFlyRequest">
+		<wsdl:part name="AttivaPagamentoOnTheFlyRequest" element="pay:AttivaPagamentoOnTheFlyType" />
+	</wsdl:message>
+	<wsdl:message name="AttivaPagamentoOnTheFlyResponse"> 
+		<wsdl:part name="AttivaPagamentoOnTheFlyResponse" element="pay:AttivaPagamentoOnTheFlyResponseType"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="ModificaDataScadenzaRequest">
+		<wsdl:part name="ModificaDataScadenzaRequest" element="pay:ModificaDataScadenzaType" />
+	</wsdl:message>
+	<wsdl:message name="ModificaDataFineValiditaRequest">
+		<wsdl:part name="ModificaDataFineValiditaRequest" element="pay:ModificaDataFineValiditaType" />
+	</wsdl:message>
+	<wsdl:message name="ModificaDataScadenzaResponse"> 
+		<wsdl:part name="ModificaDataScadenzaResponse" element="pay:ModificaDataScadenzaResponseType"></wsdl:part>
+	</wsdl:message>	
+	<wsdl:message name="ModificaDataFineValiditaResponse"> 
+		<wsdl:part name="ModificaDataFineValiditaResponse" element="pay:ModificaDataFineValiditaResponseType"></wsdl:part>
+	</wsdl:message>	
+	<wsdl:message name="VerificaStatoPosizioniRequest">
+		<wsdl:part name="VerificaStatoPosizioniRequest" element="pay:VerificaStatoPosizioniType" />
+	</wsdl:message>
+	<wsdl:message name="VerificaStatoPosizioniResponse"> 
+		<wsdl:part name="VerificaStatoPosizioniResponse" element="pay:VerificaStatoPosizioniResponseType"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="RegistraPagamentiOfflineRequest">
+		<wsdl:part name="RegistraPagamentiOfflineRequest" element="pay:NotificaPagamentoOffline"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="RegistraPagamentiOfflineResponse">
+		<wsdl:part name="RegistraPagamentiOfflineResponse" element="pay:OperazionePosizioniDebitorieResponseType"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="InviaAvvisoPagamentoRequest">
+		<wsdl:part name="InviaAvvisoPagamentoRequest" element="pay:InviaAvvisiPagamentoType"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="InviaAvvisoPagamentoResponse">
+		<wsdl:part name="InviaAvvisoPagamentoResponse" element="pay:InviaAvvisoPagamentoResponseType"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="GeneraFatturaRequest">
+		<wsdl:part name="GeneraFatturaRequest" element="pay:GeneraFattureType"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="GeneraFatturaResponse">
+		<wsdl:part name="GeneraFatturaResponse" element="pay:GeneraFattureResponseType"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="ScaricaRicevutaRequest">
+		<wsdl:part name="ScaricaRicevutaRequest" element="pay:ScaricaRicevuteTelematicheType"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="ScaricaRicevutaResponse">
+		<wsdl:part name="ScaricaRicevutaResponse" element="pay:ScaricaRicevuteTelematicheResponseType"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="DocumentiRequest">
+		<wsdl:part name="DocumentiRequest" element="pay:DocumentiPosizioneDebitoriaType"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="DocumentiResponse">
+		<wsdl:part name="DocumentiResponse" element="pay:ElencoDocumentiType"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="InfoConnettoreRequest">
+		<wsdl:part name="InfoConnettoreRequest" element="pay:InfoConnettoreRequestType"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="InfoConnettoreResponse">
+		<wsdl:part name="InfoConnettoreResponse" element="pay:InfoConnettoreResponseType"></wsdl:part>
+	</wsdl:message>
+	<wsdl:portType name="pagamentiService">
+		<wsdl:operation name="CaricamentoMassivoPosizioniDebitorie">
+			<wsdl:input message="tns:CaricamentoMassivoPosizioniDebitorieRequest" name="CaricamentoMassivoPosizioniDebitorieRequest"/>
+			<wsdl:output message="tns:CaricamentoMassivoPosizioniDebitorieResponse" name="CaricamentoMassivoPosizioniDebitorieResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="InserisciPosizioniDebitorie">
+			<wsdl:input message="tns:InserisciPosizioniDebitorieRequest" name="InserisciPosizioniDebitorieRequest"/>
+			<wsdl:output message="tns:InserisciPosizioniDebitorieResponse" name="InserisciPosizioniDebitorieResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="AnnullaPosizioniDebitorie">
+			<wsdl:input message="tns:AnnullaPosizioniDebitorieRequest" name="AnnullaPosizioniDebitorieRequest"></wsdl:input>
+			<wsdl:output message="tns:AnnullaPosizioniDebitorieResponse" name="AnnullaPosizioniDebitorieResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="AttivaSessionePagamento">
+			<wsdl:input message="tns:AttivaSessionePagamentoRequest" name="AttivaSessionePagamentoRequest"></wsdl:input>
+			<wsdl:output message="tns:AttivaSessionePagamentoResponse" name="AttivaSessionePagamentoResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="AttivaPagamentoOnTheFly">
+			<wsdl:input message="tns:AttivaPagamentoOnTheFlyRequest" name="AttivaPagamentoOnTheFlyRequest"></wsdl:input>
+			<wsdl:output message="tns:AttivaPagamentoOnTheFlyResponse" name="AttivaPagamentoOnTheFlyResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ModificaDataScadenza">
+			<wsdl:input message="tns:ModificaDataScadenzaRequest" name="ModificaDataScadenzaRequest"></wsdl:input>
+			<wsdl:output message="tns:ModificaDataScadenzaResponse" name="ModificaDataScadenzaResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ModificaDataFineValidita">
+			<wsdl:input message="tns:ModificaDataFineValiditaRequest" name="ModificaDataFineValiditaRequest"></wsdl:input>
+			<wsdl:output message="tns:ModificaDataFineValiditaResponse" name="ModificaDataFineValiditaResponse"></wsdl:output>
+		</wsdl:operation>			
+		<wsdl:operation name="VerificaStatoPosizioni">
+			<wsdl:input message="tns:VerificaStatoPosizioniRequest" name="VerificaStatoPosizioniRequest"></wsdl:input>
+			<wsdl:output message="tns:VerificaStatoPosizioniResponse" name="VerificaStatoPosizioniResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="RegistraPagamentiOffline">
+			<wsdl:input message="tns:RegistraPagamentiOfflineRequest" name="RegistraPagamentiOfflineRequest"></wsdl:input>
+			<wsdl:output message="tns:RegistraPagamentiOfflineResponse" name="RegistraPagamentiOfflineResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="InviaAvvisoPagamento">
+			<wsdl:input message="tns:InviaAvvisoPagamentoRequest" name="InviaAvvisoPagamentoRequest"></wsdl:input>
+			<wsdl:output message="tns:InviaAvvisoPagamentoResponse" name="InviaAvvisoPagamentoResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ScaricaRicevutaTelematica">
+			<wsdl:input message="tns:ScaricaRicevutaRequest" name="ScaricaRicevutaTelematicaRequest"></wsdl:input>
+			<wsdl:output message="tns:ScaricaRicevutaResponse" name="ScaricaRicevutaTelematicaResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GeneraFattura">
+			<wsdl:input message="tns:GeneraFatturaRequest" name="GeneraFatturaRequest"></wsdl:input>
+			<wsdl:output message="tns:GeneraFatturaResponse" name="GeneraFatturaResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="DocumentiPosizione">
+			<wsdl:input message="tns:DocumentiRequest" name="DocumentiRequest"></wsdl:input>
+			<wsdl:output message="tns:DocumentiResponse" name="DocumentiResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="InfoConnettore">
+			<wsdl:input message="tns:InfoConnettoreRequest" name="InfoConnettoreRequest"></wsdl:input>
+			<wsdl:output message="tns:InfoConnettoreResponse" name="InfoConnettoreResponse"></wsdl:output>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="pagamenti" type="tns:pagamentiService">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="CaricamentoMassivoPosizioniDebitorie">
+			<soap:operation soapAction="http://www.paevolution.com/ws/pagamenti/caricamentomassivo" />
+			<wsdl:input name="CaricamentoMassivoPosizioniDebitorieRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="CaricamentoMassivoPosizioniDebitorieResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="InserisciPosizioniDebitorie">
+			<soap:operation soapAction="http://www.example.org/pagamenti/inserisci" />
+			<wsdl:input name="InserisciPosizioniDebitorieRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="InserisciPosizioniDebitorieResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="AnnullaPosizioniDebitorie">
+			<soap:operation soapAction="http://www.paevolution.com/ws/pagamenti/annulla" />
+			<wsdl:input name="AnnullaPosizioniDebitorieRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="AnnullaPosizioniDebitorieResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="AttivaSessionePagamento">
+			<soap:operation soapAction="http://www.paevolution.com/ws/pagamenti/attivasessione" />
+			<wsdl:input name="AttivaSessionePagamentoRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="AttivaSessionePagamentoResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="AttivaPagamentoOnTheFly">
+			<soap:operation soapAction="http://www.paevolution.com/ws/pagamenti/attivapagamentoonthefly" />
+			<wsdl:input name="AttivaPagamentoOnTheFlyRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="AttivaPagamentoOnTheFlyResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ModificaDataScadenza">
+			<soap:operation soapAction="http://www.paevolution.com/ws/pagamenti/ModificaDataScadenza" />
+			<wsdl:input name="ModificaDataScadenzaRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="ModificaDataScadenzaResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ModificaDataFineValidita">
+			<soap:operation soapAction="http://www.paevolution.com/ws/pagamenti/ModificaDataFineValidita" />
+			<wsdl:input name="ModificaDataFineValiditaRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="ModificaDataFineValiditaResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="VerificaStatoPosizioni">
+			<soap:operation soapAction="http://www.paevolution.com/ws/pagamenti/verificastatoposizioni" />
+			<wsdl:input name="VerificaStatoPosizioniRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="VerificaStatoPosizioniResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="RegistraPagamentiOffline">
+			<soap:operation soapAction="http://www.paevolution.com/ws/pagamenti/registrapagamentioffline" />
+			<wsdl:input name="RegistraPagamentiOfflineRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="RegistraPagamentiOfflineResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="InviaAvvisoPagamento">
+			<soap:operation soapAction="http://www.paevolution.com/ws/pagamenti/inviaavviso" />
+			<wsdl:input name="InviaAvvisoPagamentoRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="InviaAvvisoPagamentoResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ScaricaRicevutaTelematica">
+			<soap:operation soapAction="http://www.paevolution.com/ws/pagamenti/scaricaricevuta" />
+			<wsdl:input name="ScaricaRicevutaTelematicaRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="ScaricaRicevutaTelematicaResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GeneraFattura">
+			<soap:operation soapAction="http://www.paevolution.com/ws/pagamenti/generafattura" />
+			<wsdl:input name="GeneraFatturaRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="GeneraFatturaResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="DocumentiPosizione">
+			<soap:operation soapAction="http://www.paevolution.com/ws/pagamenti/documentiposizione" />
+			<wsdl:input name="DocumentiRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="DocumentiResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="InfoConnettore">
+			<soap:operation soapAction="http://www.paevolution.com/ws/pagamenti/infoconnettore" />
+			<wsdl:input name="InfoConnettoreRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="InfoConnettoreResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="pagamenti">
+		<wsdl:port binding="tns:pagamenti" name="pagamenti">
+			<soap:address location="http://www.example.org/" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

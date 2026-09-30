@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:sch="http://gruppoinit.it/sigepro/schemas/messages/iride" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://gruppoinit.it/sigepro/definitions/iride" targetNamespace="http://gruppoinit.it/sigepro/definitions/iride">
+	<wsdl:types>
+		<schema xmlns="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://gruppoinit.it/sigepro/schemas/messages/iride" schemaLocation="iride.xsd" />
+		</schema>
+	</wsdl:types>
+	<wsdl:message name="IrideMessaggioResponse">
+		<wsdl:part element="sch:IrideMessaggioResponse" name="IrideMessaggioResponse" />
+	</wsdl:message>
+	<wsdl:message name="IrideMessaggioRequest">
+		<wsdl:part element="sch:IrideMessaggioRequest" name="IrideMessaggioRequest" />
+	</wsdl:message>
+	<wsdl:portType name="IrideMessaggio">
+		<wsdl:operation name="IrideMessaggio">
+			<wsdl:input message="tns:IrideMessaggioRequest" name="IrideMessaggioRequest" />
+			<wsdl:output message="tns:IrideMessaggioResponse" name="IrideMessaggioResponse" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="IrideMessaggioSoap11" type="tns:IrideMessaggio">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="IrideMessaggio">
+			<soap:operation soapAction="getIrideMessaggio" />
+			<wsdl:input name="IrideMessaggioRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="IrideMessaggioResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="IrideMessaggioService">
+		<wsdl:port binding="tns:IrideMessaggioSoap11" name="IrideMessaggioSoap11">
+			<soap:address location="http://devel9:8080/vbg/services/" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

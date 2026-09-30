@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xsd:schema xmlns="http://www.muta.servizirl.it/schema/muta/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.muta.servizirl.it/schema/muta/1.0" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xsd:annotation>
+		<xsd:documentation xml:lang="it">
+			Changelog:
+				28/03/2011 - Sostituzione stato pratica 'DEFINITIVA' con stato 'SOSPESA'
+				
+				16/03/2011 - Definizione nuovi type per la gestione delle pratiche SCIA.
+
+				17/02/2011 - Aggiornato element codiceAOO e codiceAmministrazione in protocolloType.
+
+				02/11/2010 - Spostamento da schema DIAP di noEmptyStringType
+								 - prima definizione codiceAmministrazioneType
+								 - spostamento da schema DIAP e revisione protocolloType
+								 - revisione validazionePraticaType
+
+				12/10/2010 - revisione element id_pratica, reso nillable
+
+				13/09/2010 - Aggiornamento tipi di errore, aggiunta ERRORE_VALIDAZIONE_LOGICA
+								   - aggiornamento tipi validazione, aggiunte tipologie per la distinta degli allegati
+								   - revisione tipo validazionePraticaType
+								   - revisione tipo validazioneDIAPType
+
+				11/05/2010 - Integrazione della gestione delle notifiche degli errori nel modello B
+        </xsd:documentation>
+	</xsd:annotation>
+	<xsd:simpleType name="noEmptyStringType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="it">
+				14/09/2010 - Stringa non vuota e senza spazi in testa.
+				02/11/2010 - Spostamento da schema DIAP.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:pattern value="[^\s].*"/>
+			<!-- la stringa non può iniziare con uno spazio -->
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="codiceAmministrazioneType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="it">
+				02/11/2010 - Prima definizione type.
+                17/02/2011 - Revisione definizione per estensione lunghezza a 16 caratteri come da normativa
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="noEmptyStringType">
+			<xsd:pattern value="[0-9A-Za-z_\-]{1,16}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="numeroProtocolloType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="it">
+				17/02/2011 - Prima definizione type.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="noEmptyStringType">
+			<xsd:pattern value="[0-9]{1,7}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="protocolloType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="it">
+				17/02/2011 - Modifica elementi codiceAOO e codiceAmministrazione, aggiunto minOccurs="0".
+				17/02/2011 - Modifica tipo numeroRegistrazione: striinga numeriga di lunghezza fino a 7 caratteri.
+				02/11/2010 - Spostamento da schema DIAP e revisione type.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="codiceAOO" type="codiceAmministrazioneType" minOccurs="0"/>
+			<xsd:element name="numeroRegistrazione" type="numeroProtocolloType"/>
+			<xsd:element name="dataRegistrazione" type="xsd:date"/>
+			<xsd:element name="codiceAmministrazione" type="codiceAmministrazioneType" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="statoPraticaType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="it">
+				28/03/2011 - Sostituito stato pratica 'DEFINITIVA' con stato 'SOSPESA'
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="BOZZA"/>
+			<xsd:enumeration value="COMPILATA"/>
+			<xsd:enumeration value="DEFINITIVA"/>
+			<xsd:enumeration value="SOSPESA"/>
+			<!-- <xsd:enumeration value="RITIRATA"/> -->
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="statoValidazionePraticaType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="it">
+				13/09/2010 - Aggiornamento tipi di errore, aggiunta ERRORE_VALIDAZIONE_LOGICA
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="OK_VALIDATA_CARICATA"/>
+			<xsd:enumeration value="ERRORE_GENERICO"/>
+			<xsd:enumeration value="ERRORE_VALIDAZIONE_FORMALE"/>
+			<xsd:enumeration value="ERRORE_VALIDAZIONE_LOGICA"/>
+			<xsd:enumeration value="ERRORE_VALIDAZIONE_DATI"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<!-- 
+	<xsd:simpleType name="statoValidazioneDIAPType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="it">
+				11/05/2010 - Integrazione della gestione delle notifiche degli errori nel modello B
+				13/09/2010 - Aggiornamento tipi validazione, aggiunte tipologie per la distinta degli allegati
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="ERRORE_GENERICO"/>
+			<xsd:enumeration value="ERRORE_MODELLO_A"/>
+			<xsd:enumeration value="ERRORE_MODELLO_A_SCHEDA_A1"/>
+			<xsd:enumeration value="ERRORE_MODELLO_A_SCHEDA_A2"/>
+			<xsd:enumeration value="ERRORE_MODELLO_A_SCHEDA_A3"/>
+			<xsd:enumeration value="ERRORE_MODELLO_A_SCHEDA_A4"/>
+			<xsd:enumeration value="ERRORE_MODELLO_A_SCHEDA_A5"/>
+			<xsd:enumeration value="ERRORE_MODELLO_A_SCHEDA_A6"/>
+			<xsd:enumeration value="ERRORE_MODELLO_A_DICHIARAZIONI"/>
+			<xsd:enumeration value="ERRORE_MODELLO_A_ALLEGATI"/>
+			<xsd:enumeration value="ERRORE_MODELLO_A_DISTINTA_ALLEGATI"/>
+			<xsd:enumeration value="ERRORE_MODELLO_B"/>
+			<xsd:enumeration value="ERRORE_MODELLO_B_SCHEDA_B1A"/>
+			<xsd:enumeration value="ERRORE_MODELLO_B_SCHEDA_B1B"/>
+			<xsd:enumeration value="ERRORE_MODELLO_B_SCHEDA_B2"/>
+			<xsd:enumeration value="ERRORE_MODELLO_B_SCHEDA_B3"/>
+			<xsd:enumeration value="ERRORE_MODELLO_B_SCHEDA_B4"/>
+			<xsd:enumeration value="ERRORE_MODELLO_B_SCHEDA_B5"/>
+			<xsd:enumeration value="ERRORE_MODELLO_B_SCHEDA_B6"/>
+			<xsd:enumeration value="ERRORE_MODELLO_B_SCHEDA_B7"/>
+			<xsd:enumeration value="ERRORE_MODELLO_B_SCHEDA_B8"/>
+			<xsd:enumeration value="ERRORE_MODELLO_B_DICHIARAZIONI"/>
+			<xsd:enumeration value="ERRORE_MODELLO_B_ALLEGATI"/>
+			<xsd:enumeration value="ERRORE_MODELLO_B_DISTINTA_ALLEGATI"/>
+			<xsd:enumeration value="ERRORE_SCHEDA_1"/>
+			<xsd:enumeration value="ERRORE_SCHEDA_1_FORME_SPECIALI_VENDITA"/>
+			<xsd:enumeration value="ERRORE_SCHEDA_2"/>
+			<xsd:enumeration value="ERRORE_SCHEDA_3"/>
+			<xsd:enumeration value="ERRORE_SCHEDA_4"/>
+			<xsd:enumeration value="ERRORE_SCHEDA_5"/>
+			<xsd:enumeration value="ERRORE_SCHEDA_TIPOLOGIA_RISCHI"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	 -->
+	<xsd:simpleType name="statoValidazioneSCIAType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="it">
+				16/03/2011 - Prima definizione
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="ERRORE_GENERICO"/>
+			<xsd:enumeration value="ERRORE_MODELLO_A"/>
+			<xsd:enumeration value="ERRORE_MODELLO_A_SCHEDA_A1"/>
+			<xsd:enumeration value="ERRORE_MODELLO_A_SCHEDA_A2"/>
+			<xsd:enumeration value="ERRORE_MODELLO_A_SCHEDA_A3"/>
+			<xsd:enumeration value="ERRORE_MODELLO_A_SCHEDA_A4"/>
+			<xsd:enumeration value="ERRORE_MODELLO_A_SCHEDA_A5"/>
+			<xsd:enumeration value="ERRORE_MODELLO_A_SCHEDA_A6"/>
+			<xsd:enumeration value="ERRORE_MODELLO_A_DICHIARAZIONI"/>
+			<xsd:enumeration value="ERRORE_MODELLO_A_ALLEGATI"/>
+			<xsd:enumeration value="ERRORE_MODELLO_A_DISTINTA_ALLEGATI"/>
+			<xsd:enumeration value="ERRORE_MODELLO_B"/>
+			<xsd:enumeration value="ERRORE_MODELLO_B_SCHEDA_B1A"/>
+			<xsd:enumeration value="ERRORE_MODELLO_B_SCHEDA_B1B"/>
+			<xsd:enumeration value="ERRORE_MODELLO_B_SCHEDA_B2"/>
+			<xsd:enumeration value="ERRORE_MODELLO_B_SCHEDA_B3"/>
+			<xsd:enumeration value="ERRORE_MODELLO_B_SCHEDA_B4"/>
+			<xsd:enumeration value="ERRORE_MODELLO_B_SCHEDA_B5"/>
+			<xsd:enumeration value="ERRORE_MODELLO_B_SCHEDA_B6"/>
+			<xsd:enumeration value="ERRORE_MODELLO_B_SCHEDA_B7"/>
+			<xsd:enumeration value="ERRORE_MODELLO_B_SCHEDA_B8"/>
+			<xsd:enumeration value="ERRORE_MODELLO_B_ALLEGATI"/>
+			<xsd:enumeration value="ERRORE_MODELLO_B_DISTINTA_ALLEGATI"/>
+			<xsd:enumeration value="ERRORE_SCHEDA_1"/>
+			<xsd:enumeration value="ERRORE_SCHEDA_1_VARIAZIONI"/>
+			<xsd:enumeration value="ERRORE_SCHEDA_1_FORME_SPECIALI_VENDITA_AVVIO"/>
+			<xsd:enumeration value="ERRORE_SCHEDA_1_FORME_SPECIALI_VENDITA_VARIAZIONI"/>
+			<xsd:enumeration value="ERRORE_SCHEDA_2"/>
+			<xsd:enumeration value="ERRORE_SCHEDA_3"/>
+			<xsd:enumeration value="ERRORE_SCHEDA_4"/>
+			<xsd:enumeration value="ERRORE_SCHEDA_4_TIPOLOGIA_RISCHI"/>
+			<xsd:enumeration value="ERRORE_SCHEDA_5"/>
+			<xsd:enumeration value="ERRORE_SCHEDA_6"/>
+			<xsd:enumeration value="ERRORE_SCHEDA_6_ATTIVITA_ALBERGHIERA"/>
+			<xsd:enumeration value="ERRORE_SCHEDA_6_ATTIVITA_NOALBERGHIERA"/>
+			<xsd:enumeration value="ERRORE_SCHEDA_6_ATTIVITA_ARIAAPERTA"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="validazionePraticaType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="it">
+				13/09/2010 - Revisione struttura Type
+				12/10/2010 - revisione element id_pratica, reso nillable
+				02/11/2010 - rimozione choice id_pratica/num_protocollo
+								 - rimozione id_pratica nillable
+								 - rinomino e cambio type elemento protocollo
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="id_pratica" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="protocollo" type="protocolloType" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:attribute name="stato" type="statoValidazionePraticaType" use="required"/>
+		<xsd:attribute name="descrizione" type="xsd:string"/>
+		<xsd:attribute name="data" type="xsd:dateTime" use="required"/>
+	</xsd:complexType>
+	
+	<!-- 
+	<xsd:complexType name="validazioneDIAPType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="it">
+				13/09/2010 - Revisione struttura Type
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="stato" type="statoValidazioneDIAPType" use="required"/>
+		<xsd:attribute name="descrizione" type="xsd:string"/>
+	</xsd:complexType>
+	<xsd:complexType name="DIAPResponseType">
+		<xsd:sequence>
+			<xsd:element name="esito" type="validazionePraticaType"/>
+			<xsd:element name="notifica" type="validazioneDIAPType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	 -->
+	<xsd:complexType name="validazioneSCIAType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="it">
+				16/03/2011 - Prima definizione
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="stato" type="statoValidazioneSCIAType" use="required"/>
+		<xsd:attribute name="descrizione" type="xsd:string"/>
+	</xsd:complexType>
+	<xsd:complexType name="SCIAResponseType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="it">
+				16/03/2011 - Prima definizione
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="esito" type="validazionePraticaType"/>
+			<xsd:element name="notifica" type="validazioneSCIAType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

@@ -1,0 +1,24 @@
+﻿
+<button class="btn btn-primary w-50" @onclick="Click">Salva</button>
+@* <button class="btn btn-primary w-50" disabled="@this.ContieneErrori" @onclick="Click">Salva</button> *@
+
+@code {
+    [Parameter]
+    public bool ContieneErrori { get; set; } = false;
+    [Parameter]
+    public EventCallback Click { get; set; }
+
+    bool _contieneErroriOld = false;
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        if(ContieneErrori != _contieneErroriOld)
+        {
+            this.StateHasChanged();
+        }
+
+        _contieneErroriOld = ContieneErrori;
+    }
+}

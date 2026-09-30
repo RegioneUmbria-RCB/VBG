@@ -1,0 +1,13 @@
+INSERT INTO VERTICALIZZAZIONIBASE(MODULO,DESCRIZIONE,FLAG_GESTCOMUNE) VALUES ('CARTOGRAFICO_ATTIVO','Se attivata significa che c''è una integrazione con un sistema cartografico attivato (GEECO, GEOFLORENTIA, ...)',0);
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES ('CARTOGRAFICO_ATTIVO','CONNETTORE','Indica qule cartografico è stato attivato (GEECO, GEOFLORENTIA, ...)');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES ('CARTOGRAFICO_ATTIVO','SERVICE_URL','Indica la url in cui sono esposte le API del connettore per l''interfacciamento con il cartografico');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES ('GEECO','URL_LOCCSI','Se presente, indica la url in cui sono esposte le API della componente che serve a restituire il centroide della via');
+
+INSERT INTO VERTICALIZZAZIONIBASE (MODULO, DESCRIZIONE, FLAG_GESTCOMUNE) VALUES ('GEOFLORENTIA', 'Permette la gestione integrata delle localizzazioni tramite il software cartografico Geoflorentia', 0);
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('GEOFLORENTIA', 'SERVICE_URL', 'Url Servizio Geoflorentia (Es. http://sitaplnew.comune.intranet/geoflorentia)');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('GEOFLORENTIA', 'URLAUTHENTICATION', 'Parametro Urlauthentication da passare a GeoFlorentia');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('GEOFLORENTIA', 'LAYER', 'Parametro Layer da passare a GeoFlorentia, verrà utilizzato anche per valorizzare il parametro LayerOut');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('GEOFLORENTIA', 'CODISTATCOMUNE', 'Codice ISTAT dell''Ente da passare a Geoflorentia');
+
+UPDATE comuni SET COMUNE='VENARIA REALE' WHERE CODICECOMUNE='L727';

@@ -1,0 +1,130 @@
+﻿@page "/{IdComune}/{Software}/commissionilista"
+@using Init.SIGePro.Manager.DTO.Commissioni
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.DesignComuni.Forms
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.DesignComuni.NavScroll
+@using VBG.BlazorComponentsLibrary.EditFormComponents
+@using VBG.BlazorComponentsLibrary.RisorseTestuali
+
+@inherits CommissioniBasePage
+
+@* <TitoloPagina>Elenco commissioni/conferenze aperte</TitoloPagina> *@
+<TitoloPagina>Commissioni e conferenze</TitoloPagina>
+
+<NavScrollComponent Title="Indice di pagina">
+    <NavScrollComponentItem Id="commissioniEconferenze" Label="Commissioni e conferenze">
+        @if (!_isLoading)
+        {
+            @if (DataSource != null)
+            {
+                <AccordionContainer>
+                    @foreach (CommissioneTestataDto commissione in DataSource)
+                    {
+                        var id = Guid.NewGuid();
+                        <div id="@($"comm-{id}")" @key="@($"comm-{id}")">
+                            <AccordionItem StartingCollapsed="true"
+                                            CollapsibleElementId="@($"commissione-{id}")"
+                                            Title="@(string.IsNullOrEmpty(commissione.Descrizione) ? "Non definito" : commissione.Descrizione)"
+                                            Sottotitolo="@($"Numero: {commissione.Numero}")"
+                                            RenderTitleAsHtml="true"
+                                            CssTitleClass="d-block text-truncate pe-4"
+                                            ButtonWrapperClass="min-width-zero"
+                                            HeaderElementId="@($"header-accordion-comm-{id}")">
+
+                                <NonCollapsingUpperChildContent>
+                                    <p class="mb-2 fw-normal">
+                                        Tipologia:
+                                        <span class="label fw-bold">@(string.IsNullOrEmpty(commissione.Tipologia) ? "non definito" : commissione.Tipologia)</span>
+                                    </p>
+                                </NonCollapsingUpperChildContent>
+
+                                <ChildContent>
+                                    <p class="mb-2 fw-normal">
+                                        Data:
+                                        <span class="label fw-bold">@(string.IsNullOrEmpty(commissione.Data) ? "non definito" : commissione.Data)</span>
+                                    </p>
+
+                                    <p class="mb-2 fw-normal">
+                                        Ora inizio:
+                                        <span class="label fw-bold">@(string.IsNullOrEmpty(commissione.OraInizio) ? "non definito" : commissione.OraInizio)</span>
+                                    </p>
+
+                                    <p class="mb-2 fw-normal">
+                                        Ora fine:
+                                        <span class="label fw-bold">@(string.IsNullOrEmpty(commissione.OraFine) ? "non definito" : commissione.OraFine)</span>
+                                    </p>
+
+                                    <p class="mb-2 fw-normal">
+                                        Modalità:
+                                        <span class="label fw-bold">@(commissione.Asincrona ? "Asincrona" : "Sincrona")</span>
+                                    </p>
+                                </ChildContent>
+
+                                <NonCollapsingLowerChildContent>
+                                    <div class="buttonContainer">
+                                        <button class="btn btn-primary justify-content-center" @onclick="@(() => GotoAsync("commissionidettaglio", commissione.Id.ToString()))">Partecipa </button>
+                                    </div>
+                                </NonCollapsingLowerChildContent>
+                            </AccordionItem>
+                        </div>
+                    }
+                </AccordionContainer>
+            }
+            else
+            {
+                <div class="alert alert-info" role="alert">
+                    <RisorsaTestuale IdRisorsa="lista-commissioni.messaggio.no-commissioni-trovate">
+                        Non sono state trovate commissioni o conferenze a cui sei stato invitato. <br />
+                        Se hai ricevuto un PIN di accesso utilizza la funzionalità 'Accedi con PIN' per cercare la commissione
+                    </RisorsaTestuale>
+                </div>
+            }
+        }
+        else
+        {
+            <AccordionContainer>
+                @for (int i = 0; i < 5; i++)
+                {
+                    <div id="@($"sk_{i}")">
+                        <AccordionItem CollapsibleElementId="@($"sk_{i}")" StartingCollapsed="false">
+                            <div class="skeleton">
+                                <div class="skeleton-text-bold bg-primary"></div>
+                                <div class="skeleton-text"></div>
+                                <br />
+                                <div class="skeleton-rectangle"></div>
+                                <br />
+                                <button type="button" class="btn btn-primary justify-content-center skeleton-button" data-focus-mouse="false" disabled>
+                                    Partecipa
+                                </button>
+                            </div>
+                        </AccordionItem>
+                    </div>
+                }
+            </AccordionContainer>
+        }
+    
+
+        <div class="buttonContainer mt-3 mb-3">
+            <button class="btn btn-primary" @onclick="OnBtnAccediConPin">Accedi con Pin</button>
+            <button class="btn btn-light vbg-show-spinner" @onclick="OnBtnCloseAsync">Chiudi</button>
+        </div>
+    </NavScrollComponentItem>
+</NavScrollComponent>
+
+<BasicModal @ref="modalPin" Size="ModalSizeEnum.Small" OnClose="() => modalPin.Hide()">
+    <ModalHeader Titolo="Immetti PIN commissione" Size="ModalHeaderSizeEnum.Small">
+    </ModalHeader>
+    <ModalBody>
+        <VbgForm Id="formPin" Model="@_model" OnValidSubmit="CheckPinAsync">
+            <RisorsaTestuale IdRisorsa="lista-commissioni.messaggio.accedi-con-pin">Immetti il codice PIN della commissione a cui sei stato invitato</RisorsaTestuale>
+            <TextInputForm Id="txtPin"
+                           Label="PIN"
+                           @bind-Value="_model.Pin"
+                           ValidationFor="() => _model.Pin" />
+        </VbgForm>
+    </ModalBody>
+    <ModalFooter>
+        <FormSubmitButton Form="formPin" IsButtonDisabled="false"></FormSubmitButton>
+    </ModalFooter>
+</BasicModal>

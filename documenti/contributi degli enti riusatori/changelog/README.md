@@ -4,12 +4,6 @@
 
 ### Backoffice
 
-### Console (3.20)
-
-- [Integrazione con SIT locale](../configurazione/console/domanda-on-line/configurazione-step/integrazione-sit/README.md) possibilità di effettuare ricerca e validazione di civici e mappali interfacciandosi con un sit dell'installazione locale
-
-### Nodo pagamenti
-
 ### Authenticationgateway
 
 ### Portale frontoffice
@@ -20,6 +14,37 @@
   - inserimento della descrizione estesa nel campo Intervento in fase di ricerca
 
 ---
+
+## 2.127
+
+### Backoffice 2.127
+
+- Possibilità di generare il file SUAP.XML all'inserimento della pratica o durante la protocollazione di un movimento. Il SUAP.XML potrebbe essere generato in versione 1.0.0 o 2.0.0 [Configurazione](../configurazione/gestione-istanze/suap_xml/README.md)
+- Gestione della pubblicazione degli interventi presentabili in area riservata escludendo alcuni comuni (quando l'installazione è comuni associati)
+- Importazione pratiche ZES (Implementata per enti con protocollo Maggioli) [Configurazione](../configurazione/azioni-protocollo/README.md)
+
+#### Backoffice / Area riservata  2.127
+
+- Gestione dei campi collegati: alcune schede possono contenere dei campi condivisi con altre schede, la modifica di tali campi causa l'obbligo di ricompilazione delle schede durante la presentazione della domanda on line
+- Controllo sui soggetti firmatari. Il sistema deve permettere di configurare su un documento chi devono essere i soggetti che devono firmarlo. Nella fase di inserimento del documento da area riservata il sistema deve controllare che il documento sia stato correttamente firmato
+
+### Protocollo 2.127
+
+- refattorizzazione del connettore del protocollo
+
+### dss-webapp 2.127
+
+- refattorizzazione della componente dss-webapp con ultime modifiche sorgenti
+
+### Console (3.21)
+
+- [Integrazione con SIT locale](../configurazione/console/domanda-on-line/configurazione-step/integrazione-sit/README.md) possibilità di effettuare ricerca e validazione di civici e mappali interfacciandosi con un sit dell'installazione locale
+- Gestione della pubblicazione degli interventi presentabili in area riservata escludendo alcuni comuni
+- Integrazione con PARIX_CLOUD
+
+### Nodo pagamenti 2.127
+
+- Possibilità di accorpare i pagamenti con unico avviso/pagamento OTF, modificate le interfacce wsdl
 
 ## 2.126
 

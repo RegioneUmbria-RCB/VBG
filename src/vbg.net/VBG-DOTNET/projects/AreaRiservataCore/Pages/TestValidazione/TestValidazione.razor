@@ -1,0 +1,81 @@
+﻿@page "/{IdComune}/{Software}/test-validazione"
+@using System.ComponentModel.DataAnnotations
+@inherits BasePage
+@implements IDisposable
+
+
+
+<EditForm EditContext="@editContext">
+    <DataAnnotationsValidator />
+    <div class="mb-3">
+        <div>
+            Campo sempre obbligatorio
+        </div>
+            
+        <InputText @bind-Value="model.CampoSempreObbligatorio"></InputText>
+        <ValidationMessage For="() => model.CampoSempreObbligatorio"></ValidationMessage>
+    </div>
+    <div class="mb-3">
+        <div>
+            Campo che potrebbe essere obbligatorio
+        </div>
+	        <InputText @bind-Value="model.Campo"></InputText>
+        <label>
+            <input type="checkbox" @bind-value="isRequired" /> Il campo è obbligatorio?
+        </label>
+	    <ValidationMessage For="() => model.Campo"></ValidationMessage>
+
+    </div>
+    <button type="submit" class="btn btn-light" disabled="@formInvalid">Submit</button>
+</EditForm>
+
+
+@code {
+    public class EditModel
+    {
+        public string Campo { get; set; } = "";
+        [Required(ErrorMessage = "Campo obbligatorio")]
+        public string CampoSempreObbligatorio { get; set; } = "";
+    }
+
+    private EditModel model = new EditModel();
+    private bool formInvalid = true;
+    private EditContext editContext = default!;
+    private ValidationMessageStore? messageStore;
+    private bool isRequired = false;
+
+
+    protected override void OnInitialized()
+    {
+        editContext = new (model);
+        editContext.OnFieldChanged += HandleFieldChanged;
+        editContext.OnValidationRequested += OnValidationRequested;
+
+        messageStore = new(editContext);
+    }
+
+    private void OnValidationRequested(object? sender, ValidationRequestedEventArgs e)
+    {
+        messageStore.Clear();
+
+        if (isRequired && String.IsNullOrEmpty(model.Campo))
+        {
+            messageStore?.Add(() => model.Campo, "Campo obbligatorio");
+            this.StateHasChanged();
+        }
+    }
+
+    private void HandleFieldChanged(object? sender, FieldChangedEventArgs e)
+    {
+        formInvalid = !editContext.Validate();
+        StateHasChanged();
+    }
+
+    public override void Dispose()
+    {
+        base.Dispose();
+
+        editContext.OnFieldChanged -= HandleFieldChanged;
+        editContext.OnValidationRequested -= OnValidationRequested;
+    }
+}

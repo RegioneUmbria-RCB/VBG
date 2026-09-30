@@ -1,0 +1,109 @@
+﻿@using Init.Sigepro.FrontEnd.AppLogic.Services.Domanda
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+
+@inherits BasePage
+
+@if (Item is not null)
+{
+    <div id="@($"prat-{Item.Id}")" @key="@($"prat-{Item.Id}")">
+        <AccordionItem StartingCollapsed="true"
+        CollapsibleElementId="@($"pratica-{Item.Id}")"
+        Title="@(string.IsNullOrEmpty(Item.Intervento) ? "non definito" : Item.Intervento)"
+        RenderTitleAsHtml="true"
+        Sottotitolo="@($"Ultima modifica: {Item.DataUltimaModifica?.ToString("dd/MM/yyyy HH:mm")}")"
+        CssTitleClass="d-block text-truncate pe-4"
+        ButtonWrapperClass="min-width-zero"
+        HeaderElementId="@($"header-accordion-prat-{Item.Id}")">
+
+            <NonCollapsingUpperChildContent>
+                @if (Item.PagamentoAvviato)
+                {
+                    <div class='alert alert-warning alert-pagamenti mb-0' role="alert">Operazione di pagamento in sospeso</div>
+                }
+
+                @if (Item.PagamentoCompletato)
+                {
+                    <div class='alert alert-warning alert-pagamenti mb-0' role="alert">La domanda contiene oneri pagati</div>
+                }
+            </NonCollapsingUpperChildContent>
+
+            <ChildContent>
+                <p class="mb-2 fw-normal">
+                    Richiedente:
+                    <span class="label">@(string.IsNullOrEmpty(Item.Richiedente) ? "non definito" : Item.Richiedente)</span>
+                </p>
+                <p class="mb-2 fw-normal">
+                    Oggetto:
+                    <span class="label">@(string.IsNullOrEmpty(Item.Oggetto) ? "non definito" : Item.Oggetto)</span>
+                </p>
+                <p class="mb-2 fw-normal">
+                    Identificativo domanda:
+                    <span class="label">@Item.IdentificativoDomanda</span>
+                </p>
+            </ChildContent>
+            <NonCollapsingLowerChildContent>
+                <div class="d-flex">
+
+                    @* <a href="@GetNavigationPathTo(Item.Url)" class="d-block btn btn-primary justify-content-center" data-focus-mouse="false">
+                        Riprendi
+                    </a> *@
+
+                    <button type="button" class="btn btn-primary justify-content-center" @onclick="() => GotoAsync(Item.Url)" data-focus-mouse="false">
+                        Riprendi
+                    </button>
+
+                    @if (!Item.PagamentoAvviato && !Item.PagamentoCompletato)
+                    {
+                        <button type="button" class="btn btn-secondary justify-content-center ms-1" @onclick="() => _showModalElimina = true" data-focus-mouse="false">
+                            Elimina
+                        </button>
+                    }
+                </div>
+            </NonCollapsingLowerChildContent>
+        </AccordionItem>
+
+    </div>
+
+    <ConfirmationModal Titolo="Conferma eliminazione" Visible="_showModalElimina" ConfermaClick="async() => await EliminaPraticaAsync()" AnnullaClick="() => _showModalElimina = false">
+        <ModalBody>
+            <div>
+                Stai per eliminare una pratica in bozza, l'operazione non potrà essere annullata.<br>
+                Vuoi proseguire?
+            </div>
+        </ModalBody>
+    </ConfirmationModal>
+}
+
+@code {
+    [Inject]
+    public DomandeOnlineService _datiDomandaService { get; set; } = default!;
+
+    [Parameter]
+    public DomandeListItem Item { get; set; } = default!;
+
+    [CascadingParameter]
+    public Contenitore Contenitore { get; set; } = default!;
+
+    private bool _showModalElimina;
+
+    private async Task EliminaPraticaAsync()
+    {
+        await _spinnerService.ShowSpinnerAsync(async() =>
+            {
+                try
+                {
+                    _datiDomandaService.Elimina(Item.Id, UserAuthenticationResult.DatiUtente.Codicefiscale);
+                    await this.Contenitore.LoadDataAsync();
+                    StateHasChanged();
+                    _showModalElimina = false;
+                }
+                catch (Exception ex)
+                {
+                    this.Logger.Error($"Errore durante la cancellazione della pratica in sospeso. (Id={Item?.Id}, IdentificativoDomanda={Item?.IdentificativoDomanda}, Itervento={Item?.Intervento}) exception: {ex.ToString()}");
+                    MessageContainer.ClearErrors();
+                    MessageContainer.AddError($"Si è verificato un errore inaspettato durante la cancellazione della domanda");
+                }
+            });
+    }
+}

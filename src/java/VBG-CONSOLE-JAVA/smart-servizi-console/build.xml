@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="star-accettatore" default="sync-oscat-accettatore">
+	<property name="oscat.workspace" value="../../oscat_workspace">
+	</property>
+	<property name="core.dir" value="star-core">
+	</property>
+	<property name="oscat.target" value="star-accettatore">
+	</property>
+
+	<target name="sync-oscat-accettatore" depends="configurazione-produzione, sync-core">
+		<sync overwrite="false" todir="${oscat.workspace}/${oscat.target}/src" verbose="true">
+			<fileset dir="src">
+				<include name="**" />
+			</fileset>
+		</sync>
+		<sync overwrite="false" todir="${oscat.workspace}/${oscat.target}/WebContent" verbose="true">
+			<fileset dir="WebContent">
+				<include name="**" />
+			</fileset>
+		</sync>
+		<copy todir="${oscat.workspace}/${oscat.target}/src" verbose="true">
+			<fileset dir="${oscat.workspace}/${core.dir}/src">
+				<include name="**" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="sync-core">
+		<ant antfile="../${core.dir}/build.xml">
+		</ant>
+	</target>
+
+	<target name="configurazione-sviluppo">
+		<propertyfile file="src/deploy.properties">
+			<entry key="ws.stc.url" type="string" value="http://devel9:8080/ibcstc/services/stc?wsdl" />
+			<entry key="ws.token.url" type="string" value="http://devel9:8080/ibcsecurity/services/sigeproSecurity.wsdl" />
+		</propertyfile>
+		<propertyfile file="src/db.properties">
+			<entry key="hibernate.c3p0.min_size" type="string" value="1" />
+			<entry key="hibernate.c3p0.max_size" type="string" value="2" />
+			<entry key="hibernate.c3p0.acquire_increment" type="string" value="1" />
+			<entry key="c3p0.numHelperThreads" type="string" value="1" />
+			<entry key="c3p0.checkoutTimeout" type="string" value="10000" />
+		</propertyfile>
+		<propertyfile file="src/log4j.properties">
+			<entry key="log4j.rootLogger" type="string" value="WARN, stdout" />
+		</propertyfile>
+	</target>
+	<target name="configurazione-produzione">
+		<propertyfile file="src/deploy.properties">
+			<entry key="ws.stc.url" type="string" value="http://localhost:8080/ibcstc/services/stc?wsdl" />
+			<entry key="ws.token.url" type="string" value="http://localhost:8080/ibcsecurity/services/sigeproSecurity.wsdl" />
+		</propertyfile>
+		<propertyfile file="src/db.properties">
+			<entry key="hibernate.c3p0.min_size" type="string" value="10" />
+			<entry key="hibernate.c3p0.max_size" type="string" value="100" />
+			<entry key="hibernate.c3p0.acquire_increment" type="string" value="5" />
+			<entry key="c3p0.numHelperThreads" type="string" value="3" />
+			<entry key="c3p0.checkoutTimeout" type="string" value="10000" />
+		</propertyfile>
+		<propertyfile file="src/log4j.properties">
+			<entry key="log4j.rootLogger" type="string" value="WARN, logfile" />
+		</propertyfile>
+	</target>
+</project>

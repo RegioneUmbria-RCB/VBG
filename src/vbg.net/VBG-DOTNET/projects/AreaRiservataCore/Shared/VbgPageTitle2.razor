@@ -1,0 +1,65 @@
+﻿@using Init.Sigepro.FrontEnd.CoreServices.GestioneTitoloPagina
+@inject VbgPageTitleService _pageTitleService
+
+@if (this._isVisible)
+{
+	<h1>
+		@if (_renderFragment is not null)
+		{
+			@_renderFragment 
+		}
+		else
+		{
+			@_title
+		}
+	</h1>
+}
+
+@code {
+	private RenderFragment? _renderFragment;
+	private string? _title = String.Empty;
+	private bool _isVisible = true;
+
+	protected override Task OnInitializedAsync()
+	{
+		this._pageTitleService.OnTitleChanged += OnTitleChanged;
+		this._pageTitleService.OnVisibilityChanged += OnVisibilityChanged;
+		this._pageTitleService.OnTitleFragmentChanged += OnTitleFragmentChanged;
+		return base.OnInitializedAsync();
+	}
+
+	private void OnTitleChanged(string newValue)
+	{
+		var isChanged = this._title != newValue;
+
+		this._renderFragment = null;
+		this._title = newValue;
+		this._isVisible = true;
+
+		if (isChanged)
+		{
+			StateHasChanged();
+		}
+	}
+
+	private void OnTitleFragmentChanged(RenderFragment newValue)
+	{
+		this._title = null;
+		this._renderFragment = newValue;
+		this._isVisible = true;
+
+		StateHasChanged();
+	}
+
+	private void OnVisibilityChanged(bool newVisibility)
+	{
+		var isChanged = this._isVisible != newVisibility;
+
+		this._isVisible = newVisibility;
+
+		if (isChanged)
+		{
+			StateHasChanged();
+		}
+	}
+}

@@ -1,0 +1,77 @@
+﻿@using Init.Sigepro.FrontEnd.CoreServices.GestioneOggetti
+@using Microsoft.AspNetCore.Components.Forms
+@inherits MyBaseComponent
+
+<div class="bwc-Upload mb-3 @_cssClasses" id="@UniqueID">
+    @if (ShowLabel)
+    {            
+        <Vbg.CoreControls.LabelContainerComponent ResourceId="@this.ResourceId" Value="@this.Label" Required="@this.Required" CanEditResourceText="@this.CanEditResourceText"></Vbg.CoreControls.LabelContainerComponent>
+    }
+    <div>
+        @if (ModalitaInserimento)
+        {
+            <InputFile OnChange="@OnLoadFiles" class="@_class" accept="@AcceptedFileTypes"></InputFile>
+        }
+        else
+        {
+            <Vbg.CoreControls.ScaricaOggettoComponent CodiceOggetto="@CodiceOggetto" Text="@FileName"></Vbg.CoreControls.ScaricaOggettoComponent>
+        }
+    </div>
+    <div class="help-block valid-feedback"></div>
+</div>
+
+@code {
+    [Parameter]
+    public Action<InputFileChangeEventArgs>OnLoadFiles { get; set; }
+
+    [Parameter]
+    public bool ModalitaInserimento { get; set; } = true;
+        
+    [Parameter]
+    public int? CodiceOggetto { get; set; } = null;
+    
+    [Parameter]
+    public string AcceptedFileTypes { get; set; } = "";
+    
+    [Parameter]
+    public string FileName { get; set; } = "";
+
+    private string _class 
+    {
+        get => $"form-control {this.cssErrorClass}";
+    }
+
+    public void SetOggetto(int codiceOggetto, string nomeFile)
+    {
+        this.ModalitaInserimento = false;
+        this.CodiceOggetto = codiceOggetto;
+        this.FileName = nomeFile;
+    }
+
+    internal void ResetValues()
+    {
+        this.ModalitaInserimento = true;
+        this.CodiceOggetto = null;
+        this.FileName = "";
+        //this.ErrorMessage = "";
+        //this.FileModificato = false;
+    }
+
+    //private void LoadFiles(InputFileChangeEventArgs e)
+    //{
+    //    bool isValid = ValidaFile( e.File
+    //}
+
+    public bool ValidaFile(IValidPostedFileSpecification validPostedFileSpecification, IBrowserFile file)
+    {
+        if (Required)
+            _valid = file != null;
+
+        if (file != null)
+            _valid = validPostedFileSpecification.IsSatisfiedBy(file);
+
+        cssErrorClass = IsValid ? "is-valid" : "is-invalid";
+
+        return IsValid;
+    }
+}

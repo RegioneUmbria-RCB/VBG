@@ -1,0 +1,126 @@
+﻿@using static Vbg.CoreControls.AcessibilityControls.Enumerators;
+
+<div class="@GetChipClass()">
+    @if (ShowIcon)
+    {
+        <svg class="@GetIconClass()"><use href="@($"{SvgFilePath}#{SvgIcon}")"></use></svg>
+    }
+    else if (ShowAvatar)
+    {
+        <Avatar Size="Enumerators.Size.X_SMALL" Text="@Text" ImageURL="@AvatarImageURL" Color="@Color"></Avatar>
+    }
+
+    <span class="chip-label">@Text</span>
+
+    @if (ShowCloseButton)
+    {
+        <button data-bs-dismiss='alert' disabled="@(!Enabled)">
+            <svg class="icon"><use href="@($"{SvgFilePath}#{SvgCloseIcon}")"></use></svg>
+            <span class="visually-hidden">Elimina</span>
+        </button>
+    }
+</div>
+
+@code {
+    /// <summary>
+    /// The Chip Text used as a label
+    /// </summary>
+    [Parameter]
+    public string Text { get; set; }
+
+    /// <summary>
+    /// Set ShowIcon to true to show a SVG file icon on the left of the Text
+    /// </summary>
+    [Parameter]
+    public bool ShowIcon { get; set; } = false;
+
+    /// <summary>
+    /// The SVG file left icon
+    /// </summary>
+    [Parameter]
+    public string SvgIcon { get; set; } = "it-github";
+
+    /// <summary>
+    /// Set ShowAvatar to true to show an Avatar on the left of the Text
+    /// NOTE: setting ShowIcon = true will override ShowAvatar
+    /// </summary>
+    [Parameter]
+    public bool ShowAvatar { get; set; } = false;
+
+    /// <summary>
+    /// If AvatarImageURL value is set, the Avatar will render the image instead of the Text
+    /// NOTE: AvatarImageURL property overrides AvatarIcon
+    /// </summary>
+    [Parameter]
+    public string AvatarImageURL { get; set; }
+
+    /// <summary>
+    /// Set ShowCloseButton to true to enable chip closing X button
+    /// </summary>
+    [Parameter]
+    public bool ShowCloseButton { get; set; } = false;
+
+    /// <summary>
+    /// The sprites.svg file path used for icons
+    /// </summary>
+    [Parameter]
+    public string SvgFilePath { get; set; } = "css/bootstrap-italia/svg/sprites.svg";
+
+    /// <summary>
+    /// The SVG file close icon on the right
+    /// </summary>
+    [Parameter]
+    public string SvgCloseIcon { get; set; } = "it-close";
+
+    /// <summary>
+    /// Set UseBiggerChip to true to show the bigger chip version
+    /// </summary>
+    [Parameter]
+    public bool UseBiggerChip { get; set; } = false;
+
+    /// <summary>
+    /// Set to false to disable the Chip
+    /// </summary>
+    [Parameter]
+    public bool Enabled { get; set; } = true;
+
+    /// <summary>
+    /// If Color value is set, the Chip will render with the fill selected color
+    /// NOTE: ImageURL property overrides Color property
+    /// Default: NONE
+    /// </summary>
+    [Parameter]
+    public Color Color { get; set; } = Color.NONE;
+
+
+    private string GetChipClass()
+    {
+        string s = "chip";
+
+        if (ShowCloseButton)
+            s += " alert";
+        else
+            s += " chip-simple";
+
+        if (UseBiggerChip)
+            s += " chip-lg";
+
+        if (Color != Color.NONE)
+            s += $" chip-{Enumerators.GetFillColor(Color)}";
+
+        if (!Enabled)
+            s += " chip-disabled";
+
+        return s;
+    }
+
+    private string GetIconClass()
+    {
+        string s = "icon icon-xs";
+
+        //if (Color != Color.NONE)      //commentato perchè altrimenti al mouseOver l'icona diventa dello stesso colore dello sfondo
+        //    s += $" icon-{Enumerators.GetFillColor(Color)}";
+
+        return s;
+    }
+}

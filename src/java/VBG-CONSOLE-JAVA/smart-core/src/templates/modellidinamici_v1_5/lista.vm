@@ -1,0 +1,124 @@
+#set($valoriString = $campo.getProprietaCampo("ElementiLista",""))
+#set($valoriLista = $campo.splitOpzioniLista($valoriString))
+#set($multiple = "")
+#set($valoriCount = 1)
+#set($selectedValues = $helper.getValoreVettorialeCampoDinamico(${campo.NomeCampo},${campo.Indice},${rowIndex}))
+#if($isMultiLista)
+	#set($multiselezione = $campo.getProprietaCampo("Multiselezione","true"))
+	#if($multiselezione == "true")
+		#set($multiple = "multiple='multiple'")
+	#end
+	#set($valoriCount = $modelloHelper.contaElementi($valoriLista))
+##else
+	##set($foo = $selectedValues.add($val))
+#end
+#set($ivb = $campo.getProprietaCampo("IgnoraErroriBinding","true"))
+#if($ivb == "true" && !$isTemplate && !$modelloHelper.isContestoIndefinito())
+	#foreach($selectedValue in $selectedValues)
+		#set($selValueFound = false)
+		#foreach($valorelista in $valoriLista)
+			#if($selectedValue == $valorelista.Chiave)
+				#set($selValueFound = true)
+			#end
+		#end
+		#if(!$selValueFound && !$modelloHelper.isNullOrEmpty($selectedValue))
+			#set($foo = $valoriLista.add($campo.creaOpzioneListaVuota()))
+		#end
+	#end
+#end
+#if($modelloHelper.isRenderForPrint())
+	
+##	#foreach($selVal in $selectedValues)
+##		#if($velocityCount > 1)
+##		,
+##		#end
+##		$selVal
+##	#end
+
+<b>
+
+	#if(!$isMultiLista)
+		#foreach($valorelista in $valoriLista)
+				#set($selValueFound = false)
+				#foreach($selectedValue in $selectedValues)
+					$helper.debug($valorelista,$selectedValue,${campo.NomeCampo})
+					##if($selectedValue == $valorelista.Chiave)
+						##if($velocityCount > 1)
+						##,	
+						##end
+						##${valorelista.Valore}
+					##end
+					#if($selectedValue == $valorelista.Chiave)
+						#set($selValueFound = true)
+					#end
+				#end
+				#if ($selValueFound ==true)
+					[X] ${valorelista.Valore}
+				#else
+					[&nbsp;&nbsp;] ${valorelista.Valore}
+				#end	
+				<br />
+		#end
+	#else
+		#foreach($valorelista in $valoriLista)
+				#set($selValueFound = false)
+				
+				#foreach($selectedValue in $selectedValues)
+					##if($selectedValue == $valorelista.Chiave)
+						##if($velocityCount > 1)
+						##,	
+						##end
+						##$valorelista.Valore
+					##end
+					#if($selectedValue == $valorelista.Chiave)
+						#set($selValueFound = true)
+					#end					
+				#end
+				
+				#if ($selValueFound ==true)
+					<b>[X] ${valorelista.Valore}</b>
+				#else
+					[&nbsp;&nbsp;] ${valorelista.Valore}
+				#end
+				<br/>	
+		#end
+	#end
+</b>
+
+#else
+	#if(!$isMultiLista)
+	<select name="${nameAttr}" id="${nameAttr}_ID" ${multiple} size=${valoriCount} class="$classeCampo" starid='${idStar}'>
+		<option value=""></option>
+		#foreach($valorelista in $valoriLista)
+			#set($selected = "")
+			#if(!$isTemplate)
+				#foreach($selectedValue in $selectedValues)
+					#if($selectedValue == $valorelista.Chiave)
+						#set($selected = "selected='selected'")
+					#end
+				#end
+			#end
+			<option value="${helper.escapeValueForHtmlAttribute(${valorelista.Chiave})}" $selected>${valorelista.Valore}</option>
+		#end
+	</select>
+	#else
+		#foreach($valorelista in $valoriLista)
+		<div starid='${idStar}'>
+			#set($checked = "")
+			#set($valoriCount = $velocityCount - 1)
+			#if(!$isTemplate)
+				#foreach($selectedValue in $selectedValues)
+					$helper.debug($valorelista,$selectedValue,${campo.NomeCampo})
+					#if($selectedValue == $valorelista.Chiave)
+						#set($checked = "checked='checked'")
+					#end
+				#end
+			#end
+				<div class="check-wrap $classeCampo" #if(!$pdfOutput)name="$nameAttr"#end align="center" >
+					<input type="checkbox" name="${nameAttr}" id="${nameAttr}_ID_${valoriCount}" value="${helper.escapeValueForHtmlAttribute($valorelista.Chiave)}" $checked title="${helper.escapeValueForHtmlAttribute($valorelista.Valore)}" class="$classeCampo"/>
+				</div>
+				<label for="${nameAttr}_ID_${valoriCount}" style="vertical-align: top;">$valorelista.Valore</label>
+		</div>
+		#end
+	#end
+#end

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:jms="http://www.springframework.org/schema/jms" 
+	xmlns:amq="http://activemq.apache.org/schema/core"
+	xmlns:oxm="http://www.springframework.org/schema/oxm" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:sws="http://www.springframework.org/schema/web-services" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms.xsd
+		http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core-5.3.0.xsd
+		http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm-1.5.xsd
+		http://www.springframework.org/schema/web-services http://www.springframework.org/schema/web-services/web-services-1.5.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+	
+	<context:property-placeholder location="classpath:deploy.properties" />
+	
+	<context:component-scan base-package="it.gruppoinit.downloadapp">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
+	
+	
+	<bean id="sigeproSecurityWebServiceClient" class="it.gruppoinit.sigeprosecurity.ws.SigeproSecurityWebServiceClient">
+		<property name="sigeproSecurityUrl" value="${ws.token.url}"></property>
+		<property name="sigeproSecurityUserId" value="${ws.token.user}" />
+		<property name="sigeproSecurityUserPassword" value="${ws.token.pwd}" />
+	</bean>
+	<bean id="oggettiWSClient" class="it.gruppoinit.sigepro.definitions.oggetti.OggettiWSClient">
+		<property name="securityWebServiceClient" ref="sigeproSecurityWebServiceClient" />
+		<property name="urlServicesOggettiWSDL" value="${oggetti.ws.path.to.wsdl}" />
+		<property name="mtomEnabled" value="${oggetti.ws.mtom.enabled}" />
+		<property name="timeout" value="${ws.timeout}" />
+		<property name="attachLoggingInterceptors" value="${oggetti.ws.attach.logging.interceptors}" />
+		<property name="logInbound" ref="logInbound" />
+		<property name="logOutbound" ref="logOutbound" />
+	</bean>
+	
+	<bean id="movimentiWSClient" class="it.gruppoinit.sigepro.definitions.movimenti.MovimentiWSClient">
+		<property name="securityWebServiceClient" ref="sigeproSecurityWebServiceClient" />
+		<property name="urlServicesMovimentiWSDL" value="${movimenti.ws.path.to.wsdl}" />
+		<property name="mtomEnabled" value="${movimenti.ws.mtom.enabled}" />
+		<property name="timeout" value="${ws.timeout}" />
+		<property name="attachLoggingInterceptors" value="${movimenti.ws.attach.logging.interceptors}" />
+		<property name="logInbound" ref="logInbound" />
+		<property name="logOutbound" ref="logOutbound" />
+	</bean>
+	
+
+
+</beans>

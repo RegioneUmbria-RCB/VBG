@@ -1,0 +1,147 @@
+#set($dynCampo = $campo.getDyn2Campi())
+#if($dynCampo)
+	#set($colspanLeft = $colspanLeft + 1)
+	#set($idCampo = "$dynCampo.getId().getIdcomune()_$dynCampo.getId().getCodice()")
+	#set($descCampo = false)
+	#set($descCampo = $dynCampo.getDescrizione())
+	#set($nameAttr = "FLD_${idCampo}_${campo.Indice}_${indiceBlocco}")
+	#set($val = $helper.getValoreCampoDinamico(${campo.NomeCampo},${campo.Indice},${rowIndex}))
+	#set($decodedVal = $helper.getValoreDecodificatoCampoDinamico(${campo.NomeCampo},${campo.Indice},${rowIndex}))
+	#set($errors = false)
+	#set($errors = $campo.Errors)
+	#set($classeCampo = "")
+	#if($campo.isObbligatorio())
+		#set($classeCampo = "mandatory")
+	#end
+	#if($errors && $errors.size() > 0)
+		#set($classeCampo = "${classeCampo} field-error")
+	#end
+	#if($righeTab)
+		#set($idxm = ${indiceBlocco})
+		#set($idxBlocco = ${riga.getNumRiga()})
+		#set($indexSuffix = "_row_${indiceBlocco}")
+		#if($isTemplate)
+			#set($nameAttr = "FLD_${idCampo}_${campo.Indice}_${indicePh}")
+			#set($decodedVal = "")
+			#set($val = "")
+			#set($idxm = "${indicePh}")
+			#set($indexSuffix = "_row_${indicePh}")
+		#end
+	#else
+		#set($idxm = "")
+		#set($idxBlocco = "")
+		#set($indexSuffix = "")
+	#end
+	#set($autocompCfgs = false)
+	#set($autocompCfgs = $helper.getAutocompilersForIdSemantico(${campo.getNomeCampo()}))
+	#set($idStar = "[${campo.getNomeCampo()}$indexSuffix]${d2md.Id.Codice}")
+	#set($handleAttrs = "id='${d2md.Id.Codice}'")
+	#if(!$regolaAttRiga)
+		#set($handleAttrs = "id='${d2md.Id.Codice}' dynid='${regolaHandle}' dynidx='${campo.Indice}' dynidxm='${idxm}' dynblock='${idxBlocco}'")
+	#end
+	<td id="TD_${colonna.getNumColonna()}_LBL" width="10%">
+		#if($renderElement)
+			<span class="etichettaControllo" style="vertical-align: top;" ${handleAttrs}>
+			<label for="${nameAttr}_ID">
+			#if($dynCampo.getEtichetta()!='')
+			  $dynCampo.getEtichetta()&nbsp
+			#end
+			</label>
+			#if($campo.isObbligatorio() && !$modelloHelper.isRenderForPrint())
+			<label for="${nameAttr}_ID" class="mandatory-star">
+			*
+			</label>
+			#end
+			</span>
+		#end
+	</td>
+	<td  id="TD_${colonna.getNumColonna()}" colspan="$colspanLeft" >
+	
+		#if($renderElement)
+			<div class="controllo" ${handleAttrs}>
+			#if($dynCampo.getTipodato() == "Checkbox")
+				#parse("/modellidinamici_v1_5/checkbox.vm")
+			#elseif($dynCampo.getTipodato() == "Lista")
+				#set($isMultiLista = false)
+				#parse("/modellidinamici_v1_5/lista.vm")
+			#elseif($dynCampo.getTipodato() == "ListaSIGePro")
+				#parse("/modellidinamici_v1_5/ricerca.vm")
+			#elseif($dynCampo.getTipodato() == "Data")
+				#parse("/modellidinamici_v1_5/data.vm")
+			#elseif($dynCampo.getTipodato() == "MultiLista")
+				#set($isMultiLista = true)
+				#parse("/modellidinamici_v1_5/lista.vm")
+			#elseif($dynCampo.getTipodato() == "NumericoDouble")
+				#set($isDecimal = true)
+				#parse("/modellidinamici_v1_5/numerico.vm")
+			#elseif($dynCampo.getTipodato() == "NumericoIntero")
+				#set($isDecimal = false)
+				#parse("/modellidinamici_v1_5/numerico.vm")
+			#elseif($dynCampo.getTipodato() == "Ricerca")
+				#parse("/modellidinamici_v1_5/ricerca.vm")
+			#elseif($dynCampo.getTipodato() == "Testo")
+				#parse("/modellidinamici_v1_5/textbox.vm")
+			#elseif($dynCampo.getTipodato() == "Upload")
+				#parse("/modellidinamici_v1_5/file.vm")
+			#elseif($dynCampo.getTipodato() == "Bottone")
+				#parse("/modellidinamici_v1_5/bottone.vm")
+			#elseif($dynCampo.getTipodato() == "RadioButtons")
+				#parse("/modellidinamici_v1_5/radiobuttons.vm")
+			#elseif($dynCampo.getTipodato() == "Link")
+				#parse("/modellidinamici_v1_5/link.vm")
+			#else
+			...
+			#end
+
+			#if(!$modelloHelper.isRenderForPrint())
+				#if($descCampo)
+					<span class="help_image" id="${nameAttr}_HELP" 
+					title="${descCampo}">
+						<label>(?)</label>
+					</span>
+				#end
+				#set($errStyle = "style='display:none;'")
+				#set($errText = "")
+				#if($errors && $errors.size() > 0)
+					#set($errStyle = "style='display:inline;'")
+					#foreach($error in $errors)
+						#if($velocityCount > 1)
+							#set($errText = $errText + "\r\n")
+						#end
+						#set($err = $campo.renderError($error))
+						#set($errText = $errText + $err)
+					#end
+				#end
+					<span class="error_image" ${errStyle} title="${errText}">
+						<label >(!)</label>
+		            </span>
+				#if($autocompCfgs)
+					#foreach($autocompCfg in $autocompCfgs)
+						#set($selector = "[starid={0}]")
+		   				#set($jsScript = "")
+			    		#if(!$isTemplate)
+			   				#set($suffix = ${helper.buildIndexingSuffix($rowIndex)})
+			    			#set($jsScript = ${helper.buildJavascriptForAutocompiler($autocompCfg,${campo.getNomeCampo()},${d2md.getId().getCodice().toString()},"",$suffix,$selector,$contextPath,$helper.getIdEndo())})
+			    			#if($jsScript != "")
+			                	<script>
+			                	//script che attiva la compilazione automatica dei campi se richiesta
+			        			//$(document).ready(function(){
+			        			$(function(){ 
+			                	$jsScript
+			        			});
+			                	</script>
+			    			#end
+			    		#else
+			    			#set($suffix = ${helper.buildIndexingSuffixWhithPlaceholder($rowIndex,"'' + newBlockIndex + ''",0)})
+			    			#set($jsScript = ${helper.buildJavascriptForAutocompiler($autocompCfg,${campo.getNomeCampo()},${d2md.getId().getCodice().toString()},"",$suffix,$selector,$contextPath,$helper.getIdEndo())})
+			    			#if($jsScript != "")
+			    				$blocco.addScript($jsScript)
+			    			#end
+						#end
+					#end
+				#end
+		    #end
+			</div>
+		#end
+	</td>
+#end

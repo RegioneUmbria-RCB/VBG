@@ -1,0 +1,51 @@
+﻿
+
+@inherits LayoutComponentBase
+
+<PageTitle></PageTitle>
+
+<style>
+
+	html, body, .layout-container {
+		height: 100%;
+	}
+
+	.layout-container {
+		display: flex;
+		flex-direction: column;
+		flex-wrap: nowrap;
+		justify-content: flex-start;
+		align-items: stretch;
+		align-content: stretch;
+	}
+
+		.layout-container > .container {
+			background-color: #FFF;
+			/*padding-bottom: 1em;*/
+			flex-grow: 1;
+			display: flex;
+			flex-direction: column;
+			position: relative;
+		}
+</style>
+
+<div class="layout-container">
+	<main class="container-fluid" id="main" style="padding-bottom: 12px;">
+		<MessageContainer @ref="messageContainer">
+			@Body
+		</MessageContainer>
+	</main>
+
+</div>
+
+@* <LabelUpdaterComponent></LabelUpdaterComponent> *@
+
+@code {
+	private MessageContainer? messageContainer;
+
+	protected override void OnParametersSet()
+	{
+		messageContainer?.ClearAll();
+		base.OnParametersSet();
+	}
+}

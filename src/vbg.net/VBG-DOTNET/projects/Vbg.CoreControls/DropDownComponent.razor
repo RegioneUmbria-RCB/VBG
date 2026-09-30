@@ -1,0 +1,98 @@
+﻿@using Vbg.CoreControls
+@inherits MyBaseComponent
+
+<div class="bwc-DropDown mb-3 @_cssClasses" id="@UniqueID">
+    @if (ShowLabel)
+    {
+        <Vbg.CoreControls.LabelContainerComponent RelativeControlId="@HtmlId" ResourceId="@this.ResourceId" Value="@this.Label" Required="@this.Required" CanEditResourceText="@this.CanEditResourceText"></Vbg.CoreControls.LabelContainerComponent>
+    }
+    <select name='@HtmlId' id='@HtmlId' class="form-control @cssErrorClass" disabled="@IsDisabled" @onchange="HandleInput" data-selectedValue="@this.Value">
+        @foreach(DropDownItemComponent item in Items)
+        {
+            @if (item.IsSelected)
+            {
+                <option value='@item.Value' selected>@item.Text</option>
+            }
+            else
+            {
+                <option value='@item.Value'>@item.Text</option>
+            }
+        }
+    </select>
+</div>
+
+@code {
+    [Parameter]
+    public IEnumerable<DropDownItemComponent>? Items { get; set; }
+
+    private DropDownItemComponent? _selectedItem;
+
+    public DropDownItemComponent SelectedItem { get => _selectedItem; }
+    public string SelectedValue { get => _selectedItem?.Value; }
+    public string SelectedText { get => _selectedItem?.Text; }
+
+    private string HtmlId
+    {
+        get
+        {
+            return $"cbo{Id}_{MultiValueIndex}";
+        }
+    }
+
+    protected override Task OnInitializedAsync()
+    {
+        if (Items is not null)
+        {
+            _selectedItem = Items.Where(x => x.IsSelected).FirstOrDefault();
+
+            if (_selectedItem == null)
+            {
+                Items.First().IsSelected = true;
+                _selectedItem = Items.First();
+            }
+
+            this.Value = _selectedItem.Value;
+        }
+        return base.OnInitializedAsync();
+    }
+
+    protected async Task HandleInput(ChangeEventArgs e)
+    {
+        await SelectItemByValue(e.Value != null ? e.Value.ToString() : string.Empty);
+    }
+
+    public async Task SelectItemByValue(string value, bool raiseChange = true)
+    {
+        this.Value = value;
+
+        Items.ToList().ForEach(x => x.IsSelected = false);
+        _selectedItem = Items.Where(x => x.Value == this.Value).FirstOrDefault();
+        _selectedItem.IsSelected = true;
+
+        Validate();
+
+        if (ValueChanged.HasDelegate && raiseChange)
+        {
+            var dictionary = new Dictionary<string, object>()
+            {
+                { "SenderId", Id },
+                { "ReceivedValue", Value },
+                { "MultiValueIndex", MultiValueIndex }
+            };
+
+            await ValueChanged.InvokeAsync(dictionary);
+        }
+    }
+
+    public bool Validate()
+    {
+        if (Required)
+        {
+            _valid = !string.IsNullOrEmpty(_selectedItem.Text);
+        }
+
+        cssErrorClass = IsValid ? "is-valid" : "is-invalid";
+
+        return IsValid;
+    } 
+}

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:infClas="http://insiel.it/protocollo/schemixsd/getInfoClassifica" xmlns:tgen="http://insiel.it/protocollo/schemixsd/tipiGenerali" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://insiel.it/protocollo/schemixsd/getInfoClassifica" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://193.42.71.39:8082/protows2-collaudoPN/services/protocollo/v1?xsd=tipiGenerali.xsd" namespace="http://insiel.it/protocollo/schemixsd/tipiGenerali" />
+  <xs:element name="InfoClassificaRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="utente" type="tgen:Utente" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InfoClassificaResponse">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element name="infoClassifica" type="infClas:InfoClassifica" />
+        <xs:element name="errore" type="tgen:Errore" />
+      </xs:choice>
+      <xs:attribute name="esito" type="xs:boolean" use="required" />
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="InfoClassifica">
+    <xs:sequence>
+      <xs:element name="descLiv1" nillable="true" type="xs:string" />
+      <xs:element name="descLiv2" nillable="true" type="xs:string" />
+      <xs:element name="descLiv3" nillable="true" type="xs:string" />
+      <xs:element name="descLiv4" nillable="true" type="xs:string" />
+      <xs:element name="descLiv5" nillable="true" type="xs:string" />
+      <xs:element name="descLiv6" nillable="true" type="xs:string" />
+      <xs:element name="descLiv7" nillable="true" type="xs:string" />
+      <xs:element name="descLiv8" nillable="true" type="xs:string" />
+      <xs:element name="lengthLiv1" nillable="true" type="xs:int" />
+      <xs:element name="lengthLiv2" nillable="true" type="xs:int" />
+      <xs:element name="lengthLiv3" nillable="true" type="xs:int" />
+      <xs:element name="lengthLiv4" nillable="true" type="xs:int" />
+      <xs:element name="lengthLiv5" nillable="true" type="xs:int" />
+      <xs:element name="lengthLiv6" nillable="true" type="xs:int" />
+      <xs:element name="lengthLiv7" nillable="true" type="xs:int" />
+      <xs:element name="lengthLiv8" nillable="true" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

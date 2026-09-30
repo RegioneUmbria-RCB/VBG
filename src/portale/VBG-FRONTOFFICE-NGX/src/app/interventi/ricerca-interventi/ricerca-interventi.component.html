@@ -1,0 +1,33 @@
+<div class="ricerca-testuale">
+  <div class="form-group">
+    <div class="input-group">
+      <label for="ricerca-interventi" aria-hidden="false" style="display: none">{{ segnapostoTesto }}</label>
+      <input id="ricerca-interventi" type="text" class="form-control" [(ngModel)]="text" (blur)="onBlur()"
+        (focus)="onFocus()" (keyup)="onKeyUp($event)" [placeholder]="segnapostoTesto" />
+      @if (this.statoRicerca.ricercaInCorso) {
+        <span class="input-group-addon">
+          <i class="glyphicon glyphicon-refresh"></i>
+        </span>
+      }
+      @if (!this.statoRicerca.ricercaInCorso) {
+        <span class="input-group-addon">
+          <i class="glyphicon glyphicon-search"></i>
+        </span>
+      }
+    </div>
+
+    <app-ricerca-interventi-result-container [attivo]="this.statoRicerca.mostraRisultati"
+      [risultatoRicerca]="this.risultatoRicerca$ | async" [mostraInterventiLocali]="mostraInterventiLocali"
+      [mostraInterventiRegionali]="mostraInterventiRegionali">
+    </app-ricerca-interventi-result-container>
+
+    @if (
+      this.statoRicerca.mostraRisultati &&
+      this.statoRicerca.numeroRisultatiTrovati === 0
+      ) {
+      <div class="search-results">
+        La ricerca di <b>"{{ text }}"</b> non ha prodotto risultati
+      </div>
+    }
+  </div>
+</div>

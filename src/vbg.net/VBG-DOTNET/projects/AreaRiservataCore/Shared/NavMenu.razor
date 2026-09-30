@@ -1,0 +1,185 @@
+﻿@using Init.Sigepro.FrontEnd.AppLogic.Autenticazione.Vbg.AutenticazioneUtente;
+@using Init.Sigepro.FrontEnd.AppLogic.Common
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneMenu
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneMenu.Model
+@using Init.Sigepro.FrontEnd.AppLogic.Repositories.Interfaces
+@using System.Web;
+@using Init.Sigepro.FrontEnd.CoreServices.GestioneUrl;
+
+@*
+@inject IMenuService _menuService
+@inject IConfigurazioneVbgRepository _configurazioneVbgRepository;
+@inject ISoftwareResolver _softwareResolver;
+@inject IAuthenticationDataResolver _authenticationDataResolver;
+@inject NavigationManager _navigationManager;
+@inject IUrlBuilder _urlBuilder;
+
+@if (MainMenu != null)
+{
+	<nav id="navMenu" class="navbar main-nav-bar navbar-expand-lg bg-primary" aria-label="main menu">
+		
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="main-menu-toggle navbar-toggler collapsed pull-left" data-toggle="collapse" data-target="#collapsible-menu-bar" aria-expanded="false">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+
+				<span class=" hidden-sm hidden-md hidden-lg sottotitolo-xs">
+					@SottotitoloPagina
+				</span>
+			</div>
+
+			<div class="collapse navbar-collapse" id="collapsible-menu-bar">
+				<ul class="navbar-nav me-auto">
+					@foreach (var (sezione, index) in MainMenu.Sezioni.Select((value, i) => (value, i)))
+					{
+						string ariaLabel = sezione.Titolo;
+
+						if (ariaLabel.Contains("glyphicon-home"))
+							continue;
+
+						if (ariaLabel.Contains("glyphicon-home"))
+							ariaLabel = "home";
+
+						<li class="nav-item dropdown">
+							<a href='@(string.IsNullOrEmpty(sezione.Url) ? "#" : sezione.Url)'
+							    id="navbarDropdown@(index)"
+							    class="nav-link @(sezione.HaLink ? "" : "dropdown-toggle")"
+							    data-bs-toggle="@(sezione.HaLink ? "" : "dropdown")"
+								target='@sezione.Target'
+								role="button"
+								aria-label="@ariaLabel"
+								aria-haspopup="true"
+								aria-expanded="false">
+
+								if (sezione.Titolo.Contains("glyphicon glyphicon-home"))
+								{
+									sezione.Titolo = sezione.Titolo.Replace("glyphicon glyphicon-home", "fa fa-home");
+								}
+									
+								@((MarkupString)sezione.Titolo)								
+
+								@if (!sezione.HaLink)
+								{
+									<span class="caret"></span>
+								}
+							</a>
+
+							@if (!sezione.HaLink && sezione.SubMenu != null)
+							{
+								<ul class="dropdown-menu" aria-labelledby="navbarDropdown@(index)">
+									@foreach (var sottomenu in sezione.SubMenu)
+									{
+										<li><a class="dropdown-item" href="@sottomenu.Url" target="@sottomenu.Target">@sottomenu.Titolo</a></li>
+									}
+								</ul>
+							}
+						</li>
+					}
+				</ul>
+
+
+				<!-- Menu utente -->
+
+				<ul class="navbar-nav ms-auto">
+					@if (this._authenticationDataResolver.IsAuthenticated)
+					{
+						<li class="nav-item dropdown">
+							<a href="#" id="navbarDropdownUser" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+								<span style="text-transform: capitalize">
+									@this._authenticationDataResolver.DatiAutenticazione?.FullUserName()
+								</span>
+								<span class="caret"></span>
+							</a>
+
+							<ul class="dropdown-menu" aria-labelledby="navbarDropdownUser">
+								@foreach (var item in MainMenu.MenuUtente)
+								{
+									if (item.Url.Contains("logout.ashx"))
+									{
+										<li><a class="dropdown-item" href="#" @onclick="() => LogOut(item.Url)" @onclick:preventDefault>@item.Titolo</a></li>
+									}
+									else
+									{
+										<li><a class="dropdown-item" href="@item.Url" target="@item.Target">@item.Titolo</a></li>
+									}									
+								}
+							</ul>
+						</li>
+					}
+				</ul>
+
+				<!-- Sezione menu destra -->
+				@if (MainMenu.MenuDestra is not null && MainMenu.MenuDestra.Any())
+				{
+					@foreach (var menuDx in MainMenu.MenuDestra)
+					{
+						<ul class="navbar-nav ms-auto">
+							<li class="nav-item dropdown">
+								<a href="@menuDx.Url"
+									class="@(menuDx.HaLink ? "" : "dropdown-toggle")"
+									data-bs-toggle="@(menuDx.HaLink ? "" : "dropdown")"
+									target="@menuDx.Target"
+									role="button"
+									aria-haspopup="true"
+									aria-expanded="false">
+									@((MarkupString)menuDx.Titolo)
+
+									@if (menuDx.HaLink)
+									{
+										<span class="caret" aria-hidden="true"></span>
+									}
+								</a>
+
+								@if (!menuDx.HaLink && (menuDx.SubMenu?.Any() ?? false))
+								{
+									<ul class="dropdown-menu">
+										@foreach (var item in menuDx.SubMenu)
+										{
+											<li>
+												<a href="@item.Url" target="@item.Target">@item.Titolo</a>
+											</li>
+										}
+									</ul>
+								}
+							</li>
+						</ul>
+					}
+
+				}
+			</div>
+		</div>
+	</nav>
+}
+
+@code {
+	private MenuModel? MainMenu;
+	private string? SottotitoloPagina;
+
+	protected override void OnInitialized()
+	{
+		this.MainMenu = this._menuService.LoadMenu();
+		this.SottotitoloPagina = this._configurazioneVbgRepository.LeggiConfigurazioneComune(this._softwareResolver.Software).DENOMINAZIONE;
+	}
+
+	private void LogOut(string url)
+	{
+		var uri = new Uri(url);
+		var queryParams = HttpUtility.ParseQueryString(uri?.Query);
+		string redirectUrl = queryParams?.Get("f");
+		string token = queryParams?.Get("token");
+
+		while (redirectUrl.StartsWith("/"))
+		{
+			redirectUrl = redirectUrl.Substring(1, redirectUrl.Length - 1);
+		}
+
+		//url = _urlBuilder.Build("logout", token, redirectUrl);
+		url = _urlBuilder.Build("logout", token);
+		_navigationManager.NavigateTo(url);
+	}
+}
+*@

@@ -1,0 +1,84 @@
+﻿@page "/{IdComune}/{Software}/admin/menu"
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneMenu
+@using Init.Utils
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.Utils
+
+
+@inject IMenuService _menuService
+@inherits BasePage
+
+<h2>Menu xml</h2>
+<p>Questo è il contenuto del file menu.xml</p>
+
+<TextEditor @bind-Value="@this._xml" OnBtnSave="(string s) => Task.FromResult(UpdateMenu(s))" TextFormattingMode="TextEditor.TextFormat.Xml"></TextEditor>
+
+@code {
+    [CascadingParameter(Name = "Layout")]
+    public MainLayout Layout { get; set; } = default!;
+
+    private string? _xml;
+
+    protected async override Task OnInitializedAsync()
+    {
+        if (!UtenteTester)
+        {
+            await GotoAsync("home");
+        }
+        else
+        {
+            var baseUrl = $"{_navigationManager.BaseUri}{IdComune}/{Software}";
+            var breadcrumbItems = new List<BreadcrumbsItem>()
+            {
+                new BreadcrumbsItem()
+                {
+                    Label = "Funzioni amministrative",
+                    Url = $"{baseUrl}/admin",
+                },
+                 new BreadcrumbsItem()
+                {
+                    Label = "Menu xml",
+                    Url = $"{baseUrl}/admin/menu",
+                    Active = true
+                }
+            };
+
+            this.Layout.SetBreadcrumbItems(breadcrumbItems);
+
+            var menu = this._menuService.GetMenuXml();
+
+            try
+            {
+                this._xml = XmlChecker.FormatXml(menu.TextContent);
+            }
+            catch (Exception ex)
+            {
+                this._xml = "";
+                MessageContainer.AddWarning($"Il formato xml non è valido. {ex.Message}");
+            }
+        }
+
+        await base.OnInitializedAsync();
+    }
+
+    private bool UpdateMenu(string xml)
+    {
+        if (string.IsNullOrEmpty(xml))
+        {
+            MessageContainer.AddError("Il menu non può essere vuoto");
+            return false;
+        }
+
+        try
+        {
+            this._menuService.UpdateMenu(new MenuFile(xml));
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Logger.Error("UpdateMenu ha generato un'eccezione", ex);
+            MessageContainer.AddError("Si è verificato un errore durante il salvataggio.");
+            return false;
+        }
+    }
+}

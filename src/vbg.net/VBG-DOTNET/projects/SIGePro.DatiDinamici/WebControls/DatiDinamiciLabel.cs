@@ -1,0 +1,51 @@
+﻿using Init.SIGePro.DatiDinamici.Markdown;
+using System.Web.UI.WebControls;
+using VBG.DatiDinamici;
+using VBG.DatiDinamici.WebControls;
+
+namespace Init.SIGePro.DatiDinamici.WebControls
+{
+    public partial class DatiDinamiciLabel : DatiDinamiciBaseControl<Label>
+    {
+
+        public static ProprietaDesigner[] GetProprietaDesigner()
+        {
+            return new ProprietaDesigner[] { };
+        }
+
+        private string _innerValue = "";
+
+        public override string Valore
+        {
+            get
+            {
+                return this._innerValue;
+            }
+            set
+            {
+                this._innerValue = value;
+                this.InnerControl.Text = MarkdownConverter.ToHtml(value);
+            }
+        }
+
+        public DatiDinamiciLabel(CampoDinamicoBase campo) : base(campo)
+        {
+            this.IgnoraRegistrazioneJavascript = true;
+
+            this.InnerControl.CssClass = "d2control d2-label-control";
+        }
+
+
+        protected override void Render(System.Web.UI.HtmlTextWriter writer)
+        {
+            this.NascondiIconaHelp();
+
+            base.Render(writer);
+        }
+
+        protected override string GetNomeTipoControllo()
+        {
+            return "d2Label";
+        }
+    }
+}

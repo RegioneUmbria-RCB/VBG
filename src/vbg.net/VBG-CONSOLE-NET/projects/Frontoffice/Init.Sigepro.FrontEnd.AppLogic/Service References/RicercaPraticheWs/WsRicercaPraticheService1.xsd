@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Init.SIGePro.Manager.Logic.RicercaPratiche" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Init.SIGePro.Manager.Logic.RicercaPratiche" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="RisultatoRicercaPratiche">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Anagrafiche" nillable="true" type="tns:ArrayOfAnagraficaIstanzaTrovata" />
+      <xs:element minOccurs="0" name="EstremiPratica" nillable="true" type="tns:EstremiPraticaTrovata" />
+      <xs:element minOccurs="0" name="Localizzazioni" nillable="true" type="tns:ArrayOfStradarioIstanzaTrovata" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RisultatoRicercaPratiche" nillable="true" type="tns:RisultatoRicercaPratiche" />
+  <xs:complexType name="ArrayOfAnagraficaIstanzaTrovata">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="AnagraficaIstanzaTrovata" nillable="true" type="tns:AnagraficaIstanzaTrovata" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfAnagraficaIstanzaTrovata" nillable="true" type="tns:ArrayOfAnagraficaIstanzaTrovata" />
+  <xs:complexType name="AnagraficaIstanzaTrovata">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Proprieta" nillable="true" type="tns:ArrayOfAnagraficaIstanzaTrovata.ValoreDatoAnagrafica" />
+      <xs:element minOccurs="0" name="TipoSoggetto" nillable="true" type="tns:AnagraficaIstanzaTrovata.TipoSoggettoAnagraficaTrovata" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AnagraficaIstanzaTrovata" nillable="true" type="tns:AnagraficaIstanzaTrovata" />
+  <xs:complexType name="ArrayOfAnagraficaIstanzaTrovata.ValoreDatoAnagrafica">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="AnagraficaIstanzaTrovata.ValoreDatoAnagrafica" nillable="true" type="tns:AnagraficaIstanzaTrovata.ValoreDatoAnagrafica" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfAnagraficaIstanzaTrovata.ValoreDatoAnagrafica" nillable="true" type="tns:ArrayOfAnagraficaIstanzaTrovata.ValoreDatoAnagrafica" />
+  <xs:complexType name="AnagraficaIstanzaTrovata.ValoreDatoAnagrafica">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Chiave" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="IsDateTime" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Valore" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AnagraficaIstanzaTrovata.ValoreDatoAnagrafica" nillable="true" type="tns:AnagraficaIstanzaTrovata.ValoreDatoAnagrafica" />
+  <xs:complexType name="AnagraficaIstanzaTrovata.TipoSoggettoAnagraficaTrovata">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Codice" type="xs:int" />
+      <xs:element minOccurs="0" name="Descrizione" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AnagraficaIstanzaTrovata.TipoSoggettoAnagraficaTrovata" nillable="true" type="tns:AnagraficaIstanzaTrovata.TipoSoggettoAnagraficaTrovata" />
+  <xs:complexType name="EstremiPraticaTrovata">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CodiceIstanza" type="xs:int" />
+      <xs:element minOccurs="0" name="DataIstanza" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="DataProtocollo" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="DescrizioneLavori" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Intervento" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="NumeroIstanza" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="NumeroProtocollo" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="EstremiPraticaTrovata" nillable="true" type="tns:EstremiPraticaTrovata" />
+  <xs:complexType name="ArrayOfStradarioIstanzaTrovata">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="StradarioIstanzaTrovata" nillable="true" type="tns:StradarioIstanzaTrovata" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfStradarioIstanzaTrovata" nillable="true" type="tns:ArrayOfStradarioIstanzaTrovata" />
+  <xs:complexType name="StradarioIstanzaTrovata">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Cap" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Circoscrizione" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Civico" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CodCivico" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CodViario" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CodiceComune" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CodiceStradario" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Colore" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Esponente" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="EsponenteInterno" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Fabbricato" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Interno" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Km" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Latitudine" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Longitudine" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Mappali" nillable="true" type="tns:ArrayOfMappaleIstanzaTrovata" />
+      <xs:element minOccurs="0" name="Note" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Piano" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Scala" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Stradario" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TipoLocalizzazione" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Uuid" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="StradarioIstanzaTrovata" nillable="true" type="tns:StradarioIstanzaTrovata" />
+  <xs:complexType name="ArrayOfMappaleIstanzaTrovata">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="MappaleIstanzaTrovata" nillable="true" type="tns:MappaleIstanzaTrovata" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfMappaleIstanzaTrovata" nillable="true" type="tns:ArrayOfMappaleIstanzaTrovata" />
+  <xs:complexType name="MappaleIstanzaTrovata">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CodiceTipoCatasto" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Foglio" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Particella" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Sezione" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Sub" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TipoCatasto" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="MappaleIstanzaTrovata" nillable="true" type="tns:MappaleIstanzaTrovata" />
+</xs:schema>

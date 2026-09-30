@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema
+	targetNamespace="http://www.csi.it/epay/epaywso/enti2epaywso/types"
+	xmlns="http://www.w3.org/2001/XMLSchema"
+	xmlns:cmn="http://www.csi.it/epay/epaywso/types"
+	xmlns:tns="http://www.csi.it/epay/epaywso/enti2epaywso/types"
+	elementFormDefault="qualified">
+
+	<annotation>
+		<documentation>Inserimento e Aggiornamento Posizioni debitorie</documentation>
+		<documentation>XSD versione 1.1.0</documentation>
+		<documentation>= 05/02/2019 - ComponenteImportoType aggiunti AnnoAccertamento - NumeroAccertamento</documentation>
+		<documentation>= 05/02/2019 - PosizioneDaAggiornareType aggiunti RiferimentiPagamento</documentation>
+		<documentation>= 05/02/2019 - PosizioneDaInserireType aggiunti RiferimentiPagamento</documentation>
+    </annotation>
+	
+	<import schemaLocation="EPaywsoCommonTypes.xsd" namespace="http://www.csi.it/epay/epaywso/types" />
+
+	<element name="InserisciListaDiCaricoRequest">
+		<complexType>
+			<sequence>
+				<element name="Testata" type="tns:TestataListaCarico" />
+				<element name="ListaDiCarico" type="tns:ListaDiCarico" />
+			</sequence>
+		</complexType>
+	</element>
+
+	<element name="InserisciListaDiCaricoResponse">
+		<complexType>
+			<complexContent>
+				<extension base="cmn:ResponseType">
+					<sequence>
+						<element name="EsitoInserimento" type="cmn:EsitoInserimentoType" minOccurs="0"/>
+					</sequence>
+				</extension>
+			</complexContent>
+		</complexType>
+	</element>
+
+	<element name="AggiornaPosizioniDebitorieRequest">
+		<complexType>
+			<sequence>
+				<element name="Testata" type="tns:TestataAggiornaPosizioniDebitorie" />
+				<element name="ElencoPosizioniDaAggiornare" type="tns:ElencoPosizioniDaAggiornareType"/>
+			</sequence>
+		</complexType>
+	</element>
+
+	<element name="AggiornaPosizioniDebitorieResponse">
+		<complexType>
+			<complexContent>
+				<extension base="cmn:ResponseType">
+					<sequence>
+						<element name="EsitoAggiornamento" type="cmn:EsitoAggiornamentoType" minOccurs="0"/>
+					</sequence>
+				</extension>
+			</complexContent>
+		</complexType>
+	</element>
+	
+	<complexType name="TestataListaCarico">
+		<sequence>
+			<element name="IdMessaggio" type="cmn:String35Type" />
+			<element name="CFEnteCreditore" type="cmn:String35Type" />
+			<element name="CodiceVersamento" type="cmn:CodiceVersamentoType" />
+			<element name="NumeroPosizioniDebitorie" type="cmn:Numero6CifreType" />
+			<element name="ImportoTotaleListaDiCarico" type="cmn:ImportoType" />
+		</sequence>
+	</complexType>
+	
+	<complexType name="TestataAggiornaPosizioniDebitorie">
+		<sequence>
+			<element name="IdMessaggio" type="cmn:String35Type" />
+			<element name="CFEnteCreditore" type="cmn:String35Type" />
+			<element name="CodiceVersamento" type="cmn:CodiceVersamentoType" />
+			<element name="NumeroPosizioniDebitorie" type="cmn:Numero6CifreType" />
+		</sequence>
+	</complexType>
+
+	<complexType name="ListaDiCarico">
+		<sequence>
+			<element name="PosizioniDaInserire">
+				<complexType>
+					<sequence>
+						<element name="PosizioneDaInserire" type="tns:PosizioneDaInserireType"
+							minOccurs="1" maxOccurs="1000" />
+					</sequence>
+				</complexType>
+			</element>
+		</sequence>
+	</complexType>
+
+	<complexType name="ElencoPosizioniDaAggiornareType">
+		<sequence>
+			<element name="PosizioniDaAggiornare">
+				<complexType>
+					<sequence>
+						<element name="PosizioneDaAggiornare" type="tns:PosizioneDaAggiornareType"
+							minOccurs="1" maxOccurs="1000" />
+					</sequence>
+				</complexType>
+			</element>
+		</sequence>
+	</complexType>
+	
+	<complexType name="PosizioneDaInserireType">
+		<sequence>
+			<element name="IdPosizioneDebitoria" type="cmn:String50Type" />
+			<element name="AnnoRiferimento" type="cmn:AnnoType" minOccurs="0" />
+			<element name="ImportoTotale" type="cmn:ImportoType" />
+			<element name="DataScadenza" type="date" minOccurs="0"/>
+			<element name="DataInizioValidita" type="date" minOccurs="0"/>
+			<element name="DataFineValidita" type="date" minOccurs="0"/>
+			<element name="DescrizioneCausaleVersamento" type="cmn:String100Type"/>
+			<element name="DescrizioneRata" type="cmn:String16Type" minOccurs="0"/>
+			<element name="ComponentiImporto" minOccurs="0">
+				<complexType>
+					<sequence>
+						<element name="ComponenteImporto" type="tns:ComponenteImportoType" minOccurs="1" maxOccurs="5" />
+					</sequence>
+				</complexType>
+			</element>
+			<element name="SoggettoPagatore" type="cmn:SoggettoType" />
+			<element name="NotePerIlPagatore" type="cmn:String1000Type" minOccurs="0"/>
+			<element name="RiferimentiPagamento" minOccurs="0">
+				<complexType>
+					<sequence>
+						<element name="Riferimento" type="tns:RiferimentoType" minOccurs="1" maxOccurs="5" />
+					</sequence>
+				</complexType>
+			</element>
+		</sequence>
+	</complexType>
+
+	<complexType name="PosizioneDaAggiornareType">
+		<sequence>
+			<element name="TipoAggiornamento" type="cmn:TipoAggiornamentoType"/>
+			<element name="IdPosizioneDebitoria" type="cmn:String50Type" />
+			<element name="DataScadenza" type="date" minOccurs="0"/>
+			<element name="DataInizioValidita" type="date" minOccurs="0"/>
+			<element name="DataFineValidita" type="date" minOccurs="0"/>
+			<element name="ImportoTotale" type="cmn:ImportoType" minOccurs="0"/>
+			<element name="ComponentiImporto" minOccurs="0">
+				<complexType>
+					<sequence>
+						<element name="ComponenteImporto" type="tns:ComponenteImportoType" minOccurs="1" maxOccurs="5" />
+					</sequence>
+				</complexType>
+			</element>
+			<element name="DescrizioneCausaleVersamento" type="cmn:String100Type" minOccurs="0"/>
+			<element name="Motivazione" type="cmn:String400Type" minOccurs="0"/>
+			<element name="RiferimentiPagamento" minOccurs="0">
+				<complexType>
+					<sequence>
+						<element name="Riferimento" type="tns:RiferimentoType" minOccurs="1" maxOccurs="5" />
+					</sequence>
+				</complexType>
+			</element>
+		</sequence>
+	</complexType>
+
+    <complexType name="RiferimentoType">
+        <sequence>
+            <element name="Nome" type="cmn:String70Type" />
+            <element name="Valore" type="cmn:String70Type" />
+        </sequence>
+    </complexType>
+
+	<complexType name="ComponenteImportoType">
+		<sequence>
+			<element name="Importo" type="cmn:ImportoType" />
+			<element name="CausaleDescrittiva" type="cmn:String80Type" />
+			<element name="DatiSpecificiRiscossione" type="cmn:String140Type" minOccurs="0"/>
+            <element name="AnnoAccertamento" type="cmn:AnnoType" minOccurs="0"/>
+            <element name="NumeroAccertamento" type="cmn:String35Type" minOccurs="0"/>
+		</sequence>
+	</complexType>
+
+</schema>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions name="EPaywso2EntiService"
+  targetNamespace="http://www.csi.it/epay/epaywso/epaywso2entisrv"
+  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:srv="http://www.csi.it/epay/epaywso/epaywso2enti/types"
+  xmlns:cmn="http://www.csi.it/epay/epaywso/types"
+  xmlns:tns="http://www.csi.it/epay/epaywso/epaywso2entisrv">
+  <wsdl:types>
+    <xsd:schema>
+      <xsd:import namespace="http://www.csi.it/epay/epaywso/epaywso2enti/types" schemaLocation="EPaywso2EntiServiceTypes.xsd"/>
+      <xsd:import namespace="http://www.csi.it/epay/epaywso/types" schemaLocation="EPaywsoCommonTypes.xsd"/>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="TrasmettiNotifichePagamentoRequest">
+    <wsdl:part element="srv:TrasmettiNotifichePagamentoRequest" name="parameters"/>
+  </wsdl:message>
+  <wsdl:message name="TrasmettiNotifichePagamentoResponse">
+    <wsdl:part element="cmn:EPaywsoServiceResponse" name="parameters"/>
+  </wsdl:message>
+  <wsdl:message name="TrasmettiAvvisiScadutiRequest">
+    <wsdl:part element="srv:TrasmettiAvvisiScadutiRequest" name="parameters"/>
+  </wsdl:message>
+  <wsdl:message name="TrasmettiAvvisiScadutiResponse">
+    <wsdl:part element="cmn:EPaywsoServiceResponse" name="parameters"/>
+  </wsdl:message>
+  <wsdl:message name="EsitoInserimentoListaDiCaricoRequest">
+    <wsdl:part element="srv:EsitoInserimentoListaDiCaricoRequest" name="parameters"/>
+  </wsdl:message>
+  <wsdl:message name="EsitoInserimentoListaDiCaricoResponse">
+    <wsdl:part element="cmn:EPaywsoServiceResponse" name="parameters"/>
+  </wsdl:message>
+  <wsdl:message name="EsitoAggiornaPosizioniDebitorieRequest">
+    <wsdl:part element="srv:EsitoAggiornaPosizioniDebitorieRequest" name="parameters"/>
+  </wsdl:message>
+  <wsdl:message name="EsitoAggiornaPosizioniDebitorieResponse">
+    <wsdl:part element="cmn:EPaywsoServiceResponse" name="parameters"/>
+  </wsdl:message>
+  <wsdl:portType name="EPaywso2EntiService">
+    <wsdl:operation name="TrasmettiNotifichePagamento">
+      <wsdl:input message="tns:TrasmettiNotifichePagamentoRequest"/>
+      <wsdl:output message="tns:TrasmettiNotifichePagamentoResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="TrasmettiAvvisiScaduti">
+      <wsdl:input message="tns:TrasmettiAvvisiScadutiRequest"/>
+      <wsdl:output message="tns:TrasmettiAvvisiScadutiResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="EsitoInserimentoListaDiCarico">
+      <wsdl:input message="tns:EsitoInserimentoListaDiCaricoRequest"/>
+      <wsdl:output message="tns:EsitoInserimentoListaDiCaricoResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="EsitoAggiornaPosizioniDebitorie">
+      <wsdl:input message="tns:EsitoAggiornaPosizioniDebitorieRequest"/>
+      <wsdl:output message="tns:EsitoAggiornaPosizioniDebitorieResponse"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="EPaywso2EntiServiceSOAP" type="tns:EPaywso2EntiService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="TrasmettiNotifichePagamento">
+      <soap:operation soapAction="http://www.csi.it/epay/epaywso/service/TrasmettiNotifichePagamento"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TrasmettiAvvisiScaduti">
+      <soap:operation soapAction="http://www.csi.it/epay/epaywso/service/TrasmettiAvvisiScaduti"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EsitoInserimentoListaDiCarico">
+      <soap:operation soapAction="http://www.csi.it/epay/epaywso/service/EsitoInserimentoListaDiCarico"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EsitoAggiornaPosizioniDebitorie">
+      <soap:operation soapAction="http://www.csi.it/epay/epaywso/service/EsitoAggiornaPosizioniDebitorie"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="EPaywso2EntiService">
+    <wsdl:port binding="tns:EPaywso2EntiServiceSOAP" name="EPaywso2EntiServiceSOAP">
+      <soap:address location="http://www.example.org/"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

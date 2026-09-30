@@ -1,0 +1,80 @@
+﻿@page "/"
+
+<style type="text/css">
+    .cards-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* 2 colonne */
+        gap: 20px; /* spazio tra le card */
+    }
+
+    .card {
+        /* Add shadows to create the "card" effect */
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+        transition: 0.3s;
+        cursor: pointer;
+    }
+
+        /* On mouse-over, add a deeper shadow */
+        .card:hover {
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+        }
+
+    /* Add some padding inside the card container */
+    .container {
+        padding: 2px 16px;
+    }
+</style>
+
+<h3>STC Server Test</h3>
+
+<div class="cards-container">
+    @foreach (var item in listaCard)
+    {
+        <div class="card" onclick="@(() => GoTo(item.UrlPagina))">
+            <div class="container">
+                <h4><b>@item.Titolo</b></h4>
+                <p>@item.Descrizione</p>
+            </div>
+        </div>
+    }
+</div>
+
+
+
+@code {
+    public class HomepageCard
+    {
+        public string Titolo { get; set; } = "";
+        public string Descrizione { get; set; } = "";
+        public string UrlPagina { get; set; } = "";
+    }
+
+    [Inject]
+    public NavigationManager navigationManager { get; set; } = default!;
+
+    private List<HomepageCard> listaCard = new List<HomepageCard>();
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        listaCard.Add(new HomepageCard
+        {
+            Titolo = "Invio correzioni",
+            Descrizione = "Pagina per testare l'invio delle correzioni",
+            UrlPagina = "/InvioCorrezioni"
+        });
+
+        listaCard.Add(new HomepageCard
+        {
+            Titolo = "Invio integrazioni",
+            Descrizione = "Pagina per testare l'invio delle integrazioni",
+            UrlPagina = "/InvioRequestIntegration"
+        });
+    }
+
+    private void GoTo(string page)
+    {
+        navigationManager.NavigateTo(page);
+    }
+}

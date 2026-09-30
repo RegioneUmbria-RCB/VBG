@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+	<context:component-scan base-package="it.gruppoinit.pal.gp.areariservata.web" />
+	<context:component-scan base-package="it.gruppoinit.pal.gp.cartfacct.web" />
+	<context:component-scan base-package="it.gruppoinit.pal.gp.autocompiler.web" />
+	
+	<context:annotation-config/>
+	<bean class="it.gruppoinit.pal.gp.areariservata.web.handler.RestHandlerMapping">
+		<property name="requestNames">
+			<list>
+				<value>/public_json/</value>
+				<value>/servizi/</value>
+				<value>/compilazione/</value>
+			</list>
+		</property>
+	</bean>
+	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
+	<!--
+		- This bean processes annotated handler methods, applying webapp-specific PropertyEditors
+		- for request parameter binding. It overrides the default AnnotationMethodHandlerAdapter.
+	-->
+	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="webBindingInitializer">
+			<bean class="it.gruppoinit.pal.gp.core.web.util.BindingInitializer" />
+		</property>
+	</bean>
+	
+	<bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping">
+		 <property name="interceptors">
+		 	<list>
+				<ref bean="localeChangeInterceptor" />
+				<!-- 
+				<ref bean="themeChangeInterceptor" />
+				 -->
+				<ref bean="openSessionInViewInterceptor" />
+			</list>
+		 </property>
+		 <property name="order" value="1"></property>
+	</bean>
+	
+	<bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+    	<property name="paramName" value="lang" />
+	</bean>
+	
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+		<property name="defaultLocale" value="it" />
+	</bean>
+	
+	<bean class="org.springframework.web.servlet.view.XmlViewResolver" 
+		p:location="/WEB-INF/views.xml" 
+		p:order="1" />
+	
+	<!--
+		- This bean configures the 'prefix' and 'suffix' properties of 
+		- InternalResourceViewResolver, which resolves logical view names 
+		- returned by Controllers. For example, a logical view name of "operatori" 
+		- will be mapped to "/WEB-INF/jsp/operatori.jsp".
+	-->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" 
+		p:prefix="/WEB-INF/jsp/"
+		p:suffix=".jsp" />		
+		
+	
+	<!-- MultipartResolver for parsing file uploads, implementation for Commons FileUpload -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+	  
+	<!-- bean che disabilita il MultipartResolver utilizzando aop quando è presente un parametro request di nome disableMR -->
+	<!--
+	<bean class="it.gruppoinit.pal.gp.cartfacct.web.util.MultipartResolverDisablingAspect" />
+	-->
+	<!-- 
+	<bean id="themeChangeInterceptor" class="org.springframework.web.servlet.theme.ThemeChangeInterceptor" />	
+	 -->
+	
+	<bean id="themeResolver" class="org.springframework.web.servlet.theme.SessionThemeResolver" />
+
+	<aop:aspectj-autoproxy />
+</beans>

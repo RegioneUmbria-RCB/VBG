@@ -1,0 +1,37 @@
+#set($regolaAtt = false)
+#if(!$modelloHelper.isContestoIndefinito())
+	#if($colonnaTab)
+		##$modelloHelper.debug($colonnaTab)
+		#set($regolaAtt = ${colonnaTab.getRegolaAttivazione()})
+	#else
+		#set($regolaAtt = ${colonna.getRegolaAttivazione()})
+	#end
+#end
+#set($regolaHandle = "")
+#set($renderElement = true)
+#if($regolaAtt)
+	#set($regolaHandle = "REG_${regolaAtt.Id.Codice}")
+	#if($modelloHelper.isRenderForPrint())
+		#if($indiceBlocco)
+			#set($renderElement = $regoleHelper.evaluateRule(${regolaAtt},${blocco},${indiceBlocco}).booleanValue())
+		#else
+			#set($renderElement = $regoleHelper.evaluateRule(${regolaAtt}).booleanValue())
+		#end
+	#end
+#end
+#set($colspanLeft = 0)
+#if($lastColonna)
+	#set($colspanLeft = $deltaColonne * 2)
+#end
+#if($campo)
+	#parse("modellidinamici/campo.vm")
+#elseif($testo)
+	#parse("modellidinamici/testo.vm")
+#elseif($testoEsteso)
+	#parse("modellidinamici/testoesteso.vm")
+#end
+
+#if(!$modelloHelper.isRenderForPrint())
+	#parse("modellidinamici/script_attivazione.vm")
+#end 
+

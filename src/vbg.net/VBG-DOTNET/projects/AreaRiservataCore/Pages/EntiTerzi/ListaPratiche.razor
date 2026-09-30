@@ -1,0 +1,131 @@
+﻿@page "/{IdComune}/{Software}/entiterzilistapratiche"
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneEntiTerzi
+@using Microsoft.AspNetCore.Components.QuickGrid
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.EditFormComponents
+@using VBG.BlazorComponentsLibrary.EditFormComponents.DropDown
+
+
+@inherits BasePage
+@implements IDisposable
+
+<TitoloPagina>Pratiche di competenza</TitoloPagina>
+
+<style>
+    .ellipsis {
+        max-width: 200px;
+        overflow-x: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+
+</style>
+
+@if (showLoading)
+{
+    <BasicModal AlwaysVisible="true">
+        <ModalHeader>
+            <h3>Caricamento in corso...</h3>
+        </ModalHeader>
+        <ModalBody>
+            <div>
+                L'operazione potrebbe richiedere anche alcuni minuti. Si prega di attendere senza effettuare altre operazioni.
+            </div>
+
+            <div class="progress progress-striped active" style="margin-bottom: 0;">
+                <div class="progress-bar" style="width: 100%"></div>
+            </div>
+        </ModalBody>
+    </BasicModal>
+}
+
+@switch (currentStep)
+{
+    case Constants.ViewIdRicerca:
+    
+        <VbgForm Id="mainForm" Model="@model" OnValidSubmit="OnValidSubmit" OnInvalidSubmit="OnError">
+            <div class="row">
+                <div class="col-md-6">
+                    <DateInputForm Id="dallaData" Label="Dalla data"
+                                   Value="@model.FromDate" ValueExpression="() => model.FromDate"
+                                   ValueChanged="EventCallback.Factory.Create(this, (DateTime? d) => model.FromDate = d)">
+                    </DateInputForm>
+                </div>
+                <div class="col-md-6">
+                    <DateInputForm Id="allaData" Label="Alla data"
+                                   Value="@model.ToDate" ValueExpression="() => model.ToDate"
+                                   ValueChanged="EventCallback.Factory.Create(this, (DateTime? d) => model.ToDate = d)">
+                    </DateInputForm>
+                </div>            
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <TextInputForm Id="protocollo" Label="Numero protocollo" @bind-Value="model.NumeroProtocollo" ValidationFor="() => model.NumeroProtocollo"></TextInputForm>
+                </div>
+                <div class="col-md-6">
+                    <TextInputForm Id="pratica" Label="Numero pratica" @bind-Value="model.NumeroPratica" ValidationFor="() => model.NumeroPratica"></TextInputForm>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <GenericDropDownForm Id="compentenza" Label="Modulo di competenza"
+                                         Value="model.Competenza"
+                                         TItem="ETSoftwareConPratiche"
+                                         OnChanged="EventCallback.Factory.Create(this, (ETSoftwareConPratiche c) => model.Competenza = c)"
+                                         ValueExpression="() => model.Competenza" Selector="(x) => x.Descrizione" ValidationFor="() => model.Competenza"
+                                         Items="@CompetenzeDataItems" ValueField="Codice" TextField="Descrizione"
+                                         ShowEmptyItem="true" EmptyItemText="Tutti" EmptyItemValue="">
+                    </GenericDropDownForm>
+                </div>
+                <div class="col-md-6">
+                    <GenericDropDownForm Id="elaborata" Label="Elaborata"
+                                         Value="model.Elaborata"
+                                         TItem="Elaborata"
+                                         OnChanged="EventCallback.Factory.Create(this, (Elaborata e) => model.Elaborata = e)"
+                                         ValueExpression="() => model.Elaborata" Selector="(x) => x.Text" ValidationFor="() => model.Elaborata"
+                                         Items="@ElaborataDataItems" ValueField="Value" TextField="Text"
+                                         ShowEmptyItem="true" EmptyItemText="Tutti" EmptyItemValue="">
+                    </GenericDropDownForm>
+                </div>
+                           
+            </div>
+            <div class="buttonContainer">
+                <button class="btn btn-light" @onclick="OnBtnCloseAsync">Chiudi</button>
+                <button class="btn btn-primary" @onclick="OnBtnFindAsync">Cerca</button>
+            </div>
+        </VbgForm>
+
+        break;
+    case Constants.ViewIdLista:
+
+        if (gridDataSource != null)
+        {
+            <QuickGrid id="results-grid" Items="@gridDataSource" Pagination="@_pagination" Class="table table-striped table-hover">
+                <PropertyColumn Title="Numero Pratica" Property="@(c => c.StringaNumeroIstanza)"></PropertyColumn>
+                <PropertyColumn Title="Protocollo" Property="@(c => c.StringaProtocollo)"></PropertyColumn>
+                <PropertyColumn Title="Localizzazione" Property="@(c => c.Localizzazione)"></PropertyColumn>
+                <PropertyColumn Title="Richiedente" Property="@(c => c.Richiedente)"></PropertyColumn>
+                <PropertyColumn Title="Oggetto" class="ellipsis" Property="@(c => c.Oggetto)"></PropertyColumn>
+                <PropertyColumn Title="Stato" Property="@(c => c.StatoLavorazione)"></PropertyColumn>
+                <PropertyColumn Title="Presentata a" class="ellipsis" Property="@(c => c.Modulo)"></PropertyColumn>
+                <TemplateColumn Title="Azioni">
+                    <button @onclick='() => GotoAsync($"entiterzidettagliopratica/{context.UUID}/entiterzilistapratiche?showResults=true")' class="btn btn-link">Seleziona</button>
+                </TemplateColumn>
+            </QuickGrid>
+
+            <Paginator State="@_pagination" />
+
+
+            <div class="buttonContainer">
+                <button class="btn btn-light vbg-show-spinner" @onclick="OnBtnBackAsync">Nuova Ricerca</button>
+            </div>
+        }
+        break;
+}
+
+@code {
+
+}

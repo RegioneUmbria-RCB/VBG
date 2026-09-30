@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://init.sigepro.it" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://init.sigepro.it" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/">
+  <wsdl:types>
+    <s:schema xmlns="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://init.sigepro.it" schemaLocation="WsAnagrafe2.xsd"/>
+		</s:schema>
+  </wsdl:types>
+  <wsdl:message name="getPersonaFisicaHttpPostOut">
+    <wsdl:part name="Body" element="tns:Anagrafe">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getPersonaFisicaHttpGetOut">
+    <wsdl:part name="Body" element="tns:Anagrafe">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getPersonaFisicaSoapOut">
+    <wsdl:part name="parameters" element="tns:getPersonaFisicaResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getPersonaGiuridicaHttpPostOut">
+    <wsdl:part name="Body" element="tns:Anagrafe">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getPersonaFisicaSoapIn">
+    <wsdl:part name="parameters" element="tns:getPersonaFisica">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getPersonaGiuridicaHttpGetIn">
+    <wsdl:part name="token" type="s:string">
+    </wsdl:part>
+    <wsdl:part name="cfImpresaPartitaIva" type="s:string">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getPersonaGiuridicaSoapIn">
+    <wsdl:part name="parameters" element="tns:getPersonaGiuridica">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getPersonaGiuridicaHttpPostIn">
+    <wsdl:part name="token" type="s:string">
+    </wsdl:part>
+    <wsdl:part name="cfImpresaPartitaIva" type="s:string">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getPersonaFisicaHttpPostIn">
+    <wsdl:part name="token" type="s:string">
+    </wsdl:part>
+    <wsdl:part name="codiceFiscale" type="s:string">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getPersonaGiuridicaHttpGetOut">
+    <wsdl:part name="Body" element="tns:Anagrafe">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getPersonaFisicaHttpGetIn">
+    <wsdl:part name="token" type="s:string">
+    </wsdl:part>
+    <wsdl:part name="codiceFiscale" type="s:string">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getPersonaGiuridicaSoapOut">
+    <wsdl:part name="parameters" element="tns:getPersonaGiuridicaResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="WsAnagrafe2Soap">
+    <wsdl:operation name="getPersonaFisica">
+      <wsdl:input message="tns:getPersonaFisicaSoapIn">
+    </wsdl:input>
+      <wsdl:output message="tns:getPersonaFisicaSoapOut">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getPersonaGiuridica">
+      <wsdl:input message="tns:getPersonaGiuridicaSoapIn">
+    </wsdl:input>
+      <wsdl:output message="tns:getPersonaGiuridicaSoapOut">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="WsAnagrafe2Soap" type="tns:WsAnagrafe2Soap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="getPersonaFisica">
+      <soap:operation soapAction="http://init.sigepro.it/getPersonaFisica" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getPersonaGiuridica">
+      <soap:operation soapAction="http://init.sigepro.it/getPersonaGiuridica" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="WsAnagrafe2">
+    <wsdl:port name="WsAnagrafe2" binding="tns:WsAnagrafe2Soap">
+      <soap:address location="http://localhost:8080/WebServiceRepository/services/WsAnagrafe2"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://gruppoinit.it/mailService/schemas/messages"
+	elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema"
+	xmlns:tns="http://gruppoinit.it/mailService/schemas/messages">
+
+
+	<element name="MessageRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string"></element>
+				<element name="software" type="string"></element>
+				<element name="codicemovimento" minOccurs="0" maxOccurs="1" type="string"></element>
+				<element name="mailMessage" type="tns:MailMessageType"></element>
+			</sequence>
+		</complexType>
+	</element>
+	
+	<element name="MessageResponse">
+		<complexType>
+			<sequence>
+				<element name="esito" type="string"></element>
+			</sequence>
+		</complexType>
+	</element>
+	
+	<!-- Request and Response per invio email multi account -->
+	<element name="MessageRequest2">
+		<complexType>
+			<sequence>
+				<element name="token" type="string"></element>
+				<element name="accountid" minOccurs="0" maxOccurs="1" type="integer"></element>
+				<element name="software" type="string"></element>
+				<element name="codicecomune" minOccurs="0" maxOccurs="1" type="string"></element>
+				<element name="codicemovimento" minOccurs="0" maxOccurs="1" type="string"></element>
+				<element name="mailMessage" type="tns:MailMessageType"></element>
+			</sequence>
+		</complexType>
+	</element>
+	
+	<element name="MessageResponse2">
+		<complexType>
+			<sequence>
+				<element name="esito" type="string"></element>
+			</sequence>
+		</complexType>
+	</element>
+	
+	
+	
+	<complexType name="AttachmentType">
+		<sequence>
+			<element name="id" minOccurs="0" type="string"></element>
+			<element name="descrizione" minOccurs="0" type="string"></element>
+			<element name="mimeType" type="string"></element>
+			<element name="fileName" type="string"></element>
+			<element name="binaryData" minOccurs="0" type="base64Binary"></element>
+		</sequence>
+	</complexType>
+	
+	<complexType name="AttachmentsType">
+		<sequence>
+			<element name="attachment" minOccurs="1" maxOccurs="unbounded" type="tns:AttachmentType"></element>
+		</sequence>
+	</complexType>
+	
+	<complexType name="MailMessageType">
+		<sequence>
+			<element name="inviaComeHtml" minOccurs="0" type="boolean"></element>
+			<element name="mittente" minOccurs="0" type="string"></element>
+			<element name="corpoMail" type="string"></element>
+			<element name="oggetto" type="string"></element>
+			<element name="destinatari" type="string"></element>
+			<element name="destinatariInCopia" minOccurs="0" maxOccurs="1" type="string"></element>
+			<element name="destinatariInCopiaNascosta" minOccurs="0" maxOccurs="1" type="string"></element>
+			<element name="messageID" minOccurs="0" maxOccurs="1" type="string"></element>
+			<element name="attachments" minOccurs="0" maxOccurs="1" type="tns:AttachmentsType"></element>
+		</sequence>
+	</complexType>	
+	
+	
+</schema>

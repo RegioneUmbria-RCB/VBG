@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
+	version="5.0">
+
+	<display-name>Verifica Firma Digitale - DSS 6.x (Jakarta EE)</display-name>
+
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:applicationContext.xml</param-value>
+	</context-param>
+
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<listener>
+		<listener-class>it.gruppoinit.dss.servlet.CleanupSessionListener</listener-class>
+	</listener>
+
+	<!-- CXF: endpoint SOAP validazione come in legacy (url-pattern /wservice/* da git history) -->
+	<servlet>
+		<servlet-name>CXFServlet</servlet-name>
+		<servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CXFServlet</servlet-name>
+		<url-pattern>/wservice/*</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+	<servlet-name>dispatcher</servlet-name>
+	<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+	<init-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:spring-mvc.xml</param-value>
+	</init-param>
+	<load-on-startup>2</load-on-startup>
+	<multipart-config>
+        <max-file-size>10485760</max-file-size>
+        <max-request-size>20971520</max-request-size>
+        <file-size-threshold>1048576</file-size-threshold>
+    </multipart-config>
+    </servlet>
+
+	<servlet-mapping>
+		<servlet-name>dispatcher</servlet-name>
+		<url-pattern>/api/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<description>Verifica firma digitale (DSS 6.x)</description>
+		<display-name>verifica</display-name>
+		<servlet-name>verifica</servlet-name>
+		<servlet-class>it.gruppoinit.dss.servlet.ValidationServlet</servlet-class>
+		<init-param>
+			<param-name>uploadedDir</param-name>
+			<param-value>files</param-value>
+		</init-param>
+		<init-param>
+			<param-name>maxUploadSize</param-name>
+			<param-value>10000000</param-value>
+		</init-param>
+		<init-param>
+			<param-name>uploadedDirSizeFactor</param-name>
+			<param-value>10</param-value>
+		</init-param>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>verifica</servlet-name>
+		<url-pattern>/validazione</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>verifica</servlet-name>
+		<url-pattern>/validazione/*</url-pattern>
+	</servlet-mapping>
+
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
+
+	<session-config>
+		<session-timeout>2</session-timeout>
+	</session-config>
+</web-app>

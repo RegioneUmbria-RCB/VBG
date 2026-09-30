@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2005 rel. 3 U (http://www.altova.com) by any (INSIEL S.p.A.) -->
+<xs:schema xmlns:dProtRes="http://insiel.it/protocollo/schemixsd/DettagliProtocolloResponse" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:TipiGenerali="http://insiel.it/protocollo/schemixsd/TipiGenerali" targetNamespace="http://insiel.it/protocollo/schemixsd/DettagliProtocolloResponse" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:import namespace="http://insiel.it/protocollo/schemixsd/TipiGenerali" schemaLocation="tipi_generali.xsd"/>
+	<xs:element name="DettagliProtocolloResponse">
+		<xs:complexType>
+			<xs:choice>
+				<xs:element ref="dProtRes:DettagliProtocollo"/>
+				<xs:element name="Errore" type="TipiGenerali:Errore"/>
+			</xs:choice>
+			<xs:attribute name="esito" type="xs:boolean" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="DettagliProtocollo">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="InfoGenerali" type="TipiGenerali:DettagliProtocollo"/>
+				<xs:element name="Mittenti" type="dProtRes:Mittenti" minOccurs="0"/>
+				<xs:element name="Destinatari" type="dProtRes:Destinatari" minOccurs="0"/>
+				<xs:element name="Uffici" type="dProtRes:Uffici" minOccurs="0"/>
+				<xs:element name="Precedenti" type="dProtRes:Precedenti" minOccurs="0"/>
+				<xs:element name="Classifiche" type="dProtRes:Classifiche" minOccurs="0"/>
+				<xs:element name="Documenti" type="dProtRes:DocumentiAllegati" minOccurs="0"/>
+				<xs:element name="DocumentoInCarico" type="dProtRes:DocumentoInCarico" minOccurs="0"/>
+				<xs:element name="Pratiche" type="dProtRes:Pratiche" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="Mittenti">
+		<xs:sequence minOccurs="0">
+			<xs:element name="Mittente" type="dProtRes:Corrispondente" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Destinatari">
+		<xs:sequence minOccurs="0">
+			<xs:element name="Destinatario" type="dProtRes:Corrispondente" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Uffici">
+		<xs:sequence minOccurs="0">
+			<xs:element name="Ufficio" type="dProtRes:Corrispondente" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Precedenti">
+		<xs:sequence minOccurs="0">
+			<xs:element name="Precedente" type="dProtRes:Precedente" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Precedente">
+		<xs:sequence>
+			<xs:element name="codUff" type="xs:string" nillable="true"/>
+			<xs:element name="codReg" type="xs:string" nillable="true"/>
+			<xs:element name="anno" type="TipiGenerali:anno" nillable="true"/>
+			<xs:element name="num" type="TipiGenerali:numero" nillable="true"/>
+			<xs:element name="subn" type="TipiGenerali:subNumero" nillable="true"/>
+			<xs:element name="verso" type="TipiGenerali:verso" nillable="true"/>
+			<xs:element name="tipoLegame" type="xs:string" nillable="true"/>
+			<xs:element name="estremiProto" type="xs:string" nillable="true"/>
+			<xs:element name="idProt" type="TipiGenerali:IdProtocollo" nillable="true"/>
+			<xs:element name="progPrecedente" type="xs:integer" nillable="true"/>
+			<xs:element name="descTipoRife" type="xs:string" nillable="true"/>
+			<xs:element name="codTipoRife" type="xs:string" nillable="true"/>
+			<xs:element name="codTipoRifeCol" type="xs:string" nillable="true"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Corrispondente">
+		<xs:sequence>
+			<xs:element name="codUff" type="xs:string" nillable="true"/>
+			<xs:element name="descUff" type="xs:string" nillable="true"/>
+			<xs:element name="codCatRife" type="xs:string" nillable="true"/>
+			<xs:element name="codTipoRife" type="xs:string" nillable="true"/>
+			<xs:element name="descTipoRife" type="xs:string" nillable="true"/>
+			<xs:element name="codTipoDoc" type="xs:string" nillable="true"/>
+			<xs:element name="descTipoDoc" type="xs:string" nillable="true"/>
+			<xs:element name="dataRiferim" type="xs:date" nillable="true"/>
+			<xs:element name="numRiferim" type="xs:string" nillable="true"/>
+			<xs:element name="numCopie" type="xs:integer" nillable="true"/>
+			<xs:element name="note" type="xs:string" nillable="true"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Classifiche">
+		<xs:sequence minOccurs="0">
+			<xs:element name="Classifica" type="dProtRes:Classifica" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Classifica">
+		<xs:sequence>
+			<xs:element name="codClas" type="xs:string" nillable="true"/>
+			<xs:element name="descClas" type="xs:string" nillable="true"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DocumentoInCarico">
+		<xs:sequence>
+			<xs:element name="descUff" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="descAna" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="dataCarico" type="xs:date" nillable="true" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Pratica">
+		<xs:sequence>
+			<xs:annotation>
+				<xs:documentation>copiato in parte da ricerca prat</xs:documentation>
+			</xs:annotation>
+			<xs:element name="codice_ufficio" type="xs:string" nillable="true"/>
+			<xs:element name="codice_registro" type="TipiGenerali:ClassificaResponse" nillable="true"/>
+			<xs:element name="anno" type="xs:integer" nillable="true"/>
+			<xs:element name="numero" type="xs:integer" nillable="true"/>
+			<xs:element name="sub_numero" type="xs:string" nillable="true"/>
+			<xs:element name="data" type="xs:date" nillable="true"/>
+			<xs:element name="oggetto" type="xs:string" nillable="true"/>
+			<xs:element name="prog_doc" type="TipiGenerali:progDoc" nillable="true"/>
+			<xs:element name="prog_movi" type="TipiGenerali:progMovi" nillable="true"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Pratiche">
+		<xs:sequence>
+			<xs:element name="Pratica" type="dProtRes:Pratica" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DocumentiAllegati">
+		<xs:sequence>
+			<xs:element name="Documento" type="dProtRes:DocumentoAllegato" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DocumentoAllegato">
+		<xs:sequence>
+			<xs:element name="nome" type="xs:string" nillable="true"/>
+			<xs:element name="idDoc" type="xs:long" nillable="true"/>
+			<xs:element name="tipoDoc" type="xs:string" nillable="true"/>
+			<xs:element name="tipo" type="xs:short" nillable="true"/>
+			<xs:element name="impronta" type="xs:string" nillable="true"/>
+			<xs:element name="flIop" type="xs:short" nillable="true"/>
+			<xs:element name="flDgr" type="xs:short" nillable="true"/>
+			<xs:element name="gestDocId" type="xs:long" nillable="true"/>
+			<xs:element name="flPrincipale" type="xs:short" nillable="true"/>
+			<xs:element name="gestDocIndir" type="xs:string" nillable="true"/>
+			<xs:element name="lungh" type="xs:long" nillable="true"/>
+			<xs:element name="est" type="xs:string" nillable="true"/>
+			<xs:element name="crc" type="xs:long" nillable="true"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

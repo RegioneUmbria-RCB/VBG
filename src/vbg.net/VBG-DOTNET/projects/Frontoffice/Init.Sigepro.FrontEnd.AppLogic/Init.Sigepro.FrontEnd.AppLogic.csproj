@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup Label="Globals">
+		<Configurations>Debug;Release;ReleaseFramework</Configurations>
+		<Platforms>AnyCPU</Platforms>
+		<TargetFrameworks>net10.0;net48</TargetFrameworks>
+		<RootNamespace>Init.Sigepro.FrontEnd.AppLogic</RootNamespace>
+		<ImplicitUsings>disable</ImplicitUsings>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<LangVersion>9.0</LangVersion>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+	<ItemGroup>
+	  <Compile Remove="PresentazioneIstanze\Workflow\Loaders\Reader\**" />
+	  <EmbeddedResource Remove="PresentazioneIstanze\Workflow\Loaders\Reader\**" />
+	  <None Remove="PresentazioneIstanze\Workflow\Loaders\Reader\**" />
+	</ItemGroup>
+
+	<!--<ItemGroup>
+		<Folder Include="Properties\" />
+	</ItemGroup>-->
+	<ItemGroup>
+		<PackageReference Include="Gotenberg.Sharp.API.Client" Version="3.0.0" />
+		<PackageReference Include="log4net" Version="3.3.2" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.10" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="10.0.10" />
+		<PackageReference Include="Microsoft.VisualStudio.Threading" Version="18.7.23" />
+		<PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="18.7.23">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Ninject" Version="3.3.6" />
+		<!-- La release 7 del client di rabbitmq ha rimosso le chiamate sincrone che ancora sono usate nella parte .net framework-->
+		<PackageReference Include="RabbitMQ.Client" Version="[6.8.1]" />
+		<PackageReference Include="SpreadsheetLight" Version="3.5.0" />
+		<PackageReference Include="System.Drawing.Common" Version="10.0.*" />
+		<PackageReference Include="System.Net.Http.Json" Version="10.0.10" />
+		<PackageReference Include="System.ServiceModel.Http" Version="10.0.652802" />
+		<PackageReference Include="System.Text.Encoding.CodePages" Version="10.0.*" />
+		<PackageReference Include="System.Text.Json" Version="10.0.10" />
+	</ItemGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net10.0'">
+		<PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+	</ItemGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net48' ">
+		<Reference Include="System.ServiceModel" />
+		<Reference Include="System.Data.DataSetExtensions" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\SIGePro.Manager.DTO\SIGePro.Manager.DTO.csproj" />
+		<ProjectReference Include="..\..\Init.Utils\Init.Utils.csproj" />
+		<ProjectReference Include="..\..\PersonalLib2\PersonalLib2.csproj" />
+		<ProjectReference Include="..\Init.Sigepro.FrontEnd.AppLogic.ConnectedServices\Init.Sigepro.FrontEnd.AppLogic.ConnectedServices.csproj" />
+		<ProjectReference Include="..\Init.Sigepro.FrontEnd.Infrastructure\Init.Sigepro.FrontEnd.Infrastructure.csproj" />
+	</ItemGroup>
+
+</Project>

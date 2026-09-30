@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:TipiGenerali="http://insiel.it/protocollo/schemixsd/TipiGenerali" xmlns:aggpratreq="http://insiel.it/protocollo/schemixsd/AggPraticaRequest" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://insiel.it/protocollo/schemixsd/AggPraticaRequest" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="tipi_generali.xsd" namespace="http://insiel.it/protocollo/schemixsd/TipiGenerali" />
+  <xs:element name="AggPraticaRequest">
+    <xs:annotation>
+      <xs:documentation>Comment describing your root element</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:all>
+        <xs:element name="Utente" type="TipiGenerali:Utente" />
+        <xs:element name="Pratica" type="TipiGenerali:PraticaRequest" />
+        <xs:element minOccurs="0" name="data" nillable="true" type="xs:date" />
+        <xs:element minOccurs="0" name="note" nillable="true" type="aggpratreq:NoteAgg" />
+        <xs:element minOccurs="0" name="oggetto" nillable="true" type="TipiGenerali:oggetto" />
+        <xs:element minOccurs="0" name="codice_tipo_pratica" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="uffici" nillable="true" type="aggpratreq:UfficiAggPrat" />
+        <xs:element minOccurs="0" name="pratica_ac" type="TipiGenerali:PraticaAcPlusData" />
+        <xs:element minOccurs="0" name="data_chiusura_pratica" nillable="true" type="xs:date" />
+        <xs:element minOccurs="0" name="data_pratica_chiusura" nillable="true">
+          <xs:complexType>
+            <xs:simpleContent>
+              <xs:extension base="xs:date">
+                <xs:attribute name="isNull" type="xs:boolean" />
+              </xs:extension>
+            </xs:simpleContent>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" name="stato" nillable="true" type="TipiGenerali:stato" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="UfficiAggPrat">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ufficio" type="aggpratreq:UfficioAggPrat" />
+      <xs:element minOccurs="0" name="_virtual" nillable="true" type="xs:boolean" />
+    </xs:sequence>
+    <xs:attribute name="statoParziale" type="xs:boolean" />
+  </xs:complexType>
+  <xs:complexType name="UfficioAggPrat">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="codice" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="descrizione" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="data_riferim" nillable="true" type="xs:date" />
+      <xs:element minOccurs="0" name="modalita_trasmissione" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="note" nillable="true" type="TipiGenerali:note" />
+    </xs:sequence>
+    <xs:attribute name="elimina" type="xs:boolean" />
+  </xs:complexType>
+  <xs:complexType name="NoteAgg">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="isNull" type="xs:boolean" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+</xs:schema>

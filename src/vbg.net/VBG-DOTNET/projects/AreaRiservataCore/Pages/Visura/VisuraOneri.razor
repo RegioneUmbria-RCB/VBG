@@ -1,0 +1,35 @@
+﻿@using AreaRiservataCore.Shared.DetailCards
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+@if (DataSource?.Any() ?? false)
+{
+    <DetailCardGroup Title="Oneri">
+        <DetailCardList Items="DataSource">
+            <ItemTemplate Context="item">
+                <DetailCardTitle>@item.Causale</DetailCardTitle>
+
+                <div class="row">
+
+                    @if (!String.IsNullOrEmpty(item.Importo.ToString()))
+                    {
+                        <DetailCardInfo Title="Importo" class="col">@item.Importo.ToString("c2")</DetailCardInfo>
+                    }
+                    @if (item.DataScadenza != null)
+                    {
+                        <DetailCardInfo Title="Data scadenza" class="col">@(item.DataScadenza.Value.ToString("dd/MM/yyyy"))</DetailCardInfo>
+                    }
+                    @if (item.DataPagamento != null)
+                    {
+                        <DetailCardInfo Title="Data pagamento" class="col">@(item.DataPagamento.Value.ToString("dd/MM/yyyy"))</DetailCardInfo>
+                    }
+
+                </div>
+            </ItemTemplate>
+        </DetailCardList>
+    </DetailCardGroup>
+
+}
+
+@code {
+
+}

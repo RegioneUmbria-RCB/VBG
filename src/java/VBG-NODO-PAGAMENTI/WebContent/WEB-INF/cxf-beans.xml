@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jaxws="http://cxf.apache.org/jaxws" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs" xmlns:soap="http://cxf.apache.org/bindings/soap"
+	xsi:schemaLocation="http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd    http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<!-- <import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" /> 
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-extension-policy.xml" />  -->
+
+	<context:component-scan base-package="it.gruppoinit.pal.gp.pay.ws.interceptors" />
+	
+	<jaxrs:server id="restService" address="/rest">
+		<jaxrs:serviceBeans>
+			<ref bean="pagamentiService" />
+			<ref bean="fvgpayService" />
+			<ref bean="payerRestService" />
+			<ref bean="jcitygovRestService" />
+		</jaxrs:serviceBeans>
+		<jaxrs:providers>
+			<bean class="org.apache.cxf.jaxrs.provider.json.JSONProvider">
+				<property name="dropRootElement" value="true" />
+				<property name="supportUnwrapped" value="true" />
+				<property name="ignoreNamespaces" value="true" />
+				<property name="dropCollectionWrapperElement" value="true" />
+			</bean>
+		</jaxrs:providers>
+		<jaxrs:extensionMappings>
+			<entry key="json" value="application/json" />
+		</jaxrs:extensionMappings>
+		<jaxrs:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxrs:features>
+		<!-- 
+		<jaxrs:providers> <bean class="org.apache.cxf.jaxrs.provider.JSONProvider" /> </jaxrs:providers> -->
+	</jaxrs:server>
+	
+	<jaxrs:server id="restServiceAuth" address="/rest-private">
+		<jaxrs:serviceBeans>
+			<ref bean="mipService" />
+		</jaxrs:serviceBeans>
+		<jaxrs:inInterceptors>
+			     <ref bean="interceptorInHeaderAuth"/>
+		</jaxrs:inInterceptors>
+		<jaxrs:providers>
+			<bean class="org.apache.cxf.jaxrs.provider.json.JSONProvider">
+				<property name="dropRootElement" value="true" />
+				<property name="supportUnwrapped" value="true" />
+				<property name="ignoreNamespaces" value="true" />
+				<property name="dropCollectionWrapperElement" value="true" />
+			</bean>
+		</jaxrs:providers>
+		<jaxrs:extensionMappings>
+			<entry key="json" value="application/json" />
+		</jaxrs:extensionMappings>
+		<jaxrs:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxrs:features>
+	</jaxrs:server>
+
+
+	<bean id="pagamentiService" class="it.gruppoinit.pal.gp.pay.ws.PagamentiImpl" />
+	<bean id="fvgpayService" class="it.gruppoinit.pal.gp.pay.connector.fvgpay.rest.server.FvgPayService" />
+	<bean id="mipService" class="it.gruppoinit.pal.gp.pay.connector.mip.ws.server.MIPService" />
+	<bean id="payerRestService" class="it.gruppoinit.pal.gp.pay.connector.payer.web.PayerNotificaPagamentiRestService" />
+	<bean id="jcitygovRestService" class="it.gruppoinit.pal.gp.pay.connector.jcitygov.rest.server.JCityGovRestService" />
+	<!-- 
+	<bean id="mipBasicAuthFilter" class="it.gruppoinit.pal.gp.pay.connector.mip.ws.server.BasicAuthFilter">
+		<property name="connector" value="MIPGE" />
+	</bean>
+ 	-->
+<!-- 	<context:component-scan base-package="it" /> -->
+
+	<bean id="logInbound" class="org.apache.cxf.interceptor.LoggingInInterceptor">
+		<property name="prettyLogging" value="false" />
+		<property name="limit" value="10240" />
+	</bean>
+	<bean id="logOutbound" class="org.apache.cxf.interceptor.LoggingOutInterceptor">
+		<property name="prettyLogging" value="false" />
+		<property name="limit" value="10240" />
+	</bean>
+	<bean id="inSAAJ" class="org.apache.cxf.binding.soap.saaj.SAAJInInterceptor" />
+	<bean id="inWSS4J" class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
+	<!-- 
+		<constructor-arg>
+			<map>
+				<entry key="action" value="UsernameToken" />
+				<entry key="passwordType" value="PasswordDigest" />
+				<entry key="signaturePropFile" value="..." />
+				<entry key="passwordCallbackRef">
+					<ref bean="myPasswordCallback" />
+				</entry>
+			</map>
+		</constructor-arg>
+	 -->
+	</bean>
+	<bean id="outSAAJ" class="org.apache.cxf.binding.soap.saaj.SAAJOutInterceptor" />
+	<bean id="outWSS4J" class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor">
+		<!-- 
+		<constructor-arg>
+			<map>
+				<entry key="action" value="UsernameToken" />
+				<entry key="passwordType" value="PasswordDigest" />
+				<entry key="signaturePropFile" value="..." />
+				<entry key="passwordCallbackRef">
+					<ref bean="myPasswordCallback" />
+				</entry>
+			</map>
+		</constructor-arg>
+		 -->
+	</bean>
+	<bean id="cxf" class="org.apache.cxf.bus.spring.SpringBus">
+		<property name="inInterceptors">
+			<list>
+				<ref bean="logInbound" />
+			</list>
+		</property>
+		<property name="outInterceptors">
+			<list>
+				<ref bean="logOutbound" />
+			</list>
+		</property>
+		<property name="outFaultInterceptors">
+			<list>
+				<ref bean="logOutbound" />
+			</list>
+		</property>
+		<property name="inFaultInterceptors">
+			<list>
+				<ref bean="logInbound" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- endpoint dei servizi del nodo pagamenti -->
+	<jaxws:endpoint xmlns:tns="http://www.paevolution.com/ws/pagamenti/" id="pagamenti"
+		implementor="it.gruppoinit.pal.gp.pay.ws.PagamentiImpl" wsdlLocation="WEB-INF/wsdl/pagamenti.wsdl"
+		endpointName="tns:pagamenti" serviceName="tns:pagamenti" address="/pagamentiSOAP">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+	</jaxws:endpoint>
+	<!-- endpoint dei servizi esposti dal nodo pagamenti veso piemontepay -->
+	<jaxws:endpoint xmlns:tns="http://www.csi.it/epay/epaywso/epaywso2entisrv" id="epaywso2entiservice"
+		implementor="it.gruppoinit.pal.gp.pay.connector.piemontepay.ws.server.EPaywso2EntiServiceImpl"
+		wsdlLocation="WEB-INF/wsdl/ppay/EPaywso2EntiService.wsdl" endpointName="tns:EPaywso2EntiServiceSOAP"
+		serviceName="tns:EPaywso2EntiService" address="/ppay/EPaywso2EntiServiceSOAP">
+		<jaxws:properties>
+			<entry key="action" value="UsernameToken Timestamp"></entry>
+			<entry key="passwordCallbackRef" value-ref="ppayPwdCallback"></entry>
+			<entry key="passwordType" value="PasswordText"></entry>
+		</jaxws:properties>
+		<!-- 
+		<jaxws:properties>
+			<entry key="action" value="UsernameToken Timestamp"></entry> 
+			<entry key="user" value="MercaTO-TEST"></entry>
+			<entry key="passwordCallbackRef" value-ref="ppayPwdCallback"></entry>
+			<entry key="passwordType" value="PasswordText"></entry>
+		</jaxws:properties>
+		<jaxws:inInterceptors>
+			<bean class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
+				<constructor-arg>
+					<map>
+						<entry key="action" value="UsernameToken" />
+						<entry key="passwordType" value="PasswordText" />
+						<entry key="passwordCallbackRef">
+							<ref bean="ppayPwdCallback" />
+						</entry>
+					</map>
+				</constructor-arg>
+			</bean>
+		</jaxws:inInterceptors>
+		-->
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+	</jaxws:endpoint>
+	<bean id="ppayPwdCallback" class="it.gruppoinit.pal.gp.pay.connector.ConnectorPwdCallBackHandler">
+		<property name="connector" value="PPAY" />
+	</bean>
+
+	<!-- endpoint dei servizi esposti dal nodo pagamenti veso pagoumbria -->
+	<jaxws:endpoint xmlns:tns="http://www.cart.rete.toscana.it/servizi/iris_1_1/proxy" id="notificapagoumbria"
+		implementor="it.gruppoinit.pal.gp.pay.connector.pagoumbria.ws.server.notificapagamenti.InvioNotificaPagamentoImpl"
+		wsdlLocation="/WEB-INF/wsdl/pagoumbria/InvioNotificaPagamento_Ente.wsdl" endpointName="tns:InvioNotificaPagamento"
+		serviceName="tns:InvioNotificaPagamentoService" address="/pagoumbria/InvioNotificaPagamento">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+	</jaxws:endpoint>
+	
+	<!-- endpoint dei servizi esposti dal nodo pagamenti veso iris -->
+	<jaxws:endpoint xmlns:tns="http://www.cart.rete.toscana.it/servizi/iris_1_1/proxy" id="notificairis"
+		implementor="it.gruppoinit.pal.gp.pay.connector.iris.ws.server.notificapagamenti.InvioNotificaPagamentoImpl"
+		wsdlLocation="/WEB-INF/wsdl/iris/InvioNotificaPagamento_Ente.wsdl" endpointName="tns:InvioNotificaPagamento"
+		serviceName="tns:InvioNotificaPagamentoService" address="/iris/InvioNotificaPagamento">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+	</jaxws:endpoint>
+
+	<!-- endpoint dei servizi esposti dal nodo pagamenti veso Silfi -->
+	<jaxws:endpoint xmlns:tns="it/lineacomune/pagopa/be/ws/endpoint/esiti" id="notificasilfi"
+		implementor="it.gruppoinit.pal.gp.pay.connector.silfi.ws.server.esitopagamentiattesi.EsitiPagamentiAttesiSoap11Impl"
+		wsdlLocation="/WEB-INF/wsdl/silfi/comunicaEsitoPagamentiAttesiWs.wsdl" endpointName="tns:esitiPagamentiAttesiSoap11"
+		serviceName="tns:esitiPagamentiAttesiService" address="/silfi/esiti">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+	</jaxws:endpoint>
+		<!-- endpoint dei servizi esposti dal nodo pagamenti veso jcitygov -->
+	<jaxws:endpoint xmlns:tns="http://schemi.informatica.maggioli.it/ws/pagopa/Notify" id="notificajcitygov"
+		implementor="it.gruppoinit.pal.gp.pay.connector.jcitygov.ws.clientnotify.PagoPANotifyPortImpl"
+		wsdlLocation="/WEB-INF/wsdl/jcitygov/pago-pa-notify.wsdl" endpointName="tns:PagoPANotifyPort"
+		serviceName="tns:PagoPANotifyService" address="/jcity-gov/esiti">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+	</jaxws:endpoint>
+	
+	<!-- endpoint dei servizi esposti dal nodo pagamenti veso EasyBridge -->
+	<jaxws:endpoint xmlns:tns="http://easybridge.eu/bridge/" id="ebEsitiPagamentoservice"
+		implementor="it.gruppoinit.pal.gp.pay.connector.easybridge.ws.server.EBEsitoPagamentoServiceImpl"
+		endpointName="tns:esitiPagamento"
+		serviceName="tns:esitiPagamentoService" address="/easybridge/esitiPagamento">
+		<jaxws:properties>
+			<entry key="action" value="UsernameToken Timestamp"></entry>
+			<entry key="passwordCallbackRef" value-ref="userDatabasePwdCallback"></entry>
+			<entry key="passwordType" value="PasswordText"></entry>
+		</jaxws:properties>
+		<jaxws:inInterceptors>
+			<ref bean="basicAuthAuthorizationInterceptor"></ref>		
+		</jaxws:inInterceptors>
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+		<jaxws:binding>
+		    <soap:soapBinding version="1.2"/>
+		</jaxws:binding>
+	</jaxws:endpoint>
+	<bean id="userDatabasePwdCallback" class="it.gruppoinit.pal.gp.pay.connector.UserDatabaseCallBackHandler"></bean>
+
+	<!-- ES WSS4J USERNAME PASSWORD INTERCEPTOR
+			<bean class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
+				<constructor-arg>
+					<map>
+						<entry key="action" value="UsernameToken" />
+						<entry key="passwordType" value="PasswordDigest" />
+						<entry key="passwordCallbackRef">
+							<ref bean="userDatabasePwdCallback" />
+						</entry>
+					</map>
+				</constructor-arg>
+			</bean>
+ 		-->		
+	
+	
+</beans>

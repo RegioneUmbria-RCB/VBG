@@ -1,0 +1,32 @@
+﻿@using VBG.BlazorComponentsLibrary.EditFormComponents
+@using VBG.BlazorComponentsLibrary.EditFormComponents.DropDown
+
+
+
+<DropDownForm Id="tipoCatasto" Value="Model.TipoCatasto"
+    TItem="DropDownItem"
+    OnChanged="EventCallback.Factory.Create(this, (DropDownItem i) => { Model.TipoCatasto = i; OnChanged.InvokeAsync(Model); })"
+    ValueExpression="() => Model.TipoCatasto"
+    Items="@_tipiCatasto"
+    ShowEmptyItem="true" 
+    Label="Tipo Catasto">
+</DropDownForm>
+
+<div class="row">
+    <div class="col-md-3">
+        <TextInputForm Id="foglio" @bind-Value="Model.Foglio" Label="Foglio" />
+    </div>
+
+    <div class="col-md-3">
+        <TextInputForm Id="particella" @bind-Value="Model.Particella" Label="Particella" />
+    </div>
+
+    <div class="col-md-3">
+        <TextInputForm Id="subalterno" @bind-Value="Model.Subalterno" Label="Subalterno" />
+    </div>
+</div>
+
+
+@code {
+
+}

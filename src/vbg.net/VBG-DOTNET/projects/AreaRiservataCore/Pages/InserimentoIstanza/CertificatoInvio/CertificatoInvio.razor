@@ -1,0 +1,129 @@
+﻿@page "/{IdComune}/{Software}/inserimento-istanza/certificato-invio/{IdDomanda:int}/{CodiceIstanza}"
+@using AreaRiservataCore.Pages.InserimentoIstanza.GestioneAnagrafiche
+@using Init.Sigepro.FrontEnd.AppLogic.Exceptions
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneComuni
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneDatiExtra
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneOneri
+@using Init.Sigepro.FrontEnd.AppLogic.GestionePresentazioneDomanda.GestioneAnagrafiche
+@using Init.Sigepro.FrontEnd.AppLogic.Services.Domanda
+
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.RisorseTestuali
+
+@*@inherits IstanzeStepPage *@
+@inherits BasePage
+
+
+<TitoloPagina>
+    <SvgIcon IconId="it-check-circle" CssClass="icon-success big-lg-icon mb-1"></SvgIcon>
+    Richiesta inviata
+</TitoloPagina>
+
+@if (CodiceOggettoRiepilogo != -1)
+{
+    @if (_redirectAFineDomandaAttivo)
+    {
+        <div id="divRedirect" class="card mb-2 bg-info">
+            <div class="card-header">
+                @_redirectTitolo
+            </div>
+            <div class="card-body">
+                @_redirectMessaggio
+
+                <div style="padding-top: 15px;">
+                    <button class="btn btn-primary" @onclick="@btnProcedi_ClickAsync">@_redirectBtnProcediText</button>
+                </div>
+            </div>
+        </div>
+    }
+
+    <fieldset>
+        @* Aggiunto per accessibilità *@
+        <legend></legend>
+
+        <div class="descrizioneStep descrizione-step">
+            @((MarkupString)_intestazioneCertificatoInvio)
+        </div>
+    </fieldset>
+
+   
+
+    <div class="inputForm" style="padding-top: 15px;">
+        <fieldset>
+
+            @* Aggiunto per accessibilità *@
+            <legend></legend>
+
+            <div class="riepilogoDomandaHtml" id="riepilogoDomanda" style="overflow-y: hidden; height: 500px">
+
+                <PdfViewerV2 DocumentGenerationCallback="GeneraCertificatoAsync"></PdfViewerV2>
+
+            </div>
+        </fieldset>
+    </div>
+    <div style="padding-top: 15px;">
+        Nel caso in cui il certificato non venisse visualizzato correttamente è comunque
+        possibile scaricarlo da <ScaricaRiepilogoDomanda Text="questo link" IdDomanda="@IdDomanda.Value" InserisciSchedeNonFirmate="true"></ScaricaRiepilogoDomanda>
+    </div>
+
+    @if (_questionarioGradimentoVisible)
+    {
+        <div id="divQuestionarioGradimento" class="alert alert-info mt-4" role="alert">
+
+            <RisorsaTestuale IdRisorsa="certificato-invio.questionario.label">
+                <ChildContent>
+                    <h2>Indagine per rilevare periodicamente il grado di soddisfazione delle iniziative e dei servizi offerti alla cittadinanza. </h2>
+                    <p>
+                        Le chiediamo di compilare il seguente questionario che ci sarà utile per conoscere l’opinione dei cittadini sui servizi utilizzati
+                        al fine di migliorarne la qualità e il livello di soddisfazione del servizio.
+                    </p>
+                    <p>
+                        La compilazione richiede circa un minuto e al termine potrà tornare alla pratica appena presentata.
+                    </p>
+                </ChildContent>
+            </RisorsaTestuale>
+
+            <button class="btn btn-primary vbg-show-spinner" @onclick="@btnCompilaQuestionario_ClickAsync" style="margin-top: 24px">Compila il questionario</button>
+        </div>
+    }
+
+    <button class="btn btn-outline-primary me-2" type="button" @onclick="GoToHomeAsync">Torna all'area personale</button>
+    <button class="btn btn-outline-primary" @onclick="@(() => GotoAsync($"dettaglioistanzaex/{_datiPratica.Uuid}/istanzepresentate"))">Visualizza domanda</button>
+}
+else
+{
+    <div class="cmp-heading pb-3 pb-lg-4">
+        <div class="categoryicon-top d-flex">
+        </div>
+
+        <p class="subtitle-small">
+            Grazie, abbiamo ricevuto la tua richiesta per la pratica numero <span class="fw-bold">@_datiPratica?.NumeroPratica</span>.
+        </p>
+        @if (_datiPratica != null && _datiPratica.DataPratica.HasValue) 
+        {
+            <p class="pt-3 pt-lg-4 mb-0">
+                Data invio:
+                <span class="fw-bold">@_datiPratica.DataPratica.Value.ToShortDateString()</span>
+            </p>
+        }
+
+        @if (_datiPratica != null && !string.IsNullOrEmpty(_datiPratica.NumeroProtocollo))
+        {
+            <p class="mb-0">
+                Numero protocollo:
+                <span class="fw-bold">@_datiPratica.NumeroProtocollo</span>
+            </p>
+            <p class="mb-0">
+                Data protocollo:
+                <span class="fw-bold">@_datiPratica.DataProtocollo!.Value.ToShortDateString()</span>
+            </p>
+        }
+        
+        <p class="subtitle-smallpt-3 pt-lg-4 mb-0">
+            Fare click sul bottone "Visualizza documenti" per visualizzare e scaricare la domanda inviata, gli eventuali allegati e la ricevuta.
+        </p>
+
+    </div>
+
+    <button class="btn btn-primary" @onclick="@(() => GotoAsync($"dettaglioistanzaex/{_datiPratica.Uuid}/istanzepresentate"))">Visualizza documenti</button>
+}

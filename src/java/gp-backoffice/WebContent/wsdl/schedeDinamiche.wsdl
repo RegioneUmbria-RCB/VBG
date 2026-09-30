@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:sch="http://gruppoinit.it/sigepro/schemas/messages/schedeDinamiche" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://gruppoinit.it/sigepro/definitions/schedeDinamiche" targetNamespace="http://gruppoinit.it/sigepro/definitions/schedeDinamiche">
+	<wsdl:types>
+		<schema xmlns="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://gruppoinit.it/sigepro/schemas/messages/schedeDinamiche" schemaLocation="schedeDinamiche.xsd" />
+		</schema>
+	</wsdl:types>
+	
+	<!-- DEFINIZIONE REQUEST -->
+	<wsdl:message name="ModellitFindRequest">
+		<wsdl:part element="sch:ModellitFindRequest" name="ModellitFindRequest" />
+	</wsdl:message>
+	<wsdl:message name="StrutturaModelloTFindRequest">
+		<wsdl:part element="sch:StrutturaModelloTFindRequest" name="StrutturaModelloTFindRequest" />
+	</wsdl:message>
+	<wsdl:message name="ModellitInsertRequest">
+		<wsdl:part element="sch:ModellitInsertRequest" name="ModellitInsertRequest" />
+	</wsdl:message>
+	
+	<!-- DEFINIZIONE RESPONSE -->
+	
+	<wsdl:message name="ModellitFindResponse">
+		<wsdl:part element="sch:ModellitFindResponse" name="ModellitFindResponse" />
+	</wsdl:message>
+	<wsdl:message name="StrutturaModelloTFindResponse">
+		<wsdl:part element="sch:StrutturaModelloTFindResponse" name="StrutturaModelloTFindResponse" />
+	</wsdl:message>
+	<wsdl:message name="ModellitInsertResponse">
+		<wsdl:part element="sch:ModellitInsertResponse" name="ModellitInsertResponse" />
+	</wsdl:message>
+
+	
+	<!-- DEFINIZIONE OPERAZIONI -->
+		
+	<wsdl:portType name="SchedeDinamiche">
+		<wsdl:operation name="GetModelliT">
+			<wsdl:input message="tns:ModellitFindRequest" name="ModellitFindRequest" />
+			<wsdl:output message="tns:ModellitFindResponse" name="ModellitFindResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="GetStrutturaModelloT">
+			<wsdl:input message="tns:StrutturaModelloTFindRequest" name="StrutturaModelloTFindRequest" />
+			<wsdl:output message="tns:StrutturaModelloTFindResponse" name="StrutturaModelloTFindResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="CreateModelliT">
+			<wsdl:input message="tns:ModellitInsertRequest" name="ModellitInsertRequest" />
+			<wsdl:output message="tns:ModellitInsertResponse" name="ModellitInsertResponse" />
+		</wsdl:operation>
+	</wsdl:portType>
+	
+	
+	<wsdl:binding name="SchedeDinamicheSoap11" type="tns:SchedeDinamiche">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="GetModelliT">
+			<soap:operation soapAction="getModelliT" />
+			<wsdl:input name="ModellitFindRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="ModellitFindResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="GetStrutturaModelloT">
+			<soap:operation soapAction="GetStrutturaModelloT" />
+			<wsdl:input name="StrutturaModelloTFindRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="StrutturaModelloTFindResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	
+		<wsdl:operation name="CreateModelliT">
+			<soap:operation soapAction="createModelliT" />
+			<wsdl:input name="ModellitInsertRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="ModellitInsertResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="SchedeDinamicheService">
+		<wsdl:port binding="tns:SchedeDinamicheSoap11" name="SchedeDinamicheSoap11">
+			<soap:address location="http://devel9:8080/vbg/services/" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

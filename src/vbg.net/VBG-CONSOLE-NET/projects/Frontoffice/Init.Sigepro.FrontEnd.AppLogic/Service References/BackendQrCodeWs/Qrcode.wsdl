@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://gruppoinit.it/sigepro/schemas/messages/qrcode" name="Qrcode" targetNamespace="http://gruppoinit.it/sigepro/schemas/messages/qrcode" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xs:schema elementFormDefault="qualified" targetNamespace="http://gruppoinit.it/sigepro/schemas/messages/qrcode" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="DownloadAllegatiMovimentiRequest">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="codiceMovimento" type="xs:integer" />
+            <xs:element name="tipoAuth" type="xs:string" />
+            <xs:element name="token" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="DownloadAllegatiMovimentiResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:ns1="http://www.w3.org/2005/05/xmlmime" ns1:expectedContentTypes="application/octet-stream" name="qrcode" type="xs:base64Binary" />
+            <xs:element name="url" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="DownloadAllegatiTipoMovimentoRequest">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="codiceTipoMovimento" type="xs:string" />
+            <xs:element name="codiceIstanza" type="xs:integer" />
+            <xs:element name="tipoAuth" type="xs:string" />
+            <xs:element name="token" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="DownloadAllegatiTipoMovimentoResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:ns2="http://www.w3.org/2005/05/xmlmime" ns2:expectedContentTypes="application/octet-stream" name="qrcode" type="xs:base64Binary" />
+            <xs:element name="url" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="VisurapraticaRequest">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="codiceIstanza" type="xs:integer" />
+            <xs:element name="tipoAuth" type="xs:string" />
+            <xs:element name="token" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="VisurapraticaResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:ns3="http://www.w3.org/2005/05/xmlmime" ns3:expectedContentTypes="application/octet-stream" name="qrcode" type="xs:base64Binary" />
+            <xs:element name="url" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="DownloadAllegatiMovimentoResponse">
+    <wsdl:part name="DownloadAllegatiMovimentiResponse" element="ns1:DownloadAllegatiMovimentiResponse" />
+  </wsdl:message>
+  <wsdl:message name="DownloadAllegatiTipoMovimentoResponse">
+    <wsdl:part name="DownloadAllegatiTipoMovimentoResponse" element="ns1:DownloadAllegatiTipoMovimentoResponse" />
+  </wsdl:message>
+  <wsdl:message name="VisurapraticaResponse">
+    <wsdl:part name="VisurapraticaResponse" element="ns1:VisurapraticaResponse" />
+  </wsdl:message>
+  <wsdl:message name="DownloadAllegatiMovimento">
+    <wsdl:part name="DownloadAllegatiMovimentiRequest" element="ns1:DownloadAllegatiMovimentiRequest" />
+  </wsdl:message>
+  <wsdl:message name="Visurapratica">
+    <wsdl:part name="VisurapraticaRequest" element="ns1:VisurapraticaRequest" />
+  </wsdl:message>
+  <wsdl:message name="DownloadAllegatiTipoMovimento">
+    <wsdl:part name="DownloadAllegatiTipoMovimentoRequest" element="ns1:DownloadAllegatiTipoMovimentoRequest" />
+  </wsdl:message>
+  <wsdl:portType name="Qrcode">
+    <wsdl:operation name="DownloadAllegatiTipoMovimento">
+      <wsdl:input name="DownloadAllegatiTipoMovimento" message="ns1:DownloadAllegatiTipoMovimento" />
+      <wsdl:output name="DownloadAllegatiTipoMovimentoResponse" message="ns1:DownloadAllegatiTipoMovimentoResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="Visurapratica">
+      <wsdl:input name="Visurapratica" message="ns1:Visurapratica" />
+      <wsdl:output name="VisurapraticaResponse" message="ns1:VisurapraticaResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="DownloadAllegatiMovimento">
+      <wsdl:input name="DownloadAllegatiMovimento" message="ns1:DownloadAllegatiMovimento" />
+      <wsdl:output name="DownloadAllegatiMovimentoResponse" message="ns1:DownloadAllegatiMovimentoResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>

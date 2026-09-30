@@ -1,0 +1,342 @@
+﻿<html>
+      <head>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+        <style media="all">
+					.etichetta{background-color: #efefef;font-size: 11px;padding: 4px 8px;}
+					.dato{font-size: 10px;padding: 4px 8px;}
+					.nomeFile{font-size: 10px;}
+					pre{  font-family: Verdana; font-size: 10px; }
+					h3{  font-family: Verdana; font-size: 14px; }
+					#tabella-anagrafiche {border-collapse: collapse;}
+					#tabella-anagrafiche td {border: 1px solid #666;}
+        </style>
+
+      </head>
+      <body style="font-family: Verdana; font-size: 12px;background-color:#ffffff">
+        <table width="100%" cellpadding="0" cellspacing="0" height="100px">
+          <tr>
+            <td>
+                MODULO PER LA PRESENTAZIONE DELLA DOMANDA DI PARTECIPAZIONE AL BANDO DI CONCORSO 
+				PUBBLICO PER ESAMI PER N. 2 POSTI A TEMPO PIENO ED INDETERMINATO DI ISTRUTTORE DIRETTIVO 
+				SOCIALE CAT. GIURIDICA D1 (POS. EC. D1) - CON RISERVA DI UN POSTO A FAVORE DEI VOLONTARI DELLE FF.AA.
+				- DA ASSEGNARE AL SETTORE SERVIZI ALLA COMUNITÀ DELL'UNIONE DELLA ROMAGNA FAENTINA
+            </td>			
+          </tr>
+        </table>
+
+		<br />
+		<table width="100%" cellpadding="0" cellspacing="0" height="100px">
+          <tr>
+            <td width="60%" >
+            </td>	
+			<td width="40%" >
+                AL SERVIZIO PERSONALE E ORGANIZZAZIONE<br/>
+				UNIONE DELLA ROMAGNA FAENTINA<br/>
+				P.zza del Popolo, 31<br/>
+				48018 Faenza (RA)
+            </td>				
+          </tr>
+        </table>
+
+		<br />
+		
+		<div style="width:100%;text-align:left;">
+		
+		<table width="100%" id="tabella-anagrafiche" cellpadding="0" cellspacing="0">
+			<!-- TABELLA PROFESSIONISTA -->
+			<xsl:if test="Istanze/Professionista">
+		
+				<tr>
+					<td width="25%" class="etichetta">Il sottoscritto</td>
+					<td class="dato" width="25%">
+						<xsl:value-of select="Istanze/Professionista/NOMINATIVO"/>&#160;
+						<xsl:value-of select="Istanze/Professionista/NOME" />
+					</td>
+					<td width="25%" class="etichetta">Codice Fiscale</td>
+					<td class="dato" width="25%">
+						<xsl:value-of select="Istanze/Professionista/CODICEFISCALE" />
+					</td>
+				</tr>
+
+				<tr>
+					<td width="25%" class="etichetta">Nato/a a</td>
+					<td class="dato" width="25%">
+						<xsl:value-of select="Istanze/Professionista/ComuneNascita/COMUNE" />
+					</td>
+					<td width="25%" class="etichetta">Il</td>
+					<td class="dato" width="25%">
+						<xsl:call-template name="FormatDate">
+							<xsl:with-param name="DateTime" select="Istanze/Professionista/DATANASCITA"/>
+						</xsl:call-template>
+					</td>
+				</tr>
+
+
+				<tr>
+					<td width="25%" class="etichetta">Residente in</td>
+					<td class="dato" width="25%">
+						<xsl:value-of select="Istanze/Professionista/ComuneResidenza/COMUNE" />
+					</td>
+					<td width="25%" class="etichetta">Prov.</td>
+					<td class="dato" width="25%">
+						<xsl:value-of select="Istanze/Professionista/PROVINCIA" />
+					</td>
+				</tr>
+
+				<tr>
+					<td width="25%" class="etichetta">Via/Loc.</td>
+					<td colspan="3" class="dato" width="75%">
+						<xsl:value-of select="Istanze/Professionista/INDIRIZZO" />
+					</td>
+				</tr>
+
+				<tr>
+					<td width="25%" class="etichetta">E-mail</td>
+					<td colspan="3" class="dato" width="75%">
+						<xsl:value-of select="Istanze/Professionista/EMAIL" />
+					</td>
+				</tr>
+
+				<tr>
+					<td valign="top" class="etichetta">in qualità di:</td>
+					<td valign="top" class="dato" colspan="5">
+						Delegato di
+					</td>
+				</tr>
+				<!--
+				<tr>
+					<td valign="top" class="etichetta">in qualità di:</td>
+					<td valign="top" class="dato" colspan="5">
+						<xsl:choose>
+							<xsl:when test="Istanze/TipoSoggetto/TIPOSOGGETTO">
+								<xsl:value-of select="Istanze/TipoSoggetto/TIPOSOGGETTO" />
+							</xsl:when>
+							<xsl:otherwise>
+								Delegato
+							</xsl:otherwise>
+						</xsl:choose>
+					</td>
+				</tr>
+				-->
+			</xsl:if>
+			<!-- Fine tabella professionista -->			
+			
+			<!-- Tabella Richiedente -->	
+			<tr>
+					<td width="25%" class="etichetta">
+						<xsl:choose>
+							<xsl:when test="Istanze/Professionista">
+								Nome e cognome
+							</xsl:when>
+							
+							<xsl:otherwise>
+								Il sottoscritto
+							</xsl:otherwise>
+						</xsl:choose>
+					
+					</td>
+					<td class="dato" width="25%">
+						<xsl:value-of select="Istanze/Richiedente/NOMINATIVO"/>&#160;
+						<xsl:value-of select="Istanze/Richiedente/NOME" />
+					</td>
+					<td width="25%" class="etichetta">Codice Fiscale</td>
+					<td class="dato" width="25%">
+						<xsl:value-of select="Istanze/Richiedente/CODICEFISCALE" />
+					</td>
+				</tr>
+
+				<tr>
+					<td width="25%" class="etichetta">Nato/a a</td>
+					<td class="dato" width="25%">
+						<xsl:value-of select="Istanze/Richiedente/ComuneNascita/COMUNE" />
+					</td>
+					<td width="25%" class="etichetta">Il</td>
+					<td class="dato" width="25%">
+						<xsl:call-template name="FormatDate">
+							<xsl:with-param name="DateTime" select="Istanze/Richiedente/DATANASCITA"/>
+						</xsl:call-template>
+					</td>
+				</tr>
+
+
+				<tr>
+					<td width="25%" class="etichetta">Residente in</td>
+					<td class="dato" width="25%">
+						<xsl:value-of select="Istanze/Richiedente/ComuneResidenza/COMUNE" />
+					</td>
+					<td width="25%" class="etichetta">Prov.</td>
+					<td class="dato" width="25%">
+						<xsl:value-of select="Istanze/Richiedente/PROVINCIA" />
+					</td>
+				</tr>
+
+				<tr>
+					<td width="25%" class="etichetta">Via/Loc.</td>
+					<td colspan="3" class="dato" width="75%">
+						<xsl:value-of select="Istanze/Richiedente/INDIRIZZO" />
+					</td>
+				</tr>
+
+				<tr>
+					<td width="25%" class="etichetta">E-mail</td>
+					<td colspan="3" class="dato" width="75%">
+						<xsl:value-of select="Istanze/Richiedente/EMAIL" />
+					</td>
+				</tr>
+
+			<!-- Fine Tabella Richiedente -->
+			
+			<!-- Tabella azienda -->
+			<xsl:if test="Istanze/AziendaRichiedente">
+			
+				<xsl:if test="Istanze/TipoSoggetto/TIPOSOGGETTO">
+						<tr>
+							<td valign="top" class="etichetta">In qualità di:</td>
+							<td valign="top" class="dato" colspan="5">
+								<xsl:value-of select="Istanze/TipoSoggetto/TIPOSOGGETTO" />
+							</td>
+						</tr>						
+				</xsl:if>
+
+				<tr>
+					<td width="25%" class="etichetta">
+						<xsl:choose>
+							<xsl:when test="Istanze/TipoSoggetto/TIPOSOGGETTO">
+								Ragione sociale
+							</xsl:when>
+							
+							<xsl:otherwise>
+								Per l'azienda
+							</xsl:otherwise>
+						</xsl:choose>					
+					</td>
+					<td width="25%" class="dato" colspan="3">
+						<xsl:value-of select="Istanze/AziendaRichiedente/NOMINATIVO"/>
+					</td>
+				</tr>
+				
+				<tr>
+					<td width="25%" class="etichetta">C.F.</td>
+					<td width="25%" class="dato">
+						<xsl:value-of select="Istanze/AziendaRichiedente/CODICEFISCALE"/>
+					</td>
+					<td width="25%" class="etichetta">P.IVA</td>
+					<td width="25%" class="dato">
+						<xsl:value-of select="Istanze/AziendaRichiedente/PARTITAIVA"/>
+					</td>										
+				</tr>
+
+				<tr>
+					<td width="25%" class="etichetta">Con sede in </td>
+					<td class="dato" width="25%">
+						<xsl:value-of select="Istanze/AziendaRichiedente/ComuneResidenza/COMUNE"/>
+					</td>
+					<td width="25%" class="etichetta">Via/Loc.</td>
+					<td class="dato" width="25%">
+						<xsl:value-of select="Istanze/AziendaRichiedente/INDIRIZZO"/>
+					</td>
+				</tr>
+			</xsl:if>
+			<!-- Fine tabella azienda -->
+		</table>
+		
+		
+		<br />		
+
+		<div style="text-align:center">
+		   <h3>
+					   <u>CHIEDE</u>
+		   </h3>
+		</div>
+		
+		<table width="100%" cellpadding="0" cellspacing="0">
+			<tr>
+				<td class="etichetta">
+					di essere ammesso/a a partecipare al <b>BANDO DI CONCORSO PUBBLICO PER ESAMI PER N. 2 POSTI A TEMPO PIENO 
+					ED INDETERMINATO DI ISTRUTTORE DIRETTIVO SOCIALE CAT. GIURIDICA D1 (POS. EC. D1) - 
+					CON RISERVA DI UN POSTO A FAVORE DEI VOLONTARI DELLE FF.AA. - 
+					DA ASSEGNARE AL SETTORE SERVIZI ALLA COMUNITÀ DELL'UNIONE DELLA ROMAGNA FAENTINA</b>
+				</td>
+			</tr>
+			<tr>
+				<td class="etichetta">
+					-
+				</td>
+			</tr>
+		</table>
+			
+		<div style="text-align:center">
+		   <h3>
+					   <u>DICHIARA</u>
+		   </h3>
+		</div>
+			
+			
+			<hr />
+			<schedeDinamiche />
+			
+			<br/>
+			<br/>
+			<xsl:if test="count(/Istanze/DocumentiIstanza/DocumentiIstanza) != 0" >
+				<div style="text-align:left">
+						   <h3>
+									   Allegati: 
+						   </h3>
+				</div>
+				
+				<ul>
+					<xsl:for-each select="/Istanze/DocumentiIstanza/DocumentiIstanza">
+						<li>
+							<div class="dato">
+								<xsl:value-of select="DOCUMENTO"/>&#160;
+							</div><div class="nomeFile"><xsl:value-of select="Oggetto/NOMEFILE"/></div>
+						</li>
+					</xsl:for-each>
+				</ul>
+			</xsl:if>
+			<br/>
+		</div>
+		
+		<table width="100%" cellpadding="0" cellspacing="0">
+			<tr>
+				<td class="etichetta">
+					Dichiara, altresì, di essere informato che il trattamento dei miei dati personali avverrà nel rispetto delle disposizioni contenute nel D.Lgs. n. 196 del 30.06.2003 e nel Regolamento UE N. 2016/679 sia per la gestione del procedimento selettivo, compresa la pubblicazione del nominativo sul sito internet dell'Unione della Romagna Faentina, sia per l’eventuale stipula e gestione del contratto individuale di lavoro, anche con Pubbliche Amministrazioni autorizzate dall'Unione della Romagna Faentina
+				</td>
+			</tr>
+		</table><br /><br /><br />
+		
+		<table width="100%" border="0px" cellpadding="0" cellspacing="0">
+			<tr>
+				  <td class="etichetta" colspan="1" width="25%" style="font-weight:bold" align="center">
+						 _____________________________
+				  </td>
+				  <td class="etichetta" colspan="1" width="25%" style="font-weight:bold" align="center">
+						   
+				  </td>
+				  <td class="etichetta" colspan="1" width="25%" style="font-weight:bold" align="center">
+						   
+				  </td>
+				  <td class="etichetta" colspan="1" width="25%" style="font-weight:bold" align="center">
+						_____________________________
+				  </td>
+			</tr>
+			<tr>
+				  <td class="etichetta" colspan="1" width="25%" style="font-weight:bold" align="center">
+						(Luogo e data)
+				  </td>
+				  <td class="etichetta" colspan="1" width="25%" style="font-weight:bold" align="center">
+						   
+				  </td>
+				  <td class="etichetta" colspan="1" width="25%" style="font-weight:bold" align="center">
+						   
+				  </td>
+				  <td class="etichetta" colspan="1" width="25%" style="font-weight:bold" align="center">
+						   (Firma)
+				  </td>
+			</tr>
+	   </table>
+
+
+      </body>
+
+    </html>

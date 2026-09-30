@@ -1,0 +1,233 @@
+<?xml version="1.0" ?><schema elementFormDefault="qualified" targetNamespace="http://sigepro.init.it/rte" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://sigepro.init.it/rte" xmlns:types="http://sigepro.init.it/rte/types" xmlns:xmime="http://www.w3.org/2005/05/xmlmime">
+    
+    <import namespace="http://sigepro.init.it/rte/types" schemaLocation="types.xsd"></import>
+	<simpleType name="XsdStcVersion">
+        
+        <restriction base="string">
+			<enumeration value="V_1_0"></enumeration>
+			<enumeration value="V_1_1"></enumeration>
+			<enumeration value="V_1_2"></enumeration>
+			<enumeration value="V_1_3"></enumeration>
+			<enumeration value="V_1_4"></enumeration>
+			<enumeration value="V_1_5"></enumeration>
+			<enumeration value="V_1_6"></enumeration>
+			<enumeration value="V_1_7"></enumeration>
+			<enumeration value="V_1_8"></enumeration>
+			<enumeration value="V_1_9"></enumeration>
+			<enumeration value="V_1_10"></enumeration>
+			<enumeration value="V_1_11"></enumeration>
+			<enumeration value="V_1_12"></enumeration>
+			<enumeration value="V_1_13"></enumeration>
+			<enumeration value="V_1_14"></enumeration>
+		</restriction>
+	</simpleType>
+	<element name="LoginRequest">
+		<complexType>
+			<sequence>
+				<element name="username" type="string"></element>
+				<element name="password" type="string"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="LoginResponse">
+		<complexType>
+			<sequence>
+				<element name="result" type="boolean"></element>
+				<element name="token" type="string"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="CheckTokenRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="CheckTokenResponse">
+		<complexType>
+			<sequence>
+				<element name="result" type="boolean"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="DirezioneSportelloRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string"></element>
+				<element name="sportello" type="types:SportelloType"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="DirezioneSportelloResponse">
+		<complexType>
+			<sequence>
+				<element name="direzione" type="types:DirezioneType"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="NotificaAttivitaRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string"></element>
+				<element name="sportelloMittente" type="types:SportelloType"></element>
+				<element name="sportelloDestinatario" type="types:SportelloType"></element>
+				<element name="datiAttivita" type="types:DettaglioAttivitaType"></element>
+				<element maxOccurs="1" minOccurs="0" name="rifPraticaDestinatario" type="types:RiferimentiPraticaType"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="NotificaAttivitaResponse">
+		<complexType>
+			<choice minOccurs="1">
+				<element maxOccurs="1" minOccurs="0" name="dettaglioattivita" type="types:RiferimentiAttivitaType"></element>
+				<element maxOccurs="unbounded" minOccurs="0" name="dettaglioErrore" type="types:ErroreType"></element>
+			</choice>
+		</complexType>
+	</element>
+	<element name="AllegatoBinarioRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string"></element>
+				<element name="sportelloMittente" type="types:SportelloType"></element>
+				<element name="sportelloDestinatario" type="types:SportelloType"></element>
+				<element name="riferimentiAllegato" type="types:RiferimentiAllegatoType"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="AllegatoBinarioResponse">
+		<complexType>
+			<sequence>
+				<element maxOccurs="1" minOccurs="0" name="mimeType" type="string"></element>
+				<element name="binaryData" type="base64Binary" xmime:expectedContentTypes="application/octet-stream"></element>
+				<element name="fileName" type="string"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="RichiestaPraticaRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string"></element>
+				<element name="sportelloMittente" type="types:SportelloType"></element>
+				<element name="sportelloDestinatario" type="types:SportelloType"></element>
+				<element name="rifPratica" type="types:RiferimentiPraticaType"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="RichiestaPraticaResponse">
+		<complexType>
+			<sequence>
+				<element maxOccurs="1" minOccurs="0" name="dettaglioPratica" type="types:DettaglioPraticaVisuraType"></element>
+				<element maxOccurs="unbounded" minOccurs="0" name="dettaglioErrore" type="types:ErroreType"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="RichiestaPraticaCollegataRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string"></element>
+				<element name="sportelloMittente" type="types:SportelloType"></element>
+				<element name="sportelloDestinatario" type="types:SportelloType"></element>
+				<element name="idPraticaMitt" type="string"></element>
+				<element maxOccurs="1" minOccurs="0" name="idProcedimentoMitt" type="string"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="RichiestaPraticaCollegataResponse">
+		<complexType>
+			<sequence>
+				<element maxOccurs="1" minOccurs="0" name="dettaglio">
+					<complexType>
+						<sequence>
+							<element name="sportello" type="types:SportelloType"></element>
+							<element name="dettaglioPratica" type="types:DettaglioPraticaType"></element>
+						</sequence>
+					</complexType>
+				</element>
+				<element maxOccurs="unbounded" minOccurs="0" name="dettaglioErrore" type="types:ErroreType"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="InserimentoPraticaRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string"></element>
+				<element name="sportelloMittente" type="types:SportelloType"></element>
+				<element name="sportelloDestinatario" type="types:SportelloType"></element>
+				<element name="dettaglioPratica" type="types:DettaglioPraticaType"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="InserimentoPraticaResponse">
+		<complexType>
+			<choice minOccurs="1">
+				<element minOccurs="0" name="dettaglioPratica" type="types:RiferimentiPraticaType"></element>
+				<element maxOccurs="unbounded" minOccurs="0" name="dettaglioErrore" type="types:ErroreType"></element>
+			</choice>
+		</complexType>
+	</element>
+	<element name="RichiestaPraticheListaRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string"></element>
+				<element name="sportelloMittente" type="types:SportelloType"></element>
+				<element name="sportelloDestinatario" type="types:SportelloType"></element>
+				<element maxOccurs="1" minOccurs="0" name="filtriUtenteConnesso" type="types:FiltriUtenteType"></element>
+				<element maxOccurs="1" minOccurs="1" name="filtriPratica" type="types:FiltriPraticaType"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="RichiestaPraticheListaResponse">
+		<complexType>
+			<sequence>
+				<element maxOccurs="unbounded" minOccurs="0" name="dettaglioPratica" type="types:DettaglioPraticaBreveType"></element>
+				<element maxOccurs="unbounded" minOccurs="0" name="dettaglioErrore" type="types:ErroreType"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="AggiungiDocumentiRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string"></element>
+				<element name="sportelloMittente" type="types:SportelloType"></element>
+				<element name="sportelloDestinatario" type="types:SportelloType"></element>
+				<element name="idPraticaDest" type="string"></element>
+				<element maxOccurs="unbounded" minOccurs="1" name="documenti" type="types:DocumentiType"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="AggiungiDocumentiResponse">
+		<complexType>
+			<sequence>
+				<element maxOccurs="unbounded" minOccurs="0" name="dettaglioErrore" type="types:ErroreType"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="CancellaAttivitaRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string"></element>
+				<element name="sportello" type="types:SportelloType"></element>
+				<element name="idAttivita" type="string"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="RichiestaPraticaCollegataDaAttivitaDestinatariaRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string"></element>
+				<element name="sportello" type="types:SportelloType"></element>
+				<element name="idAttivita" type="string"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="RichiestaPraticaCollegataDaAttivitaMittenteRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string"></element>
+				<element name="sportello" type="types:SportelloType"></element>
+				<element name="idAttivita" type="string"></element>
+			</sequence>
+		</complexType>
+	</element>
+</schema>

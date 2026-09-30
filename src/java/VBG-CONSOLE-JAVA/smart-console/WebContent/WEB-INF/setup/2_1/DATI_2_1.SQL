@@ -1,0 +1,3 @@
+INSERT INTO SOFTWARE ( CODICE, DESCRIZIONE, MODULOOPZIONALE, DESCRIZIONELUNGA, ACCESSORAPIDO, ORDINE ) VALUES ('PI','Prima Infanzia',1,'Servizi Educativi per la Prima Infanzia',0,44);
+update clmenu_java set pagina='sorteggitestata/list.htm?software=SOFTWARE', jsp='JAVA' where id=495;
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO,PARAMETRO ,DESCRIZIONE ) VALUES ('WSANAGRAFE_RAVENNA','VIEW' ,'Vista da interrogare');

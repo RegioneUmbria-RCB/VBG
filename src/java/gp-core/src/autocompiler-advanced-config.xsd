@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+	jxb:version="2.1" targetNamespace="http://gruppoinit.it/sigepro/schemas/autocompiler"
+	xmlns:tns="http://gruppoinit.it/sigepro/schemas/autocompiler"
+	elementFormDefault="qualified">
+
+	<element name="AutocompilerConfig">
+		<complexType>
+			<all>
+				<element name="autocompiler-definitions" type="tns:AutocompilerDefinitionConfig" minOccurs="1" nillable="false"></element>
+				<element name="autocompiler-applications" type="tns:AutocompilerApplicationConfig" minOccurs="1" nillable="false"></element>
+			</all>
+		</complexType>
+	</element>
+
+	<complexType name="AutocompilerDefinitionConfig">
+		<sequence minOccurs="1" maxOccurs="unbounded">
+			<annotation>
+				<appinfo>
+					<jxb:property name="autocompilerDefinitions" />
+				</appinfo>
+			</annotation>
+			<element name="autocompiler-definition" type="tns:AutocompilerDefinition"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="AutocompilerDefinition">
+		<all>
+			<element name="autocompiler-id" type="ID" minOccurs="1" nillable="false"></element>
+			<element name="controller-url" type="string" minOccurs="1" nillable="false"></element>
+			<element name="js-control-object" type="string" minOccurs="1" nillable="false"></element>
+		</all>
+	</complexType>
+
+	<complexType name="AutocompilerApplicationConfig">
+		<sequence minOccurs="1" maxOccurs="unbounded">
+			<annotation>
+				<appinfo>
+					<jxb:property name="autocompilerApplications" />
+				</appinfo>
+			</annotation>
+			<element name="autocompiler-application" type="tns:AutocompilerApplication"></element>
+		</sequence>
+	</complexType>
+	
+	<complexType name="AutocompilerApplication">
+		<all>
+			<element name="autocompiler-ref" type="IDREF" minOccurs="1" nillable="false"></element>
+			<element name="trigger-field-id" type="string" minOccurs="1" nillable="false"></element>
+			<element name="label" type="string" minOccurs="0"></element>
+			<element name="result-mappings" type="tns:AutocompilerResultMapppings" minOccurs="1" nillable="false"></element>
+		</all>
+	</complexType>
+	
+	<complexType name="AutocompilerResultMapppings">
+		<sequence minOccurs="1" maxOccurs="unbounded">
+			<annotation>
+				<appinfo>
+					<jxb:property name="resultMappings" />
+				</appinfo>
+			</annotation>
+			<element name="result-mapping" type="tns:SearchResultAttributeMapping"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="SearchResultAttributeMapping">
+		<all>
+			<element name="result-attribute" type="tns:ResultAttribute" minOccurs="1" nillable="false"></element>
+			<element name="destination-field-id" type="string" minOccurs="1" nillable="false"></element>
+		</all>
+	</complexType>
+	
+	<complexType name="ResultAttribute">
+		<all>
+			<element name="main-property" type="string" minOccurs="1" nillable="false"></element>
+			<element name="alternative-property" type="string" minOccurs="0"></element>
+			<element name="value-regexp" type="string" minOccurs="0"></element>
+			<element name="values-mappings" type="tns:ResultValueMapppings" minOccurs="0"></element>
+		</all>
+	</complexType>
+	
+	<complexType name="ResultValueMapppings">
+		<sequence minOccurs="1" maxOccurs="unbounded">
+			<annotation>
+				<appinfo>
+					<jxb:property name="valuesMappings" />
+				</appinfo>
+			</annotation>
+			<element name="value-mapping" type="tns:ResultValueMapping"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="ResultValueMapping">
+		<all>
+			<element name="result-value" type="string" minOccurs="1" nillable="false">
+				<annotation>
+					<documentation>Se il valore della proprietà recuperata dal controllo é uguale al testo inserito in questo elemento allora nel form sarà posizionato il valore presente nell'elemento destination-value associato.
+E' anche possibile utilizzare le espressioni regolari per matchare i valori della proprietà restituita. In questo caso occorre utilizzare la sintassi JavaScript prevista dall'oggetto RegExp</documentation>
+				</annotation></element>
+			<element name="destination-value" type="string" minOccurs="1" nillable="false"></element>
+		</all>
+	</complexType>	
+</schema>

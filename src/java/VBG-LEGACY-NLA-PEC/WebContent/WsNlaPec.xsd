@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://gruppoinit.it/nlapec" xmlns:tns="http://gruppoinit.it/nlapec"
+	xmlns:xmime="http://www.w3.org/2005/05/xmlmime" elementFormDefault="qualified">
+
+	<element name="ListaMessaggiRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string" maxOccurs="1" minOccurs="1"></element>
+				<element name="software" type="string" maxOccurs="1" minOccurs="1"></element>
+				<element name="idaccount" type="integer" maxOccurs="1" minOccurs="0"></element>
+				<element name="listaFiltri" type="tns:FiltroType" maxOccurs="unbounded" minOccurs="0"></element>
+			</sequence>
+		</complexType>
+	</element>
+
+	<complexType name="FiltroType">
+		<sequence>
+			<element name="tipo" maxOccurs="1" minOccurs="1">
+				<simpleType>
+					<restriction base="string">
+						<enumeration value="DATA_DA"></enumeration>
+						<enumeration value="DATA_A"></enumeration>
+						<enumeration value="LETTI"></enumeration>
+						<enumeration value="NON_LETTI"></enumeration>
+						<enumeration value="CORPO"></enumeration>
+					</restriction>
+				</simpleType>
+			</element>
+			<element name="valore" maxOccurs="1" minOccurs="1">
+				<simpleType>
+					<restriction base="string">
+						<pattern
+							value="^((((0[1-9]|[12][0-9]|3[01])[- /.](0[13578]|1[02])|(0[1-9]|[12][0-9]|30)[- /.](0[469]|11)|(0[1-9]|1\d|2[0-8])[- /.]02)[- /.]\d{4}|29[- /.]02[- /.](\d{2}(0[48]|[2468][048]|[13579][26])|([02468][048]|[1359][26])00)))|[Ss]|[Nn]$">
+						</pattern>
+					</restriction>
+				</simpleType>
+			</element>
+		</sequence>
+	</complexType>
+
+	<element name="ListaMessaggiResponse">
+		<complexType>
+			<sequence>
+				<element name="messaggio" type="tns:MessaggioType" maxOccurs="unbounded" minOccurs="0"></element>
+				<element name="idaccount" type="integer" maxOccurs="1" minOccurs="0"></element>
+			</sequence>
+		</complexType>
+    </element>
+    
+	<complexType name="MessaggioType">
+		<sequence>
+			<element name="identificativo" type="string" maxOccurs="1" minOccurs="1"></element>
+			<element name="mittenti" type="string" maxOccurs="unbounded" minOccurs="1"></element>
+			<element name="destinatari" type="string" maxOccurs="unbounded" minOccurs="0"></element>
+			<element name="destinataricc" type="string" maxOccurs="unbounded" minOccurs="0"></element>
+			<element name="oggetto" type="string" maxOccurs="1" minOccurs="1"></element>
+			<element name="corpo" type="string" maxOccurs="1" minOccurs="1"></element>
+			<element name="dataSpedizione" type="dateTime" maxOccurs="1" minOccurs="0"></element>
+			<element name="dataRicezione" type="dateTime" maxOccurs="1" minOccurs="0"></element>
+			<element name="letto" type="boolean" maxOccurs="1" minOccurs="1"></element>
+			<element name="dimensione" type="long" maxOccurs="1" minOccurs="0"></element>
+			<element name="altriDati" type="tns:AltriDatiType" maxOccurs="unbounded" minOccurs="0"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="AltriDatiType">
+		<sequence>
+			<element name="codice" type="string" maxOccurs="1" minOccurs="1"></element>
+			<element name="valori" type="string" maxOccurs="unbounded" minOccurs="1"></element>
+		</sequence>
+	</complexType>
+
+	<element name="ProcessaMessaggiRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string" maxOccurs="1" minOccurs="1"></element>
+				<element name="software" type="string" maxOccurs="1" minOccurs="1"></element>
+				<element name="idaccount" type="integer" maxOccurs="1" minOccurs="0"></element>
+			</sequence>
+		</complexType>
+	</element>
+
+
+	<element name="ProcessaMessaggiResponse">
+		<complexType>
+			<sequence>
+				<element name="descrizioneEnte" type="string" maxOccurs="1" minOccurs="1"></element>
+				<element name="alias" type="string" maxOccurs="1" minOccurs="1"></element>
+				<element name="errore" type="string" maxOccurs="1" minOccurs="0"></element>
+				<element name="avviso" type="string" maxOccurs="1" minOccurs="0"></element>
+				<element name="listaDettagli" type="tns:DettaglioReportType"></element>
+				<element name="idaccount" type="integer" maxOccurs="1" minOccurs="0"></element>
+			</sequence>
+		</complexType>
+	</element>
+
+	<complexType name="DettaglioReportType">
+		<sequence>
+			<element name="software" type="string" maxOccurs="1" minOccurs="1"></element>
+			<element name="tipologiaMessaggiDaProcessare" type="string" maxOccurs="1" minOccurs="0"></element>
+			<element name="numeroMessaggiTotali" type="int" maxOccurs="1" minOccurs="1"></element>
+			<element name="numeroMessaggiConErrore" type="int" maxOccurs="1" minOccurs="1"></element>
+			<element name="listaErrori" type="string" maxOccurs="unbounded" minOccurs="0"></element>
+		</sequence>
+	</complexType>
+
+    <element name="ScaricaAllegatiMessaggioRequest">
+    	<complexType>
+			<sequence>
+				<element name="token" type="string" maxOccurs="1" minOccurs="1"></element>
+				<element name="software" type="string" maxOccurs="1" minOccurs="1"></element>
+				<element name="identificativoMessaggio" type="string" maxOccurs="1" minOccurs="1"></element>
+				<element name="idaccount" type="integer" maxOccurs="1" minOccurs="0"></element>
+			</sequence>
+		</complexType>
+	</element>
+		
+	<element name="ScaricaAllegatiMessaggioResponse">
+	    <complexType>
+    		<sequence>
+    			<element name="messaggio" type="tns:MessaggioType"></element>
+    			<element name="allegati" type="tns:AllegatoMailType" maxOccurs="unbounded" minOccurs="0"></element>
+    			<element name="idaccount" type="integer" maxOccurs="1" minOccurs="0"></element>
+    		</sequence>
+    	</complexType>
+    </element>
+
+    <complexType name="AllegatoMailType">
+    	<sequence>
+    		<element name="contentType" type="string" maxOccurs="1" minOccurs="0"></element>    		
+    		<element name="encoding" type="string" maxOccurs="1" minOccurs="0"></element>
+    		<element name="nomeFile" type="string" maxOccurs="1" minOccurs="0"></element>
+    		<element name="content" type="base64Binary" xmime:expectedContentTypes="application/octet-stream" maxOccurs="1" minOccurs="1"></element>
+    	</sequence>
+    </complexType>
+    
+    <element name="MessaggiNonLettiRequest">
+	    <complexType>
+    		<sequence>
+    			<element name="token" type="string" maxOccurs="1" minOccurs="1"></element>
+    			<element name="software" type="string" maxOccurs="1" minOccurs="1"></element>
+    			<element name="idaccount" type="integer" maxOccurs="1" minOccurs="0"></element>
+    		</sequence>
+    	</complexType>
+	</element>
+	
+	
+    <element name="MessaggiNonLettiResponse">
+	    <complexType>
+    		<sequence>
+    			<element name="proprietarioCasella" type="string" maxOccurs="1" minOccurs="1"></element>
+    			<element name="numMessaggi" type="int" maxOccurs="1" minOccurs="1"></element>
+    			<element name="idaccount" type="integer" maxOccurs="1" minOccurs="0"></element>
+    		</sequence>
+    	</complexType>
+    </element>
+
+    <element name="ScaricaMessaggioBinarioRequest">
+        <complexType>
+			<sequence>
+				<element name="token" type="string" maxOccurs="1" minOccurs="1"></element>
+				<element name="software" type="string" maxOccurs="1" minOccurs="1"></element>
+				<element name="identificativoMessaggio" type="string" maxOccurs="1" minOccurs="1"></element>
+				<element name="idaccount" type="integer" maxOccurs="1" minOccurs="0"></element>
+			</sequence>
+		</complexType>
+    </element>
+
+    <element name="ScaricaMessaggioBinarioResponse">
+    	<complexType>
+    		<sequence>
+	    		<element name="nomeFile" type="string"  maxOccurs="1" minOccurs="1"></element>
+    			<element name="contentType" type="string" maxOccurs="1" minOccurs="1"></element>
+    			<element name="content" type="base64Binary" xmime:expectedContentTypes="application/octet-stream" maxOccurs="1" minOccurs="1"></element>
+    			<element name="idaccount" type="integer" maxOccurs="1" minOccurs="0"></element>
+    		</sequence>
+    	</complexType>
+    </element>
+    
+    <element name="SetFlagLetturaMessaggioRequest">
+        <complexType>
+			<sequence>
+				<element name="token" type="string" maxOccurs="1" minOccurs="1"></element>
+				<element name="software" type="string" maxOccurs="1" minOccurs="1"></element>
+				<element name="identificativoMessaggio" type="string" maxOccurs="1" minOccurs="1"></element>
+				<element name="flagValue" type="boolean" maxOccurs="1" minOccurs="1"></element>
+				<element name="idaccount" type="integer" maxOccurs="1" minOccurs="0"></element>
+			</sequence>
+		</complexType>
+    </element>
+ 
+    <element name="SetFlagLetturaMessaggioResponse">
+    	<complexType>
+    		<sequence>
+	    		<element name="esito" type="string"  maxOccurs="1" minOccurs="1"></element>
+	    		<element name="idaccount" type="integer" maxOccurs="1" minOccurs="0"></element>
+    		</sequence>
+    	</complexType>
+    </element>
+    
+    <element name="ScaricaMessaggioInviatoBinarioRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string"/>
+				<element name="software" type="string"/>
+				<element name="identificativoBackofficeMessaggio" type="string"/>
+				<element name="folderName" type="string"/>
+				<element name="idaccount" type="integer" maxOccurs="1" minOccurs="0"></element>
+			</sequence>
+		</complexType>
+	</element>
+    
+     <element name="ScaricaMessaggioInviatoBinarioResponse">
+		<complexType>
+			<sequence>
+	    		<element name="nomeFile" type="string"  maxOccurs="1" minOccurs="1"></element>
+    			<element name="contentType" type="string" maxOccurs="1" minOccurs="1"></element>
+    			<element name="content" type="base64Binary" xmime:expectedContentTypes="application/octet-stream" maxOccurs="1" minOccurs="1"></element>
+    			<element name="idaccount" type="integer" maxOccurs="1" minOccurs="0"></element>
+			</sequence>
+		</complexType>
+	</element>
+</schema>

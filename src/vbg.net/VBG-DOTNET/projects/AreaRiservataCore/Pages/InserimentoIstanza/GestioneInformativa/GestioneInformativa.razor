@@ -1,0 +1,133 @@
+﻿@page "/{IdComune}/{Software}/inserimento-istanza/gestione-informativa/{idDomanda:int}/{stepId:int}"
+@using Init.Sigepro.FrontEnd.AppLogic.Exceptions
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneComuni
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneDatiExtra
+@using Init.Sigepro.FrontEnd.AppLogic.Services.Domanda
+@using Init.Sigepro.FrontEnd.Infrastructure.StepsDomanda.Attributi
+@inherits IstanzeStepPage
+
+@if (!String.IsNullOrEmpty(TestoInformativa?.Trim()))
+{
+    <div class="card mb-2 border">
+        <div class="card-body">
+            @(
+                    (MarkupString)String.Format(TestoInformativa, GetNomeComune())
+                )
+        </div>
+    </div>
+}
+
+@if (MostraCheckAccettazione)
+{
+    <div class="form-check mt-4 mb-3 mt-md-40 mb-lg-40">
+        <div class="checkbox-body d-flex align-items-center">
+            <InputCheckbox id="privacy" @bind-Value="@_isChecked" />
+            <label class="title-small-semi-bold pt-1" for="privacy">@TestoAccettazioneInformativa</label>
+        </div>
+    </div>
+}
+
+@code {
+    protected static class Constants
+    {
+        // public const string FlagInformativa = "FlagInformativa";
+        public const string ErroreInformativaNonAccettata = "Per proseguire è necessario leggere ed accettare le condizioni riportate";
+    }
+
+    [Inject]
+    public IComuniService _comuniService { get; set; } = default!;
+
+    [Inject]
+    public DatiDomandaService _datiDomandaService { get; set; } = default!;
+
+    [Inject]
+    public DatiExtraService _datiExtraService { get; set; } = default!;
+
+    [StepProperty]
+    public string CodiceComuneDiRiferimento { get; set; } = "";
+
+    [StepProperty]
+    public string MessaggioErrore { get; set; } = Constants.ErroreInformativaNonAccettata;
+
+    [StepProperty]
+    public string TestoAccettazioneInformativa { get; set; } = "";
+
+    [StepProperty]
+    public string TestoInformativa { get; set; } = "";
+
+    [StepProperty]
+    public bool MostraCheckAccettazione { get; set; }
+
+    [StepProperty]
+    public bool IgnoraControlloComuneRiferimento { get; set; }
+
+    [StepProperty]
+    public string ListaComuniDiRiferimento { get; set; } = "";
+
+    [StepProperty]
+    public string ChiaveInformativa { get; set; } = "FlagInformativa";
+
+    bool _isChecked = false;
+
+    protected override void OnInitializeStep()
+    {
+        var f = _datiExtraService.Get<string>(IdDomanda.Value, this.ChiaveInformativa);
+        _isChecked = !String.IsNullOrEmpty(f) ? Convert.ToBoolean(f) : false;
+
+        if (!this.MostraCheckAccettazione)
+        {
+            _isChecked = true;
+        }
+    }
+
+    protected override bool CanEnterStep()
+    {
+        if (this.IgnoraControlloComuneRiferimento)
+        {
+            return true;
+        }
+
+        var listaComuniArray = this.ListaComuniDiRiferimento;
+
+        if (String.IsNullOrEmpty(listaComuniArray))
+        {
+            listaComuniArray = this.CodiceComuneDiRiferimento;
+        }
+
+        var listaComuni = listaComuniArray.Split(',').Select(x => x.Trim()).Where(x => x.Length > 0);
+
+        return listaComuni.Contains(this.DomandaCorrente.AltriDati.CodiceComune);
+
+        // return (DomandaCorrente.AltriDati.CodiceComune == CodiceComuneDiRiferimento);
+    }
+
+    protected override void OnBeforeExitStep()
+    {
+        _datiExtraService.Set<string>(IdDomanda.Value, this.ChiaveInformativa, _isChecked.ToString());
+    }
+
+    protected override bool CanExitStep()
+    {
+        MessageContainer.ClearErrors();
+
+        if (!_isChecked)
+        {
+            MessageContainer.AddError(this.MessaggioErrore);
+            return false;
+        }
+
+        return true;
+    }
+
+    private string GetNomeComune()
+    {
+        var comune = _comuniService.GetByCodiceComune(DomandaCorrente.AltriDati.CodiceComune);
+
+        if (comune == null)
+        {
+            return String.Empty;
+        }
+
+        return comune.Comune;
+    }
+}

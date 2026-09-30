@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+    xmlns:corrispondenza="http://www.agid.gov.it/MODULI_PA/SUAP/modulo_corrispondenza"
+    xmlns:suapcommon="http://www.agid.gov.it/MODULI_PA/SUAP/suap_common_components"
+    xmlns:moduli="http://www.agid.gov.it/MODULI_PA/moduli_common_components"
+    xmlns:aggregate="http://www.agid.gov.it/AgID_aggregate_components"
+    xmlns:basic="http://www.agid.gov.it/AgID_basic_components"
+    xmlns:enumeration="http://www.agid.gov.it/AgID_enumeration"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    
+    targetNamespace="http://www.agid.gov.it/MODULI_PA/SUAP/modulo_corrispondenza"
+
+    elementFormDefault="qualified" attributeFormDefault="qualified" version="1.3.0">
+
+    
+    
+
+    <xs:import namespace="http://www.agid.gov.it/MODULI_PA/SUAP/suap_common_components" schemaLocation="SUAP_common_components.xsd"/>    
+    <xs:import namespace="http://www.agid.gov.it/MODULI_PA/moduli_common_components" schemaLocation="../MODULI_common_components.xsd"/>
+    <xs:import namespace="http://www.agid.gov.it/AgID_basic_components" schemaLocation="../../AgID_Vocabularies/AgID_basic_components.xsd"/>
+    <xs:import namespace="http://www.agid.gov.it/AgID_aggregate_components" schemaLocation="../../AgID_Vocabularies/AgID_aggregate_components.xsd"/>
+    <xs:import namespace="http://www.agid.gov.it/AgID_enumeration" schemaLocation="../../AgID_Vocabularies/AgID_enumeration.xsd"/>
+  
+    <!-- // Modulo modulo_corrispondenza ## internal code ref 005 // -->
+    
+    <!-- ROOT ELEMENT -->
+    <xs:element name="ModuloCorrispondenza" type="corrispondenza:ModuloCorrispondenzaType" />
+    
+    <!-- AGGREGATE COMPONENTS TYPE -->
+    <xs:complexType name="ModuloCorrispondenzaType" >
+        <xs:annotation>
+            <xs:documentation>
+                SEGNALAZIONE CERTIFICATA DI INIZIO ATTIVITÀ 
+                PER L’ESERCIZIO DI VENDITA PER CORRISPONDENZA, TELEVISIONE E ALTRI SISTEMI DI COMUNICAZIONE, COMPRESO IL COMMERCIO ON LINE
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="schedaAnagrafica" type="suapcommon:SchedaAnagraficaSUAPType"/>
+            <xs:element name="integrazioneAnagrafica" type="suapcommon:IntegrazioneAnagraficaType"/>
+            <xs:element name="apertura" type="corrispondenza:AperturaType"/>
+            <xs:element name="dichiarazioni" type="suapcommon:DichiarazioniType"/>
+            <xs:element name="altreDichiarazioni" type="suapcommon:AltreDichiarazioniType"/>
+            <xs:element name="dichiarazionePresaVisioneInformativaPrivacy" type="xs:boolean" />
+            <xs:element name="tabellaAllegati" type="corrispondenza:TabellaAllegatiType"/>                 
+        </xs:sequence>
+    </xs:complexType>  
+  
+    <xs:complexType name="AperturaType">
+        <xs:sequence>
+            <xs:element name="tipoEsercizio" type="corrispondenza:TipoEsercizioType"/>
+            <xs:element name="modalitaVendita" type="suapcommon:ModalitaVenditaType"/>
+            <xs:element name="settoriMerceologici" type="suapcommon:SettoriMerceologiciType"/>         
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="TabellaAllegatiType">
+        <xs:sequence>
+            <xs:element name="allegatiSCIA" type="corrispondenza:AllegatiSCIAType"/>
+            <xs:element name="allegatiSCIAUnica" type="corrispondenza:AllegatiSCIAUnicaType"/>
+            <xs:element name="allegatiSCIACondizionata" type="corrispondenza:AllegatiSCIACondizionataType"/>
+            <xs:element name="allegatiAltri" type="suapcommon:AllegatiAltriType"/>      
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="AllegatiSCIAType">
+        <xs:sequence>
+            <xs:element name="allegatoProcuraDelega" type="moduli:AllegatoType" minOccurs="0"/>
+            <xs:element name="allegatoDocumentoIdentitaTitolare" type="moduli:AllegatoType"  minOccurs="0" maxOccurs="unbounded"/>  
+            <xs:element name="allegatoPossessoRequisitiAltriSoci" type="suapcommon:AllegatoPossessoRequisitiAltriSociType" minOccurs="0" maxOccurs="unbounded" />
+            <!-- ALLEGATO DICHIARAZIONE PREPOSTO INCLUSO IN DICHIARAZIONI -->
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="AllegatiSCIAUnicaType">
+        <xs:sequence>
+            <xs:element name="allegatoNotificaSanitaria" type="suapcommon:AllegatoNotificaSanitariaType" minOccurs="0"/>
+            <xs:element name="allegatoSCIAVenditaProdottiAlimentazioneAnimale" type="moduli:AllegatoType" minOccurs="0"/>
+        </xs:sequence>                                
+    </xs:complexType>
+    
+    <xs:complexType name="AllegatiSCIACondizionataType">
+        <xs:sequence>
+            <xs:element name="allegatoAutorizzazioneVenditaPreziosi" type="moduli:AllegatoType" minOccurs="0"/>
+        </xs:sequence>                                
+    </xs:complexType>
+    
+   
+        
+    <!-- BASIC COMPONENTS TYPE -->  
+    <xs:complexType name="TipoEsercizioType" >
+        <xs:sequence>
+            <xs:element name="venditaPerCorrispondenza" minOccurs="0" type="basic:EmptyType"/>
+            <xs:element name="venditaPerRadioTelevisione" minOccurs="0" type="basic:EmptyType"/>
+            <xs:element name="commercioElettronicoSito" minOccurs="0" type="xs:anyURI"/><!-- verificare se usare URI o string libera -->
+            <xs:element name="altriSistemiDiComunicazione" minOccurs="0" type="xs:string"/>
+        </xs:sequence>        
+    </xs:complexType>
+    
+    
+    <!-- ENUMERATION -->
+    
+</xs:schema>

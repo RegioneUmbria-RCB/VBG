@@ -1,0 +1,104 @@
+﻿@using Init.SIGePro.Manager.DTO.Configurazione;
+@using Init.Sigepro.FrontEnd.AppLogic.Configurazione.V2;
+@using System.ComponentModel.DataAnnotations;
+@using VBG.BlazorComponentsLibrary.DesignComuni.Forms
+@using VBG.BlazorComponentsLibrary.EditFormComponents.DropDown
+
+@if (_pnlDimensioniFileVisible)
+{
+    <DropDownForm @bind-Value="@_numeroPagine" 
+                  Id="ddlNumeroPagine"
+                  Label="Numero Pagine"
+                  OnChanged="async (DropDownItem s) => { await CalcolaDimensioneMassima(); }"
+                  Items="@_numeroPagineDataSource"
+                  ShowEmptyItem="false"
+                  ValidationFor="() => this._numeroPagine"
+                  Required="true">
+    </DropDownForm>
+
+    <GenericDropDownForm Id="ddlFormato"
+                  Label="Formato"
+                  Value="@_formato"
+                  TItem="FormatoAllegatoLiberoDto"
+                  OnChanged="async (FormatoAllegatoLiberoDto s) => {this._formato = s; await CalcolaDimensioneMassima();}"
+                  ValueExpression="() => this._formato"
+                  Selector="(x) => x.Formato"
+                  Items="@_formatoDataSource" ValueField="Id" TextField="Formato"
+                  ShowEmptyItem="true"
+                  ValidationFor="() => this._formato"
+                  Required="true">
+    </GenericDropDownForm>
+
+    @if (MostraTestoDimensioneMassima)
+    {
+        <FormTextReadonly Titolo="Dimensione massima">@_testoDimensione</FormTextReadonly>
+    }
+}
+
+@code {
+    [Inject]
+    public IConfigurazione<ParametriDimensioneAllegatiLiberi> _parametriAllegatiLiberi { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public EventCallback<int> OnDimensioneMassimaChanged { get; set; }
+    [Parameter]
+    public bool MostraTestoDimensioneMassima { get; set; } = false;
+
+
+    private bool _pnlDimensioniFileVisible = false;
+    private List<DropDownItem>? _numeroPagineDataSource;
+    private List<FormatoAllegatoLiberoDto>? _formatoDataSource;
+    [Required(ErrorMessage = "Campo obbligatorio")]
+    private FormatoAllegatoLiberoDto? _formato;
+    [Required(ErrorMessage = "Campo obbligatorio")]
+    private DropDownItem? _numeroPagine;
+    private string _testoDimensione = "Specificare il numero di pagine e il formato del file caricato";
+
+
+    protected override async Task OnParametersSetAsync()
+    {
+        //this._defaultPostedFileSpecification = this._postedFileSpecificationFactoryAsync.Get(new FileValidationFlags());
+
+        this._numeroPagineDataSource = Enumerable.Range(1, 30)
+                                                .Select(x => new DropDownItem(x.ToString(), x.ToString()))
+                                                .ToList();
+
+        this._formatoDataSource = this._parametriAllegatiLiberi.Parametri.FormatiAllegatiLiberi.ToList();
+
+        this._pnlDimensioniFileVisible = this._parametriAllegatiLiberi.Parametri.FormatiAllegatiLiberi.Length > 0;
+
+        await Task.CompletedTask;
+    }
+
+    private async Task CalcolaDimensioneMassima()
+    {
+        if ((this._formato?.Id ?? -1) == -1)
+        {
+            this._testoDimensione = "Specificare il numero di pagine e il formato del file caricato";
+            return;
+        }
+
+        int numeroPagine = Convert.ToInt32(this._numeroPagine?.Value);
+        int dimensionePagina = this._formato?.DimensioneMaxPagina ?? 0;
+
+        var nuovaDimensioneMassima = numeroPagine * 1024 * dimensionePagina;
+
+        this._testoDimensione = this.ToHumanReadable(nuovaDimensioneMassima);
+
+        await this.OnDimensioneMassimaChanged.InvokeAsync(nuovaDimensioneMassima);
+    }
+
+    private string ToHumanReadable(int len)
+    {
+        var sizes = new string[] { "B", "KB", "MB", "GB", "TB" };
+        var order = 0;
+
+        while (len >= 1024 && order < sizes.Length - 1)
+        {
+            order++;
+            len = len / 1024;
+        }
+
+        return len.ToString("N2") + " " + sizes[order];
+    }
+}

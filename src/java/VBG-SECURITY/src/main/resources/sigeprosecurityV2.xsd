@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://sigeprosecurity.retelit.it/schema"
+	elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema"
+	xmlns:tns="http://sigeprosecurity.retelit.it/schema">
+	<element name="LoginRequest">
+		<complexType>
+			<sequence>
+				<element name="alias" type="string" minOccurs="1" />
+				<element name="contesto" type="tns:ContestoType" minOccurs="1" />
+				<element name="username" type="string" minOccurs="1" />
+				<element name="password" type="string" minOccurs="1" />
+				<element name="ipAddress" type="string" minOccurs="1" />
+			</sequence>
+		</complexType>
+	</element>
+	<element name="LoginResponse">
+		<complexType>
+			<complexContent>
+				<extension base="tns:TokenResultType" />
+			</complexContent>
+		</complexType>
+	</element>
+	<element name="LoginSSORequest">
+		<complexType>
+			<sequence>
+				<element name="alias" type="string" minOccurs="1" />
+				<element name="contesto" type="tns:ContestoType" minOccurs="1" />
+				<element name="username" type="string" minOccurs="1" />
+				<element name="ipAddress" type="string" minOccurs="1" />
+			</sequence>
+		</complexType>
+	</element>
+	<element name="LoginSSOResponse">
+		<complexType>
+			<complexContent>
+				<extension base="tns:TokenResultType" />
+			</complexContent>
+		</complexType>
+	</element>
+
+	<element name="CheckTokenRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string" minOccurs="1" />
+				<element name="tokenInfo" type="boolean" minOccurs="1" />
+			</sequence>
+		</complexType>
+	</element>
+
+	<element name="CheckTokenResponse">
+		<complexType>
+			<sequence>
+				<element name="valid" type="boolean" minOccurs="1" maxOccurs="1" />
+				<element name="tokenInfo" type="tns:TokenInfoType" minOccurs="0" />
+			</sequence>
+		</complexType>
+	</element>
+	<element name="LogoutRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string" minOccurs="1" />
+			</sequence>
+		</complexType>
+	</element>
+	<element name="LogoutResponse">
+		<complexType>
+			<sequence>
+				<element name="success" type="boolean" minOccurs="1" />
+			</sequence>
+		</complexType>
+	</element>
+	<element name="GetDbConnectionInfoRequest">
+		<complexType>
+			<sequence>
+				<element name="alias" type="string" minOccurs="1" />
+				<element name="ambiente" type="string" minOccurs="1" />
+			</sequence>
+		</complexType>
+	</element>
+
+	<element name="GetDbConnectionInfoResponse">
+		<complexType>
+			<sequence>
+				<element name="alias" type="string" minOccurs="1" />
+				<element name="idComune" type="string" minOccurs="0" />
+				<element name="connectionString" type="string" minOccurs="1" />
+				<element name="dbUser" type="string" minOccurs="1" />
+				<element name="dbPassword" type="string" minOccurs="1" />
+				<element name="provider" type="string" minOccurs="0" />
+				<element name="dbOwner" type="string" minOccurs="1" />
+				<element name="dbMsName" type="string" minOccurs="0" />
+			</sequence>
+		</complexType>
+	</element>
+	<element name="GetApplicationInfoRequest">
+		<complexType>
+			<sequence>
+				<element name="param" type="string" minOccurs="0" />
+			</sequence>
+		</complexType>
+	</element>
+
+	<element name="GetApplicationInfoResponse">
+		<complexType>
+			<sequence>
+				<element name="applicationInfo" type="tns:ApplicationInfoType" minOccurs="0" maxOccurs="unbounded" />
+			</sequence>
+		</complexType>
+	</element>
+	<element name="GetSecurityListRequest">
+		<complexType>
+			<sequence>
+				<element name="alias" type="string" minOccurs="0" />
+				<element name="tipo" type="tns:ComunisecurityAttiviType" minOccurs="0" />
+			</sequence>
+		</complexType>
+	</element>
+	<element name="GetSecurityListResponse">
+		<complexType>
+			<sequence>
+				<element name="security" type="tns:SecurityListType" minOccurs="0" maxOccurs="unbounded" />
+			</sequence>
+		</complexType>
+	</element>
+	<complexType name="SecurityListType">
+		<sequence>
+			<element name="alias" type="string" minOccurs="1" />
+			<element name="descrizione" type="string" minOccurs="0" />
+			<element name="attivo" type="boolean" minOccurs="1" />
+		</sequence>
+	</complexType>
+	<complexType name="ApplicationInfoType">
+		<sequence>
+			<element name="param" type="string" minOccurs="1" />
+			<element name="value" type="string" minOccurs="0" />
+		</sequence>
+	</complexType>
+	<simpleType name="ComunisecurityAttiviType">
+		<restriction base="string">
+			<enumeration value="TUTTI" />
+			<enumeration value="ATTIVI" />
+			<enumeration value="DISATTIVATI" />
+		</restriction>
+	</simpleType>
+	<simpleType name="ContestoType">
+		<annotation>
+			<documentation>
+				Enumerazione dei Contesti disponibili 
+				AMM: Amministrazioni 
+				APP: Applicazioni 
+				OPE: Utenti di Backoffice 
+				UTE: Utenti di Frontoffice
+				UTEG: Utenti di Frontoffice Persone giuridiche
+			</documentation>
+		</annotation>
+		<restriction base="string">
+			<enumeration value="AMM" />
+			<enumeration value="APP" />
+			<enumeration value="OPE" />
+			<enumeration value="UTE" />
+			<enumeration value="UTEG" />
+		</restriction>
+	</simpleType>
+	<complexType name="TokenInfoType">
+		<sequence>
+			<element name="contesto" type="tns:ContestoType" minOccurs="1" />
+			<element name="clientIp" type="string" minOccurs="1" />
+			<element name="alias" type="string" minOccurs="1" />
+			<element name="idcomune" type="string" minOccurs="1" />
+			<element name="firstrequest" type="string" minOccurs="1" />
+			<element name="lastrequest" type="string" minOccurs="1" />
+			<element name="userid" type="string" minOccurs="1" />
+		</sequence>
+	</complexType>
+	<complexType name="TokenResultType">
+		<sequence>
+			<element name="token" type="string" minOccurs="1" />
+		</sequence>
+	</complexType>
+	<element name="SetTokenPartnerAppRequest">
+		<complexType>
+			<sequence>
+				<element name="token" minOccurs="1" maxOccurs="1" type="string"></element>
+				<element name="tokenPartnerApp" minOccurs="1" maxOccurs="1" type="string"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="SetTokenPartnerAppResponse">
+		<complexType>
+			<sequence>
+				<element name="code" minOccurs="1" maxOccurs="1" type="integer"></element>
+				<element name="message" minOccurs="0" maxOccurs="1" type="string"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element  name="GetTokenPartnerAppRequest">
+		<complexType>
+			<sequence>
+				<element name="token" minOccurs="1" maxOccurs="1" type="string"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="GetTokenPartnerAppResponse">
+		<complexType>
+			<sequence>
+				<element name="tokenPartnerApp" minOccurs="1" maxOccurs="1" type="string"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="SetAuthLevelRequest">
+		<complexType>
+			<sequence>
+				<element name="token" minOccurs="1" maxOccurs="1" type="string"></element>
+				<element name="authlevel" minOccurs="1" maxOccurs="1" type="integer"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element  name="SetAuthLevelResponse">
+		<complexType>
+			<sequence>
+				<element name="success" type="boolean" minOccurs="1" />
+			</sequence>
+		</complexType>
+	</element>
+	<element name="GetAuthLevelRequest">
+		<complexType>
+			<sequence>
+				<element name="token" minOccurs="1" maxOccurs="1" type="string"></element>				
+			</sequence>
+		</complexType>
+	</element>
+	<element  name="GetAuthLevelResponse">
+		<complexType>
+			<sequence>
+				<element name="authlevel" minOccurs="1" maxOccurs="1" type="integer"></element>
+			</sequence>
+		</complexType>
+	</element>	
+	
+	<element name="SetTokenPartnerAppPerComuneESoftwareRequest">
+		<complexType>
+			<sequence>
+				<element name="token" minOccurs="1" maxOccurs="1" type="string"></element>
+				<element name="tokenPartnerApp" minOccurs="1" maxOccurs="1" type="string"></element>
+				<element name="codicecomune" minOccurs="0" maxOccurs="1" type="string"></element>
+				<element name="software" minOccurs="0" maxOccurs="1" type="string"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="SetTokenPartnerAppPerComuneESoftwareResponse">
+		<complexType>
+			<sequence>
+				<element name="code" minOccurs="1" maxOccurs="1" type="integer"></element>
+				<element name="message" minOccurs="0" maxOccurs="1" type="string"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element  name="GetTokenPartnerAppPerComuneESoftwareRequest">
+		<complexType>
+			<sequence>
+				<element name="token" minOccurs="1" maxOccurs="1" type="string"></element>
+				<element name="codicecomune" minOccurs="0" maxOccurs="1" type="string"></element>
+				<element name="software" minOccurs="0" maxOccurs="1" type="string"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="GetTokenPartnerAppPerComuneESoftwareResponse">
+		<complexType>
+			<sequence>
+				<element name="tokenPartnerApp" minOccurs="1" maxOccurs="1" type="string"></element>
+			</sequence>
+		</complexType>
+	</element>
+	
+</schema>

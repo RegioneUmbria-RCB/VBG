@@ -1,0 +1,49 @@
+#if($modelloHelper.isRenderForPrint())
+	#set($idSemantico = $campo.NomeCampo)
+	#set($uploadedFiles = $helper.getUploadedFiles($idSemantico, $rowIndex))
+	#foreach($attachment in $uploadedFiles)
+		<div class="boldchar">
+			$attachment.NomeFile
+        </div>
+	#end
+	#if($uploadedFiles.size() == 0)
+		<span > . . . </span>
+	#end
+	
+#else
+	#set($extsString = $campo.getProprietaCampo("AllowedExtensions",""))
+	#set($extsString = $campo.getFormattedAcceptFileAttribute($extsString))
+	#set($dsRequired = $campo.getProprietaCampo("DigitalSignatureRequired","false"))
+	#set($jsonFragment = "digitalSignatureRequired: $dsRequired, accept: '$extsString', classeBottoneElimina: '$classeCampo', classeBottoneUpload: '$classeCampo'")
+	#set($readonly = $campo.getProprietaCampo("ReadOnly",""))
+	#if($readonly && $readonly == "true")
+		#set($readonly = "readonly='readonly'")
+	#else
+		#set($readonly = "")
+	#end
+	<input type="text" name="${nameAttr}" id="${nameAttr}_ID" value="$val" $readonly class="$classeCampo" id-sem="$campo.NomeCampo" starid='${idStar}'/>
+	#set($qs = "idSemantico=$campo.NomeCampo&idModulo=${helper.getRiferimentoModulo($helper.modulo)}")
+	#set($jsonOpts = "{uploadHandler:'../uploaddatidinamici/ajaxUploadFile.htm',readHandler:'../uploaddatidinamici/ajaxReadFile.htm',deleteHandler:'../uploaddatidinamici/ajaxDeleteFile.htm',downloadHandler:'../uploaddatidinamici/ajaxDownloadFile.htm',${jsonFragment}}")
+	#if(!$isTemplate)
+		##set($foo = $helper.debug($rowIndex))
+		#set($emptyStr = "")
+		#set($indexStr = "${helper.buildIndexingSuffix($rowIndex,$emptyStr)}")
+		#if(!$preview)
+			#set($jsonOpts = "{querystring: '${qs}&indice=[${helper.buildIndexingSuffix($rowIndex,$emptyStr)}]', readHandler:'../cart/ajaxDynReadFile.htm',uploadHandler:'../cart/ajaxDynUpload.htm',deleteHandler:'../cart/ajaxDynDelete.htm',${jsonFragment}}")
+		#end
+		<script type="text/javascript">
+			jQuery(document).ready(function(){
+				jQuery('#' + '${nameAttr}_ID').uploadDatiDinamici($jsonOpts);
+				initUIControls(jQuery('#' + '${nameAttr}_ID').parent());
+			});
+		</script>
+	#else
+		#if(!$preview)
+			#set($jsonOpts = "{querystring: '${qs}&indice=[' + newBlockIndex + ']', readHandler:'../cart/ajaxDynReadFile.htm', uploadHandler:'../cart/ajaxDynUpload.htm',deleteHandler:'../cart/ajaxDynDelete.htm',${jsonFragment}}")
+		#end
+		#set($script = "jQuery('#FLD_${idCampo}_${campo.Indice}_' + newBlockIndex + '_ID').uploadDatiDinamici($jsonOpts);")
+		$blocco.addScript($script)
+		#set($script = "initUIControls(jQuery('#FLD_${idCampo}_${campo.Indice}_' + newBlockIndex + '_ID').parent());")
+		$blocco.addScript($script)
+	#end
+#end

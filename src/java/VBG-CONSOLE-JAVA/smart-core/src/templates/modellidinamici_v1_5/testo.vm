@@ -1,0 +1,23 @@
+	#set($colspanLeft = $colspanLeft + 2)
+	#if($righeTab)
+		#set($idxm = $indiceBlocco)
+		#set($idxBlocco = ${riga.getNumRiga()})
+		#if($isTemplate)
+			#set($idxm = "${indicePh}")
+		#end
+	#else
+		#set($idxm = "")
+		#set($idxBlocco = "")
+	#end
+	#set($handleAttrs = "")
+	#if(!$regolaAttRiga)
+		#set($handleAttrs = "dynid='${regolaHandle}' dynidx='0' dynidxm='${idxm}' dynblock='${idxBlocco}'")
+	#end
+	<td id="TD_${colonna.getNumColonna()}" colspan="$colspanLeft">		
+	#if($renderElement)
+		<div style="width:100%; margin-top: 0px;" ${handleAttrs}>
+		$testo
+		</div>
+	#end
+	</td>
+		

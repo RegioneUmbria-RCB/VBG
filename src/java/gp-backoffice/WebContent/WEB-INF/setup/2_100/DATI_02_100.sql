@@ -1,0 +1,4 @@
+INSERT into verticalizzazioniparametribase(modulo, parametro, descrizione) VALUES ('AREA_RISERVATA', 'FORZA_STEP_LOCALIZZAZIONI_SIT', 'Se impostato a 1 sostituisce lo step di gestione localizzazioni con quello integrato con il sit (la verticalizzazione SIT_ATTIVO deve essere attiva e correttamente configurata)');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('NLA-RICEZIONE-PEC', 'CARTELLA-MAIL', 'Specifica la cartella della casella di posta dalla quale vengono letti i messaggi in ingresso. Se non specificata legge la folder INBOX');
+INSERT INTO verticalizzazioniparametribase (modulo, parametro, descrizione) VALUES  ('NODO_PAGAMENTI', 'AR_ATTIVA_PAGO_DOPO', 'Se impostato a 1 permette di attivare la funzionalità "pago dopo" nello step dei pagamenti dell''area riservata (i lconnettore in uso deve supportare il modello 3 e il download dell''avviso di pagamento)'); 
+

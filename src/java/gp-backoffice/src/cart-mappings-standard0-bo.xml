@@ -1,0 +1,917 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CartMappingsConfig xmlns="http://gruppoinit.it/sigepro/schemas/cartmapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://gruppoinit.it/sigepro/schemas/cartmapping cart-sigepro-mapping.xsd ">
+	<!-- QUADRO 01 -->
+	<cart-mapping>
+		<id-semantico>COMUNE_SUAP</id-semantico>
+		<value>
+			<vbg-value>
+				<campo-statico>comune.comune</campo-statico>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>PRATICA_TIPOLOGIA</id-semantico>
+		<value>
+			<vbg-value>
+				<valore-fisso>comunicazione</valore-fisso>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>PRATICA_AZIONE</id-semantico>
+		<value>
+			<vbg-value if-property="alberoproc.stpEndoTipo2s.stpTipologieEndo2.descrizione">
+				<campo-statico>alberoproc.stpEndoTipo2s.stpTipologieEndo2.descrizione</campo-statico>
+			</vbg-value>
+			<vbg-value>
+				<valore-fisso>variazione</valore-fisso>
+			</vbg-value>
+		</value>
+		<value-mappings>
+			<value-mapping>
+				<vbg-value-match>Avvio</vbg-value-match>
+				<cart-value>avvio</cart-value>
+			</value-mapping>
+			<value-mapping>
+				<vbg-value-match>Variazione</vbg-value-match>
+				<cart-value>variazione</cart-value>
+			</value-mapping>
+			<value-mapping>
+				<vbg-value-match>Subingresso</vbg-value-match>
+				<cart-value>subentro</cart-value>
+			</value-mapping>
+			<value-mapping>
+				<vbg-value-match>Chiusura</vbg-value-match>
+				<cart-value>cessazione</cart-value>
+			</value-mapping>
+			<value-mapping>
+				<vbg-value-match>.*</vbg-value-match>
+				<cart-value>variazione</cart-value>
+			</value-mapping>
+		</value-mappings>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>CODICE_ATTIVITA_REGIONALE</id-semantico>
+		<value>
+			<vbg-value if-property="alberoproc.stpEndoTipo2s.codiceEndoRegionale">
+				<campo-statico>alberoproc.stpEndoTipo2s.codiceEndoRegionale</campo-statico>
+			</vbg-value>
+			<vbg-value>
+				<valore-fisso>NON DEFINITA</valore-fisso>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>DESCR_ATTIVITA_REGIONALE</id-semantico>
+		<value>
+			<vbg-value if-property="alberoproc.vwAlberoproc.scDescrizionepadre">
+				<campo-statico>alberoproc.vwAlberoproc.scDescrizionepadre</campo-statico>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>COD_ATTIVITA_PRIMARIA_ATECO</id-semantico>
+		<value>
+			<vbg-value if-property="alberoproc.stpEndoTipo2s.codiceEndoRegionale">
+				<campo-statico>alberoproc.stpEndoTipo2s.codiceEndoRegionale</campo-statico>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>DESCR_ATTIVITA_PRIMARIA_ATECO</id-semantico>
+		<value>
+			<vbg-value if-property="alberoproc.vwAlberoproc.scDescrizionepadre">
+				<campo-statico>alberoproc.vwAlberoproc.scDescrizionepadre</campo-statico>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+	
+
+	<!-- Quadro A1 -->
+	<cart-mapping>
+		<id-semantico>RICHIEDENTE.NOME</id-semantico>
+		<value>
+			<vbg-value>
+				<campo-statico>richiedente.nome</campo-statico>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>RICHIEDENTE.COGNOME</id-semantico>
+		<value>
+			<vbg-value>
+				<campo-statico>richiedente.nominativo</campo-statico>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>RICHIEDENTE.CF</id-semantico>
+		<value>
+			<vbg-value>
+				<campo-statico>richiedente.codicefiscale</campo-statico>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>RICHIEDENTE.NATO_A</id-semantico>
+		<value>
+			<vbg-value>
+				<campo-statico>richiedente.comuneNascita.comune</campo-statico>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>RICHIEDENTE.DATA_NASCITA</id-semantico>
+		<value>
+			<vbg-value>
+				<campo-statico>richiedente.datanascita</campo-statico>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>RICHIEDENTE.CITTADINANZA</id-semantico>
+		<value>
+			<vbg-value if-property="richiedente.cittadinanza.cittadinanza" if-operator="EQUALS" if-value="ITALIA">
+				<valore-fisso>ITALIANA</valore-fisso>
+			</vbg-value>
+			<vbg-value if-property="richiedente.cittadinanza.flgPaeseComunitario" if-operator="EQUALS" if-value="true">
+				<valore-fisso>COMUNITARIA</valore-fisso>
+			</vbg-value>
+			<vbg-value if-property="richiedente.cittadinanza.flgPaeseComunitario" if-operator="EQUALS" if-value="false">
+				<valore-fisso>NON COMUNITARIA</valore-fisso>
+			</vbg-value>
+			<vbg-value>
+				<valore-fisso>ITALIANA</valore-fisso>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>RICHIEDENTE.CITTADINANZA.COMUNITARIA</id-semantico>
+		<value>
+			<vbg-value if-property="richiedente.cittadinanza.flgPaeseComunitario" if-operator="EQUALS" if-value="true">
+				<campo-statico>richiedente.cittadinanza.cittadinanza</campo-statico>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>RICHIEDENTE.CITTADINANZA.NONCOMUNITARIA</id-semantico>
+		<value>
+			<vbg-value if-property="richiedente.cittadinanza.flgPaeseComunitario" if-operator="EQUALS" if-value="false">
+				<campo-statico>richiedente.cittadinanza.cittadinanza</campo-statico>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>RICHIEDENTE.RESIDENZA.STATO</id-semantico>
+		<value>
+			<vbg-value if-property="richiedente.comuneResidenza.siglaprovincia" if-operator="EQUALS" if-value="EE">
+				<valore-fisso>RESIDENTE ALL'ESTERO</valore-fisso>
+			</vbg-value>
+			<vbg-value if-property="richiedente.comuneResidenza.siglaprovincia" if-operator="NOT_EQUALS" if-value="EE">
+				<valore-fisso>RESIDENTE IN ITALIA</valore-fisso>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>RICHIEDENTE.RESIDENZA.ITALIA.COMUNE</id-semantico>
+		<value>
+			<vbg-value if-property="richiedente.comuneResidenza.siglaprovincia" if-operator="NOT_EQUALS" if-value="EE">
+				<campo-statico>richiedente.comuneResidenza.comune</campo-statico>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>RICHIEDENTE.RESIDENZA.ITALIA.PROVINCIA</id-semantico>
+		<value>
+			<vbg-value if-property="richiedente.comuneResidenza.siglaprovincia" if-operator="NOT_EQUALS" if-value="EE">
+				<campo-statico>richiedente.comuneResidenza.siglaprovincia</campo-statico>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>RICHIEDENTE.RESIDENZA.ITALIA.VIA</id-semantico>
+		<value>
+			<vbg-value if-property="richiedente.comuneResidenza.siglaprovincia" if-operator="NOT_EQUALS" if-value="EE">
+				<campo-statico>richiedente.indirizzo</campo-statico>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>RICHIEDENTE.RESIDENZA.ITALIA.CAP</id-semantico>
+		<value>
+			<vbg-value if-property="richiedente.comuneResidenza.siglaprovincia" if-operator="NOT_EQUALS" if-value="EE">
+				<campo-statico>richiedente.comuneResidenza.cap</campo-statico>
+			</vbg-value>
+		</value>
+		<value-processing>
+			<value-replace>
+				<replace-match>\D</replace-match>
+				<replace-with></replace-with>
+			</value-replace>
+		</value-processing>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>RICHIEDENTE.RESIDENZA.ITALIA.TELEFONO</id-semantico>
+		<value>
+			<vbg-value if-property="richiedente.comuneResidenza.siglaprovincia" if-operator="NOT_EQUALS" if-value="EE">
+				<campo-statico>richiedente.telefono</campo-statico>
+			</vbg-value>
+			<vbg-value>
+				<valore-fisso>00000000000</valore-fisso>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>RICHIEDENTE.RESIDENZA.ITALIA.FAX</id-semantico>
+		<value>
+			<vbg-value if-property="richiedente.comuneResidenza.siglaprovincia" if-operator="NOT_EQUALS" if-value="EE">
+				<campo-statico>richiedente.fax</campo-statico>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>RICHIEDENTE.RESIDENZA.ESTERO.COMUNE</id-semantico>
+		<value>
+			<vbg-value if-property="richiedente.comuneResidenza.siglaprovincia" if-operator="EQUALS" if-value="EE">
+				<campo-statico>richiedente.comuneResidenza.comune</campo-statico>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>RICHIEDENTE.RESIDENZA.ESTERO.PROVINCIA</id-semantico>
+		<value>
+			<vbg-value if-property="richiedente.comuneResidenza.siglaprovincia" if-operator="EQUALS" if-value="EE">
+				<campo-statico>richiedente.comuneResidenza.siglaprovincia</campo-statico>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>RICHIEDENTE.RESIDENZA.ESTERO.VIA</id-semantico>
+		<value>
+			<vbg-value if-property="richiedente.comuneResidenza.siglaprovincia" if-operator="EQUALS" if-value="EE">
+				<campo-statico>richiedente.indirizzo</campo-statico>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>RICHIEDENTE.RESIDENZA.ESTERO.CAP</id-semantico>
+		<value>
+			<vbg-value if-property="richiedente.comuneResidenza.siglaprovincia" if-operator="EQUALS" if-value="EE">
+				<campo-statico>richiedente.comuneResidenza.cap</campo-statico>
+			</vbg-value>
+		</value>
+		<value-processing>
+			<value-replace>
+				<replace-match>\D</replace-match>
+				<replace-with></replace-with>
+			</value-replace>
+		</value-processing>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>RICHIEDENTE.RESIDENZA.ESTERO.TELEFONO</id-semantico>
+		<value>
+			<vbg-value if-property="richiedente.comuneResidenza.siglaprovincia" if-operator="EQUALS" if-value="EE">
+				<campo-statico>richiedente.telefono</campo-statico>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>RICHIEDENTE.RESIDENZA.ESTERO.FAX</id-semantico>
+		<value>
+			<vbg-value if-property="richiedente.comuneResidenza.siglaprovincia" if-operator="EQUALS" if-value="EE">
+				<campo-statico>richiedente.fax</campo-statico>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>IMPRESA.DENOMINAZIONE</id-semantico>
+		<value>
+			<vbg-value>
+				<campo-statico>titolarelegale.nominativo</campo-statico>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>IMPRESA.SEDE_LEGALE.COMUNE</id-semantico>
+		<value>
+			<vbg-value>
+				<campo-statico>titolarelegale.comuneResidenza.comune</campo-statico>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>IMPRESA.SEDE_LEGALE.PROVINCIA</id-semantico>
+		<value>
+			<vbg-value>
+				<campo-statico>titolarelegale.comuneResidenza.siglaprovincia</campo-statico>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>IMPRESA.SEDE_LEGALE.CAP</id-semantico>
+		<value>
+			<vbg-value>
+				<campo-statico>titolarelegale.comuneResidenza.cap</campo-statico>
+			</vbg-value>
+		</value>
+		<value-processing>
+			<value-replace>
+				<replace-match>\D</replace-match>
+				<replace-with></replace-with>
+			</value-replace>
+		</value-processing>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>IMPRESA.SEDE_LEGALE.VIA</id-semantico>
+		<value>
+			<vbg-value>
+				<campo-statico>titolarelegale.indirizzo</campo-statico>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>IMPRESA.SEDE_LEGALE.PRESENZA_CIVICO</id-semantico>
+		<value>
+			<vbg-value>
+				<valore-fisso>Senza numero civico</valore-fisso>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>IMPRESA.COD_FISCALE</id-semantico>
+		<value>
+			<vbg-value if-property="titolarelegale.codicefiscale">
+				<campo-statico>titolarelegale.codicefiscale</campo-statico>
+			</vbg-value>
+			<vbg-value if-property="richiedente.partitaiva">
+				<campo-statico>titolarelegale.partitaiva</campo-statico>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>IMPRESA.PARTITA_IVA</id-semantico>
+		<value>
+			<vbg-value if-property="titolarelegale.partitaiva">
+				<campo-statico>titolarelegale.partitaiva</campo-statico>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<!-- QUADRO B -->
+	<cart-mapping>
+		<id-semantico>COMUNICAZIONI.POSTA.EMAIL</id-semantico>
+		<value>
+			<vbg-value>
+				<campo-statico>domicilioElettronico</campo-statico>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>COMUNICAZIONI.TELEFONO</id-semantico>
+		<value>
+			<vbg-value>
+				<campo-statico>richiedente.telefono</campo-statico>
+			</vbg-value>
+		</value>
+		<value-processing>
+			<value-replace>
+				<replace-match>\D</replace-match>
+				<replace-with></replace-with>
+			</value-replace>
+		</value-processing>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>COMUNICAZIONI.CELLULARE</id-semantico>
+		<value>
+			<vbg-value>
+				<campo-statico>richiedente.telefonocellulare</campo-statico>
+			</vbg-value>
+		</value>
+		<value-processing>
+			<value-replace>
+				<replace-match>\D</replace-match>
+				<replace-with></replace-with>
+			</value-replace>
+		</value-processing>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>COMUNICAZIONI.FAX</id-semantico>
+		<value>
+			<vbg-value>
+				<campo-statico>richiedente.fax</campo-statico>
+			</vbg-value>
+		</value>
+		<value-processing>
+			<value-replace>
+				<replace-match>\D</replace-match>
+				<replace-with></replace-with>
+			</value-replace>
+		</value-processing>
+	</cart-mapping>
+
+	<!-- QUADRO C -->
+	<cart-mapping>
+		<id-semantico>ATTIVITA.INDIRIZZO.COMUNE</id-semantico>
+		<value indexed-property="istanzestradarios">
+			<vbg-value>
+				<campo-statico>comune.comune</campo-statico>
+			</vbg-value>
+			<vbg-value>
+				<valore-fisso>non specificato</valore-fisso>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+<!-- questo mapping imposta un valore per ogni stradario con il valore di istanza.comune.provincia
+se mancano glil stradari allora inserisce una riga con valore NP -->
+	<cart-mapping>
+		<id-semantico>ATTIVITA.INDIRIZZO.PROVINCIA</id-semantico>
+		<value indexed-property="istanzestradarios">
+			<vbg-value >
+				<campo-statico>comune.siglaprovincia</campo-statico>
+			</vbg-value>
+			<vbg-value>
+				<valore-fisso>NP</valore-fisso>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+<!-- questo mapping imposta un valore per ciascuno stradario recuperandone il CAP
+se il cap è vuoto viene inserito 00000, se non ci sono record di stradario 
+associati all'istanza viene inserita una sola riga con valore 00000 -->
+	<cart-mapping>
+		<id-semantico>ATTIVITA.INDIRIZZO.CAP</id-semantico>
+		<value>
+			<vbg-value if-property="istanzestradarios.cap">
+				<campo-statico>istanzestradarios.cap</campo-statico>
+			</vbg-value>
+			<vbg-value>
+				<valore-fisso>00000</valore-fisso>
+			</vbg-value>
+		</value>
+		<value-processing>
+			<value-replace>
+				<replace-match>\D</replace-match>
+				<replace-with></replace-with>
+			</value-replace>
+		</value-processing>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>ATTIVITA.INDIRIZZO.VIA</id-semantico>
+		<value>
+			<vbg-value>
+				<campo-statico>istanzestradarios.stradario.descrizioneCompleta</campo-statico>
+			</vbg-value>
+			<vbg-value>
+				<valore-fisso>non specificata</valore-fisso>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>ATTIVITA.INDIRIZZO.PRESENZA_CIVICO</id-semantico>
+		<value indexed-property="istanzestradarios">
+			<vbg-value if-property="istanzestradarios.civico" if-operator="EXISTS">
+				<valore-fisso>Numero civico ed eventuali esponenti</valore-fisso>
+			</vbg-value>
+			<vbg-value if-property="istanzestradarios.civico" if-operator="NOT_EXISTS">
+				<valore-fisso>Senza numero civico</valore-fisso>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>ATTIVITA.INDIRIZZO.CIVICO</id-semantico>
+		<value>
+			<vbg-value>
+				<campo-statico>istanzestradarios.civico</campo-statico>
+			</vbg-value>
+			<vbg-value>
+				<valore-fisso>-</valore-fisso>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>ATTIVITA.INDIRIZZO.ALTRI_DATI</id-semantico>
+		<value value-elaboration="APPEND" indexed-property="istanzestradarios">
+			<vbg-value if-property="istanzestradarios.esponente">
+				<valore-fisso>/</valore-fisso>
+			</vbg-value>
+			<vbg-value>
+				<campo-statico>istanzestradarios.esponente</campo-statico>
+			</vbg-value>
+			<vbg-value if-property="istanzestradarios.stradariocolore.colore">
+				<valore-fisso> </valore-fisso>
+			</vbg-value>
+			<vbg-value>
+				<campo-statico>istanzestradarios.stradariocolore.colore</campo-statico>
+			</vbg-value>
+			<vbg-value if-property="istanzestradarios.interno">
+				<valore-fisso>, int.</valore-fisso>
+			</vbg-value>
+			<vbg-value>
+				<campo-statico>istanzestradarios.interno</campo-statico>
+			</vbg-value>
+			<vbg-value if-property="istanzestradarios.esponenteinterno">
+				<valore-fisso>/</valore-fisso>
+			</vbg-value>
+			<vbg-value>
+				<campo-statico>istanzestradarios.esponenteinterno</campo-statico>
+			</vbg-value>
+			<vbg-value if-property="istanzestradarios.piano">
+				<valore-fisso>, piano </valore-fisso>
+			</vbg-value>
+			<vbg-value>
+				<campo-statico>istanzestradarios.piano</campo-statico>
+			</vbg-value>
+			<vbg-value if-property="istanzestradarios.scala">
+				<valore-fisso>, scala </valore-fisso>
+			</vbg-value>
+			<vbg-value>
+				<campo-statico>istanzestradarios.scala</campo-statico>
+			</vbg-value>
+			<vbg-value if-property="istanzestradarios.km">
+				<valore-fisso>, km.</valore-fisso>
+			</vbg-value>
+			<vbg-value>
+				<campo-statico>istanzestradarios.km</campo-statico>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>ATTIVITA.INDIRIZZO.INSEGNA</id-semantico>
+		<value indexed-property="istanzestradarios">
+			<vbg-value>
+				<campo-statico>nomeattivita</campo-statico>
+			</vbg-value>
+			<vbg-value>
+				<valore-fisso>non specificato</valore-fisso>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+	<cart-mapping>
+		<id-semantico>ATTIVITA.CATASTO.CATEGORIA</id-semantico>
+		<value>
+			<vbg-value>
+				<campo-statico>istanzestradarios.istanzemappalis.catasto.descrizione</campo-statico>
+			</vbg-value>
+			<vbg-value>
+				<valore-fisso>-</valore-fisso>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>ATTIVITA.CATASTO.SEZIONE</id-semantico>
+		<value>
+			<vbg-value>
+				<campo-statico>istanzestradarios.istanzemappalis.sezione</campo-statico>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>ATTIVITA.CATASTO.FOGLIO</id-semantico>
+		<value>
+			<vbg-value>
+				<campo-statico>istanzestradarios.istanzemappalis.foglio</campo-statico>
+			</vbg-value>
+			<vbg-value>
+				<valore-fisso>-</valore-fisso>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>ATTIVITA.CATASTO.NUMERO</id-semantico>
+		<value>
+			<vbg-value>
+				<campo-statico>istanzestradarios.istanzemappalis.particella</campo-statico>
+			</vbg-value>
+			<vbg-value>
+				<valore-fisso>-</valore-fisso>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>ATTIVITA.CATASTO.SUBALTERNO.PRESENZA</id-semantico>
+		<value indexed-property="istanzestradarios.istanzemappalis">
+			<vbg-value if-property="istanzestradarios.istanzemappalis.sub" if-operator="EXISTS">
+				<valore-fisso>presente</valore-fisso>
+			</vbg-value>
+			<vbg-value if-property="istanzestradarios.istanzemappalis.sub" if-operator="NOT_EXISTS">
+				<valore-fisso>non presente</valore-fisso>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>ATTIVITA.CATASTO.SUBALTERNO</id-semantico>
+		<value>
+			<vbg-value if-property="istanzestradarios.istanzemappalis.sub">
+				<campo-statico>istanzestradarios.istanzemappalis.sub</campo-statico>
+			</vbg-value>
+			<vbg-value>
+				<valore-fisso>-</valore-fisso>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<!-- QUADRO ALLEGATI -->
+
+	<!-- QUADRO CONCLUSIONE -->
+	<cart-mapping>
+		<id-semantico>DICHIARAZIONE.AVENTE_TITOLO</id-semantico>
+		<value>
+			<vbg-value>
+				<valore-fisso>di trasmettere la pratica a Codesto Ente Terzo</valore-fisso>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>DATA_COMPILAZIONE</id-semantico>
+		<value>
+			<vbg-value>
+				<campo-statico>data</campo-statico>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>NUMERO_PROTOCOLLO</id-semantico>
+		<value>
+			<vbg-value>
+				<campo-statico>numeroprotocollo</campo-statico>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>RICHIEDENTE.IN_QUALITA_DI.ALTRO.SPEC</id-semantico>
+		<value>
+			<!-- LO RECUPERO FISSO DA tipisoggetto.tiposoggetto PERCHE' LA LOGICA PER RECUPERARLO E' TROPPO CONTORTA -->
+			<vbg-value>
+				<campo-statico>tipisoggetto.tiposoggetto</campo-statico>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<!-- PERSONALIZZAZIONE ENTE CI VANNO MESSI I VALORI PRESENTI NELLA BASE DATI -->
+
+	<cart-mapping>
+		<id-semantico>IMPRESA.FORMA_GIURIDICA</id-semantico>
+		<value>
+			<vbg-value>
+				<campo-statico>titolarelegale.formagiuridica.formagiuridica</campo-statico>
+			</vbg-value>
+		</value>
+		<value-mappings>
+			<value-mapping>
+				<vbg-value-match>Impresa individuale</vbg-value-match>
+				<cart-value>Impresa individuale</cart-value>
+			</value-mapping>
+			<value-mapping>
+				<vbg-value-match>Impresa famigliare</vbg-value-match>
+				<cart-value>Impresa famigliare </cart-value>
+			</value-mapping>
+			<value-mapping>
+				<vbg-value-match>Impresa coniugale</vbg-value-match>
+				<cart-value>Impresa coniugale </cart-value>
+			</value-mapping>
+			<value-mapping>
+				<vbg-value-match>Societa' semplice (s.s.)</vbg-value-match>
+				<cart-value>Societa' semplice (s.s.)</cart-value>
+			</value-mapping>
+			<value-mapping>
+				<vbg-value-match>Societa' in nome collettivo (s.n.c.)</vbg-value-match>
+				<cart-value>Societa' in nome collettivo (s.n.c.)</cart-value>
+			</value-mapping>
+			<value-mapping>
+				<vbg-value-match>Societa' in accomandita semplice (s.a.s.)</vbg-value-match>
+				<cart-value>Societa' in accomandita semplice (s.a.s.)</cart-value>
+			</value-mapping>
+			<value-mapping>
+				<vbg-value-match>Societa' a responsabilita' limitata (s.r.l.)</vbg-value-match>
+				<cart-value>Societa' a responsabilita' limitata (s.r.l.)</cart-value>
+			</value-mapping>
+			<value-mapping>
+				<vbg-value-match>Societa' per azioni (s.p.a.)</vbg-value-match>
+				<cart-value>Societa' per azioni (s.p.a.)</cart-value>
+			</value-mapping>
+			<value-mapping>
+				<vbg-value-match>Societa' in accomandita per azioni (s.a.p.a.)</vbg-value-match>
+				<cart-value>Societa' in accomandita per azioni (s.a.p.a.)</cart-value>
+			</value-mapping>
+			<value-mapping>
+				<vbg-value-match>Societa' cooperativa responsabilita' limitata</vbg-value-match>
+				<cart-value>Societa' cooperativa responsabilita' limitata</cart-value>
+			</value-mapping>
+			<value-mapping>
+				<vbg-value-match>Societa' cooperativa responsabilita' illimitata</vbg-value-match>
+				<cart-value>Societa' cooperativa responsabilita' illimitata</cart-value>
+			</value-mapping>
+			<value-mapping>
+				<vbg-value-match>Societa' consortile</vbg-value-match>
+				<cart-value>Societa' consortile</cart-value>
+			</value-mapping>
+			<value-mapping>
+				<vbg-value-match>Societa' estera</vbg-value-match>
+				<cart-value>Societa' estera</cart-value>
+			</value-mapping>
+			<value-mapping>
+				<vbg-value-match>Associazione di promozione sociale</vbg-value-match>
+				<cart-value>Associazione di promozione sociale</cart-value>
+			</value-mapping>
+			<value-mapping>
+				<vbg-value-match>Associazione legalmente riconosciuta</vbg-value-match>
+				<cart-value>Associazione legalmente riconosciuta</cart-value>
+			</value-mapping>
+			<value-mapping>
+				<vbg-value-match>Associazione non legalmente riconosciuta</vbg-value-match>
+				<cart-value>Associazione non legalmente riconosciuta</cart-value>
+			</value-mapping>
+			<!-- MAPPATURE D'ESEMPIO DA COMPLETARE CON I VERI VALORI DI PRODUZIONE -->
+		</value-mappings>
+	</cart-mapping>
+	<!-- QUADRO A2 -->
+	<cart-mapping>
+		<id-semantico>RICHIEDENTE.IN_QUALITA_DI</id-semantico>
+		<value>
+			<vbg-value>
+				<campo-statico>tipisoggetto.tiposoggetto</campo-statico>
+			</vbg-value>
+		</value>
+		<value-mappings>
+			<value-mapping>
+				<vbg-value-match>.*[Pp]rocura([t][o][r][e]){0,1}.*</vbg-value-match>
+				<cart-value>Procuratore</cart-value>
+			</value-mapping>
+			<value-mapping>
+				<vbg-value-match>.*[Ll]egale [Rr]appresentante.*</vbg-value-match>
+				<cart-value>Legale rappresentante</cart-value>
+			</value-mapping>
+			<value-mapping>
+				<vbg-value-match>.*[tT]itolare della.*[Ii]ndividuale.*</vbg-value-match>
+				<cart-value>Titolare della impresa individuale</cart-value>
+			</value-mapping>
+			<value-mapping>
+				<vbg-value-match>[iI]nstitore.*</vbg-value-match>
+				<cart-value>Institore</cart-value>
+			</value-mapping>
+			<value-mapping>
+				<vbg-value-match>[cC]ointestatario.*</vbg-value-match>
+				<cart-value>Altro (erede, ecc)</cart-value>
+			</value-mapping>
+			<value-mapping>
+				<vbg-value-match>Preposto</vbg-value-match>
+				<cart-value>Altro (erede, ecc)</cart-value>
+			</value-mapping>
+			<value-mapping>
+				<vbg-value-match>Socio</vbg-value-match>
+				<cart-value>Altro (erede, ecc)</cart-value>
+			</value-mapping>
+			<value-mapping>
+				<vbg-value-match>Intermediario</vbg-value-match>
+				<cart-value>Altro (erede, ecc)</cart-value>
+			</value-mapping>
+			<value-mapping>
+				<vbg-value-match>.*</vbg-value-match>
+				<cart-value>Altro (erede, ecc)</cart-value>
+			</value-mapping>
+		</value-mappings>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>RICHIEDENTE.NON_COMUNITARIO.TIPO_DOC_SOGGIORNO</id-semantico>
+		<value>
+			<vbg-value if-property="richiedente.cittadinanza.flgPaeseComunitario" if-operator="EQUALS" if-value="false">
+				<campo-dinamico>
+					<codice-campo>CITT_EXTRACOMUNITARIO_TIPODOCUMENTO</codice-campo>
+					<software>TT</software>
+				</campo-dinamico>
+			</vbg-value>
+			<vbg-value>
+				<valore-fisso>di essere in possesso di permesso di soggiorno</valore-fisso>
+			</vbg-value>
+		</value>
+		<value-mappings>
+			<value-mapping>
+				<vbg-value-match>PERMESSO DI SOGGIORNO</vbg-value-match>
+				<cart-value>di essere in possesso di permesso di soggiorno</cart-value>
+			</value-mapping>
+			<value-mapping>
+				<vbg-value-match>CARTA DI SOGGIORNO</vbg-value-match>
+				<cart-value>di essere in possesso di carta di soggiorno</cart-value>
+			</value-mapping>
+		</value-mappings>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>RICHIEDENTE.NON_COMUNITARIO.DOC_SOGGIORNO.MOTIVAZIONE</id-semantico>
+		<value>
+			<vbg-value if-property="richiedente.cittadinanza.flgPaeseComunitario" if-operator="EQUALS" if-value="false">
+				<campo-dinamico>
+					<codice-campo>CITT_EXTRACOMUNITARIO_PERMESSO_MOTIVO_RILASCIO</codice-campo>
+					<software>TT</software>
+				</campo-dinamico>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>RICHIEDENTE.NON_COMUNITARIO.DOC_SOGGIORNO.NUMERO</id-semantico>
+		<value>
+			<vbg-value if-property="richiedente.cittadinanza.flgPaeseComunitario" if-operator="EQUALS" if-value="false">
+				<campo-dinamico>
+					<codice-campo>CITT_EXTRACOMUNITARIO_PERMESSO_NUMERO</codice-campo>
+					<software>TT</software>
+				</campo-dinamico>
+			</vbg-value>
+			<vbg-value>
+				<valore-fisso>non specificato</valore-fisso>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>RICHIEDENTE.NON_COMUNITARIO.DOC_SOGGIORNO.ENTE_RILASCIO</id-semantico>
+		<value>
+			<vbg-value if-property="richiedente.cittadinanza.flgPaeseComunitario" if-operator="EQUALS" if-value="false">
+				<campo-dinamico>
+					<codice-campo>CITT_EXTRACOMUNITARIO_PERMESSO_ENTE</codice-campo>
+					<software>TT</software>
+				</campo-dinamico>
+			</vbg-value>
+			<vbg-value>
+				<valore-fisso>non specificato</valore-fisso>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>RICHIEDENTE.NON_COMUNITARIO.DOC_SOGGIORNO.DATA_RILASCIO</id-semantico>
+		<value>
+			<vbg-value if-property="richiedente.cittadinanza.flgPaeseComunitario" if-operator="EQUALS" if-value="false">
+				<campo-dinamico>
+					<codice-campo>CITT_EXTRACOMUNITARIO_MOTIVO_RILASCIO_DATA</codice-campo>
+					<software>TT</software>
+				</campo-dinamico>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+
+	<cart-mapping>
+		<id-semantico>RICHIEDENTE.NON_COMUNITARIO.DOC_SOGGIORNO.DATA_FINE_VALIDITA</id-semantico>
+		<value>
+			<vbg-value if-property="richiedente.cittadinanza.flgPaeseComunitario" if-operator="EQUALS" if-value="false">
+				<campo-dinamico>
+					<codice-campo>CITT_EXTRACOMUNITARIO_MOTIVO_RILASCIO_VALIDITA</codice-campo>
+					<software>TT</software>
+				</campo-dinamico>
+			</vbg-value>
+		</value>
+	</cart-mapping>
+</CartMappingsConfig>

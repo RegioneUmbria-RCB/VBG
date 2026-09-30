@@ -1,0 +1,27 @@
+﻿@using AreaRiservataCore.Shared.Utils
+<div class="@_computedClass" @attributes="UnmatchedAttributes">
+    @ChildContent
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public bool HasShadow { get; set; } = true;
+
+    [Parameter]
+    public int PaddingLevel { get; set; } = 4;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object> UnmatchedAttributes { get; set; } = new();
+
+    private string _computedClass = "";
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        _computedClass = UnmatchedAttributeUtils.ExtractCssClass(this.UnmatchedAttributes, $"{(HasShadow ? "shadow " : "")} p-{PaddingLevel} mb-4");
+    }
+}

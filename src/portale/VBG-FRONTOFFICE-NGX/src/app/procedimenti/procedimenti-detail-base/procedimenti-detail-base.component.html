@@ -1,0 +1,78 @@
+@if (procedimento) {
+  <div class="scheda-intervento">
+    <h2>{{ procedimento.nome }}</h2>
+    <h3>&nbsp;</h3>
+    <div class="row">
+      <div class="col-md-3 menu-laterale" cdkScrollable>
+        <div appAffix>
+          <app-menu-laterale [dataSource]="listaSezioni" [sezioneAttiva]="sezioneAttiva"></app-menu-laterale>
+          <div class="btn btn-primary" (click)="tornaAdAttivita()">
+            <i class="glyphicon glyphicon-chevron-left"></i> Torna
+            indietro
+          </div>
+        </div>
+      </div>
+      <div class="col-md-9" appScrollSpy [spiedTags]="'H3'" (sectionChange)="onSectionChange($event)">
+        @if (procedimento.amministrazione) {
+          <app-sezione-intervento titolo="Amministrazione competente">
+            <p [innerHtml]="procedimento.amministrazione"></p>
+          </app-sezione-intervento>
+        }
+        @if (procedimento.schedaRegionale) {
+          <app-sezione-intervento titolo="Scheda regionale">
+            <p [innerHtml]="procedimento.schedaRegionale"></p>
+          </app-sezione-intervento>
+        }
+        @if (procedimento.tipologia) {
+          <app-sezione-intervento titolo="Tipologia">
+            <p [innerHtml]="procedimento.tipologia"></p>
+          </app-sezione-intervento>
+        }
+        @if (procedimento.natura) {
+          <app-sezione-intervento titolo="Natura del procedimento">
+            <p [innerHtml]="procedimento.natura"></p>
+          </app-sezione-intervento>
+        }
+        @if (procedimento.descrizione) {
+          <app-sezione-intervento titolo="Descrizione">
+            <p [innerHtml]="procedimento.descrizione"></p>
+          </app-sezione-intervento>
+        }
+        @if (procedimento.requisiti) {
+          <app-sezione-intervento titolo="Requisiti">
+            <p [innerHtml]="procedimento.requisiti"></p>
+          </app-sezione-intervento>
+        }
+        @if (procedimento.adempimenti) {
+          <app-sezione-intervento titolo="Adempimenti">
+            <p [innerHtml]="procedimento.adempimenti"></p>
+          </app-sezione-intervento>
+        }
+        @if (procedimento.oneri) {
+          <app-sezione-intervento titolo="Oneri">
+            <app-griglia-oneri [dataSource]="procedimento.oneri"></app-griglia-oneri>
+          </app-sezione-intervento>
+        }
+        @if (
+          procedimento.modulistica && procedimento.modulistica.length
+          ) {
+          <app-sezione-intervento titolo="Modulistica">
+            <app-griglia-modulistica [dataSource]="procedimento.modulistica" (download)="onDownload($event)">
+            </app-griglia-modulistica>
+          </app-sezione-intervento>
+        }
+        @if (procedimento.normativa && procedimento.normativa.length) {
+          <app-sezione-intervento titolo="Normativa">
+            <app-griglia-normativa [dataSource]="procedimento.normativa" (download)="onDownload($event)">
+            </app-griglia-normativa>
+          </app-sezione-intervento>
+        }
+        @if (procedimento.dataAggiornamento) {
+          <app-sezione-intervento titolo="Data aggiornamento">
+            <p [innerHtml]="procedimento.dataAggiornamento"></p>
+          </app-sezione-intervento>
+        }
+      </div>
+    </div>
+  </div>
+}

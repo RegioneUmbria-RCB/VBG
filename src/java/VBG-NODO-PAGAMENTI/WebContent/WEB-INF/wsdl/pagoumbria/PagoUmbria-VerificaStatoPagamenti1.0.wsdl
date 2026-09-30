@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="VerificaStatoPagamentoOTFImplService" targetNamespace="http://webservices.idp.tasgroup.it/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://webservices.idp.tasgroup.it/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://schemas.xmlsoap.org/soap/http" xmlns:ns1="http://www.cart.rete.toscana.it/servizi/iris_1_1/proxy" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:import namespace="http://www.cart.rete.toscana.it/servizi/iris_1_1/proxy" location="VerificaStatoPagamento.xsd">
+    </wsdl:import>
+  <wsdl:binding name="VerificaStatoPagamentoOTFImplServiceSoapBinding" type="ns1:VerificaStatoPagamento">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="IdpVerificaStatoPagamenti">
+      <soap:operation soapAction="IdpVerificaStatoPagamenti" style="document"/>
+      <wsdl:input name="IdpVerificaStatoPagamenti">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="IdpVerificaStatoPagamentiResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="VerificaStatoPagamentoOTFImplService">
+    <wsdl:port name="VerificaStatoPagamento" binding="tns:VerificaStatoPagamentoOTFImplServiceSoapBinding">
+      <soap:address location="https://api.regione.umbria.it:443/pagoumbriaverificastatopag/1.0"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

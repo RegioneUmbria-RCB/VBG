@@ -1,0 +1,163 @@
+﻿@page "/{IdComune}/{Software}/inserimento-istanza/pagamenti/scelta-paga-dopo/{idDomanda:int}/{stepId:int}"
+@using Init.Sigepro.FrontEnd.AppLogic.Pagamenti.NodoPagamenti
+@using Init.Sigepro.FrontEnd.AppLogic.Pagamenti.NodoPagamenti.Anagrafiche
+@using Init.Sigepro.FrontEnd.CoreServices.GestionePresentazioneDomanda.Paginatore
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.DesignComuni.Spinner
+@using VBG.BlazorComponentsLibrary.RisorseTestuali
+@inherits IstanzeStepPage
+
+<style>
+    .paga-online {
+        margin-top: 1em;
+    }
+
+    @@media (min-width: 992px)
+    {
+        .opzioni-pagamento {
+            display:flex;
+        }
+        
+        .descrizione-modalita {
+            padding:0 10%;
+        }
+
+        .paga-online {
+            margin-top: 0;
+        }
+    }
+</style>
+
+<TitoloPagina>Come vuoi pagare?</TitoloPagina>
+
+<div class="descrizione-generale">
+    <RisorsaTestuale IdRisorsa="step-paga-dopo.descrizione-step">
+        &nbsp;
+    </RisorsaTestuale>
+</div>
+
+<div class="paga-dopo">
+    <div class="opzioni-pagamento">
+        <button @onclick="PagaDopo">
+            <div class="opzione paga-dopo">
+                <h2 class="h3">
+                    <RisorsaTestuale IdRisorsa="step-paga-dopo.paga-dopo-titolo">
+                        Paga dopo
+                    </RisorsaTestuale>
+                </h2>
+                <small>
+                    <RisorsaTestuale IdRisorsa="step-paga-dopo.paga-dopo-sottotitolo">
+                        Paga sul territorio
+                    </RisorsaTestuale>
+                </small>
+                <div class="icona" aria-hidden="true">
+                    <img src="./images/paga-dopo/creditcard.png" alt="Paga con carta di credito" />
+                </div>
+                <div class="descrizione-modalita">
+                    <RisorsaTestuale IdRisorsa="step-paga-dopo.paga-dopo-descrizione">
+                        Presso banche, ricevitorie, tabaccai, bancomat o supermercati.
+                        Potrai pagare in contanti, con carte di credito o conto corrente.
+                    </RisorsaTestuale>
+                </div>
+            </div>
+        </button>
+
+        <button @onclick="PagaOnline">
+            <div class="opzione paga-online">
+                <h2 class="h3">
+                    <RisorsaTestuale IdRisorsa="step-paga-dopo.paga-online-titolo">
+                        Paga online
+                    </RisorsaTestuale>
+                </h2>
+                <small>
+                    <RisorsaTestuale IdRisorsa="step-paga-dopo.paga-online-sottotitolo">
+                        Paga sul sito o tramite app
+                    </RisorsaTestuale>
+                </small>
+                <div class="icona" aria-hidden="true">
+                    <img src="./images/paga-dopo/euro.png" alt="Paga online" />
+                </div>
+                <div class="descrizione-modalita">
+                    <RisorsaTestuale IdRisorsa="step-paga-dopo.paga-online-descrizione">
+                        Paga ora sul sito o con le app del tuo Ente Creditore, della tua banca o degli altri canali di pagamento.
+                        Potrai pagare con carte, conto corrente, CBILL.
+                    </RisorsaTestuale>
+                </div>
+            </div>
+        </button>
+    </div>
+</div>
+
+<ConfirmationModal Titolo="Stai per aprire una nuova posizione debitoria" Visible="_showPopupModal" ConfermaClick="OnPagaDopoConfirmed" AnnullaClick="() => _showPopupModal = false" TestoBottoneConferma="Apri posizione debitoria">
+    <ModalBody>
+        <RisorsaTestuale IdRisorsa="paga-dopo.popup-text">
+            <p>Proseguendo verrà aperta una nuova posizione debitoria e verranno generati uno o più avvisi di pagamento. Per procedere al pagamento dovrai stampare l'avviso e recarti presso uno degli esercenti convenzionati come banche, ricevitorie, tabaccai, bancomat o supermercati</p>
+            <p>La presentazione della domanda sarà sospesa fino a quando le posizioni non saranno saldate. Una volta effettuato il pagamento potrai riprendere la compilazione della domanda tramite la sezione <span class="fw-bold">"Istanze in sospeso"</span>.</p>
+            <p>La posizione debitoria potrà essere annullata riprendendo la compilazione tramite la sezione <span class="fw-bold">"Istanze in sospeso"</span> tornando nello step di verifica pagamento oneri.</p>
+
+            <div class="alert alert-info" role="alert">
+                <span class="fw-bold">
+                    Gli avvisi saranno validi per trenta giorni dalla data di elaborazione, come indicato nel testo dell’avviso.
+                    Una volta scaduti senza che sia stato effettuato il pagamento bisognerà rigenerare le posizioni debitorie.
+                </span>
+            </div>
+        </RisorsaTestuale>
+    </ModalBody>
+</ConfirmationModal>
+
+
+@code {
+    [Inject]
+    public IPagamentiNodoPagamentiService _nodoPagamentiService { get; set; } = default!;
+    [Inject]
+    public IEstremiDomandaNodoPagamentiReader _estremiDomandaNodoPagamentiReader { get; set; } = default!;
+    [CascadingParameter]
+    private PaginatoreStateService _paginatoreStateService { get; set; } = default!;
+
+    private bool _showPopupModal;
+
+    protected override void OnLoadStep()
+    {
+        this._paginatoreStateService.MostraPaginatore();
+        this._paginatoreStateService.NascondiBottoneAvanti();
+        this._paginatoreStateService.NascondiDescrizioneStep();
+    }
+
+    private void PagaOnline()
+    {
+        GotoAsync($"inserimento-istanza/pagamenti/pagamento/{IdDomanda.Value}/{StepId}/OTF");
+    }
+
+    private void PagaDopo()
+    {
+        _showPopupModal = true;
+    }
+
+    private async Task OnPagaDopoConfirmed()
+    {
+        await _spinnerService.ShowSpinnerAsync(() =>
+            {
+                try
+                {
+                    this.MessageContainer.ClearErrors();
+
+
+                    var estremiDomanda = this._estremiDomandaNodoPagamentiReader.GetEstremiDomandaDaIdDomanda(this.IdDomanda.Value, StepId);
+                    var esito = this._nodoPagamentiService.AvviaPagamentoDifferito(estremiDomanda);
+
+                    if (!esito)
+                    {
+                        this.MessageContainer.AddError("Si è verificato un errore durante l'apertura delle posizioni debitorie, si prega di riprovare in un secondo momento. Se il problema dovesse persistere si prega di contattare l'assistenza");
+
+                        return;
+                    }
+
+                    GotoAsync($"inserimento-istanza/pagamenti/riepilogo-paga-dopo/{IdDomanda.Value}/{StepId}");
+                }
+                catch (Exception ex)
+                {
+                    this.MessageContainer.AddError($"Si è verificato un errore durante l'apertura delle posizioni debitorie: {ex.Message}");
+                }
+            });
+    }
+}

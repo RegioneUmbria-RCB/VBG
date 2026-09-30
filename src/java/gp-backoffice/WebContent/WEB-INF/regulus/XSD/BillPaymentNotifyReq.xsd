@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="urn:it.regulus.gestoreincassi" xmlns="urn:it.regulus.gestoreincassi" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:include schemaLocation="TipoAttestazione.xsd"/>
+	<xs:include schemaLocation="TipoDatiPagamento.xsd"/>
+	<xs:include schemaLocation="TipoUtente.xsd"/>
+	<xs:include schemaLocation="TipiDati.xsd"/>
+	<xs:include schemaLocation="TipoDatiSpontanei.xsd"/>
+	<xs:element name="DATIFORNITI">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="INTESTATARIO" type="TipoUtente" minOccurs="0"/>
+				<xs:element name="PAGANTE" type="TipoUtente" minOccurs="0"/>
+				<xs:element name="CODENTE" type="xs:string"/>
+				<xs:element name="TIPOCODENTE" type="TipoCodiceEnte"/>
+				<xs:element name="CODTRIBUTO" type="xs:string"/>
+				<xs:element name="TIPOPAG" type="TipoDocumentoPagamento"/>
+				<xs:element name="NUMDOC" type="xs:string" minOccurs="0"/>
+				<xs:element name="ANNODOC" type="TipoAnno"/>
+				<xs:element name="DATADOC" type="xs:date" minOccurs="0"/>
+				<xs:element name="IMPORTIDOC" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="TOTALE" type="xs:unsignedLong"/>
+							<xs:element name="SPESESUPPL" type="xs:unsignedLong" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="NUMRATEPAG" type="xs:short"/>
+				<xs:element name="RATE">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="RATA" type="xs:int" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="DATISPONTANEI" type="TipoDatiSpontanei" minOccurs="0"/>
+				<xs:element name="IMPTOTALE" type="xs:unsignedLong"/>
+				<xs:element name="IMPRATEPAG" type="xs:unsignedLong"/>
+				<xs:element name="IMPBOLLO" type="xs:unsignedLong" minOccurs="0"/>
+				<xs:element name="IMPCOMMISSIONI" type="xs:unsignedLong" minOccurs="0"/>
+				<xs:element name="IMPSPESEATTEST" type="xs:unsignedLong" minOccurs="0"/>
+				<xs:element name="IMPSPESEVARIE" type="xs:unsignedLong" minOccurs="0"/>
+				<xs:element name="ATTESTAZIONE" type="TipoAttestazione" minOccurs="0"/>
+				<xs:element name="CANALE" type="TipoCanale"/>
+				<xs:element name="STATO" type="TipoStatoPagamentoFattura"/>
+				<xs:element name="IDPRENOTAZIONE" type="xs:string" minOccurs="0"/>
+				<xs:element name="DATIPAGAMENTO" type="TipoDatiPagamento" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

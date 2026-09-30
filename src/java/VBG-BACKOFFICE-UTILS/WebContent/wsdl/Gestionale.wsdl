@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://regione.emilia-romagna.it/sieder/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="GestionaleService" targetNamespace="http://regione.emilia-romagna.it/sieder/">
+	<wsdl:types>
+		<xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://regione.emilia-romagna.it/sieder/" xmlns:tns="http://regione.emilia-romagna.it/sieder/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+			<xs:element name="modificaStatoIstanza" type="tns:modificaStatoIstanza"/>
+			<xs:element name="modificaStatoIstanzaResponse" type="tns:modificaStatoIstanzaResponse"/>
+			<xs:element name="ricercaIstanze" type="tns:ricercaIstanze"/>
+			<xs:element name="ricercaIstanzeResponse" type="tns:ricercaIstanzeResponse"/>
+			<xs:element name="ricercaStatiIstanzaAmmessi" type="tns:ricercaStatiIstanzaAmmessi"/>
+			<xs:element name="ricercaStatiIstanzaAmmessiResponse" type="tns:ricercaStatiIstanzaAmmessiResponse"/>
+			<xs:element name="scaricoXMLUnico" type="tns:scaricoXMLUnico"/>
+			<xs:element name="scaricoXMLUnicoResponse" type="tns:scaricoXMLUnicoResponse"/>
+			<xs:complexType name="ricercaIstanze">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="datiRicercaIstanza" type="tns:richiestaRicercaIstanza"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="richiestaRicercaIstanza">
+				<xs:sequence>
+					<xs:element name="comune" type="xs:string"/>
+					<xs:element minOccurs="0" name="numeroFascicolo" type="xs:int"/>
+					<xs:element minOccurs="0" name="annoFascicolo" type="xs:int"/>
+					<xs:element minOccurs="0" name="numeroIstanza" type="xs:int"/>
+					<xs:element minOccurs="0" name="annoIstanza" type="xs:int"/>
+					<xs:element minOccurs="0" name="numeroProtocolloIstanza" type="xs:int"/>
+					<xs:element minOccurs="0" name="annoProtocolloIstanza" type="xs:int"/>
+					<xs:element maxOccurs="unbounded" minOccurs="0" name="statoIstanza" type="tns:statoLavorazioneIstanza"/>
+					<xs:element maxOccurs="unbounded" minOccurs="0" name="tipologiaIstanza" type="tns:tipologiaIstanza"/>
+					<xs:element minOccurs="0" name="intestatarioIstanza" type="xs:string"/>
+					<xs:element minOccurs="0" name="professionista" type="xs:string"/>
+					<xs:element minOccurs="0" name="dataDa" type="xs:dateTime"/>
+					<xs:element minOccurs="0" name="dataA" type="xs:dateTime"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="ricercaIstanzeResponse">
+				<xs:sequence>
+					<xs:element maxOccurs="unbounded" minOccurs="0" name="result" type="tns:datiSintesiIstanza"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="datiSintesiIstanza">
+				<xs:sequence>
+					<xs:element name="codModello" type="xs:string"/>
+					<xs:element name="numeroMUDEFascicolo" type="xs:string"/>
+					<xs:element name="numeroMUDEIstanza" type="xs:string"/>
+					<xs:element name="tipoIstanza" type="tns:tipoIstanzaMude"/>
+					<xs:element minOccurs="0" name="tipoTitoloEdilizio" type="tns:tipoTitoloEdilizio"/>
+					<xs:element name="statoIstanza" type="tns:statoLavorazioneIstanza"/>
+					<xs:element name="professionista" type="xs:string"/>
+					<xs:element name="tipoIntestatario" type="xs:unsignedShort"/>
+					<xs:element name="intestatario" type="xs:string"/>
+					<xs:element maxOccurs="unbounded" minOccurs="0" name="indirizzo" type="xs:string"/>
+					<xs:element maxOccurs="unbounded" minOccurs="0" name="rifCatastale" type="xs:string"/>
+					<xs:element minOccurs="0" name="dataRicezione" type="xs:dateTime"/>
+					<xs:element minOccurs="0" name="numeroProtocollo" type="xs:string"/>
+					<xs:element name="dataCreazione" type="xs:dateTime"/>
+					<xs:element name="dataUltimaTransizioneStato" type="xs:dateTime"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="scaricoXMLUnico">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="datiScaricoIstanza" type="tns:richiestaSingolaIstanza"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="richiestaSingolaIstanza">
+				<xs:sequence>
+					<xs:element name="numeroMUDEIstanza" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="scaricoXMLUnicoResponse">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="result" type="tns:datiXMLUnico"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="datiXMLUnico">
+				<xs:sequence>
+					<xs:element name="tracciatoXMLUnico" type="xs:string"/>
+					<xs:element name="codiceVersioneUnico" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="modificaStatoIstanza">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="datiModificaStatoIstanza" type="tns:richiestaModificaStatoIstanza"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="richiestaModificaStatoIstanza">
+				<xs:sequence>
+					<xs:element name="numeroMUDEIstanza" type="xs:string"/>
+					<xs:element name="nuovoStato" type="tns:statoLavorazioneIstanza"/>
+					<xs:element minOccurs="0" name="testo" type="xs:string"/>
+					<xs:element minOccurs="0" name="numeroProtocollo" type="xs:string"/>
+					<xs:element minOccurs="0" name="dataProtocollo" type="xs:dateTime"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="modificaStatoIstanzaResponse">
+				<xs:sequence>
+					<xs:element name="result" type="xs:boolean"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="ricercaStatiIstanzaAmmessi">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="datiRicercaStatiAmmessi" type="tns:richiestaSingolaIstanza"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="ricercaStatiIstanzaAmmessiResponse">
+				<xs:sequence>
+					<xs:element maxOccurs="unbounded" minOccurs="0" name="result" type="tns:codificaGenerale"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="codificaGenerale">
+				<xs:sequence>
+					<xs:element name="codice" type="xs:string"/>
+					<xs:element name="descrizione" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:simpleType name="statoLavorazioneIstanza">
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="DEPOS"/>
+					<xs:enumeration value="RICEV"/>
+					<xs:enumeration value="EFFIC"/>
+					<xs:enumeration value="ISTRU"/>
+					<xs:enumeration value="SOSPE"/>
+					<xs:enumeration value="INTER"/>
+					<xs:enumeration value="RETTI"/>
+					<xs:enumeration value="DINIE"/>
+					<xs:enumeration value="RILAS"/>
+					<xs:enumeration value="RITIR"/>
+					<xs:enumeration value="RINUN"/>
+					<xs:enumeration value="DECAD"/>
+					<xs:enumeration value="SOSTI"/>
+					<xs:enumeration value="INIZL"/>
+					<xs:enumeration value="BLOCL"/>
+					<xs:enumeration value="FNLVP"/>
+					<xs:enumeration value="FINEL"/>
+					<xs:enumeration value="AGIBI"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType name="tipologiaIstanza">
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="CIL"/>
+					<xs:enumeration value="SCIA"/>
+					<xs:enumeration value="PDC"/>
+					<xs:enumeration value="CCEA_NO_TIT"/>
+					<xs:enumeration value="RIC"/>
+					<xs:enumeration value="NOT"/>
+					<xs:enumeration value="INL"/>
+					<xs:enumeration value="VRS"/>
+					<xs:enumeration value="FNL"/>
+					<xs:enumeration value="CCEA"/>
+					<xs:enumeration value="COM"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType name="tipoIstanzaMude">
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="TIT"/>
+					<xs:enumeration value="TIT_RET"/>
+					<xs:enumeration value="TIT_VAR"/>
+					<xs:enumeration value="TIT_VAR_FN"/>
+					<xs:enumeration value="TIT_ABI"/>
+					<xs:enumeration value="INL"/>
+					<xs:enumeration value="CCEA"/>
+					<xs:enumeration value="NOT"/>
+					<xs:enumeration value="COM"/>
+					<xs:enumeration value="RIC"/>
+					<xs:enumeration value="VRS"/>
+					<xs:enumeration value="CCEA_NO_TIT"/>
+					<xs:enumeration value="FNL"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType name="tipoTitoloEdilizio">
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="CIL"/>
+					<xs:enumeration value="PDC"/>
+					<xs:enumeration value="SCIA"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:element name="ComuneNonAbilitatoException" type="tns:ComuneNonAbilitatoException"/>
+			<xs:complexType name="ComuneNonAbilitatoException">
+				<xs:sequence/>
+			</xs:complexType>
+			<xs:element name="SystemException" type="tns:SystemException"/>
+			<xs:complexType name="SystemException">
+				<xs:sequence/>
+			</xs:complexType>
+			<xs:element name="ValoreNonAmmessoException" type="tns:ValoreNonAmmessoException"/>
+			<xs:complexType name="ValoreNonAmmessoException">
+				<xs:sequence/>
+			</xs:complexType>
+			<xs:element name="CampoObbligatorioException" type="tns:CampoObbligatorioException"/>
+			<xs:complexType name="CampoObbligatorioException">
+				<xs:sequence/>
+			</xs:complexType>
+			<xs:element name="FruitoreNonAbilitatoComuneException" type="tns:FruitoreNonAbilitatoComuneException"/>
+			<xs:complexType name="FruitoreNonAbilitatoComuneException">
+				<xs:sequence/>
+			</xs:complexType>
+			<xs:element name="IstanzaNonConsultabileException" type="tns:IstanzaNonConsultabileException"/>
+			<xs:complexType name="IstanzaNonConsultabileException">
+				<xs:sequence/>
+			</xs:complexType>
+			<xs:element name="IstanzaNonTrovataException" type="tns:IstanzaNonTrovataException"/>
+			<xs:complexType name="IstanzaNonTrovataException">
+				<xs:sequence/>
+			</xs:complexType>
+			<xs:element name="PassaggioStatoImpossibileException" type="tns:PassaggioStatoImpossibileException"/>
+			<xs:complexType name="PassaggioStatoImpossibileException">
+				<xs:sequence/>
+			</xs:complexType>
+		</xs:schema>
+	</wsdl:types>
+	<wsdl:message name="IstanzaNonConsultabileException">
+		<wsdl:part name="IstanzaNonConsultabileException" element="tns:IstanzaNonConsultabileException">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="IstanzaNonTrovataException">
+		<wsdl:part name="IstanzaNonTrovataException" element="tns:IstanzaNonTrovataException">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="scaricoXMLUnico">
+		<wsdl:part name="parameters" element="tns:scaricoXMLUnico">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="ricercaStatiIstanzaAmmessiResponse">
+		<wsdl:part name="parameters" element="tns:ricercaStatiIstanzaAmmessiResponse">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="scaricoXMLUnicoResponse">
+		<wsdl:part name="parameters" element="tns:scaricoXMLUnicoResponse">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="ricercaStatiIstanzaAmmessi">
+		<wsdl:part name="parameters" element="tns:ricercaStatiIstanzaAmmessi">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="ComuneNonAbilitatoException">
+		<wsdl:part name="ComuneNonAbilitatoException" element="tns:ComuneNonAbilitatoException">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="FruitoreNonAbilitatoComuneException">
+		<wsdl:part name="FruitoreNonAbilitatoComuneException" element="tns:FruitoreNonAbilitatoComuneException">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="PassaggioStatoImpossibileException">
+		<wsdl:part name="PassaggioStatoImpossibileException" element="tns:PassaggioStatoImpossibileException">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="ValoreNonAmmessoException">
+		<wsdl:part name="ValoreNonAmmessoException" element="tns:ValoreNonAmmessoException">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="modificaStatoIstanza">
+		<wsdl:part name="parameters" element="tns:modificaStatoIstanza">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="modificaStatoIstanzaResponse">
+		<wsdl:part name="parameters" element="tns:modificaStatoIstanzaResponse">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="ricercaIstanze">
+		<wsdl:part name="parameters" element="tns:ricercaIstanze">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="CampoObbligatorioException">
+		<wsdl:part name="CampoObbligatorioException" element="tns:CampoObbligatorioException">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="SystemException">
+		<wsdl:part name="SystemException" element="tns:SystemException">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="ricercaIstanzeResponse">
+		<wsdl:part name="parameters" element="tns:ricercaIstanzeResponse">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:portType name="Gestionale">
+		<wsdl:operation name="ricercaIstanze">
+			<wsdl:input name="ricercaIstanze" message="tns:ricercaIstanze">
+			</wsdl:input>
+			<wsdl:output name="ricercaIstanzeResponse" message="tns:ricercaIstanzeResponse">
+			</wsdl:output>
+			<wsdl:fault name="SystemException" message="tns:SystemException">
+			</wsdl:fault>
+			<wsdl:fault name="FruitoreNonAbilitatoComuneException" message="tns:FruitoreNonAbilitatoComuneException">
+			</wsdl:fault>
+			<wsdl:fault name="ComuneNonAbilitatoException" message="tns:ComuneNonAbilitatoException">
+			</wsdl:fault>
+			<wsdl:fault name="CampoObbligatorioException" message="tns:CampoObbligatorioException">
+			</wsdl:fault>
+			<wsdl:fault name="ValoreNonAmmessoException" message="tns:ValoreNonAmmessoException">
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="scaricoXMLUnico">
+			<wsdl:input name="scaricoXMLUnico" message="tns:scaricoXMLUnico">
+			</wsdl:input>
+			<wsdl:output name="scaricoXMLUnicoResponse" message="tns:scaricoXMLUnicoResponse">
+			</wsdl:output>
+			<wsdl:fault name="SystemException" message="tns:SystemException">
+			</wsdl:fault>
+			<wsdl:fault name="FruitoreNonAbilitatoComuneException" message="tns:FruitoreNonAbilitatoComuneException">
+			</wsdl:fault>
+			<wsdl:fault name="ComuneNonAbilitatoException" message="tns:ComuneNonAbilitatoException">
+			</wsdl:fault>
+			<wsdl:fault name="CampoObbligatorioException" message="tns:CampoObbligatorioException">
+			</wsdl:fault>
+			<wsdl:fault name="IstanzaNonConsultabileException" message="tns:IstanzaNonConsultabileException">
+			</wsdl:fault>
+			<wsdl:fault name="ValoreNonAmmessoException" message="tns:ValoreNonAmmessoException">
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="modificaStatoIstanza">
+			<wsdl:input name="modificaStatoIstanza" message="tns:modificaStatoIstanza">
+			</wsdl:input>
+			<wsdl:output name="modificaStatoIstanzaResponse" message="tns:modificaStatoIstanzaResponse">
+			</wsdl:output>
+			<wsdl:fault name="SystemException" message="tns:SystemException">
+			</wsdl:fault>
+			<wsdl:fault name="FruitoreNonAbilitatoComuneException" message="tns:FruitoreNonAbilitatoComuneException">
+			</wsdl:fault>
+			<wsdl:fault name="ComuneNonAbilitatoException" message="tns:ComuneNonAbilitatoException">
+			</wsdl:fault>
+			<wsdl:fault name="CampoObbligatorioException" message="tns:CampoObbligatorioException">
+			</wsdl:fault>
+			<wsdl:fault name="IstanzaNonTrovataException" message="tns:IstanzaNonTrovataException">
+			</wsdl:fault>
+			<wsdl:fault name="PassaggioStatoImpossibileException" message="tns:PassaggioStatoImpossibileException">
+			</wsdl:fault>
+			<wsdl:fault name="ValoreNonAmmessoException" message="tns:ValoreNonAmmessoException">
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="ricercaStatiIstanzaAmmessi">
+			<wsdl:input name="ricercaStatiIstanzaAmmessi" message="tns:ricercaStatiIstanzaAmmessi">
+			</wsdl:input>
+			<wsdl:output name="ricercaStatiIstanzaAmmessiResponse" message="tns:ricercaStatiIstanzaAmmessiResponse">
+			</wsdl:output>
+			<wsdl:fault name="SystemException" message="tns:SystemException">
+			</wsdl:fault>
+			<wsdl:fault name="CampoObbligatorioException" message="tns:CampoObbligatorioException">
+			</wsdl:fault>
+			<wsdl:fault name="IstanzaNonTrovataException" message="tns:IstanzaNonTrovataException">
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="GestionaleServiceSoapBinding" type="tns:Gestionale">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="ricercaIstanze">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input name="ricercaIstanze">
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="ricercaIstanzeResponse">
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="SystemException">
+				<soap:fault name="SystemException" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="FruitoreNonAbilitatoComuneException">
+				<soap:fault name="FruitoreNonAbilitatoComuneException" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="ComuneNonAbilitatoException">
+				<soap:fault name="ComuneNonAbilitatoException" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="CampoObbligatorioException">
+				<soap:fault name="CampoObbligatorioException" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="ValoreNonAmmessoException">
+				<soap:fault name="ValoreNonAmmessoException" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="scaricoXMLUnico">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input name="scaricoXMLUnico">
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="scaricoXMLUnicoResponse">
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="SystemException">
+				<soap:fault name="SystemException" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="FruitoreNonAbilitatoComuneException">
+				<soap:fault name="FruitoreNonAbilitatoComuneException" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="ComuneNonAbilitatoException">
+				<soap:fault name="ComuneNonAbilitatoException" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="CampoObbligatorioException">
+				<soap:fault name="CampoObbligatorioException" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="IstanzaNonConsultabileException">
+				<soap:fault name="IstanzaNonConsultabileException" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="ValoreNonAmmessoException">
+				<soap:fault name="ValoreNonAmmessoException" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="modificaStatoIstanza">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input name="modificaStatoIstanza">
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="modificaStatoIstanzaResponse">
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="SystemException">
+				<soap:fault name="SystemException" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="FruitoreNonAbilitatoComuneException">
+				<soap:fault name="FruitoreNonAbilitatoComuneException" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="ComuneNonAbilitatoException">
+				<soap:fault name="ComuneNonAbilitatoException" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="CampoObbligatorioException">
+				<soap:fault name="CampoObbligatorioException" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="IstanzaNonTrovataException">
+				<soap:fault name="IstanzaNonTrovataException" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="PassaggioStatoImpossibileException">
+				<soap:fault name="PassaggioStatoImpossibileException" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="ValoreNonAmmessoException">
+				<soap:fault name="ValoreNonAmmessoException" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="ricercaStatiIstanzaAmmessi">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input name="ricercaStatiIstanzaAmmessi">
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="ricercaStatiIstanzaAmmessiResponse">
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="SystemException">
+				<soap:fault name="SystemException" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="CampoObbligatorioException">
+				<soap:fault name="CampoObbligatorioException" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="IstanzaNonTrovataException">
+				<soap:fault name="IstanzaNonTrovataException" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="GestionaleService">
+		<wsdl:port name="GestionalePort" binding="tns:GestionaleServiceSoapBinding">
+			<soap:address location="https://url-regionale/sieder/Gestionale"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,78 @@
+<?xml version="1.0" ?><wsdl:definitions targetNamespace="http://gruppoinit.it/sigepro/definitions/eventi" xmlns:sch="http://gruppoinit.it/sigepro/schemas/messages/eventi" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://gruppoinit.it/sigepro/definitions/eventi" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:sch="http://gruppoinit.it/sigepro/schemas/messages/eventi" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://gruppoinit.it/sigepro/definitions/eventi" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+			<import namespace="http://gruppoinit.it/sigepro/schemas/messages/eventi" schemaLocation="http://devel9:8080/backend/services/eventi?xsd=eventi.xsd"></import>
+		</schema>
+  </wsdl:types>
+  <wsdl:message name="EventoIstanzaInsertRequest">
+    <wsdl:part element="sch:EventoIstanzaInsertRequest" name="EventoIstanzaInsertRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="EventoBackofficeInsertRequest">
+    <wsdl:part element="sch:EventoBackofficeInsertRequest" name="EventoBackofficeInsertRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="EventoMovimentoInsertRequest">
+    <wsdl:part element="sch:EventoMovimentoInsertRequest" name="EventoMovimentoInsertRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="EventoInsertResponse">
+    <wsdl:part element="sch:EventoInsertResponse" name="EventoInsertResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="Eventi">
+    <wsdl:operation name="EventoIstanzaInsert">
+      <wsdl:input message="tns:EventoIstanzaInsertRequest" name="EventoIstanzaInsertRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:EventoInsertResponse" name="EventoIstanzaInsertResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EventoMovimentoInsert">
+      <wsdl:input message="tns:EventoMovimentoInsertRequest" name="EventoMovimentoInsertRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:EventoInsertResponse" name="EventoMovimentoInsertResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EventoBackofficeInsert">
+      <wsdl:input message="tns:EventoBackofficeInsertRequest" name="EventoBackofficeInsertRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:EventoInsertResponse" name="EventoBackofficeInsertResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="EventiSoap11" type="tns:Eventi">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"></soap:binding>
+    <wsdl:operation name="EventoIstanzaInsert">
+      <soap:operation soapAction="EventoIstanzaInser"></soap:operation>
+      <wsdl:input name="EventoIstanzaInsertRequest">
+        <soap:body use="literal"></soap:body>
+      </wsdl:input>
+      <wsdl:output name="EventoIstanzaInsertResponse">
+        <soap:body use="literal"></soap:body>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EventoMovimentoInsert">
+      <soap:operation soapAction="EventoMovimentoInsert"></soap:operation>
+      <wsdl:input name="EventoMovimentoInsertRequest">
+        <soap:body use="literal"></soap:body>
+      </wsdl:input>
+      <wsdl:output name="EventoMovimentoInsertResponse">
+        <soap:body use="literal"></soap:body>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EventoBackofficeInsert">
+      <soap:operation soapAction="EventoBackofficeInsert"></soap:operation>
+      <wsdl:input name="EventoBackofficeInsertRequest">
+        <soap:body use="literal"></soap:body>
+      </wsdl:input>
+      <wsdl:output name="EventoBackofficeInsertResponse">
+        <soap:body use="literal"></soap:body>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="EventiWsService">
+    <wsdl:port binding="tns:EventiSoap11" name="EventiSoap11">
+      <soap:address location="http://devel9:8080/backend/services/eventi"></soap:address>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,95 @@
+﻿@using AreaRiservataCore.Pages.InserimentoIstanza.GestionePagamenti.Components
+@using Init.Sigepro.FrontEnd.AppLogic.Pagamenti.NodoPagamenti
+@using VBG.BlazorComponentsLibrary.DesignComuni.Spinner
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+@using VBG.Pagamenti.NodoPagamenti.Verifica
+
+@if (IdDomanda.HasValue && this._dataSource.Any())
+{
+    <div class="mt-4">
+        <StepCard Titolo="@Titolo" IdRisorsaTitolo="@IdRisorsaTitolo">
+
+            @foreach (var item in _dataSource)
+            {
+                <StepCardItem>
+
+                    <StepCardTitle>@item.Causale <IconaStatoPagamento Stato="item.StatoPagamentoEnum"></IconaStatoPagamento></StepCardTitle>
+
+                    <StepCardInfoRow>
+                        <StepCardInfoRowItem Titolo="IUV">@item.IUV</StepCardInfoRowItem>
+                        <StepCardInfoRowItem Titolo="Codice avviso">@item.CodiceAvviso</StepCardInfoRowItem>
+                    </StepCardInfoRow>
+
+                    <StepCardInfo Titolo="C.F. soggetto debitore">@item.CfSoggettoDebitore</StepCardInfo>
+
+                    <StepCardInfoRow>
+                        <StepCardInfoRowItem Titolo="Importo (€)">@item.Importo.ToString("N2")</StepCardInfoRowItem>
+                        <StepCardInfoRowItem Titolo="Stato">@item.Stato</StepCardInfoRowItem>
+                    </StepCardInfoRow>
+
+                    <StepCardInfo Titolo="Scadenza">@item.Scadenza</StepCardInfo>
+
+                    @if (item.PermetteDownloadAvviso)
+                    {
+                        <button class="download-avviso btn btn-outline-primary mt-4" @onclick="() => DownloadAvvisoPagamento(item.UniqueId)">Scarica avviso di pagamento</button>
+                    }
+
+                    @if (item.PermetteDownloadRicevuta)
+                    {
+                        <button class="download-avviso btn btn-outline-primary mt-4" @onclick="() => DownloadRicevuta(item.UniqueId)">Scarica ricevuta</button>
+                    }
+
+                </StepCardItem>
+            }
+
+        </StepCard>
+    </div>
+
+    <PopupDownloadAvvisoPagamento IdDomanda="@IdDomanda.Value" @ref="_popupDownloadAvvisoPagamento"></PopupDownloadAvvisoPagamento>
+    <PopupDownloadRicevutaTelematica IdDomanda="@IdDomanda.Value" @ref="_popupDownloadRicevutaTelematica"></PopupDownloadRicevutaTelematica>
+}
+
+@code {
+    [Inject]
+    public IPagamentiNodoPagamentiService _nodoPagamentiService { get; set; } = default!;
+    [Inject]
+    public SpinnerService _spinnerService { get; set; } = default!;
+
+    [Parameter]
+    public int? IdDomanda { get; set; }
+    [Parameter]
+    public string Titolo { get; set; } = "Elenco posizioni debitorie";
+    [Parameter]
+    public string IdRisorsaTitolo { get; set; } = "";
+    
+
+    private IEnumerable<DatiOperazioneSuNodoPagamenti> _dataSource = Enumerable.Empty<DatiOperazioneSuNodoPagamenti>();
+    private PopupDownloadAvvisoPagamento? _popupDownloadAvvisoPagamento;
+    private PopupDownloadRicevutaTelematica? _popupDownloadRicevutaTelematica;
+
+    protected override void OnParametersSet()
+    {
+        if (!this.IdDomanda.HasValue)
+        {
+            return;
+        }
+
+        this._dataSource = this._nodoPagamentiService.GetDatiPosizioniDebitorie(IdDomanda.Value);
+    }
+
+    private async Task DownloadAvvisoPagamento(string uidOnere)
+    {
+        if (_popupDownloadAvvisoPagamento is not null)
+        {
+            await _popupDownloadAvvisoPagamento.Show(uidOnere);
+        }
+    }
+
+    private async Task DownloadRicevuta(string uidOnere)
+    {
+        if (_popupDownloadRicevutaTelematica is not null)
+        {
+            await _popupDownloadRicevutaTelematica.Show(uidOnere);
+        }
+    }
+}

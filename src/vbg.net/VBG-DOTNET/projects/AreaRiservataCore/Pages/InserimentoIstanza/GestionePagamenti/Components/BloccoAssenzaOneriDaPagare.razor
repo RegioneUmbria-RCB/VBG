@@ -1,0 +1,31 @@
+﻿@if(Visible)
+{
+    <div class="card mb-2 border" id="dichiarazioneAssenzaOneri" style="display: block;">
+
+        <div class="card-header">
+            Dichiarazione assenza oneri da pagare
+        </div>
+
+        <div class="card-body">
+            <span class="chkAssenzaOneri">
+                <div class="form-check">
+                    <input type="checkbox" id="chkAssenzaOneri" checked="@Checked" @oninput="(e) => CheckedChanged.InvokeAsync(((bool?)e.Value) ?? false)">
+                    <label for="chkAssenzaOneri">@((MarkupString)TestoDichiarazioneAssenzaOneri)</label>
+                </div>
+            </span>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public bool Visible { get; set; } = false;
+    [Parameter]
+    public bool Checked { get; set; } = false;
+    [Parameter]
+    public EventCallback<bool> CheckedChanged { get; set; }
+    [Parameter]
+    public string TestoDichiarazioneAssenzaOneri { get; set; } = "";
+
+
+}

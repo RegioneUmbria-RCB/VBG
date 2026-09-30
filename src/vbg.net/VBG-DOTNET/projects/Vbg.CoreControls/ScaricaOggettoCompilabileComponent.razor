@@ -1,0 +1,92 @@
+﻿@using Init.Sigepro.FrontEnd.AppLogic.GenerazioneDocumentiDomanda.GenerazioneDocumentiDomanda
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneConversioneFiles
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneOggetti
+@using Init.Sigepro.FrontEnd.AppLogic.PrecompilazionePDF
+@using Microsoft.JSInterop
+@using VBG.BlazorComponentsLibrary.DesignComuni.Spinner
+@inject IJSRuntime _jsRuntime
+@inject IPdfUtilsService _pdfUtilsService
+@inject GenerazioneDocumentoDomandaService _generaDocumentoService
+
+@if (CodiceOggetto.HasValue && IdDomanda.HasValue)
+{
+    @if (ChildContent != null)
+    {
+        <a href="#" class="@CssClass" title="download" @onclick="@OnDownloadFile" @onclick:preventDefault target="_blank">@ChildContent</a>
+    }
+    else
+    {
+        <a href="#" class="@CssClass" title="download" @onclick="@OnDownloadFile" @onclick:preventDefault target="_blank">@Text</a>
+    }
+}
+
+@code {
+    [Inject]
+    public SpinnerService _spinnerService { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public int? CodiceOggetto { get; set; }
+
+    [Parameter, EditorRequired]
+    public int? IdDomanda { get; set; }
+
+    [Parameter]
+    public FormatoConversioneEnum? Formato { get; set; }
+
+    [Parameter]
+    public string Text { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public string CssClass { get; set; }
+
+    [Parameter]
+    public Func<bool> IfCanDownload { get; set; }
+
+    [Parameter]
+    public Action IfCanDownloadFailed { get; set; }
+
+    private async Task OnDownloadFile()
+    {
+        bool checkCondition = true;
+
+        if (IfCanDownload != null)
+            checkCondition = IfCanDownload();
+
+        if (!checkCondition)
+        {
+            if (IfCanDownloadFailed != null)
+                IfCanDownloadFailed();
+
+            return;
+        }
+
+        await _spinnerService.ShowSpinnerAsync(async () =>
+            {
+                try
+                {
+                    BinaryFile f = null;
+
+                    if (Formato == FormatoConversioneEnum.PDFC)
+                        f = _pdfUtilsService.PrecompilaPdf(CodiceOggetto.Value, IdDomanda.Value);
+                    else if (Formato != null)
+                        f = _generaDocumentoService.GeneraDocumento(CodiceOggetto.Value, IdDomanda.Value, Formato.Value);
+                    else
+                    {
+                        return;
+                    }
+
+                    using var fileStream = new MemoryStream(f.FileContent);
+                    var streamRef = new DotNetStreamReference(fileStream);
+
+                    await _jsRuntime.InvokeVoidAsync("downloadFileFromStream", f.FileName, streamRef);
+                }
+                catch (Exception ex)
+                {
+
+                }
+            });
+    }
+}

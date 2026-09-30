@@ -1,0 +1,139 @@
+﻿@page "/{IdComune}/{Software}/sostituzionidocumentali/{IdMovimento:int}/{Step:int?}/{*GoBackUrl}"
+@using VBG.BlazorComponentsLibrary.DesignComuni.Download
+@using VBG.BlazorComponentsLibrary.DesignComuni.Forms
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.DesignComuni.NavScroll
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+@using VBG.BlazorComponentsLibrary.EditFormComponents
+
+@inherits MovimentiBasePage
+
+<TitoloPagina>Chiusura istanza</TitoloPagina>
+
+<NavScrollComponent Title="Indice di pagina">
+
+    @if ((documentiIntervento!= null && documentiIntervento.Documenti.Any()) || (documentiEndo != null && documentiEndo.Any()))
+    {
+        <StepCard Titolo="Sostituzioni documentali" Sottotitolo="I seguenti allegati della pratica possono essere sostituiti">
+            @if (documentiIntervento != null && documentiIntervento.Documenti.Any())
+            {
+                <StepCardItem>
+                    @foreach (var item in documentiIntervento.Documenti)
+                    {
+                        <StepCardInfo Titolo="@item.Descrizione">
+                            @if (item.DocumentoSostitutivo == null)
+                            {
+                                <div class="float-end">
+                                    <button class="text-decoration-none ms-2" aria-labelledby="@($"buttonSostituisciDocumentoInt-{item.CodiceOggetto}")" data-focus-mouse="false" @onclick="@(() => OpenUploadWindow(item))">
+                                        <span id="@($"buttonSostituisciDocumentoInt-{item.CodiceOggetto}")" class="text-button-sm-semi t-primary">Sostituisci</span>
+                                    </button>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="float-end">
+                                    <button class="text-decoration-none ms-2" aria-labelledby="@($"buttonAnnullaSostituzioneInt-{item.CodiceOggetto}")" data-focus-mouse="false" @onclick="@(() => OpenAnnullaSostituzioneModal(item))">
+                                        <span id="@($"buttonAnnullaSostituzioneInt-{item.CodiceOggetto}")" class="text-button-sm-semi t-alert">Annulla</span>
+                                    </button>
+                                </div>
+                            }
+
+                            <DownloadButton CodiceOggetto="item.CodiceOggetto"></DownloadButton>
+                            @if (item.DocumentoSostitutivo != null)
+                            {
+                                <div style="margin-top:0.3em;">
+                                    <span>Sostituito da:</span>
+                                    <DownloadButton CodiceOggetto="item.DocumentoSostitutivo.CodiceOggetto"></DownloadButton>
+                                </div>
+                            }
+                        </StepCardInfo>
+                    }
+                </StepCardItem>
+            }
+
+            @if (documentiEndo != null && documentiEndo.Any())
+            {
+                foreach (var item in documentiEndo)
+                {
+                    if (item.Documenti.Any())
+                    {
+                        <StepCardItem>
+                            <StepCardTitle>@item.Descrizione</StepCardTitle>
+                            @foreach (var doc in item.Documenti)
+                            {
+                                <StepCardInfo Titolo="@doc.Descrizione">
+                                    @if (doc.DocumentoSostitutivo == null)
+                                    {
+                                        <div class="float-end">
+                                            <button class="text-decoration-none ms-2" aria-labelledby="@($"buttonSostituisciDocumentoEndo-{doc.CodiceOggetto}")" data-focus-mouse="false" @onclick="@(() => OpenUploadWindow(doc))">
+                                                <span id="@($"buttonSostituisciDocumentoEndo-{doc.CodiceOggetto}")" class="text-button-sm-semi t-primary">Sostituisci</span>
+                                            </button>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="float-end">
+                                            <button class="text-decoration-none ms-2" aria-labelledby="@($"buttonAnnullaSostituzioneEndo-{doc.CodiceOggetto}")" data-focus-mouse="false" @onclick="@(() => OpenAnnullaSostituzioneModal(doc))">
+                                                <span id="@($"buttonAnnullaSostituzioneEndo-{doc.CodiceOggetto}")" class="text-button-sm-semi t-alert">Annulla</span>
+                                            </button>
+                                        </div>
+                                    }
+                                    <DownloadButton CodiceOggetto="doc.CodiceOggetto"></DownloadButton>
+                                    @if (doc.DocumentoSostitutivo != null)
+                                    {
+                                        <div style="margin-top:0.3em;">
+                                            <span>Sostituito da:</span>
+                                            <DownloadButton CodiceOggetto="doc.DocumentoSostitutivo.CodiceOggetto"></DownloadButton>
+                                        </div>
+                                    }
+                                </StepCardInfo>
+                            }
+                        </StepCardItem>
+                    }
+                }
+            }
+        </StepCard>
+    }
+
+    <div id="bottoniMovimento" class="d-flex gap-3 mb-3">
+        <button class="btn btn-light" @onclick="OnBtnBackAsync">Torna indietro</button>
+        <button class="btn btn-primary" @onclick="OnBtnNextAsync">Procedi</button>
+    </div>
+</NavScrollComponent>
+
+@if (_showUploadModal)
+{
+    <FormModal OnClose="() => CloseUploadModal()" Model="@documentData?.newDocument" FormId="sostituzioneDocumentaleFormUpload" OnValidSubmit="@OnSostituisciDocumentoAsync">
+        <ModalHeader Titolo="Sostituzione file">
+            Selezionare un file per sostituire "<span class="fw-bold">@documentData.updatingDocument.Descrizione</span>"
+        </ModalHeader>
+        <ModalBody>
+            @if (RichiedeFirmaDigitale)
+            {
+                <div class="help-block">
+                    <span class="fst-italic">Il file deve essere firmato digitalmente</span>
+                </div>
+            }
+
+            <FormUpload @bind-Value="documentData.newDocument.CodiceOggetto"
+                        OnFileChanged="(FormFileChangedEventArgs e) => UploadFile_OnChanged(e)"
+                        Obbligatorio="true"
+                        VerificaFirmaDigitale="@RichiedeFirmaDigitale"
+                        ValidationFor="() => documentData.newDocument.CodiceOggetto">
+            </FormUpload>
+        </ModalBody>
+        <ModalFooter>
+            <FormSubmitButton Form="sostituzioneDocumentaleFormUpload"></FormSubmitButton>
+        </ModalFooter>
+    </FormModal>
+}
+
+<ConfirmationModal Titolo="Annulla sostituzione" Visible="@_annullaSostituzioneModalVisible" ConfermaClick="@OnAnnullaSostituzioneDocumentale" AnnullaClick="@CloseAnnullaSostituzioneModal">
+    <ModalBody>
+        Eliminare il file sostitutivo? L'operazione non potrà essere annullata.
+    </ModalBody>
+</ConfirmationModal>
+
+@code {
+    
+}

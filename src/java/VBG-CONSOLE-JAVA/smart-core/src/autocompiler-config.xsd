@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+	jxb:version="2.1" targetNamespace="http://gruppoinit.it/sigepro/schemas/autocompiler"
+	xmlns:tns="http://gruppoinit.it/sigepro/schemas/autocompiler"
+	elementFormDefault="qualified">
+
+	<element name="AutocompilerConfig">
+		<complexType>
+			<all>
+				<element name="autocompiler-definitions" type="tns:AutocompilerDefinitionConfig" minOccurs="1" nillable="false"></element>
+				<element name="autocompiler-applications" type="tns:AutocompilerApplicationConfig" minOccurs="1" nillable="false"></element>
+			</all>
+		</complexType>
+	</element>
+
+	<complexType name="AutocompilerDefinitionConfig">
+		<sequence minOccurs="1" maxOccurs="unbounded">
+			<annotation>
+				<appinfo>
+					<jxb:property name="autocompilerDefinitions" />
+				</appinfo>
+			</annotation>
+			<element name="autocompiler-definition" type="tns:AutocompilerDefinition"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="AutocompilerDefinition">
+		<all>
+			<element name="autocompiler-id" type="ID" minOccurs="1" nillable="false"></element>
+			<element name="controller-url" type="string" minOccurs="1" nillable="false"></element>
+			<element name="js-control-object" type="string" minOccurs="1" nillable="false"></element>
+		</all>
+	</complexType>
+
+	<complexType name="AutocompilerApplicationConfig">
+		<sequence minOccurs="1" maxOccurs="unbounded">
+			<annotation>
+				<appinfo>
+					<jxb:property name="autocompilerApplications" />
+				</appinfo>
+			</annotation>
+			<element name="autocompiler-application" type="tns:AutocompilerApplication"></element>
+		</sequence>
+	</complexType>
+	
+	<complexType name="AutocompilerApplication">
+		<all>
+			<element name="autocompiler-ref" type="IDREF" minOccurs="1"
+				nillable="false">
+			</element>
+			<element name="trigger-field-id" type="string" minOccurs="1"
+				nillable="false">
+                <annotation>
+                	<documentation>Id semantico del campo a cui si applica la funzionalità di completamento automatico.</documentation>
+                </annotation>
+			</element>
+			<element name="label" type="string" minOccurs="0"></element>
+			<element name="result-mappings"
+				type="tns:AutocompilerResultMapppings" minOccurs="1"
+				nillable="false">
+			</element>
+			<element name="config-options" type="tns:ConfigOptions"
+				minOccurs="0" nillable="false">
+			</element>
+			<element name="exclude-modules" type="tns:ExcludeModules"
+				minOccurs="0" nillable="false">
+			</element>
+			<element name="validator" type="string" maxOccurs="1" minOccurs="0">
+				<annotation>
+					<documentation>In questo parametro di configurazione opzionale è possibile specificareil riferimento ad un bean di Spring oppure il nome completo di una classe Java da utilizzare per la validazione lato server del valore immesso nel campo.
+La classe Java deve essere un'implementazione dell'interfaccia IAutocompilerValidator</documentation>
+				</annotation></element>
+		</all>
+		<attribute name="usage" type="tns:UsageType" default="FO_BO"></attribute>
+	</complexType>
+	
+	<simpleType name="UsageType">
+		<restriction base="string">
+			<enumeration value="FO"></enumeration>
+			<enumeration value="BO"></enumeration>
+			<enumeration value="FO_BO"></enumeration>
+		</restriction>
+	</simpleType>
+	
+	<complexType name="AutocompilerResultMapppings">
+		<sequence minOccurs="1" maxOccurs="unbounded">
+			<annotation>
+				<appinfo>
+					<jxb:property name="resultMappings" />
+				</appinfo>
+			</annotation>
+			<element name="result-mapping" type="tns:SearchResultAttributeMapping"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="SearchResultAttributeMapping">
+		<all>
+			<element name="result-attribute-name" type="string" minOccurs="1" nillable="false"></element>
+			<element name="destination-field-id" type="string" minOccurs="1" nillable="false"></element>
+		</all>
+	</complexType>
+	
+	<complexType name="ConfigOptions">
+		<sequence minOccurs="0" maxOccurs="unbounded">
+			<annotation>
+				<appinfo>
+					<jxb:property name="configOptions" />
+				</appinfo>
+			</annotation>
+			<element name="config-option" type="tns:ConfigOption"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="ConfigOption">
+		<attribute name="option-name" type="string" use="required"></attribute>
+		<attribute name="option-value" type="string" use="required"></attribute>
+	</complexType>
+	
+	<complexType name="ExcludeModules">
+		<sequence minOccurs="0" maxOccurs="unbounded">
+			<annotation>
+				<appinfo>
+					<jxb:property name="moduleNames" />
+				</appinfo>
+			</annotation>
+			<element name="module-name" type="string"></element>
+		</sequence>
+	</complexType>
+
+</schema>

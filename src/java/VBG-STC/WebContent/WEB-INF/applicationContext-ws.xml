@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd 
+	http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+
+	<bean id="stcImpl" class="it.gruppoinit.stc.ws.StcImpl" />
+	<bean id="nlaMock" class="it.gruppoinit.stc.ws.NlaMock" />
+
+
+
+	<jaxws:endpoint id="stc" implementor="#stcImpl" address="/stc" wsdlLocation="wsdl/stc.wsdl">
+		<jaxws:properties>
+			<entry key="mtom-enabled" value="true" />
+			<entry key="attachment-memory-threshold" value="0" />		
+		    <!-- entry key="attachment-directory" value="C:/Temp/" / -->	
+			<!-- validazione disabilitata perchè provoca il caricamento in memoria degli allegati mtom -->
+			<entry key="schema-validation-enabled" value="false" />
+		</jaxws:properties>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="nla" implementor="#nlaMock" address="/nla" wsdlLocation="wsdl/nla.wsdl" />
+ 
+	<bean id="logInbound" class="org.apache.cxf.interceptor.LoggingInInterceptor">
+		<property name="prettyLogging" value="false" />
+		<property name="limit" value="102400" />
+	</bean>
+    <bean id="logOutbound" class="org.apache.cxf.interceptor.LoggingOutInterceptor">
+    	<property name="prettyLogging" value="false" />
+    	<property name="limit" value="102400" />
+    </bean>	
+    <bean id="cxf" class="org.apache.cxf.bus.spring.SpringBus">
+        <property name="inInterceptors">
+            <list>
+                <ref bean="logInbound"/>
+            </list>
+        </property>
+        <property name="outInterceptors">
+            <list>
+                <ref bean="logOutbound"/>
+            </list>
+        </property>
+        <property name="outFaultInterceptors">
+            <list>
+                <ref bean="logOutbound"/>
+            </list>
+        </property>
+        <property name="inFaultInterceptors">
+            <list>
+                <ref bean="logInbound"/>
+            </list>
+        </property>
+    </bean>
+</beans>

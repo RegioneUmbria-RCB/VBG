@@ -1,0 +1,80 @@
+﻿@page "/{IdComune}/{Software}/inserimento-istanza/dati-istanza-ce/{idDomanda:int}/{stepId:int}"
+@using Init.Sigepro.FrontEnd.AppLogic.Exceptions
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneComuni
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneDatiExtra
+@using Init.Sigepro.FrontEnd.AppLogic.Services.Domanda
+@using Init.Sigepro.FrontEnd.Infrastructure.StepsDomanda.Attributi
+@using VBG.BlazorComponentsLibrary.DesignComuni.Forms
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards.CardButtons
+@using VBG.BlazorComponentsLibrary.EditFormComponents
+@inherits IstanzeStepPage
+
+<style>
+    #caratteri-rimanenti {
+        font-size: 0.8em;
+        text-align: right;
+    }
+</style>
+
+<StepCard Titolo=" ">
+    <StepCardItem>
+        <div class="float-end mt-2">
+            <button @onclick="() => OpenModalModifiche()" class="text-decoration-none me-2"><span class="text-button-sm-semi t-primary">Modifica</span></button>
+        </div>
+
+        <StepCardItemTitle Titolo="@TitoloSezione"></StepCardItemTitle>
+
+        <StepCardInfo Titolo="Oggetto">@model.Oggetto</StepCardInfo>
+
+        <StepCardInfo Titolo="Note">
+            @model.Note
+        </StepCardInfo>
+    </StepCardItem>
+</StepCard>
+
+
+@if (_showModalModifiche)
+{
+    <FormModal OnClose="() => CloseModalModifiche()" AlwaysVisible="true" Size="ModalSizeEnum.Large" Model="@model" FormId="formModifiche" OnValidSubmit="() => SalvaModifiche()">
+        <ModalHeader Titolo="@_titoloModal"></ModalHeader>
+        <ModalBody>
+            <div class="row">
+                <TextInputForm Id="txtOggetto"
+                                Value="@_editingOggetto"
+                                @oninput=@(args => { _editingOggetto = args.Value?.ToString(); StateHasChanged();})
+                                ValueExpression="() => _editingOggetto"
+                                MaxLength="@_limiteCaratteri"
+                                Label="Oggetto"
+                                IsMultiline="true"
+                                Rows="8"
+                                ValidationFor="() => model.Oggetto"
+                                Required="@oggettoRequired" />
+
+                @if (LimiteCaratteri > 0)
+                {
+                    <div id="caratteri-rimanenti" class="errori">
+                        <span>@_editingOggetto?.Length</span> / @LimiteCaratteri
+                    </div>
+                }
+
+            </div>
+
+            <div class="row">
+                <TextInputForm Id="txtNote"
+                                @bind-Value="_editingNote"
+                                Label="Note"
+                                IsMultiline="true"
+                                Rows="8"
+                                ValidationFor="() => model.Note" />
+            </div>
+        </ModalBody>
+        <ModalFooter>
+            <FormSubmitButton Form="formModifiche">Salva</FormSubmitButton>
+        </ModalFooter>
+    </FormModal>
+}
+
+
+    

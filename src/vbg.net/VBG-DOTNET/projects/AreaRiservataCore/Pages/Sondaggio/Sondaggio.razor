@@ -1,0 +1,81 @@
+﻿@page "/{IdComune}/{Software}/sondaggio/{UuidPratica}"
+@using VBG.BlazorComponentsLibrary
+@using VBG.BlazorComponentsLibrary.EditFormComponents
+@using VBG.BlazorComponentsLibrary.RisorseTestuali
+@inherits BasePage
+<TitoloPagina>Compilazione questionario</TitoloPagina>
+
+<div>
+    @if (_questionarioCompilato)
+    {
+        <div class="alert alert-success" role="alert">
+            <RisorsaTestuale IdRisorsa="questionario.titolo.compilazione-completata">
+                Grazie per aver compilato il nostro questionario, la tua opinione ci aiuterà a migliorare la qualità dei nostri servizi.
+            </RisorsaTestuale>
+        </div>
+
+        <button class="btn btn-light vbg-show-spinner" @onclick="OnChiudiAsync">Torna alla pratica</button>
+    }
+    else
+    {
+
+        <style>
+            .valutazione {
+                list-style-type: none;
+                cursor: pointer;
+                margin: 0;
+                padding: 0;
+                display: inline-block;
+                font-size: 1.5em;
+            }
+
+                .valutazione li {
+                    display: inline-block;
+                }
+
+            .descrizioneStep {
+                margin-bottom: 24px;
+            }
+        </style>
+
+        <div class="descrizioneStep descrizione-step">
+            <RisorsaTestuale IdRisorsa="questionario.titolo-pagina">Come valuta la qualità e il livello di servizio offerto dal portale riguardo la presentazione di pratiche telematiche?</RisorsaTestuale>
+        </div>
+
+        <div class="mb-3" id="valutazione-group">
+            <LabelContainerComponent Value="Valutazione" Required="true"></LabelContainerComponent>
+            <div class="form-control">
+                <ul class="valutazione">
+                    @foreach (var index in Enumerable.Range(1, Stars))
+                    {
+                        <li data-stelle="@index">
+                            @if (index <= _value)
+                            {
+                                <a href="javascript:void(0)" @onclick="@(args => SetValue(index))" @onkeypress="@(async args => { if (args.Code == "Space") { SetValue(index); } })">
+                                    <i class="fa fa-star"></i>
+                                </a>
+                            }
+                            else
+                            {
+                                <a href="javascript:void(0)" @onclick="@(args => SetValue(index))" @onkeypress="@(async args => { if (args.Code == "Space") { SetValue(index); } })">
+                                    <i class="fa fa-star-o"></i>
+                                </a>
+                            }
+                        </li>
+                    }
+                </ul>
+            </div>
+            <div class="help-block valid-feedback">Campo obbligatorio</div>
+        </div>
+
+        <TextInputForm @ref="txtNote" IsMultiline="true" Rows="4" MaxLength="4000" Label="Suggerimenti"></TextInputForm>
+
+        <button id="btnInviaValutazione" class="btn btn-primary vbg-show-spinner-if-valid" @onclick="OnInviaValutazioneAsync">Invia valutazione</button>
+        <button id="btnChiudi" class="btn btn-light vbg-show-spinner" @onclick="OnChiudiAsync">Torna alla pratica senza lasciare una valutazione</button>
+    }
+</div>
+
+
+@code {
+    // vedi relativo .cs
+}

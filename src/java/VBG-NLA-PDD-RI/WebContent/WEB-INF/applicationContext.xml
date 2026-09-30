@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:oxm="http://www.springframework.org/schema/oxm"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm.xsd">
+	<context:property-placeholder location="classpath:deploy.properties" />
+	
+	<context:annotation-config />
+	<context:component-scan base-package="it.gruppoinit.pdd.ri.ws" />
+	
+	<bean id="stcWebServiceClient" class="it.gruppoinit.nlaproxy.service.stc.StcWebServiceClient">
+		<property name="timeout" value="${ws.timeout}"></property>
+		<property name="stcWsUrl" value="${stcWsUrl}" />
+		<property name="nlaUserId" value="${nlaUserId}" />
+		<property name="nlaPassword" value="${nlaPassword}" />
+		<property name="idNodo" value="${idNodo}" />
+		<property name="mtom" value="${stcMtomEnabled}" />
+	</bean>
+	<bean id="sigeproSecurityWebServiceClient" class="it.gruppoinit.sigeprosecurity.ws.SigeproSecurityWebServiceClient">
+		<property name="sigeproSecurityUrl" value="${ws.token.url}"></property>
+		<property name="sigeproSecurityUserId" value="${ws.token.user}" />
+		<property name="sigeproSecurityUserPassword" value="${ws.token.pwd}" />
+	</bean>
+	<bean id="oggettiWSClient" class="it.gruppoinit.sigepro.definitions.oggetti.OggettiWSClient">
+		<property name="securityWebServiceClient" ref="sigeproSecurityWebServiceClient" />
+		<property name="urlServicesOggettiWSDL" value="${oggetti.ws.path.to.wsdl}" />
+		<property name="mtomEnabled" value="${oggetti.ws.mtom.enabled}" />
+		<property name="timeout" value="${ws.timeout}" />
+		<property name="attachLoggingInterceptors" value="${oggetti.ws.attach.logging.interceptors}" />
+		<property name="logInbound" ref="logInbound" />
+		<property name="logOutbound" ref="logOutbound" />
+	</bean>
+	<bean id="registroImpreseService" class="it.gruppoinit.pdd.ri.service.impl.RegistroImpreseServiceImpl">
+		<property name="interazioniRIClient" ref="interazioniRIClient" />
+		<property name="sigeproSecurityWebServiceClient" ref="sigeproSecurityWebServiceClient" />
+		<property name="oggettiWSClient" ref="oggettiWSClient" />
+		<property name="richiediVisuraPdf" value="${pdd.ri.ws.dettaglio.visura.pdf}" />
+		<property name="richiediVisuraXml" value="${pdd.ri.ws.dettaglio.visura.xml}" />
+		<property name="movimentiWSClient" ref="movimentiWsClient" />
+	</bean>
+	
+
+	
+	<bean id="movimentiWsClient" class="it.gruppoinit.sigepro.definitions.movimenti.MovimentiWSClient">
+		<property name="mtomEnabled" value="${oggetti.ws.mtom.enabled}" />
+		<property name="securityWebServiceClient" ref="sigeproSecurityWebServiceClient" />
+		<property name="timeout" value="${ws.timeout}" />
+		<property name="urlServicesMovimentiWSDL" value="${movimenti.ws.path.to.wsdl}"></property>
+	</bean>
+	
+	<context:component-scan base-package="it.gruppoinit.pdd.ri.features" />
+</beans>

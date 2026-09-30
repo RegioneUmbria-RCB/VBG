@@ -1,0 +1,57 @@
+﻿@page "/{IdComune}/{Software}/benvenuto"
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneMenu
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneMenu.Model
+@inject IMenuService _menuService
+@inherits BasePage
+
+
+<TitoloPagina Visible="false">Scrivania Virtuale</TitoloPagina>
+
+<div class="pagina-benvenuto mb-5">
+    <h1 class="mb-4">Scrivania virtuale</h1>
+@*	<div style="padding: var(--padding-default) var(--padding-small) var(--padding-default) var(--padding-small);">
+		<h2 style="text-transform: capitalize">@UserAuthenticationResult.DatiUtente?.Nome @UserAuthenticationResult.DatiUtente?.Nominativo</h2>
+		<span style="text-transform: uppercase">CF: @UserAuthenticationResult.DatiUtente?.Codicefiscale</span>
+	</div>*@
+	@if (!String.IsNullOrEmpty(this.DescrizionePagina))
+	{
+		<div class="jumbotron">
+			@this.DescrizionePagina
+		</div>
+	}
+
+	@if (Menu != null)
+	{
+		@* <div class="tile-container"> *@
+        <div class="responsive-card-container">
+
+			@foreach (var voce in Menu.VociInHomepage)
+			{
+                <div class="col">
+				    <HomepageCard Icona="@voce.Icona" 
+							      Titolo="@voce.Titolo" 
+					 		      Descrizione="@voce.Descrizione" 
+							      Url="@voce.Url" 
+							      Target="@voce.Target">
+				    </HomepageCard>
+                </div>
+			}
+		</div>
+	}
+</div>
+
+@code {
+	private MenuModel? Menu;
+	private string? TitoloPagina;
+	private string? DescrizionePagina;
+
+	protected override void OnInitialized()
+	{
+		this.Menu = this._menuService.LoadMenu();
+		this.DescrizionePagina = Menu.Descrizione;
+
+		var vociMenuHomePage = Menu.VociInHomepage;
+
+		// this.NascondiTitoloPagina();
+	}
+}

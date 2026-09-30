@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:TipiGenerali="http://insiel.it/protocollo/schemixsd/TipiGenerali" xmlns:rpreq="http://insiel.it/protocollo/schemixsd/InterrogazionePraticheRequest" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://insiel.it/protocollo/schemixsd/InterrogazionePraticheRequest" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="tipi_generali.xsd" namespace="http://insiel.it/protocollo/schemixsd/TipiGenerali" />
+  <xs:element name="InterrogazionePraticheRequest">
+    <xs:annotation>
+      <xs:documentation>Comment describing your root element</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:all>
+        <xs:element name="Utente" type="TipiGenerali:Utente" />
+        <xs:element minOccurs="0" name="oggetto">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="valore" nillable="true" type="TipiGenerali:oggetto" />
+              <xs:element name="relazione" nillable="true">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:enumeration value="iniziaCon" />
+                    <xs:enumeration value="contiene" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" name="note" nillable="true" type="TipiGenerali:note">
+          <xs:annotation>
+            <xs:documentation>contiene</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="codice_ufficio" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="codice_registro" type="TipiGenerali:Classifica" />
+        <xs:element minOccurs="0" name="anno">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element minOccurs="0" name="da" nillable="true" type="TipiGenerali:anno" />
+              <xs:element minOccurs="0" name="a" nillable="true" type="TipiGenerali:anno" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" name="numero">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element minOccurs="0" name="da" nillable="true" type="TipiGenerali:numero" />
+              <xs:element minOccurs="0" name="a" nillable="true" type="TipiGenerali:numero" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" name="sub_numero">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element minOccurs="0" name="da" nillable="true" type="TipiGenerali:subNumero" />
+              <xs:element minOccurs="0" name="a" nillable="true" type="TipiGenerali:subNumero" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" name="data">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element minOccurs="0" name="da" nillable="true" type="xs:date" />
+              <xs:element minOccurs="0" name="a" nillable="true" type="xs:date" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" name="codice_tipo_pratica" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="uffici" type="rpreq:UfficiRicercaPrat" />
+        <xs:element minOccurs="0" name="data_chiusura">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element minOccurs="0" name="da" nillable="true" type="xs:date" />
+              <xs:element minOccurs="0" name="a" nillable="true" type="xs:date" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" name="pratica_data_ac">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element minOccurs="0" name="da" nillable="true" type="xs:date" />
+              <xs:element minOccurs="0" name="a" nillable="true" type="xs:date" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" name="stato" nillable="true" type="TipiGenerali:stato" />
+        <xs:element minOccurs="0" name="codice_uff_op_ricerca" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="pratica_ac" nillable="true" type="TipiGenerali:PraticaAC" />
+        <xs:element minOccurs="0" name="RiferimentoAnagrafico" type="rpreq:RiferimentiAnagraficiRicerca" />
+        <xs:element minOccurs="0" name="MnemoniciRicerca" type="rpreq:MnemoniciRicerca" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="UfficiRicercaPrat">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" name="ufficio" type="rpreq:ufficioType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ufficioType">
+    <xs:choice>
+      <xs:element name="codice" type="TipiGenerali:ValoreRelazioneType">
+        <xs:annotation>
+          <xs:documentation>uguale</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="descrizione" type="TipiGenerali:ValoreRelazioneType" />
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="RiferimentiAnagraficiRicerca">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="RiferimentoAnagraficoRicerca" type="rpreq:RiferimentoAnagraficoRicerca" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="RiferimentoAnagraficoRicerca">
+    <xs:annotation>
+      <xs:documentation>riferimento anagrafico pratica</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="codice" nillable="true" type="TipiGenerali:ValoreRelazioneType" />
+      <xs:element minOccurs="0" name="descrizione" nillable="true" type="TipiGenerali:ValoreRelazioneType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="MnemoniciRicerca">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="MnemonicoRicerca" type="rpreq:MnemonicoRicerca" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="MnemonicoRicerca">
+    <xs:choice>
+      <xs:element name="codiceTipo" type="xs:string" />
+      <xs:element maxOccurs="8" name="livello">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="valore" type="xs:string" />
+            <xs:element name="relazione" type="TipiGenerali:operatoreRelazionale" />
+          </xs:sequence>
+          <xs:attribute name="numero" type="xs:int" use="required" />
+        </xs:complexType>
+      </xs:element>
+    </xs:choice>
+  </xs:complexType>
+</xs:schema>

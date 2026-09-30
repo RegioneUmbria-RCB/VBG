@@ -1,0 +1,15 @@
+﻿using VBG.Pagamenti.NodoPagamenti.Shared;
+
+namespace Init.Sigepro.FrontEnd.Pagamenti.Tests.Mocks
+{
+    public class MockRiferimentiDomanda : IRiferimentiDomandaPerPagamenti
+    {
+        public string IdComune => "IDCOMUNE";
+
+        public string Software => "SOFTWARE";
+
+        public int IdPresentazione => 123;
+
+        public string CodiceUnivocoDomanda => "ASDASDASD";
+    }
+}

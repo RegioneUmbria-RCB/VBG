@@ -1,0 +1,112 @@
+##Nel BO durante la procedura di creazione degli allegati per consentire la notifica CART da istanze non pervenute tramite CART
+##si caricano i dati dell'istanza nella modulistica CART per consentire all'operatore di completare le informazioni richieste
+##in questi casi i campi file non serviranno per uploadare nuovi allegati ma per selezionare uno degli allegati già esistenti
+##nell'istanza o in uno dei suoi endoprocedimenti.
+#set($idCampo = "campo_$item.File.Id")
+#set($idCampo = $helper.getUniqueId(${idCampo},${item.File}))
+
+#set($idSemantico = $item.File.IdSemantico)
+#set($idInput = $idSemantico)
+#if($isTableTemplate)
+	#set($placeholder = "${esc.D}'{'index{0}'}'")
+	#set($idCampo = "${idCampo}${helper.buildIndexingSuffixWhithPlaceholder($rowIndex,$placeholder,$templateNestingLevel)}")
+	#set($idInput = "${idInput}${helper.buildIndexingSuffixWhithPlaceholder($rowIndex,$placeholder,$templateNestingLevel)}")
+#else
+	#set($idCampo = "${idCampo}${helper.buildIndexingSuffix($rowIndex)}")
+	#set($idInput = "${idInput}${helper.buildIndexingSuffix($rowIndex)}")
+#end
+#if($item.File.MaxUpload == "unbounded")
+	#set($maxUploadAttribute = "0")
+#else
+	#set($maxUploadAttribute = $item.File.MaxUpload)
+#end
+<div id="$idCampo" class="campo-cart-container">
+	#set($tooltiptext = ${helper.getFileHelp($item.File)})
+	#set($classeDivCampo = "campo-cart-right")
+	#if($helper.renderFormLayout($item,$quadro))
+        <div class="label-cart" >
+        	$!item.File.Titolo&nbsp;
+        </div>
+	#else
+		#set($classeDivCampo = "campo-cart-left")
+	#end
+
+	<div class="campo-file-cart $classeDivCampo">
+		##<div class="MultiFile-wrap">
+	    	#set($fileOptions = $helper.getAllegatiIstanza(${codiceIstanza}))
+	    	<select id="$idInput" name="$idInput" class="campo-file-cart" >
+	    		<option value=""></option>
+	    		#foreach($fileOption in $fileOptions)
+	    		<option value="$fileOption.Value">$fileOption.Label</option>
+	    		#end
+	    	</select>
+    	##</div>
+		<label for="$idInput" class="mandatory-star mandatory-file-star" style="display:none;">*</label>
+		<div class="campo-cart-icons">
+			#if($tooltiptext.length() > 0)
+				<span class="help_image" id="${idInput}_help" title="${helper.escapeValueForHtmlAttribute($tooltiptext)}">
+					<label >(?)</label>
+	            </span>
+			#end
+			<span class="error_image" style="display:none;" title="">
+				<label >(!)</label>
+	        </span>
+			<span class="warning_image" style="display:none;" title="">
+				<label >(!)</label>
+	        </span>
+	    </div>
+    	#set($mandatory = $helper.evaluateExpression($item.File.Obbligatorio,$rowIndex))
+    	#if($mandatory || $helper.isEspressioneDinamica($item.File.Obbligatorio))
+			#if(!$isTableTemplate)
+				#set($jsScript = $helper.buildJavascriptToDynamicallySetMandatoryElement($idInput,$item.File.Obbligatorio,2))
+            	<script>
+    			$(document).ready(function(){
+                	##scrittura dello script che rende il campo obbligatorio dinamicamente in base ai valori assunti da altri campi
+            		$jsScript
+    			});
+            	</script>
+			#else
+				#set($placeholder = "'' + newRowIndex{0} + ''")
+				#set($placeholder = ${helper.buildIndexingSuffixWhithPlaceholder($rowIndex,$placeholder,$templateNestingLevel)})
+				#set($jsScript = $helper.buildJavascriptToDynamicallySetMandatoryElement($item.File.IdSemantico,$item.File.Obbligatorio,$placeholder,2))
+				#if($jsScript != "")
+					$helper.addScriptToCache($jsScript)
+				#end
+    		#end
+		#end
+		#set($idInputEscaped = $helper.escapeForCssSelector($idInput))
+		#set($valore = "$helper.getValoreSingolo($idSemantico,$rowIndex)")
+		#if(!$isTableTemplate)
+    	<script>
+		$(document).ready(function(){
+			##scrittura dello script che crea il controllo per la selezione degli allegati e ne imposta le proprietà che definiscono il comportamento
+			initializeSelectFile('$idInputEscaped',$maxUploadAttribute);
+		});
+    	</script>	
+		#else
+			#set($idInputEscaped = $helper.escapeForCssSelector($idSemantico))
+			#set($placeholder = "'' + newRowIndex{0} + ''")
+			#set($placeholder = ${helper.buildIndexingSuffixWhithPlaceholder($rowIndex,$placeholder,$templateNestingLevel)})
+			$helper.addScriptToCache("initializeSelectFile('${idInputEscaped}${placeholder}',$maxUploadAttribute);")
+    	#end		
+    	#set($attivo = $helper.evaluateExpression($item.File.Attivo,$rowIndex))
+    	#if(!$attivo || $helper.isEspressioneDinamica($item.File.Attivo))
+			#if(!$isTableTemplate)
+				#set($jsScript = $helper.buildJavascriptToDynamicallyEnableElement($idCampo,$item.File.Attivo,2))
+            	<script>
+    			$(document).ready(function(){
+                	##scrittura dello script che attiva e disattiva il campo dinamicamente in base ai valori assunti da altri campi
+            		$jsScript
+    			});
+            	</script>
+			#else
+				#set($placeholder = "'' + newRowIndex{0} + ''")
+				#set($placeholder = ${helper.buildIndexingSuffixWhithPlaceholder($rowIndex,$placeholder,$templateNestingLevel)})
+				#set($jsScript = $helper.buildJavascriptToDynamicallyEnableElement($helper.getUniqueId("campo_$item.File.Id", ${item.File}),$item.File.Attivo,$placeholder,2))
+				#if($jsScript != "")
+					$helper.addScriptToCache($jsScript)
+				#end
+    		#end
+		#end
+    </div>
+</div>

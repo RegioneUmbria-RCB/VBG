@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:tns="https://ws.ldpgis.it/" targetNamespace="https://ws.ldpgis.it/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
+	<wsdl:types>
+		<s:schema targetNamespace="https://ws.ldpgis.it/">
+			<s:complexType name="ComplexTypeStringa">
+				<s:sequence>
+					<s:element minOccurs="1" maxOccurs="1" nillable="true" name="testo" type="s:string" />
+				</s:sequence>
+			</s:complexType>
+			<s:element name="ComplexTypeStringa" type="tns:ComplexTypeStringa" />
+			<s:complexType name="ArrayOfComplexTypeStringa">
+				<s:sequence>
+					<s:element name="ComplexTypeStringa" type="tns:ComplexTypeStringa" minOccurs="0" maxOccurs="unbounded"/>
+				</s:sequence>
+			</s:complexType>
+			<s:element name="ComplexTypeStringaArray" type="tns:ArrayOfComplexTypeStringa" />
+			<s:complexType name="ComplexTypePoint">
+				<s:sequence>
+					<s:element minOccurs="1" maxOccurs="1" nillable="false" name="x" type="s:float" />
+					<s:element minOccurs="1" maxOccurs="1" nillable="false" name="y" type="s:float" />
+				</s:sequence>
+			</s:complexType>
+			<s:element name="ComplexTypePoint" type="tns:ComplexTypePoint" />
+			<s:complexType name="ComplexTypePraticaIdentificativi">
+				<s:sequence>
+					<s:element minOccurs="1" maxOccurs="1" nillable="true" name="identificativo_temporaneo" type="s:string" />
+					<s:element minOccurs="1" maxOccurs="1" nillable="true" name="numero_pratica" type="s:string" />
+				</s:sequence>
+			</s:complexType>
+			<s:element name="ComplexTypePraticaIdentificativi" type="tns:ComplexTypePraticaIdentificativi" />
+			<s:complexType name="ComplexTypePraticaDatiTerritoriali">
+				<s:sequence>
+					<s:element minOccurs="1" maxOccurs="1" nillable="true" name="point" type="tns:ComplexTypePoint" />
+					<s:element minOccurs="1" maxOccurs="1" nillable="true" name="a_subalterni" type="tns:ArrayOfComplexTypeSubalterno" />
+					<s:element minOccurs="1" maxOccurs="1" nillable="true" name="a_civici" type="tns:ArrayOfComplexTypeCivico" />
+				</s:sequence>
+			</s:complexType>
+			<s:element name="ComplexTypePraticaDatiTerritoriali" type="tns:ComplexTypePraticaDatiTerritoriali" />
+			<s:complexType name="ComplexTypeSubalterno">
+				<s:sequence>
+					<s:element minOccurs="1" maxOccurs="1" nillable="true" name="sezione" type="s:string" />
+					<s:element minOccurs="1" maxOccurs="1" nillable="true" name="foglio" type="s:string" />
+					<s:element minOccurs="1" maxOccurs="1" nillable="true" name="particella" type="s:string" />
+					<s:element minOccurs="1" maxOccurs="1" nillable="true" name="subalterno" type="s:string" />
+				</s:sequence>
+			</s:complexType>
+			<s:element name="ComplexTypeSubalterno" type="tns:ComplexTypeSubalterno" />
+			<s:complexType name="ArrayOfComplexTypeSubalterno">
+				<s:sequence>
+					<s:element name="ComplexTypeSubalterno" type="tns:ComplexTypeSubalterno" minOccurs="0" maxOccurs="unbounded"/>
+				</s:sequence>
+			</s:complexType>
+			<s:element name="ComplexTypeSubalternoArray" type="tns:ArrayOfComplexTypeSubalterno" />
+			<s:complexType name="ComplexTypeCivico">
+				<s:sequence>
+					<s:element minOccurs="1" maxOccurs="1" nillable="true" name="codice_strada" type="s:string" />
+					<s:element minOccurs="1" maxOccurs="1" nillable="true" name="numero" type="s:string" />
+					<s:element minOccurs="1" maxOccurs="1" nillable="true" name="esponente" type="s:string" />
+				</s:sequence>
+			</s:complexType>
+			<s:element name="ComplexTypeCivico" type="tns:ComplexTypeCivico" />
+			<s:complexType name="ArrayOfComplexTypeCivico">
+				<s:sequence>
+					<s:element name="ComplexTypeCivico" type="tns:ComplexTypeCivico" minOccurs="0" maxOccurs="unbounded"/>
+				</s:sequence>
+			</s:complexType>
+			<s:element name="ComplexTypeCivicoArray" type="tns:ArrayOfComplexTypeCivico" />
+		</s:schema>
+	</wsdl:types>
+	<wsdl:message name="getDatiTerritorialiByIdentificativoTemporaneoSoapIn">
+		<wsdl:part name="identificativo_temporaneo" element="tns:ComplexTypeStringa" />
+	</wsdl:message>
+	<wsdl:message name="getDatiTerritorialiByIdentificativoTemporaneoSoapOut">
+		<wsdl:part name="return" element="tns:ComplexTypePraticaDatiTerritoriali" />
+	</wsdl:message>
+	<wsdl:message name="setNumeroPraticaSoapIn">
+		<wsdl:part name="pratica_identificativi" element="tns:ComplexTypePraticaIdentificativi" />
+	</wsdl:message>
+	<wsdl:message name="setNumeroPraticaSoapOut">
+		<wsdl:part name="return" element="tns:ComplexTypeStringa" />
+	</wsdl:message>
+	<wsdl:portType name="PresentazionePraticheEdilizieSoap">
+		<wsdl:operation name="getDatiTerritorialiByIdentificativoTemporaneo">
+			<wsdl:input message="tns:getDatiTerritorialiByIdentificativoTemporaneoSoapIn" />
+			<wsdl:output message="tns:getDatiTerritorialiByIdentificativoTemporaneoSoapOut" />
+		</wsdl:operation>
+		<wsdl:operation name="setNumeroPratica">
+			<wsdl:input message="tns:setNumeroPraticaSoapIn" />
+			<wsdl:output message="tns:setNumeroPraticaSoapOut" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="PresentazionePraticheEdilizieSoap" type="tns:PresentazionePraticheEdilizieSoap">
+		<soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+		<wsdl:operation name="getDatiTerritorialiByIdentificativoTemporaneo">
+			<soap:operation soapAction="https://ws.ldpgis.it/getDatiTerritorialiByIdentificativoTemporaneo" />
+			<wsdl:input>
+				<soap:body use="literal"  parts="identificativo_temporaneo" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"  parts="return" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="setNumeroPratica">
+			<soap:operation soapAction="https://ws.ldpgis.it/setNumeroPratica" />
+			<wsdl:input>
+				<soap:body use="literal"  parts="pratica_identificativi" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"  parts="return" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="PresentazionePraticheEdilizie">
+		<wsdl:port name="PresentazionePraticheEdilizieSoap" binding="tns:PresentazionePraticheEdilizieSoap">
+			<soap:address location="https://ws.ldpgis.it/siena/presentazione_pratiche_edilizie.php" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

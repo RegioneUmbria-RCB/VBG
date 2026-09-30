@@ -1,0 +1,157 @@
+DELETE FROM FO_ARJ_DOMANDE_STEPS_ESEGUITI
+GO
+COMMIT
+GO
+DELETE FROM FO_ARJ_DOMANDE_ONERI
+GO
+COMMIT
+GO
+DELETE FROM FO_ARJ_DOMANDE
+GO
+COMMIT
+GO
+DELETE FROM FO_ARJ_STEPS
+GO
+COMMIT
+GO
+
+ALTER TABLE FO_ARJ_STEPS DROP CONSTRAINT FK_FASNOMESTEP_FASBNOMESTEP
+GO
+COMMIT
+GO
+ALTER TABLE FO_ARJ_STEPS_PARAMS_BASE DROP CONSTRAINT FK_FOARJSTEPPARMBASE_STEPBASE
+GO
+COMMIT
+GO
+ALTER TABLE FO_ARJ_DOMANDE_STEPS_ESEGUITI DROP CONSTRAINT STEPSESEGUITI_FOARJSTEPSBA
+GO
+COMMIT
+GO
+DROP TABLE FO_ARJ_STEPS_BASE
+GO
+COMMIT
+GO
+CREATE TABLE FO_ARJ_STEPS_BASE
+  (
+    NOME_STEP              VARCHAR(50) NOT NULL,
+    LINK_FUNZIONE          VARCHAR(125) NOT NULL,
+    TITOLO                 VARCHAR(150) NOT NULL,
+    DESCRIZIONE            VARCHAR(4000),
+    FLAG_OBBLIGATORIO      NUMERIC(1,0),
+    DIPENDE_DA_STEP        VARCHAR(50),
+    INCOMPATIBILE_CON_STEP VARCHAR(50),
+    ORDINE_DEFAULT         NUMERIC(4,0) NOT NULL,
+    PRIMARY KEY (NOME_STEP)
+  )
+GO
+COMMIT
+GO 
+ALTER TABLE FO_ARJ_STEPS ADD CONSTRAINT FK_FASNOMESTEP_FASBNOMESTEP FOREIGN KEY (FK_NOME_STEP_BASE) REFERENCES FO_ARJ_STEPS_BASE (NOME_STEP)
+GO
+COMMIT
+GO
+ALTER TABLE FO_ARJ_DOMANDE_STEPS_ESEGUITI ADD CONSTRAINT STEPSESEGUITI_FOARJSTEPSBA FOREIGN KEY (FK_FO_ARJ_STEPS_BASE) REFERENCES FO_ARJ_STEPS_BASE (NOME_STEP)
+GO
+COMMIT
+GO
+ALTER TABLE FO_ARJ_STEPS_PARAMS_BASE ADD CONSTRAINT FK_FOARJSTEPPARMBASE_STEPBASE FOREIGN KEY (FK_FO_ARJ_STEP_BASE) REFERENCES FO_ARJ_STEPS_BASE (NOME_STEP)
+GO
+COMMIT
+GO  
+insert into FO_ARJ_STEPS_BASE (NOME_STEP,LINK_FUNZIONE,TITOLO,DESCRIZIONE,FLAG_OBBLIGATORIO,DIPENDE_DA_STEP,INCOMPATIBILE_CON_STEP,ORDINE_DEFAULT) values ('BENVENUTO','../nuovaistanzabenvenuto/view.htm','Benvenuto','Le pagine che seguono rappresentano il percorso guidato per la presentazione on line di una istanza.<br />Il percorso per inviare la pratica on line è composto da una serie di step (schede).<br />In fondo a destra si trova la numerazione delle pagine e in nero viene evidenziato lo step che si sta compilando.',0,null,null,10)
+GO
+COMMIT
+GO
+insert into FO_ARJ_STEPS_BASE (NOME_STEP,LINK_FUNZIONE,TITOLO,DESCRIZIONE,FLAG_OBBLIGATORIO,DIPENDE_DA_STEP,INCOMPATIBILE_CON_STEP,ORDINE_DEFAULT) values ('INFORMATIVA','../nuovaistanzainformativa/view.htm','Informativa privacy','INFORMATIVA AI SENSI DELL''ART. 13 DEL DECRETO LEGISLATIVO N. 196/2003, "CODICE IN MATERIA DI PROTEZIONE DEI DATI PERSONALI"
+ 
+Si informa, ai sensi dell''art. 13 del D. Lgs. n. 196 del 30 giugno 2003 ("Codice in materia di protezione dei dati personali"), che il Comune di Ponteratto, in qualità di "Titolare" del trattamento, è tenuto a fornirle informazioni in merito all''utilizzo dei suoi dati personali.
+Per trattamento si intende qualunque operazione o complesso di operazioni concernenti "la raccolta, la registrazione, l''organizzazione, la conservazione, la consultazione, l''elaborazione, la modificazione, la selezione, l''estrazione, il raffronto, l''utilizzo,l''interconnessione, il blocco, la comunicazione, la diffusione, la cancellazione e la distruzione di dati, anche se non registrati in una banca dati".
+La raccolta dei suoi dati personali viene effettuata registrando i dati da lei stesso forniti, in qualità di interessato, al momento della iscrizione al sistema di autenticazione federato.
+ 
+I dati personali sono trattati per le finalità previste dal procedimento. Per garantire l''efficienza del servizio la informiamo inoltre che i dati potrebbero essere utilizzati per effettuare prove tecniche e di verifica.
+In relazione alle finalità descritte, il trattamento dei dati personali avviene mediante strumenti manuali, informatici e telematici con logiche strettamente correlate alle finalità sopra evidenziate e, comunque, in modo da garantire la sicurezza e la riservatezza dei dati stessi. Adempiute le finalità prefissate, i dati verranno cancellati o trasformati in forma anonima.
+ 
+Ai sensi dell''art. 13, 1° comma lett. b) e c), si evidenzia che il trattamento dei dati da parte del Comune è essenziale per l''adempimento degli obblighi di legge e che, pertanto, il mancato conferimento di tali dati impedisce l''utilizzo del servizio offerto on line.
+I suoi dati personali potranno essere conosciuti esclusivamente dagli operatori dell''ufficio del SUAP del Comune di Ponteratto e da tutti gli operatori degli altri uffici comunali interessati dal procedimento, individuati quali Incaricati del trattamento.
+Si precisa inoltre che i dati verranno comunicati a terzi esclusivamente in adempimento di specifici obblighi di legge, ovvero qualora tale comunicazione risulti necessaria o funzionale alla gestione del servizio, previa designazione in qualità di Responsabili del trattamento e garantendo il medesimo livello di protezione.
+ 
+Si informa, infine, che l''art. 7 del Decreto Legislativo n. 196/2003, riportato di seguito integralmente, attribuisce all''interessato specifici diritti a garanzia della corretta acquisizione e del corretto utilizzo dei dati trattati ed in particolare:
+L''interessato ha diritto di ottenere la conferma dell''esistenza o meno di dati personali che lo riguardano, anche se non ancora registrati, e la loro comunicazione in forma intelligibile.L''interessato ha diritto di ottenere l''indicazione: 
+dell''origine dei dati personali
+GO
+COMMIT
+GO 
+delle finalità e modalità del trattamento
+GO
+COMMIT
+GO 
+della logica applicata in caso di trattamento effettuato con l''ausilio di strumenti elettronici
+GO
+COMMIT
+GO 
+degli estremi identificativi del titolare, dei responsabili e del rappresentante designato ai sensi dell''articolo 5, comma 2
+GO
+COMMIT
+GO 
+dei soggetti o delle categorie di soggetti ai quali i dati personali possono essere comunicati o che possono venirne a conoscenza in qualità di rappresentante designato nel territorio dello Stato, di responsabili o incaricati. 
+L''interessato ha diritto di ottenere:l''aggiornamento, la rettificazione ovvero, quando vi ha interesse, l''integrazione dei dati
+GO
+COMMIT
+GO 
+la cancellazione, la trasformazione in forma anonima o il blocco dei dati trattati in violazione di legge, compresi quelli di cui non è necessaria la conservazione in relazione agli scopi per i quali i dati sono stati raccolti o successivamente trattati
+GO
+COMMIT
+GO ',0,null,null,20)
+GO
+COMMIT
+GO
+insert into FO_ARJ_STEPS_BASE (NOME_STEP,LINK_FUNZIONE,TITOLO,DESCRIZIONE,FLAG_OBBLIGATORIO,DIPENDE_DA_STEP,INCOMPATIBILE_CON_STEP,ORDINE_DEFAULT) values ('CONFERMA','../nuovaistanzaconferma/view.htm','Conferma','...',0,null,'INVIO',130)
+GO
+COMMIT
+GO
+insert into FO_ARJ_STEPS_BASE (NOME_STEP,LINK_FUNZIONE,TITOLO,DESCRIZIONE,FLAG_OBBLIGATORIO,DIPENDE_DA_STEP,INCOMPATIBILE_CON_STEP,ORDINE_DEFAULT) values ('LOCALIZZAZIONE','../nuovaistanzalocalizzazione/view.htm','Localizzazione','È possibile in questa sezione inserire nel campo "Indirizzo" la localizzazione dell''intervento. <br />Selezionare un indirizzo compreso nello stradario comunale dopo aver digitato nel campo "Denominazione" almeno due lettere della localizzazione, quindi completare l''indirizzo indicando il civico ed eventuali note.<br />Se l''intervento ricade in una zona ancora non censita digitare "NON DEFINITO" nel campo "Denominazione" e nel campo "Note" immettere una localizzazione di massima (frazione, zona, etc.)',0,null,null,60)
+GO
+COMMIT
+GO
+insert into FO_ARJ_STEPS_BASE (NOME_STEP,LINK_FUNZIONE,TITOLO,DESCRIZIONE,FLAG_OBBLIGATORIO,DIPENDE_DA_STEP,INCOMPATIBILE_CON_STEP,ORDINE_DEFAULT) values ('INTERVENTO','../nuovaistanzaintervento/view.htm','Intervento','In questa sezione è possibile individuare l''attività della propria azienda secondo la classificazione adottata dallo sportello unico del comune',0,null,null,30)
+GO
+COMMIT
+GO
+insert into FO_ARJ_STEPS_BASE (NOME_STEP,LINK_FUNZIONE,TITOLO,DESCRIZIONE,FLAG_OBBLIGATORIO,DIPENDE_DA_STEP,INCOMPATIBILE_CON_STEP,ORDINE_DEFAULT) values ('ALLEGATI','../nuovaistanzaallegati/view.htm','Allegati','Gli allegati che riportano il simbolo (<b>*</b>) sono obbligatori. Sarà cura del richiedente o della persona incaricata allegare i documenti proposti nell''elenco. <br />Il bottone "Sfoglia" permette di cercare il documento da caricare , una volta selezionato cliccare sulla voce "Carica". <br />',0,'INTERVENTO',null,80)
+GO
+COMMIT
+GO
+insert into FO_ARJ_STEPS_BASE (NOME_STEP,LINK_FUNZIONE,TITOLO,DESCRIZIONE,FLAG_OBBLIGATORIO,DIPENDE_DA_STEP,INCOMPATIBILE_CON_STEP,ORDINE_DEFAULT) values ('SCHEDE','../nuovaistanzaschede/view.htm','Schede','...',0,'INTERVENTO',null,90)
+GO
+COMMIT
+GO
+insert into FO_ARJ_STEPS_BASE (NOME_STEP,LINK_FUNZIONE,TITOLO,DESCRIZIONE,FLAG_OBBLIGATORIO,DIPENDE_DA_STEP,INCOMPATIBILE_CON_STEP,ORDINE_DEFAULT) values ('PROCEDIMENTI','../nuovaistanzaprocedimenti/view.htm','Procedimenti','In questa sezione è possibile attivare gli endoprocedimenti utili al completamento dell''istanza.<br />Gli endo-procedimenti già selezionati sono proposti dal sistema in base alla compilazione degli step precedenti.',0,'INTERVENTO',null,70)
+GO
+COMMIT
+GO
+insert into FO_ARJ_STEPS_BASE (NOME_STEP,LINK_FUNZIONE,TITOLO,DESCRIZIONE,FLAG_OBBLIGATORIO,DIPENDE_DA_STEP,INCOMPATIBILE_CON_STEP,ORDINE_DEFAULT) values ('ONERI','../nuovaistanzaoneri/view.htm','Riepilogo diritti/oneri','Questa scheda riepiloga quanti diritti di istruttoria/oneri/bolli devono essere corrisposti con riferimento all''intervento e agli endoprocedimenti attivati.
+Per i pagamenti per i quali si possiede già la ricevuta si ricorda che questa deve essere firmata digitalmente. I pagamenti possono essere effettuati mediante bollettino utilizzando le seguenti coordinate: 
+<b>c/c postale n. XXXX intestato a Comune di XXXXX- Direzione XXXXXX.</b>',0,'INTERVENTO',null,110)
+GO
+COMMIT
+GO
+insert into FO_ARJ_STEPS_BASE (NOME_STEP,LINK_FUNZIONE,TITOLO,DESCRIZIONE,FLAG_OBBLIGATORIO,DIPENDE_DA_STEP,INCOMPATIBILE_CON_STEP,ORDINE_DEFAULT) values ('ALLEGATI_SCHEDE','../nuovaistanzaallegatischede/view.htm','Allegati Schede','...',0,'SCHEDE',null,100)
+GO
+COMMIT
+GO
+insert into FO_ARJ_STEPS_BASE (NOME_STEP,LINK_FUNZIONE,TITOLO,DESCRIZIONE,FLAG_OBBLIGATORIO,DIPENDE_DA_STEP,INCOMPATIBILE_CON_STEP,ORDINE_DEFAULT) values ('ANAGRAFE','../nuovaistanzaanagrafesingola/view.htm','Anagrafe','In questa scheda vanno inseriti tutti i soggetti, persone fisiche e giuridiche, coinvolti nella pratica che si sta presentando. I soggetti possono essere l''interessato, l''azienda coinvolta, l''intermediario ...',0,'INTERVENTO','(null)',40)
+GO
+COMMIT
+GO
+insert into FO_ARJ_STEPS_BASE (NOME_STEP,LINK_FUNZIONE,TITOLO,DESCRIZIONE,FLAG_OBBLIGATORIO,DIPENDE_DA_STEP,INCOMPATIBILE_CON_STEP,ORDINE_DEFAULT) values ('DOMICILIO_ELETTRONICO','../nuovaistanzadomicilioelettronico/view.htm','Domicilio Elettronico','...',0,'ANAGRAFE','(null)',50)
+GO
+COMMIT
+GO
+insert into FO_ARJ_STEPS_BASE (NOME_STEP,LINK_FUNZIONE,TITOLO,DESCRIZIONE,FLAG_OBBLIGATORIO,DIPENDE_DA_STEP,INCOMPATIBILE_CON_STEP,ORDINE_DEFAULT) values ('RIEPILOGO','../nuovaistanzariepilogo/view.htm','Riepilogo Domanda','...',0,null,null,120)
+GO
+COMMIT
+GO
+insert into FO_ARJ_STEPS_BASE (NOME_STEP,LINK_FUNZIONE,TITOLO,DESCRIZIONE,FLAG_OBBLIGATORIO,DIPENDE_DA_STEP,INCOMPATIBILE_CON_STEP,ORDINE_DEFAULT) values ('INVIO','../nuovaistanzainviodomanda/view.htm','Invio Domanda','...',0,null,'CONFERMA',140)
+GO
+COMMIT
+GO

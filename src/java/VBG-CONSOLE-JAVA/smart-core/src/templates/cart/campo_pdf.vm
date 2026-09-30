@@ -1,0 +1,115 @@
+
+
+#set($idSemantico = $item.Campo.IdSemantico)
+<div class="campo-cart-container">
+	#set($colspan = 1)
+	#if($item.Campo.Titolo && $item.Campo.Titolo.length() > 0)
+         <div class="label-cart" style="width:150px; float: left">
+        	$!item.Campo.Titolo
+        </div>
+	#else
+		#set($colspan = 2)
+	#end
+	#set($classeDivCampo = "campo-cart-right")
+	#if($helper.renderFormLayout($item, $quadro))
+		#if(!${helper.isRenderingSezione()})
+			#set($classeDivCampo = "$classeDivCampo campo-cart-nowidth")
+		#end
+	#else
+		#set($classeDivCampo = "campo-cart-left")
+	#end
+	#set($readonly = " ")
+	#set($classeCampo = " ")
+	
+	<div class="campo-cart $classeDivCampo $classeCampo">
+	#if($item.Campo.SetValori.Enumerazione)
+		#if($isCheckBox || $isRadioButton)
+			##checkboxes
+			#set($inputStyle = "check-wrap")
+			#set($inputType = "checkbox")
+			#if($isRadioButton)
+				#set($inputType = "radio")
+				#set($inputStyle = "radio-wrap")
+			#end
+			#foreach($enumItem in $item.Campo.SetValori.Enumerazione.EnumItem)
+				<br />
+				#if(!$isTableTemplate && $helper.contieneValore($idSemantico,$rowIndex,$enumItem.Valore))
+					#set($checked = "X")
+				#else
+					#set($checked = "")
+				#end			
+				#set($valoriCount = $velocityCount - 1)							
+				<b>[$checked]</b>&nbsp;<span class="etichettaControllo" style="vertical-align: top;">$enumItem.Valore</span>				
+			#end
+			<br />
+		#else
+			##select
+			#foreach($enumItem in $item.Campo.SetValori.Enumerazione.EnumItem)
+				<br />
+				#if(!$isTableTemplate && $helper.contieneValore($idSemantico,$rowIndex,$enumItem.Valore))
+					<b>[X]</b> $enumItem.Valore
+				#else
+					<b>[&nbsp;&nbsp;]</b> $enumItem.Valore
+				#end				
+			#end
+			<br />
+		#end
+	#elseif($item.Campo.SetValori.Calendario)
+		#if(!$isTableTemplate)
+			#set($valore = "${helper.getValoreSingolo($idSemantico,$rowIndex)}")
+		#else
+			#set($valore = "")
+		#end
+		
+		#if ( "$!valore" == "" )
+			&nbsp;<b>__/__/____</b>&nbsp;(GG/MM/AAAA)
+		#else
+			<b>$valore</b>
+		#end
+				
+		
+	##Campi di tipo Numerico implementati con jquery.autonumeric
+	#elseif($item.Campo.SetValori.Numerico)
+		#if(!$isTableTemplate)
+			#set($valore = "${helper.getValoreSingolo($idSemantico,$rowIndex)}")
+		#else
+			#set($valore = "")
+		#end
+		#if ( "$!valore" == "" )
+			<b>_____________________________________</b>
+		#else
+			<b>$valore</b>
+		#end
+		
+	#else
+		#if(!$isTableTemplate)
+			#set($valore = "${helper.getValoreSingolo($idSemantico,$rowIndex)}")
+		#else
+			#set($valore = "")
+		#end
+		#if($helper.rendersAsTextarea($item.Campo))
+		
+			#if ( "$!valore" == "" )
+
+					<b>_____________________________________<br/>
+					   _____________________________________<br/>
+					   _____________________________________<br/>
+					   _____________________________________</b>
+		
+			#else
+				<b>$valore</b>
+			#end
+		
+		#else
+		
+			#if ( "$!valore" == "" )
+
+					<b>_____________________________________</b>
+			#else
+				<b>$valore</b>
+			#end
+		#end
+		
+	#end
+    </div>	
+</div>

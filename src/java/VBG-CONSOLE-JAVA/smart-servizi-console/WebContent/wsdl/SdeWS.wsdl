@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://gruppoinit.it/sde" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="SdeWS"
+	targetNamespace="http://gruppoinit.it/sde" xmlns:xsd1="http://gruppoinit.it/sde/anagrafici/types"
+	xmlns:xsd2="http://sigepro.init.it/rte/types">
+	<wsdl:types>
+
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xsd:import namespace="http://gruppoinit.it/sde/anagrafici/types"
+				schemaLocation="sde_anagrafe_types.xsd">
+			</xsd:import>
+			<xsd:import namespace="http://sigepro.init.it/rte/types"
+				schemaLocation="pratiche_types.xsd">
+			</xsd:import>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="CercaStradarioRequest">
+		<wsdl:part name="parameters" element="xsd1:CercaStradarioRequest" />
+	</wsdl:message>
+	<wsdl:message name="CercaStradarioResponse">
+		<wsdl:part element="xsd1:CercaStradarioResponse" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="GetPersonaFisicaRequest">
+		<wsdl:part name="parameters" element="xsd1:GetPersonaFisicaRequest">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="GetPersonaFisicaResponse">
+		<wsdl:part name="parameters" element="xsd1:GetPersonaFisicaResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="RicercaPraticaRequest">
+		<wsdl:part name="parameters" element="xsd2:CercaPraticaRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="RicercaPraticaResponse">
+		<wsdl:part name="parameters" element="xsd2:CercaPraticaResponse">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="RicercaPraticheRequest">
+		<wsdl:part name="parameters" element="xsd2:RicercaPraticheRequest">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="RicercaPraticheResponse">
+		<wsdl:part name="parameters" element="xsd2:RicercaPraticheResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="AllegatoBinarioRequest">
+		<wsdl:part name="parameters" element="xsd2:AllegatoBinarioRequest">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="AllegatoBinarioResponse">
+		<wsdl:part name="parameters" element="xsd2:AllegatoBinarioresponse">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:portType name="SdeWS">
+		<wsdl:operation name="CercaStradario">
+			<wsdl:input message="tns:CercaStradarioRequest" />
+			<wsdl:output message="tns:CercaStradarioResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="GetPersonaFisica">
+			<wsdl:input message="tns:GetPersonaFisicaRequest"></wsdl:input>
+			<wsdl:output message="tns:GetPersonaFisicaResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="RicercaPratica">
+			<wsdl:input message="tns:RicercaPraticaRequest"></wsdl:input>
+			<wsdl:output message="tns:RicercaPraticaResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="RicercaPratiche">
+			<wsdl:input message="tns:RicercaPraticheRequest"></wsdl:input>
+			<wsdl:output message="tns:RicercaPraticheResponse"></wsdl:output>
+		</wsdl:operation>		<wsdl:operation name="AllegatoBinario">			<wsdl:input message="tns:AllegatoBinarioRequest"></wsdl:input>			<wsdl:output message="tns:AllegatoBinarioResponse"></wsdl:output>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="SdeWSSOAP" type="tns:SdeWS">
+
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="CercaStradario">
+
+			<soap:operation soapAction="http://gruppoinit.it/sde/CercaStradario" />
+			<wsdl:input>
+
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetPersonaFisica">
+			<soap:operation soapAction="http://gruppoinit.it/sde/GetPersonaFisica" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="RicercaPratica">
+			<soap:operation soapAction="http://gruppoinit.it/sde/RicercaPratica" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="RicercaPratiche">
+			<soap:operation soapAction="http://gruppoinit.it/sde/RicercaPratiche" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="AllegatoBinario">
+			<soap:operation soapAction="http://gruppoinit.it/sde/AllegatoBinario" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="SdeWS">
+		<wsdl:port binding="tns:SdeWSSOAP" name="SdeWSSOAP">
+			<soap:address location="http://localhost:8080/sdews/services/" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

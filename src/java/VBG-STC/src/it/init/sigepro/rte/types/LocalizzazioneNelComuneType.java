@@ -1,0 +1,665 @@
+
+package it.init.sigepro.rte.types;
+
+import java.util.ArrayList;
+import java.util.List;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
+
+
+/**
+ * <p>Java class for LocalizzazioneNelComuneType complex type.
+ * 
+ * <p>The following schema fragment specifies the expected content contained within this class.
+ * 
+ * <pre>
+ * &lt;complexType name="LocalizzazioneNelComuneType">
+ *   &lt;complexContent>
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *       &lt;sequence>
+ *         &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="codiceViario" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="denominazione" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="civico" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="esponente" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="colore" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="scala" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="interno" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="esponenteInterno" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="piano" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="fabbricato" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="km" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="frazione" type="{http://sigepro.init.it/rte/types}FrazioneType" minOccurs="0"/>
+ *         &lt;element name="circoscrizione" type="{http://sigepro.init.it/rte/types}CircoscrizioneType" minOccurs="0"/>
+ *         &lt;element name="quartiere" type="{http://sigepro.init.it/rte/types}QuartiereType" minOccurs="0"/>
+ *         &lt;element name="riferimentoCatastale" type="{http://sigepro.init.it/rte/types}RiferimentoCatastaleType" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="coordinate" type="{http://sigepro.init.it/rte/types}CoordinateType" minOccurs="0"/>
+ *         &lt;element name="tipo" type="{http://sigepro.init.it/rte/types}TipoLocalizzazioneType" minOccurs="0"/>
+ *         &lt;element name="uuid" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="cap" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="accessoTipo" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="accessoNumero" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="accessoDescrizione" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *       &lt;/sequence>
+ *     &lt;/restriction>
+ *   &lt;/complexContent>
+ * &lt;/complexType>
+ * </pre>
+ * 
+ * 
+ */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "LocalizzazioneNelComuneType", propOrder = {
+    "id",
+    "codiceViario",
+    "denominazione",
+    "civico",
+    "esponente",
+    "colore",
+    "scala",
+    "interno",
+    "esponenteInterno",
+    "piano",
+    "fabbricato",
+    "km",
+    "frazione",
+    "circoscrizione",
+    "quartiere",
+    "riferimentoCatastale",
+    "coordinate",
+    "tipo",
+    "uuid",
+    "cap",
+    "accessoTipo",
+    "accessoNumero",
+    "accessoDescrizione"
+})
+public class LocalizzazioneNelComuneType {
+
+    @XmlElement(required = true)
+    protected String id;
+    @XmlElement(required = true)
+    protected String codiceViario;
+    @XmlElement(required = true)
+    protected String denominazione;
+    protected String civico;
+    protected String esponente;
+    protected String colore;
+    protected String scala;
+    protected String interno;
+    protected String esponenteInterno;
+    protected String piano;
+    protected String fabbricato;
+    protected String km;
+    protected FrazioneType frazione;
+    protected CircoscrizioneType circoscrizione;
+    protected QuartiereType quartiere;
+    protected List<RiferimentoCatastaleType> riferimentoCatastale;
+    protected CoordinateType coordinate;
+    protected TipoLocalizzazioneType tipo;
+    protected String uuid;
+    protected String cap;
+    protected String accessoTipo;
+    protected String accessoNumero;
+    protected String accessoDescrizione;
+
+    /**
+     * Gets the value of the id property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * Sets the value of the id property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setId(String value) {
+        this.id = value;
+    }
+
+    /**
+     * Gets the value of the codiceViario property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getCodiceViario() {
+        return codiceViario;
+    }
+
+    /**
+     * Sets the value of the codiceViario property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setCodiceViario(String value) {
+        this.codiceViario = value;
+    }
+
+    /**
+     * Gets the value of the denominazione property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getDenominazione() {
+        return denominazione;
+    }
+
+    /**
+     * Sets the value of the denominazione property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setDenominazione(String value) {
+        this.denominazione = value;
+    }
+
+    /**
+     * Gets the value of the civico property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getCivico() {
+        return civico;
+    }
+
+    /**
+     * Sets the value of the civico property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setCivico(String value) {
+        this.civico = value;
+    }
+
+    /**
+     * Gets the value of the esponente property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getEsponente() {
+        return esponente;
+    }
+
+    /**
+     * Sets the value of the esponente property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setEsponente(String value) {
+        this.esponente = value;
+    }
+
+    /**
+     * Gets the value of the colore property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getColore() {
+        return colore;
+    }
+
+    /**
+     * Sets the value of the colore property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setColore(String value) {
+        this.colore = value;
+    }
+
+    /**
+     * Gets the value of the scala property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getScala() {
+        return scala;
+    }
+
+    /**
+     * Sets the value of the scala property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setScala(String value) {
+        this.scala = value;
+    }
+
+    /**
+     * Gets the value of the interno property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getInterno() {
+        return interno;
+    }
+
+    /**
+     * Sets the value of the interno property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setInterno(String value) {
+        this.interno = value;
+    }
+
+    /**
+     * Gets the value of the esponenteInterno property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getEsponenteInterno() {
+        return esponenteInterno;
+    }
+
+    /**
+     * Sets the value of the esponenteInterno property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setEsponenteInterno(String value) {
+        this.esponenteInterno = value;
+    }
+
+    /**
+     * Gets the value of the piano property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getPiano() {
+        return piano;
+    }
+
+    /**
+     * Sets the value of the piano property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setPiano(String value) {
+        this.piano = value;
+    }
+
+    /**
+     * Gets the value of the fabbricato property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getFabbricato() {
+        return fabbricato;
+    }
+
+    /**
+     * Sets the value of the fabbricato property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setFabbricato(String value) {
+        this.fabbricato = value;
+    }
+
+    /**
+     * Gets the value of the km property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getKm() {
+        return km;
+    }
+
+    /**
+     * Sets the value of the km property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setKm(String value) {
+        this.km = value;
+    }
+
+    /**
+     * Gets the value of the frazione property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link FrazioneType }
+     *     
+     */
+    public FrazioneType getFrazione() {
+        return frazione;
+    }
+
+    /**
+     * Sets the value of the frazione property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link FrazioneType }
+     *     
+     */
+    public void setFrazione(FrazioneType value) {
+        this.frazione = value;
+    }
+
+    /**
+     * Gets the value of the circoscrizione property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link CircoscrizioneType }
+     *     
+     */
+    public CircoscrizioneType getCircoscrizione() {
+        return circoscrizione;
+    }
+
+    /**
+     * Sets the value of the circoscrizione property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link CircoscrizioneType }
+     *     
+     */
+    public void setCircoscrizione(CircoscrizioneType value) {
+        this.circoscrizione = value;
+    }
+
+    /**
+     * Gets the value of the quartiere property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link QuartiereType }
+     *     
+     */
+    public QuartiereType getQuartiere() {
+        return quartiere;
+    }
+
+    /**
+     * Sets the value of the quartiere property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link QuartiereType }
+     *     
+     */
+    public void setQuartiere(QuartiereType value) {
+        this.quartiere = value;
+    }
+
+    /**
+     * Gets the value of the riferimentoCatastale property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the riferimentoCatastale property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getRiferimentoCatastale().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link RiferimentoCatastaleType }
+     * 
+     * 
+     */
+    public List<RiferimentoCatastaleType> getRiferimentoCatastale() {
+        if (riferimentoCatastale == null) {
+            riferimentoCatastale = new ArrayList<RiferimentoCatastaleType>();
+        }
+        return this.riferimentoCatastale;
+    }
+
+    /**
+     * Gets the value of the coordinate property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link CoordinateType }
+     *     
+     */
+    public CoordinateType getCoordinate() {
+        return coordinate;
+    }
+
+    /**
+     * Sets the value of the coordinate property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link CoordinateType }
+     *     
+     */
+    public void setCoordinate(CoordinateType value) {
+        this.coordinate = value;
+    }
+
+    /**
+     * Gets the value of the tipo property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link TipoLocalizzazioneType }
+     *     
+     */
+    public TipoLocalizzazioneType getTipo() {
+        return tipo;
+    }
+
+    /**
+     * Sets the value of the tipo property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link TipoLocalizzazioneType }
+     *     
+     */
+    public void setTipo(TipoLocalizzazioneType value) {
+        this.tipo = value;
+    }
+
+    /**
+     * Gets the value of the uuid property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getUuid() {
+        return uuid;
+    }
+
+    /**
+     * Sets the value of the uuid property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setUuid(String value) {
+        this.uuid = value;
+    }
+
+    /**
+     * Gets the value of the cap property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getCap() {
+        return cap;
+    }
+
+    /**
+     * Sets the value of the cap property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setCap(String value) {
+        this.cap = value;
+    }
+
+    /**
+     * Gets the value of the accessoTipo property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getAccessoTipo() {
+        return accessoTipo;
+    }
+
+    /**
+     * Sets the value of the accessoTipo property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setAccessoTipo(String value) {
+        this.accessoTipo = value;
+    }
+
+    /**
+     * Gets the value of the accessoNumero property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getAccessoNumero() {
+        return accessoNumero;
+    }
+
+    /**
+     * Sets the value of the accessoNumero property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setAccessoNumero(String value) {
+        this.accessoNumero = value;
+    }
+
+    /**
+     * Gets the value of the accessoDescrizione property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getAccessoDescrizione() {
+        return accessoDescrizione;
+    }
+
+    /**
+     * Sets the value of the accessoDescrizione property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setAccessoDescrizione(String value) {
+        this.accessoDescrizione = value;
+    }
+
+}

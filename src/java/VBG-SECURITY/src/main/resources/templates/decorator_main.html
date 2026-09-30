@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html
+	th:fragment="layout (title, content)"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	lang="it">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="pragma" content="no-cache" />
+	
+	<title th:replace="${title}">@{ - <!--  <decorator:title default="" /> --></title>
+	
+	<link th:href="@{/bootstrap-5.2.3/css/bootstrap.min.css}" rel="stylesheet">
+	<!--- Versione non bundle di Bootstrap Italia -->
+		
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+
+<br style="clear: both;" />
+<!-- start wrapper -->
+<div id="wrapper">
+	<!-- start page -->
+	<div id="page">
+		<!-- start content -->
+		<div id="content">
+			<div th:replace="~{fragments/notifiche :: notifiche}"></div>
+  			<div th:replace="${content}"></div>
+		</div>
+		<!-- end content -->
+		<br />
+	</div>
+	<!-- end page -->
+</div>
+<!-- end wrapper -->
+<!-- start footer -->
+<div id="footer" th:replace="~{fragments/footer :: footer}"></div>
+<!-- end footer -->
+
+<script th:src="@{/bootstrap-5.2.3/js/bootstrap.bundle.min.js}" ></script>
+  
+</body>
+</html>

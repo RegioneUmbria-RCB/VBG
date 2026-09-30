@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions 
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+	xmlns:sch="http://gruppoinit.it/schemas/messages/pdfutils"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+	xmlns:tns="http://gruppoinit.it/messages/pdfutils" 
+	targetNamespace="http://gruppoinit.it/messages/pdfutils">
+	<wsdl:types>
+		<schema xmlns="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://gruppoinit.it/schemas/messages/pdfutils" schemaLocation="pdfutils.xsd" />
+		</schema>
+	</wsdl:types>
+	<wsdl:message name="RecuperaDatiDaPDFRequest">
+		<wsdl:part element="sch:RecuperaDatiDaPDFRequest" name="RecuperaDatiDaPDFRequest" />
+	</wsdl:message>
+	<wsdl:message name="RecuperaDatiDaPDFResponse">
+		<wsdl:part element="sch:RecuperaDatiDaPDFResponse" name="RecuperaDatiDaPDFResponse" />
+	</wsdl:message>
+	<wsdl:message name="PrecompilaPDFRequest">
+		<wsdl:part element="sch:PrecompilaPDFRequest" name="PrecompilaPDFRequest" />
+	</wsdl:message>
+	<wsdl:message name="PrecompilaPDFResponse">
+		<wsdl:part element="sch:PrecompilaPDFResponse" name="PrecompilaPDFResponse" />
+	</wsdl:message>
+	<wsdl:message name="ApplicaTextLayerPDFRequest">
+		<wsdl:part element="sch:ApplicaTextLayerPDFRequest" name="ApplicaTextLayerPDFRequest" />
+	</wsdl:message>
+	<wsdl:message name="ApplicaTextLayerPDFResponse">
+		<wsdl:part element="sch:ApplicaTextLayerPDFResponse" name="ApplicaTextLayerPDFResponse" />
+	</wsdl:message>
+	<wsdl:portType name="PdfUtils">
+		<wsdl:operation name="RecuperaDatiDaPDF">
+			<wsdl:input message="tns:RecuperaDatiDaPDFRequest" name="RecuperaDatiDaPDFRequest" />
+			<wsdl:output message="tns:RecuperaDatiDaPDFResponse" name="RecuperaDatiDaPDFResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="PrecompilaPDF">
+			<wsdl:input message="tns:PrecompilaPDFRequest" name="PrecompilaPDFRequest" />
+			<wsdl:output message="tns:PrecompilaPDFResponse" name="PrecompilaPDFResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="ApplicaTextLayerPDF">
+			<wsdl:input message="tns:ApplicaTextLayerPDFRequest" name="ApplicaTextLayerPDFRequest" />
+			<wsdl:output message="tns:ApplicaTextLayerPDFResponse" name="ApplicaTextLayerPDFResponse" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="PdfUtilsSoapBinding" type="tns:PdfUtils">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="RecuperaDatiDaPDF">
+			<soap:operation soapAction="recuperaDatiDaPDF" />
+			<wsdl:input name="RecuperaDatiDaPDFRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="RecuperaDatiDaPDFResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="PrecompilaPDF">
+			<soap:operation soapAction="precompilaPDF" />
+			<wsdl:input name="PrecompilaPDFRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="PrecompilaPDFResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ApplicaTextLayerPDF">
+			<soap:operation soapAction="applicaTextLayerPDF" />
+			<wsdl:input name="ApplicaTextLayerPDFRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="ApplicaTextLayerPDFResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>			
+	</wsdl:binding>
+	<wsdl:service name="PdfUtilsService">
+		<wsdl:port binding="tns:PdfUtilsSoapBinding" name="PdfUtilsPort">
+			<soap:address location="http://localhost:8080/pdfutils/services/" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

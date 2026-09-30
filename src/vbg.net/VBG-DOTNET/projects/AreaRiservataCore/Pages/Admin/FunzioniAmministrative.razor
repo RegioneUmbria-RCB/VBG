@@ -1,0 +1,60 @@
+﻿@page "/{IdComune}/{Software}/admin"
+@using AreaRiservataCore.Pages.Benvenuto
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+
+@inherits BasePage
+
+
+@if (UtenteTester)
+{
+    <h2>Funzioni Amministrative</h2>
+
+    <p>Di seguito è riportato l'elenco delle funzioni amministrative a disposizione di un utente tester.</p>
+
+    <div class="card-wrapper card-teaser-wrapper align-items-stretch">
+        <HomepageCard Titolo="Configurazioni" Descrizione="Visualizza i parametri di configurazione dell'applicazione." Url="@urlConfigurazioni"></HomepageCard>
+        <HomepageCard Titolo="Menu XML" Descrizione="Visualizza l'attuale configurazione del file menu.xml." Url="@urlMenuXml"></HomepageCard>
+        <HomepageCard Titolo="Workflow XML" Descrizione="Visualizza l'attuale configurazione del file workflow.xml." Url="@urlWorkflowXml"></HomepageCard>
+        <HomepageCard Titolo="Dashboard SSU" Descrizione="Visualizza dashboard Sostema informatico Sportelli Unici" Url="@urlDashboardSSU"></HomepageCard>
+    </div>
+}
+else
+{
+    <h2>Errore</h2>
+    <p>Impossibile visualizzare la pagina perchè non si dispone dei permessi necessari.</p>
+    <p>Clicca <span><a href="" @onclick:preventDefault @onclick="@(() => GotoAsync("home"))">qui</a></span> per tornare alla homepage. </p>
+}
+
+@code {
+    [CascadingParameter(Name = "Layout")]
+    public MainLayout Layout { get; set; } = default!;
+
+    private string urlConfigurazioni = "";
+    private string urlMenuXml = "";
+    private string urlWorkflowXml = "";
+    private string urlDashboardSSU = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        var basePath = $"{_navigationManager.BaseUri}{IdComune}/{Software}";
+            var breadcrumbItems = new List<BreadcrumbsItem>()
+            {
+                new BreadcrumbsItem()
+                {
+                    Label = "Funzioni amministrative",
+                    Url = $"{basePath}/admin",
+                    Active = true
+                }
+            };
+
+            this.Layout.SetBreadcrumbItems(breadcrumbItems);
+
+        urlConfigurazioni = $"{basePath}/admin/configuration";
+        urlMenuXml = $"{basePath}/admin/menu";
+        urlWorkflowXml = $"{basePath}/admin/workflow";
+        urlDashboardSSU = $"{basePath}/admin/dashboardssu";
+
+    }
+}

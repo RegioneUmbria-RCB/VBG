@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:jxb="http://java.sun.com/xml/ns/jaxb" jxb:version="2.1"
+	targetNamespace="http://gruppoinit.it/sigepro/schemas/cartmapping" xmlns:tns="http://gruppoinit.it/sigepro/schemas/cartmapping" elementFormDefault="qualified">
+
+	<element name="CartMappingsConfig">
+		<complexType>
+			<sequence minOccurs="1" maxOccurs="unbounded">
+				<annotation>
+					<appinfo>
+						<jxb:property name="cartMappings" />
+					</appinfo>
+				</annotation>
+				<element name="cart-mapping" type="tns:CartMapping"></element>
+			</sequence>
+		</complexType>
+	</element>
+
+	<complexType name="CartMapping">
+		<all>
+			<element name="id-semantico" type="string" minOccurs="1" nillable="false"></element>
+			<element name="value" type="tns:ValueBuilder" minOccurs="1" nillable="false"></element>
+			<element name="value-processing" type="tns:ValueProcessing" minOccurs="0" nillable="false"></element>
+			<element name="value-mappings" type="tns:ValueMappings" minOccurs="0" nillable="false"></element>
+		</all>
+	</complexType>
+
+	<complexType name="ValueBuilder">
+		<sequence minOccurs="1" maxOccurs="unbounded">
+			<annotation>
+				<appinfo>
+					<jxb:property name="vbgValues" />
+				</appinfo>
+			</annotation>
+			<element name="vbg-value" type="tns:VbgValue">
+				<annotation>
+					<documentation>
+						Indica la modalità per recuperare un valore da riportare in un id semantico.
+						I valori possono essere dei valori fissi o dei valori
+						recuperati dalla base dati di VBG.
+						In ciascun elemento vbg-value può essere impostata una condizione booleana usando gli attributi if-*.
+						Se la
+						condizione viene specificata il valore viene recuperato solo se risulta vera, se non è specificata
+						verrà sempre recuperato il valore e nel caso
+						di valori vuoti o nulli verrà comunque impostato un id semantico con valore vuoto.
+					</documentation>
+				</annotation>
+			</element>
+		</sequence>
+		<attribute name="indexed-property" type="string" use="optional">
+			<annotation>
+				<documentation>
+					L'attributo specifica quale sia la proprietà dell'istanza in base alla quale stabilire il numero di valori restituiti.
+					E' necessario
+					specificarlo solo nei seguenti casi:
+					1) il valore da restituire è un valore fisso che viene utilizzato per popolare un id semantico indicizzato,
+					in questo caso
+					sarà restituito il valore fisso tante volte quanti sono i valori della proprietà specificata.
+					2) il valore da restituire è preso da
+					un campo dell'istanza di tipo scalare ma il valore deve essere ripetuto N volte
+					tante quanti sono i valori di un'altra proprietà indicizzata
+					dell'istanza.
+				</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="value-elaboration" type="tns:ElaborationType" default="GET_FIRST">
+			<annotation>
+				<documentation>
+					L'attributo specifica come devono essere trattati i valori recuperati in ciascun vbg-value.
+					I valori possibili sono APPEND per
+					concatenare tutti i valori recuperati per cui la condizione specificata sia verificata
+					e GET_FIRST per recuperare solo il primo per cui la
+					condizione sia verificata.
+				</documentation>
+			</annotation>
+		</attribute>
+	</complexType>
+
+	<simpleType name="ElaborationType">
+		<restriction base="string">
+			<enumeration value="APPEND"></enumeration>
+			<enumeration value="GET_FIRST"></enumeration>
+		</restriction>
+	</simpleType>
+
+	<complexType name="VbgValue">
+		<choice minOccurs="1" maxOccurs="1">
+			<element name="campo-dinamico" type="tns:CampoDinamico" minOccurs="0" nillable="false">
+				<annotation>
+					<documentation>Utilizzato per indicare che il valore deve essere recuperato da un campo dinamico</documentation>
+				</annotation>
+			</element>
+			<element name="campo-statico" type="string" minOccurs="0" nillable="false">
+				<annotation>
+					<documentation>
+						Utilizzato per indicare che il valore deve essere recuperato da una proprietà dell'istanza o di una qualunque entità ad essa
+						collegata.
+					</documentation>
+				</annotation>
+			</element>
+			<element name="valore-fisso" type="string" minOccurs="0" nillable="false">
+				<annotation>
+					<documentation>Utilizzato per popolare l'id semantico con un valore fisso prestabilito.</documentation>
+				</annotation>
+			</element>
+		</choice>
+		<attribute name="if-property" type="string" use="optional"></attribute>
+		<attribute name="if-operator" type="tns:OperatorType" use="optional" default="EXISTS"></attribute>
+		<attribute name="if-value" type="string" use="optional"></attribute>
+	</complexType>
+
+	<simpleType name="OperatorType">
+		<restriction base="string">
+			<enumeration value="EXISTS">
+				<annotation>
+					<documentation>
+						l'operatore restituisce true se la proprietà specificata in if-property è valorizzata
+					</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="NOT_EXISTS">
+				<annotation>
+					<documentation>
+						l'operatore restituisce true se la proprietà specificata in if-property non è valorizzata
+					</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="EQUALS">
+				<annotation>
+					<documentation>
+						l'operatore restituisce true se la proprietà specificata in if-property è uguale al valore specificato in if-value
+					</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="NOT_EQUALS">
+				<annotation>
+					<documentation>
+						l'operatore restituisce true se la proprietà specificata in if-property è diversa dal valore specificato in if-value
+					</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="MATCHES">
+				<annotation>
+					<documentation>
+						l'operatore restituisce true se la proprietà specificata in if-property matcha l'espressione regolare specificata in if-value
+					</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="NOT_MATCHES">
+				<annotation>
+					<documentation>
+						l'operatore restituisce true se la proprietà specificata in if-property non matcha l'espressione regolare specificata in if-value
+					</documentation>
+				</annotation>
+			</enumeration>
+		</restriction>
+	</simpleType>
+
+	<complexType name="CampoDinamico">
+		<all>
+			<element name="software" type="string" minOccurs="1" nillable="false">
+				<annotation>
+					<documentation>Riferimento al software a cui è associato il campo dinamico</documentation>
+				</annotation>
+			</element>
+			<element name="codice-campo" type="string" minOccurs="1" nillable="false">
+				<annotation>
+					<documentation>Riferimento all'id numerico del campo dinamico oppure al suo codice univoco alfanumerico</documentation>
+				</annotation>
+			</element>
+		</all>
+	</complexType>
+
+	<complexType name="ValueProcessing">
+		<sequence minOccurs="1" maxOccurs="unbounded">
+			<annotation>
+				<appinfo>
+					<jxb:property name="processingSteps" />
+				</appinfo>
+				<documentation>
+					Contiene un elenco di trasformazioni da applicare ai valori recuperati.
+					Le trasformazioni serviranno per rielaborare i valori
+					estratti dalla mappatura e renderli compatibili con le regole di validazione del campo CART di desctinazione
+					Le trasformazioni potranno essere di diverso tipo a seconda delle necessità.
+					Le trasformazioni sono applicate sempre prima delle mappature dei valori VBG sui valori CART.
+				</documentation>
+			</annotation>
+			<choice>
+				<element name="value-replace" type="tns:ValueReplace" minOccurs="0" nillable="false">
+					<annotation>
+						<documentation>Utilizzato per sostituire nel valore tutte le occorrenze di una espressione regolare con la stringa specificata.</documentation>
+					</annotation>
+				</element>
+			</choice>
+		</sequence>
+	</complexType>
+
+	<complexType name="ValueReplace">
+		<all>
+			<element name="replace-match" type="string" minOccurs="1" nillable="false">
+				<annotation>
+					<documentation>Espressione regolare che individua le parti da sostituire nel valore.</documentation>
+				</annotation>
+			</element>
+			<element name="replace-with" type="string" minOccurs="1" nillable="false">
+				<annotation>
+					<documentation>Stringa sostituita in ogni occorrenza di replace-match</documentation>
+				</annotation>
+			</element>
+		</all>
+	</complexType>
+
+	<complexType name="ValueMappings">
+		<sequence minOccurs="1" maxOccurs="unbounded">
+			<annotation>
+				<appinfo>
+					<jxb:property name="valueMappings" />
+				</appinfo>
+				<documentation>
+					Elenco di mappature da applicare ai valori SiGePro per trasformarli in valori CART.
+					Per ciascun valore esistente in SiGePro verranno
+					valutate le mappature dei valori nell'ordine in cui sono scritte,
+					verrà considerata solo la prima per cui l'espressione regolare matcha.
+					Perciò se
+					si vuole creare una mappatura del tipo 'per tutti gli altri valori inserisci il valore ALTRO'
+					occorre creare una mappatura che ad un'espressione
+					regolare che matcha qualunque stringa (oppure vuota) associa il valore 'ALTRO'
+					e occorre che tale
+					mappatura sia messa per ultima nell'elenco.
+				</documentation>
+			</annotation>
+			<element name="value-mapping" type="tns:ValueMapping"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="ValueMapping">
+		<all>
+			<element name="vbg-value-match" type="string" minOccurs="1" nillable="false">
+				<annotation>
+					<documentation>Espressione regolare. Se il valore di SIGePro matcha l'espressione regolare allora al CART viene trasmesso il valore specificato
+						in cart-value
+					</documentation>
+				</annotation>
+			</element>
+			<element name="cart-value" type="string" minOccurs="1" nillable="false"></element>
+		</all>
+	</complexType>
+
+</schema>

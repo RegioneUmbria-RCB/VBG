@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration>
+ 
+<configuration>
+  <import class="ch.qos.logback.classic.encoder.PatternLayoutEncoder"/>
+  
+  
+  <import class="de.siegmar.logbackgelf.GelfTcpAppender"/>
+  <import class="de.siegmar.logbackgelf.GelfEncoder"/>
+
+  <import class="ch.qos.logback.core.ConsoleAppender"/>
+  <import class="ch.qos.logback.classic.AsyncAppender"/>
+  
+  <springProperty name="application.name" source="spring.application.name"/>
+  
+  <appender name="STDOUT" class="ConsoleAppender">
+    <encoder class="PatternLayoutEncoder">
+      <pattern>%green(%date) %highlight(%-5level) %yellow([%file:%line]) %blue(: %msg%n)</pattern>
+      <charset>UTF-8</charset>
+    </encoder>
+  </appender>
+
+  <appender name="GELF" class="GelfTcpAppender">
+    <graylogHost>vbg.graylog</graylogHost>
+    <graylogPort>12201</graylogPort>
+    <encoder class="GelfEncoder">
+    	<staticField>app_name:${application.name}</staticField>
+    </encoder>
+  </appender>
+ 
+  <appender name="ASYNC GELF" class="AsyncAppender">
+    <appender-ref ref="GELF"/>
+    <neverBlock>true</neverBlock>
+  </appender>
+  
+  <root level="INFO">
+    <appender-ref ref="STDOUT"/>
+  </root>
+  
+	<logger name="org.springframework.web" level="error" additivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+	<logger name="org.springframework.ws" level="error" additivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="org.springframework.security" level="error" additivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="it.sgp" level="info" additivity="false">
+       <appender-ref ref="STDOUT"/>
+    </logger>
+    
+    <logger name="org.hibernate" level="error" additivity="false">
+       <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="org.hibernate.type" level="error" additivity="false">
+       <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="org.hibernate.stat" level="error" additivity="false">
+       <appender-ref ref="STDOUT"/>
+    </logger>
+	<logger name="org.hibernate.orm.jdbc.bind" level="error" additivity="false">
+       <appender-ref ref="STDOUT"/>
+    </logger>    
+
+    <logger name="it.sgp" level="info" additivity="false">
+    	<appender-ref ref="ASYNC GELF"/>
+    </logger>
+ 
+</configuration>

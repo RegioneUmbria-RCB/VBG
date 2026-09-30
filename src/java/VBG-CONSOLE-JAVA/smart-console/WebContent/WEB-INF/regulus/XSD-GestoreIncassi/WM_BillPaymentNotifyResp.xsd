@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="urn:it.regulus.gestoreincassi" xmlns="urn:it.regulus.gestoreincassi" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:include schemaLocation="../XSD/BillPaymentNotifyResp.xsd"/>
+	<xs:element name="MSG">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="TITOLO" type="xs:string"/>
+				<xs:element name="RISPOSTA">
+					<xs:complexType>
+						<xs:attribute name="IdentificativoRisposta" type="xs:string" use="required"/>
+						<xs:attribute name="DataRisposta" type="xs:string" use="required"/>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="ESITO">
+					<xs:complexType>
+						<xs:simpleContent>
+							<xs:extension base="xs:string">
+								<xs:attribute name="RC" type="xs:string" use="required"/>
+								<xs:attribute name="RCADD" type="xs:string" use="required"/>
+								<xs:attribute name="TIPOM" type="xs:string" use="required"/>
+							</xs:extension>
+						</xs:simpleContent>
+					</xs:complexType>
+				</xs:element>
+				<xs:element ref="DATIOUTPUT"/>
+			</xs:sequence>
+			<xs:attribute name="VersioneMessaggio" type="xs:string" use="required"/>
+			<xs:attribute name="NomeFunzione" type="xs:string" use="required"/>
+			<xs:attribute name="CodiceFunzione" type="xs:string" use="required"/>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

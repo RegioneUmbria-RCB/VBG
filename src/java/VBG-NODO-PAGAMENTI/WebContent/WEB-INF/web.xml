@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee; http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+  <display-name>nodo-pagamenti (_NOME_VERSIONE_)</display-name>
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>
+			/WEB-INF/applicationContext.xml
+			/WEB-INF/cxf-beans.xml
+		</param-value>
+  </context-param>
+  <context-param>
+		<param-name>log4jRefreshInterval</param-name>
+		<param-value>10000</param-value>
+  </context-param>
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  <servlet>
+    <description>Apache CXF Endpoint</description>
+    <servlet-name>cxf</servlet-name>
+    <servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet>
+    <servlet-name>nla-pagamenti</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <load-on-startup>2</load-on-startup>
+  </servlet>
+	<!-- 3. Workaround mirato per Content-Length. -->
+	<filter>
+	    <filter-name>contentLengthTrackingWorkaroundFilter</filter-name>
+	    <filter-class>it.gruppoinit.pal.gp.pay.web.filters.ContentLengthTrackingWorkaroundFilter</filter-class>
+	</filter>
+	 
+	<filter-mapping>
+	    <filter-name>contentLengthTrackingWorkaroundFilter</filter-name>
+	    <url-pattern>/*</url-pattern>
+	    <dispatcher>REQUEST</dispatcher>
+	    <dispatcher>ERROR</dispatcher>
+	</filter-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>cxf</servlet-name>
+    <url-pattern>/services/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>nla-pagamenti</servlet-name>
+    <url-pattern>/esitoSessionePagamento/*</url-pattern>
+    <url-pattern>*.htm</url-pattern>
+    <url-pattern>*.xml</url-pattern>
+  </servlet-mapping>
+  <session-config>
+    <session-timeout>60</session-timeout>
+  </session-config>
+  <welcome-file-list>
+    <welcome-file>/index.jsp</welcome-file>
+  </welcome-file-list>
+</web-app>

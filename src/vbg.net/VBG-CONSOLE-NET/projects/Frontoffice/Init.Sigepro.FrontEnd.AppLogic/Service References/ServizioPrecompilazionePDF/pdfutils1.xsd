@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<schema xmlns:tns="http://gruppoinit.it/schemas/messages/pdfutils" xmlns:xmime="http://www.w3.org/2005/05/xmlmime" elementFormDefault="qualified" targetNamespace="http://gruppoinit.it/schemas/messages/pdfutils" xmlns="http://www.w3.org/2001/XMLSchema">
+  <element name="PrecompilaPDFRequest" type="tns:PrecompilaPDFRequestType" />
+  <complexType name="PrecompilaPDFRequestType">
+    <sequence>
+      <element minOccurs="1" maxOccurs="1" name="token" type="string" />
+      <element minOccurs="1" maxOccurs="1" name="xmlFileIn" type="tns:XmlFileType" />
+      <element minOccurs="1" maxOccurs="unbounded" name="pdfList" type="tns:PDFFileType" />
+    </sequence>
+  </complexType>
+  <complexType name="PDFFileType">
+    <sequence>
+      <element minOccurs="1" maxOccurs="1" name="id" type="string" />
+      <element minOccurs="1" maxOccurs="1" name="fileName" type="string" />
+      <element xmime:expectedContentTypes="application/octet-stream" minOccurs="1" maxOccurs="1" name="binaryData" type="base64Binary" />
+    </sequence>
+  </complexType>
+  <complexType name="XmlFileType">
+    <sequence>
+      <element xmime:expectedContentTypes="application/octet-stream" minOccurs="1" maxOccurs="1" name="binaryData" type="base64Binary" />
+    </sequence>
+  </complexType>
+  <element name="PrecompilaPDFResponse" type="tns:PrecompilaPDFResponseType" />
+  <complexType name="PrecompilaPDFResponseType">
+    <sequence>
+      <choice>
+        <element minOccurs="1" maxOccurs="unbounded" name="pdfList" type="tns:PDFFileType" />
+        <element minOccurs="1" maxOccurs="unbounded" name="errori" type="string" />
+      </choice>
+    </sequence>
+  </complexType>
+  <element name="RecuperaDatiDaPDFRequest" type="tns:RecuperaDatiDaPDFRequestType" />
+  <complexType name="RecuperaDatiDaPDFRequestType">
+    <sequence>
+      <element minOccurs="1" maxOccurs="1" name="token" type="string" />
+      <element minOccurs="1" maxOccurs="1" name="pdfFile" type="tns:PDFFileType" />
+    </sequence>
+  </complexType>
+  <element name="RecuperaDatiDaPDFResponse" type="tns:RecuperaDatiDaPDFResponseType" />
+  <complexType name="RecuperaDatiDaPDFResponseType">
+    <choice>
+      <element minOccurs="0" maxOccurs="unbounded" name="dati" type="tns:DatiPDFType" />
+      <element minOccurs="1" maxOccurs="unbounded" name="errori" type="string" />
+    </choice>
+  </complexType>
+  <complexType name="DatiPDFType">
+    <sequence>
+      <element minOccurs="1" maxOccurs="1" name="codice" type="string" />
+      <element minOccurs="0" maxOccurs="unbounded" name="valore" type="string" />
+    </sequence>
+  </complexType>
+</schema>

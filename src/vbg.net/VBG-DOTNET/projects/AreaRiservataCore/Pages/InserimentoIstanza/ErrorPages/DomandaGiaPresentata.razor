@@ -1,0 +1,18 @@
+﻿@page "/{IdComune}/{Software}/inserimento-istanza/errors/domanda-gia-presentata"
+@using Init.Sigepro.FrontEnd.CoreServices.GestionePresentazioneDomanda.Paginatore
+@using VBG.BlazorComponentsLibrary.RisorseTestuali
+@inherits BasePage
+@layout MainLayout
+
+<h3>
+    <RisorsaTestuale IdRisorsa="domandagiapresentata.messaggio">@MessaggioDomandaGiaPresentata</RisorsaTestuale>
+</h3>
+
+<div class="buttonContainer">
+    <button class="btn btn-light" @onclick="@(() => GotoAsync("home"))">Chiudi</button>
+</div>
+
+@code {
+    [Parameter]
+    public string MessaggioDomandaGiaPresentata { get; set; } = "Attenzione, la domanda a cui si sta cercando di accedere risulta già presentata";
+}

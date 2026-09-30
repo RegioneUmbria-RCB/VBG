@@ -1,0 +1,74 @@
+﻿@page "/{IdComune}/{Software}/entiterziscadenzario"
+@using Microsoft.AspNetCore.Components.QuickGrid
+
+@inherits BasePage
+
+<TitoloPagina>Le mie scadenze</TitoloPagina>
+
+<style>
+    h4 {
+        font-size: 16px;
+        margin-bottom: 0;
+        margin-top: 0;
+        font-weight: bold;
+    }
+
+    .soggetto-pratica {
+        margin-bottom: 16px;
+    }
+
+    #grid .btn.btn-link {
+        padding: 0
+    }
+</style>
+
+<QuickGrid Items="@DataSource" Pagination="@_pagination" Class="table table-striped table-hover" id="grid">
+    <TemplateColumn Title="Numero Istanza">
+
+        <div>
+            <a class="btn btn-link" href="@($"entiterzidettagliopratica/{@context.UuidIstanza}/entiterziscadenzario")">@context.NumeroIstanza</a>
+            <div>@context.DescrStatoIstanza</div>
+        </div>
+    </TemplateColumn>
+    <PropertyColumn Title="Sportello" Property="@(c => c.ModuloSoftware)" />
+    <TemplateColumn Title="Soggetti">
+        @if (context.DatiRichiedente?.ToString()?.Trim().Length > 0)
+        {
+            <div class="soggetto-pratica">
+                <h4>Richiedente</h4>
+                <p>@context.DatiRichiedente</p>
+            </div>
+        }
+
+        @if (context.DatiAzienda?.ToString()?.Trim().Length > 0)
+        {
+            <div class="soggetto-pratica">
+                <h4>Azienda</h4>
+                <p>@context.DatiAzienda</p>
+            </div>
+        }
+
+        @if (context.DatiTecnico?.ToString()?.Trim().Length > 0)
+        {
+            <div class="soggetto-pratica">
+                <h4>Tecnico</h4>
+                <p>@context.DatiTecnico</p>
+            </div>
+        }
+    </TemplateColumn>
+    <PropertyColumn Title="Localizzazione" Property="@(c => c.Localizzazione)" />
+    <PropertyColumn Title="Movimento Precedente" Property="@(c => c.DatiMovimento)" />
+    <TemplateColumn Title="Movimento in scadenza">
+        <b>@context.DescrMovimentoDaFare</b><br>
+        <span>Scadenza: @context.DataScadenza?.ToString("dd/MM/yyyy")</span>
+    </TemplateColumn>
+    <TemplateColumn Title="Azioni">
+        <button class="btn btn-link" @onclick='() => GotoAsync($"effettuamovimento/{context.CodiceScadenza}/0/entiterziscadenzario")'>Effettua Movimento</button>
+    </TemplateColumn>
+</QuickGrid>
+
+<Paginator State="@_pagination" />
+
+<div class="buttonContainer">
+    <button class="btn btn-light" @onclick="@(() => GotoAsync("home"))">Torna alla home page</button>
+</div>

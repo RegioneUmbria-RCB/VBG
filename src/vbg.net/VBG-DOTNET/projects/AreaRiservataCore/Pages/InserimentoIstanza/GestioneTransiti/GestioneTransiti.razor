@@ -1,0 +1,235 @@
+﻿@page "/{IdComune}/{Software}/inserimento-istanza/gestione-transiti/{idDomanda:int}/{stepId:int}"
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneTransiti;
+@using Init.Sigepro.FrontEnd.Infrastructure.StepsDomanda.Attributi;
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.DesignComuni.Forms
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+@using VBG.BlazorComponentsLibrary.EditFormComponents
+@using static VBG.BlazorComponentsLibrary.AccessibilityComponents.BadgeComponent
+@inherits IstanzeStepPage
+
+<p>Per eseguire la ricerca delle autorizzazione fare click sul bottone "Ricerca".</p>
+
+<button class="btn btn-primary w-100 mb-40 pt" @onclick="() => _showModalRicerca = true">
+    <span class="rounded-icon">
+        <SvgIcon CssClass="icon-light icon-sm" IconId="it-search"></SvgIcon>
+    </span>
+    Ricerca
+</button>
+
+@if (_showModalRicerca)
+{
+    <BasicModal AlwaysVisible="true" Size="ModalSizeEnum.Small" OnClose="() => _showModalRicerca = false">
+        <ModalHeader Titolo="Ricerca autorizzazione">
+            <small class="text-muted">
+                I campi contrassegnati con <sup>*</sup> sono obbligatori
+            </small>
+        </ModalHeader>
+        <ModalBody>
+            <VbgForm Model="@_model">
+                <div class="row">
+                    <div class="col-12">
+                        <TextInputForm Label="Numero autorizzazione" @bind-Value="_model.NumeroAutorizzazione" Required="true" ValidationFor="() => _model.NumeroAutorizzazione"></TextInputForm>
+                    </div>
+                    <div class="col-12">
+                        <DateInputForm Label="Data autorizzazione" @bind-Value="_model.DataAutorizzazione" Required="true" ValidationFor="() => _model.DataAutorizzazione"></DateInputForm>
+                    </div>
+                </div>
+            </VbgForm>
+        </ModalBody>
+        <ModalFooter>
+            <button class="btn btn-primary fw-bold flex-even" type="submit" form="editor-persona-fisica-form" aria-labelledby="confermaButton" @onclick="EffettuaRicerca"><span id="confermaButton">Conferma</span></button>
+        </ModalFooter>
+    </BasicModal>
+}
+
+
+    
+@if(_model?.Autorizzazione is not null)
+{
+    var titolo = $"Autorizzazione {_model.Autorizzazione.Riferimenti.ToString()}";
+    var sottoTitolo = GetSottotitoloValidita(_model.Autorizzazione.DataValidita, _model.Autorizzazione.DataScadenza);
+
+    <StepCard Titolo="@titolo" Sottotitolo="@sottoTitolo">
+        @if (_model.Autorizzazione.TransitiConsentiti >= 0)
+        {
+            <BadgeComponent Type="BadgeCategoryEnum.WARNING" CssClass="fw-normal mb-3">@($"Preavvisi rimanenti: {_model.Autorizzazione.TransitiRimanenti}")</BadgeComponent>
+        }        
+
+        @if (_model.Autorizzazione.Operazioni.Any())
+        {
+            @foreach (var op in _model.Autorizzazione.Operazioni)
+            {
+                <StepCardItem>
+                    <StepCardItemTitle Titolo="@op.Tipo"></StepCardItemTitle>
+
+                    <StepCardInfo Titolo="Pratica">@op.Istanza</StepCardInfo>
+                    <StepCardInfo Titolo="Protocollo">@op.Protocollo</StepCardInfo>
+                    <StepCardInfo Titolo="Stato">@op.Stato</StepCardInfo>
+                    <StepCardInfo Titolo="Data Aut.Op.">@op.DataAutorizzazione.ToString("dd/MM/yyyy")</StepCardInfo>
+                </StepCardItem>
+            }
+        }
+        else
+        {
+            <div class="alert alert-info" role="alert">
+                    Non sono presenti operazioni.
+            </div>
+        }
+
+    </StepCard>
+}
+
+
+
+@code {
+    [Inject]
+    protected IGestioneTransitiService _transitiService { get; set; } = default!;
+
+    [StepProperty]
+    public string TipoOperazione { get; set; } = "NonDefinita"; 
+
+    [StepProperty]
+    public int IdCampoDinamico { get; set; } = -1;
+
+
+    private class Model
+    {
+        public DateTime? DataAutorizzazione { get; set; }
+        public string NumeroAutorizzazione { get; set; } = "";
+        public AutorizzazioneTransito? Autorizzazione { get; set; }
+    }
+
+    private Model? _model = default!;
+    private bool _showModalRicerca;
+    private bool _permetteOperazione;
+
+    protected override async Task OnLoadStepAsync()
+    {
+        this._model = new Model();
+
+        var ultimaRicerca = this._transitiService.GetRiferimentiPRaticaCercata(this.IdDomanda.Value);
+
+        if (ultimaRicerca == null)
+        {
+            return;
+        }
+
+        this._model.DataAutorizzazione = ultimaRicerca.DataAutorizzazione;
+        this._model.NumeroAutorizzazione = ultimaRicerca.NumeroAutorizzazione;
+
+        await this.EffettuaRicerca();
+    }
+
+    private async Task EffettuaRicerca()
+    {
+        await _spinnerService.ShowSpinnerAsync(() =>
+            {
+                this.MessageContainer.ClearAll();
+
+                var azienda = this.DomandaCorrente.Anagrafiche.GetAzienda();
+
+                if (azienda == null)
+                {
+                    this.MessageContainer.AddError("Nessuna azienda registrata tra le anagrafiche della domanda");
+                    return;
+                }
+
+                if (String.IsNullOrEmpty(_model?.NumeroAutorizzazione))
+                {
+                    this.MessageContainer.AddError("Specificare un numero autorizzazione");
+                    return;
+                }
+
+                if (!_model.DataAutorizzazione.HasValue)
+                {
+                    this.MessageContainer.AddError("Specificare la data dell'autorizzazione");
+                    return;
+                }
+
+                try
+                {
+                    this._model.Autorizzazione = _transitiService.TrovaAutorizzazione(azienda.Codicefiscale, azienda.PartitaIva, _model.NumeroAutorizzazione, _model.DataAutorizzazione.Value);
+
+                    if (this._model.Autorizzazione == null)
+                    {
+                        this.MessageContainer.AddError($"Autorizzazione {_model.NumeroAutorizzazione} del {_model.DataAutorizzazione.Value} non trovata, verificare i dati immessi.");
+                        return;
+                    }
+
+                    var tipoOperazione = AutorizzazioneTransito.TipoOperazione.NonDefinita;
+
+                    if (!Enum.TryParse<AutorizzazioneTransito.TipoOperazione>(TipoOperazione, out tipoOperazione))
+                    {
+                        this.MessageContainer.AddError("La control property \"TipoOperazione\" contiene un valore non valido: " + TipoOperazione);
+                        tipoOperazione = AutorizzazioneTransito.TipoOperazione.NonDefinita;
+                    }
+
+                    _permetteOperazione = this._model.Autorizzazione.PermetteOperazione(tipoOperazione);
+
+                    if (!_permetteOperazione)
+                    {
+                        this.MessageContainer.AddError("L'operazione selezionata non è valida per questa autorizzazione");
+                        return;
+                    }
+
+                    _showModalRicerca = false;
+                }
+                catch (Exception ex)
+                {
+                    this.MessageContainer.AddError("Non sono state trovate autorizzazioni corrispondenti ai riferimenti inseriti");
+                    Logger.Error($"Errore durante la ricerca delle autorizzazioni: {ex.Message}");
+                }
+            }); 
+    }
+
+    protected override void OnBeforeExitStep()
+    {
+        base.OnBeforeExitStep();
+
+        if (!String.IsNullOrEmpty(_model?.NumeroAutorizzazione) && _model.DataAutorizzazione.HasValue && _model.Autorizzazione != null)
+        {
+            var valoreCercato = new RiferimentiPraticaCercata
+                {
+                    NumeroAutorizzazione = _model.NumeroAutorizzazione,
+                    DataAutorizzazione = _model.DataAutorizzazione.Value
+                };
+            var idPraticaRiferimento = _model.Autorizzazione.CodiceIstanza;
+
+            this._transitiService.SalvaDatiAutorizzazioneTrovata(this.IdDomanda.Value, new DatiAutorizzazioneTrovata(valoreCercato, idPraticaRiferimento, this.IdCampoDinamico));
+        }
+    }
+
+    protected override bool CanExitStep()
+    {
+        if (this._model?.Autorizzazione is null)
+        {
+            MessageContainer.AddError("Per proseguire è necessario selezionare un'autorizzazione");
+
+            return false;
+        }
+
+        if (!_permetteOperazione)
+        {
+            this.MessageContainer.AddError("L'operazione selezionata non è valida per questa autorizzazione");
+            return false;
+        }
+
+        return true;
+    }
+
+    private string GetSottotitoloValidita(DateTime? dataInizio, DateTime? dataFine)
+    {
+        if (dataInizio.HasValue && dataFine.HasValue)
+            return $"Valida dal {dataInizio.Value.ToShortDateString()} al {dataFine.Value.ToShortDateString()}";
+
+        if(dataInizio.HasValue && !dataFine.HasValue)
+            return $"Valida dal {dataInizio.Value.ToShortDateString()}";
+
+        if (!dataInizio.HasValue && dataFine.HasValue)
+            return $"Valida fino al {dataFine.Value.ToShortDateString()}";
+
+        return "";
+    }
+}

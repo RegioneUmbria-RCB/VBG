@@ -1,0 +1,1 @@
+C:\sviluppo\apache-cxf\apache-cxf-2.5.1\bin\wsdl2java.bat -p it.gruppoinit.pal.gp.backoffice.schemas.messages.autorizzazioniaccessi -all -frontend jaxws21 AutorizzazioniAccessi.wsdl

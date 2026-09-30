@@ -1,0 +1,39 @@
+#set($valTrue = $campo.getProprietaCampo("ValoreTrue","1"))
+#set($valFalse = $campo.getProprietaCampo("ValoreFalse","0"))
+#set($rightLabel = $campo.getProprietaCampo("Testo",""))
+#if($modelloHelper.isRenderForPrint())
+	#if($val.equalsIgnoreCase($valTrue))
+		#set($val = "x")
+	#else
+		#set($val = " ")
+	#end
+	<b>[$val]</b>&nbsp;<span class="etichettaControllo" style="vertical-align: top;">$rightLabel</span>
+#else
+	#set($checked = "")
+	#if($val.equalsIgnoreCase($valTrue))
+		#if(!$isTemplate)
+			#set($checked = "checked='checked'")
+		#end
+	#else
+		#set($val = $valFalse)
+	#end
+	<div class="check-wrap ${classeCampo}" align="center" starid='${idStar}'>
+		<input type="checkbox" name="TMP_$nameAttr" id="TMP_${nameAttr}_ID" value="$valTrue" $checked 
+		onchange="javascript:settaValoreCheckbox(this);"/>
+	</div>
+	<span class="etichettaControllo" style="vertical-align: top;">$rightLabel</span>
+	<input type="hidden" value="$val" name="${nameAttr}" id="${nameAttr}_ID" starid='${idStar}' />
+	#if(!$isTemplate)
+	<script type="text/javascript">
+		jQuery(document).ready(function(){
+			jQuery('#TMP_${nameAttr}_ID').data("ValoreTrue","$valTrue");
+			jQuery('#TMP_${nameAttr}_ID').data("ValoreFalse","$valFalse");
+		});
+	</script>
+	#else
+		#set($script = "jQuery('#TMP_${nameAttr}_ID').data(${esc.q}ValoreTrue${esc.q},${esc.q}${valTrue}${esc.q});")
+		$blocco.addScript($script)
+		#set($script = "jQuery('#TMP_${nameAttr}_ID').data(${esc.q}ValoreFalse${esc.q},${esc.q}${valFalse}${esc.q});")
+		$blocco.addScript($script)
+	#end
+#end

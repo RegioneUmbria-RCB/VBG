@@ -1,0 +1,471 @@
+﻿@page "/{IdComune}/{Software}/inserimento-istanza/gestione-localizzazioni/{idDomanda:int}/{stepId:int}"
+@using AreaRiservataCore.Shared.Localizzazioni
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.DesignComuni.Forms
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards.CardButtons
+@using VBG.BlazorComponentsLibrary.EditFormComponents
+@using VBG.BlazorComponentsLibrary.EditFormComponents.DropDown
+@using VBG.BlazorComponentsLibrary.RisorseTestuali
+@inherits IstanzeStepPage
+
+
+@if (gridDataSource is not null && gridDataSource.Any())
+{
+    <StepCard Titolo="@TitoloUbicazioneIntervento">
+        @foreach (var item in gridDataSource)
+        {
+            var indirizzoCompleto = !String.IsNullOrEmpty(item.Civico) || !String.IsNullOrEmpty(item.Esponente) ? $"{item.Indirizzo}, {item.Civico} {item.Esponente}" : item.Indirizzo;
+
+            <StepCardItem>
+                <StepCardButtonGroup EditClick="() => OnRowEdit(item)" DeleteVisible="true" DeleteClick="() => OnIniziaEliminazione(item)"></StepCardButtonGroup>
+                <StepCardItemTitle Titolo="@indirizzoCompleto"></StepCardItemTitle>
+
+                <StepCollapsibleContent>
+                    <StepCollapsibleContentItem>
+                        <StepCardInfo Titolo="@_formLocalizzazioni.Colore.Etichetta" Visible="@_formLocalizzazioni.Colore.Visibile">@item.Colore</StepCardInfo>
+                        <StepCardInfo Titolo="@_formLocalizzazioni.Scala.Etichetta" Visible="@_formLocalizzazioni.Scala.Visibile">@item.Scala</StepCardInfo>
+                        <StepCardInfo Titolo="@_formLocalizzazioni.Piano.Etichetta" Visible="@_formLocalizzazioni.Piano.Visibile">@item.Piano</StepCardInfo>
+                        <StepCardInfo Titolo="@_formLocalizzazioni.Interno.Etichetta" Visible="@_formLocalizzazioni.Interno.Visibile">@item.Interno</StepCardInfo>
+                        <StepCardInfo Titolo="@_formLocalizzazioni.EsponenteInterno.Etichetta" Visible="@_formLocalizzazioni.EsponenteInterno.Visibile">@item.EsponenteInterno</StepCardInfo>
+                        <StepCardInfo Titolo="@_formLocalizzazioni.Fabbricato.Etichetta" Visible="@_formLocalizzazioni.Fabbricato.Visibile">@item.Fabbricato</StepCardInfo>
+                        <StepCardInfo Titolo="@_formLocalizzazioni.Km.Etichetta" Visible="@_formLocalizzazioni.Km.Visibile">@item.Km</StepCardInfo>
+                        <StepCardInfo Titolo="@_formLocalizzazioni.Note.Etichetta" Visible="@_formLocalizzazioni.Note.Visibile">@item.Note</StepCardInfo>
+                    </StepCollapsibleContentItem>
+                            
+                    @if (_formLocalizzazioni.Longitudine.Visibile)
+                    {
+                        <StepCollapsibleContentItem Titolo="Coordinate">
+                            <div class="row">
+                                <div class="col-6">
+                                    <StepCardInfo Titolo="@_formLocalizzazioni.Longitudine.Etichetta" CapitalizeText="true">@item.Longitudine</StepCardInfo>
+                                </div>
+                                <div class="col-6">
+                                    <StepCardInfo Titolo="@_formLocalizzazioni.Latitudine.Etichetta" CapitalizeText="true">@item.Latitudine</StepCardInfo>
+                                </div>
+                            </div>
+                        </StepCollapsibleContentItem>
+                    }
+
+                    @if (DatiCatastaliVisibili)
+                    {
+                        <StepCollapsibleContentItem Titolo="Riferimenti catastali">
+                            <div class="row">
+                                <div class="col-6">
+                                    <StepCardInfo Titolo="@_formLocalizzazioni.TipoCatasto.Etichetta" CapitalizeText="true">@item.PrimoRiferimentoCatastale?.TipoCatasto</StepCardInfo>
+                                </div>
+                                <div class="col-6">
+                                    <StepCardInfo Titolo="@_formLocalizzazioni.Sezione.Etichetta" CapitalizeText="true">@item.PrimoRiferimentoCatastale?.Sezione</StepCardInfo>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4">
+                                    <StepCardInfo Titolo="@_formLocalizzazioni.Foglio.Etichetta" CapitalizeText="true">@item.PrimoRiferimentoCatastale?.Foglio</StepCardInfo>
+                                </div>
+                                <div class="col-4">
+                                    <StepCardInfo Titolo="@_formLocalizzazioni.Particella.Etichetta" CapitalizeText="true">@item.PrimoRiferimentoCatastale?.Particella</StepCardInfo>
+                                </div>
+                                <div class="col-4">
+                                    <StepCardInfo Titolo="@_formLocalizzazioni.Sub.Etichetta" CapitalizeText="true">@item.PrimoRiferimentoCatastale?.Sub</StepCardInfo>
+                                </div>
+                            </div>
+                        </StepCollapsibleContentItem>
+                    }
+
+                </StepCollapsibleContent>
+                      
+            </StepCardItem>   
+        }
+
+        @if (DomandaCorrente.Localizzazioni.Indirizzi.Count() < this.NumeroMassimoIndirizzi)
+        {
+            <StepButton Text="Aggiungi un indirizzo" OnClick="OnNewRow" Icon="StepButtonIcons.PlusCircle"></StepButton>
+        }
+    </StepCard>
+}
+else
+{
+    <button class="btn btn-primary w-100 mb-40 pt" @onclick="OnNewRow">
+        <span class="rounded-icon">
+            <SvgIcon CssClass="icon-light icon-sm" IconId="it-plus-circle"></SvgIcon>
+        </span>
+        Aggiungi un indirizzo
+    </button>
+}
+
+<ConfirmationModal Titolo="Conferma eliminazione indirizzo" Visible="@(_deletingItem != null)" ConfermaClick="OnRowDeleteAsync" AnnullaClick="OnAnnullaEliminazione">
+    <ModalBody>
+        <div>
+            Sei sicuro di voler rimuovere l'indirizzo selezionato?
+        </div>
+    </ModalBody>
+</ConfirmationModal>
+
+@switch (currentStep)
+{
+    case Constants.DETAILS_VIEW:
+        <FormModal AlwaysVisible="true" OnClose="@OnBtnAnnullaClick" Size="ModalSizeEnum.Large" Model="@model" FormId="localizzazioniForm" OnValidSubmit="@OnBtnConfirmAsync">
+            <ModalHeader Titolo="@this._titoloModal">
+                <span><span class="fst-italic">I campi contrassegnati con * sono obbligatori</span></span>
+            </ModalHeader>
+            <ModalBody>
+                @if (dataSourceComuni?.Length > 0)
+                {
+                    <div class="row">
+                        <DropDownForm Id="ddlComuneLocalizzazione"
+                                        TItem="DropDownItem"
+                                        Label="Comune"
+                                        Value="model.Comune"
+                                        ValueExpression="() => model.Comune"
+                                        OnChanged="EventCallback.Factory.Create(this, (DropDownItem i) => {
+                                            model.Comune = i ?? new DropDownItem(string.Empty, string.Empty);
+                                        })"
+                                        Items="@comuniDataItems"
+                                        ShowEmptyItem="true"
+                                        EmptyItemValue="@string.Empty"
+                                        ValidationFor="() => model.Comune">
+                        </DropDownForm>
+                    </div>
+                }
+
+                <div class="row">
+                    <AutocompleteForm Id="acIndirizzo"
+                                        Label="Indirizzo"
+                                        TItem="AutocompleteStradarioResultItem" TValue="AutocompleteFormResult"
+                                        SearchMethod="@GetStradarioDataItemsAsync"
+                                        ConvertMethod="(AutocompleteStradarioResultItem x) => x == null ? null : new AutocompleteFormResult(x.Codice.ToString(), x.Descrizione)"
+                                        Value="model.Indirizzo"
+                                        ValueExpression="() => model.Indirizzo"
+                                        ValueChanged="EventCallback.Factory.Create(this, (AutocompleteFormResult r) => model.Indirizzo = r)"
+                                        TextField="@nameof(AutocompleteStradarioResultItem.Descrizione)"
+                                        ValidationFor="() => model.Indirizzo"
+                                        Required="true">
+                    </AutocompleteForm>
+                </div>
+                <div class="row">
+                    @if (_formLocalizzazioni.Civico.Visibile)
+                    {
+                        if (CivicoNumerico)
+                        {
+                            <div class="col-md-4">
+                                <NumericInputForm Id="txtCivico"
+                                                  Label="@_formLocalizzazioni.Civico.Etichetta"
+                                                  TValue="int?"
+                                                  Value="@model.CivicoNumerico"
+                                                  ValueExpression="() => model.CivicoNumerico"
+                                                  MaxLength="10"
+                                                  ValueChanged="EventCallback.Factory.Create(this, (int? n) => model.CivicoNumerico = n)"
+                                                  ValidationFor="() => model.CivicoNumerico"
+                                                  Required="@_formLocalizzazioni.Civico.Obbligatorio"
+                                                  RegEx="@_formLocalizzazioni.Civico.EspressioneRegolare"
+                                                  ValoreMin="@_formLocalizzazioni.Civico.ValoreMin"
+                                                  ValoreMax="@_formLocalizzazioni.Civico.ValoreMax">
+                                </NumericInputForm>
+                            </div>                        
+                        }
+                        else
+                        {
+                            <div class="col-md-4">
+                                <TextInputForm Id="txtCivico"
+                                                @bind-Value="model.Civico"
+                                                MaxLength="10"
+                                                Label="@_formLocalizzazioni.Civico.Etichetta"
+                                                ValidationFor="() => model.Civico"
+                                                Required="@_formLocalizzazioni.Civico.Obbligatorio"
+                                                RegEx="@_formLocalizzazioni.Civico.EspressioneRegolare"
+                                                ValoreMin="@_formLocalizzazioni.Civico.ValoreMin"
+                                                ValoreMax="@_formLocalizzazioni.Civico.ValoreMax" />
+                            </div>
+                        }
+                    }
+                    @if (_formLocalizzazioni.Esponente.Visibile)
+                    {
+                        if (EsponenteNumerico)
+                        {
+                            <div class="col-md-4">
+                                <NumericInputForm Id="txtEsponente"
+                                                    Label="@_formLocalizzazioni.Esponente.Etichetta"
+                                                    TValue="int?"
+                                                    Value="@model.EsponenteNumerico"
+                                                    ValueExpression="() => model.EsponenteNumerico"
+                                                    MaxLength="10"
+                                                    ValueChanged="EventCallback.Factory.Create(this, (int? n) => model.EsponenteNumerico = n)"
+                                                    ValidationFor="() => model.EsponenteNumerico"
+                                                    Required="@_formLocalizzazioni.Esponente.Obbligatorio"
+                                                    RegEx="@_formLocalizzazioni.Esponente.EspressioneRegolare"
+                                                    ValoreMin="@_formLocalizzazioni.Esponente.ValoreMin"
+                                                    ValoreMax="@_formLocalizzazioni.Esponente.ValoreMax">
+                                </NumericInputForm>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-md-4">
+                                <TextInputForm Id="txtEsponente"
+                                               @bind-Value="model.Esponente"
+                                               MaxLength="10"
+                                               Label="@_formLocalizzazioni.Esponente.Etichetta"
+                                               ValidationFor="() => model.Esponente"
+                                               Required="@_formLocalizzazioni.Esponente.Obbligatorio"
+                                               RegEx="@_formLocalizzazioni.Esponente.EspressioneRegolare"
+                                               ValoreMin="@_formLocalizzazioni.Esponente.ValoreMin"
+                                               ValoreMax="@_formLocalizzazioni.Esponente.ValoreMax" />
+                            </div>
+                            
+                        }
+                    }
+                    @if (_formLocalizzazioni.Colore.Visibile)
+                    {
+                        <DropDownForm Id="ddlColore"
+                                        Label="@_formLocalizzazioni.Colore.Etichetta"
+                                        Value="model.Colore"
+                                        ValueExpression="() => model.Colore"
+                                        TItem="DropDownItem"
+                                        OnChanged="EventCallback.Factory.Create(this, (DropDownItem i) => { model.Colore = i; })"
+                                        Items="@coloriDataItems"
+                                        ShowEmptyItem="true"
+                                        EmptyItemValue="@string.Empty"
+                                        ValidationFor="() => model.Colore"
+                                        Required="@_formLocalizzazioni.Colore.Obbligatorio">
+                        </DropDownForm>
+                    }
+                </div>
+                <div class="row">
+                    @if (_formLocalizzazioni.Scala.Visibile)
+                    {
+                        <div class="col-md-4">
+                            <TextInputForm Id="txtScala"
+                                           @bind-Value="model.Scala"
+                                           MaxLength="10"
+                                           Label="@_formLocalizzazioni.Scala.Etichetta"
+                                           ValidationFor="() => model.Scala"
+                                           Required="@_formLocalizzazioni.Scala.Obbligatorio"
+                                           RegEx="@_formLocalizzazioni.Scala.EspressioneRegolare"
+                                           ValoreMin="@_formLocalizzazioni.Scala.ValoreMin"
+                                           ValoreMax="@_formLocalizzazioni.Scala.ValoreMax" />
+                        </div>
+                        
+                    }
+                    @if (_formLocalizzazioni.Piano.Visibile)
+                    {
+                        <div class="col-md-4">
+                            <TextInputForm Id="txtPiano"
+                                           @bind-Value="model.Piano"
+                                           MaxLength="10"
+                                           Label="@_formLocalizzazioni.Piano.Etichetta"
+                                           ValidationFor="() => model.Piano"
+                                           Required="@_formLocalizzazioni.Piano.Obbligatorio"
+                                           RegEx="@_formLocalizzazioni.Piano.EspressioneRegolare"
+                                           ValoreMin="@_formLocalizzazioni.Piano.ValoreMin"
+                                           ValoreMax="@_formLocalizzazioni.Piano.ValoreMax" />
+                        </div>
+                        
+                    }
+                    @if (_formLocalizzazioni.Interno.Visibile)
+                    {
+                        <div class="col-md-4">
+                            <TextInputForm Id="txtInterno"
+                                           @bind-Value="model.Interno"
+                                           MaxLength="10"
+                                           Label="@_formLocalizzazioni.Interno.Etichetta"
+                                           ValidationFor="() => model.Interno"
+                                           Required="@_formLocalizzazioni.Interno.Obbligatorio"
+                                           RegEx="@_formLocalizzazioni.Interno.EspressioneRegolare"
+                                           ValoreMin="@_formLocalizzazioni.Interno.ValoreMin"
+                                           ValoreMax="@_formLocalizzazioni.Interno.ValoreMax" />
+                        </div>
+                        
+                    }
+                </div>
+                <div class="row">
+                    @if (_formLocalizzazioni.EsponenteInterno.Visibile)
+                    {
+                        <div class="col-md-4">
+                            <TextInputForm Id="txtEsponenteInterno"
+                                           @bind-Value="model.EsponenteInterno"
+                                           MaxLength="10"
+                                           Label="@_formLocalizzazioni.EsponenteInterno.Etichetta"
+                                           ValidationFor="() => model.EsponenteInterno"
+                                           Required="@_formLocalizzazioni.EsponenteInterno.Obbligatorio"
+                                           RegEx="@_formLocalizzazioni.EsponenteInterno.EspressioneRegolare"
+                                           ValoreMin="@_formLocalizzazioni.EsponenteInterno.ValoreMin"
+                                           ValoreMax="@_formLocalizzazioni.EsponenteInterno.ValoreMax" />
+                        </div>
+                        
+                    }
+                    @if (_formLocalizzazioni.Fabbricato.Visibile)
+                    {
+                        <div class="col-md-4">
+                            <TextInputForm Id="txtFabbricato"
+                                           @bind-Value="model.Fabbricato"
+                                           MaxLength="10"
+                                           Label="@_formLocalizzazioni.Fabbricato.Etichetta"
+                                           ValidationFor="() => model.Fabbricato"
+                                           Required="@_formLocalizzazioni.Fabbricato.Obbligatorio"
+                                           RegEx="@_formLocalizzazioni.Fabbricato.EspressioneRegolare"
+                                           ValoreMin="@_formLocalizzazioni.Fabbricato.ValoreMin"
+                                           ValoreMax="@_formLocalizzazioni.Fabbricato.ValoreMax" />
+                        </div>
+                        
+                    }
+                    @if (_formLocalizzazioni.Km.Visibile)
+                    {                   
+                        <div class="col-md-4">
+                            <TextInputForm Id="txtKm"
+                                           @bind-Value="model.Km"
+                                           MaxLength="10"
+                                           Label="@_formLocalizzazioni.Km.Etichetta"
+                                           ValidationFor="() => model.Km"
+                                           Required="@_formLocalizzazioni.Km.Obbligatorio"
+                                           RegEx="@_formLocalizzazioni.Km.EspressioneRegolare"
+                                           ValoreMin="@_formLocalizzazioni.Km.ValoreMin"
+                                           ValoreMax="@_formLocalizzazioni.Km.ValoreMax" />
+                        </div>
+                    }
+                </div>
+                <div class="row">
+                    @if (_formLocalizzazioni.Note.Visibile)
+                    {
+                        <TextInputForm Id="txtNote"
+                                        @bind-Value="model.Note"
+                                        MaxLength="3000"
+                                        Label="@_formLocalizzazioni.Note.Etichetta"
+                                        IsMultiline="true"
+                                        ValidationFor="() => model.Note"
+                                        Required="@_formLocalizzazioni.Note.Obbligatorio"
+                                        RegEx="@_formLocalizzazioni.Note.EspressioneRegolare"
+                                        ValoreMin="@_formLocalizzazioni.Note.ValoreMin"
+                                        ValoreMax="@_formLocalizzazioni.Note.ValoreMax" />
+                    }
+                </div>
+
+                @if (CoordinateVisibili)
+                {
+                    <fieldset>
+                        <legend class="mb-4">
+                            <RisorsaTestuale>
+                                <ChildContent>
+                                    @_coordinateTitoloBlocco
+                                </ChildContent>
+                            </RisorsaTestuale>
+                        </legend>
+                        <div class="row">
+                            @if (_formLocalizzazioni.Longitudine.Visibile)
+                            {
+                                <div class="col-md-6">
+                                    <TextInputForm Id="txtLongitudine"
+                                                   @bind-Value="model.Longitudine"
+                                                   MaxLength="50"
+                                                   Label="@_formLocalizzazioni.Longitudine.Etichetta"
+                                                   ValidationFor="() => model.Longitudine"
+                                                   Required="@_formLocalizzazioni.Longitudine.Obbligatorio"
+                                                   RegEx="@_formLocalizzazioni.Longitudine.EspressioneRegolare"
+                                                   ValoreMin="@_formLocalizzazioni.Longitudine.ValoreMin"
+                                                   ValoreMax="@_formLocalizzazioni.Longitudine.ValoreMax" />
+                                </div>
+                                
+                            }
+                            @if (_formLocalizzazioni.Latitudine.Visibile)
+                            {
+                                <div class="col-md-6">
+                                    <TextInputForm Id="txtLatitudine"
+                                                   @bind-Value="model.Latitudine"
+                                                   MaxLength="50"
+                                                   Label="@_formLocalizzazioni.Latitudine.Etichetta"
+                                                   ValidationFor="() => model.Latitudine"
+                                                   Required="@_formLocalizzazioni.Latitudine.Obbligatorio"
+                                                   RegEx="@_formLocalizzazioni.Latitudine.EspressioneRegolare"
+                                                   ValoreMin="@_formLocalizzazioni.Latitudine.ValoreMin"
+                                                   ValoreMax="@_formLocalizzazioni.Latitudine.ValoreMax" />
+                                </div>
+                                
+                            }
+                        </div>
+                    </fieldset>
+                }
+
+                @if (DatiCatastaliVisibili)
+                {
+                    <fieldset>
+                        <legend class="mb-4">
+                            <RisorsaTestuale>
+                                <ChildContent>
+                                    Riferimenti catastali
+                                </ChildContent>
+                            </RisorsaTestuale>
+                        </legend>
+                        <div class="row">
+                            @if (_formLocalizzazioni.TipoCatasto.Visibile)
+                            {
+                                <DropDownForm Id="ddlTipoCatasto"
+                                                Label="@_formLocalizzazioni.TipoCatasto.Etichetta"
+                                                Value="model.TipoCatasto"
+                                                ValueExpression="() => model.TipoCatasto"
+                                                TItem="DropDownItem"
+                                                OnChanged="@(EventCallback.Factory.Create(this, async (DropDownItem i) => { model.TipoCatasto = i; MostraSubalterno(i.Value); }))"
+                                                Items="@tipoCatastoDataItems"
+                                                ShowEmptyItem="false"
+                                                ValidationFor="() => model.TipoCatasto"
+                                                Required="@_formLocalizzazioni.TipoCatasto.Obbligatorio"
+                                                RegEx="@_formLocalizzazioni.TipoCatasto.EspressioneRegolare"
+                                                MinValue="@_formLocalizzazioni.TipoCatasto.ValoreMin"
+                                                MaxValue="@_formLocalizzazioni.TipoCatasto.ValoreMax">
+                                </DropDownForm>
+                            }
+                            @if (_formLocalizzazioni.Foglio.Visibile)
+                            {
+                                <div class="col-md-4">
+                                    <TextInputForm Id="txtFoglio"
+                                                   @bind-Value="model.Foglio"
+                                                   MaxLength="10"
+                                                   Label="@_formLocalizzazioni.Foglio.Etichetta"
+                                                   ValidationFor="() => model.Foglio"
+                                                   Required="@_formLocalizzazioni.Foglio.Obbligatorio"
+                                                   RegEx="@_formLocalizzazioni.Foglio.EspressioneRegolare"
+                                                   ValoreMin="@_formLocalizzazioni.Foglio.ValoreMin"
+                                                   ValoreMax="@_formLocalizzazioni.Foglio.ValoreMax" />
+                                </div>
+                                
+                            }
+                            @if (_formLocalizzazioni.Particella.Visibile)
+                            {
+                                <div class="col-md-4">
+                                    <TextInputForm Id="txtParticella"
+                                                   @bind-Value="model.Particella"
+                                                   MaxLength="10"
+                                                   Label="@_formLocalizzazioni.Particella.Etichetta"
+                                                   ValidationFor="() => model.Particella"
+                                                   Required="@_formLocalizzazioni.Particella.Obbligatorio"
+                                                   RegEx="@_formLocalizzazioni.Particella.EspressioneRegolare"
+                                                   ValoreMin="@_formLocalizzazioni.Particella.ValoreMin"
+                                                   ValoreMax="@_formLocalizzazioni.Particella.ValoreMax" />
+                                </div>
+                                
+                            }
+                            @if (_formLocalizzazioni.Sub.Visibile)
+                            {
+                                <div class="col-md-4">
+                                    <TextInputForm Id="txtSub"
+                                                   @bind-Value="model.Subalterno"
+                                                   MaxLength="10"
+                                                   Label="@_formLocalizzazioni.Sub.Etichetta"
+                                                   ValidationFor="() => model.Subalterno"
+                                                   Required="@_formLocalizzazioni.Sub.Obbligatorio"
+                                                   RegEx="@_formLocalizzazioni.Sub.EspressioneRegolare"
+                                                   ValoreMin="@_formLocalizzazioni.Sub.ValoreMin"
+                                                   ValoreMax="@_formLocalizzazioni.Sub.ValoreMax" />
+                                </div>
+                                
+                            }
+                        </div>
+                    </fieldset>
+                }
+            </ModalBody>
+            <ModalFooter>
+                <FormSubmitButton Form="localizzazioniForm"></FormSubmitButton>
+            </ModalFooter>
+        </FormModal>
+
+        break;
+}

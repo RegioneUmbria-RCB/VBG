@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?><wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:sch="http://sigeprosecurity.gruppoinit.it/schema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://sigeprosecurity.gruppoinit.it/ws" targetNamespace="http://sigeprosecurity.gruppoinit.it/ws">
+  <wsdl:types>
+    <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://sigeprosecurity.gruppoinit.it/schema" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://sigeprosecurity.gruppoinit.it/schema"><element name="LoginRequest"><complexType><sequence><element name="alias" type="string"/><element name="contesto" type="tns:ContestoType"/><element name="username" type="string"/><element name="password" type="string"/><element name="ipAddress" type="string"/></sequence></complexType></element><element name="LoginResponse"><complexType><complexContent><extension base="tns:TokenResultType"/></complexContent></complexType></element><element name="LoginSSORequest"><complexType><sequence><element name="alias" type="string"/><element name="contesto" type="tns:ContestoType"/><element name="username" type="string"/><element name="ipAddress" type="string"/></sequence></complexType></element><element name="LoginSSOResponse"><complexType><complexContent><extension base="tns:TokenResultType"/></complexContent></complexType></element><element name="CheckTokenRequest"><complexType><sequence><element name="token" type="string"/><element name="tokenInfo" type="boolean"/></sequence></complexType></element><element name="CheckTokenResponse"><complexType><sequence><element name="valid" type="boolean"/><element minOccurs="0" name="tokenInfo" type="tns:TokenInfoType"/></sequence></complexType></element><element name="LogoutRequest"><complexType><sequence><element name="token" type="string"/></sequence></complexType></element><element name="LogoutResponse"><complexType><sequence><element name="success" type="boolean"/></sequence></complexType></element><element name="GetDbConnectionInfoRequest"><complexType><sequence><element name="alias" type="string"/><element name="ambiente" type="tns:AmbienteType"/></sequence></complexType></element><element name="GetDbConnectionInfoResponse"><complexType><sequence><element name="alias" type="string"/><element minOccurs="0" name="idComune" type="string"/><element name="connectionString" type="string"/><element name="dbUser" type="string"/><element name="dbPassword" type="string"/><element minOccurs="0" name="provider" type="string"/><element name="dbOwner" type="string"/><element minOccurs="0" name="dbMsName" type="string"/></sequence></complexType></element><element name="GetApplicationInfoRequest"><complexType><sequence><element minOccurs="0" name="param" type="string"/></sequence></complexType></element><element name="GetApplicationInfoResponse"><complexType><sequence><element maxOccurs="unbounded" minOccurs="0" name="applicationInfo" type="tns:ApplicationInfoType"/></sequence></complexType></element><element name="GetSecurityListRequest"><complexType><sequence><element minOccurs="0" name="alias" type="string"/><element minOccurs="0" name="tipo" type="tns:ComunisecurityAttiviType"/></sequence></complexType></element><element name="GetSecurityListResponse"><complexType><sequence><element maxOccurs="unbounded" minOccurs="0" name="security" type="tns:SecurityListType"/></sequence></complexType></element><complexType name="SecurityListType"><sequence><element name="alias" type="string"/><element minOccurs="0" name="descrizione" type="string"/><element name="attivo" type="boolean"/></sequence></complexType><complexType name="ApplicationInfoType"><sequence><element name="param" type="string"/><element minOccurs="0" name="value" type="string"/></sequence></complexType><simpleType name="ComunisecurityAttiviType"><restriction base="string"><enumeration value="TUTTI"/><enumeration value="ATTIVI"/><enumeration value="DISATTIVATI"/></restriction></simpleType><simpleType name="AmbienteType"><restriction base="string"><enumeration value="ASP"/><enumeration value="DOTNET"/><enumeration value="JAVA"/></restriction></simpleType><simpleType name="ContestoType"><annotation><documentation>
+				Enumerazione dei Contesti disponibili 
+				AMM: Amministrazioni 
+				APP: Applicazioni 
+				OPE: Utenti di Backoffice 
+				UTE: Utenti di Frontoffice
+				UTEG: Utenti di Frontoffice Persone giuridiche
+			</documentation></annotation><restriction base="string"><enumeration value="AMM"/><enumeration value="APP"/><enumeration value="OPE"/><enumeration value="UTE"/><enumeration value="UTEG"/></restriction></simpleType><complexType name="TokenInfoType"><sequence><element name="contesto" type="tns:ContestoType"/><element name="clientIp" type="string"/><element name="alias" type="string"/><element name="idcomune" type="string"/><element name="firstrequest" type="string"/><element name="lastrequest" type="string"/><element name="userid" type="string"/></sequence></complexType><complexType name="TokenResultType"><sequence><element name="token" type="string"/></sequence></complexType></schema>
+  </wsdl:types>
+  <wsdl:message name="LoginResponse">
+    <wsdl:part element="sch:LoginResponse" name="LoginResponse"/>
+  </wsdl:message>
+  <wsdl:message name="LogoutRequest">
+    <wsdl:part element="sch:LogoutRequest" name="LogoutRequest"/>
+  </wsdl:message>
+  <wsdl:message name="GetDbConnectionInfoResponse">
+    <wsdl:part element="sch:GetDbConnectionInfoResponse" name="GetDbConnectionInfoResponse"/>
+  </wsdl:message>
+  <wsdl:message name="LoginSSORequest">
+    <wsdl:part element="sch:LoginSSORequest" name="LoginSSORequest"/>
+  </wsdl:message>
+  <wsdl:message name="CheckTokenResponse">
+    <wsdl:part element="sch:CheckTokenResponse" name="CheckTokenResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetSecurityListRequest">
+    <wsdl:part element="sch:GetSecurityListRequest" name="GetSecurityListRequest"/>
+  </wsdl:message>
+  <wsdl:message name="GetSecurityListResponse">
+    <wsdl:part element="sch:GetSecurityListResponse" name="GetSecurityListResponse"/>
+  </wsdl:message>
+  <wsdl:message name="LoginSSOResponse">
+    <wsdl:part element="sch:LoginSSOResponse" name="LoginSSOResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetDbConnectionInfoRequest">
+    <wsdl:part element="sch:GetDbConnectionInfoRequest" name="GetDbConnectionInfoRequest"/>
+  </wsdl:message>
+  <wsdl:message name="GetApplicationInfoResponse">
+    <wsdl:part element="sch:GetApplicationInfoResponse" name="GetApplicationInfoResponse"/>
+  </wsdl:message>
+  <wsdl:message name="LoginRequest">
+    <wsdl:part element="sch:LoginRequest" name="LoginRequest"/>
+  </wsdl:message>
+  <wsdl:message name="CheckTokenRequest">
+    <wsdl:part element="sch:CheckTokenRequest" name="CheckTokenRequest"/>
+  </wsdl:message>
+  <wsdl:message name="LogoutResponse">
+    <wsdl:part element="sch:LogoutResponse" name="LogoutResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetApplicationInfoRequest">
+    <wsdl:part element="sch:GetApplicationInfoRequest" name="GetApplicationInfoRequest"/>
+  </wsdl:message>
+  <wsdl:portType name="sigeproSecurity">
+    <wsdl:operation name="CheckToken">
+      <wsdl:input message="tns:CheckTokenRequest" name="CheckTokenRequest"/>
+      <wsdl:output message="tns:CheckTokenResponse" name="CheckTokenResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="LoginSSO">
+      <wsdl:input message="tns:LoginSSORequest" name="LoginSSORequest"/>
+      <wsdl:output message="tns:LoginSSOResponse" name="LoginSSOResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="Login">
+      <wsdl:input message="tns:LoginRequest" name="LoginRequest"/>
+      <wsdl:output message="tns:LoginResponse" name="LoginResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetSecurityList">
+      <wsdl:input message="tns:GetSecurityListRequest" name="GetSecurityListRequest"/>
+      <wsdl:output message="tns:GetSecurityListResponse" name="GetSecurityListResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="Logout">
+      <wsdl:input message="tns:LogoutRequest" name="LogoutRequest"/>
+      <wsdl:output message="tns:LogoutResponse" name="LogoutResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetDbConnectionInfo">
+      <wsdl:input message="tns:GetDbConnectionInfoRequest" name="GetDbConnectionInfoRequest"/>
+      <wsdl:output message="tns:GetDbConnectionInfoResponse" name="GetDbConnectionInfoResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetApplicationInfo">
+      <wsdl:input message="tns:GetApplicationInfoRequest" name="GetApplicationInfoRequest"/>
+      <wsdl:output message="tns:GetApplicationInfoResponse" name="GetApplicationInfoResponse"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="sigeproSecuritySoap11" type="tns:sigeproSecurity">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="CheckToken">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="CheckTokenRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="CheckTokenResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LoginSSO">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="LoginSSORequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="LoginSSOResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Login">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="LoginRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="LoginResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSecurityList">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="GetSecurityListRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="GetSecurityListResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Logout">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="LogoutRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="LogoutResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDbConnectionInfo">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="GetDbConnectionInfoRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="GetDbConnectionInfoResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetApplicationInfo">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="GetApplicationInfoRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="GetApplicationInfoResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="sigeproSecurityService">
+    <wsdl:port binding="tns:sigeproSecuritySoap11" name="sigeproSecuritySoap11">
+      <soap:address location="http://devel9:8080/ibcsecurity/services"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

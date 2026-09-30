@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?><wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:sch="http://gruppoinit.it/dossier" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://gruppoinit.it/dossier" targetNamespace="http://gruppoinit.it/dossier">
+  <wsdl:types>
+    <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xmime="http://www.w3.org/2005/05/xmlmime" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://gruppoinit.it/dossier" xmlns:tns="http://gruppoinit.it/dossier"><element name="RiversaIstanzeRequest"><complexType><sequence><element name="token" type="string"/><element name="software" type="string"/></sequence></complexType></element><element name="RiversaIstanzeResponse"><complexType><sequence><element name="idComuneAlias" type="string"/><element name="idComune" type="string"/><element minOccurs="0" name="errore" type="string"/><element maxOccurs="unbounded" minOccurs="0" name="listaDettagli" type="tns:DettaglioReportType"/></sequence></complexType></element><complexType name="DettaglioReportType"><sequence><element name="software" type="string"/><element minOccurs="0" name="errore" type="string"/><element minOccurs="0" name="msg" type="string"/></sequence></complexType></schema>
+  </wsdl:types>
+  <wsdl:message name="RiversaIstanzeRequest">
+    <wsdl:part element="tns:RiversaIstanzeRequest" name="RiversaIstanzeRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="RiversaIstanzeResponse">
+    <wsdl:part element="tns:RiversaIstanzeResponse" name="RiversaIstanzeResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="RiversaIstanzeDossier">
+    <wsdl:operation name="RiversaIstanze">
+      <wsdl:input message="tns:RiversaIstanzeRequest" name="RiversaIstanzeRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:RiversaIstanzeResponse" name="RiversaIstanzeResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="RiversaIstanzeDossierSoap11" type="tns:RiversaIstanzeDossier">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="RiversaIstanze">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="RiversaIstanzeRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="RiversaIstanzeResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="RiversaIstanzeDossierService">
+    <wsdl:port binding="tns:RiversaIstanzeDossierSoap11" name="RiversaIstanzeDossierSoap11">
+      <soap:address location="http://localhost:8080/dossiER/services"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

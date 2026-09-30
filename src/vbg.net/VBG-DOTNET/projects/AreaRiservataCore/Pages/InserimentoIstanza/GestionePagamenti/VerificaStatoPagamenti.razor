@@ -1,0 +1,141 @@
+﻿@page "/{IdComune}/{Software}/inserimento-istanza/pagamenti/verifica-stato-pagamenti/{idDomanda:int}/{stepId:int}"
+@using AreaRiservataCore.Pages.InserimentoIstanza.GestionePagamenti.Components
+@using AreaRiservataCore.Pages.InserimentoIstanza.GestionePagamenti.v2.Componenti
+@using Init.Sigepro.FrontEnd.AppLogic.Pagamenti.NodoPagamenti
+@using Init.Sigepro.FrontEnd.AppLogic.Pagamenti.NodoPagamenti.Configurazione
+@using Init.Sigepro.FrontEnd.AppLogic.PresentazioneIstanze.Workflow;
+@using Init.Sigepro.FrontEnd.CoreServices.GestionePresentazioneDomanda.Paginatore;
+@using Init.Sigepro.FrontEnd.Infrastructure.StepsDomanda.Attributi;
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.DesignComuni.Spinner
+@using VBG.BlazorComponentsLibrary.RisorseTestuali
+@inherits IstanzeStepPage
+
+@if (_esistonoPagamentiInSospeso)
+{
+    <div>
+        <RisorsaTestuale IdRisorsa="verifica-stato-pagamenti.descrizione-estesa">
+            <div class="alert alert-warning" role="alert">
+                <h2 class="alert-heading h4">Sono presenti operazioni in sospeso</h2>
+                <p>@((MarkupString)MessaggioErrore)</p>
+            </div>
+        </RisorsaTestuale>
+    </div>
+
+    <RiepilogoPosizioniDebitorie IdDomanda="@this.IdDomanda" Titolo="Dettaglio delle operazioni in sospeso" IdRisorsaTitolo="verifica-stato-pagamenti.titolo"></RiepilogoPosizioniDebitorie>
+
+    <div>
+        @if (this._esistonoPagamentiInSospeso)
+        {
+            <button class="btn btn-primary me-2" @onclick="AggiornaStatoPagamenti">Verifica lo stato dei pagamenti</button>
+        }
+        @if (_mostraBottoneProcedi)
+        {
+            <button class="btn btn-danger" @onclick="() => _showModalAnnullamento = true">@TestoBottoneProcedi</button>
+        }
+    </div>
+
+    <ConfirmationModal Titolo="Conferma annullamento posizioni debitorie" Visible="_showModalAnnullamento" ConfermaClick="@AnnullaPagamentoCorrente" AnnullaClick="() => _showModalAnnullamento = false">
+        <ModalBody>
+            Proseguendo tutte le operazioni di pagamento in sospeso verranno annullate e sarà necessario effettuare un nuovo pagamento per proseguire con la compilazione e l'invio della domanda.<br />
+            <br />
+            Se si è già provveduto al pagamento si consiglia di non proseguire e di attendere la ricezione dell'esito del pagamento a meno che l'ente non abbia fornito indicazioni diverse.<br />
+            <br />
+            L'operazione non potrà essere annullata.
+        </ModalBody>
+    </ConfirmationModal>
+}
+@code {
+    [Inject]
+    public IPagamentiNodoPagamentiService _nodoPagamentiService { get; set; } = default!;
+    [CascadingParameter]
+    private PaginatoreStateService _paginatoreStateService { get; set; } = default!;
+
+    [Inject]
+    public IVerificaConfigurazioneNodoPagamentiService _verificaConfigurazioneNodoPagamentiService { get; set; } = default!;
+
+    [StepProperty]
+    public string MessaggioErrore { get; set; } = "[INSERIRE NEL WORKFLOW UN MESSAGGIO DI ERRORE]";
+
+    [StepProperty]
+    public string TestoBottoneProcedi { get; set; } = "Annulla pagamento in sospeso";
+
+    [StepProperty]
+    public bool PermetteForzaturaAnnullamentoPagamentiAttivati { get; set; } = false;
+
+    private bool _showModalAnnullamento = false;
+
+    bool _mostraBottoneProcedi = false;
+    bool _esistonoPagamentiInSospeso = false;
+
+
+    protected override bool CanEnterStep()
+    {
+        if (!IdDomanda.HasValue)
+        {
+            throw new Exception("Id domanda non valorizzato");
+        }
+
+        if (!this._nodoPagamentiService.NodoPagamentoAttivo(IdDomanda.Value))
+        {
+            return false;
+        }
+
+        var configurazioneValida = this._verificaConfigurazioneNodoPagamentiService.ConfigurazioneValida(IdDomanda.Value);
+
+        if (!configurazioneValida)
+            throw new Exception($"L'integrazione con il sistema dei pagamenti non è correttamente configurata. Controllare i parametri della verticalizzazione NODO_PAGAMENTI");
+
+        this._nodoPagamentiService.AggiornaStatoPagamenti(this.IdDomanda.Value);
+        this._nodoPagamentiService.AnnullaPagamenti(this.IdDomanda.Value, FlagEliminazionePagamenti.PagamentiFalliti);
+
+        var pagamenti = this._nodoPagamentiService.GetStatoPagamentiInSospeso(this.IdDomanda.Value);
+
+        return pagamenti.EsistonoPagamentiInSospeso;
+    }
+
+    protected override async Task OnLoadStepAsync()
+    {
+        this._paginatoreStateService.NascondiBottoneAvanti();
+
+        await this.DataBindAsync();
+    }
+
+
+    private async Task DataBindAsync()
+    {
+        await _spinnerService.ShowSpinnerAsync(async () =>
+            {
+                var pagamentiInSospeso = this._nodoPagamentiService.GetStatoPagamentiInSospeso(this.IdDomanda.Value);
+
+                if (!pagamentiInSospeso.EsistonoPagamentiInSospeso)
+                {
+                    await _paginatoreStateService.GoToNextStepAsync();
+                    return;
+                }
+
+                this._esistonoPagamentiInSospeso = pagamentiInSospeso.EsistonoPagamentiInSospeso;
+                this._mostraBottoneProcedi = !pagamentiInSospeso.EsistonoPagamentiAttivatiNonCompletati;
+
+                if (PermetteForzaturaAnnullamentoPagamentiAttivati && pagamentiInSospeso.EsistonoPagamentiAttivatiNonCompletati)
+                {
+                    this._mostraBottoneProcedi = true;
+                }
+            });
+    }
+
+    private async Task AggiornaStatoPagamenti()
+    {
+        await DataBindAsync();
+    }
+
+    protected async Task AnnullaPagamentoCorrente()
+    {
+        await _spinnerService.ShowSpinnerAsync(async () =>
+            {
+                this._nodoPagamentiService.AnnullaPagamenti(IdDomanda.Value, FlagEliminazionePagamenti.PagamentiFallitiOInAttesaDiRisposta);
+
+                await this._paginatoreStateService.GoToNextStepAsync();
+            });
+    }
+}

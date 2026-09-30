@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="federaag-dist" default="distribuzione">
+	
+	<property name="build.classes.dir" value="${basedir}\build\classes" />
+	<property name="build.src.dir" value="${basedir}\src" />
+	<property name="project.encoding" value="utf-8" />
+	<property environment="env"/>
+	<target name="distribuzione">
+		
+      	<property name="UrlFrontendLogin" value="${env.VURLFRONTENDLOGIN}" />
+      	<property name="NomeContesto" value="${env.VNOMECONTESTO}" />
+		<property name="entityId" value="${env.VENTITYID}" />
+		<property name="UrlAmbienteLoginUmbria" value="${env.VAMBIENTE}" />
+		<property name="SamlAuthnMethod" value="${env.SAML_AUTHN_METHOD}" />
+		
+		
+	    <echo>entityId = ${entityId}</echo>	
+	    <echo>NomeContesto = ${NomeContesto}</echo>
+		<echo>UrlFrontendLogin = ${UrlFrontendLogin}</echo>
+		<echo>UrlAmbienteLoginUmbria = ${UrlAmbienteLoginUmbria}</echo>
+		<echo>SamlAuthnMethod = ${SamlAuthnMethod}</echo>
+			
+		<antcall target="clean" />
+		<antcall target="compile" />
+		<copy todir="${basedir}/build/classes">
+				  <fileset dir="${basedir}/src">
+				  	<exclude name="**/*.java"/>
+				    <include name="**/*.*"/>
+				  	<include name="LICENSE"/>
+		</fileset>
+	    </copy>
+
+		
+		<copy todir="${basedir}/target/webapp">
+			<fileset dir="${basedir}/WebContent" />
+	    </copy>
+		
+		<replace casesensitive="true" file="${basedir}/build/classes/log4j.xml" token="LoginUmbria-log-AG" value="${NomeContesto}.log"></replace>
+		
+		<replace casesensitive="true" file="${basedir}/build/classes/logback.xml" token="logs/LoginUmbria-AG-logback" value="logs/${NomeContesto}-logback.log"></replace>
+		<replace casesensitive="true" file="${basedir}/build/classes/logback.xml" token="LoginUmbria-AG-audit-file" value="${NomeContesto}-audit-file"></replace>
+				
+		<replace casesensitive="true" file="${basedir}/target/webapp/WEB-INF/web.xml" token="param-value>https://suape.regione.umbria.it/LoginUmbriaAG/metadata" value="param-value>${entityId}"></replace>		
+		<replace casesensitive="true" file="${basedir}/target/webapp/WEB-INF/web.xml" token="https://suape.regione.umbria.it/LoginUmbriaAG" value="${UrlFrontendLogin}/${NomeContesto}"></replace>
+		<replace casesensitive="true" file="${basedir}/target/webapp/WEB-INF/web.xml" token="https://suape.regione.umbria.it" value="${UrlFrontendLogin}"></replace>
+		
+		<replace casesensitive="true" file="${basedir}/target/webapp/resources/metadata/metadata.xml" token='entityID="https://suape.regione.umbria.it/LoginUmbriaAG/metadata"' value='entityID="${entityId}"'></replace>
+		<replace casesensitive="true" file="${basedir}/target/webapp/resources/metadata/metadata.xml" token='Location="https://suape.regione.umbria.it/LoginUmbriaAG/AssertionConsumerService"' value='Location="${UrlFrontendLogin}/${NomeContesto}/AssertionConsumerService"'></replace>
+
+		<replace casesensitive="true" file="${basedir}/build/classes/federa.properties" token="https://suape.regione.umbria.it/LoginUmbriaAG/logout" value="${UrlFrontendLogin}/${NomeContesto}/logout"></replace>		
+		
+		
+	
+ 		<replace casesensitive="true" file="${basedir}/build/classes/sp-config.properties" 
+						token="https://login.regione.umbria.it/gw/metadata#mappingAssertion" 
+						value="${UrlAmbienteLoginUmbria}/gw/metadata#mappingAssertion"></replace>
+		
+		<replace casesensitive="true" file="${basedir}/build/classes/sp-config.properties" 
+								token="urn:oasis:names:tc:SAML:2.0:ac:classes:SecureRemotePassword" 
+								value="${SamlAuthnMethod}"></replace>
+				
+				
+		
+		
+		<replace casesensitive="true" file="${basedir}/target/webapp/WEB-INF/web.xml" 
+						token="https://login.regione.umbria.it/" 
+						value="${UrlAmbienteLoginUmbria}/"></replace>
+
+		
+		
+		
+		<war destfile = "target/${NomeContesto}.war" webxml="${basedir}/target/webapp/WEB-INF/web.xml">
+			
+		      <fileset dir="${basedir}/target/webapp" />
+		      <classes dir="${basedir}/build/classes"/>
+			  
+		 </war>
+	</target>
+
+	<path id="compile.classpath">
+				<fileset dir="${basedir}\ext\tomcat">
+			    	<include name="**/*.jar"/>
+			  	</fileset>
+				<fileset dir="${basedir}\WebContent\WEB-INF\lib">
+			    	<include name="**/*.jar"/>
+			  	</fileset>		
+		</path>
+		
+	
+	<target name="compile" >
+        <mkdir dir="${build.classes.dir}"/>
+        	<javac srcdir="${build.src.dir}" includejavaruntime="true" 
+        			includeantruntime="true" 
+        			source="1.8" target="1.8" 
+        			encoding="${project.encoding}"
+        			destdir="${build.classes.dir}" 
+        			debug="false" fork="true">
+        		<classpath refid="compile.classpath" />
+        	</javac>
+    </target>
+
+    <target name="clean">
+        <delete dir="${build.classes.dir}"/>
+    	<delete dir="target"/>
+    </target>
+	
+	
+</project>

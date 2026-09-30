@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Init.SIGePro.Manager.DTO.Oneri" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Init.SIGePro.Manager.DTO.Oneri" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:2640/sigepro.net/WebServices/WsAreaRiservata/WcfServices/Oneri/WsOneriService.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/Init.SIGePro.Manager.DTO" />
+  <xs:complexType name="ArrayOfOnereDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="OnereDto" nillable="true" type="tns:OnereDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfOnereDto" nillable="true" type="tns:ArrayOfOnereDto" />
+  <xs:complexType name="OnereDto">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CausaleOnereDto">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CampoDinamico" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="CodiceInterventoOEndoOrigine" type="xs:int" />
+          <xs:element minOccurs="0" name="Importo" type="xs:float" />
+          <xs:element minOccurs="0" name="InterventoOEndoOrigine" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Note" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="OrigineOnere" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="OnereDto" nillable="true" type="tns:OnereDto" />
+  <xs:complexType name="CausaleOnereDto">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://schemas.datacontract.org/2004/07/Init.SIGePro.Manager.DTO" base="q1:BaseDtoOfintstring">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CausaleOnereDto" nillable="true" type="tns:CausaleOnereDto" />
+  <xs:complexType name="ContoDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CodiceMappaturaNodoPagamenti" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CodiceSottoConto" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Conto" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Iva" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="NumeroAccertamento" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ContoDto" nillable="true" type="tns:ContoDto" />
+</xs:schema>

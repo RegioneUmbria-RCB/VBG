@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<schema xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:tns="http://pa-evolution.com/schemas/messages/aurigaProxy" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://pa-evolution.com/schemas/messages/aurigaProxy" xmlns="http://www.w3.org/2001/XMLSchema">
+  <element name="AurigaProxyRequest" type="tns:AurigaProxyRequestType" />
+  <element name="AurigaProxyResponse" type="tns:AurigaProxyResponseType" />
+  <complexType name="AurigaProxyRequestType">
+    <sequence>
+      <element name="token" type="string" />
+      <element name="codiceApplicazione" type="string" />
+      <element minOccurs="0" name="istanzaApplicazione" type="string" />
+      <element name="userName" type="string" />
+      <element name="password" type="string" />
+      <element minOccurs="0" name="xml" type="string" />
+      <element minOccurs="0" name="hash" type="string" />
+      <element name="namespace" type="string" />
+      <element name="serviceName" type="string" />
+      <element name="wsUrl" type="string" />
+      <element minOccurs="0" maxOccurs="unbounded" name="codiciOggetto" type="int" />
+      <element minOccurs="0" name="codicecomune" type="string" />
+      <element minOccurs="0" name="software" type="string" />
+      <element minOccurs="0" name="operazione" type="string" />
+    </sequence>
+  </complexType>
+  <complexType name="AurigaProxyResponseType">
+    <sequence>
+      <element minOccurs="0" name="esito" type="tns:EsitoOperazioneType" />
+      <element name="xml" type="string" />
+      <element minOccurs="0" maxOccurs="unbounded" name="allegati" type="tns:AllegatoBaseType" />
+    </sequence>
+  </complexType>
+  <complexType name="EsitoOperazioneType">
+    <sequence>
+      <element minOccurs="0" maxOccurs="unbounded" name="listaErrori" type="string" />
+    </sequence>
+  </complexType>
+  <complexType name="AllegatoBaseType">
+    <sequence>
+      <element minOccurs="0" maxOccurs="1" name="descrizione" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="fileName" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="mimeType" type="string" />
+      <element xmime:expectedContentTypes="application/octet-stream" minOccurs="0" maxOccurs="1" name="binaryData" type="base64Binary" />
+    </sequence>
+  </complexType>
+</schema>

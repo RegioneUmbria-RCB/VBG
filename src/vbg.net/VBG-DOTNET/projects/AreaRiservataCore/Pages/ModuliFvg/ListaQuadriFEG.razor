@@ -1,0 +1,239 @@
+﻿@page "/modulifvg/{Alias}/{Software}/compila/{IdDomandaFEG:long}/{IdQuadro}"
+@inherits FVGComponentBase
+@using AreaRiservataCore.Utils
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneServiziFVG;
+@using VBG.BlazorComponentsLibrary.DesignComuni.Spinner
+@using VBG.BlazorComponentsLibrary.RisorseTestuali
+@using static Init.Sigepro.FrontEnd.AppLogic.GestioneServiziFVG.ServiziFVGService;
+
+<style media="all">
+    .schede-da-compilare {
+        list-style-type: none;
+    }
+
+        .schede-da-compilare > li {
+            margin-left: -30px;
+        }
+
+            .schede-da-compilare > li.compilata,
+            .schede-da-compilare > li.compilata > a {
+                color: var(--bs-success);
+            }
+
+            .schede-da-compilare > li > i.fa {
+                display: inline-block;
+                margin-right: var(--bs-border-radius);
+            }
+    /*
+                        .schede-da-compilare > li > a:before {
+                            position: relative;
+                            top: 1px;
+                            display: inline-block;
+                            font-family: 'Glyphicons Halflings';
+                            font-style: normal;
+                            font-weight: 400;
+                            line-height: 1;
+                            -webkit-font-smoothing: antialiased;
+                            content: "\270f";
+                            padding-right: 5px;
+                        }
+
+                        .schede-da-compilare > li.compilata > a:before {
+                            position: relative;
+                            top: 1px;
+                            display: inline-block;
+                            font-family: 'Glyphicons Halflings';
+                            font-style: normal;
+                            font-weight: 400;
+                            line-height: 1;
+                            -webkit-font-smoothing: antialiased;
+                            content: "\e013";
+                            padding-right: 5px;
+                        }
+                        */
+    .intestazione-lista-moduli {
+        line-height: 2em;
+    }
+
+    #iewarning {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(128, 128, 128, 0.8);
+        cursor: not-allowed;
+    }
+
+        #iewarning > div {
+            margin-top: 150px;
+            cursor: default;
+        }
+
+    .container {
+        width: 100% !important;
+    }
+</style>
+
+@if (_quadro is not null)
+{
+    <h1>
+        @_quadro.Descrizione
+    </h1>
+
+    <div id="dettagli">
+        <div class="intestazione-lista-moduli" id="intestazione-lista-moduli">
+            <RisorsaTestuale IdRisorsa="FVG_INTESTAZIONE_LISTA_MODULI">intestazione</RisorsaTestuale>
+        </div>
+
+        @if (_quadro.TutteLeSchedeSonoCompilate)
+        {
+            <div>
+                <div class="alert alert-success" role="alert">
+                    <i class="fa fa-check" aria-hidden="true"></i>
+                    Tutti i quadri del modulo sono stati compilati correttamente. Fare click su <span class="fw-bold">"Crea PDF modulo"</span> per proseguire.
+                </div>
+            </div>
+        }
+
+        @if (CopiaDa.HasValue)
+        {
+            <div>
+                <div class="alert alert-success" role="alert">
+                    <i class="fa fa-check" aria-hidden="true"></i>
+                    Precompilazione effettuata correttamente, si può procedere al salvataggio dei quadri
+                </div>
+            </div>
+        }
+
+        <ul class="schede-da-compilare" id="schede-da-compilare">
+
+            @foreach (var scheda in this._quadro.ListaSchedePubblicate)
+            {
+                <li runat="server" class="@(scheda.Compilata ? "compilata" : "")">
+                    @if (scheda.Compilata)
+                    {
+                        <i class="fa fa-check" aria-hidden="true"></i>
+                    }
+                    else
+                    {
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                    }
+                    <a href="@GetUrlCompilazioneScheda(scheda.Id)">@scheda.Descrizione</a>
+                </li>
+            }
+        </ul>
+
+        <div>
+            @if (_quadro.TutteLeSchedeSonoCompilate)
+            {
+                <button id="cmdInviaDatiAlComune" class="btn btn-primary" @onclick="InviaDatiAlComune">Crea PDF modulo</button>
+            }
+
+            <button id="cmdGeneraPdf" class="btn btn-default" @onclick="Anteprima">Anteprima</button>
+
+        </div>
+
+    </div>
+}
+
+@code {
+    [Inject]
+    protected ServiziFVGService _service { get; set; } = default!;
+    [Inject]
+    protected SpinnerService _spinnerService { get; set; } = default!;
+    [Inject]
+    protected NavigationManager _navManager { get; set; } = default!;
+    [Inject]
+    protected FileDownloadHelper _fileDownloadHelper { get; set; } = default!;
+
+
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "copia-da")]
+    public long? CopiaDa { get; set; }
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "continua")]
+    public int? Continua { get; set; }
+
+    private EndoprocedimentoDaCompilare? _quadro = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        await _spinnerService.ShowSpinnerAsync(async () =>
+            {
+                try
+                {
+                    var quadro = await GetDatiQuadro();
+
+                    if (Continua.HasValue)
+                    {
+                        var prossimoQuadro = quadro.GetIdSchedaSuccessiva(Continua.Value);
+
+                        if (prossimoQuadro.HasValue)
+                        {
+                            this._navManager.NavigateTo(GetUrlCompilazioneScheda(prossimoQuadro.Value));
+
+                            return;
+                        }
+                    }
+
+                    this._quadro = quadro;
+                }
+                catch (Exception ex)
+                {
+                    this.MessageContainer.AddError(ex.Message);
+                }
+            });
+    }
+
+    public async Task<EndoprocedimentoDaCompilare> GetDatiQuadro()
+    {
+        EndoprocedimentoDaCompilare retVal = null;
+
+        await _spinnerService.ShowSpinnerAsync(() =>
+            {
+                retVal = this._service.GetDatiModulo(this.IdDomandaFEG, IdQuadro, CopiaDa);
+            });
+
+        return retVal;
+    }
+
+    private string GetUrlCompilazioneScheda(int idScheda)
+    {
+        return $"modulifvg/{Alias}/{Software}/compila/{IdDomandaFEG}/{IdQuadro}/{idScheda}";
+    }
+
+    async Task InviaDatiAlComune()
+    {
+        await _spinnerService.ShowSpinnerAsync(() =>
+            {
+                MessageContainer.ClearErrors();
+
+                try
+                {
+                    this._service.AllegaPdfADomanda(this.IdDomandaFEG, this.IdQuadro);
+
+                    var returnUrl = $"modulifvg/{Alias}/{Software}/compila/{IdDomandaFEG}/{IdQuadro}/OK";
+
+                    this._navManager.NavigateTo(returnUrl);
+                }
+                catch (Exception ex)
+                {
+                    this.MessageContainer.AddError(ex.Message);
+                }
+            });
+    }
+
+    async Task Anteprima()
+    {
+        await _spinnerService.ShowSpinnerAsync(async () =>
+        {
+            var pdf = this._service.GeneraPdfModulo(this.IdDomandaFEG, this.IdQuadro);
+
+            await _fileDownloadHelper.DownloadFileAsync(pdf);
+        });
+    }
+
+}

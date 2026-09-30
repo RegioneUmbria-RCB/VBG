@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://ws.dss.markt.ec.europa.eu/" name="ValidationService" targetNamespace="http://ws.dss.markt.ec.europa.eu/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xs:schema xmlns:tns="http://ws.dss.markt.ec.europa.eu/" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://ws.dss.markt.ec.europa.eu/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="validateDocument" type="tns:validateDocument" />
+      <xs:element name="validateDocumentResponse" type="tns:validateDocumentResponse" />
+      <xs:complexType name="validateDocument">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="document" type="tns:wsDocument" />
+          <xs:element minOccurs="0" name="originalDocument" type="tns:wsDocument" />
+          <xs:element minOccurs="0" name="giveBackContent" type="xs:boolean" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="wsDocument">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="binary" type="xs:base64Binary" />
+          <xs:element minOccurs="0" name="name" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="validateDocumentResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="response" type="tns:wsValidationReport" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="wsValidationReport">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="content" type="tns:wsDocument" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="detachedTsVerificationResult" nillable="true" type="tns:wsTimestampVerificationResult" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="signatureInformationList" nillable="true" type="tns:wsSignatureInformation" />
+          <xs:element minOccurs="0" name="timeInformation" type="tns:wsTimeInformation" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="wsTimestampVerificationResult">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="certPathVerification" type="xs:string" />
+          <xs:element minOccurs="0" name="creationTime" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="issuerName" type="xs:string" />
+          <xs:element minOccurs="0" name="sameDigest" type="xs:string" />
+          <xs:element minOccurs="0" name="serialNumber" type="xs:string" />
+          <xs:element minOccurs="0" name="signatureAlgorithm" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="wsSignatureInformation">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="certPathRevocationAnalysis" type="tns:wsCertPathRevocationAnalysis" />
+          <xs:element minOccurs="0" name="finalConclusion" type="xs:string" />
+          <xs:element minOccurs="0" name="qcStatementInformation" type="tns:wsqcStatementInformation" />
+          <xs:element minOccurs="0" name="qualificationsVerification" type="tns:wsQualificationsVerification" />
+          <xs:element minOccurs="0" name="signatureLevelAnalysis" type="tns:wsSignatureLevelAnalysis" />
+          <xs:element minOccurs="0" name="signatureVerification" type="tns:wsSignatureVerification" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="wsCertPathRevocationAnalysis">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="certificatePathVerification" nillable="true" type="tns:wsCertificateVerification" />
+          <xs:element minOccurs="0" name="summary" type="xs:string" />
+          <xs:element minOccurs="0" name="trustedListInformation" type="tns:wsTrustedListInformation" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="wsCertificateVerification">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="certificate" type="xs:base64Binary" />
+          <xs:element minOccurs="0" name="certificateStatus" type="tns:wsRevocationVerificationResult" />
+          <xs:element minOccurs="0" name="signatureVerification" type="tns:wsSignatureVerification" />
+          <xs:element minOccurs="0" name="validityPeriodVerification" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="wsRevocationVerificationResult">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="issuer" type="xs:string" />
+          <xs:element minOccurs="0" name="issuingTime" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="revocationDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="status" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="wsSignatureVerification">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="digestAlgorithm" type="xs:string" />
+          <xs:element minOccurs="0" name="referenceTime" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="signatureAlgorithm" type="xs:string" />
+          <xs:element minOccurs="0" name="signatureVerificationResult" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="wsTrustedListInformation">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="currentStatus" type="xs:string" />
+          <xs:element minOccurs="0" name="currentStatusStartingDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="serviceName" type="xs:string" />
+          <xs:element minOccurs="0" name="serviceType" type="xs:string" />
+          <xs:element name="serviceWasFound" type="xs:boolean" />
+          <xs:element minOccurs="0" name="statusAtReferenceTime" type="xs:string" />
+          <xs:element minOccurs="0" name="statusStartingDateAtReferenceTime" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="tspElectronicAddress" type="xs:string" />
+          <xs:element minOccurs="0" name="tspName" type="xs:string" />
+          <xs:element minOccurs="0" name="tspPostalAddress" type="xs:string" />
+          <xs:element minOccurs="0" name="tspTradeName" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="wsqcStatementInformation">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="qcCompliancePresent" type="xs:string" />
+          <xs:element minOccurs="0" name="qcLimitValue" type="xs:string" />
+          <xs:element minOccurs="0" name="qcPPlusPresent" type="xs:string" />
+          <xs:element minOccurs="0" name="qcPPresent" type="xs:string" />
+          <xs:element minOccurs="0" name="qcRetentionPeriod" type="xs:string" />
+          <xs:element minOccurs="0" name="qcSCCDPresent" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="wsQualificationsVerification">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="qcForLegalPerson" type="xs:string" />
+          <xs:element minOccurs="0" name="qcNoSSCD" type="xs:string" />
+          <xs:element minOccurs="0" name="qcSSCDStatusAsInCert" type="xs:string" />
+          <xs:element minOccurs="0" name="qcWithSSCD" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="wsSignatureLevelAnalysis">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="levelA" type="tns:wsSignatureLevelA" />
+          <xs:element minOccurs="0" name="levelBES" type="tns:wsSignatureLevelBES" />
+          <xs:element minOccurs="0" name="levelC" type="tns:wsSignatureLevelC" />
+          <xs:element minOccurs="0" name="levelEPES" type="tns:wsSignatureLevelEPES" />
+          <xs:element minOccurs="0" name="levelLTV" type="tns:wsSignatureLevelLTV" />
+          <xs:element minOccurs="0" name="levelT" type="tns:wsSignatureLevelT" />
+          <xs:element minOccurs="0" name="levelX" type="tns:wsSignatureLevelX" />
+          <xs:element minOccurs="0" name="levelXL" type="tns:wsSignatureLevelXL" />
+          <xs:element minOccurs="0" name="signatureFormat" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="wsSignatureLevelA">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="archiveTimestampsVerification" nillable="true" type="tns:wsTimestampVerificationResult" />
+          <xs:element minOccurs="0" name="levelReached" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="wsSignatureLevelBES">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="certificates" nillable="true" type="xs:base64Binary" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="counterSignatureVerification" nillable="true" type="tns:wsSignatureInformation" />
+          <xs:element minOccurs="0" name="levelReached" type="xs:string" />
+          <xs:element minOccurs="0" name="signingCertRefVerification" type="xs:string" />
+          <xs:element minOccurs="0" name="signingCertificate" type="xs:base64Binary" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="wsSignatureLevelC">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="certificateRefsVerification" type="xs:string" />
+          <xs:element minOccurs="0" name="levelReached" type="xs:string" />
+          <xs:element minOccurs="0" name="revocationRefsVerification" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="wsSignatureLevelEPES">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="levelReached" type="xs:string" />
+          <xs:element minOccurs="0" name="policyValue" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="wsSignatureLevelLTV">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="levelReached" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="wsSignatureLevelT">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="levelReached" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="signatureTimestampsVerification" nillable="true" type="tns:wsTimestampVerificationResult" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="wsSignatureLevelX">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="levelReached" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="referencesTimestampsVerification" nillable="true" type="tns:wsTimestampVerificationResult" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="signatureAndRefsTimestampsVerification" nillable="true" type="tns:wsTimestampVerificationResult" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="wsSignatureLevelXL">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="certificateValuesVerification" type="xs:string" />
+          <xs:element minOccurs="0" name="levelReached" type="xs:string" />
+          <xs:element minOccurs="0" name="revocationValuesVerification" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="wsTimeInformation">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="verificationTime" type="xs:dateTime" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="IOException" type="tns:IOException" />
+      <xs:complexType name="IOException">
+        <xs:sequence />
+      </xs:complexType>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="IOException">
+    <wsdl:part name="IOException" element="ns1:IOException" />
+  </wsdl:message>
+  <wsdl:message name="validateDocumentResponse">
+    <wsdl:part name="parameters" element="ns1:validateDocumentResponse" />
+  </wsdl:message>
+  <wsdl:message name="validateDocument">
+    <wsdl:part name="parameters" element="ns1:validateDocument" />
+  </wsdl:message>
+  <wsdl:portType name="ValidationService">
+    <wsdl:operation name="validateDocument">
+      <wsdl:input name="validateDocument" message="ns1:validateDocument" />
+      <wsdl:output name="validateDocumentResponse" message="ns1:validateDocumentResponse" />
+      <wsdl:fault name="IOException" message="ns1:IOException" />
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>

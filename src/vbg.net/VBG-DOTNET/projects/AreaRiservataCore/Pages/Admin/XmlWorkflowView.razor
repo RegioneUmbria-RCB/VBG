@@ -1,0 +1,432 @@
+﻿@page "/{IdComune}/{Software}/admin/workflow/{CodiceIntervento:int?}"
+@using AreaRiservataCore.Pages.Admin.Components.EditorWorkflow
+@using AreaRiservataCore.Pages.InserimentoIstanza.GestioneInterventi.Components
+@using Init.SIGePro.Manager.DTO.Interventi
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneInterventi
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneMenu
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneMenu.Model
+@using System.Xml.Linq
+@using System.Xml
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneOggetti
+@using Init.Sigepro.FrontEnd.AppLogic.PresentazioneIstanze.Workflow
+@using Init.Sigepro.FrontEnd.AppLogic.PresentazioneIstanze.Workflow.MergepointFinder
+@using Init.Sigepro.FrontEnd.AppLogic.Utils.SerializationExtensions
+@using Init.Utils
+@using System.Net
+@using System.Xml.Serialization
+@using VBG.BlazorComponentsLibrary
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using log4net
+
+@inject IWorkflowEditService _workflowEditorService
+@inject IWorkflowLoaderService _workflowLoaderService
+@inject IMergepointFinder _mergePointFinder
+@inherits BasePage
+
+<style>
+    .cmp-accordion .accordion-body button{
+    width:inherit;
+    display:inline-block;
+    }
+</style>
+
+<h2>Workflow xml</h2>
+
+<TabComponent CssClass="nav-tabs-hidescroll hidescroll-ico mb-4 mb-lg-5 mt-lg-4" NavTabs_CssClass="nav-tabs-icon-text mb-4 mb-lg-5 w-100 flex-nowrap" NavItem_CssClass="w-100" NavLink_CssClass="justify-content-start text-tab">
+    <TabPageComponent Text="Editor testuale" Id="editor_testuale">
+        <AccordionContainer>
+            <AccordionItem CollapsibleElementId="elem1" Title="Workflow di base" StartingCollapsed="true">
+                <ChildContent>
+                    <TextEditor @bind-Value="@this._xmlBase" OnBtnSave="(string s) => Task.FromResult(UpdateBaseWorkflow(s, false))" TextFormattingMode="TextEditor.TextFormat.Xml"></TextEditor>
+                </ChildContent>
+            </AccordionItem>
+            <AccordionItem CollapsibleElementId="elem2" Title="Workflow Intervento" StartingCollapsed="@(CodiceIntervento is null)">
+                <ChildContent>
+                    <div class="d-flex">
+                        <div class="flex-grow-1">
+                            <AlberoInterventi NodoSelezionato="@OnNodoSelezionato" ScatenaEventoNodoSelezionatoSoltantoSulleFoglie="false" PercorsoSelezionato="@_alberaturaInterventoSelezionato" CodiceComune=""></AlberoInterventi>
+                        </div>
+                        <div class="mt-4 ml-auto">
+                            <label for="codnum">Codice intervento</label>
+                            <input id="codnum" type="number" value="@_codiceIntervento" style="width:5em;" />
+                            <button class="btn btn-primary" @onclick="async() => await LoadAsync()">Aggiorna</button>
+                        </div>
+                    </div>
+
+                    @if (this._showHineritanceAlert)
+                    {
+                        <p class="text-warning text-center">
+                            Il Workflow visualizzato viene ereditato da: <span class="fw-semibold">@($"{this._nodoIntervento.Descrizione} ({this._nodoIntervento.Id})")</span>
+                        </p>
+                    }
+
+                    @if (this._codiceIntervento.HasValue)
+                    {
+                        <TextEditor @bind-Value="@this._nodoIntervento.XmlWorkflow" OnBtnSave="(string s) => UpdateInterventoWorkflowAsync(s, false)" TextFormattingMode="TextEditor.TextFormat.Xml"></TextEditor>
+                    }
+
+                </ChildContent>
+            </AccordionItem>
+            @if (this._codiceIntervento.HasValue)
+            {
+                <AccordionItem CollapsibleElementId="elem3" Title="Workflow Intervento combinato con quello base" StartingCollapsed="true">
+                    <ChildContent>
+                        <TextEditor Value="@this._xmlMergeBaseIntervento" ReadOnlyMode="true" TextFormattingMode="TextEditor.TextFormat.Xml"></TextEditor>
+                    </ChildContent>
+                </AccordionItem>
+            }           
+        </AccordionContainer>        
+    </TabPageComponent>
+    <TabPageComponent Text="Editor grafico" Id="editor_grafico" >
+        <p>@(this._editingItem == null ? "Selezionare un workflow xml da modificare." : "")</p>
+        <div class="d-flex gap-3 mb-3">
+            <button type="button" class="btn btn-outline-primary" @onclick="async() => await CambiaWorkflowVisualizzato(WorkflowTypeEnum.Base)">Modifica workflow base</button>
+            <button type="button" class="btn btn-outline-primary" disabled="@(!this._codiceIntervento.HasValue)" @onclick="async() => await CambiaWorkflowVisualizzato(WorkflowTypeEnum.Intervento)">Modifica workflow intervento</button>
+        </div>
+        
+        @if (_showEditor)
+        {
+            <EditorWorkflowComponent Titolo="@_titoloEditor" Model="_editingItem" ListaStepBase="this._listaStepBase" OnSave="() => SalvaWorkflowDaInterfaccia()"></EditorWorkflowComponent>
+        }
+
+    </TabPageComponent>
+</TabComponent>
+
+<ConfirmationModal Titolo="Modifiche non salvate" Visible="@_showConfermaCambioWorkflow" ConfermaClick="@(() => ShowEditor(this._tipoWorkflow))" AnnullaClick="() => CloseConfermaCambioWorkflow()">
+    <ModalBody>Cliccando su "Conferma" le modifiche non salvate andranno perse. 
+        <br/>
+        Continuare? 
+    </ModalBody>
+</ConfirmationModal>
+
+@code {
+    public enum WorkflowTypeEnum
+    {
+        Base,
+        Intervento
+    }
+
+    [Parameter]
+    public int? CodiceIntervento { get; set; }
+
+    [CascadingParameter(Name = "Layout")]
+    public MainLayout Layout { get; set; } = default!;
+
+    [Inject]
+    public IInterventiRepository _interventiRepository { get; set; } = default!;
+
+    private int? _codiceIntervento;
+    private int? _codiceInterventoVisualizzato;
+    private string? _xmlBase;
+    private NodoConWorkflowXml _nodoIntervento = new();
+    private string? _xmlMergeBaseIntervento;
+    private bool _showHineritanceAlert;
+    LinkedList<InterventoDto> _alberaturaInterventoSelezionato = new LinkedList<InterventoDto>();
+    private WorkflowModel _editingItem = default!;
+    private bool _showEditor;
+    private WorkflowTypeEnum _tipoWorkflow;
+    private string _titoloEditor = "";
+    private string _titoloIntervento = "";
+    private List<Step> _listaStepBase = new List<Step>();
+    private List<Step> _listaStepOriginale = new List<Step>();
+    private bool _showConfermaCambioWorkflow;
+
+    protected async override Task OnInitializedAsync()
+    {
+        if (!UtenteTester)
+        {
+            await GotoAsync("home");
+        }
+        else
+        {
+            var baseUrl = $"{_navigationManager.BaseUri}{IdComune}/{Software}";
+            var breadcrumbItems = new List<BreadcrumbsItem>()
+            {
+                new BreadcrumbsItem()
+                {
+                    Label = "Funzioni amministrative",
+                    Url = $"{baseUrl}/admin",
+                },
+                 new BreadcrumbsItem()
+                {
+                    Label = "Workflow xml",
+                    Url = $"{baseUrl}/admin/workflow/{CodiceIntervento}",
+                    Active = true
+                }
+            };
+
+            this.Layout.SetBreadcrumbItems(breadcrumbItems);
+
+            await this.LoadAsync();
+        }
+
+        await base.OnInitializedAsync();
+    }
+
+    private async Task LoadAsync()
+    {
+        MessageContainer.ClearAll();
+
+        this._xmlBase = this._workflowLoaderService.GetBaseWorkflow()?.ToXmlString();
+
+        if (CodiceIntervento is not null && this._codiceIntervento is null)
+            this._codiceIntervento = CodiceIntervento;
+
+        if (this._codiceIntervento is not null)
+        {
+            this._nodoIntervento = this._workflowLoaderService.GetNodoInterventoWorkflowXml(this._codiceIntervento.Value);
+            this._xmlMergeBaseIntervento = this._workflowLoaderService.GetMergedWorkflowByIdIntervento(this._codiceIntervento.Value)?.ToXmlString() ?? "";
+            this._showHineritanceAlert = this._nodoIntervento.Id > 0 && this._codiceIntervento.Value != this._nodoIntervento.Id;
+            var dettagliIntervento = await this._interventiRepository.GetTitoloInterventoAsync(Convert.ToInt32(this._codiceIntervento));
+            _titoloIntervento = dettagliIntervento.Titolo;
+
+            if (this._showHineritanceAlert)
+            {
+                MessageContainer.AddWarning($"Il Workflow visualizzato viene ereditato da: {this._nodoIntervento.Descrizione}");
+            }
+
+            if (string.IsNullOrEmpty(this._nodoIntervento.XmlWorkflow))
+            {
+                MessageContainer.AddWarning("Non è stato trovato un workflow per questo intervento");
+            }
+
+        }
+
+        MessageContainer.AddAlert("Caricamento completato");
+    }
+
+    private async Task OnNodoSelezionato(InterventoDto intervento)
+    {
+        ResetEditor();
+        this._codiceIntervento = intervento.Codice;
+        await this.LoadAsync();
+    }
+
+    private bool UpdateBaseWorkflow(string xml, bool aggiornaDaInterfaccia)
+    {
+        if (string.IsNullOrEmpty(xml))
+        {
+            MessageContainer.AddError("Il workflow di base non può essere vuoto");
+            return false;
+        }
+
+        try
+        {
+            if (!aggiornaDaInterfaccia)
+            {
+                ResetEditor();
+            }
+
+            this._workflowEditorService.AggiornaXmlWorkflowBase(xml);
+
+
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Logger.Error("UpdateBaseWorkflow ha generato un'eccezione", ex);
+            MessageContainer.AddError("Si è verificato un errore durante il salvataggio.");
+            return false;
+        }
+    }
+
+    private async Task<bool> UpdateInterventoWorkflowAsync(string xml, bool aggiornaDaInterfaccia)
+    {
+        if (string.IsNullOrEmpty(xml))
+        {
+            MessageContainer.AddError("Impossibile inserire un documento xml vuoto. Se l'intento è quello di eliminare il documento, tale operazione può essere eseguita accedendo al Backoffice.");
+            return false;
+        }
+
+        try
+        {
+            if (!aggiornaDaInterfaccia)
+            {
+                ResetEditor();
+            }
+
+            await this._workflowEditorService.AggiornaXmlWorkflowInterventoAsync(xml, this._codiceIntervento!.Value);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Logger.Error($"Il metodo {nameof(UpdateInterventoWorkflowAsync)} ha generato un'eccezione", ex);
+            MessageContainer.AddError("Si è verificato un errore durante il salvataggio.");
+            return false;
+        }
+    }
+
+    private async Task CambiaWorkflowVisualizzato(WorkflowTypeEnum tipoWorkflow)
+    {
+        if (this._editingItem != null)
+        {
+            if (tipoWorkflow != this._tipoWorkflow)
+            {
+                //se ci sono delle modifiche non salvate
+                if (!this._editingItem.Steps.SequenceEqual(this._listaStepOriginale))
+                {
+                    this._tipoWorkflow = tipoWorkflow;
+                    this._showConfermaCambioWorkflow = true;
+                    return;
+                }
+                await ShowEditor(tipoWorkflow);
+            }      
+        }
+        else
+        {
+            await ShowEditor(tipoWorkflow);
+        }    
+    }
+
+    private void CloseConfermaCambioWorkflow()
+    {
+        this._tipoWorkflow = this._tipoWorkflow == WorkflowTypeEnum.Base ? WorkflowTypeEnum.Intervento : WorkflowTypeEnum.Base;
+
+        this._showConfermaCambioWorkflow = false;
+    }
+
+    private async Task ShowEditor(WorkflowTypeEnum tipoWorkflow)
+    {
+        await _spinnerService.ShowSpinnerAsync(() =>
+        {
+            MessageContainer.ClearAll();
+            this._showConfermaCambioWorkflow = false;
+            ResetEditor();
+
+            var workflowBase = _workflowLoaderService.GetBaseWorkflow();
+            var stepsBase = this.ConvertWorkflowToModel(workflowBase);
+
+            if (tipoWorkflow == WorkflowTypeEnum.Base)
+            {
+                this._editingItem = stepsBase;
+            }
+
+            if (tipoWorkflow == WorkflowTypeEnum.Intervento)
+            {
+                var mergeIndex = _mergePointFinder.FindMergePoint(workflowBase!);
+
+                for (int i = 0; i <= mergeIndex; i++)
+                {
+                    this._listaStepBase.Add(stepsBase.Steps[i]);
+                }
+
+                var wfIntervento = _workflowLoaderService.GetWorkflowIntervento(this._codiceIntervento);
+
+                if (wfIntervento is not null)
+                {
+                    this._editingItem = this.ConvertWorkflowToModel(wfIntervento);
+                }
+            }
+            this._listaStepOriginale = this._editingItem.Steps;
+            this._tipoWorkflow = tipoWorkflow;
+            this._titoloEditor = tipoWorkflow == WorkflowTypeEnum.Base ? "Workflow base" : _tipoWorkflow == WorkflowTypeEnum.Intervento ? _titoloIntervento : _titoloEditor;
+            this._showEditor = true;
+        });   
+    }
+
+    private async Task SalvaWorkflowDaInterfaccia()
+    {
+        await _spinnerService.ShowSpinnerAsync(async() =>
+        {
+            try
+            {
+                var workflowObject = MapWorkflowModelToStepCollectionTypeWithCData(_editingItem);
+                var workflowString = WebUtility.HtmlDecode(workflowObject.ToXmlString());
+
+                switch (this._tipoWorkflow)
+                {
+                    case WorkflowTypeEnum.Base:
+                        this.UpdateBaseWorkflow(workflowString, true);
+                        await this.LoadAsync();
+                        await ShowEditor(this._tipoWorkflow);
+                        MessageContainer.ClearWarnings();
+                        break;
+
+                    case WorkflowTypeEnum.Intervento:
+                        await this.UpdateInterventoWorkflowAsync(workflowString, true);
+                        await this.LoadAsync();
+                        await ShowEditor(this._tipoWorkflow);
+                        MessageContainer.ClearWarnings();
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageContainer.AddError("Errore durante il salvataggio del wokflow");
+                Logger.Error($"Il metodo {nameof(SalvaWorkflowDaInterfaccia)} ha generato il seguente errore: {ex.Message}");
+            }
+        });
+    }
+
+    private WorkflowModel ConvertWorkflowToModel(IWorkflowDomandaOnline? workflow)
+    {
+        if(workflow is null)
+        {
+            return new WorkflowModel();
+        }
+
+
+        return new WorkflowModel
+        {
+            Steps = workflow.MapSteps(step => new Step
+            {
+                StepId = step.StepId!.Value,
+                Title = step.Title,
+                Description = step.Description,
+                Control = step.Control,
+                ControlProperties = step.ControlProperties?.Select(prop => new ControlProperty
+                {
+                    Nome = prop.name,
+                    Valore = prop.Value
+                }).ToList() ?? new(),
+                Disabled = step.Disabled
+            }).ToList()
+        };
+    }
+
+    private StepCollectionType MapWorkflowModelToStepCollectionTypeWithCData(WorkflowModel workflowModel)
+    {
+        StepCollectionType result = new StepCollectionType();
+        var listaSteps = new List<StepType>();
+
+        foreach (var step in workflowModel.Steps)
+        {
+            var listaControlProperties = new List<PropertyValueType>();
+
+            foreach (var prop in step.ControlProperties)
+            {
+                listaControlProperties.Add(new PropertyValueType
+                {
+                    name = prop.Nome,
+                    Value = prop.Valore
+                });
+            }
+
+            listaSteps.Add(new StepType
+            {
+                Title = step.Title,
+                Description = step.Description,
+                Control = step.Control,
+                ControlProperties = listaControlProperties.ToArray(),
+                Disabled = step.Disabled,
+                StepId = step.StepId
+            });
+        }
+
+        result.Steps = listaSteps.ToArray();
+        return result;
+    }
+
+    private void ResetEditor()
+    {
+        this._editingItem = new WorkflowModel();
+        this._editingItem.Steps = new List<Step>();
+        this._listaStepBase = new List<Step>();
+        this._showEditor = false;
+        StateHasChanged();
+    }
+}

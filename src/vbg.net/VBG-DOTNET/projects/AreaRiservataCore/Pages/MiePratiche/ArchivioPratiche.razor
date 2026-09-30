@@ -1,0 +1,43 @@
+﻿@page "/{IdComune}/{Software}/archiviopratiche"
+
+@using AreaRiservataCore.Pages.MiePratiche.Componenti
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.DesignComuni.NavScroll
+
+@inherits BasePage
+
+@* <TitoloPagina>Archivio Pratiche</TitoloPagina> *@
+<PageTitle>Archivio pratiche</PageTitle>
+
+<div class="row">
+    <NavScrollComponent Title="Indice di pagina">
+        <NavScrollComponentItem Label="Archivio pratiche" Id="pratiche">
+            <ContenitoreRisultatiRicerca TitoloPagina="Archivio pratiche" Mode="ViewMode.ArchivioPratiche"></ContenitoreRisultatiRicerca>
+        </NavScrollComponentItem>
+    </NavScrollComponent>
+</div>
+
+@code
+{
+    [CascadingParameter(Name = "Layout")]
+    public MainLayout Layout { get; set; } = default!;
+
+    protected override void OnInitialized()
+    {
+        var baseUrl = $"{_navigationManager.BaseUri}{_authenticationDataResolver.DatiAutenticazione.Alias}/{Software}";
+        var breadcrumbItems = new List<BreadcrumbsItem>()
+            {
+                new BreadcrumbsItem()
+                {
+                    Label = "Archivio pratiche",
+                    Url = $"{baseUrl}/archiviopratiche",
+                    Active = true
+                }
+            };
+
+        this.Layout.SetBreadcrumbItems(breadcrumbItems);
+        this._pageTitleService?.SetTitle("");
+
+        base.OnInitialized();
+    }
+}

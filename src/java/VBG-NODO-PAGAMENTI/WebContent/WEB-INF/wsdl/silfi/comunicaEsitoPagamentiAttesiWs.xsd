@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  elementFormDefault="qualified" xmlns:tns="it/lineacomune/pagopa/be/ws/endpoint"
+  targetNamespace="it/lineacomune/pagopa/be/ws/endpoint">
+  <xs:element name="pagamentiAttesiEsitoPagamentoRequest">
+    <xs:complexType>
+      <xs:sequence minOccurs="1" maxOccurs="1">
+        <xs:element name="ente" type="xs:string" />
+        <xs:element name="codiceServizio" type="xs:string"></xs:element>
+        <xs:element name="esiti">
+          <xs:complexType>
+            <xs:sequence minOccurs="0" maxOccurs="unbounded">
+              <xs:element name="esito">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="iuv" type="xs:string" />
+                    <xs:element name="identificativo" type="xs:string" />
+                    <xs:element name="positivo" type="xs:boolean" />
+                    <xs:element name="statoPagamento" type="xs:string" />
+                    <xs:element name="dataPagamento" type="xs:dateTime" />
+                    <xs:element name="importo" type="xs:decimal" />
+                    <xs:element name="extraPagoPa" type="xs:boolean" />
+                    <xs:element name="canalePagamentoExtraPagoPa" type="xs:string" />
+                    <xs:element name="canalePagamento" type="xs:string" />
+                    <xs:element name="rt" type="xs:base64Binary" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="codiceEsitoComunicazione">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="SUCCESS" />
+      <xs:enumeration value="ERROR" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="pagamentiAttesiEsitoPagamentoResponse">
+    <xs:complexType>
+      <xs:sequence minOccurs="1" maxOccurs="1">
+        <xs:element name="esitoComunicazione" type="tns:codiceEsitoComunicazione" minOccurs="1" maxOccurs="1"/>
+        <xs:element name="codiceErrore"  minOccurs="0" maxOccurs="1"  type="xs:string" />
+        <xs:element name="descrizioneErrore"  minOccurs="0" maxOccurs="1" type="xs:string" />
+        <xs:element name="ente" type="xs:string" />
+        <xs:element name="codiceServizio" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

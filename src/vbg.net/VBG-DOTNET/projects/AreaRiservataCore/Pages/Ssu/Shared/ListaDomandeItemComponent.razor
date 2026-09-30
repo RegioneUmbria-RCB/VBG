@@ -1,0 +1,109 @@
+﻿@using AreaRiservataCore.Pages.InserimentoIstanza.Ssu
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+
+@inherits BasePage
+
+@if (Item is not null && MainComponent is not null)
+{
+    <div id="@($"prat-{Item.Id}")" @key="@($"prat-{Item.Id}")">
+        <AccordionItem StartingCollapsed="true"
+                       CollapsibleElementId="@($"pratica-{Item.Id}")"
+                       Title="@(string.IsNullOrEmpty(Item.Intervento) ? Item.Oggetto : Item.Intervento)"
+                       RenderTitleAsHtml="true"
+                       Sottotitolo="@Item.Richiedente"
+                       CssTitleClass="d-block text-truncate pe-4"
+                       ButtonWrapperClass="min-width-zero"
+                       HeaderElementId="@($"header-accordion-prat-{Item.Id}")">
+            <ChildContent>
+
+                @switch (TipoLista)
+                {
+                    case ListaDomandeTypeEnum.Correzioni:
+                        <ListaCorrezioniSsu IdDomanda="Item.Id"></ListaCorrezioniSsu>
+                        break;
+
+                    case ListaDomandeTypeEnum.Integrazioni:
+                        <ListaIntegrazioniSsu IdDomanda="Item.Id"></ListaIntegrazioniSsu>
+                        break;
+
+                    case ListaDomandeTypeEnum.Rifiutate:
+                        // metto <ListaCorrezioniSsu> anche qui?
+                        break;
+                }
+
+                <p class="mb-2 fw-normal">
+                    Richiedente:
+                    <span class="label">@(string.IsNullOrEmpty(Item.Richiedente) ? "non definito" : Item.Richiedente)</span>
+                </p>
+                <p class="mb-2 fw-normal">
+                    Oggetto:
+                    <span class="label">@(string.IsNullOrEmpty(Item.Oggetto) ? "non definito" : Item.Oggetto)</span>
+                </p>
+                <p class="mb-2 fw-normal">
+                    Identificativo domanda:
+                    <span class="label">@Item.IdentificativoDomanda</span>
+                </p>
+
+                @if (Item.DataUltimaModifica.HasValue)
+                {
+                    <p class="mb-2 fw-normal">
+                        Ultima modifica:
+                        <span class="label">@Item.DataUltimaModifica.Value.ToString("dd/MM/yyyy HH:mm")</span>
+                    </p>
+                }
+
+            </ChildContent>
+            <NonCollapsingLowerChildContent>
+
+                <div class="d-flex">
+                    @if (MainComponent.OnActionButtonClicked.HasDelegate)
+                    {
+                        <div>
+                            <button type="button" @onclick="OnActionButtonClicked" class="btn btn-primary me-2">@MainComponent.ActionButtonText</button>
+                        </div>
+                    }
+
+                    <div>
+                        <button type="button" @onclick="OnDettagliChicked" class="btn btn-outline-secondary">Dettagli</button>
+                    </div>
+                </div>
+
+            </NonCollapsingLowerChildContent>
+        </AccordionItem>
+
+    </div>
+}
+
+@code {
+
+    [Parameter]
+    public ListaDomandeItem Item { get; set; } = default!;
+    [Parameter]
+    public ListaDomandeTypeEnum TipoLista { get; set; } = ListaDomandeTypeEnum.Correzioni;
+    [CascadingParameter]
+    public ListaDomandeSsu? MainComponent { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        if (this.MainComponent is null)
+        {
+            throw new InvalidOperationException($"Il componente {nameof(ListaDomandeItemComponent)} deve essere utilizzato all'interno di un componente {nameof(ListaDomandeSsu)}");
+        }
+    }
+
+    async Task OnActionButtonClicked()
+    {
+        if (MainComponent is not null)
+        {
+            await MainComponent.OnActionButtonClicked.InvokeAsync(Item);
+        }
+    }
+
+    async Task OnDettagliChicked()
+    {
+        var url = $"{SsuUrlConstants.UrlDettaglioPratica}/{Item.Id}";
+        await GotoAsync(url);
+    }
+}

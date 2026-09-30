@@ -1,0 +1,141 @@
+//
+// Questo file è stato generato dall'architettura JavaTM per XML Binding (JAXB) Reference Implementation, v2.3.2 
+// Vedere <a href="https://javaee.github.io/jaxb-v2/">https://javaee.github.io/jaxb-v2/</a> 
+// Qualsiasi modifica a questo file andrà persa durante la ricompilazione dello schema di origine. 
+// Generato il: 2021.02.05 alle 03:23:29 PM CET 
+//
+
+
+package it.gruppoinit.fileconverter;
+
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlType;
+
+
+/**
+ * <p>Classe Java per anonymous complex type.
+ * 
+ * <p>Il seguente frammento di schema specifica il contenuto previsto contenuto in questa classe.
+ * 
+ * <pre>
+ * &lt;complexType&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="token"&gt;
+ *           &lt;simpleType&gt;
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *               &lt;minLength value="1"/&gt;
+ *             &lt;/restriction&gt;
+ *           &lt;/simpleType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="rtfBinaryData"&gt;
+ *           &lt;simpleType&gt;
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}base64Binary"&gt;
+ *               &lt;minLength value="1"/&gt;
+ *             &lt;/restriction&gt;
+ *           &lt;/simpleType&gt;
+ *         &lt;/element&gt;
+ *         &lt;element name="xmlBinaryData"&gt;
+ *           &lt;simpleType&gt;
+ *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}base64Binary"&gt;
+ *               &lt;minLength value="1"/&gt;
+ *             &lt;/restriction&gt;
+ *           &lt;/simpleType&gt;
+ *         &lt;/element&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
+ * </pre>
+ * 
+ * 
+ */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "", propOrder = {
+    "token",
+    "rtfBinaryData",
+    "xmlBinaryData"
+})
+@XmlRootElement(name = "MergeDataRequest")
+public class MergeDataRequest {
+
+    @XmlElement(required = true)
+    protected String token;
+    @XmlElement(required = true)
+    protected byte[] rtfBinaryData;
+    @XmlElement(required = true)
+    protected byte[] xmlBinaryData;
+
+    /**
+     * Recupera il valore della proprietà token.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getToken() {
+        return token;
+    }
+
+    /**
+     * Imposta il valore della proprietà token.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setToken(String value) {
+        this.token = value;
+    }
+
+    /**
+     * Recupera il valore della proprietà rtfBinaryData.
+     * 
+     * @return
+     *     possible object is
+     *     byte[]
+     */
+    public byte[] getRtfBinaryData() {
+        return rtfBinaryData;
+    }
+
+    /**
+     * Imposta il valore della proprietà rtfBinaryData.
+     * 
+     * @param value
+     *     allowed object is
+     *     byte[]
+     */
+    public void setRtfBinaryData(byte[] value) {
+        this.rtfBinaryData = value;
+    }
+
+    /**
+     * Recupera il valore della proprietà xmlBinaryData.
+     * 
+     * @return
+     *     possible object is
+     *     byte[]
+     */
+    public byte[] getXmlBinaryData() {
+        return xmlBinaryData;
+    }
+
+    /**
+     * Imposta il valore della proprietà xmlBinaryData.
+     * 
+     * @param value
+     *     allowed object is
+     *     byte[]
+     */
+    public void setXmlBinaryData(byte[] value) {
+        this.xmlBinaryData = value;
+    }
+
+}

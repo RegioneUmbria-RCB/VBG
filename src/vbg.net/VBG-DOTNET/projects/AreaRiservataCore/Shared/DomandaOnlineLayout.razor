@@ -1,0 +1,60 @@
+﻿@using AreaRiservataCore.Shared;
+@using Microsoft.AspNetCore.Components.Web
+
+@inherits LayoutComponentBase
+
+<PageTitle></PageTitle>
+
+<style>
+
+    html, body, .layout-container {
+        min-height: 100vh;
+        min-height: 100svh;
+    }
+
+    .layout-container {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        align-items: stretch;
+        align-content: stretch;
+    }
+
+        .layout-container > .container {
+            background-color: #FFF;
+            /*padding-bottom: 1em;*/
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+</style>
+
+<div class="layout-container">
+    <div>
+        <Header></Header>
+    </div>
+
+    <main id="main">
+        <div class="container">
+            <VbgPageTitle2></VbgPageTitle2>
+            <MessageContainer @ref="messageContainer">
+                @Body
+            </MessageContainer>
+        </div>
+    </main>
+</div>
+
+<Footer></Footer>
+
+@code {
+    private MessageContainer? messageContainer;
+
+    protected override void OnParametersSet()
+    {
+
+        messageContainer?.ClearAll();
+        base.OnParametersSet();
+    }
+}

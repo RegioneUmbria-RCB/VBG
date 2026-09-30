@@ -1,0 +1,43 @@
+﻿@page "/{IdComune}/{Software}/inserimento-istanza/allegati-endo/{idDomanda:int}/{stepId:int}"
+@using AreaRiservataCore.Pages.InserimentoIstanza.Allegati.AllegatoLibero;
+@using Init.Sigepro.FrontEnd.AppLogic.Exceptions
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneComuni
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneDatiExtra
+@using Init.Sigepro.FrontEnd.AppLogic.Services.Domanda
+@using Init.Sigepro.FrontEnd.Infrastructure.StepsDomanda.Attributi
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards.CardButtons
+@inherits IstanzeStepPage
+
+@if (_dataSource is not null)
+{
+    @* <AttributiAllegato Leggenda="true"></AttributiAllegato> *@
+
+    @foreach (var item in _dataSource)
+    {
+        <StepCard Titolo="@item.Descrizione">
+ 
+            <GrigliaAllegati DataSource="@item.Allegati"
+                             OnDeleteFile="OnRimuoviDocumentoAsync"
+                             OnCompileDocument="OnCompilaDocumentoAsync"
+                             GetValidPostedFileSpecification="GetValidationSpecification" 
+                             OnEditFile="DataBindAsync">
+            </GrigliaAllegati>
+            <StepButton Text="Aggiungi allegato libero" OnClick="AggiungiNuovoAllegato" Icon="StepButtonIcons.PlusCircle"></StepButton>
+        </StepCard>
+    }
+
+    <BasicModal @ref="_modalNote" Size="ModalSizeEnum.Normal">
+        <ModalHeader Titolo="Note dell'allegato" Size="ModalHeaderSizeEnum.Small">
+        </ModalHeader>
+        <ModalBody>
+            @((MarkupString)_noteAllegato)
+        </ModalBody>
+    </BasicModal>
+
+    <AllegatoLiberoComponent @ref="_modalAllegatiLiberi" CategorieSupportate="@_categorie"
+                         OnAllegatoLiberoCaricato="@OnAllegatoLiberoCaricatoAsync"
+                         OnCaricamentoAllegatoAnnullato="@OnCaricamentoAllegatoAnnullato">
+    </AllegatoLiberoComponent>
+}

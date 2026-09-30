@@ -1,0 +1,686 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="AreaRiservataMaster.master.cs" Inherits="Init.Sigepro.FrontEnd.AreaRiservataMaster" %>
+
+<%@ Register TagPrefix="ar" Namespace="Init.Sigepro.FrontEnd.WebControls.FormControls" Assembly="Init.Sigepro.FrontEnd.WebControls" %>
+
+<!DOCTYPE html>
+<html lang="it">
+<head runat="server">
+    <meta content="initial-scale=1.0, width=device-width" name="viewport" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Type" content="text/html; utf-8" />
+    <title>Untitled Page</title>
+    <link href="~/vendor/bootstrap-3.3.6-dist/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+    <link href="~/css/jqueryui/ui-bootstrap/jquery-ui-1.10.0.custom.css" type="text/css" rel="stylesheet" />
+    <link href="~/vendor/ionicons-2.0.1/css/ionicons.min.css" type="text/css" rel="stylesheet" />
+    <link href="~/vendor/font-awesome-4.6.3/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
+    <link href="~/styles/areariservata.css?_cb=2" type="text/css" rel="stylesheet" id="cssLink" />
+    <link href="~/vendor/datatables/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/vendor/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" />
+
+    <link href='~/extra-css-handler.ashx' type="text/css" rel="stylesheet" />
+
+    <%= LoadScripts(new[] {
+            "~/js/lib/jquery.js",
+            
+            "~/vendor/bootstrap-3.3.6-dist/js/bootstrap.min.js",
+            "~/js/lib/jquery.ui.js",
+            "~/vendor/bootstrap-validator-0.11.5/dist/validator.js",
+            "~/vendor/datatables/js/jquery.dataTables.min.js",
+            "~/vendor/datatables/js/dataTables.bootstrap.min.js",
+            "~/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js",
+            "~/vendor/bootstrap-datepicker/locales/bootstrap-datepicker.it.min.js",
+            "~/js/app/fix-bottoni.js",
+
+    }) %>
+    <script type="text/javascript">
+
+        $(function onInit() {
+
+            $("form>.container").css("min-height",
+                $(window).height()
+                - $("header").height()
+                - $(".paginatore-step").height()
+                - $(".main-nav-bar").height()
+            );
+
+            // validatori
+            $.fn.validator.Constructor.INPUT_SELECTOR = ':input:not([type="hidden"], [type="submit"], [type="reset"], button, [formnovalidate], :hidden), .vai-avanti';
+            $.fn.validator.Constructor.FOCUS_OFFSET = 80;
+            $.fn.validator.Constructor.DEFAULTS.custom = {
+                equals: function ($el) {
+                    var matchValue = $el.data("equals") // foo
+                    if ($el.val() !== matchValue.toString()) {
+                        return "Il campo contiene un valore non valido";
+                    }
+                }
+            };
+
+            // Datepicker
+            $.fn.datepicker.defaults.format = "dd/mm/yyyy";
+            $.fn.datepicker.defaults.language = "it";
+            $.fn.datepicker.defaults.autoclose = true;
+
+            <% if (ResetValidatorsOnLoad)
+        {%>
+            resetValidators();
+            <%}%>
+
+            $(".table").addClass("table-striped table-hover");
+            $.extend($.fn.DataTable.defaults, {
+                "order": [[0, 'desc']],
+                oLanguage: {
+                    "sEmptyTable": "Nessun dato presente nella tabella",
+                    "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+                    "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+                    "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+                    "sInfoPostFix": "",
+                    "sInfoThousands": ".",
+                    "sLengthMenu": "Visualizza _MENU_ elementi",
+                    "sLoadingRecords": "Caricamento...",
+                    "sProcessing": "Elaborazione...",
+                    "sSearch": "Cerca:",
+                    "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+                    "oPaginate": {
+                        "sFirst": "Inizio",
+                        "sPrevious": "Precedente",
+                        "sNext": "Successivo",
+                        "sLast": "Fine"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                        "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+                    }
+                }
+            });
+
+            jQuery.fn.dataTableExt.oSort['data-pre'] = (a) => {
+                let datePart = $.trim(a);
+                let timeParts = ["00", "00"];
+
+                if (datePart === '' || datePart === "&nbsp;") {
+                    return 0;
+                }
+
+                if (a.toString().indexOf(" ") >= 0) {
+                    let temp = a.split(" ");
+                    datePart = temp[0];
+                    timeParts = temp[1].split(":");
+                }
+
+                let frDatea2 = datePart.split('/');
+                return (frDatea2[2] + frDatea2[1] + frDatea2[0] + timeParts[0] + timeParts[1]) * 1;
+            };
+
+
+
+            document.querySelectorAll('.vbg-show-spinner').forEach((item) => {
+                item.addEventListener('click', (item) => mostraModalCaricamento());
+            });
+
+            document.querySelectorAll('.vbg-show-spinner-if-valid').forEach((item) => {
+                item.addEventListener('click', (item) => {
+                    setTimeout(() => {
+                        if (document.querySelectorAll('.has-error').length === 0) {
+                            mostraModalCaricamento();
+                        }
+                    }, 100);
+                });
+            });
+
+            document.querySelectorAll('.messaggi-successo>.alert').forEach(item => {
+
+                setTimeout(() => {
+                    item.style.transition = '0.5s';
+                    item.style.opacity = 0;
+
+                    setTimeout(() => item.remove(), 500);
+                }, 3000)
+            })
+        });
+
+
+        // Metodi globali per la gestione dei validatori
+        function resetValidators() {
+            $('#aspnetForm').validator('reset');
+            $('#aspnetForm').validator('update');
+        }
+
+
+        function updateValidators() {
+            $('#aspnetForm').validator('update');
+        }
+
+        function fireValidatiors() {
+            $('#aspnetForm').validator('validate');
+        }
+
+        function updateValidatedButtons() {
+            $('#aspnetForm').validator('toggleSubmit');
+        }
+
+        function disableValidators() {
+            $('#aspnetForm').validator('destroy');
+        }
+
+        function parseHTML(html) {
+            const t = document.createElement('template');
+            t.innerHTML = html;
+            return t.content;
+        }
+
+
+        <%if (this.UtenteTester)
+        {%>
+
+        $(function () {
+            const modal = $("#<%=bmModificaRisorse.ClientID%>");
+            const modalOkButton = modal.find(".modal-ok-button");
+            const modalKoButton = modal.find(".modal-ko-button");
+            const txtIdRisorsa = modal.find("#<%=txtIdRisorsa.ClientID%>");
+            const txtNuovoTesto = modal.find("#<%=txtNuovoTesto.Inner.ClientID%>");
+            let editingElement = null;
+
+            modalKoButton.on('click', () => {
+                if (editingElement) {
+                    // Svuoto il testo che potrebbe contenere valori che 
+                    // mandano in errore la pagina durante il postback
+                    txtNuovoTesto.val('');
+                }
+            });
+
+            modalOkButton.on("click", (e) => {
+                let val = txtNuovoTesto.val();
+
+                if (editingElement) {
+                    editingElement.text(val);
+                }
+
+                val = val.replace(new RegExp("<", "g"), "&lt;")
+                    .replace(new RegExp(">", "g"), "&gt;");
+
+                txtNuovoTesto.val(val);
+
+                __doPostBack(modalOkButton.get(0).name, null)
+            });
+
+            $(".risorsa-testuale").each(function () {
+                const editabile = $("<div class='editabile'></div>");
+                const el = $(this);
+                const html = el.html();
+
+                el.empty();
+                el.append(editabile);
+                editabile.html(html);
+            });
+
+            // Aggiungo l'elemento per visualizzare o nascondere il layer di edit
+            $(".risorsa-testuale").each(function (idx, el) {
+                var elEdit = $("<div class='risorsa-testuale-edit'><i class=' glyphicon glyphicon-pencil'></i> Modifica</div>"),
+                    elEvidenzia = $("<div class='evidenzia'></div>"),
+                    $el = $(this);
+
+                elEdit.hover(
+                    function onMouseIn() { $el.addClass('attivo'); },
+                    function onMouseOut() { $el.removeClass('attivo'); },
+                );
+
+                elEdit.on("click", function (e) {
+                    editingElement = $el.find(">.editabile");
+
+                    txtIdRisorsa.val(editingElement.parent().data("idRisorsa"));
+                    txtNuovoTesto.val(editingElement.html().trim());
+
+                    modal.modal("show");
+                    e.preventDefault();
+                });
+
+                $el.prepend(elEdit);
+                $el.prepend(elEvidenzia);
+            })
+        });
+
+        <%}%>
+
+
+        var _focusElementoHandler = null;
+
+        function focusElemento(nomeElemento) {
+            if (_focusElementoHandler != null) {
+                return;
+            }
+
+            _focusElementoHandler = function () {
+                $(function () {
+                    if ($(nomeElemento).length) {
+                        $('html, body').animate({
+                            scrollTop: $(nomeElemento).offset().top
+                        }, 500);
+                    }
+                });
+            };
+
+            _focusElementoHandler();
+        }
+
+        function mostraModalCaricamento() {
+            $(".modal-invio-dati-in-corso").modal("show");
+        }
+
+        function nascondiModalCaricamento() {
+            $(".modal-invio-dati-in-corso").modal("hide");
+        }
+
+
+        function mostraModalEliminazioneInCorso() {
+            $("#<%=bmMasterEliminazioneInCorso.ClientID%>").modal('show');
+        }
+
+        function nascondiModalEliminazioneInCorso() {
+            $("#<%=bmMasterEliminazioneInCorso.ClientID%>").modal('hide');
+        }
+
+        $(function () {
+            function verificaLunghezza(el) {
+                var limite = parseInt(el.data('maxCaratteri') || '4000'),
+                    len = el.val().length,
+                    delta = limite - len,
+                    limiteSuperato = delta < 0;
+
+                if (limiteSuperato) {
+                    el.val(el.val().slice(0, limite));
+                    verificaLunghezza(el);
+                }
+            }
+
+            $('.limita-lunghezza').on('change keyup paste', function (e) {
+                verificaLunghezza($(this));
+            });
+
+            $('.limita-lunghezza').trigger('keyup');
+        });
+
+
+
+
+        function ready(fn) {
+            if (document.readyState != 'loading') {
+                fn();
+            } else {
+                document.addEventListener('DOMContentLoaded', fn);
+            }
+        }
+
+        window.vbg = document.vbg || {};
+        window.vbg.ready = ready;
+        window.vbg.mostraModal = (modalId) => {
+            $(`#${modalId}`).modal('show');
+        };
+
+    </script>
+
+    <asp:ContentPlaceHolder ID="headPagina" runat="server"></asp:ContentPlaceHolder>
+
+    <%if (this.UtenteTester)
+        { %>
+    <style>
+        .risorsa-testuale{
+            min-width: 10px;
+            min-height: 10px;
+            display: inline-block;
+        }
+        
+    </style>
+
+    <%} // if (this.UtenteTester)%>
+
+
+
+    <%if (!String.IsNullOrEmpty(AnalyticsId))
+        {%>
+    <script type="text/javascript">
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', '<%=AnalyticsId %>', 'auto');
+        ga('send', 'pageview');
+
+    </script>
+    <%}%>
+</head>
+<body class="areariservata">
+
+    <a id="skipLink" href="#content" class="sr-only" tabindex="0">Passa al contenuto principale</a>
+
+    <form id="form1" runat="server">
+
+        <%if (MostraIntestazione)
+            {%>
+        <header class="banner">
+            <div class="banner-superiore">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-2 logo-comune hidden-sm hidden-xs" style="max-height: 90px; overflow: hidden">
+                            <asp:LinkButton runat="server" ID="LinkButton1" OnClick="lnkTornaAllaHome_Click" ToolTip="Torna alla pagina iniziale">
+                                    <img src='<%= ResolveClientUrl("~/public/handlers/loghi/logo-area-riservata.ashx?Software=" + Software + "&IdComune=" + IdComune) %>' style="max-height: 80px;" alt="Torna alla home" aria-hidden="True"/>
+                            </asp:LinkButton>
+                        </div>
+
+                        <div class="col-md-8 titolo-area-riservata">
+                            <h1>Scrivania virtuale</h1>
+
+                            <h2 class="hidden-xs">
+                                <%=SottotitoloPagina %>
+                            </h2>
+                        </div>
+
+                        <div class="col-md-2 logo-regione hidden-sm hidden-xs" aria-hidden="true">
+                            <img alt="" src='<%= ResolveClientUrl("~/public/handlers/loghi/logo-regione.ashx?Software=" + Software + "&IdComune=" + IdComune) %>' style="max-height: 80px;" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+
+        <div class="nav-wrapper">
+            <nav class="navbar navbar-default main-nav-bar " data-spy="affix" data-offset-top="115">
+                <div class="container-fluid">
+
+                    <div class="navbar-header">
+                        <button type="button" class="main-menu-toggle navbar-toggle collapsed pull-left" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+
+                        <span class=" hidden-sm hidden-md hidden-lg sottotitolo-xs">
+                            <%=SottotitoloPagina %>
+                        </span>
+                    </div>
+
+                    <%if (!UtenteAnonimo)
+                        {%>
+
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <!-- Sezione menu sinistra -->
+                        <ul class="nav navbar-nav">
+                            <asp:Repeater runat="server" ID="rptMenu" OnItemDataBound="rptMenu_ItemDataBound">
+                                <ItemTemplate>
+
+                                    <li class="dropdown">
+                                        <a href='<%# ResolveClientUrl((string)Eval("Url"))%>'
+                                            class='<%# (bool)Eval("HaLink") ? "" : "dropdown-toggle" %>'
+                                            data-toggle='<%# (bool)Eval("HaLink") ? "" : "dropdown" %>'
+                                            target='<%#Eval("Target") %>'
+                                            role="button"
+                                            aria-haspopup="true"
+                                            aria-expanded="false">
+
+                                            <%#Eval("Titolo") %>
+
+                                            <span class="caret" runat="server" visible='<%# !(bool)Eval("HaLink") %>'></span>
+                                        </a>
+
+
+                                        <ul class="dropdown-menu" runat="server" visible='<%# !(bool)Eval("HaLink")%>'>
+
+                                            <asp:Repeater runat="server" ID="rptSubMenu">
+
+                                                <ItemTemplate>
+                                                    <li>
+                                                        <asp:HyperLink runat="server" ID="hlMenuUrl" NavigateUrl='<%#Eval("Url")%>' Text='<%#Eval("Titolo") %>' Target='<%#Eval("Target") %>' />
+                                                    </li>
+                                                </ItemTemplate>
+
+                                            </asp:Repeater>
+                                        </ul>
+                                    </li>
+
+                                </ItemTemplate>
+                            </asp:Repeater>
+                        </ul>
+
+                        <!-- Menu utente -->
+                        <div class="pull-right hidden-xs" style="display: inline-block">
+                            <ul class="nav navbar-nav">
+                                <%if (this._authenticationDataResolver.IsAuthenticated)
+                                    {%>
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                        <span class="glyphicon glyphicon-user hidden-xs"></span>
+                                        <asp:Literal runat="server" ID="lblNomeUtente2">Nome utente</asp:Literal>
+                                        <span class="caret"></span>
+                                    </a>
+
+                                    <ul class="dropdown-menu">
+
+                                        <asp:Repeater runat="server" ID="rptMenuUtente">
+
+                                            <ItemTemplate>
+                                                <li>
+                                                    <asp:HyperLink runat="server" ID="hlMenuUrl" NavigateUrl='<%#Eval("Url")%>' Text='<%#Eval("Titolo") %>' Target='<%#Eval("Target") %>' />
+                                                </li>
+                                            </ItemTemplate>
+
+                                        </asp:Repeater>
+
+                                    </ul>
+                                </li>
+                                <%} %>
+                            </ul>
+
+                            <!-- Sezione menu destra -->
+
+                            <asp:Repeater runat="server" ID="rptMenuDestra" OnItemDataBound="rptMenu_ItemDataBound">
+
+                                <HeaderTemplate>
+                                    <ul class="nav navbar-nav">
+                                </HeaderTemplate>
+
+                                <ItemTemplate>
+
+                                    <li class="dropdown">
+                                        <a runat="server"
+                                            href='<%#Eval("Url")%>'
+                                            class='<%# (bool)Eval("HaLink") ? "" : "dropdown-toggle" %>'
+                                            data-toggle='<%# (bool)Eval("HaLink") ? "" : "dropdown" %>'
+                                            target='<%#Eval("Target") %>'
+                                            role="button"
+                                            aria-haspopup="true"
+                                            aria-expanded="false">
+
+                                            <asp:Literal runat="server" Text='<%#Eval("Titolo") %>' />
+
+                                            <span class="caret" runat="server" visible='<%# !(bool)Eval("HaLink") %>'></span>
+                                        </a>
+
+
+                                        <ul class="dropdown-menu" runat="server" visible='<%# !(bool)Eval("HaLink")%>'>
+
+                                            <asp:Repeater runat="server" ID="rptSubMenu">
+
+                                                <ItemTemplate>
+                                                    <li>
+                                                        <asp:HyperLink runat="server" ID="hlMenuUrl" NavigateUrl='<%#Eval("Url")%>' Text='<%#Eval("Titolo") %>' Target='<%#Eval("Target") %>' />
+                                                    </li>
+                                                </ItemTemplate>
+
+                                            </asp:Repeater>
+                                        </ul>
+                                    </li>
+
+                                </ItemTemplate>
+
+                                <FooterTemplate>
+                                    </ul>
+                                </FooterTemplate>
+                            </asp:Repeater>
+                        </div>
+                        <%}
+                            else
+                            { %>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="dropdown">
+                                <%--                                <asp:LinkButton runat="server" ID="lnkAccedi" OnClick="lnkAccedi_Click">
+                                    <span class="glyphicon glyphicon-lock"></span> Accedi
+                                </asp:LinkButton>--%>
+                            </li>
+
+                        </ul>
+                        <%} %>
+                    </div>
+            </nav>
+        </div>
+        <%} %>   <%--if (MostraIntestazione) --%>
+
+        <div id="content" class="container <%= UtenteAnonimo? "contenuti-anonimo" : "" %>">
+
+            <% if (!NascondiTitoloPagina)
+                {%>
+            <h1>
+                <asp:Label runat="server" ID="lblTitoloPagina" />
+            </h1>
+            <%} %>
+            <div class="messaggi-successo">
+                <asp:Repeater runat="server" ID="rptMessaggiSuccesso">
+
+                    <ItemTemplate>
+                        <div class="alert alert-success" role="alert">
+                            <i class="glyphicon glyphicon-ok"></i>
+                            <%# DataBinder.Eval(Container,"DataItem") %>
+                        </div>
+                    </ItemTemplate>
+                </asp:Repeater>
+            </div>
+
+            <div class="errori">
+                <asp:Repeater runat="server" ID="rptErrori">
+
+                    <ItemTemplate>
+                        <div class="alert alert-danger" role="alert">
+                            <i class="glyphicon glyphicon-alert"></i>
+                            <%# DataBinder.Eval(Container,"DataItem") %>
+                        </div>
+                    </ItemTemplate>
+                </asp:Repeater>
+            </div>
+            <div class="messaggi">
+                <asp:Repeater runat="server" ID="rptMessaggi">
+
+                    <ItemTemplate>
+                        <div class="alert alert-info" role="alert">
+                            <i class="glyphicon glyphicon-info-sign"></i>
+                            <%# DataBinder.Eval(Container,"DataItem") %>
+                        </div>
+                    </ItemTemplate>
+                </asp:Repeater>
+            </div>
+
+
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server"></asp:ContentPlaceHolder>
+        </div>
+
+        <div class="modal fade modal-salvataggio-schede-in-corso" class="modal-salvataggio-schede-in-corso" data-backdrop="static" data-keyboard="false" role="dialog" aria-hidden="true" style="padding-top: 15%; overflow-y: visible; display: none;">
+            <div class="modal-dialog modal-m">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 style="margin: 0;">Salvataggio dati in corso...</h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="progress progress-striped active" style="margin-bottom: 0;">
+                            <div class="progress-bar" style="width: 100%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <ar:BootstrapModal runat="server" ID="bmMasterEliminazioneInCorso" ShowFooter="false" Title="Eliminazione in corso...">
+            <ModalBody>
+                <div class="progress progress-striped active" style="margin-bottom: 0;">
+                    <div class="progress-bar" style="width: 100%"></div>
+                </div>
+            </ModalBody>
+        </ar:BootstrapModal>
+
+        <div class="modal fade modal-caricamento-file-in-corso" id="caricamentoFileIncorso" data-backdrop="static" data-keyboard="false" role="dialog" aria-hidden="true" style="padding-top: 15%; overflow-y: visible; display: none;">
+            <div class="modal-dialog modal-m">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 style="margin: 0;">Caricamento del file in corso...</h3>
+                    </div>
+                    <div class="modal-body">
+
+                        <div>
+                            L'invio di un file di grandi dimensioni potrebbe richiedere anche alcuni minuti
+                        </div>
+
+                        <div class="progress progress-striped active" style="margin-bottom: 0;">
+                            <div class="progress-bar" style="width: 100%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade modal-invio-istanza-in-corso" data-backdrop="static" data-keyboard="false" role="dialog" aria-hidden="true" style="padding-top: 15%; overflow-y: visible; display: none;">
+            <div class="modal-dialog modal-m">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 style="margin: 0;">Invio della pratica in corso...</h3>
+                    </div>
+                    <div class="modal-body">
+
+                        <div>
+                            L'operazione potrebbe richiedere anche alcuni minuti. Si prega di attendere senza effettuare altre operazioni.
+                        </div>
+
+                        <div class="progress progress-striped active" style="margin-bottom: 0;">
+                            <div class="progress-bar" style="width: 100%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade modal-invio-dati-in-corso" id="modal-invio-dati-in-corso" data-backdrop="static" data-keyboard="false" role="dialog" aria-hidden="true" style="padding-top: 15%; overflow-y: visible; display: none;">
+            <div class="modal-dialog modal-m">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 style="margin: 0;">Invio dei dati corso...</h3>
+                    </div>
+                    <div class="modal-body">
+
+                        <div>
+                            L'operazione potrebbe richiedere anche alcuni minuti. Si prega di attendere senza effettuare altre operazioni.
+                        </div>
+
+                        <div class="progress progress-striped active" style="margin-bottom: 0;">
+                            <div class="progress-bar" style="width: 100%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <%if (this.UtenteTester)
+            {%>
+        <ar:BootstrapModal runat="server" ID="bmModificaRisorse" OnOkClicked="bmModificaRisorse_OkClicked" Title="Modifica risorsa testuale">
+            <ModalBody>
+                <div class="form-group">
+                    <label for='<%=txtIdRisorsa.ClientID %>'>ID Risorsa testuale</label>
+                    <asp:TextBox runat="server" ID="txtIdRisorsa" class="form-control"></asp:TextBox>
+                </div>
+
+                <ar:TextBox runat="server" ID="txtNuovoTesto" Label="Testo risorsa" TextMode="MultiLine" Rows="6" />
+            </ModalBody>
+        </ar:BootstrapModal>
+        <%} %>
+    </form>
+</body>
+</html>

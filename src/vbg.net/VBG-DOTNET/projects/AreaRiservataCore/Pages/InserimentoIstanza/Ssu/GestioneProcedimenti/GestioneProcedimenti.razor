@@ -1,0 +1,127 @@
+﻿@page "/{IdComune}/{Software}/inserimento-istanza/ssu/gestione-procedimenti/{idDomanda:int}/{stepId:int}"
+@using AreaRiservataCore.Pages.InserimentoIstanza.Ssu.GestioneProcedimenti.RiepilogoProcedimenti
+@using Init.Sigepro.FrontEnd.AppLogic.Services.Domanda
+@using Init.Sigepro.FrontEnd.CoreServices.GestionePresentazioneDomanda.Paginatore
+@using VBG.AppLogic.SSU.GestioneProcedimenti
+@inherits IstanzeStepPage
+
+<ContenitoreRisorseTestuali Nome="ssu-procedimenti">
+    <CascadingValue Name="IdDomanda" Value="@IdDomanda">
+        @if (_procedimentiAttivati is not null)
+        {
+            <RiepilogoProcedimentiComponent ProcedimentiDomanda="_procedimentiAttivati"
+                                            ProcedimentoAggiunto="OnProcedimentoAggiunto"
+                                            EliminaFattispecieSecondaria="OnEliminaFattispecieSecondaria"
+                                            EliminaProcedimento="OnEliminaProcedimento"
+                                            EliminaFattispeciePrimaria="OnEliminaFattispeciePrimaria"
+                                            SolaLettura="SolaLettura"></RiepilogoProcedimentiComponent>
+        }
+    </CascadingValue>
+</ContenitoreRisorseTestuali>
+
+@code {
+    [Inject]
+    public SsuProcedimentiDomandaService _procedimentiService { get; set; } = default!;
+    [Inject]
+    public DatiDomandaService _datiDomandaService{get;set;} = default!;
+
+    [CascadingParameter]
+    private PaginatoreStateService _paginatoreStateService { get; set; } = default!;
+
+    private SsuProcedimentiDomanda _procedimentiAttivati = new();
+
+    protected override async Task OnInitializeStepAsync()
+    {
+        try
+        {
+            await base.OnInitializeStepAsync();
+
+            await this._spinnerService.ShowSpinnerAsync(async() =>
+            {
+                this._procedimentiAttivati = await _procedimentiService.GetProcedimentiAsync(IdDomanda!.Value);
+
+                if (this._procedimentiAttivati is null)
+                {
+                    this._procedimentiAttivati = new();
+                }
+            });
+
+        }
+        catch (Exception)
+        {
+            MessageContainer.AddError("Si è verificato un errore durante il recupero dei procedimenti");
+            this._paginatoreStateService.NascondiBottoneAvanti();
+        }
+
+    }
+
+    // protected async override Task OnBeforeExitStepAsync()
+    // {
+    //     await base.OnBeforeExitStepAsync();
+
+    //     // Se non ho un intervento impostato ne creo uno fittizio con la descrizione del primo procedimento selezionato
+    //     if(DomandaCorrente.AltriDati.Intervento is null)
+    //     {
+    //         _datiDomandaService.ImpostaIntervento(IdDomanda.Value, -1, _procedimentiAttivati.Procedimenti.First().Descrizione, false);
+    //     }
+    // }
+
+    async Task OnProcedimentoAggiunto(SsuProcedimentoDomanda procedimento)
+    {
+        _procedimentiAttivati.Procedimenti.Add(procedimento);
+
+        await _procedimentiService.SaveProcedimentiAsync(IdDomanda!.Value, _procedimentiAttivati);
+    }
+
+    async Task OnEliminaProcedimento(SsuProcedimentoDomanda procedimento)
+    {
+        _procedimentiAttivati.Procedimenti.RemoveAll(p => p.Id == procedimento.Id);
+
+        await _procedimentiService.SaveProcedimentiAsync(IdDomanda!.Value, _procedimentiAttivati);
+
+        await this.InvokeAsync(StateHasChanged);
+    }
+
+    async Task OnEliminaFattispeciePrimaria(SsuFattispeciePrimariaDomanda fattispecie)
+    {
+        foreach (var procedimento in _procedimentiAttivati.Procedimenti)
+        {
+            procedimento.FattispeciePrimarie.RemoveAll(f => f.Id == fattispecie.Id);
+        }
+
+        EliminaProcedimentiSenzaFattispecie();
+
+        await _procedimentiService.SaveProcedimentiAsync(IdDomanda!.Value, _procedimentiAttivati);
+
+        await this.InvokeAsync(StateHasChanged);
+    }
+
+    void EliminaProcedimentiSenzaFattispecie()
+    {
+        _procedimentiAttivati.Procedimenti.RemoveAll(x => !x.FattispeciePrimarie.Any());
+    }
+
+    async Task OnEliminaFattispecieSecondaria(SsuFattispecieSecondariaDomanda fattispecie)
+    {
+        foreach (var procedimento in _procedimentiAttivati.Procedimenti)
+        {
+            foreach (var primarie in procedimento.FattispeciePrimarie)
+            {
+                var daRimuovere = primarie.FattispecieSecondarie.FirstOrDefault(f => f.Id == fattispecie.Id);
+
+                if (daRimuovere is not null)
+                {
+                    primarie.FattispecieSecondarie.Remove(daRimuovere);
+                }
+            }
+
+            procedimento.FattispeciePrimarie.RemoveAll(x => !x.FattispecieSecondarie.Any());
+        }
+
+        EliminaProcedimentiSenzaFattispecie();
+
+        await _procedimentiService.SaveProcedimentiAsync(IdDomanda!.Value, _procedimentiAttivati);
+
+        await this.InvokeAsync(StateHasChanged);
+    }
+}

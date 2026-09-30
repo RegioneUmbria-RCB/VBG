@@ -1,0 +1,288 @@
+﻿@using AreaRiservataCore.Shared.enums
+@using AreaRiservataCore.Pages.Visura
+@using Init.Sigepro.FrontEnd.AppLogic.WebServiceReferences.IstanzeService
+@using VBG.BlazorComponentsLibrary
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.EditFormComponents
+@using VBG.BlazorComponentsLibrary.RisorseTestuali
+@using VBG.AreaRiservataCore.Controls;
+
+<div class="cmp-filter">
+    <div class="filter-section">
+        <h1 class="cmp-filter__title title-xxlarge">@Title</h1>
+        <div class="filter-wrapper d-flex align-items-center">
+            <button disabled="@Disabled" type="button" aria-labelledby="buttonFiltraPratiche" class="btn p-0 pe-2 shadow-none" @onclick="() => _showModal = true">
+                <span class="rounded-icon">
+                    <SvgIcon IconId="it-funnel" CssClass="icon-primary icon-xs me-1"></SvgIcon>
+                </span>
+                <span id="buttonFiltraPratiche">Filtra</span>
+            </button>
+            <div class="dropdown">
+                <button disabled="@Disabled" class="btn btn-dropdown dropdown-toggle shadow-none" type="button" id="@($"dropdownMenu-{Id}")" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-labelledby="buttonOrdinaPratiche" data-focus-mouse="false">
+                    <SvgIcon IconId="it-expand" CssClass="icon-expand icon-sm icon-primary"></SvgIcon>
+                    <span id="buttonOrdinaPratiche" class="dropdown__title">Ordina</span>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="@($"dropdownMenu-{Id}")" style="">
+                    <div class="link-list-wrapper">
+                        <ul class="link-list">
+                            <li>
+                                <a class="dropdown-item list-item" href="@_navigationManager.Uri" @onclick="async () => await SetOrder(OrderByDate.DataAscendente)" @onclick:preventDefault>
+                                    <span class="@(_ordinaPer switch { OrderByDate.DataAscendente => "fw-bold" , _ => ""})">
+                                        <SvgIcon IconId="it-arrow-up" CssClass="icon-expand icon-sm icon-primary"></SvgIcon>Meno recente
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item list-item" href="@_navigationManager.Uri" @onclick="async () => await SetOrder(OrderByDate.DataDiscendente)" @onclick:preventDefault>
+                                    <span class="@(_ordinaPer switch { OrderByDate.DataDiscendente => "fw-bold" , _ => ""})">
+                                        <SvgIcon IconId="it-arrow-down" CssClass="icon-expand icon-sm icon-primary"></SvgIcon>Più recente
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            @if (IsBtnShowInMapVisible)
+            {                
+                <button type="button" aria-labelledby="buttonMostraInMappa" class="btn p-0 pe-2 shadow-none" @onclick="OnBtnShowInMapAsync">
+                    <span class="rounded-icon">
+                        <SvgIcon IconId="it-map-marker-circle" CssClass="icon-primary icon-xs me-1"></SvgIcon>
+                    </span>
+                    <span id="buttonMostraInMappa">Mostra in mappa</span>
+                </button>
+            }
+        </div>
+    </div>
+    <div class="appliedFilters">
+        @if (this._filtri is not null)
+        {
+            if (this._filtri.FiltroPerCodiceIstanzaImpostato)
+            {
+                <Chips Color="Enumerators.Color.PRIMARY" Text="Filtro Codice" ShowCloseButton="true" OnCloseClicked="() => OnFiltroClose(TipoFiltroIstanzePresentate.CodiceIstanza)"></Chips>
+            }
+            if (this._filtri.FiltroPerNumeroProtocolloImpostato)
+            {
+                <Chips Color="Enumerators.Color.PRIMARY" Text="Filtro Numero Protocollo" ShowCloseButton="true" OnCloseClicked="() => OnFiltroClose(TipoFiltroIstanzePresentate.NumeroProtocollo)"></Chips>
+            }
+            if (this._filtri.FiltroPerDataProtocolloImpostato)
+            {
+                <Chips Color="Enumerators.Color.PRIMARY" Text="Filtro Data Protocollo" ShowCloseButton="true" OnCloseClicked="() => OnFiltroClose(TipoFiltroIstanzePresentate.DataProtocollo)"></Chips>
+            }
+            if (this._filtri.FiltroPerRichiedenteImpostato)
+            {
+                <Chips Color="Enumerators.Color.PRIMARY" Text="Filtro Richiedente" ShowCloseButton="true" OnCloseClicked="() => OnFiltroClose(TipoFiltroIstanzePresentate.Richiedente)"></Chips>
+            }
+            if (this._filtri.FiltroPerNumeroAutorizzazioneImpostato)
+            {
+                <Chips Color="Enumerators.Color.PRIMARY" Text="Filtro Numero Autorizzazione" ShowCloseButton="true" OnCloseClicked="() => OnFiltroClose(TipoFiltroIstanzePresentate.NumeroAutorizzazione)"></Chips>
+            }
+            if (this._filtri.FiltroPerAnnoImpostato)
+            {
+                <Chips Color="Enumerators.Color.PRIMARY" Text="Filtro Anno" ShowCloseButton="true" OnCloseClicked="() => OnFiltroClose(TipoFiltroIstanzePresentate.Anno)"></Chips>
+            }
+            if (this._filtri.FiltroPerMeseImpostato)
+            {
+                <Chips Color="Enumerators.Color.PRIMARY" Text="Filtro Mese" ShowCloseButton="true" OnCloseClicked="() => OnFiltroClose(TipoFiltroIstanzePresentate.Mese)"></Chips>
+            }
+            if (this._filtri.FiltroPerStatoPraticaImpostato)
+            {
+                <Chips Color="Enumerators.Color.PRIMARY" Text="Filtro Stato" ShowCloseButton="true" OnCloseClicked="() => OnFiltroClose(TipoFiltroIstanzePresentate.StatoPratica)"></Chips>
+            }
+            if (this._filtri.FiltroPerTipoInterventoImpostato)
+            {
+                <Chips Color="Enumerators.Color.PRIMARY" Text="Filtro Tipo Intervento" ShowCloseButton="true" OnCloseClicked="() => OnFiltroClose(TipoFiltroIstanzePresentate.TipoIntervento)"></Chips>
+            }
+            if (this._filtri.FiltroPerIndirizzoImpostato)
+            {
+                <Chips Color="Enumerators.Color.PRIMARY" Text="Filtro Indirizzo" ShowCloseButton="true" OnCloseClicked="() => OnFiltroClose(TipoFiltroIstanzePresentate.Indirizzo)"></Chips>
+            }
+            if (this._filtri.FiltroPerFabbricatoImpostato)
+            {
+                <Chips Color="Enumerators.Color.PRIMARY" Text="Filtro Fabbricato" ShowCloseButton="true" OnCloseClicked="() => OnFiltroClose(TipoFiltroIstanzePresentate.Fabbricato)"></Chips>
+            }
+            if (this._filtri.FiltroPerOggettoImpostato)
+            {
+                <Chips Color="Enumerators.Color.PRIMARY" Text="Filtro Oggetto" ShowCloseButton="true" OnCloseClicked="() => OnFiltroClose(TipoFiltroIstanzePresentate.Oggetto)"></Chips>
+            }
+            if (this._filtri.FiltroPerPosizioneArchivioImpostato)
+            {
+                <Chips Color="Enumerators.Color.PRIMARY" Text="Filtro Posizione Archivio" ShowCloseButton="true" OnCloseClicked="() => OnFiltroClose(TipoFiltroIstanzePresentate.PosizioneArchivio)"></Chips>
+            }
+            if (this._filtri.FiltroPerTipoCatastoImpostato)
+            {
+                <Chips Color="Enumerators.Color.PRIMARY" Text="Filtro Tipo Catasto" ShowCloseButton="true" OnCloseClicked="() => OnFiltroClose(TipoFiltroIstanzePresentate.TipoCatasto)"></Chips>
+            }
+            if (this._filtri.FiltroPerDatiCatastaliImpostato)
+            {
+                <Chips Color="Enumerators.Color.PRIMARY" Text="Filtro Dati Catastali" ShowCloseButton="true" OnCloseClicked="() => OnFiltroClose(TipoFiltroIstanzePresentate.DatiCatastali)"></Chips>
+            }
+        }
+    </div>
+</div>
+
+@if (this._showModal)
+{
+    <BasicModal AlwaysVisible="true" CssClass="mw-60" OnClose="() => this._showModal = false">
+        <ModalHeader Titolo="Filtri">
+        </ModalHeader>
+        <ModalBody>
+            <FiltriVisuraControl Mode="Mode" IdComune="@_aliasSoftwareResolver.AliasComune" SelectedFilters="this._filtri?.ParametriFiltri" OnCerca="OnCercaAsync"></FiltriVisuraControl>
+        </ModalBody>
+        <ModalFooter>
+            <button type="submit" form="mainForm" class="btn btn-primary flex-even fw-bold"> Cerca </button>
+        </ModalFooter>
+    </BasicModal>
+}
+
+@code {
+
+    [Inject]
+    public NavigationManager _navigationManager { get; set; } = default!;
+    [Inject]
+    public IAliasSoftwareResolver _aliasSoftwareResolver { get; set; } = default!;
+
+    private readonly FiltroIstanzePresentate _filtri = new();
+
+    private bool _showModal = false;
+
+    [Parameter]
+    public ViewMode Mode { get; set; } = ViewMode.ArchivioPratiche;
+
+    /// <summary>
+    /// The component unique Id
+    /// </summary>
+    [Parameter, EditorRequired]
+    public string Id { get; set; } = default!;
+
+    /// <summary>
+    /// The Section title
+    /// </summary>
+    [Parameter]
+    public string Title { get; set; } = "";
+
+    /// <summary>
+    /// Choose if disabled
+    /// </summary>
+    [Parameter]
+    public bool Disabled { get; set; }
+
+    [Parameter]
+    public EventCallback<RichiestaListaPraticheV3> OnFiltersChanged { get; set; }
+
+    [Parameter]
+    public EventCallback OnBtnShowInMapClicked { get; set; }
+
+    [Parameter]
+    public bool IsBtnShowInMapVisible { get; set; }
+
+    OrderByDate _ordinaPer { get; set; } = OrderByDate.DataDiscendente;
+
+    private async Task SetOrder(OrderByDate order)
+    {
+        _ordinaPer = order;
+
+        await NotifyFiltersChangedAsync();
+    }
+
+    private async Task OnCercaAsync(RichiestaListaPraticheV3 richiestaListaPratiche)
+    {
+        // Sto facendo una unova ricerca e potenzialmente ho modificato i filtri, devo resettare il
+        // criterio di ordinamento
+        this._ordinaPer = OrderByDate.DataDiscendente;
+        this._filtri.ParametriFiltri = richiestaListaPratiche;
+
+        await NotifyFiltersChangedAsync();
+    }
+
+    private async Task NotifyFiltersChangedAsync()
+    {
+        this._showModal = false;
+
+        var argument = this._filtri.ParametriFiltri;
+
+        this._filtri.ParametriFiltri.OrderByDate = this._ordinaPer.ToWSEnum();
+
+        await OnFiltersChanged.InvokeAsync(this._filtri.ParametriFiltri);
+    }
+
+
+    private async Task OnFiltroClose(TipoFiltroIstanzePresentate tipoFiltro)
+    {
+        switch (tipoFiltro)
+        {
+            case TipoFiltroIstanzePresentate.CodiceIstanza:
+                this._filtri.RimuoviFiltroPerCodiceIstanza();
+
+                break;
+
+            case TipoFiltroIstanzePresentate.Anno:
+                this._filtri.RimuoviFiltroPerAnno();
+
+                break;
+            case TipoFiltroIstanzePresentate.Mese:
+                this._filtri.RimuoviFiltroPerMese();
+
+                break;
+
+            case TipoFiltroIstanzePresentate.NumeroProtocollo:
+                this._filtri.RimuoviFiltroPerNumeroProtocollo();
+                break;
+
+            case TipoFiltroIstanzePresentate.DataProtocollo:
+                this._filtri.RimuoviFiltroPerDataProtocollo();
+                break;
+
+            case TipoFiltroIstanzePresentate.Richiedente:
+                this._filtri.RimuoviFiltroPerRichiedente();
+                break;
+
+            case TipoFiltroIstanzePresentate.NumeroAutorizzazione:
+                this._filtri.RimuoviFiltroPerNumeroAutorizzazione();
+                break;
+
+            case TipoFiltroIstanzePresentate.StatoPratica:
+                this._filtri.RimuoviFiltroPerStatoPratica();
+                break;
+
+            case TipoFiltroIstanzePresentate.TipoIntervento:
+                this._filtri.RimuoviFiltroPerTipoIntervento();
+                break;
+
+            case TipoFiltroIstanzePresentate.Indirizzo:
+                this._filtri.RimuoviFiltroPerIndirizzo();
+                break;
+
+            case TipoFiltroIstanzePresentate.Fabbricato:
+                this._filtri.RimuoviFiltroPerFabbricato();
+                break;
+
+            case TipoFiltroIstanzePresentate.Oggetto:
+                this._filtri.RimuoviFiltroPerOggetto();
+                break;
+
+            case TipoFiltroIstanzePresentate.PosizioneArchivio:
+                this._filtri.RimuoviFiltroPerPosizioneArchivio();
+                break;
+
+            case TipoFiltroIstanzePresentate.TipoCatasto:
+                this._filtri.RimuoviFiltroPerTipoCatasto();
+                break;
+
+            case TipoFiltroIstanzePresentate.DatiCatastali:
+                this._filtri.RimuoviFiltroPerDatiCatastali();
+                break;
+        }
+
+        await NotifyFiltersChangedAsync();
+    }
+
+    protected async Task OnBtnShowInMapAsync()
+    {
+        if (OnBtnShowInMapClicked.HasDelegate)
+        {
+            await OnBtnShowInMapClicked.InvokeAsync();
+        }
+    }
+}

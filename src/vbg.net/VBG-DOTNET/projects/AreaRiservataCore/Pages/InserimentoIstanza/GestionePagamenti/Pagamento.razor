@@ -1,0 +1,334 @@
+﻿@page "/{IdComune}/{Software}/inserimento-istanza/pagamenti/pagamento/{idDomanda:int}/{stepId:int}"
+@page "/{IdComune}/{Software}/inserimento-istanza/pagamenti/pagamento/{idDomanda:int}/{stepId:int}/{TipoPagamento}"
+@using AreaRiservataCore.Pages.InserimentoIstanza.GestionePagamenti.Components
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneComuni;
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneOneri;
+@using Init.Sigepro.FrontEnd.AppLogic.GestionePresentazioneDomanda.GestioneOneri
+@using Init.Sigepro.FrontEnd.AppLogic.Pagamenti.NodoPagamenti
+@using Init.Sigepro.FrontEnd.AppLogic.Pagamenti.NodoPagamenti.Anagrafiche
+@using Init.Sigepro.FrontEnd.AppLogic.Pagamenti.NodoPagamenti.NODOPAGAMENTI.GenerazioneUrlRitorno
+@using Init.Sigepro.FrontEnd.AppLogic.SalvataggioDomanda;
+@using Init.Sigepro.FrontEnd.CoreServices.GestionePresentazioneDomanda.Paginatore
+@using Init.Sigepro.FrontEnd.Infrastructure.UrlsAndPaths
+@using VBG.BlazorComponentsLibrary.DesignComuni.Spinner
+@using VBG.BlazorComponentsLibrary.RisorseTestuali
+@using VBG.Pagamenti.NodoPagamenti.Attivazione
+@inherits IstanzeStepPage
+
+@if (_activeView == ActiveViewEnum.Nuovo)
+{
+    <div class="card mb-2">
+        <div class="card-header">
+            <div class="loader" style="display: inline-block;"></div>
+            Trasferimento al sistema di pagamento
+        </div>
+        <div class="panel-body">
+            In pochi secondi verrai automaticamente trasferito al sistema di pagamento.<br />
+            Fai click su <a href="@_urlPagamento" id="paga">questo link</a> se non vuoi attendere
+        </div>
+    </div>
+}
+
+@if (_activeView == ActiveViewEnum.Riuscito)
+{
+    <div class="alert alert-success" role="alert">
+        <h2 class="alert-heading h4">Pagamento completato con successo</h2>
+        <RisorsaTestuale IdRisorsa="PagamentoNodoPagamenti_MessaggioPagamentoRiuscito">
+            A breve riceverai una mail contenente i dettagli del pagamento.<br />
+            L’attestazione di pagamento sarà acquisita dal sistema e non sarà necessario inviare ulteriori informazioni sul pagamento effettuato.<br />
+            Fai click su <span class="fw-bold">"Avanti"</span> per proseguire la presentazione della domanda.
+        </RisorsaTestuale>
+    </div>
+}
+
+@if (_activeView == ActiveViewEnum.Fallito)
+{
+    <div class="alert alert-danger" role="alert">
+        <h2 class="alert-heading h4">Pagamento fallito</h2>
+        <RisorsaTestuale IdRisorsa="PagamentoNodoPagamenti_MessaggioPagamentoFallito">
+            Il pagamento è fallito oppure è stato annullato dall'utente.<br />
+            Fai click su <span class="fw-bold">"Ritenta il pagamento"</span> per ripetere la procedura di pagamento
+            oppure su <span class="fw-bold">"Torna indietro"</span> per tornare al passaggio precedente.
+        </RisorsaTestuale>
+    </div>
+
+    <button @onclick="OnTornaIndietro" class="btn btn-light">Torna indietro</button>
+    <button @onclick="OnRitentaPagamento" class="btn btn-primary">Ritenta il pagamento</button>
+}
+
+@if (_activeView == ActiveViewEnum.InAttesa)
+{
+    <PagamentoInAttesaComponent IdDomanda="@IdDomanda.Value" OnPagamentoCompletato="OnAttesaPagamentoCompletata" OnTornaAllaHome="TornaAllaHome"></PagamentoInAttesaComponent>
+}
+
+@if (_activeView == ActiveViewEnum.ErroreAttivazione)
+{
+    <div>ErroreAttivazione</div>
+}
+
+@if (_pagamentiInSospeso.Any())
+{
+    <h2>Operazioni di pagamento</h2>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Causale</th>
+                <th scope="col">IUV</th>
+                <th scope="col">Importo (€)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var pagamento in this._pagamentiInSospeso)
+            {
+                <tr title='@($"{pagamento.StatoNativo} {pagamento.Stato}")'>
+                    <td>
+                        @if (pagamento.Stato == StatoPagamentoOnereEnum.PagamentoFallito)
+                        {
+                            <div class="badge" style="display:inline-block; color:var(--bs-danger);">
+                                <i class="fa fa-exclamation"></i>
+                            </div>
+                        }
+
+                        @if (pagamento.Stato == StatoPagamentoOnereEnum.PagamentoRiuscito)
+                        {
+                            <div class="badge" style="display:inline-block; color:var(--bs-success);">
+                                <i class="fa fa-check"></i>
+                            </div>
+                        }
+                        @if (pagamento.Stato == StatoPagamentoOnereEnum.PagamentoIniziato)
+                        {
+                            <div class="badge" style="display:inline-block; color:var(--bs-info);">
+                                <i class="fa fa-clock-o"></i>
+                            </div>
+                        }
+
+                        @pagamento.IdPosizioneNodoPagamenti  - @pagamento.Causale
+                    </td>
+                    <td>
+                        @pagamento.IUV
+                    </td>
+
+                    <td style="text-align: right">@pagamento.Importo</td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+}
+
+
+@code {
+
+    enum ActiveViewEnum
+    {
+        Inizializzato,
+        Nuovo,
+        Fallito,
+        Riuscito,
+        InAttesa,
+        ErroreAttivazione
+    }
+
+    [Inject]
+    public IPagamentiNodoPagamentiService _nodoPagamentiService { get; set; } = default!;
+
+    [Inject]
+    public IResolveUrl _resolveUrl { get; set; } = default!;
+
+    [Inject]
+    public IEstremiDomandaNodoPagamentiReader _estremiDomandaNodoPagamentiReader { get; set; } = default!;
+    [CascadingParameter]
+    private PaginatoreStateService _paginatoreStateService { get; set; } = default!;
+
+    [Parameter]
+    public string TipoPagamento { get; set; } = "";
+    IEnumerable<OnereConPagamentoInSospeso> _pagamentiInSospeso = Enumerable.Empty<OnereConPagamentoInSospeso>();
+    ActiveViewEnum _activeView = ActiveViewEnum.Inizializzato;
+    string _urlPagamento = "";
+
+    protected override bool CanEnterStep()
+    {
+        return this._nodoPagamentiService.NodoPagamentoAttivo(IdDomanda.Value) &&
+                this._nodoPagamentiService.DomandaRichiedePagamentoOnline(IdDomanda.Value);
+    }
+
+    protected override async Task OnLoadStepAsync()
+    {
+        await DataBind();
+    }
+
+    private async Task DataBind()
+    {
+        var idDomanda = IdDomanda.Value;
+
+        await _spinnerService.ShowSpinnerAsync(async () =>
+            {
+                this.MessageContainer.ClearErrors();
+
+                try
+                {
+
+
+                    if (!this._nodoPagamentiService.PagamentoAvviato(idDomanda))
+                    {
+                        var pagaDopoSupportato = this._nodoPagamentiService.PagoDopoAttivo(idDomanda);
+
+                        if (pagaDopoSupportato && TipoPagamento != "OTF")
+                        {
+                            AvviaRedirectAPagoDopo();
+                        }
+                        else
+                        {
+                            await AvviaPagamentoOTF();
+                        }
+
+                        return;
+                    }
+
+                    this._nodoPagamentiService.AggiornaStatoPagamenti(idDomanda);
+
+                    var stato = this._nodoPagamentiService.GetStatoPosizioni(idDomanda);
+
+                    this._pagamentiInSospeso = stato.Pagamenti;
+
+                    switch (stato.StatoGlobale)
+                    {
+                        case StatoPagamentoOnereEnum.PagamentoRiuscito:
+                            PagamentoRiuscito();
+                            break;
+                        case StatoPagamentoOnereEnum.PagamentoFallito:
+                            PagamentoFallito();
+                            break;
+                        default:
+                            PagamentoInAttesa();
+                            break;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    this._activeView = ActiveViewEnum.Fallito;
+                    this.MessageContainer.AddError($"Pagamento fallito: {ex.Message}");
+                    this._paginatoreStateService.NascondiBottoneAvanti();
+                }
+            });
+    }
+
+    private void AvviaRedirectAPagoDopo()
+    {
+        GotoAsync("inserimento-istanza/pagamenti/scelta-paga-dopo", IdDomanda.Value, StepId);
+    }
+
+    private void PagamentoFallito()
+    {
+        this._activeView = ActiveViewEnum.Fallito;
+        this._paginatoreStateService.NascondiPaginatore();
+    }
+
+
+    private void PagamentoInAttesa()
+    {
+        this._activeView = ActiveViewEnum.InAttesa;
+        this._paginatoreStateService.NascondiPaginatore();
+    }
+
+    private void PagamentoRiuscito()
+    {
+        try
+        {
+            this._activeView = ActiveViewEnum.Riuscito;
+        }
+        catch (Exception ex)
+        {
+            this._activeView = ActiveViewEnum.Fallito;
+            this.MessageContainer.AddError($"Pagamento fallito: {ex.Message}");
+            this._paginatoreStateService.NascondiBottoneAvanti();
+        }
+    }
+
+    private async Task AvviaPagamentoOTF()
+    {
+        try
+        {
+            this._paginatoreStateService.NascondiBottoneAvanti();
+
+            var estremiDomanda = this._estremiDomandaNodoPagamentiReader.GetEstremiDomandaDaIdDomanda(this.IdDomanda.Value, StepId);
+
+            var esito = this._nodoPagamentiService.AvviaPagamentoOnTheFly(estremiDomanda, new ArCoreUrlRitornoPagamentiProvider(_resolveUrl));
+
+            if (esito.Esito)
+            {
+                try
+                {
+                    if (esito.HttpMethod == HttpMethodEnum.GET)
+                    {
+                        _urlPagamento = esito.UrlSistemaPagamenti;
+                        _navigationManager.NavigateTo(this._urlPagamento);
+                    } else if(esito.HttpMethod == HttpMethodEnum.POST)
+                    {
+                        var cfg = new
+                        {
+                            method = "POST",
+                            action = esito.UrlSistemaPagamenti,
+                            parameters = esito.PostParameters.Select(x => new
+                            {
+                                key = x.Key,
+                                value = x.Value
+                            })
+                        };
+
+                        await _jsRuntime.InvokeVoidAsync("AvviaPagamento.avviaPagamento", cfg);
+                    }
+
+                    this._activeView = ActiveViewEnum.Nuovo;
+                }
+                catch (NavigationException)
+                {
+                    // ... Generato da navigationManager su primo load
+                }
+                catch
+                {
+                    this._activeView = ActiveViewEnum.ErroreAttivazione;
+                    throw;
+                }
+            }
+            else
+            {
+                this._activeView = ActiveViewEnum.Fallito;
+            }
+        }
+        catch (Exception ex)
+        {
+            this.MessageContainer.AddError($"Avvio pagamento fallito: {ex.Message}");
+        }
+    }
+
+    private void OnTornaIndietro()
+    {
+        this._nodoPagamentiService.AnnullaPagamenti(this.IdDomanda.Value, FlagEliminazionePagamenti.PagamentiFalliti);
+        this._paginatoreStateService.GoToPrevStep();
+    }
+
+    private async Task OnRitentaPagamento()
+    {
+        await _spinnerService.ShowSpinnerAsync(async () =>
+            {
+                this._nodoPagamentiService.AnnullaPagamenti(this.IdDomanda.Value, FlagEliminazionePagamenti.PagamentiFalliti);
+                // Response.Redirect(Request.RawUrl);
+                await DataBind();
+            });
+    }
+
+    private async Task OnAttesaPagamentoCompletata()
+    {
+        await _spinnerService.ShowSpinnerAsync(async () =>
+            {
+                await DataBind();
+            });
+    }
+
+    void TornaAllaHome()
+    {
+        GotoAsync("");
+    }
+}

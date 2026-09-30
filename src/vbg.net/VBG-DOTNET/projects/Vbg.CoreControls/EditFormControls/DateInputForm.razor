@@ -1,0 +1,115 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+@using Vbg.CoreControls
+@using System.Linq.Expressions
+@using System.Diagnostics.CodeAnalysis
+@using System.Globalization
+@inherits MyBaseFormComponent<DateTime?>
+
+<div class="mb-3 @CssClassContainer" id="@UniqueID">
+    @if (ShowLabel)
+    {
+        <LabelContainerComponent RelativeControlId="@this.Id" ResourceId="@this.ResourceId" Value="@this.Label" Required="@this.Required" CanEditResourceText="@this.CanEditResourceText"></LabelContainerComponent>
+    }
+@*    <div class="input-group">
+        <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+        <input type="date" id="@this.Id" class="form-control @this.CssClass  @cssErrorClass" @attributes="this.AdditionalAttributes" disabled="@this.IsDisabled" @onchange="Changed" value="@getCurrentValue()" />
+    </div>*@
+    <input type="date" id="@this.Id" class="form-control @this.CssClass  @cssErrorClass" @attributes="this.AdditionalAttributes" disabled="@this.IsDisabled" @onchange="Changed" value="@getCurrentValue()" />
+    @if (ValidationFor != null)
+    {
+        <div class="form-control-validation help-block">
+            <ValidationMessage For="@ValidationFor" />
+        </div>
+    }
+</div>
+
+
+@code {
+    [Parameter] 
+    public string ParsingErrorMessage { get; set; } = "The {0} field must be a date.";
+
+    [Parameter]
+    public DateTime? ValoreMin { get; set; }
+
+    [Parameter]
+    public DateTime? ValoreMax { get; set; }
+
+    private string getCurrentValue()
+    {
+        if (CurrentValue == null)
+            return string.Empty;
+
+        return CurrentValue.Value.ToString("yyyy-MM-dd");
+    }
+
+    private async Task Changed(ChangeEventArgs e)
+    {
+        DateTime date;
+
+        if (e.Value != null && DateTime.TryParse(e.Value.ToString(), out date))
+        {
+            CurrentValue = date;
+            await ValueChanged.InvokeAsync(date);
+        }        
+        else
+        {
+            CurrentValue = null;
+            await ValueChanged.InvokeAsync(null);
+        }
+
+        if (FieldIdentifier.FieldName != null)
+        {
+            EditContext?.NotifyFieldChanged(FieldIdentifier);
+        }
+    }
+
+    protected override bool TryParseValueFromString(string value, [MaybeNullWhen(false)] out DateTime? result, [NotNullWhen(false)] out string validationErrorMessage)
+    {
+        if (BindConverter.TryConvertTo<DateTime?>(value, CultureInfo.InvariantCulture, out result))
+        {
+            validationErrorMessage = null;
+            return true;
+        }
+        else
+        {
+            validationErrorMessage = string.Format(CultureInfo.InvariantCulture, ParsingErrorMessage, Label ?? DisplayName ?? FieldIdentifier.FieldName);
+            return false;
+        }
+    }
+
+    protected override string FormatValueAsString(DateTime? value)
+    {
+        return value?.ToShortDateString();
+    }
+
+    protected override bool PerformCustomValidation(FieldIdentifier fieldIdentifier, ValidationMessageStore messageStore)
+    {
+        if (ValoreMin == null && ValoreMax == null)
+            return true;
+
+        var min = ValoreMin;
+        var max = ValoreMax;
+
+        if (ValoreMin < min)
+        {
+            messageStore.Add(this.FieldIdentifier, $"Il valore minimo del campo {this.FieldIdentifier.FieldName} non è una data valida (valore={this.ValoreMin}), verrà usato DateTime.MinValue come valore minimo");
+            min = DateTime.MinValue;
+        }
+
+        if (ValoreMax > max)
+        {
+            messageStore.Add(this.FieldIdentifier, $"Il valore massimo del campo {this.FieldIdentifier.FieldName} non è una data valida (valore={this.ValoreMax}), verrà usato DateTime.MaxValue come valore massimo");
+            max = DateTime.MaxValue;
+        }
+
+        DateTime val;
+
+        if (!DateTime.TryParse(this.CurrentValueAsString, out val))
+        {
+            messageStore.Add(this.FieldIdentifier, $"Il valore del campo {this.FieldIdentifier.FieldName} non è una data valida (valore={this.CurrentValueAsString}), non verrà effettuata la verifica di appartenenza ad un range di valori");
+            return true;
+        }
+
+        return min <= val && val <= max;
+    }
+}

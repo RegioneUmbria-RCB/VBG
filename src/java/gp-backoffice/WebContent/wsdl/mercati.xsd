@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://gruppoinit.it/sigepro/schemas/messages/mercati" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema"
+	xmlns:tns="http://gruppoinit.it/sigepro/schemas/messages/mercati">
+	<!-- Presenze Proprietario -->
+	<element name="PresenzeProprietarioRequest">
+		<complexType>
+			<all>
+				<element name="token" type="string" />
+				<element name="codIstanza" type="int" />
+				<element name="estremiAut" type="tns:EstremiAut" />
+				<element name="catMerc" type="string" />
+				<element name="inserisciAutSeNonTrovata" type="boolean" />
+			</all>
+		</complexType>
+	</element>
+	<element name="PresenzeProprietarioResponse">
+		<complexType>
+			<all>
+				<element name="numeroPresenzeProp" type="int" />
+			</all>
+		</complexType>
+	</element>
+	<!-- Presenze -->
+	<element name="PresenzeRequest">
+		<complexType>
+			<all>
+				<element name="token" type="string" />
+				<element name="codiceIstanza" type="int" />
+				<element name="estremiAut" type="tns:EstremiAut" />
+				<element name="catMerc" type="string" />
+				<element name="inserisciAutSeNonTrovata" type="boolean" />
+			</all>
+		</complexType>
+	</element>
+	<element name="PresenzeResponse">
+		<complexType>
+			<all>
+				<element name="numeroPresenze" type="int" />
+			</all>
+		</complexType>
+	</element>
+	<!-- Presenze per Posteggio -->
+	<element name="PresenzePosteggioRequest">
+		<complexType>
+			<all>
+				<element name="token" type="string" />
+				<element name="codIstanza" type="int" />
+				<element name="codPosteggio" type="string" />
+				<element name="estremiAut" type="tns:EstremiAut" />
+				<element name="catMerc" type="string" />
+				<element name="inserisciAutSeNonTrovata" type="boolean" />
+			</all>
+		</complexType>
+	</element>
+	<element name="PresenzePosteggioResponse">
+		<complexType>
+			<all>
+				<element name="numeroPresenze" type="int" />
+				<element name="numeroPresenzeProp" type="int" />
+			</all>
+		</complexType>
+	</element>
+
+	<!-- Presenze per Manifestazione -->
+	<element name="PresenzeManifestazioneRequest">
+		<complexType>
+			<all>
+				<element name="token" type="string"  minOccurs="1" maxOccurs="1" />
+				<element name="codiceIstanza" type="int" minOccurs="0" maxOccurs="1" />
+				<element name="codiceManifestazione" type="int" minOccurs="1" maxOccurs="1" />
+				<element name="codiceUso" type="int" minOccurs="0" maxOccurs="1" />
+				<element name="estremiAut" type="tns:EstremiAut" />
+				<element name="catMerc" type="string" minOccurs="0" maxOccurs="1" />
+				<element name="inserisciAutSeNonTrovata" type="boolean" />
+			</all>
+		</complexType>
+	</element>
+	<element name="PresenzeManifestazioneResponse">
+		<complexType>
+			<all>
+				<element name="numeroPresenze" type="int" />
+				<element name="numeroPresenzeProp" type="int" />
+			</all>
+		</complexType>
+	</element>
+	
+	<!-- Presenze per Manifestazione V2 -->
+	<element name="PresenzeManifestazioneV2Request">
+		<complexType>
+			<all>
+				<element name="token" type="string"  minOccurs="1" maxOccurs="1" />
+				<element name="codiceIstanza" type="int" minOccurs="0" maxOccurs="1" />
+				<element name="codiceManifestazione" type="int" minOccurs="1" maxOccurs="1" />
+				<element name="codiceUso" type="int" minOccurs="0" maxOccurs="1" />
+				<element name="estremiAut" type="tns:EstremiAut" />
+				<element name="catMerc" type="string" minOccurs="0" maxOccurs="1" />
+				<element name="inserisciAutSeNonTrovata" type="boolean" />
+				<element name="presenzeDaAggiungere" type="int" minOccurs="0" maxOccurs="1" />
+			</all>
+		</complexType>
+	</element>
+	<element name="PresenzeManifestazioneV2Response">
+		<complexType>
+			<all>
+				<element name="numeroPresenze" type="int" />
+				<element name="numeroPresenzeProp" type="int" />
+				<element name="inseritoAutorizzazione" type="boolean"/>
+				<element name="inseritoPresenze" type="boolean"/>
+				<element name="inseritoSpuntistiMercato" type="boolean"/>
+			</all>
+		</complexType>
+	</element>
+	
+	<complexType name="EstremiAut">
+		<all>
+			<element name="autoriznumero" type="string" />
+			<element name="autorizdata" type="string" />
+			<element name="codiceAutorizcomune" type="string" />
+			<element name="codiceAutorizregistro" type="int" />
+		</all>
+	</complexType>
+	
+</schema>

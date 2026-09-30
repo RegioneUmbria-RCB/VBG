@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 rel. 2 (http://www.altova.com) by Pippolo (Pippolo) -->
+<xs:schema xmlns:rea="http://www.impresainungiorno.gov.it/schema/suap/rea" xmlns:ps="http://www.impresainungiorno.gov.it/schema/suap/pratica" xmlns:pi="http://www.impresainungiorno.gov.it/schema/base" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.impresainungiorno.gov.it/schema/suap/rea" elementFormDefault="unqualified" attributeFormDefault="unqualified" version="1.0.0">
+	<!--  
+  -->
+	<xs:import namespace="http://www.impresainungiorno.gov.it/schema/base" schemaLocation="./impresainungiorno.gov_tipi_elementari-1.0.0.xsd"/>
+	<xs:import namespace="http://www.impresainungiorno.gov.it/schema/suap/pratica" schemaLocation="./pratica_suap-1.0.1.xsd"/>
+	<!--  
+    
+    Comunicazione REA
+    
+  -->
+	<xs:element name="comunicazione-rea" type="rea:ComunicazioneREA"/>
+	<!--  
+  -->
+	<xs:complexType name="ComunicazioneREA">
+		<xs:sequence>
+			<xs:element name="info-schema" type="ps:VersioneSchema"/>
+			<xs:element name="protocollo-suap" type="ps:ProtocolloSUAP" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+          Protocollo SUAP in uscita associato alla comunicazione REA 
+          ai sensi dell'articolo 11 dell'allegato tecnico DPR 160/2010
+        </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="suap-mittente">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="id-suap" type="xs:positiveInteger"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="estremi-pratica-suap">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="protocollo-suap" type="ps:ProtocolloSUAP">
+							<xs:annotation>
+								<xs:documentation>
+                E' il protocollo SUAP associato alla pratica SUAP oggetto della comunicazione REA
+              </xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="protocollo-ri" type="ps:ProtocolloRI" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>
+                Nel caso di SCIA in Comunica è il protocollo della pratica Comunica contentente la SCIA
+              </xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="impresa">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="denominazione" type="pi:Stringa"/>
+									<xs:element name="codice-fiscale" type="pi:CodiceFiscale"/>
+									<xs:element name="provincia-cciaa-competente" type="ps:SiglaProvincia"/>
+									<xs:element name="indirizzo" type="pi:Indirizzo" minOccurs="0"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="oggetto" type="rea:OggettoComunicazioneREA"/>
+					</xs:sequence>
+					<xs:attribute name="codice-pratica" type="pi:Stringa" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="stato-pratica" type="rea:StatoPratica"/>
+			<xs:choice>
+				<xs:element name="comunicazione-scia">
+					<xs:annotation>
+						<xs:documentation>
+          E' il caso di comunicazione al REA della presentazione di una SCIA al SUAP
+        </xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="allegato" type="rea:AllegatoSuap" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="comunicazione-esito-scia">
+					<xs:annotation>
+						<xs:documentation>
+          E' il caso di comunicazione al REA degli eventuali esiti della SCIA
+        </xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="esito" type="rea:EsitoScia"/>
+							<xs:element name="atto-ente" type="rea:AllegatoGenerico" minOccurs="0" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>
+                Rappresentano gli atti amministrativi associati all'esito della pratica suap
+              </xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+		</xs:sequence>
+		<xs:attribute name="lingua" type="rea:Lingua"/>
+	</xs:complexType>
+	<!-- 
+  
+    Tipi complessi
+  
+   -->
+	<xs:simpleType name="StatoPratica">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="istruttoria"/>
+			<xs:enumeration value="evasa"/>
+			<xs:enumeration value="sospesa"/>
+			<xs:enumeration value="rifiutata"/>
+			<xs:enumeration value="annullata"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!--  
+    -->
+	<xs:simpleType name="Lingua">
+		<xs:restriction base="pi:Stringa">
+			<xs:pattern value="[a-zA-Z]{2,8}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!--  
+    -->
+	<xs:simpleType name="TestoComunicazione">
+		<xs:restriction base="pi:Stringa">
+			<xs:maxLength value="160"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!--  
+    -->
+	<xs:complexType name="OggettoComunicazioneREA">
+		<xs:annotation>
+			<xs:documentation>
+			Valorizzare ad esempio con:
+			(Apertura/Chiusura) pratica SUAP [id pratica]
+]			</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="rea:TestoComunicazione">
+				<xs:attribute name="tipo-procedimento">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="SCIA">
+								<xs:annotation>
+									<xs:documentation>
+                                    Tipologia di procedimento automatizzato previsto dal Capo Terzo dpr 160
+                                </xs:documentation>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="silenzio-assenso">
+								<xs:annotation>
+									<xs:documentation>
+                                    Tipologia di procedimento automatizzato previsto dal Capo Terzo dpr 160
+                                </xs:documentation>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="ordinario"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+				<xs:attribute name="tipo-intervento" type="ps:TipoIntervento"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<!--  
+  -->
+	<xs:complexType name="AllegatoSuap">
+		<xs:complexContent>
+			<xs:extension base="rea:AllegatoGenerico">
+				<xs:attribute name="descrittore" use="required">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="SUAP-ZIP">
+								<xs:annotation>
+									<xs:documentation>il tipo SUAP-ZIP  rappresenta la pratica suap nella sua interezza cosi' come definita dalla specifica </xs:documentation>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="SUAP-PDF">
+								<xs:annotation>
+									<xs:documentation>il tipo SUAP-PDF  rappresenta la distinta del modello di riepilogo</xs:documentation>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="SUAP-XML">
+								<xs:annotation>
+									<xs:documentation>il tipo SUAP-XML rappresenta il modello di riepilogo della pratica SUAP</xs:documentation>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="MDA-PDF"/>
+							<xs:enumeration value="MDA-XML"/>
+							<xs:enumeration value="ALTRO"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!--  
+  -->
+	<xs:complexType name="AllegatoGenerico">
+		<xs:complexContent>
+			<xs:extension base="ps:BaseAllegatoSUAP">
+				<xs:attribute name="nome-file" type="pi:Stringa" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!--  
+  -->
+	<xs:complexType name="EsitoScia">
+		<xs:sequence>
+			<xs:element name="descrizione" type="pi:Stringa"/>
+			<xs:element name="dettaglio-esito" type="pi:Stringa" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+          Descrizione estesa dell'esito, note o altra informazione utile a specificare ulteriormente l'esito della pratica SUAP
+        </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="data" type="xs:date" use="required"/>
+	</xs:complexType>
+</xs:schema>

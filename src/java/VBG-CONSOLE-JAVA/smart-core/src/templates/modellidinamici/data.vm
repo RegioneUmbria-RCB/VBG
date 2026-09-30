@@ -1,0 +1,31 @@
+#if($modelloHelper.isRenderForPrint())
+	<b>$decodedVal</b>
+#else
+	#set($readonly = $campo.getProprietaCampo("ReadOnly",""))
+	#if($readonly && $readonly == "true")
+		#set($readonlyAttr = "readonly='readonly'")
+		#set($jqOptions = "{disabled:true}")
+	#else
+		#set($readonlyAttr = "")
+		#set($jqOptions = "{}")
+	#end
+	<input type="text" name="${nameAttr}" id="${nameAttr}_ID" value="${decodedVal}" $readonlyAttr
+	size="10" onchange="isValidDate(this,true);" class="$classeCampo"/>
+	#if(!$isTemplate)
+	<script type="text/javascript">
+		jQuery(document).ready(function(){
+			jQuery('#' + '${nameAttr}_ID').datepicker(${jqOptions});
+			###if($readonly && $readonly == "true")
+			##jQuery('#' + '${nameAttr}_ID').datepicker("option","disabled",true);
+			###end
+		});
+	</script>
+	#else
+		#set($script = "jQuery('#FLD_${idCampo}_${campo.Indice}_' + newBlockIndex + '_ID').datepicker(${jqOptions});")
+		$blocco.addScript($script)
+##		#if($readonly && $readonly == "true")
+##			#set($script = "jQuery('#FLD_${idCampo}_${campo.Indice}_' + newBlockIndex + '_ID').datepicker('option','disabled',true);")
+##			$blocco.addScript($script)
+##		#end
+	#end
+#end

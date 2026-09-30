@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://gruppoinit.it/sigepro/schemas/messages/regole"
+	elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema"
+	xmlns:tns="http://gruppoinit.it/sigepro/schemas/messages/regole"
+	xmlns:base="http://gruppoinit.it/sigepro/schemas/messages/base">
+	<import id="oggettiBase" schemaLocation="backoffice_oggetti_base.xsd"
+		namespace="http://gruppoinit.it/sigepro/schemas/messages/base" />
+
+
+	<element name="GetComuniESoftwarePerRegolaRequest" type="tns:ComuniESoftwarePerRegolaRequest"></element>
+	<complexType name="ComuniESoftwarePerRegolaRequest">
+    	<sequence>
+    		<element name="token" type="string" maxOccurs="1" minOccurs="1"></element>
+    		<element name="nomeRegola" type="string" maxOccurs="1" minOccurs="1"></element>
+    		<element name="nomeParametro" type="string" maxOccurs="1" minOccurs="0"></element>
+    	</sequence>
+	</complexType>
+
+
+	<element name="GetComuniESoftwarePerRegolaResponse" type="tns:ComuniESoftwarePerRegolaResponse"></element>
+	
+
+	<complexType name="ComuniESoftwarePerRegolaResponse">
+    	<sequence>
+			<element name="configurazioni" type="tns:ComuniESoftwareType" maxOccurs="unbounded" minOccurs="0" />
+    	</sequence>
+	</complexType>
+	
+	<complexType name="ComuniESoftwareType">
+    	<sequence>			
+    		<element name="codiceComune" type="string" maxOccurs="1" minOccurs="1"></element>
+    		<element name="software" type="string" maxOccurs="1" minOccurs="1"></element>
+    	</sequence>
+	</complexType>
+
+
+
+	<element name="GetRegolaRequest" type="tns:RegolaRequest"></element>
+
+
+	<complexType name="RegolaRequest">
+    	<sequence>
+    		<element name="token" type="string" maxOccurs="1" minOccurs="1"></element>
+    		<element name="software" type="string" maxOccurs="1" minOccurs="1"></element>
+    		<element name="nomeRegola" type="string" maxOccurs="1" minOccurs="1"></element>
+    		<element name="recuperaParametri" type="boolean" maxOccurs="1" minOccurs="0"></element>
+    		<element name="codiceComune" type="string" maxOccurs="1" minOccurs="0"></element>
+    	</sequence>
+	</complexType>
+
+
+    
+    <complexType name="RegolaResponse">
+    	<sequence>
+    		<element name="attiva" type="boolean"></element>
+    		<element name="listaParametri" type="tns:ParametroType"
+    			maxOccurs="unbounded" minOccurs="0">
+    		</element>
+    	</sequence>
+    </complexType>
+
+
+    <complexType name="ParametroType">
+    	<sequence>
+    		<element name="descrizione" maxOccurs="1" minOccurs="1"></element>    		
+    		<element name="valore" type="string" maxOccurs="1" minOccurs="1"></element>
+    	</sequence>
+    </complexType>
+
+
+    <element name="GetRegolaResponse" type="tns:RegolaResponse"></element>
+
+    <element name="GetParametroRegolaRequest"
+    	type="tns:ParametroRegolaRequest">
+    </element>
+    
+    <element name="GetParametroRegolaResponse"
+    	type="tns:ParametroRegolaResponse">
+    </element>
+    
+    <complexType name="ParametroRegolaResponse">
+    	<sequence>
+    	<choice>
+    		<element name="parametro" type="tns:ParametroType" maxOccurs="1"
+    			minOccurs="1">
+    		</element>
+    		<element name="errore" type="base:ErroreBackofficeType"
+    			maxOccurs="1" minOccurs="1">
+    		</element>
+    		</choice>
+    	</sequence>
+    </complexType>
+
+    <complexType name="ParametroRegolaRequest">
+    	<sequence>
+    		<element name="token" type="string" maxOccurs="1" minOccurs="1"></element>
+    		<element name="software" type="string" maxOccurs="1" minOccurs="1"></element>
+    		<element name="nomeRegola" type="string" maxOccurs="1" minOccurs="1"></element>
+    		<element name="nomeParametro" type="string" maxOccurs="1" minOccurs="1"></element>
+    		<element name="codiceComune" type="string" maxOccurs="1" minOccurs="0"></element>
+    	</sequence>
+    </complexType>
+</schema>

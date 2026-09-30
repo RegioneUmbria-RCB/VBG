@@ -1,0 +1,11 @@
+export const ApriPannello = "megamenu_apri_pannello";
+export const PannelloAperto = "megamenu_pannello_aperto";
+export const ApriRicercaTestuale = "megamenu_apri_ricerca_testuale";
+export const RicercaTesto = "megamenu_RT_ricerca_testo";
+export const TestoCercatoTrovato = "megamenu_RT_testo_cercato_trovato";
+export const TestoCercatoNonTrovato = "megamenu_RT_testo_cercato_non_trovato";
+export const ResetRicercaTestuale = "megamenu_RT_reset_ricerca";
+export const BloccaCambiamentoPannello = "megamenu_blocca_cambiamento_pannello";
+export const SbloccaCambiamentoPannello = "megamenu_sblocca_cambiamento_pannello";
+export const AggiungiAPreferiti = "megamenu_aggiungi_a_preferiti";
+export const RimuoviDaPreferiti = "megamenu_rimuovi_da_preferiti";

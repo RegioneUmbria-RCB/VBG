@@ -1,0 +1,70 @@
+﻿@using VBG.AppLogic.SSU.GestioneProcedimenti
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+
+<ContenitoreRisorseTestuali Nome="riepilogo-procedimenti">
+
+    @if (ProcedimentiDomanda is not null)
+    {
+        if (ProcedimentiDomanda.Procedimenti.Any())
+        {
+            @foreach (var procedimento in ProcedimentiDomanda.Procedimenti)
+            {
+                <RiepilogoSingoloProcedimento Procedimento="@procedimento"
+                                              EliminaFattispeciePrimaria="EliminaFattispeciePrimaria"
+                                              EliminaFattispecieSecondaria="EliminaFattispecieSecondaria"
+                                              EliminaProcedimento="EliminaProcedimento"
+                                              SolaLettura="SolaLettura"></RiepilogoSingoloProcedimento>
+            }
+        }
+        else
+        {
+            <div class="alert alert-primary" role="alert">
+                <ContenitoreRisorseTestuali Nome="alert-no-procedimenti">
+
+                    <h4 class="alert-heading">Seleziona un procedimento</h4>
+                    <p>
+                        <RisorsaTestuale IdRisorsa="testo">
+                            In questa pagina puoi selezionare uno o più procedimenti da attivare nella domanda che stai presentando
+                        </RisorsaTestuale>
+                    </p>
+                    <hr>
+                    <p class="mb-0">
+                        <RisorsaTestuale IdRisorsa="action">
+                            Fai click su <b>Aggiungi</b> per cercare ed aggiungere procedimenti alla domanda
+                        </RisorsaTestuale>
+                    </p>
+                </ContenitoreRisorseTestuali>
+            </div>
+        }
+
+        if (!SolaLettura)
+        {
+            <CascadingValue Name="ProcedimentiDomanda" Value="@ProcedimentiDomanda">
+                <BottoneAggiungiProcedimento ProcedimentoSelezionato="ProcedimentoAggiunto"></BottoneAggiungiProcedimento>
+            </CascadingValue>
+        }
+        
+    }
+
+
+</ContenitoreRisorseTestuali>
+
+@code {
+    [Parameter, EditorRequired]
+    public SsuProcedimentiDomanda? ProcedimentiDomanda { get; set; }
+    [Parameter, EditorRequired]
+    public EventCallback<SsuProcedimentoDomanda> ProcedimentoAggiunto { get; set; }
+    [Parameter, EditorRequired]
+    public EventCallback<SsuFattispecieSecondariaDomanda> EliminaFattispecieSecondaria { get; set; }
+    [Parameter, EditorRequired]
+    public EventCallback<SsuFattispeciePrimariaDomanda> EliminaFattispeciePrimaria { get; set; }
+    [Parameter, EditorRequired]
+    public EventCallback<SsuProcedimentoDomanda> EliminaProcedimento { get; set; }
+    [Parameter]
+    public bool SolaLettura { get; set; }
+
+
+
+    
+
+}

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns1="http://dmServerService.WS.dmServer.finmatica.it" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="http://dmServerService.WS.dmServer.finmatica.it" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema xmlns="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://dmServerService.WS.dmServer.finmatica.it">
+      <xsd:element name="ricerca">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="area" type="xsd:string" />
+            <xsd:element name="modello" type="xsd:string" />
+            <xsd:element name="stato" type="xsd:string" />
+            <xsd:element name="utenteApplicativo" type="xsd:string" />
+            <xsd:element maxOccurs="unbounded" name="mt" type="tns1:MetadatoRicerca" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ricercaResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="ricercaReturn" type="tns1:RisultatoRicerca" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="MetadatoRicerca">
+        <xsd:sequence>
+          <xsd:element name="metadato" nillable="true" type="xsd:string" />
+          <xsd:element name="operatore" type="xsd:int" />
+          <xsd:element name="valore" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Allegato">
+        <xsd:sequence>
+          <xsd:element name="allegato" nillable="true" type="xsd:base64Binary" />
+          <xsd:element name="dataAggiornamento" nillable="true" type="xsd:string" />
+          <xsd:element name="descrizione" nillable="true" type="xsd:string" />
+          <xsd:element name="extendAllegato" nillable="true" type="xsd:anyType" />
+          <xsd:element name="idAllegato" type="xsd:long" />
+          <xsd:element name="tipoAllegato" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Metadato">
+        <xsd:sequence>
+          <xsd:element name="area" nillable="true" type="xsd:string" />
+          <xsd:element name="codice" nillable="true" type="xsd:string" />
+          <xsd:element name="codiceModello" nillable="true" type="xsd:string" />
+          <xsd:element name="descrizione" nillable="true" type="xsd:string" />
+          <xsd:element name="extendMetadato" nillable="true" type="xsd:anyType" />
+          <xsd:element name="tipo" nillable="true" type="xsd:string" />
+          <xsd:element name="valore" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Documento">
+        <xsd:sequence>
+          <xsd:element name="allegati" nillable="true" type="tns1:ArrayOf_tns1_Allegato" />
+          <xsd:element name="area" nillable="true" type="xsd:string" />
+          <xsd:element name="dataCreazione" nillable="true" type="xsd:string" />
+          <xsd:element name="extendDocumento" nillable="true" type="xsd:anyType" />
+          <xsd:element name="id" type="xsd:long" />
+          <xsd:element name="metadati" nillable="true" type="tns1:ArrayOf_tns1_Metadato" />
+          <xsd:element name="modello" nillable="true" type="xsd:string" />
+          <xsd:element name="stato" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="RisultatoRicerca">
+        <xsd:sequence>
+          <xsd:element name="extendRisultatoRicerca" nillable="true" type="xsd:anyType" />
+          <xsd:element name="listaDocumenti" nillable="true" type="tns1:ArrayOf_tns1_Documento" />
+          <xsd:element name="numeroDocumentiRestituiti" type="xsd:long" />
+          <xsd:element name="numeroDocumentiTotali" type="xsd:long" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOf_tns1_Allegato">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Allegato" type="tns1:Allegato" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOf_tns1_Metadato">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Metadato" type="tns1:Metadato" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOf_tns1_Documento">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Documento" type="tns1:Documento" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="ricercaResponse">
+    <wsdl:part name="parameters" element="tns1:ricercaResponse" />
+  </wsdl:message>
+  <wsdl:message name="ricercaRequest">
+    <wsdl:part name="parameters" element="tns1:ricerca" />
+  </wsdl:message>
+  <wsdl:portType name="QueryService">
+    <wsdl:operation name="ricerca">
+      <wsdl:input name="ricercaRequest" message="tns1:ricercaRequest" />
+      <wsdl:output name="ricercaResponse" message="tns1:ricercaResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="QueryServiceSoapBinding" type="tns1:QueryService">
+    <wsdlsoap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ricerca">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="ricercaRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="ricercaResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="QueryServiceService">
+    <wsdl:port name="QueryService" binding="tns1:QueryServiceSoapBinding">
+      <wsdlsoap:address location="http://sigedo.comune.intranet/dbfw/services/QueryService" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

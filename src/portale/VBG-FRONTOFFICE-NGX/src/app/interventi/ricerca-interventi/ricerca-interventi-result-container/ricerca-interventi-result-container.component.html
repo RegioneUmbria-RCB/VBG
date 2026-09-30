@@ -1,0 +1,24 @@
+@if (attivo && risultatoRicerca?.almenoUnMatch) {
+  <div class="search-results">
+    @if (mostraInterventiRegionali) {
+      <app-ricerca-interventi-result
+        [titolo]="'Procedimenti gestiti con modulistica unificata'"
+        [mostraTitoliSezioni]="mostraTitoliSezioni"
+        [urlRedirect]="urlRedirectRegionale"
+        [interventi]="risultatoRicerca?.regionali"
+        [limitaRisultati]="10"
+        >
+      </app-ricerca-interventi-result>
+    }
+    @if (mostraInterventiLocali) {
+      <app-ricerca-interventi-result
+        [titolo]="'Altri procedimenti'"
+        [mostraTitoliSezioni]="mostraTitoliSezioni"
+        [urlRedirect]="urlRedirectLocale"
+        [interventi]="risultatoRicerca?.locali"
+        [limitaRisultati]="10"
+        >
+      </app-ricerca-interventi-result>
+    }
+  </div>
+}

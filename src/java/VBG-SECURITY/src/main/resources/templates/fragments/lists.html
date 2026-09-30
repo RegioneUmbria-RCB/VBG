@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>list utilities fragment</title>
+</head>
+<body>
+
+
+
+<!--/* BOTTONIERA PAGINAZIONE */-->
+
+<div th:fragment="list-pagination(dataList)">
+
+
+						 <nav class="pagination-wrapper" aria-label="Page navigation" th:if="${dataList.totalPages > 0}">
+							<ul class="pagination">
+								<li class="page-item" th:classappend="${currentPage == 1 ? 'disabled' : ''}">
+									<a class="page-link" th:attr="data-page=1" >First</a> 
+								</li>
+								<li class="page-item" th:classappend="${currentPage == 1 ? 'disabled' : ''}">
+									<a class="page-link" th:attr="data-page=${currentPage}" >Previous</a>
+								</li>
+								<li class="page-item" th:each="i : ${#numbers.sequence(0, dataList.totalPages - 1)}"
+									th:classappend="${currentPage == (i+1) ? 'active' : ''}">
+									<a class="page-link" th:attr="data-page=${i+1}" th:text="${i + 1}"></a>
+								</li>
+								<li class="page-item" th:classappend="${currentPage == dataList.totalPages ? 'disabled' : ''}">
+									<a class="page-link" th:attr="data-page=${currentPage + 1}" >Next</a>
+								</li>
+								<li class="page-item" th:classappend="${currentPage == dataList.totalPages? 'disabled' : ''}">
+									<a class="page-link" th:attr="data-page=${dataList.totalPages}" >Last</a>
+								</li>
+							</ul>
+						</nav>
+						
+						
+		<div class="valori_filtri_tabelle" th:each="instance : ${listaValoriFiltriTabelle}" 
+	  			th:attr="data-name=${instance.key},data-valore=${instance.value}" 
+	  			style="display: none" />
+	  	
+
+	  <div id="current_table_page" 
+	  	th:attr="data-current-page=${currentPage}" 
+	  	style="display: block" />	
+						
+
+</div>
+
+
+
+<!--/* SCRIPT PER INIZIALIZZARE TABELLA RISULTATI E FILTRI */-->
+
+<script th:fragment="script-list-pagination"  th:inline="javascript">
+
+
+
+var cerca = function(page){
+	  
+	  document.inviodati.action="list.htm?page="+page;
+	  document.inviodati.submit();	
+};
+
+
+var inizializzaFiltriTabella = function(){
+	  
+	  document.querySelectorAll('.table-filterable-header').forEach(d => {
+		  
+			let propertyName = d.dataset.filterName;		  
+			let fieldName = "table-filterable-element-"+propertyName;
+			let tipoDato = d.dataset.tipoDato==''?"text":d.dataset.tipoDato;
+			let valore = getValoreImmesso(fieldName);
+			let dataPage = document.getElementById('current_table_page').dataset.currentPage;
+			// la proprietà tipoDato è un tipo di campo html tra text (default se non specificato), email, tel, number			
+			let template = `<div class="form-group">
+									<input type="${tipoDato}" 
+											class="form-control table-filter-inizizalized" data-page="${dataPage}"
+											name="${fieldName}" value="${valore}"/>
+							</div>`;
+		  	d.innerHTML += template;
+		  	 	
+		  
+	  });
+	  
+	  document.querySelectorAll('.table-filter-inizizalized').forEach(d => {
+		  console.info('inizializzo il filtro di ricerca ' + d.name);
+		  d.addEventListener("keypress", function(event) {
+			  // If the user presses the "Enter" key on the keyboard
+			  
+			  if (event.key === "Enter") {
+			    // Cancel the default action, if needed
+			    event.preventDefault();
+			    // Trigger the button element with a click
+			    cerca(d.dataset.page);
+			  }
+			});
+	  });
+};
+
+
+var getValoreImmesso = function(nomeCampo){
+	  
+	  let risultato = '';
+	  document.querySelectorAll('.valori_filtri_tabelle').forEach(d => {
+
+		  if(d.dataset.name===nomeCampo){
+			  risultato =  d.dataset.valore;
+			  return risultato;
+		  }
+	  });
+	  return risultato;
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+
+	  document.querySelectorAll('.page-link').forEach(d => {
+		  
+		  d.addEventListener('click', async (e) => {
+			  cerca(d.dataset.page);				
+			});
+		  		
+
+	  });
+	  
+	  document.querySelectorAll('.elimina-action').forEach(d => {
+
+			d.addEventListener('click', async (e) => {
+
+				let tokenId = d.dataset.id;
+				if(confirm('[[#{javascript.confirm.delete}]]')){
+					document.location.href='delete.htm?codice=' + tokenId;
+				}
+			});
+
+		});
+	  
+	  document.querySelectorAll('.detail-link-action').forEach(d => {
+
+			d.addEventListener('click', async (e) => {
+
+					document.location.href='view.htm?codice=' + d.dataset.id;
+			});
+		});
+	  
+	  inizializzaFiltriTabella();
+	  
+});
+
+
+
+</script>
+
+<!--/* LE PARTI COMUNI DEI FORM DELLE LISTE ES: CSRF */-->
+<div th:fragment="list-common-parts">
+
+	<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+</div>
+						
+
+
+</body>
+</html>

@@ -1,0 +1,13 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Init.Sigepro.FrontEnd.AppLogic.GestioneCommissioni.AccessoPIN
+{
+    public interface IAccessoPINService
+    {
+        bool VerificaValiditaPIN(string pin);
+        int AssociaUtenteCorrenteACommissioneByPIN(string pin);
+    }
+}

@@ -1,0 +1,1 @@
+ALTER TABLE attivita MODIFY idattivita VARCHAR2(80 CHAR);

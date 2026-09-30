@@ -1,0 +1,133 @@
+﻿@using AreaRiservataCore.Pages.Admin.Components
+@using AreaRiservataCore.Pages.InserimentoIstanza.Ssu
+@using Init.Sigepro.FrontEnd.CoreServices.GestionePresentazioneDomanda.Paginatore
+@using Init.Sigepro.FrontEnd.CoreServices.GestioneTitoloPagina
+
+
+@inherits LayoutComponentBase
+@layout MainLayout
+@implements IDisposable
+@inject VbgPageTitleService _pageTitleService
+@inject PaginatoreStateService _paginatoreService
+
+
+<style type="text/css">
+    .step-domanda {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+
+    .contenuto-step {
+        flex-grow: 1;
+    }
+
+    .paginatore-step {
+        flex-grow: 0;
+        width: 100%;
+    }
+</style>
+
+@* <IndicatoreCaricamentoPagina> *@
+
+<TitoloPagina>@_titoloPagina</TitoloPagina>
+
+@if (this._isStepDisabilitato)
+{
+    <div class="alert alert-warning text-danger" role="alert">
+        <span class="fw-bold">Attenzione!</span> Questo step è disabilitato, pertanto solo gli utenti tester possono visualizzarlo.
+    </div>
+}
+
+<CascadingValue Value="@_paginatoreService">
+    <CascadingValue Value="this">
+
+        <div class="step-domanda">
+            <div class="contenuto-step mb-5">
+                <p class="descrizione-step">@((MarkupString)_descrizioneStep)</p>
+
+                @if (_idDomanda.HasValue)
+                {
+                    <ListaCorrezioniSsu IdDomanda="@_idDomanda.Value"></ListaCorrezioniSsu>
+                    <ListaIntegrazioniSsu IdDomanda="@_idDomanda.Value"></ListaIntegrazioniSsu>
+                }
+
+                <ErrorBoundary>
+                    <ChildContent>
+                        @Body
+                    </ChildContent>
+                    <ErrorContent>
+                        <InserimentoIstanzaErrorComponent></InserimentoIstanzaErrorComponent>
+                    </ErrorContent>
+                </ErrorBoundary>
+
+            </div>
+            <GoToWorkflowButton></GoToWorkflowButton>
+            <PaginatoreSteps></PaginatoreSteps>
+        </div>
+    </CascadingValue>
+
+</CascadingValue>
+
+@code {
+    [Inject]
+    public NavigationManager _navigationManager { get; set; } = default!;
+
+    [Inject]
+    public IAliasSoftwareResolver _aliasSoftwareResolver { get; set; } = default!;
+
+    string _descrizioneStep = "";
+    string _titoloPagina = "";
+    bool _isStepDisabilitato;
+    int? _idDomanda;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        this._paginatoreService.OnStateChanged += OnPaginatoreStateChanged;
+        ReloadState(false);
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+
+    }
+
+    void OnPaginatoreStateChanged()
+    {
+        this.ReloadState(true);
+    }
+
+    void ReloadState(bool notifyChange)
+    {
+        var state = this._paginatoreService.CurrentState;
+
+        if (state is not null)
+        {
+            this._pageTitleService.SetTitle(state.TitoloPagina);
+            this._descrizioneStep = state.DescrizionePagina;
+            this._titoloPagina = state.TitoloPagina;
+            this._isStepDisabilitato = state.IsStepDisabilitato;
+
+            if (notifyChange)
+            {
+                this.StateHasChanged();
+            }
+        }
+    }
+
+    public void Dispose()
+    {
+        this._paginatoreService.OnStateChanged -= OnPaginatoreStateChanged;
+    }
+
+    public void SetIdDomanda(int idDomanda)
+    {
+        if (idDomanda != _idDomanda)
+        {
+            this._idDomanda = idDomanda;
+        }
+    }
+}

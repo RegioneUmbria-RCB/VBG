@@ -1,0 +1,744 @@
+﻿<?xml version="1.0"?>
+<SnippetCollection xmlns="http://init.sigepro.it/datidinamiciSnippet" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<Gruppo Nome="Generale">
+		<Snippet>
+			<Descrizione>Template di formula validazione campi</Descrizione>
+			<Parametri></Parametri>
+			<Codice>
+				<![CDATA[
+bool ValidaCampi()
+{
+	// Nel caso in cui si sia verificato un errore di validazione informo l'utente dell'errore
+	//
+	// ErroreValidazioneCampo( messaggioErrore, riferimentoCampo );
+	//
+	// Se l'errore si è verificato in un campo multiplo e devo specificare anche l'indice del campo con errori utilizzo:
+	// 
+	// ErroreValidazioneCampo( messaggioErrore, riferimentoCampo, indiceCampo );
+
+
+
+	// La collection "ErroriValidazione" contiene la lista di errori di validazione rilevati
+	return this.ErroriValidazione.Count() == 0;
+}			
+			]]>
+			</Codice>
+			
+		</Snippet>
+		
+		<Snippet>
+			<Descrizione>Effettua una query su db utilizzando gli oggetti nativi IDbCommand e IDataReader</Descrizione>
+			<Parametri></Parametri>
+			<Codice>
+				<![CDATA[
+// Esempio di query diretta sul database. Viene utilizzato un oggetto Database
+// come factory per istanziare un oggetto IDbCommand. Il command
+// verrà poi utilizzato per effettuare la query sul db e i risultati 
+// saranno letti tramite un IDataReader
+const string NOME_CAMPO = "TXT_OUTPUT";
+
+var campoOutput = ModelloCorrente.TrovaCampo(NOME_CAMPO);
+
+// Se il campo non è stato trovato esco 
+if( campoOutput == null || !String.IsNullOrEmpty( campoOutput.ListaValori[0].Valore )	)
+    return null;
+        
+        
+using(var db = CreateDatabase())			
+{
+    try
+    {
+        // Apro la connessione al database
+        db.Connection.Open();
+    
+        var sql = "select codicecomune,comune from comuni where COMUNE like 'A%' order by comune asc";
+    
+        // Creo un command utilizzando l'istruzione sql
+        using( var cmd = db.CreateCommand( sql ) )
+        {
+            // Creo il DataReader
+            using( var dataReader = cmd.ExecuteReader() )
+            {
+                // Per ogni record del DataReader leggo il codice comune e il nome comune 
+                // e li scrivo in una riga del campo di output
+                while( dataReader.Read() )
+                {
+                    var codice = dataReader["codicecomune"].ToString();
+                    var descrizione = dataReader["comune"].ToString();
+                    // Scrivo i valori letti nel campo di output
+                    campoOutput.ListaValori[0].Valore += String.Format( "{0} - {1}\r\n" , codice , descrizione );
+                }
+            }
+        }
+    }
+    catch(Exception ex)
+    {
+        // Se si è verificata un'eccezione scrivo il testo nel campo di output
+        campoOutput.ListaValori[0].Valore = "Errore durante l'esecuzione della formula: " + ex.ToString();
+    }
+    finally
+    {
+        // Chiudo la connessione al db
+        db.Connection.Close();
+    }
+}
+]]></Codice>
+			
+		</Snippet>
+
+		<Snippet>
+			<Descrizione>Utilizza il manager dei comuni per leggere il nome del comune in cui è stata presentata l'istanza</Descrizione>
+			<Parametri></Parametri>
+			<Codice>
+				<![CDATA[
+// Utilizza un manager per leggere dalla tabella COMUNI il nome del 
+// comune in cui è stata presentata l'istanza
+const string NOME_CAMPO = "TXT_OUTPUT";
+var TXT_OUTPUT = ModelloCorrente.TrovaCampo(NOME_CAMPO);
+
+var comuneIstanza = IstanzaCorrente.CODICECOMUNE;
+
+ComuniMgr mgr = new ComuniMgr( CreateDatabase() );
+Comuni comune = mgr.GetById( comuneIstanza );
+
+var valore = (comune != null) ? 
+                "L'istanza è stata presentata nel comune di " + comune.COMUNE :
+                "Il comune con codice " + comuneIstanza + " non è stato trovato";
+                
+TXT_OUTPUT.ListaValori[0].Valore = valore;	
+
+]]></Codice>
+		</Snippet>
+
+		<Snippet>
+			<Descrizione>Invoca il servizio di verifica morosità Sigel utilizzando il codice fiscale del richiedente della domanda (ATTENZIONE: l'assembly SigelWebService deve essere nella bin e nel web.config deve essere configurato l'endpoint corretto)</Descrizione>
+			<Parametri>
+			</Parametri>
+			<Codice>
+				<![CDATA[//
+// Invoca il servizio di verifica morosità Sigel utilizzando il codice fiscale del richiedente della domanda
+// ---------------------------------------------------------------------------------------------------------
+// (ATTENZIONE: l'assembly SigelWebService deve essere presente nella bin 
+// e nel web.config della web application deve essere configurato l'endpoint corretto)				
+
+// Leggo il codice fiscale del richiedente
+var codiceFiscale = IstanzaCorrente.Richiedente.CODICEFISCALE;
+
+// Ottengo un riferimento al campo in cui verrà visualizzato l'output
+var txtOutput = ModelloCorrente.TrovaCampo("TXT_OUTPUT");
+
+if( txtOutput == null || String.IsNullOrEmpty( codiceFiscale ) )
+    return null;
+try
+{
+    // Invoco il servizio di verifica della morosità
+    var response = SigelWebService.SigelClient.TestMoroso(codiceFiscale);
+    
+    // Formatto il messaggio di ritorno
+    var msg = String.Format( @"Invocazione del servizio di verifica morosità con il codice fiscale: {0}
+    
+Esito: {1}
+IsMoroso: {2}
+MsgUtente: {3}
+StackTrace: {4}", codiceFiscale , response.Esito , response.IsMoroso , response.MsgUtente , response.StackTrace );
+    
+    // Mostro il messaggio di ritorno
+    txtOutput.ListaValori[0].Valore = msg;
+} 
+catch(Exception ex)
+{
+    txtOutput.ListaValori[0].Valore = String.Format("Errore durante l'invocazione del servizio con il codice fiscale {0}\r\n\r\nErrore:\r\n{1}",
+                                                    codiceFiscale, ex.ToString() );
+}
+]]>
+			</Codice>
+		</Snippet>
+		
+		<Snippet>
+			<Descrizione>Ottiene il riferimento ad un campo</Descrizione>
+			<Parametri>
+				<ParametroDatiDinamici>
+					<NomeParametro>nomeVariabile</NomeParametro>
+					<DescrizioneParametro>Nome della variabile a cui assegnare il riferimento al campo</DescrizioneParametro>
+					<RichiedeNomeCampo>false</RichiedeNomeCampo>
+				</ParametroDatiDinamici>
+				<ParametroDatiDinamici>
+					<NomeParametro>nomeCampo</NomeParametro>
+					<DescrizioneParametro>Nome del campo di cui si vuole ottenere un riferimento</DescrizioneParametro>
+					<RichiedeNomeCampo>false</RichiedeNomeCampo>
+				</ParametroDatiDinamici>
+			</Parametri>
+			<Codice>
+				<![CDATA[
+CampoDinamicoBase @nomeVariabile@ = ModelloCorrente.TrovaCampo("@nomeCampo@");
+]]>
+			</Codice>
+		</Snippet>
+		<Snippet>
+			<Descrizione>Ottiene il valore di un campo</Descrizione>
+			<Parametri>
+				<ParametroDatiDinamici>
+					<NomeParametro>tipoVariabile</NomeParametro>
+					<DescrizioneParametro>Tipo della variabile a cui assegnare il valore del campo</DescrizioneParametro>
+					<RichiedeNomeCampo>false</RichiedeNomeCampo>
+				</ParametroDatiDinamici>
+				<ParametroDatiDinamici>
+					<NomeParametro>nomeVariabile</NomeParametro>
+					<DescrizioneParametro>Nome della variabile a cui assegnare il valore del campo</DescrizioneParametro>
+					<RichiedeNomeCampo>false</RichiedeNomeCampo>
+				</ParametroDatiDinamici>
+				<ParametroDatiDinamici>
+					<NomeParametro>nomeCampo</NomeParametro>
+					<DescrizioneParametro>Nome del campo di cui si vuole ottenere il valore</DescrizioneParametro>
+					<RichiedeNomeCampo>false</RichiedeNomeCampo>
+				</ParametroDatiDinamici>
+				<ParametroDatiDinamici>
+					<NomeParametro>valoreDefault</NomeParametro>
+					<DescrizioneParametro>valore di default da assegnare se il valore del campo è nullo</DescrizioneParametro>
+					<RichiedeNomeCampo>false</RichiedeNomeCampo>
+				</ParametroDatiDinamici>
+			</Parametri>
+			<Codice>
+				<![CDATA[
+@tipoVariabile@ @nomeVariabile@ = @nomeCampo@.ListaValori[0].GetValoreODefault(@valoreDefault@);
+]]>
+			</Codice>
+		</Snippet>
+	</Gruppo>
+	<Gruppo Nome="Istanze">
+		<Snippet>
+			<Descrizione>Assegna ad un campo la data dell'istanza</Descrizione>
+			<Parametri></Parametri>
+			<Codice>
+				<![CDATA[
+/******************************************************************
+ * ASSEGNA AD UN CAMPO LA DATA DI CREAZIONE DELL'ISTANZA IN CUI 
+ * VIENE UTILIZZATO
+ * 
+ * NOTE: L'utilizzo di questo frammento di codice all'interno della 
+ * formula di un campo è sconsigliato. Utilizzarlo all'interno della
+ * formula di un modello.
+ */
+
+// Nome del campo a cui dovrà essere assegnata la data dell'istanza
+// (sostituire con il nome corretto del campo) 
+string nomeCampo = "NOME_DEL_CAMPO";	
+
+CampoDinamicoBase campo = ModelloCorrente.TrovaCampo( nomeCampo );
+
+// se il campo è stato trovato e ancora non ha un valore impostato
+// gli assegno la la data di creazione dell'istanza nel formato aaaammdd
+if ( campo != null && String.IsNullOrEmpty( campo.ListaValori[0].Valore ) )	
+	campo.ListaValori[0].Valore = IstanzaCorrente.DATA.Value.ToString("yyyyMMdd");	
+
+]]>
+			</Codice>
+		</Snippet>
+
+		<Snippet>
+			<Descrizione>Creazione o modifica di un movimento a partire da un campo data</Descrizione>
+			<Parametri/>
+			<Codice>
+				<![CDATA[
+/******************************************************************
+ * CREAZIONE O AGGIORNAMENTO DI UN MOVIMENTO A PARTIRE DA UN CAMPO DATA
+ * 
+ * NOTE: L'utilizzo di questo frammento di codice all'interno della 
+ * formula di un modello è sconsigliato. Utilizzarlo all'interno della
+ * formula di modifica di un campo.
+ */
+
+// Nome del campo da utilizzare come data del movimento
+// (sostituire con il nome corretto del campo) 
+var MOVIMENTO_DA_EFFETTUARE = ModelloCorrente.TrovaCampo("MOVIMENTO_DA_EFFETTUARE");
+var DATA_MOVIMENTO = ModelloCorrente.TrovaCampo("DATA_MOVIMENTO");
+var TXT_OUTPUT = ModelloCorrente.TrovaCampo("TXT_OUTPUT");
+
+
+// Se il campo è stato trovato e ha un valore impostato
+if (DATA_MOVIMENTO != null && DATA_MOVIMENTO.ListaValori.Count == 1 && !String.IsNullOrEmpty(DATA_MOVIMENTO.ListaValori[0].Valore) && 
+	MOVIMENTO_DA_EFFETTUARE != null && MOVIMENTO_DA_EFFETTUARE.ListaValori.Count == 1 && !String.IsNullOrEmpty(MOVIMENTO_DA_EFFETTUARE.ListaValori[0].Valore)  )
+{
+    try
+    {
+        using(var db = CreateDatabase())
+        {
+		
+            // Leggo le info di autenticazione per accedere all'idcomune
+            var authInfo = CheckToken(  );
+
+            // Effettuo il parse della data del movimento 
+            var dataMovimento = DateTime.ParseExact(DATA_MOVIMENTO.ListaValori[0].Valore, "yyyyMMdd" , null);
+
+            // Creo il manager da utilizzare per l'inserimento del movimento
+            var mgrMovimenti = new MovimentiMgr(authInfo.CreateDatabase());
+			
+            // Verifico che il movimento non sia già stato inserito
+            var movimento     = new Movimenti()
+            {
+                IDCOMUNE	    = authInfo.IdComune,
+                TIPOMOVIMENTO = MOVIMENTO_DA_EFFETTUARE.ListaValori[0].Valore,
+                CODICEISTANZA = IstanzaCorrente.CODICEISTANZA,
+                OrderBy = "DATA DESC"
+            };
+
+            var listaMovimenti = mgrMovimenti.GetList(movimento);
+
+            if ( listaMovimenti.Count == 0 )	// Il movimento non esiste
+            {
+                // Inserisco un nuovo movimento
+                // riprendo la classe che ho popolato in precedenza
+                movimento.DATA = dataMovimento;
+                movimento.NOTE = "Movimento creato dai dati dinamici";
+
+                mgrMovimenti.Insert( movimento , Init.SIGePro.Manager.Manager.ComportamentoElaborazioneEnum.NonElaborare );
+            }
+            else
+            {
+                // Aggiorno i dati del movimento più recente 
+                // (dovrebbe essere il primo della lista)
+                listaMovimenti[0].DATA = dataMovimento;
+                listaMovimenti[0].NOTE += "\r\nValori modificati dai dati dinamici";
+
+                mgrMovimenti.Update( listaMovimenti[0] , Init.SIGePro.Manager.Manager.ComportamentoElaborazioneEnum.NonElaborare );
+            }
+
+        }
+    }
+    catch (Exception ex)
+    {
+        // Gestire l'eccezione, si può risollevare l'eccezione per 
+        // mostrare un errore all'utente oppure si può procedere con l'elaborazione
+        TXT_OUTPUT.ListaValori[0].Valore += ex.ToString();
+        
+        // Risollevo l'eccezione
+        throw;
+    }
+}]]>
+
+			</Codice>
+		</Snippet>
+    <Snippet>
+      <Descrizione>
+        Legge le presenze a partire dal codice istanza
+      </Descrizione>
+      <Parametri></Parametri>
+      <Codice>
+        <![CDATA[
+string num_presenze = "MERCATI_NUMERO_PRESENZE";
+
+
+CampoDinamicoBase campo_presenze = ModelloCorrente.TrovaCampo( num_presenze );
+
+//Se il numero presenze è già impostato esce
+if (campo_presenze.ListaValori.Count == 1 && !string.IsNullOrEmpty(campo_presenze.ListaValori[0].Valore)) return null;
+
+// Effettuo l'autenticazione utilizzando il token preimpostato
+AuthenticationInfo authInfo = AuthenticationManager.CheckToken( Token );
+
+// Creo il manager da utilizzare per l'inserimento dell'autorizzazione
+IstanzeMgr mgr = new IstanzeMgr(authInfo.CreateDatabase());
+Int32 presenze = mgr.GetPresenze( Token, Convert.ToInt32( IstanzaCorrente.CODICEISTANZA ) );
+
+campo_presenze.ListaValori[0].Valore = ( presenze == int.MinValue ) ? "0" : presenze.ToString();
+        ]]>
+      </Codice>
+    </Snippet>
+    <Snippet>
+      <Descrizione>
+        Legge le presenze di una autorizzazione salvata nei campi dinamici.
+      </Descrizione>
+      <Parametri></Parametri>
+      <Codice>
+        <![CDATA[
+string num_presenze = "MERCATI_NUMERO_PRESENZE";
+//Estremi dell'autorizzazione
+string num_aut = "MERCATI_NUMERO_AUTORIZZAZIONE";
+string data_aut = "MERCATI_DATA_AUTORIZZAZIONE";
+string comune_aut = "MERCATI_COMUNE_AUTORIZZAZIONE";
+
+CampoDinamicoBase campo_presenze = ModelloCorrente.TrovaCampo(num_presenze);
+CampoDinamicoBase campo_num_aut = ModelloCorrente.TrovaCampo(num_aut);
+CampoDinamicoBase campo_data_aut = ModelloCorrente.TrovaCampo(data_aut);
+CampoDinamicoBase campo_comune_aut = ModelloCorrente.TrovaCampo(comune_aut);
+
+//Esco se le presenze sono già imputate
+if (!string.IsNullOrEmpty(campo_presenze.Valore)) return null;
+
+//Esco se non ho tutti i dati per calcolare le presenze dell'autorizzazione
+if (string.IsNullOrEmpty(campo_num_aut.Valore)) return null;
+if (string.IsNullOrEmpty(campo_data_aut.Valore)) return null;
+if (string.IsNullOrEmpty(campo_comune_aut.Valore)) return null;
+
+// Effettuo l'autenticazione utilizzando il token preimpostato
+AuthenticationInfo authInfo = AuthenticationManager.CheckToken(Token);
+
+//Creo il manager IstanzeDyn2DatiMgr per salvare il modello con i dati
+//che servono al ws java
+
+//NUMERO AUTORIZZAZIONE
+IstanzeDyn2DatiMgr istD2Mgr = new IstanzeDyn2DatiMgr(authInfo.CreateDatabase());
+IstanzeDyn2Dati istD2 = istD2Mgr.GetById(authInfo.IdComune, Convert.ToInt32(IstanzaCorrente.CODICEISTANZA), campo_num_aut.Id);
+if (istD2 == null)
+{
+	//Insert
+	istD2 = new IstanzeDyn2Dati();
+	istD2.FkD2cId = campo_num_aut.Id;
+	istD2.Codiceistanza = Convert.ToInt32(IstanzaCorrente.CODICEISTANZA);
+	istD2.Idcomune = IstanzaCorrente.IDCOMUNE;
+	istD2.Valore = campo_num_aut.Valore;
+	istD2Mgr.Insert(istD2);
+}
+else 
+{
+	//update
+	istD2.Valore = campo_num_aut.Valore;
+	istD2Mgr.Update(istD2);
+}
+
+//DATA AUTORIZZAZIONE
+istD2 = istD2Mgr.GetById(authInfo.IdComune, Convert.ToInt32(IstanzaCorrente.CODICEISTANZA), campo_data_aut.Id);
+if (istD2 == null)
+{
+	//Insert
+	istD2 = new IstanzeDyn2Dati();
+	istD2.FkD2cId = campo_data_aut.Id;
+	istD2.Codiceistanza = Convert.ToInt32(IstanzaCorrente.CODICEISTANZA);
+	istD2.Idcomune = IstanzaCorrente.IDCOMUNE;
+	istD2.Valore = campo_data_aut.Valore;
+	istD2Mgr.Insert(istD2);
+}
+else
+{
+	//update
+	istD2.Valore = campo_data_aut.Valore;
+	istD2Mgr.Update(istD2);
+}
+
+//COMUNE AUTORIZZAZIONE
+istD2 = istD2Mgr.GetById(authInfo.IdComune, Convert.ToInt32(IstanzaCorrente.CODICEISTANZA), campo_comune_aut.Id);
+if (istD2 == null)
+{
+	//Insert
+	istD2 = new IstanzeDyn2Dati();
+	istD2.FkD2cId = campo_comune_aut.Id;
+	istD2.Codiceistanza = Convert.ToInt32(IstanzaCorrente.CODICEISTANZA);
+	istD2.Idcomune = IstanzaCorrente.IDCOMUNE;
+	istD2.Valore = campo_comune_aut.Valore;
+	istD2Mgr.Insert(istD2);
+}
+else
+{
+	//update
+	istD2.Valore = campo_comune_aut.Valore;
+	istD2Mgr.Update(istD2);
+}
+
+// Creo il manager delle istanze per estrarre le presenze relative all'autorizzazione
+//specificata nei dati dinamici e nella configurazione mercati
+IstanzeMgr mgr = new IstanzeMgr(authInfo.CreateDatabase());
+Int32 presenze = mgr.GetPresenze(Token, Convert.ToInt32(IstanzaCorrente.CODICEISTANZA));
+
+campo_presenze.Valore = (presenze == int.MinValue) ? "0" : presenze.ToString();
+        ]]>
+      </Codice>
+    </Snippet>
+    <Snippet>
+      <Descrizione>
+        Crea un dettaglio informazione da un campo dinamico contenente il codice del dettaglio informazione (Elimina gli altri dettagli dello stesso tipo).
+      </Descrizione>
+      <Parametri>
+        <ParametroDatiDinamici>
+          <NomeParametro>codiceSettore</NomeParametro>
+          <DescrizioneParametro>Codice del TIPO INFORMAZIONE per il quale si vuole inserire il dettaglio</DescrizioneParametro>
+          <RichiedeNomeCampo>false</RichiedeNomeCampo>
+        </ParametroDatiDinamici>
+        <ParametroDatiDinamici>
+          <NomeParametro>nomeCampo</NomeParametro>
+          <DescrizioneParametro>Nome del campo dinamico che contiene il codice del dettaglio informazione da inserire</DescrizioneParametro>
+          <RichiedeNomeCampo>false</RichiedeNomeCampo>
+        </ParametroDatiDinamici>
+      </Parametri>
+      <Codice>
+        <![CDATA[
+
+/******************************************************************
+ * CREAZIONE DI UN RECORD IN ISTANZEATTIVITA * 
+ * La funzione recupera da un campo dinamico il codice del dettaglio informazione 
+ * che deve essere inserito nell'istanza.
+ * ATTENZIONE!!! Prima dell'inserimento tutti i dettagli informazioni del 
+ * tipo informazione indicato verranno cancellati.
+ * Utilizzo:
+ * la funzione è stata utilizzata per mostrare un campo dinamico
+ * il cui contenuto era prelevato da una lista di valori che rappresentavano
+ * dei codici di dettagli informazioni, al salvataggio il valore selezionato 
+ * dalla lista viene aggiunto nei dettagli informazione dell'istanza.
+ * 
+ */
+
+// Codice del tipo informazione da utilizzare per la cancellazione dei dettagli
+string codiceSettore = "@codiceSettore@";
+
+//campo dinamico da salvare tra i dettagli informazione dell'istanza
+string nomeCampo = "@nomeCampo@";
+
+try
+{
+	// Effettuo l'autenticazione utilizzando il token preimpostato
+	AuthenticationInfo authInfo = AuthenticationManager.CheckToken( Token );
+	
+	//Creo la classe da utilizzare come filtro
+	IstanzeAttivita ia = new IstanzeAttivita();
+        ia.IDCOMUNE = authInfo.IdComune;
+        ia.CODICEISTANZA = IstanzaCorrente.CODICEISTANZA;
+        ia.OthersTables.Add("ATTIVITA");
+        ia.OthersWhereClause.Add("ATTIVITA.IDCOMUNE = ISTANZEATTIVITA.IDCOMUNE");
+        ia.OthersWhereClause.Add("ATTIVITA.CODICEISTAT = ISTANZEATTIVITA.CODICEATTIVITA");
+        ia.OthersWhereClause.Add("ATTIVITA.CODICESETTORE = '" + codiceSettore + "'");
+                
+	// Creo il manager da utilizzare per la cancellazione dei dettagli informazione
+	IstanzeAttivitaMgr mgr = new IstanzeAttivitaMgr(authInfo.CreateDatabase());
+	List<IstanzeAttivita> lIa = mgr.GetList(ia);
+        foreach (IstanzeAttivita istatt in lIa)
+        {
+        	mgr.Delete(istatt);
+        }
+	
+	//Recupero il dettaglio informazione da inserire
+	CampoDinamicoBase campo = ModelloCorrente.TrovaCampo( nomeCampo );
+	
+	// Se il campo è stato trovato e ha un valore impostato ...
+	if (campo != null && !String.IsNullOrEmpty(campo.Valore))
+	{
+                IstanzeAttivita ist_att = new IstanzeAttivita();
+                ist_att.CODICEATTIVITA = campo.Valore;
+                ist_att.CODICEISTANZA = IstanzaCorrente.CODICEISTANZA;
+                ist_att.IDCOMUNE = IstanzaCorrente.IDCOMUNE;
+                ist_att.SOFTWARE = IstanzaCorrente.SOFTWARE;
+                
+                mgr.Insert( ist_att );
+	}
+}
+catch (Exception ex)
+{
+	// Gestire l'eccezione, si può risollevare l'eccezione per 
+	// mostrare un errore all'utente oppure si può procedere con l'elaborazione
+	throw ex;
+}
+        
+        ]]>
+      </Codice>
+    </Snippet>
+    <Snippet>
+      <Descrizione>
+        Crea il dettaglio informazione specificato se un campo dinamico di tipo check è selezionato.
+      </Descrizione>
+      <Parametri>
+        <ParametroDatiDinamici>
+          <NomeParametro>dettaglioInformazione</NomeParametro>
+          <DescrizioneParametro>Codice del DETTAGLIO INFORMAZIONE che si vuole inserire nell'istanza</DescrizioneParametro>
+          <RichiedeNomeCampo>false</RichiedeNomeCampo>
+        </ParametroDatiDinamici>
+        <ParametroDatiDinamici>
+          <NomeParametro>nomeCampo</NomeParametro>
+          <DescrizioneParametro>Nome del campo dinamico che contiene il check 0/1 che indica se inserire il dettaglio informazione precedentemente inserito</DescrizioneParametro>
+          <RichiedeNomeCampo>false</RichiedeNomeCampo>
+        </ParametroDatiDinamici>
+      </Parametri>
+      <Codice>
+        <![CDATA[
+
+/******************************************************************
+ * CREAZIONE DI UN RECORD IN ISTANZEATTIVITA * 
+ * La funzione verifica il contenuto di un campo dinamico di tipo
+ * check (che potrà assumere valore 0 o 1) e se il risultato è 1
+ * allora nell'istanza corrente sarà presente il dettaglio informazione 
+ * specificato altrimenti (se 0) non sarà presente.
+ */
+
+// Codice del dettaglio informazione da iserire se il valore del campo è "1"
+string dettaglioInformazione = "@dettaglioInformazione@";
+
+//nome del campo dinamico utilizzato come check
+string nomeCampo = "@nomeCampo@";
+
+try
+{
+	// Effettuo l'autenticazione utilizzando il token preimpostato
+	AuthenticationInfo authInfo = AuthenticationManager.CheckToken( Token );
+	
+	//Creo la classe da utilizzare come filtro
+	IstanzeAttivita ia = new IstanzeAttivita();
+        ia.IDCOMUNE = authInfo.IdComune;
+        ia.CODICEISTANZA = IstanzaCorrente.CODICEISTANZA;
+        ia.OthersWhereClause.Add("ISTANZEATTIVITA.CODICEATTIVITA = '" + dettaglioInformazione + "'");
+                
+	// Creo il manager da utilizzare per la cancellazione di dettaglioInformazione
+	IstanzeAttivitaMgr mgr = new IstanzeAttivitaMgr(authInfo.CreateDatabase());
+	List<IstanzeAttivita> lIa = mgr.GetList(ia);
+        foreach (IstanzeAttivita istatt in lIa)
+        {
+        	mgr.Delete(istatt);
+        }
+	
+	//Recupero il valore del check capire se il dettaglioInformazione è da inserire
+	CampoDinamicoBase campo = ModelloCorrente.TrovaCampo( nomeCampo );
+	
+	// Se il campo è stato trovato, ha un valore impostato ed il valore è "1" allora inserisco il dettaglioInformazione nell'istanza
+	if (campo != null && !String.IsNullOrEmpty(campo.Valore) && campo.Valore == "1")
+	{
+                IstanzeAttivita ist_att = new IstanzeAttivita();
+                ist_att.CODICEATTIVITA = dettaglioInformazione;
+                ist_att.CODICEISTANZA = IstanzaCorrente.CODICEISTANZA;
+                ist_att.IDCOMUNE = IstanzaCorrente.IDCOMUNE;
+                ist_att.SOFTWARE = IstanzaCorrente.SOFTWARE;
+                
+                mgr.Insert( ist_att );
+	}
+}
+catch (Exception ex)
+{
+	// Gestire l'eccezione, si può risollevare l'eccezione per 
+	// mostrare un errore all'utente oppure si può procedere con l'elaborazione
+	throw ex;
+}
+        
+        ]]>
+      </Codice>
+    </Snippet>
+
+    <Snippet>
+      <Descrizione>
+        Cerca un dettaglio informazione e se è presente imposta il valore di un campo dinamico a "1" altrimenti a "0" (caricamento).
+      </Descrizione>
+      <Parametri>
+        <ParametroDatiDinamici>
+          <NomeParametro>dettaglioInformazione</NomeParametro>
+          <DescrizioneParametro>Codice del DETTAGLIO INFORMAZIONE che si vuole cercare nell'istanza</DescrizioneParametro>
+          <RichiedeNomeCampo>false</RichiedeNomeCampo>
+        </ParametroDatiDinamici>
+        <ParametroDatiDinamici>
+          <NomeParametro>nomeCampo</NomeParametro>
+          <DescrizioneParametro>Nome del campo dinamico il cui valore conterrà il check 0/1 che indica la presenza del dettaglio informazione precedentemente inserito</DescrizioneParametro>
+          <RichiedeNomeCampo>false</RichiedeNomeCampo>
+        </ParametroDatiDinamici>
+      </Parametri>
+      <Codice>
+        <![CDATA[
+/******************************************************************
+ * LETTURA DI UN RECORD DI ISTANZEATTIVITA * 
+ * La funzione cerca un dettaglio informazione e se presente imposta
+ * il valore del campo dinamico (check) a "1", altrimenti a "0".
+ */
+
+// Codice del dettaglio informazione da iserire se il valore del campo è "1"
+string dettaglioInformazione = "@dettaglioInformazione@";
+
+//nome del campo dinamico utilizzato come check
+string nomeCampo = "@nomeCampo@";
+
+try
+{
+	// Effettuo l'autenticazione utilizzando il token preimpostato
+	AuthenticationInfo authInfo = AuthenticationManager.CheckToken( Token );
+	
+	//Recupero il campo di cui impostare il valore
+	CampoDinamicoBase campo = ModelloCorrente.TrovaCampo( nomeCampo );
+	
+	// Creo il manager da utilizzare per la lettura di dettaglioInformazione
+	IstanzeAttivitaMgr mgr = new IstanzeAttivitaMgr(authInfo.CreateDatabase());
+	
+	//Leggo il dettaglio informazione
+	IstanzeAttivita ist_att = new IstanzeAttivita();
+        ist_att.CODICEATTIVITA = dettaglioInformazione;
+        ist_att.CODICEISTANZA = IstanzaCorrente.CODICEISTANZA;
+        ist_att.IDCOMUNE = IstanzaCorrente.IDCOMUNE;
+        ist_att.SOFTWARE = IstanzaCorrente.SOFTWARE;
+	
+	List<IstanzeAttivita> lIa = mgr.GetList(ist_att);
+	
+	String 	tmpValore = "0";
+        foreach (IstanzeAttivita istatt in lIa)
+        {
+        	//è stato trovato il dettaglio informazione quindi imposto il valore del campo dinamico a "1" (il campo è un check)
+        	tmpValore = "1";
+        }
+
+	if (campo.Valore != tmpValore )
+	{	
+		campo.Valore = tmpValore;
+		//Salvo il modello perchè è cambiato il valore del campo
+		ModelloCorrente.Salva();
+	}
+}
+catch (Exception ex)
+{
+	// Gestire l'eccezione, si può risollevare l'eccezione per 
+	// mostrare un errore all'utente oppure si può procedere con l'elaborazione
+	throw ex;
+}      
+        ]]>
+      </Codice>
+    </Snippet>
+    
+	</Gruppo>
+	<Gruppo Nome="Frontoffice">
+		<Snippet>
+			<Descrizione>
+				Estrae tutti i richiedenti di tipo persona fisica della domanda e ne assegna i valori a tanti blocchi multipli quanti sono i richiedenti
+			</Descrizione>
+			<Parametri></Parametri>
+			<Codice>
+				<![CDATA[
+CampoDinamicoBase CAMPO_DI_TESTO_5 = ModelloCorrente.TrovaCampo("CAMPO_DI_TESTO_5");
+CampoDinamicoBase NOME = ModelloCorrente.TrovaCampo("NOME");
+CampoDinamicoBase COGNOME = ModelloCorrente.TrovaCampo("COGNOME");
+CampoDinamicoBase DATA_NASCITA = ModelloCorrente.TrovaCampo("DATA_NASCITA");
+CampoDinamicoBase COMUNE_NASCITA = ModelloCorrente.TrovaCampo("COMUNE_NASCITA");
+CampoDinamicoBase CODICE_FISCALE = ModelloCorrente.TrovaCampo("CODICE FISCALE");
+
+int idxAnagraficaCreata = 0;
+
+
+if( COGNOME.ListaValori.Count == 1 && String.IsNullOrEmpty(CODICE_FISCALE.ListaValori[0].Valore))
+{
+	
+	for( int i = 0 ; i < IstanzaCorrente.Richiedenti.Count ;i++ )
+	{
+		Anagrafe anagrafe = IstanzaCorrente.Richiedenti[i].Richiedente;
+
+	
+		if(anagrafe.TIPOANAGRAFE != "F")
+			continue;
+	
+		string nome = anagrafe.NOME;
+		string cognome = anagrafe.NOMINATIVO;
+		string codiceFiscale = anagrafe.CODICEFISCALE;
+		string codComNascita = anagrafe.CODCOMNASCITA;
+		string dataNascita = anagrafe.DATANASCITA.HasValue ? 
+								anagrafe.DATANASCITA.Value.ToString("yyyyMMdd") : 
+								String.Empty;
+					
+		NOME.ListaValori[ idxAnagraficaCreata].Valore = nome;
+		COGNOME.ListaValori[ idxAnagraficaCreata ].Valore = cognome ;
+		CODICE_FISCALE.ListaValori[ idxAnagraficaCreata ].Valore = codiceFiscale;
+		COMUNE_NASCITA.ListaValori[ idxAnagraficaCreata ].Valore = codComNascita;
+		DATA_NASCITA.ListaValori[ idxAnagraficaCreata ].Valore = dataNascita;
+ 
+		idxAnagraficaCreata++;
+	}
+	
+	CAMPO_DI_TESTO_5.ListaValori[0].Valore = IstanzaCorrente.Richiedenti.Count.ToString() + " anagrafiche trovate, " + idxAnagraficaCreata + " anagrafiche aggiunte alla scheda" ;
+}]]>
+				
+				
+			</Codice>
+		</Snippet>
+		
+	</Gruppo>
+
+
+
+
+
+</SnippetCollection>

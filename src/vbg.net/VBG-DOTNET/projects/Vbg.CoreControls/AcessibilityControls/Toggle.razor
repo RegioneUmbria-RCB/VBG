@@ -1,0 +1,73 @@
+﻿<div class="form-check">
+    <div class="toggles">
+        <label for="@Id">
+            @Label
+            <input type="checkbox" id="@Id" @bind="Checked" @oninput="OnInput" disabled="@(!Enabled)">
+            <span class="lever"></span>
+        </label>
+    </div>
+    @if (!string.IsNullOrEmpty(HelperText))
+    {
+        <small id="@($"{Id}-help")" class="form-text">@HelperText</small>
+    }
+</div>
+
+@code {
+    /// <summary>
+    /// The toggle id
+    /// </summary>
+    [Parameter, EditorRequired]
+    public string Id { get; set; }
+
+    /// <summary>
+    /// The componet label
+    /// </summary>
+    [Parameter]
+    public string Label { get; set; }
+
+    /// <summary>
+    /// A small description displayed under the Label
+    /// </summary>
+    [Parameter]
+    public string HelperText { get; set; }
+
+    /// <summary>
+    /// Binded Value: if checked = true the toggle is on, if checked = false the toggle is off
+    /// </summary>
+    private bool _checked = false;
+    [Parameter]
+    public bool Checked { 
+        get => _checked;
+        set
+        {
+            if (_checked == value) return;
+
+            _checked = value;
+            CheckedChanged.InvokeAsync(value);
+        }
+    }
+
+    /// <summary>
+    /// Set to false to disable the toggle
+    /// </summary>
+    [Parameter]
+    public bool Enabled { get; set; } = true;
+
+    /// <summary>
+    /// Internal Event for binding. To assign a custom function Use OnClick event instead
+    /// </summary>
+    [Parameter]
+    public EventCallback<bool> CheckedChanged { get; set; }
+
+    /// <summary>
+    /// Optional Event to be called on toggle click
+    /// </summary>
+    [Parameter]
+    public EventCallback<ChangeEventArgs> OnClick { get; set; }
+
+    private async Task OnInput(ChangeEventArgs e)
+    {
+        if (OnClick.HasDelegate)
+            await OnClick.InvokeAsync(e);
+    }
+}

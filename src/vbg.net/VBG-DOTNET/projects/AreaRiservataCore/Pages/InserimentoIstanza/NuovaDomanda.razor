@@ -1,0 +1,67 @@
+﻿@page "/{IdComune}/{Software}/inserimento-istanza/nuova-domanda"
+@using Init.Sigepro.FrontEnd.AppLogic.Configurazione.V2
+@using Init.Sigepro.FrontEnd.AppLogic.Services.Domanda;
+@using Microsoft.AspNetCore.WebUtilities
+@inherits BasePage
+@inject IConfigurazione<ParametriWorkflow> _configurazione
+@inject NavigationManager _navManager
+
+@code {
+
+	[Inject]
+	private DomandeOnlineService _domandeOnlineService { get; set; } = default!;
+	[Inject]
+	private DatiDomandaService _datiDomandaService { get; set; } = default!;
+
+	public static class Constants
+	{
+		public const string QsParamSelezionaIntervento = "SelezionaIntervento";
+		public const string QsParamCopiaDa = "copia-da";
+	}
+
+	int? _copiaDa = null;
+	int? _selezionaIntervento = null;
+
+	protected override Task OnInitializedAsync()
+	{
+
+		var uri = _navManager.ToAbsoluteUri(_navManager.Uri);
+
+		if (QueryHelpers.ParseQuery(uri.Query).TryGetValue(Constants.QsParamCopiaDa, out var copiaDa))
+		{
+			this._copiaDa = Convert.ToInt32(copiaDa);
+		}
+
+		if (QueryHelpers.ParseQuery(uri.Query).TryGetValue(Constants.QsParamSelezionaIntervento, out var selezionaIntervento))
+		{
+			this._selezionaIntervento = Convert.ToInt32(selezionaIntervento);
+		}
+
+		var nuovoId = this._domandeOnlineService.GetProssimoIdDomanda();
+
+		string url = GetNavigationPathTo(
+			_configurazione.Parametri.DefaultWorkflow.GetStepUrl(0),
+			nuovoId.ToString(), "0");
+
+		// TODO: Gestire le seguenti casistiche:
+		// - copia-da
+		// - bookmark
+		// - selezionaIntervento
+
+		
+		if (this._selezionaIntervento.HasValue)
+		{
+			_datiDomandaService.ImpostaIdIntervento(nuovoId, _selezionaIntervento.Value, (int?)null, true);
+		}
+		
+		if (this._copiaDa.HasValue)
+		{
+			url = QueryHelpers.AddQueryString(url, Constants.QsParamCopiaDa, this._copiaDa.Value.ToString());
+		}
+
+		
+		_navigationManager.NavigateTo(url);
+
+		return base.OnInitializedAsync();
+	}
+}

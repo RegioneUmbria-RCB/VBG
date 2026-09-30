@@ -1,0 +1,17 @@
+
+#set($render = true)
+#if($item.Campo)
+	#parse("/cart/campo.vm")
+#elseif($item.Testo)
+	#parse("/cart/testo.vm")
+#elseif($item.Tabella)
+	#parse("/cart/tabella.vm")
+#elseif($item.File)
+	#if($isFrontOffice == true)
+		#parse("/cart/file.vm")
+	#else
+		#parse("/cart/file_bo.vm")
+	#end
+#elseif($item.Sezione)
+	#parse("/cart/sezione.vm")
+#end

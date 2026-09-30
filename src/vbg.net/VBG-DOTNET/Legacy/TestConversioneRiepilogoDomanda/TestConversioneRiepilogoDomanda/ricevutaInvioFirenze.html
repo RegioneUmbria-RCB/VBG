@@ -1,0 +1,263 @@
+<html>
+			<body>
+				<div style="text-align:center">
+					<h1>Comune di Firenze SUAP</h1>
+					<h1>RICEVUTA Telematica</h1>
+					<h1>PRESENTAZIONE PRATICA SUAP</h1>
+					art. 5, commi 4 e 5 DPR 160/2010
+				</div>
+				<br/>
+				<br/>
+				<div>
+					La presente ricevuta telematica attesta l'avvenuta presentazione della Pratica Suap n. <xsl:value-of select="Istanze/NUMEROISTANZA"/>
+					e, in caso di SCIA, Segnalazione Certificata Inizio Attività, costituisce titolo per l'avvio dell'intervento o dell'attività.
+				</div>
+				<br/>
+				<div>
+					L’ufficio competente, in caso di accertate carenze in sede di verifica formale, provvederà  a richiedere le necessarie integrazioni.
+				</div>
+				<br/>
+				<table width="100%" border="1" bordercolor="#666666" cellpadding="0" cellspacing="0">
+					<tr bgcolor="#efefef">
+						<td>
+							Prot. n°: <xsl:value-of select="Istanze/NUMEROPROTOCOLLO"/>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Pratica N° <xsl:value-of select="Istanze/NUMEROISTANZA"/><br />
+							(da citare nelle future comunicazioni)
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Data Presentazione:
+							<xsl:call-template name="FormatDate">
+								<xsl:with-param name="DateTime" select="/Istanze/DATA"/>
+							</xsl:call-template>
+						</td>
+					</tr>
+				</table>
+				<br />
+				<table width="100%" border="1" bordercolor="#666666" cellpadding="0" cellspacing="0">
+					<tr>
+						<td width="20%" valign="top">RICHIEDENTE:</td>
+						<td width="40%">
+							<xsl:value-of select="Istanze/Richiedente/NOMINATIVO"/>&#160;
+							<xsl:value-of select="Istanze/Richiedente/NOME"/><br />
+							<xsl:value-of select="Istanze/Richiedente/INDIRIZZO"/><br />
+							<xsl:value-of select="Istanze/Richiedente/CAP"/>&#160;
+							<xsl:value-of select="Istanze/Richiedente/ComuneResidenza/COMUNE"/>&#160;
+
+							<xsl:if test="Istanze/Richiedente/ComuneResidenza/SIGLAPROVINCIA">
+								(<xsl:value-of select="Istanze/Richiedente/ComuneResidenza/SIGLAPROVINCIA"/>)
+							</xsl:if>
+
+						</td>
+
+						<td width="40%" valign="top">
+							<xsl:value-of select="Istanze/TipoSoggetto/TIPOSOGGETTO"/>
+							<br />
+							<xsl:value-of select="Istanze/AziendaRichiedente/NOMINATIVO"/>
+							<br />
+							<xsl:value-of select="Istanze/AziendaRichiedente/INDIRIZZO"/>
+							<br/>
+							<xsl:value-of select="Istanze/AziendaRichiedente/CAP"/>&#160;
+							<xsl:value-of select="Istanze/AziendaRichiedente/ComuneResidenza/COMUNE"/>&#160;
+							<xsl:if test="Istanze/AziendaRichiedente/ComuneResidenza/SIGLAPROVINCIA">
+								(<xsl:value-of select="Istanze/AziendaRichiedente/ComuneResidenza/SIGLAPROVINCIA"/>)
+							</xsl:if>
+						</td>
+					</tr>
+
+					<tr>
+						<td valign="top">TECNICO:</td>
+						<td colspan="2" valign="top">
+							<xsl:value-of select="Istanze/Professionista/NOMINATIVO"/>&#160;
+							<xsl:value-of select="Istanze/Professionista/NOME"/>
+						</td>
+					</tr>
+				</table>
+
+				<br />
+				<table width="100%" bgcolor="#efefef" border="1" bordercolor="#666666" cellpadding="0" cellspacing="0">
+					<tr>
+						<td>OGGETTO:</td>
+						<td colspan="5">
+							<b>
+								<xsl:value-of select="/Istanze/Intervento/SC_DESCRIZIONE"/>
+							</b>
+							<br />
+							<br />
+							<i>Elenco degli endoprocedimenti attivati:</i>
+							<ul>
+								<xsl:for-each select="Istanze/EndoProcedimenti/IstanzeProcedimenti">
+									<li>
+										<xsl:value-of select="Endoprocedimento/Procedimento"/>
+									</li>
+								</xsl:for-each>
+							</ul>
+						</td>
+					</tr>
+					<!-- Box dell'indirizzo primario -->
+					<xsl:for-each select="Istanze/Stradario/IstanzeStradario[PRIMARIO=1]">
+						<tr>
+							<td colspan="6"><b>Indirizzo primario</b></td>
+						</tr>
+						<tr>
+							<td colspan="6">
+								<xsl:value-of select="Stradario/PREFISSO"/>
+								&#160;
+								<xsl:value-of select="Stradario/DESCRIZIONE"/>
+								&#160;
+								<xsl:value-of select="CIVICO"/>
+								&#160;
+								<xsl:value-of select="ESPONENTE"/>
+								&#160;
+								<xsl:value-of select="COLORE"/>
+							</td>
+						</tr>
+						<tr>
+							<td>Scala</td>
+							<td><xsl:value-of select="SCALA"/></td>
+							<td>Interno</td>
+							<td><xsl:value-of select="INTERNO"/></td>
+							<td>Esponente Interno</td>
+							<td><xsl:value-of select="ESPONENTEINTERNO"/></td>
+						</tr>
+						<tr>
+							<td>Note</td>
+							<td colspan="5"><xsl:value-of select="NOTE"/></td>
+						</tr>
+												<tr>
+							<td>CAP</td>
+							<td><xsl:value-of select="CAP"/></td>
+							<td>Circoscrizione</td>
+							<td colspan="4"><xsl:value-of select="CIRCOSCRIZIONE"/></td>
+						</tr>
+					</xsl:for-each>
+
+					<!-- Box degli altri indirizzi dell'istanza -->
+					<xsl:if test="count(Istanze/Stradario/IstanzeStradario[PRIMARIO=0]) > 0">
+						<tr>
+							<td colspan="6"><b>Altri indirizzi</b></td>
+						</tr>
+						<xsl:for-each select="Istanze/Stradario/IstanzeStradario[PRIMARIO=0]">
+
+							<tr>
+								<td colspan="6">
+									<xsl:value-of select="Stradario/PREFISSO"/>
+									&#160;
+									<xsl:value-of select="Stradario/DESCRIZIONE"/>
+									&#160;
+									<xsl:value-of select="CIVICO"/>
+									&#160;
+									<xsl:value-of select="ESPONENTE"/>
+									&#160;
+									<xsl:value-of select="COLORE"/>
+								</td>
+							</tr>
+							<tr>
+								<td>Scala</td>
+								<td><xsl:value-of select="SCALA"/></td>
+								<td>Interno</td>
+								<td><xsl:value-of select="INTERNO"/></td>
+								<td>Esponente Interno</td>
+								<td><xsl:value-of select="ESPONENTEINTERNO"/></td>
+							</tr>
+							<tr>
+								<td>Note</td>
+								<td colspan="5"><xsl:value-of select="NOTE"/></td>
+							</tr>
+													<tr>
+								<td>CAP</td>
+								<td><xsl:value-of select="CAP"/></td>
+								<td>Circoscrizione</td>
+								<td colspan="4"><xsl:value-of select="CIRCOSCRIZIONE"/></td>
+							</tr>
+
+						</xsl:for-each>
+					</xsl:if>
+
+				</table>
+
+				<br />
+
+				Si comunica che:<br/>
+				<ol>
+					<li>
+						L’Unità Organizzativa competente, presso cui può essere presa visione degli atti, è: <xsl:value-of select="Istanze/ConfigurazioneComune/DENOMINAZIONE"/>
+					</li>
+					<li>
+						Il Responsabile del Procedimento Unico è: <xsl:value-of select="Istanze/ResponsabileProc/RESPONSABILE"/>
+					</li>
+					<li>
+						I singoli enti competenti sono responsabili per gli endoprocedimenti attivati.
+					</li>
+					<li>
+						I termini endoprocedimentali sono quelli previsti dalle rispettive normative di riferimento così come i rimedi esperibili in caso d’inerzia.
+					</li>
+				</ol>
+
+				<br />
+				<div style="text-align:center">
+					<h2>
+						ELENCO DEI DOCUMENTI DIGITALI ALLEGATI
+					</h2>
+				</div>
+
+				<div style="text-align: left;">
+					<div style="text-align:center">
+						<h3>Allegati della pratica</h3>
+					</div>
+					<ul>
+						<xsl:for-each select="Istanze/DocumentiIstanza/DocumentiIstanza">
+							<li>
+								<div class="dato">
+									<b>
+										<xsl:value-of select="DOCUMENTO"/>
+									</b>
+								</div>
+								<xsl:value-of select="Oggetto/NOMEFILE"/>
+							</li>
+						</xsl:for-each>
+					</ul>
+
+						<xsl:for-each select="Istanze/EndoProcedimenti/IstanzeProcedimenti">
+							<xsl:if test="count(IstanzeAllegati/IstanzeAllegati[PRESENTE = '1']) > 0">
+
+								<div style="text-align:center">
+									<h3>
+										Allegati dell'endoprocedimento 
+										<xsl:value-of select="Endoprocedimento/Procedimento"/>
+									</h3>
+								</div>
+
+								<ul>
+									<xsl:for-each select="IstanzeAllegati/IstanzeAllegati">
+										<xsl:if test="PRESENTE != '0'">
+											<li>
+												<div class="dato">
+													<b>
+														<xsl:value-of select="ALLEGATOEXTRA"/>
+													</b>
+												</div>
+												<xsl:value-of select="Oggetto/NOMEFILE"/>
+											</li>
+										</xsl:if>
+									</xsl:for-each>
+								</ul>	
+							</xsl:if>
+						</xsl:for-each>
+				</div>
+				<br/>
+				<br />
+				<div style="text-align:center">
+					<h5>
+						Informativa ai sensi dell’art. 13 del D. Lgs. 196/03: i dati sopra riportati sono prescritti dalle disposizioni vigenti<br />
+						ai fini del procedimento per il quale sono richiesti e verranno utilizzati esclusivamente per tale scopo.
+					</h5>
+				</div>
+
+			</body>
+		</html>

@@ -1,0 +1,123 @@
+﻿@using Init.Sigepro.FrontEnd.AppLogic.Autenticazione.Vbg.AutenticazioneUtente
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneInterventi
+@using Init.Sigepro.FrontEnd.AppLogic.Repositories.AmbitoRicercaIntervento
+@using Init.Sigepro.FrontEnd.AppLogic.WsInterventi
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.EditFormComponents
+
+<button class="btn btn-primary mt-4 mb-4" @onclick="OpenPopup">Ricerca testuale</button>
+
+
+<BasicModal @ref="_modal" CssClass="modal-lg" OnClose="() => _modal?.Hide()">
+	<ModalHeader Titolo="Ricerca testuale interventi">
+		
+	</ModalHeader>
+	<ModalBody>
+		<VbgForm Model="@this">
+			<AutocompleteForm Label="Cosa stai cercando"
+								Value="interventoBreveDto"
+								SearchMethod="@OnAutocompleteSearch"
+								ConvertMethod="interventoConvertMethod"
+								TextField="@nameof(InterventoBreveDto.Descrizione)"
+								TItem="InterventoBreveDto"
+								TValue="AutocompleteFormResult"
+								ValueChanged="OnInterventoSelezionato"
+								ValueExpression="() => interventoBreveDto"></AutocompleteForm>
+
+			<fieldset class="sezione-ricerca">
+				<legend>
+					Modalità di ricerca
+				</legend>
+
+				@foreach (var mr in this.MetodiRicerca)
+				{
+					<RadioButton Id="@($"rd_{mr.Valore}")" GroupName="group1" Label="@mr.Descrizione" @bind-Value="MetodoRicerca" SelectedValue="@mr.Valore" DisplayOrizonthally="true"></RadioButton>
+				}
+			</fieldset>
+
+			<fieldset>
+				<legend>Tipo ricerca</legend>
+
+				@foreach (var tr in this.TipiRicerca)
+				{
+					<RadioButton Id="@($"rd_{tr.Valore}")" GroupName="group2" Label="@tr.Descrizione" @bind-Value="TipoRicerca" SelectedValue="@tr.Valore" DisplayOrizonthally="false"></RadioButton>
+				}
+			</fieldset>
+
+            @* submit button nascosto per accessibilità *@
+            <button type="submit" class="d-none" aria-hidden="true"></button>
+		</VbgForm>
+	</ModalBody>
+</BasicModal>
+
+
+
+
+@code {
+	private record struct RadioItem(string Valore, string Descrizione);
+
+	[Inject]
+	IInterventiRepository _interventiRepository { get; set; } = default!;
+	[Inject]
+	IAuthenticationDataResolver _authDataResolver { get; set; } = default!;
+	[Inject]
+	public IJSRuntime _js { get; set; } = default!;
+
+	[Parameter]
+	public IAmbitoRicercaIntervento? AmbitoRicerca { get; set; }
+	[Parameter]
+	public EventCallback<int> InterventoSelezionato { get; set; }
+
+	RadioItem[] MetodiRicerca = new[] {
+		new RadioItem("mr1", "Cerca nei titoli"),
+		new RadioItem("mr2", "Cerca nei titoli e nelle descrizioni")
+	};
+
+	RadioItem[] TipiRicerca = new[] {
+		new RadioItem("tr2", "Cerca le voci che contengono tutte le parole"),
+		new RadioItem("tr1", "Cerca le voci che contengono l'intera frase"),
+		new RadioItem("tr3", "Cerca le voci che contengono almeno una parola")
+	};
+
+	private BasicModal? _modal;
+
+	string MetodoRicerca = "mr1";
+	string TipoRicerca = "tr2";
+	AutocompleteFormResult? interventoBreveDto = null;
+
+	Task<IEnumerable<InterventoBreveDto>> OnAutocompleteSearch(string partial)
+	{
+		var ambitoRicerca = this.AmbitoRicerca ?? new AmbitoRicercaAreaRiservata(this._authDataResolver.DatiAutenticazione?.DatiUtente.UtenteTester ?? false);
+
+		return Task.FromResult(this._interventiRepository.RicercaTestuale2(partial, 10, MetodoRicerca, TipoRicerca, ambitoRicerca));
+	}
+
+	void OnInterventoSelezionato(AutocompleteFormResult intervento)
+	{
+		interventoBreveDto = intervento;
+
+		if (intervento == null)
+			return;
+
+		_js.InvokeVoidAsync("removeClassFromAllElements", "selected");
+
+		_modal?.Hide();
+
+		int id = Convert.ToInt32(intervento.Value);
+		this.InterventoSelezionato.InvokeAsync(id);
+	}
+
+	private AutocompleteFormResult interventoConvertMethod(InterventoBreveDto intervento)
+	{
+		return intervento == null ? null : new AutocompleteFormResult($"{intervento.Codice}", intervento.Descrizione);
+	}
+
+	void OpenPopup()
+	{
+		this.MetodoRicerca = "mr1";
+		this.TipoRicerca = "tr2";
+
+		_modal?.Show();
+	}
+}

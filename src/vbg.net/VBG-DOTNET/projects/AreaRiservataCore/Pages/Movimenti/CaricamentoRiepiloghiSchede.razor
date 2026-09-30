@@ -1,0 +1,109 @@
+﻿@page "/{IdComune}/{Software}/caricamentoriepiloghischede/{IdMovimento:int}/{Step:int?}/{*GoBackUrl}"
+@using VBG.BlazorComponentsLibrary
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.DesignComuni.Forms
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.DesignComuni.NavScroll
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards.CardButtons
+@using VBG.BlazorComponentsLibrary.EditFormComponents
+@using VBG.BlazorComponentsLibrary.RisorseTestuali
+
+@inherits MovimentiBasePage
+
+<style type="text/css">
+	.form-group {
+		position: static;
+	}
+
+	input .upload {
+		background-color: var(--main-primary);
+	}
+
+	.upload[type="file"] + label {
+		line-height: 1.7 !important;
+	}
+
+	.fa-check {
+		color: green;
+	}
+</style>
+
+<TitoloPagina>@_viewModel.GetNomeAttivitaDaEffettuare()</TitoloPagina>
+
+<NavScrollComponent Title="Indice di pagina">
+    <div id="contenutoStep">
+	    @if (_dataSource is not null)
+	    {
+		    <StepCard>
+                <StepCardTitle>
+                    <div style="margin-top: -1.5rem; margin-bottom:1.5rem;">
+                        <RisorsaTestuale IdRisorsa="movimenti.carica-riepiloghi.titolo-griglia">Verifica schede compilate</RisorsaTestuale>
+                    </div>
+                </StepCardTitle>
+                    
+			    @foreach (var item in _dataSource)
+			    {
+				    <StepCardItem>
+					    <div class="row">
+						    <div class="d-inline-flex">
+							    @if (item.CodiceOggetto.HasValue)
+							    {
+								    <i class="fa fa-check me-1 my-1" title="Riepilogo della scheda caricato correttamente" aria-hidden="true"></i>
+							    }
+							    else
+							    {
+								    <i class="fa fa-exclamation-circle me-1 my-1" title="Per proseguire è necessario scaricare, firmare e ricaricare il riepilogo della scheda" aria-hidden="true"></i>
+							    }
+							    <StepCardItemTitle Titolo="@item.NomeScheda"></StepCardItemTitle>
+								
+						    </div>					
+					    </div>
+
+					    <StepCardInfo Titolo="">
+						    <button class="btn btn-sm btn-primary w-100 mb-3" @onclick="@(() => DownloadDocumentAsync(item.IdScheda))" aria-labelledby="@($"buttonScaricaDoc-{item.CodiceOggetto}")">
+							    <SvgIcon CssClass="icon-sm icon-light mx-1" IconId="it-download"></SvgIcon>
+							    <span class="align-bottom" id="@($"buttonScaricaDoc-{item.CodiceOggetto}")">Scarica documento</span>
+						    </button>
+
+                            @if (item.CodiceOggetto is not null)
+						    {
+							    <div class="float-end">
+
+								    <button class=" text-decoration-none ms-4" aria-labelledby="@($"buttonEliminaDoc-{item.CodiceOggetto}")" data-focus-mouse="false" @onclick="@(() => ShowConfirmationModal(item.IdScheda))">
+									    <span id="@($"buttonEliminaDoc-{item.CodiceOggetto}")" class="text-button-sm-semi t-alert">Elimina</span>
+								    </button>
+							    </div>
+						    }
+
+						    <VbgForm Model="@item">
+                                <FormUpload @bind-Value="item.CodiceOggetto"
+										    Label=""
+                                            OnFileChanged="@((FormFileChangedEventArgs e) => UploadFile_OnChanged(item.IdScheda, e))"
+										    VerificaFirmaDigitale="item.FirmatoDigitalmente"
+                                            ValidationFor="() => item.CodiceOggetto">
+							    </FormUpload>
+
+							    @* submit button invisible inserito per eliminare errore accessibilità *@
+							    <button type="submit" class="d-none" aria-hidden="true" ></button>
+						    </VbgForm>
+					    </StepCardInfo>
+				    </StepCardItem>
+			    }
+			
+		    </StepCard>
+	    }
+
+        <div id="bottoniMovimento" class="d-flex gap-3 mb-3">
+		    <button class="btn btn-light" @onclick="OnBtnBackAsync">Torna indietro</button>
+		    <button class="btn btn-primary" @onclick="OnBtnNextAsync">Procedi</button>
+	    </div>
+    </div>
+</NavScrollComponent>
+
+<ConfirmationModal Titolo="Eliminazione riepilogo" Visible="(_idSchedaDaEliminare is not null)" ConfermaClick="@EliminaRiepilogo" AnnullaClick="@(() => _idSchedaDaEliminare = null)">
+	<ModalBody>
+		Rimuovere il riepilogo selezionato?
+	</ModalBody>
+</ConfirmationModal>
+

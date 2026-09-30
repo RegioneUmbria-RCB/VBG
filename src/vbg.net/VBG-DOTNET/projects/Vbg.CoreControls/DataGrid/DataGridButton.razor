@@ -1,0 +1,26 @@
+﻿<button title="@Text" class="@CssClass" @onclick="@OnClick">
+    @if (!IconOnTheRight && !string.IsNullOrEmpty(Icon))
+    {
+        <i class="@Icon"></i> 
+    }
+
+    @Text
+
+    @if (IconOnTheRight && !string.IsNullOrEmpty(Icon))
+    {
+        <i class="IconOnTheRight @Icon"></i>
+    }
+</button>
+
+@code {
+    [Parameter]
+    public string Text { get; set; }
+    [Parameter]
+    public string Icon { get; set; }
+    [Parameter]
+    public bool IconOnTheRight { get; set; } = false;
+    [Parameter]
+    public string CssClass { get; set; } = "grid-button";
+    [Parameter]
+    public EventCallback OnClick { get; set; }
+}

@@ -1,0 +1,38 @@
+##nessun output per la versione PDF del controllo
+#if(!$modelloHelper.isRenderForPrint())
+	#set($text = $campo.getProprietaCampo("Testo","Link"))
+	#set($urlPattern = $campo.getProprietaCampo("Url",""))
+	#set($urlPattern = ${helper.sostituisciSegnaposto($urlPattern,$rowIndex,true)})
+	#set($valuePattern = $campo.getProprietaCampo("Valore",""))
+	#set($valuePattern = ${helper.sostituisciSegnaposto($valuePattern,$rowIndex,true)})
+	#if($valuePattern)
+		<input type="hidden" name="${nameAttr}" starid='${idStar}' id="${nameAttr}_ID" valuePattern="${valuePattern}" value="${valuePattern}"/>
+	#end
+	<a id="${nameAttr}_LINK_ID" class="link-cart" hrefPattern="${urlPattern}" href="${urlPattern}" onclick="javascript:void(0);" target="${campo.getNomeCampo()}">$text</a>
+	
+	<script type="text/javascript">
+			jQuery(document).ready(function(){
+			#set($watchIdSem = $helper.getSegnapostoIdSemantici("${urlPattern}${valuePattern}"))
+			#if($watchIdSem && $watchIdSem.size() > 0)
+				var placeholders = [];
+				#foreach($watchThis in $watchIdSem)
+					placeholders[placeholders.length] = "${watchThis}";
+				#end
+				#foreach($watchThis in $watchIdSem)
+					var phEscaped = escapeStringForCssSelector("${watchThis}")
+					var tempFields = jQuery("[starid^='" + phEscaped + "']");
+					var anonFunction_${nameAttr} = function(element){
+						replacePlaceholders(placeholders,$(element).val(),'href',"${nameAttr}_LINK_ID");
+						replacePlaceholders(placeholders,$(element).val(),'value',"${nameAttr}_ID");
+					};
+					tempFields.each(function(index,element){
+						anonFunction_${nameAttr}(element);
+					});
+					tempFields.change(function(event){
+						anonFunction_${nameAttr}(event.target);
+					});
+				#end
+			#end
+			});
+	</script>
+#end

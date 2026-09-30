@@ -1,0 +1,124 @@
+﻿@using VBG.AppLogic.SSU.APICatalogoServizi.Client
+@using VBG.AppLogic.SSU.GestioneFattispecie
+@using VBG.AppLogic.SSU.GestioneProcedimenti
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+
+<BasicModal AlwaysVisible="true" OnClose="OnClose">
+    <ModalHeader Size="ModalHeaderSizeEnum.Small" Titolo="Fattispecie primarie">
+        Seleziona una o più fattispecie primarie relative al procedimento <b>@Procedimento?.Descrizione</b>
+    </ModalHeader>
+    <ModalBody>
+        @if (_isLoading)
+        {
+            <MessaggioCaricamento></MessaggioCaricamento>
+
+        }
+        else
+        {
+            <div class="it-list-wrapper">
+                <ul class="it-list">
+                    @foreach (var fattispecie in _fattispecie)
+                    {
+                        <li style="cursor:pointer" @onclick="() => OnFattispecieSelezionata(fattispecie)" class="@(_fattispecieSelezionate.Contains(fattispecie) ? "border border-success shadow" : "")">
+                            <div class="list-item">
+                                <div class="it-right-zone">
+                                    <div>
+                                        @if (fattispecie.Obbligatoria)
+                                        {
+                                            <span class="badge bg-success">Obbligatoria</span>
+                                        }
+                                        <h4 class="text m-0">@fattispecie.Descrizione</h4>
+                                        @if (!String.IsNullOrEmpty(@fattispecie.DescrizioneEstesa))
+                                        {
+                                            <p class="small m-0">@fattispecie.DescrizioneEstesa</p>
+                                        }
+                                    </div>
+                                    <span class="it-multiple">
+                                        @if (_fattispecieSelezionate.Contains(fattispecie))
+                                        {
+                                            <SvgIcon CssClass="icon-secondary" IconId="it-check-circle" AriaLabel="selezionata"></SvgIcon>
+                                        }
+                                    </span>
+                                </div>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
+    </ModalBody>
+
+    <ModalFooter>
+        <button class="btn btn-primary flex-even fw-bold" disabled="@(_fattispecieSelezionate.Count == 0)" @onclick="OnProcediClick">Prosegui</button>
+    </ModalFooter>
+</BasicModal>
+
+@code {
+    [Inject]
+    public SsuFattispecieService _service { get; set; } = default!;
+
+    [CascadingParameter(Name = "IdDomanda")]
+    public int? IdDomanda { get; set; }
+
+    [Parameter, EditorRequired]
+    public EventCallback OnClose { get; set; }
+    [Parameter, EditorRequired]
+    public SsuProcedimentoDomanda? Procedimento { get; set; }
+    [Parameter, EditorRequired]
+    public EventCallback<List<Fattispecie>> FattispecieSelezionate { get; set; }
+
+    private List<Fattispecie> _fattispecie = new();
+    private List<Fattispecie> _fattispecieSelezionate = new();
+    private bool _isLoading = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        if (Procedimento is not null)
+        {
+            _isLoading = true;
+
+            try
+            {
+                _fattispecie = await _service.GetFattispeciePrimarieAsync(IdDomanda!.Value, Procedimento.Id);
+
+                _fattispecie.Where(f => f.Obbligatoria).ToList().ForEach(f => this.ForzaSelezioneFattispecie(f));
+            }
+            finally
+            {
+                _isLoading = false;
+            }
+        }
+    }
+
+    async Task OnProcediClick()
+    {
+        await FattispecieSelezionate.InvokeAsync(_fattispecieSelezionate);
+    }
+
+    void ForzaSelezioneFattispecie(Fattispecie f)
+    {
+        if (!_fattispecieSelezionate.Contains(f))
+        {
+            _fattispecieSelezionate.Add(f);
+        }
+    }
+
+    void OnFattispecieSelezionata(Fattispecie f)
+    {
+        if (_fattispecieSelezionate.Contains(f))
+        {
+            if (f.Obbligatoria)
+            {
+                return;
+            }
+
+            _fattispecieSelezionate.Remove(f);
+        }
+        else
+        {
+            _fattispecieSelezionate.Add(f);
+        }
+    }
+}

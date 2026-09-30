@@ -1,0 +1,2413 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xs:schema xmlns:sem="http://www.suap.regione.toscana.it/sem/types/procedimento"
+	xmlns:wsi="http://ws-i.org/profiles/basic/1.1/xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:attori="http://www.suap.regione.toscana.it/sem/types/attori"
+	attributeFormDefault="unqualified" elementFormDefault="qualified"
+	targetNamespace="http://www.suap.regione.toscana.it/sem/types/procedimento"
+	version="1.0">
+	
+	<xs:import namespace="http://ws-i.org/profiles/basic/1.1/xsd" schemaLocation="swaref.xsd"/>
+	<xs:import namespace="http://www.suap.regione.toscana.it/sem/types/attori" schemaLocation="attoriSuap.xsd"/>
+
+	<xs:element name="riceviStimoloAsync" type="sem:riceviStimoloType">
+		<xs:annotation>
+			<xs:documentation>
+				rappresenta lo stimolo ricevuto dal destinatario in modalita' asincrona. 
+			</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	
+	<xs:element name="riceviStimoloRequest" type="sem:riceviStimoloType">
+		<xs:annotation>
+			<xs:documentation>
+				rappresenta lo stimolo ricevuto dal destinatario in modalita' sincrona. 
+			</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	
+	<xs:complexType name="riceviStimoloType">
+		<xs:sequence>
+			<xs:element name="idMessaggio" type="sem:stringaNonVuota">
+				<xs:annotation>
+					<xs:documentation>
+						Identificativo del messaggio (obbligatorio).
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element> 	
+			<xs:element name="stimolo" type="sem:stimoloType">
+				<xs:annotation>
+					<xs:documentation>
+						Stimolo veicolato dal SEM al destinatario (obbligatorio vedi 'stimoloType').
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:element name="riceviStimoloResponse" type="sem:confermaRicezioneReqType">
+		<xs:annotation>
+			<xs:documentation>
+				E' la rappresentazione che la ricezione e' avvenuta con successo e 
+				al tempo stesso segnala eventuali errori che il destinatario e' in grado di riscontrare automaticamente. 
+			</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	
+	<xs:element name="riceviConfermaRicezioneRequest" type="sem:confermaRicezioneReqType">
+		<xs:annotation>
+			<xs:documentation>
+				Servizio che comunica ad un soggetto fruitore di un messaggio che la ricezione e' avvenuta con successo e 
+				al tempo stesso segnala eventuali errori che l'attore principale e' in grado di riscontrare automaticamente
+				(vedi 'confermaRicezioneReqType').
+			</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+
+	<xs:element name="riceviConfermaRicezioneResponse" type="sem:riceviConfermaRicezioneRespType">
+		<xs:annotation>
+			<xs:documentation>
+				Messaggio di risposta inviato dal Destinatario a seguito di un messaggio di tipo 'confermaRicezioneReqType'. 
+				Contiene la presa in carico (vedi 'confermaRicezioneRespType').
+			</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+
+	<xs:complexType name="riceviConfermaRicezioneRespType">
+		<xs:sequence>
+			<xs:element name="esito" type="sem:esitoRiceviConfermaRicezioneType">
+				<xs:annotation>
+					<xs:documentation>Messaggio di esito per la presa in carico da parte dal SEM della conferma di ricezione inviata</xs:documentation>
+				</xs:annotation>
+			</xs:element> 
+		</xs:sequence>
+		<xs:attribute name="msgErrore" use="optional" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>
+					Eventuale messaggio di errore dal SEM
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute> 	
+	</xs:complexType>
+
+	<xs:element name="inviaStimoloRequest" type="sem:inviaStimoloRequestType">
+		<xs:annotation>
+			<xs:documentation>
+				E' la rappresentazione di una delle azioni che consentono al processo di nascere ed evolvere nelle sue fasi 
+				attivando i vari attori nell’esecuzione delle specifiche attivita' (obbligatorio, vedi 'stimoloRequestType'). 
+			</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	
+	<xs:complexType name="inviaStimoloRequestType">
+		<xs:sequence>
+			<xs:element name="stimolo" type="sem:stimoloType">
+				<xs:annotation>
+					<xs:documentation>
+						Stimolo veicolato dal mittente al SEM (obbligatorio vedi 'stimoloType').
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:element name="segnalazioneCompletezzaRequest" type="sem:segnalazioneCompletezzaReqType">
+		<xs:annotation>
+			<xs:documentation>
+				Messaggio del SEM contenente la conferma che tutti gli allegati relativi allo stimolo idMessaggio sono stati correttamente acquisiti.
+			</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="segnalazioneCompletezzaResponse" type="sem:segnalazioneCompletezzaRespType">
+		<xs:annotation>
+			<xs:documentation>
+				Messaggio di risposta inviato dal Destinatario a seguito di un messaggio di tipo 'confermaRicezioneReqType'. 
+				Contiene la presa in carico (vedi 'confermaRicezioneRespType').
+			</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="segnalazioneCompletezzaRespType">
+		<xs:sequence>
+			<xs:element name="esito" type="sem:esitoRiceviConfermaRicezioneType">
+				<xs:annotation>
+					<xs:documentation>Messaggio di esito relativo alla completezza di uno stimolo e degli allegati</xs:documentation>
+				</xs:annotation>
+			</xs:element> 
+		</xs:sequence>
+		<xs:attribute name="msgErrore" use="optional" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>
+					Eventuale messaggio di errore al SEM
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute> 	
+	</xs:complexType>
+	
+	<xs:complexType abstract="true" name="abstractStimoloType">
+		<xs:sequence>
+			<xs:element name="mittente" type="sem:soggettoReteSuapType">
+				<xs:annotation>
+					<xs:documentation>
+						Soggetto mittente dello stimolo (obbligatorio, vedi 'soggettoReteSuapType').
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="data" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation>
+						Data di invio dello stimolo (obbligatorio).
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="idPratica" type="sem:idPraticaSUAP">
+				<xs:annotation>
+					<xs:documentation>
+						Riferimento univoco alla pratica (obbligatorio, vedi 'idPraticaSUAP').
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="stimoloType">
+		<xs:complexContent>
+			<xs:extension base="sem:abstractStimoloType">
+				<xs:sequence>
+					<xs:element name="attributiSpecifici" type="sem:attributiStimoloType">
+						<xs:annotation>
+							<xs:documentation>
+								Attributi dello specifica tipologia di stimolo veicolato dal mittente al SEM (obbligatorio vedi 'attributiStimoloType').
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>					
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="attributiStimoloType">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="presentazionePratica" type="sem:presentazionePraticaType">
+					<xs:annotation>
+						<xs:documentation>
+							Stimolo che rappresenta la nascita del procedimento Suap a seguito della 'presentazione' della
+							pratica, da parte del Cittadino, attraveros il Front End di Accettazione (vedi 'presentazionePraticaType').
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="notificaET" type="sem:notificaETType">
+					<xs:annotation>
+						<xs:documentation>
+							Stimolo attraverso il quale il Suap cmunica al SEM di notificare gli Enti Terzi dell'avvio di un procedimento che li 
+							coinvolge (vedi 'notificaETType').
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="notifica" type="sem:notificaType">
+					<xs:annotation>
+						<xs:documentation>
+							Stimolo attraverso il quale il Suap notifica un Ente Terzo dell'avvio di un procedimento che lo 
+							coinvolge (vedi 'notificaType').
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="valutazioneIntegrazione" type="sem:valutazioneIntegrazioneType">
+					<xs:annotation>
+						<xs:documentation>
+							Stimolo che rappresenta, dal punto di vista dell'Ente Terzo, una richiesta formale di documentazione 
+							aggiuntiva, o, viceversa, che la documentazione fornita e' sufficiente (vedi 'valutazioneIntegrazioneType').
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="richiestaIntegrazioni" type="sem:richiestaIntegrazioniType">
+					<xs:annotation>
+						<xs:documentation>
+							Stimolo attraverso il quale il Suap richiede formalmente al Cittadino che ha presentato la pratica 
+							di integrarla con della documentazione aggiuntiva (vedi 'richiestaIntegrazioniType').
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="invioIntegrazioni" type="sem:invioIntegrazioniType">
+					<xs:annotation>
+						<xs:documentation>
+							Stimolo rappresentante la risposta del Cittadino ad una 'richiestaIntegrazioni' ricevuta dal Suap 
+							(vedi 'invioIntegrazioniType').
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="inoltroIntegrazioneET" type="sem:inoltroIntegrazioniETType">
+					<xs:annotation>
+						<xs:documentation>
+							Stimolo che consiste nella richiesta da parte del Suap al SEM di inoltrare verso gli Enti Terzi la documentazione aggiuntiva 
+							ricevuta dal Cittadino ed il passaggio della pratica alla fase successiva del procedimento 
+							(vedi 'inoltroIntegrazioniETType').
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="inoltroIntegrazione" type="sem:inoltroIntegrazioniType">
+					<xs:annotation>
+						<xs:documentation>
+							Stimolo che consiste nell'invio da parte del Suap verso uno specifico Ente Terzo della documentazione aggiuntiva 
+							ricevuta dal Cittadino ed il passaggio della pratica alla fase successiva del procedimento 
+							(vedi 'inoltroIntegrazioniType').
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="chiusuraIntegrazioni" type="sem:chiusuraIntegrazioniType">
+					<xs:annotation>
+						<xs:documentation>
+							Stimolo attraverso il quale il Suap informa gli Enti Terzi che non riceveranno ulteriore documentazione 
+							da parte del Suap stesso: la pratica passa alla fase successiva del procedimento (vedi 'chiusuraIntegrazioniType').
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="valutazioneConformazione" type="sem:valutazioneConformazioneType">
+					<xs:annotation>
+						<xs:documentation>
+							Stimolo attraverso il quale l'Ente Terzo comunica al Suap che la parte della pratica di sua competenza 
+							e' completa o carente (vedi 'valutazioneConformazioneType').
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="richiestaConformazioni" type="sem:richiestaConformazioniType">
+					<xs:annotation>
+						<xs:documentation>
+							Stimolo attraverso il quale il Suap richiede formalmente al Cittadino che ha presentato la pratica 
+							di 'conformarsi' a delle richieste (vedi 'richiestaConformazioniType').
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="invioConformazioni" type="sem:invioConformazioniType">
+					<xs:annotation>
+						<xs:documentation>
+							Stimolo attraverso il quale il Cittadino risponde ad una 'richiestaConformazioni' ricevuta dal Suap 
+							(vedi 'sem:invioConformazioniType').
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="inoltroConformazioneET" type="sem:inoltroConformazioniETType">
+					<xs:annotation>
+						<xs:documentation>
+							Stimolo che consiste nella richiesta da parte del Suap al SEM di inoltrare verso gli Enti Terzi la documentazione aggiuntiva 
+							ricevuta dal Cittadino ed il passaggio della pratica alla fase successiva del procedimento 
+							(vedi 'inoltroConformazioniETType').
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="inoltroConformazione" type="sem:inoltroConformazioniType">
+					<xs:annotation>
+						<xs:documentation>
+							Stimolo che consiste nell'invio da parte del Suap verso lo specifico'Ente Terzo della 
+							documentazione aggiuntiva fornita dal Cittadino con il messaggio di 'invioConformazione' (vedi 'inoltroConformazioniType').
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="chiusuraConformazioni" type="sem:chiusuraConformazioniType">
+					<xs:annotation>
+						<xs:documentation>
+							Stimolo che rappresenta la fine della fase di conformazione ed il passaggio della pratica alla valutazione 
+							finale (vedi 'sem:chiusuraConformazioniType').
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="esitoNegativo" type="sem:esitoNegativoType">
+					<xs:annotation>
+						<xs:documentation>
+							Stimolo che rappresenta la fine del procedimento per l'Ente Terzo e contiene il giudizio di respingimento 
+							della pratica presentata (vedi 'sem:esitoNegativoType').
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="chiusuraValutazioni" type="sem:chiusuraValutazioniType">
+					<xs:annotation>
+						<xs:documentation>
+							Stimolo attraverso il quale il Suap informa tutti gli enti coinvolti nella pratica 
+							dell'avvenuta chiusura del procedimento automatico (vedi 'sem:chiusuraValutazioniType').
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="diniego" type="sem:diniegoType">
+					<xs:annotation>
+						<xs:documentation>
+							Stimolo attraverso il quale il Suap comunica al Cittadino il rigetto della pratica presentata (vedi 'sem:diniegoType').
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="comunicazioneResponsabile" type="sem:comunicazioneResponsabileType">
+					<xs:annotation>
+						<xs:documentation>
+							Stimolo attraverso il quale il Suap informa il Cittadino che la pratica e' stata ricevuta ed e' stata presa 
+							in carico dal soggetto 'Responsabile' (vedi 'comunicazioneResponsabileType').
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="rigetto" type="sem:rigettoType">
+					<xs:annotation>
+						<xs:documentation>
+							Stimolo inviato dal Suap per comunicare al Cittadino che la pratica, valutata come 'non integrabile', 
+							non puo' essere accettata (vedi 'rigettoType').
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="invioPareri" type="sem:invioPareriType">
+					<xs:annotation>
+						<xs:documentation>
+							Stimolo obbligatorio che esprime l'esito dei controlli effettuati da parte dell'Ente Terzo sulla pratica
+							presentata dal Cittadino: contiene il giudizio di accettazione o respingimento (vedi 'invioPareriType').
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="invioMotivazioni" type="sem:invioMotivazioniType">
+					<xs:annotation>
+						<xs:documentation>
+							L'invio dello stimolo 'invioMotivazioni' e' obbligatorio per i casi in cui la pratica sia stata valutata
+							negativamente dai soggetti coinvolti ed informa il Cittadino delle relative motivazioni (vedi 'invioMotivazioniType').
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="invioOsservazioni" type="sem:invioOsservazioniType">
+					<xs:annotation>
+						<xs:documentation>
+							Stimolo contenente tutta la documentazione che il Cittadino ritiene utile per replicare
+							alle motivazioni ostative ricevute dal Suap con il messaggio 'invioMotivazioni' (vedi 'invioOsservazioniType').
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="inoltroOsservazioni" type="sem:inoltroOsservazioniType">
+					<xs:annotation>
+						<xs:documentation>
+							Lo stimolo consiste nell'invio da parte del Suap verso l'Ente Terzo della documentazione aggiuntiva 
+							fornita dal Cittadino con il messaggio di 'invioOsservazioni', con l'intenzione di replicare ai motivi 
+							ostativi alla pratica (vedi 'sem:inoltroOsservazioniType').
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="inoltroOsservazioniET" type="sem:inoltroOsservazioniETType">
+					<xs:annotation>
+						<xs:documentation>
+							Lo stimolo consiste nella richiesta da parte del Suap al SEM di iviare agli Enti Terzi 
+							la documentazione aggiuntiva fornita dal Cittadino con il messaggio di 'invioOsservazioni', con l'intenzione di replicare ai motivi 
+							ostativi alla pratica (vedi 'sem:inoltroOsservazioniType').
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="esitoOsservazioni" type="sem:esitoOsservazioniType">
+					<xs:annotation>
+						<xs:documentation>
+							 Stimolo che rappresenta la valutazione definitiva, da parte dell'Ente Terzo, della pratica alla luce 
+							 della documentazione aggiuntiva presentata dal Cittadino in replica ai motivi ostativi gia' evidenziati 
+							 in precedenza (vedi 'sem:esitoOsservazioniType'). 
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="chiusuraProcedimento" type="sem:chiusuraProcedimentoType">
+					<xs:annotation>
+						<xs:documentation>
+							 Stimolo che rappresenta la fine del processo iniziato tra il Suap e gli Enti Terzi con il messaggio 
+							 di 'notifica' e contiene l'esito complessivo del procedimento formulato sulla base dei singoli pareri 
+							 inviati dagli Enti Terzi (vedi 'sem:chiusuraProcedimentoType').
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="invioProvvedimento" type="sem:invioProvvedimentoType">
+					<xs:annotation>
+						<xs:documentation>
+							Stimolo attraverso il quale il Suap comunica al cittadino l'esito finale della pratica (vedi 'invioProvvedimentoType').
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="segnalazioneErrore" type="sem:segnalazioneErroreType">
+					<xs:annotation>
+						<xs:documentation>
+							Stimolo che indica la volonta' di uno dei soggetti di voler "correggere" un messaggio inviato in precedenza
+							unitamente alla richiesta di riportare la pratica allo stato precedente alla ricezione del messaggio 
+							errato (vedi 'segnalazioneErroreType').
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="comunicazione" type="sem:comunicazioneType">
+					<xs:annotation>
+						<xs:documentation>
+							Stimolo utilizzato per effettuare comunicazioni 'generiche' e non tipizzate tra gli attori della rete.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>	
+				<xs:element name="pubblicaRicevuta" type="sem:pubblicaRicevutaType">
+					<xs:annotation>
+						<xs:documentation>
+							Stimolo utilizzato per pubblicare la ricevuta di presa in carico della pratica da parte del sistema.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>	
+			</xs:choice>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="allegati" type="sem:allegatoGenericoType"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:element name="inviaStimoloResponse" type="sem:inviaStimoloResponseType">
+		<xs:annotation>
+			<xs:documentation>
+				Messaggio del SEM contenente la conferma che lo stimolo processato e' valido e coerente con lo stato della pratica, o 
+				in alternativa, l'errore che ne impedisce l'elaborazione (vedi 'stimoloResponseType').
+			</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="inviaStimoloResponseType">
+		<xs:sequence>
+			<xs:element name="idMessaggio" type="sem:stringaNonVuota">
+				<xs:annotation>
+					<xs:documentation>
+						Identificativo del messaggio ricevuto (obbligatorio).
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element> 	
+			<xs:element name="esito" type="sem:esitoResponseType">
+				<xs:annotation>
+					<xs:documentation>
+						Esito della fase di acquisizione stimoli con indicazione di eventuali errori riscontrati dal SEM (vedi 'esitoResponseType').
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element> 	
+			<xs:element name="destinatariRaggiunti" minOccurs="0" maxOccurs="unbounded" type="attori:attoreReteSuap">
+				<xs:annotation>
+					<xs:documentation>
+						Per i messaggi con piu' destinatari viene fornito l'elenco di quelli ai quali il messaggio e' stato inoltrato.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element> 	
+			<xs:element name="destinatariNonRaggiungibili" minOccurs="0" maxOccurs="unbounded" type="attori:attoreReteSuap">
+				<xs:annotation>
+					<xs:documentation>
+						Per i messaggi con piu' destinatari viene fornito l'elenco di quelli ai quali non e' stato possibile inoltrare il messaggio.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element> 	
+		</xs:sequence>
+		<xs:attribute name="msgErrore" use="optional" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>
+					Eventuale messaggio di errore dal SEM
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+ 	</xs:complexType>
+	
+	<xs:complexType name="presentazionePraticaType">
+		<xs:annotation>
+			<xs:documentation>
+				Contenuto del messaggio 'presentazionePratica'.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="tipoProcedimento" type="sem:tipoProcedimentoType">
+				<xs:annotation>
+					<xs:documentation>
+						indicazione del procedimento da adottare per la gestione della pratica
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="copertina-xml" type="sem:allegatoXMLType">
+				<xs:annotation>
+					<xs:documentation>
+						Copertina in formato xml (obbligatorio, vedi 'allegatoXMLType')
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="copertina-pdf" type="sem:allegatoPDFType">
+				<xs:annotation>
+					<xs:documentation>
+						Copertina in formato pdf (obbligatorio, vedi 'allegatoPDFType')
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="moduloCompilato" type="sem:moduloCompilatoType">
+				<xs:annotation>
+					<xs:documentation>
+						Elenco dei moduli (uno o piu') inclusi nella pratica (obbligatorio, vedi 'moduloCompilatoType').
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="notificaETType">
+		<xs:annotation>
+			<xs:documentation>
+				Contenuto del messaggio 'notificaET'.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="sem:inoltroDocumentazioneETType">
+				<xs:sequence>
+					<xs:element name="integrazione" type="xs:boolean">
+						<xs:annotation>
+							<xs:documentation>
+								Valorizzato a 'true' definisce la possibilita' da parte degli Enti Terzi di richiedere integrazioni 
+								nel procedimento automatico.
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="destinatariCopertina" minOccurs="0">
+						<xs:complexType>
+							<xs:sequence maxOccurs="unbounded">
+								<xs:element name="ente" type="attori:attoreReteSuap"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="notificaType">
+		<xs:annotation>
+			<xs:documentation>
+				Contenuto del messaggio 'notifica' per lo specifico ET.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="sem:inoltroDocumentazioneType">
+				<xs:sequence>
+					<xs:element name="integrazione" type="xs:boolean">
+						<xs:annotation>
+							<xs:documentation>
+								Valorizzato a 'true' definisce la possibilita' da parte degli Enti Terzi di richiedere integrazioni 
+								nel procedimento automatico.
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="copertina-xml" type="sem:allegatoXMLType">
+						<xs:annotation>
+							<xs:documentation>
+								Copertina in formato xml (obbligatorio, vedi 'allegatoXMLType')
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="copertina-pdf" type="sem:allegatoPDFType">
+						<xs:annotation>
+							<xs:documentation>
+								Copertina in formato pdf (obbligatorio, vedi 'allegatoPDFType')
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:complexType name="valutazioneIntegrazioneType">
+		<xs:annotation>
+			<xs:documentation>
+				Contenuto del messaggio 'valutazioneIntegrazione'.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" name="richiestaIntegrazione" type="sem:richiestaDocumentazioneType">
+				<xs:annotation>
+					<xs:documentation>
+						Contenuto della richiesta di integrazione.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="richiestaIntegrazioniType">
+		<xs:annotation>
+			<xs:documentation>
+				Contenuto del messaggio 'richiestaIntegrazioni'.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="sem:richiestaDocumentazioneType">
+				<xs:sequence>
+					<xs:element name="proposta" type="xs:boolean">
+						<xs:annotation>
+							<xs:documentation>
+								Se impostato a 'true' indica al cittadino la possibilita' di fornire documentazione integrativa 'spontaneamente'.
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:complexType name="invioIntegrazioniType">
+		<xs:annotation>
+			<xs:documentation>
+				Contenuto del messaggio 'invioIntegrazioni': contiene uno o piu' moduli aggiuntivi compilati unitamente all'opportuna
+				valorizzazione del tag 'proposta'.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="proposta" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>
+						Valorizzato a 'true' qualora, nel messaggio di richiesta integrazione, l'omonimo tag fosse anch'esso valorizzato 
+						a 'true'; consente di distinguere una richiesta di integrazione effettuata dal Suap da una volontaria 
+						da parte del Cittadino.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element maxOccurs="unbounded" name="moduloCompilato" type="sem:moduloCompilatoType">
+				<xs:annotation>
+					<xs:documentation>
+						Modulo compilato integrativo (obbligatorio, vedi 'moduloCompilatoType').
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>			
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="inoltroIntegrazioniETType">
+		<xs:annotation>
+			<xs:documentation>
+				Contenuto del messaggio 'inoltroIntegrazioniET'.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="sem:inoltroDocumentazioneETType">
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:complexType name="inoltroDocumentazioneETType">
+		<xs:annotation>
+			<xs:documentation>
+				Struttura dati che consente di comunicare a SEM quale documentazione 
+				trasmettere agli EETT in aggiunta alle specifiche presenti nella pratica
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element maxOccurs="unbounded" minOccurs="0" name="modulo" type="sem:moduloDestinatarioType">
+				<xs:annotation>
+					<xs:documentation>
+						Moduli compilati con indicazione dei destinatari (opzionali, vedi 'moduloDestinatarioType').
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element maxOccurs="unbounded" minOccurs="0" name="allegatoAggiuntivo" type="sem:allegatoDaSuapType">
+				<xs:annotation>
+					<xs:documentation>
+						Allegato aggiuntivo caricato dal Suap (opzionale, vedi 'allegatoDaSuapType')
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>	
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="inoltroDocumentazioneType">
+		<xs:annotation>
+			<xs:documentation>
+				Struttura dati che consente l'inoltro di documentazione ad un destinatario.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="modulo" type="sem:moduloCompilatoSDType">
+				<xs:annotation>
+					<xs:documentation>
+						Modulo compilato (obbligatorio, vedi 'moduloCompilatoType').
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element maxOccurs="unbounded" minOccurs="0" name="allegatoAggiuntivo" type="sem:allegatoDaSuapSDType">
+				<xs:annotation>
+					<xs:documentation>
+						Allegato aggiuntivo caricato dal Suap (opzionale, vedi 'allegatoDaSuapSDType')
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>	
+		</xs:sequence>
+		<xs:attribute name="destinatario" type="attori:attoreReteSuap" use="required"/>	
+	</xs:complexType>
+
+	<xs:complexType name="richiestaDocumentazioneType">
+		<xs:annotation>
+			<xs:documentation>
+				Struttura utilizzata per la richiesta di modulistica aggiuntiva al cittadino
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="rispostaAttesaIn" type="xs:duration">
+				<xs:annotation>
+					<xs:documentation>
+						Tempo massimo, espresso in giorni, entro cui il cittadino deve fornire la documentazione richiesta (obbligatorio).
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element maxOccurs="unbounded" name="moduloRichiesto" type="sem:moduloRichiestoType">
+				<xs:annotation>
+					<xs:documentation>
+						Modulo richiesto (obbligatorio, vedi 'moduloRichiestoType').
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="comunicazione-formale" type="sem:comunicazioneFormaleType">
+				<xs:annotation>
+					<xs:documentation>
+						Comunicazione formale allegata (obbligatorio, vedi 'comunicazioneFormaleType').
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="inoltroIntegrazioniType">
+		<xs:annotation>
+			<xs:documentation>
+				Contenuto del messaggio 'inoltroIntegrazioni'.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="sem:inoltroDocumentazioneType">
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:complexType name="chiusuraIntegrazioniType">
+		<xs:annotation>
+			<xs:documentation>
+				Contenuto del messaggio 'chiusuraIntegrazioni': puo' contenere una comunicazione formale.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" name="comunicazione-formale" type="sem:comunicazioneFormaleType">
+				<xs:annotation>
+					<xs:documentation>
+						Comunicazione formale allegata (opzionale, vedi 'comunicazioneFormaleType').
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="valutazioneConformazioneType">
+		<xs:annotation>
+			<xs:documentation>
+				Contenuto del messaggio 'valutazioneConformazione': contiene il modulo richiesto oppure esprime la volonta' di non
+				richiedere documentazione aggiuntiva al cittadino da parte dell'Ente Terzo.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" name="richiestaConformazione" type="sem:richiestaDocumentazioneType">
+				<xs:annotation>
+					<xs:documentation>
+						Contenuto di un modulo richiesto in fase di 'conformazione'.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="richiestaConformazioniType">
+		<xs:annotation>
+			<xs:documentation>
+				Contenuto del messaggio di 'richiestaConformazioni'
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="sem:richiestaDocumentazioneType">
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:complexType name="invioConformazioniType">
+		<xs:annotation>
+			<xs:documentation>
+				Contenuto del messaggio 'invioConformazioni': contiene uno o piu' moduli aggiuntivi compilati.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element maxOccurs="unbounded" name="moduloCompilato" type="sem:moduloCompilatoType">
+				<xs:annotation>
+					<xs:documentation>
+						Modulo compilato conformativo (obbligatorio, vedi 'moduloCompilatoType').
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="inoltroConformazioniETType">
+		<xs:annotation>
+			<xs:documentation>
+				Contenuto del messaggio 'inoltroConformazioniET'.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="sem:inoltroDocumentazioneETType">
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:complexType name="inoltroConformazioniType">
+		<xs:annotation>
+			<xs:documentation>
+				Contenuto del messaggio 'inoltroConformazioni'.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="sem:inoltroDocumentazioneType">
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:complexType name="chiusuraConformazioniType">
+		<xs:annotation>
+			<xs:documentation>
+				Contenuto del messaggio 'chiusuraConformazioni': puo' contenere una comunicazione formale.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" name="comunicazione-formale" type="sem:comunicazioneFormaleType">
+				<xs:annotation>
+					<xs:documentation>
+						Comunicazione formale allegata (opzionale, vedi 'comunicazioneFormaleType').
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="chiusuraValutazioniType">
+		<xs:annotation>
+			<xs:documentation>
+				Contenuto del messaggio 'chiusuraValutazioni': contiene la valutazione (positiva/negativa) sulla pratica ed una comunicazione
+				formale opzionale.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="esitoPositivoProcedimento" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>
+						Se impostato a 'true' segnala una valutazione positiva (obbligatorio).
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="comunicazione-formale" type="sem:comunicazioneFormaleType">
+				<xs:annotation>
+					<xs:documentation>
+						Comunicazione formale allegata (opzionale, vedi 'comunicazioneFormaleType').
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>	
+	</xs:complexType>
+	
+	<xs:complexType name="esitoNegativoType">
+		<xs:annotation>
+			<xs:documentation>
+				Contenuto del messaggio 'esitoNegativo': contiene la valutazione (negativa, vedi 'esitoNegativoPerEndoprocedimento') 
+				di uno o piu' endoprocedimenti con allegata una comunicazione formale per ognuno di questi. 
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element maxOccurs="unbounded" name="esitoNegativoPerEndoprocedimento">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="idEndoprocedimento" type="sem:elementoBDRType">
+							<xs:annotation>
+								<xs:documentation>
+									Identificativo dell'endoprocedimento (obbligatorio).
+								</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="comunicazione-formale" type="sem:comunicazioneFormaleType">
+							<xs:annotation>
+								<xs:documentation>
+									Comunicazione formale allegata (obbligatorio, vedi 'comunicazioneFormaleType')
+								</xs:documentation>
+							</xs:annotation>			
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>				
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="ente" type="attori:attoreReteSuap" use="required">
+			<xs:annotation>
+				<xs:documentation>
+					Ente che emana l'esito (obbligatorio, vedi 'attoreReteSuap').
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	
+	<xs:complexType name="diniegoType">
+		<xs:annotation>
+			<xs:documentation>
+				Contenuto del messaggio 'diniego': contiene una comunicazione formale.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="comunicazione-formale" type="sem:comunicazioneFormaleType">
+				<xs:annotation>
+					<xs:documentation>
+						Comunicazione formale allegata (obbligatorio, vedi 'comunicazioneFormaleType').
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="comunicazioneResponsabileType">
+		<xs:annotation>
+			<xs:documentation>
+				Contenuto del messaggio 'comunicazioneResponsabile': contiene il nominativo del responsabile assegnato con
+				allegata una comunicazione formale.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="responsabile" type="sem:stringaNonVuota">
+				<xs:annotation>
+					<xs:documentation>
+						Il rensponsabile del procedimento (obbligatorio).
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="comunicazione-formale" type="sem:comunicazioneFormaleType">
+				<xs:annotation>
+					<xs:documentation>
+						Comunicazione formale allegata (obbligatorio, vedi 'comunicazioneFormaleType').
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="rigettoType">
+		<xs:annotation>
+			<xs:documentation>
+				Contenuto del messaggio 'rigetto': contiene una comunicazione formale.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="comunicazione-formale" type="sem:comunicazioneFormaleType">
+				<xs:annotation>
+					<xs:documentation>
+						Comunicazione formale allegata (obbligatorio, vedi 'comunicazioneFormaleType')
+					</xs:documentation>
+				</xs:annotation>			
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="invioPareriType">
+		<xs:annotation>
+			<xs:documentation>
+				Contenuto del messaggio 'invioPareri': contiene un 'parere' per ogni endoprocedimento valutato.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element maxOccurs="unbounded" name="parere" type="sem:parerePerEndoSDType">
+				<xs:annotation>
+					<xs:documentation>
+						Comunicazione relativa al singolo endoprocedimento (obbligatorio)
+					</xs:documentation>
+				</xs:annotation>			
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="invioMotivazioniType">
+		<xs:annotation>
+			<xs:documentation>
+				Contenuto del messaggio 'invioMotivazioni'.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element maxOccurs="unbounded" name="parere" type="sem:parerePerEndoType">
+				<xs:annotation>
+					<xs:documentation>
+						Comunicazione relativa al singolo endoprocedimento (obbligatorio)
+					</xs:documentation>
+				</xs:annotation>			
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="invioOsservazioniType">
+		<xs:annotation>
+			<xs:documentation>
+				Contenuto del messaggio 'invioOsservazioni'.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element maxOccurs="unbounded" name="osservazione" type="sem:osservazionePerEndoType">
+				<xs:annotation>
+					<xs:documentation>
+						'Osservazione' relativa al singolo endoprocedimento (obbligatorio)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>			
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="inoltroOsservazioniETType">
+		<xs:annotation>
+			<xs:documentation>
+				Contenuto del messaggio 'inoltroOsservazioniET'.
+			</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
+
+	<xs:complexType name="inoltroOsservazioniType">
+		<xs:annotation>
+			<xs:documentation>
+				Contenuto del messaggio 'inoltroOsservazioni'.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element maxOccurs="unbounded" name="osservazione" type="sem:osservazionePerEndoSDType">
+				<xs:annotation>
+					<xs:documentation>
+						'Osservazione' relativa al singolo endoprocedimento (obbligatorio)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>				
+		</xs:sequence>
+		<xs:attribute name="ente" type="attori:attoreReteSuap" use="required" />
+	</xs:complexType>
+
+	<xs:complexType name="esitoOsservazioniType">
+		<xs:annotation>
+			<xs:documentation>
+				Contenuto dello stimolo 'esitoOsservazioni': contiene una valutazione per ogni endoprocedimento.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="sem:invioPareriType">
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:complexType name="osservazionePerEndoSDType">
+		<xs:annotation>
+			<xs:documentation>
+				osservazione utilizata all'interno dei messaggi 'inoltroOsservazioni', contiene il riferimento all'endoprocedimento
+				ed uno o piu' file allegati.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="idEndoprocedimento" type="sem:codiceEndoprocedimento">
+				<xs:annotation>
+					<xs:documentation>
+						Identificativo dell'endoprocedimento (obbligatorio, vedi 'codiceEndoprocedimento').
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element maxOccurs="unbounded" name="allegato" type="sem:allegatoType">
+				<xs:annotation>
+					<xs:documentation>
+						File allegato all''osservazione' inviata (obbligatorio, vedi 'sem:allegatoType').
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="osservazionePerEndoType">
+		<xs:annotation>
+			<xs:documentation>
+				osservazione utilizzata all'interno dei messaggi 'invioOsservazioni', contiene 
+				il riferimento all'endoprocedimento
+				uno o piu' file allegati
+				l'ente a cui fa riferimento l'endoprocedimento
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="sem:osservazionePerEndoSDType">
+				<xs:attribute name="ente" type="attori:attoreReteSuap" use="required" />
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:complexType name="parerePerEndoSDType">
+		<xs:annotation>
+			<xs:documentation>
+				Comunicazione contenente il riferimento all'endoprocedimento, il parere, ed una comunicazione formale allegata.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="codiceEndoprocedimento" type="sem:elementoBDRType">
+				<xs:annotation>
+					<xs:documentation>
+						Identificativo dell'endoprocedimento (obbligatorio).
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="parerePositivo" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>
+						Se impostato a 'true' segnala una valutazione positiva (obbligatorio)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="comunicazione-formale" type="sem:comunicazioneFormaleType">
+				<xs:annotation>
+					<xs:documentation>
+						Comnunicazione formale allegata alla valutazione (obbligatorio, vedi 'comunicazioneFormaleType').
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+		
+	<xs:complexType name="parerePerEndoType">
+		<xs:annotation>
+			<xs:documentation>
+				Comunicazione contenente il riferimento all'endoprocedimento, il parere, ed una comunicazione formale allegata.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="sem:parerePerEndoSDType">
+				<xs:attribute name="ente" type="attori:attoreReteSuap" use="required" />
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:complexType name="chiusuraProcedimentoType">
+		<xs:annotation>
+			<xs:documentation>
+				Contenuto dello stimolo 'chiusuraProcedimento'.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="esitoPositivoProcedimentoOrdinario" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>
+						Se impostato a 'true' segnala che la pratica relativa ad un procedimento ordinario e' stata valutata 
+						positivamente (obbligatorio).
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="comunicazione-formale" type="sem:comunicazioneFormaleType">
+				<xs:annotation>
+					<xs:documentation>
+						Comunicazione formale allegata all'esito sulla pratica relativa ad un procedimento ordinario 
+						(obbligatorio, vedi 'comunicazioneFormaleType').
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>	
+	</xs:complexType>
+	
+	<xs:complexType name="invioProvvedimentoType">
+		<xs:annotation>
+			<xs:documentation>
+				Contenuto dello stimolo 'invioProvvedimento'.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="esitoPositivoPratica" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>
+						Se impostato a 'true' segnala che la pratica e' stata valutata positivamente (obbligatorio).
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="comunicazione-formale" type="sem:comunicazioneFormaleType">
+				<xs:annotation>
+					<xs:documentation>
+						Comunicazione formale allegata all'esito sulla pratica (obbligatorio, vedi 'comunicazioneFormaleType').
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="comunicazioneSecondaria" type="sem:comunicazioneFormaleType">
+				<xs:annotation>
+					<xs:documentation>
+						Comunicazione formale allegata all'esito sulla pratica (obbligatorio, vedi 'comunicazioneFormaleType').
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>	
+	</xs:complexType>
+
+	<xs:complexType name="segnalazioneErroreType">
+		<xs:annotation>
+			<xs:documentation>
+				Contenuto dello stimolo 'segnalazioneErrore'.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="idMessaggio" type="sem:stringaNonVuota">
+				<xs:annotation>
+					<xs:documentation>
+						Identificativo univoco del messaggio errato (obbligatorio).
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="comunicazione-formale" type="sem:comunicazioneFormaleType">
+				<xs:annotation>
+					<xs:documentation>
+						Comunicazione formale relativa al messaggio errato (obbligatorio, vedi 'comunicazioneFormaleType').
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:element name="confermaRicezioneReq" type="sem:confermaRicezioneReqType">
+		<xs:annotation>
+			<xs:documentation>
+				Servizio che comunica ad un soggetto fruitore di un messaggio che la ricezione e' avvenuta con successo e 
+				al tempo stesso segnala eventuali errori che l'attore principale e' in grado di riscontrare automaticamente
+				(vedi 'confermaRicezioneReqType').
+			</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="confermaRicezioneReqType">
+		<xs:sequence>
+			<xs:element name="mittente" type="sem:soggettoReteSuapType">
+				<xs:annotation>
+					<xs:documentation>
+						Soggetto mittente dello conferma di ricezione (obbligatorio, vedi 'soggettoReteSuapType').
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="idMessaggio" type="sem:stringaNonVuota">
+				<xs:annotation>
+					<xs:documentation>
+						Identificativo univoco del messaggio di cui e' stata confermata la ricezione (obbligatorio).
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ricezione" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation>
+						La data in cui e' stato effettivamente ricevuto il messaggio (obbligatorio).
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="errore" type="sem:erroreDestinatarioType">
+				<xs:annotation>
+					<xs:documentation>
+						Errore che segnala l'incoerenza del messaggio rispetto allo stato della pratica (opzionale, 'sem:erroreDestinatarioType').
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:element name="confermaRicezioneResp" type="sem:confermaRicezioneRespType">
+		<xs:annotation>
+			<xs:documentation>
+				Messaggio di risposta inviato dal SEM a seguito di un messaggio di tipo 'confermaRicezioneReqType'. 
+				Contiene un esito di presa in carico (vedi 'confermaRicezioneRespType').
+			</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="confermaRicezioneRespType">
+		<xs:sequence>
+			<xs:element name="esito" type="sem:esitoConfermaRicezioneType">
+				<xs:annotation>
+					<xs:documentation>Messaggio di esito per la presa in carico da parte dal SEM della conferma di ricezione inviata</xs:documentation>
+				</xs:annotation>
+			</xs:element> 
+		</xs:sequence>
+		<xs:attribute name="msgErrore" use="optional" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>
+					Eventuale messaggio di errore dal SEM
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute> 	
+	</xs:complexType>
+	
+	<xs:element name="statoMessaggioReq" type="sem:statoMessaggioReqType">
+		<xs:annotation>
+			<xs:documentation>
+				Servizio offerto dal componente di dominio SEM per permettere al mittente di conoscere
+		 		lo stato di trasmissione di un messaggio inviato in precedenza (vedi 'statoMessaggioReqType').
+			</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="statoMessaggioReqType">
+		<xs:sequence>
+			<xs:element name="mittente" type="sem:soggettoReteSuapType">
+				<xs:annotation>
+					<xs:documentation>
+						Soggetto mittente del messaggio (obbligatorio, vedi 'soggettoReteSuapType').
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="idMessaggio" type="sem:stringaNonVuota">
+				<xs:annotation>
+					<xs:documentation>
+						Identificativo univoco del messaggio inviato in precedenza di cui si vuole conoscere lo stato
+						della trasmissione (obbligatorio).
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element> 
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:element name="statoMessaggioResp" type="sem:statoMessaggioRespType">
+		<xs:annotation>
+			<xs:documentation>
+				Messaggio di risposta inviato dal SEM a seguito di un messaggio di tipo 'statoMessaggioReqType'. 
+				Contiene le informazioni relative allo stato di un messaggio trasmesso in precedenza (vedi 'statoMessaggioRespType').
+			</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="statoMessaggioRespType">
+		<xs:sequence>
+			<xs:element name="mittente" type="sem:soggettoReteSuapType">
+				<xs:annotation>
+					<xs:documentation>
+						Soggetto mittente del messaggio (obbligatorio, vedi 'soggettoReteSuapType').
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="idMessaggio" type="sem:stringaNonVuota">
+				<xs:annotation>
+					<xs:documentation>
+						Identificativo univoco del messaggio di cui si erano richieste informazioni sullo stato della trasmissione (obbligatorio).
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="stato" type="sem:esitoStatoMessaggioType">
+				<xs:annotation>
+					<xs:documentation>
+						Stringa rappresentativa dello stato dell'elaborazione del messaggio di stimolo inviato dal mittente (obbligatorio).
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="msgErrore" use="optional" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>
+					Eventuale messaggio di errore dal SEM
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute> 	
+	</xs:complexType>
+	
+	<xs:element name="statoPraticaReq" type="sem:statoPraticaReqType">
+		<xs:annotation>
+			<xs:documentation>
+				Servizio offerto dal componente di dominio SEM per permettere al mittente di conoscere la fase 
+				in cui si trova una pratica alla quale il mittente ha accesso (vedi 'statoPraticaReqType').
+			</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="statoPraticaReqType">
+		<xs:sequence>
+			<xs:element name="mittente" type="sem:soggettoReteSuapType">
+				<xs:annotation>
+					<xs:documentation>
+						Soggetto mittente (obbligatorio, vedi 'soggettoReteSuapType').
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="idPratica" type="sem:idPraticaSUAP">
+				<xs:annotation>
+					<xs:documentation>Id della pratica di cui si vuole conoscere lo fase (obbligatorio, vedi 'idPraticaSuap').</xs:documentation>
+				</xs:annotation>
+			</xs:element> 
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:element name="statoPraticaResp" type="sem:statoPraticaRespType">
+		<xs:annotation>
+			<xs:documentation>
+				Messaggio di risposta inviato dal SEM a seguito di un messaggio di tipo 'statoPraticaReqType'. 
+				Contiene le informazioni relative alla pratica di cui si vuole conoscere la fase di lavorazione 
+				(vedi 'statoPraticaRespType').
+			</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="statoPraticaRespType">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="statoPratica" type="sem:statoPraticaType">
+					<xs:annotation>
+						<xs:documentation>stato della pratica richiesta</xs:documentation>
+					</xs:annotation>
+				</xs:element> 
+				<xs:element name="errore" type="sem:erroreStatoPraticaType">
+					<xs:annotation>
+						<xs:documentation>errore riscontrato nell'elaborazione della richiesta</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+		</xs:sequence>
+		<xs:attribute name="msgErrore" use="optional" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>
+					Eventuale messaggio di errore dal SEM
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute> 	
+	</xs:complexType>
+
+	<xs:complexType name="statoPraticaType">
+		<xs:sequence>
+			<xs:element name="idPratica" type="sem:idPraticaSUAP">
+			<xs:annotation>
+					<xs:documentation>
+						Id della pratica di cui si vuole conoscere lo fase (obbligatorio, vedi 'idPraticaSuap').
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element> 
+			<xs:element name="tipoProcedimento" type="sem:stringaNonVuota">
+				<xs:annotation>
+					<xs:documentation>Tipologia di procedimento della pratica in oggetto.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="fase" type="sem:stringaNonVuota">
+				<xs:annotation>
+					<xs:documentation>Fase in cui si trova la pratica; ne rappresenta lo stato di lavorazione (obbligatorio).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="giorni" type="xs:duration">
+				<xs:annotation>
+					<xs:documentation>Giorni mancanti alla fine del procedimento (obbligatorio).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:element name="inviaAllegatoReq" type="sem:inviaAllegatoReqType">
+		<xs:annotation>
+			<xs:documentation>
+				Consente ai soggetti della Rete dei Suap di integrare un messaggio (stimolo) inviato in precedenza ma senza gli allegati 
+				previsti (vedi 'inviaAllegatoReqType').
+			</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="inviaAllegatoReqType">
+		<xs:sequence>
+			<xs:element name="mittente" type="sem:soggettoReteSuapType">
+				<xs:annotation>
+					<xs:documentation>
+						Soggetto mittente del messaggio da integrare (obbligatorio, vedi 'soggettoReteSuapType').
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="idMessaggio" type="sem:stringaNonVuota">
+				<xs:annotation>
+					<xs:documentation>
+						Identificativo univoco del messaggio di cui si vuole integrare un allegato (obbligatorio).
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="contentID" type="sem:stringaNonVuota">		
+				<xs:annotation>
+					<xs:documentation>Identificativo del contenuto cosi' come indicato nel messaggio di stimolo inviato (obbligatorio)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="cid" type="wsi:swaRef">		
+				<xs:annotation>
+					<xs:documentation>Identificativo del contenuto corrente (obbligatorio)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:element name="inviaAllegatoResp" type="sem:inviaAllegatoRespType">
+		<xs:annotation>
+			<xs:documentation>
+				Messaggio di risposta inviato dal SEM a seguito di un messaggio di tipo 'inviaAllegatoReqType'.
+				Contiene obbligatoriamente un esito (vedi 'inviaAllegatoRespType').
+			</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="inviaAllegatoRespType">
+		<xs:sequence>
+			<xs:element name="esito" type="sem:esitoInviaAllegatoType">
+				<xs:annotation>
+					<xs:documentation>Esito invio allegato</xs:documentation>
+				</xs:annotation>
+			</xs:element>	 
+		</xs:sequence>
+		<xs:attribute name="msgErrore" use="optional" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>
+					Eventuale messaggio di errore dal SEM
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute> 	
+	</xs:complexType>
+	
+	<xs:element name="richiediAllegatoReq" type="sem:richiediAllegatoReqType">
+		<xs:annotation>
+			<xs:documentation>
+				Consente ai soggetti della Rete dei Suap di richiedere al componente SEM gli allegati relativi ad un 
+				messaggio (stimolo) ricevuto in precedenza ma senza degli allegati previsti (vedi 'richiediAllegatoReqType').
+			</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="richiediAllegatoReqType">
+		<xs:sequence>
+			<xs:element name="mittente" type="sem:soggettoReteSuapType">
+				<xs:annotation>
+					<xs:documentation>
+						Soggetto mittente del messaggio da integrare (obbligatorio, vedi 'soggettoReteSuapType').
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="idMessaggio" type="sem:stringaNonVuota">
+				<xs:annotation>
+					<xs:documentation>
+						Identificativo univoco del messaggio di cui si vuole richiedere un allegato (obbligatorio).
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="contentID" type="sem:stringaNonVuota">
+				<xs:annotation>
+					<xs:documentation>
+						Riferimento univoco al file da richiedere per uno specifico messaggio (obbligatorio).
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>	
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:element name="richiediAllegatoResp" type="sem:richiediAllegatoRespType">
+		<xs:annotation>
+			<xs:documentation>
+				Messaggio di risposta inviato dal SEM a seguito di un messaggio di tipo 'richiediAllegatoReq'.
+			</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="richiediAllegatoRespType">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="contentID" type="wsi:swaRef" >		
+					<xs:annotation>
+						<xs:documentation>Identificativo del contenuto cosi' come indicato nel messaggio ricevuto</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="errore" type="sem:erroreAllegatoRichiestoType">
+					<xs:annotation>
+						<xs:documentation>Eventuale errore riscontrato nell'elaborazione della richiesta</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+		</xs:sequence>
+		<xs:attribute name="msgErrore" use="optional" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>
+					Eventuale messaggio di errore dal SEM
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute> 	
+	</xs:complexType>
+
+	<xs:element name="aggiornaStatoPraticaReq" type="sem:aggiornaStatoPraticaReqType">
+		<xs:annotation>
+			<xs:documentation>
+				Permette al Suap di informare la componente di dominio SEM della fase in cui si trova la pratica e 
+				dei giorni mancanti alla fine del procedimento (vedi 'aggiornaStatoPraticaReqType').
+			</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="aggiornaStatoPraticaReqType">
+		<xs:sequence>
+			<xs:element name="mittente" type="sem:soggettoReteSuapType">
+				<xs:annotation>
+					<xs:documentation>
+						Soggetto mittente dell'aggiornamento dello stato della pratica (obbligatorio, vedi 'soggettoReteSuapType').
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="idPratica" type="sem:idPraticaSUAP">
+				<xs:annotation>
+					<xs:documentation>Id della pratica (obbligatorio, vedi 'idPraticaSuap').</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="fase" type="sem:stringaNonVuota">
+				<xs:annotation>
+					<xs:documentation>Fase in cui si trova la pratica; ne rappresenta lo stato di lavorazione (obbligatorio).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="giorni" type="xs:duration">
+				<xs:annotation>
+					<xs:documentation>Giorni mancanti alla fine del procedimento (obbligatorio).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:element name="aggiornaStatoPraticaResp" type="sem:aggiornaStatoPraticaRespType">
+		<xs:annotation>
+			<xs:documentation>
+				Messaggio di risposta, inviato dal SEM a seguito di un messaggio di tipo 'aggiornaStatoPraticaReq' (vedi 'aggiornaStatoPraticaRespType').
+			</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="aggiornaStatoPraticaRespType">
+		<xs:sequence>
+			<xs:element name="esito" type="sem:esitoAggiornamentoStatoPraticaType">
+				<xs:annotation>
+					<xs:documentation>Esito aggiornamento stato pratica </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="msgErrore" use="optional" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>
+					Eventuale messaggio di errore dal SEM
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute> 	
+	</xs:complexType>
+
+	<xs:element name="segnalazioneCompletezzaReq" type="sem:segnalazioneCompletezzaReqType">
+		<xs:annotation>
+			<xs:documentation>
+				Messaggio del SEM contenente la conferma che tutti gli allegati relativi allo stimolo idMessaggio sono stati correttamente acquisiti.
+			</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="segnalazioneCompletezzaReqType">
+			<xs:attribute name="idMessaggio" use="required" type="sem:stringaNonVuota">
+				<xs:annotation>
+					<xs:documentation>
+						Identificativo del messaggio ricevuto (obbligatorio).
+					</xs:documentation>
+				</xs:annotation>
+			</xs:attribute> 	
+ 	</xs:complexType>
+
+	
+<!--
+
+	Definizione complexType utilizzati nella definizione degli elements figli di stimoloType
+
+-->
+
+	<xs:complexType name="arrayEndoTipo1Type">
+		<xs:annotation>
+			<xs:documentation>
+				Lista degli endoprocedimenti identificati dal loro codice (vedi 'codiceEndoprocedimento').
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element name="idEndoprocedimento" type="sem:codiceEndoprocedimento">
+				<xs:annotation>
+					<xs:documentation>Identificativo dell'endoprocedimento (obbligatorio)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="arrayAttivitaType">
+		<xs:annotation>
+			<xs:documentation>
+				Lista delle attivita' identificate dal loro codice (vedi 'codiceAttivita'').
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element name="idAttivitaBDR" type="sem:codiceAttivita">
+					<xs:annotation>
+						<xs:documentation>
+							Codice dell'attivita' (vedi 'codiceAttivita'').
+						</xs:documentation>
+					</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType abstract="true" name="abstractAllegatoType">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="hashedFile" type="sem:hashedFileType">
+					<xs:annotation>
+						<xs:documentation>
+							identificativo e Hash di verifica di un contenuto non allegato.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="contentID" type="wsi:swaRef" >		
+					<xs:annotation>
+						<xs:documentation>Identificativo del contenuto allegato al messaggio o chiave per il suo recupero/invio successivo all'invio/ricezione del messaggio(obbligatorio)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+			<xs:element name="contentType" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Tipo del file (obbligatorio).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="fileSize" type="xs:long">
+				<xs:annotation>
+					<xs:documentation>Dimensione del file, espressa in kilobyte (opzionale).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="allegatoType">
+		<xs:complexContent>
+			<xs:extension base="sem:abstractAllegatoType">
+				<xs:sequence>
+					<xs:element name="nomefileOriginale" type="sem:fileName">
+						<xs:annotation>
+							<xs:documentation>
+								Nome del file originale, cosi' come indicato all'interno del file system (obbligatorio, vedi 'fileName').
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="allegatoGenericoType">
+		<xs:annotation>
+			<xs:documentation>
+				Allegato proveniente dal Suap. Estende 'allegatoDaSuapType' aggiungendo 'destinatari'.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="sem:allegatoDaSuapSDType">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="unbounded" name="destinatari" type="attori:attoreReteSuap">
+						<xs:annotation>
+							<xs:documentation>Eventuali destinatari dell'allegato.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="allegatoDaSuapSDType">
+		<xs:annotation>
+			<xs:documentation>
+				Allegato proveniente dal Suap. Estende 'allegatoType' aggiungendo 'note'.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="sem:allegatoType">
+				<xs:sequence>
+					<xs:element name="note" type="xs:string" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation> Stringa contenente eventuali note aggiuntive (opzionale).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="allegatoDaSuapType">
+		<xs:annotation>
+			<xs:documentation>
+				Allegato proveniente dal Suap. Estende 'allegatoDaSuapSDType' aggiungendo 'destinatari'.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="sem:allegatoDaSuapSDType">
+				<xs:sequence>
+					<xs:element maxOccurs="unbounded" name="destinatari" type="attori:attoreReteSuap">
+						<xs:annotation>
+							<xs:documentation>Uno o piu' destinatari dell'allegato (obbligatorio, vedi 'attoreReteSuap').</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="allegatoInModuloType">
+		<xs:complexContent>	
+			<xs:extension base="sem:abstractAllegatoType">
+				<xs:sequence>
+					<xs:element name="nomefileOriginale" type="sem:fileName">
+						<xs:annotation>
+							<xs:documentation>
+								Nome del file originale, cosi' come caricato dal Cittadino (obbligatorio, vedi 'fileName').
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0" name="codice" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Codifica attribuita all'allegato attraverso l'idSemantico con il suffisso "-CODICE" (opzionale).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="idSemantico" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Identificativo del generico dato richiesto dalla PA, imposto dalla modulistica (obbligatorio).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="allegatoXMLType">
+		<xs:annotation>
+			<xs:documentation>
+				Un allegato xml 'restringe' il tipo 'allegatoType' imponendo il vincolo che il nome del file abbia estensione xml
+				(vedi xmlFile).
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="sem:abstractAllegatoType">
+				<xs:sequence>
+					<xs:element name="nomefileOriginale" type="sem:xmlFile"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="allegatoPDFType">
+		<xs:annotation>
+			<xs:documentation>
+				Un allegato pdf 'restringe' il tipo 'allegatoType' imponendo il vincolo che il nome del file abbia estensione pdf
+				(vedi 'pdfFile').
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="sem:abstractAllegatoType">
+				<xs:sequence>
+					<xs:element name="nomefileOriginale" type="sem:pdfFile"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:complexType name="moduloRichiestoType">
+		<xs:annotation>
+			<xs:documentation>
+				Un modulo richiesto contiene l'ente richiedente (vedi 'attoreReteSuap'), 
+				un elemento estratto dalla BDR (vedi 'elementoBDRType') ed eventuali allegati aggiuntivi
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="allegato" type="sem:allegatoRichiestoType"/>
+		</xs:sequence>
+		<xs:attribute name="identificativoModulo" type="sem:elementoBDRType" use="required"/>
+		<xs:attribute name="enteRichiedente" type="attori:attoreReteSuap" use="required"/>
+	</xs:complexType>
+	
+	<xs:complexType name="allegatoRichiestoType">
+		<xs:annotation>
+			<xs:documentation>
+				Un allegato richiesto e' costituito da un allegato (vedi 'allegatoType') o da un link che consenta lo scarico dell'allegato 
+				per il quale viene indicato se deve essere o meno firmato.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="link" type="sem:stringaNonVuota"/>
+			<xs:element name="attach" type="sem:allegatoType"/>
+		</xs:choice>
+		<xs:attribute name="firmato" type="xs:boolean" use="required"/>
+	</xs:complexType>
+				
+	<xs:complexType name="moduloCompilatoSDType">
+		<xs:annotation>
+			<xs:documentation>
+				Un modulo 'compilato' senza destinatari contiene:
+				* identificativoModulo - stringa che identifica il modulo all'interno della modulistica BDR (vedi 
+				'elementoBDRType')
+				* modulo-engine - struttura del modulo proposto al cittadino, in forma di allegato xml (opzionale)
+				* modello-MDA - insieme degli identificativi semantici presenti nel modulo con i rispettivi 
+					valori inseriti dall'utente, in formato xml (obbligatorio, vedi 'allegatoXMLType')
+				* modello-PDF - versione in formato pdf di 'modello-MDA' (obbligatorio, vedi 'allegatoPDFType')
+				* allegato - file che il modulo richiede all'utente di allegare (opzionale, vedi 'allegatoInModuloType')
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" name="modulo-engine" type="sem:allegatoXMLType"/>
+			<xs:element name="modello-MDA" type="sem:allegatoXMLType"/>
+			<xs:element name="modello-PDF" type="sem:allegatoPDFType"/>
+			<xs:element maxOccurs="unbounded" minOccurs="0" name="allegato" type="sem:allegatoInModuloType"/>
+		</xs:sequence>
+		<xs:attribute name="identificativoModulo" type="sem:elementoBDRType" use="required"/>
+	</xs:complexType>
+
+	<xs:complexType name="moduloCompilatoType">
+		<xs:annotation>
+			<xs:documentation>
+				Un modulo 'compilato' estende il modulo compilato senza destinatari (vedi 'moduloCompilatoSDType') e vi aggiunge
+				* destinatari - uno o piu' enti coinvolti (vedi 'attoreReteSuap')
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="sem:moduloCompilatoSDType">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="destinatari">
+						<xs:complexType>
+							<xs:sequence maxOccurs="unbounded">
+								<xs:element name="ente" type="attori:attoreReteSuap"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="moduloDestinatarioType">
+		<xs:annotation>
+			<xs:documentation>
+				Struttura che riporta l'identificativo del modulo e a quali destinatari debba essere inviato.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="destinatari">
+				<xs:complexType>
+					<xs:sequence maxOccurs="unbounded">
+						<xs:element name="ente" type="attori:attoreReteSuap"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="identificativoModulo" type="sem:elementoBDRType" use="required"/>
+	</xs:complexType>
+
+	<xs:complexType name="soggettoReteSuapType">
+		<xs:annotation>
+			<xs:documentation>
+				Un soggetto all'interno della rete SUAP e' caratterizzato da una tipologia di riferimento (vedi 'attoreReteSuap')
+				e da un codice (vedi 'codiceEnte'), entrambi obbligatori.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element maxOccurs="1" minOccurs="1" name="tipologia" type="attori:attoreReteSuap"/>
+			<xs:element maxOccurs="1" minOccurs="1" name="ente" type="sem:codiceEnte"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="hashedFileType">
+		<xs:sequence>
+			<xs:element name="contentID" type="sem:stringaNonVuota">
+				<xs:annotation>
+					<xs:documentation>
+						Riferimento univoco al file da recuperare tramite l'operazione richiediAllegato (obbligatorio).
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>	
+			<xs:element name="hash" type="sem:hashType">
+				<xs:annotation>
+					<xs:documentation>
+						Hash dell'allegato non trasmesso. Deve essere presente se sostituisce un contenuto.
+						Nel caso sia presente consente la verifica di integrita' con quanto recuperato tramite l'operazione richiediAllegato.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>	
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="comunicazioneFormaleType">
+		<xs:sequence>
+			<xs:element minOccurs="0" name="messaggio" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>
+						Puo' essere utilizzato per veicolare un contenuto testuale di interesse per il destinatario (opzionale).
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="comunicazionePDF" type="sem:allegatoPDFType">
+				<xs:annotation>
+					<xs:documentation>
+						E' il documento in formato pdf o pdf.p7m contenente la comunicazione formale (obbligatorio).
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element maxOccurs="unbounded" minOccurs="0" name="comunicazioniSecondarie" type="sem:allegatoType">
+				<xs:annotation>
+					<xs:documentation>
+						Puo' essere utilizzato per inoltrare altri allegati di interesse per il destinatario (opzionale).
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="comunicazioneType">
+		<xs:sequence>
+			<xs:element name="destinatario" type="attori:attoreReteSuap">
+				<xs:annotation>
+					<xs:documentation>
+						Destinatario della comunicazione (obbligatorio).
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="oggetto" type="sem:oggettoType">
+				<xs:annotation>
+					<xs:documentation>
+						Oggetto della comunicazione (obbligatorio), limitato a 500 caratteri.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="corpo" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						Testo della comunicazione, facoltativo.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element maxOccurs="unbounded" name="allegato" type="sem:allegatoType">
+				<xs:annotation>
+					<xs:documentation>
+						File allegato (obbligatorio, vedi 'allegatoType').
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="attesaRisposta">
+				<xs:annotation>
+					<xs:documentation>
+						Se presente, il mittente del messaggio richiede risposta dal destinatario (opzionale).
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="giorni" type="xs:duration">
+						<xs:annotation>
+							<xs:documentation>
+								Indica al destinatario entro quanti giorni il mittente attende risposta (opzionale di default).
+							</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="pubblicaRicevutaType">
+		<xs:sequence>
+			<xs:element name="ricevuta" type="sem:allegatoPDFType">
+				<xs:annotation>
+					<xs:documentation>
+						File allegato (obbligatorio, vedi 'allegatoType').
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="erroreDestinatarioType">
+		<xs:annotation>
+			<xs:documentation>
+				Note relative alla causa dell'errore
+			</xs:documentation>		
+		</xs:annotation>
+		<xs:sequence>			
+			<xs:element name="note" type="xs:string"/>
+		</xs:sequence>
+		<xs:attribute name="codiceErrore" type="sem:erroreDestinatario" use="required"/>
+	</xs:complexType>
+	
+
+
+<!--
+
+	Definizione simple Types
+
+-->
+
+	<xs:simpleType name="oggettoType">
+		<xs:annotation>
+			<xs:documentation>
+				Oggetto della comunicazione, limitato a 500 caratteri
+			</xs:documentation>		
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="500">
+			</xs:maxLength>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="fileName">
+		<xs:annotation>
+			<xs:documentation>
+				Il nome del file puo' contenere lettere e numeri nonche' i caratteri '-', '_', '.'
+				Estensioni ammesse: pdf; pdf.p7m; xml; dwf; dwf.p7m; svg; svg.p7m; jpg; jpg.p7m
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[a-zA-Z0-9\-_.]+\.(([Pp][Dd][Ff]\.[Pp]7[Mm])|([Pp][Dd][Ff])|([Xx][Mm][Ll])|([Dd][Ww][Ff]\.[Pp]7[Mm])|([Dd][Ww][Ff])|([Ss][Vv][Gg]\.[Pp]7[Mm])|([Ss][Vv][Gg])|([Jj][Pp][Gg]\.[Pp]7[Mm])|([Jj][Pp][Gg]))"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="pdfFile">
+		<xs:annotation>
+			<xs:documentation>
+				Nome di un file con estensione pdf o p7m di tipo alfanumerico che puo' includere anche i caratteri '-', '_', '.'
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="sem:fileName">
+			<xs:pattern value="[a-zA-Z0-9\-_.]+\.(([Pp][Dd][Ff]\.[Pp]7[Mm])|([Pp][Dd][Ff]))"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="xmlFile">
+		 <xs:annotation>
+			<xs:documentation>
+				Nome di un file con estensione xml di tipo alfanumerico che puo' includere anche i caratteri '-', '_', '.'
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="sem:fileName">
+			<xs:pattern value="[a-zA-Z0-9\-_.]+\.[Xx][Mm][Ll]"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="stringaNonVuota">
+	 	<xs:annotation>
+			<xs:documentation>
+				Stringa contenente almeno un carattere, quindi non vuota.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="tipoProcedimentoType">
+	 	<xs:annotation>
+			<xs:documentation>
+				Stringa contenente le tipologie di procedimento gestite
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="automatico"/>
+			<xs:enumeration value="ordinario"/>
+			<xs:enumeration value="r-comunicazione"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+ 	<xs:simpleType name="erroreDestinatario">
+		<xs:annotation>
+			<xs:documentation>
+				Altre tipologie di errore vengono rilevate in fase di invio
+			</xs:documentation>		
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="INCOERENTE"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="idPraticaSUAP">
+		<xs:annotation>
+			<xs:documentation>
+				L'identificativo della pratica e' strutturato come segue:
+				[codice amministrazione]_[ggmmaaaa]_[hh.mm]_[codice fiscale]_[id FACCT][progressivo giornaliero]
+				Esempio: 13.13.1.M.999.999999_21122011_11.55_AAADDD11T30D098H_0341356
+			</xs:documentation>	
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9]{2}\.[0-9]{2}\.[A-Z0-9]{1}\.[A-Z0-9]{1}\.[0-9]{3}\.[0-9]{6}_(([0-2]\d|[3][0-1])([0]\d|[1][0-2])[2][0]\d{2})_([0-1]\d|[2][0-3])\.[0-5]\d_[A-Z]{6}[0-9LMNPQRSTUV]{2}[ABCDEHLMPRST][0-9LMNPQRSTUV]{2}[A-Z][0-9LMNPQRSTUV]{3}[A-Z]_[0-9]{1}[0-9]{6}"/>
+			<xs:pattern value=".*"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="codiceEnte">
+		<xs:annotation>
+			<xs:documentation>Come da RFC 53 al 24/07/2014 - Esempio: 13.13.1.M.000.100005</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9]{2}\.[0-9]{2}\.[A-Z0-9]{1}\.[A-Z0-9]{1}\.[0-9]{3}\.[0-9]{6}"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="elementoBDRType">
+		<xs:annotation>
+			<xs:documentation>elemento della BDR: codice attivita', endoprocedimento, standard2 etc</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="sem:stringaNonVuota"/>
+	</xs:simpleType>
+
+	<xs:simpleType name="codiceAttivita">
+		<xs:annotation>
+			<xs:documentation>
+				E' il codice rappresentativo dell'attivita' oggetto del procedimento.
+				Esempio: 47.101R 
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="sem:elementoBDRType"/>
+	</xs:simpleType>
+
+	<xs:simpleType name="codiceEndoprocedimento">
+		<xs:annotation>
+			<xs:documentation>
+				E' il codice rappresentativo dell'endoprocedimento come elemento BDR.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="sem:elementoBDRType"/>
+	</xs:simpleType>
+
+	<xs:simpleType name="esitoResponseType">
+		<xs:annotation>
+			<xs:documentation>
+				Tipo rappresentativo degli errori che possono verificarsi allorche' il SEM processa uno stimolo:
+					* 'OK' - stimolo acquisito correttamente senza riscontrare errore di forma
+					* 'INCOERENTE' - stimolo che non e' coerente con lo stato della pratica
+					* 'INCOMPLETO' - stimolo che non ha tutti gli allegati previsti
+					* 'DUPLICATO' - stimolo che e' duplicato di uno precedente
+					* 'PRATICA_INESISTENTE' - la pratica alla quale si fa riferimento nello stimolo non esiste 
+					* 'MSG_NON_VALIDO' - lo stimolo inviato non e' valido secondo le specifiche dello schema 
+					* 'DEST_NON_RAGGIUNGIBILE' - lo stimolo inviato indica un destinatario non raggiungibile da SEM
+					* 'KO' - problemi durante l'elaborazione del messaggio
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="OK"/>
+			<xs:enumeration value="INCOERENTE"/>
+			<xs:enumeration value="INCOMPLETO"/>
+			<xs:enumeration value="DUPLICATO"/>
+			<xs:enumeration value="PRATICA_INESISTENTE"/>
+			<xs:enumeration value="MSG_NON_VALIDO"/>
+			<xs:enumeration value="DEST_NON_RAGGIUNGIBILE"/>
+			<xs:enumeration value="KO"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="esitoAggiornamentoStatoPraticaType">
+		<xs:annotation>
+			<xs:documentation>
+				Tipo rappresentativo degli esiti allorche' il SEM processa uno aggiornamento stato pratica:
+					* 'OK' - aggiornamento acquisito correttamente senza riscontrare errore di forma
+					* 'INCOERENTE' - nell'aggiornamento la pratica identificata dallo specifico id pratica non e' di competenza del mittente indicato
+					* 'MITTENTE_INESISTENTE' - Il mittente che va ad aggiornare lo stato della pratica non e' tra quelli conosciuti dal SEM 
+					* 'PRATICA_INESISTENTE' - la pratica alla quale si fa riferimento nell'aggiornamento non esiste 
+					* 'KO' - problemi durante l'elaborazione del messaggio
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="OK"/>
+			<xs:enumeration value="INCOERENTE"/>
+			<xs:enumeration value="MITTENTE_INESISTENTE"/>
+			<xs:enumeration value="PRATICA_INESISTENTE"/>
+			<xs:enumeration value="KO"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="esitoRiceviConfermaRicezioneType">
+		<xs:annotation>
+			<xs:documentation>
+				Tipo rappresentativo degli esiti allorche' il Destinatario acquisisce una conferma ricezione :
+					* 'OK' - conferma ricezione acquisita correttamente senza riscontrare errore di forma
+					* 'KO' - problemi durante l'elaborazione del messaggio
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="OK"/>
+			<xs:enumeration value="KO"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="esitoConfermaRicezioneType">
+		<xs:annotation>
+			<xs:documentation>
+				Tipo rappresentativo degli esiti allorche' il SEM processa una conferma ricezione:
+					* 'OK' - conferma ricezione acquisita correttamente senza riscontrare errore di forma
+					* 'INCOERENTE' - nella conferma ricezione il messaggio identificato dallo specifico (idMessaggio) non e' stato inviato al mittente indicato
+					* 'MITTENTE_INESISTENTE' - Il mittente che va a confermare il messaggio ricevuto non e' tra quelli conosciuti dal SEM 
+					* 'IDMSG_INESISTENTE' - l'identificativo indicato non risulta essere tra quelli conosciuti dal SEM 
+					* 'KO' - problemi durante l'elaborazione del messaggio
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="OK"/>
+			<xs:enumeration value="INCOERENTE"/>
+			<xs:enumeration value="MITTENTE_INESISTENTE"/>
+			<xs:enumeration value="IDMSG_INESISTENTE"/>
+			<xs:enumeration value="KO"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="esitoInviaAllegatoType">
+		<xs:annotation>
+			<xs:documentation>
+				Tipo rappresentativo degli esiti allorche' il SEM processa una messaggio di invio allegato:
+					* 'OK' - invio allegato acquisito correttamente senza riscontrare errore di forma
+					* 'MITTENTE_INESISTENTE' - Il mittente che invia l'allegato a integrazione del messaggio inviato non e' tra quelli conosciuti dal SEM 
+					* 'IDMSG_INESISTENTE' - l'identificativo indicato non risulta essere tra quelli conosciuti dal SEM 
+					* 'INCOERENTE' - il messaggio identificato dallo specifico idMessaggio non e' stato inviato dal mittente indicato
+					* 'CONTENT_ID_INCOERENTE' - Il 'content id' indicato non risulta essere presente nel messaggio caratterizzato dall'idMessaggio oppure il contenuto specifico risulta gia' acquisito da SEM 
+					* 'HASH_ERRATO' - L'hash del file calcolato non corrisponde al valore dell'omonimo tag presente nel messaggio 
+					* 'KO' - problemi durante l'elaborazione del messaggio
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="OK"/>
+			<xs:enumeration value="MITTENTE_INESISTENTE"/>
+			<xs:enumeration value="IDMSG_INESISTENTE"/>
+			<xs:enumeration value="INCOERENTE"/>
+			<xs:enumeration value="CONTENT_ID_INCOERENTE"/>
+			<xs:enumeration value="HASH_ERRATO"/>
+			<xs:enumeration value="KO"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="erroreAllegatoRichiestoType">
+		<xs:annotation>
+			<xs:documentation>
+				Tipo rappresentativo degli errori che possono verificarsi allorche' il SEM processa uno messaggio di tipo	'richiediAllegatoReq'
+					* 'MITTENTE_INESISTENTE' - Il mittente che va a richiedere l'allegato del messaggio ricevuto non e' tra quelli conosciuti dal SEM 
+					* 'IDMSG_INESISTENTE' - l'identificativo indicato non risulta essere tra quelli conosciuti dal SEM 
+					* 'CONTENT_ID_INESISTENTE' - Il 'content id' indicato non risulta essere presente nel messaggio caratterizzato dall'idMessaggio indicato 
+					* 'INCOERENTE' - il messaggio identificato dallo specifico idMessaggio non e' stato ricevuto dal mittente indicato
+					* 'KO' - problemi durante l'elaborazione del messaggio
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="MITTENTE_INESISTENTE"/>
+			<xs:enumeration value="IDMSG_INESISTENTE"/>
+			<xs:enumeration value="CONTENT_ID_INESISTENTE"/>
+			<xs:enumeration value="INCOERENTE"/>
+			<xs:enumeration value="KO"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="esitoStatoMessaggioType">
+		<xs:annotation>
+			<xs:documentation>
+				Tipo rappresentativo dell'esito in caso di richiesta dello stato di un messaggio di stimolo
+					* 'MITTENTE_INESISTENTE' - Il mittente del messaggio non e' tra quelli conosciuti dal SEM 
+					* 'IDMSG_INESISTENTE' - l'identificativo indicato non risulta essere tra quelli conosciuti dal SEM 
+					* 'INCOERENTE' - il messaggio identificato dallo specifico idMessaggio non e' stato inviato dal mittente indicato
+					* 'INVIATO_CON_ERRORI' - il messaggio ricevuto dal SEM presentava errori e non e' stato elaborato
+					* 'RICEVUTO_SEM' - Il messaggio e' stato ricevuto dal SEM ma non e' stato ancora inoltrato al destinatario
+					* 'INOLTRATO_DESTINATARIO' - Il messaggio e' stato ricevuto dal SEM che ha provveduto ad inoltrarlo al destinatario
+					* 'RICEVUTO_DESTINATARIO' - Il messaggio e' stato ricevuto dal destinatario (il SEM ha ricevuto la conferma di ricezione)
+					* 'INOLTRATA_RICEVUTA' - Il messaggio e' stato ricevuto dal destinatario ed il SEM ha inviato la conferma di ricezione al mittente
+					* 'KO' - problemi durante l'elaborazione del messaggio
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="MITTENTE_INESISTENTE"/>
+			<xs:enumeration value="IDMSG_INESISTENTE"/>
+			<xs:enumeration value="INCOERENTE"/>
+			<xs:enumeration value="INVIATO_CON_ERRORI"/>
+			<xs:enumeration value="RICEVUTO_SEM"/>
+			<xs:enumeration value="INOLTRATO_DESTINATARIO"/>
+			<xs:enumeration value="RICEVUTO_DESTINATARIO"/>
+			<xs:enumeration value="INOLTRATA_RICEVUTA"/>
+			<xs:enumeration value="KO"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="erroreStatoPraticaType">
+		<xs:annotation>
+			<xs:documentation>
+				Tipo rappresentativo degli errori che possono verificarsi allorche' il SEM riceva una richiesta di tipo	'statoPraticaReqType'
+					* 'MITTENTE_INESISTENTE' - Il mittente del messaggio non e' tra quelli conosciuti dal SEM 
+					* 'PRATICA_INESISTENTE' - l'identificativo indicato non risulta essere una pratica conosciuta da SEM 
+					* 'KO' - problemi durante l'elaborazione del messaggio
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="MITTENTE_INESISTENTE"/>
+			<xs:enumeration value="PRATICA_INESISTENTE"/>
+			<xs:enumeration value="KO"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="hashType">
+		<xs:annotation>
+			<xs:documentation>Hash del file generato tramite algoritmo SHA1 160-bit (20-byte) - hash value.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:annotation>
+				<xs:documentation>Stringa in esadecimale, lunga 40 caratteri.</xs:documentation>
+			</xs:annotation>
+			<xs:pattern value="[0-9A-Fa-f]{40}"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+</xs:schema>

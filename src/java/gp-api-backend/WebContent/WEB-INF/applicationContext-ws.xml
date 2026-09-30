@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans default-lazy-init="false"
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd 
+	http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
+	http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd">
+
+	<context:property-placeholder location="classpath:deploy.properties" />
+
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+	
+	
+	<!-- CLIENTS -->
+
+
+
+	<bean id="stcWsClient" class="it.gruppoinit.pal.gp.core.ws.client.StcWsClient" />
+	
+	<bean id="parixGateWsClient" class="it.gruppoinit.pal.gp.core.ws.client.ParixGateWsClient" />
+	
+	<bean id="parixGateV2WsClient" class="it.gruppoinit.pal.gp.core.ws.client.ParixGateV2WsClient" />
+	
+	<bean id="adrierWsClient" class="it.gruppoinit.pal.gp.core.ws.client.AdrierWsClient" />
+	
+	<bean id="aaepcsiClient" class="it.gruppoinit.pal.gp.core.ws.client.AAEPCSIClient" />
+	
+	
+	<bean id="securityWSClient"
+		class="it.gruppoinit.pal.gp.core.ws.client.SecurityWSClient">
+		<property name="wsUrl" value="${ws.token.url}" />
+		<property name="username" value="${ws.token.user}" />
+		<property name="password" value="${ws.token.pwd}" />
+		<property name="timeout" value="15000" />
+	</bean>
+	<bean id="anagrafe2WsClient" class="it.gruppoinit.pal.gp.core.ws.client.Anagrafe2WsClient">
+		<property name="timeout" value="45000" />
+	</bean>
+	
+	<bean id="rfc186WsClient" class="it.gruppoinit.sigepro.suapengine.services.XengineWebServiceClient">
+	</bean>
+	
+	
+	<bean id="LDPWsClient" class="it.gruppoinit.pal.gp.core.ws.client.LDPWsClient">
+	</bean>
+	
+
+
+	<!-- SERVERS -->
+	
+	<jaxrs:server id="restStatusService" address="/rest">
+		<jaxrs:properties>
+	         <entry key="org.apache.cxf.endpoint.private" value="true"/>
+	     </jaxrs:properties>
+		<!-- USATO SOLO PER HEALTH CHECK -->
+			<jaxrs:serviceBeans>
+				<ref bean="statusRestService" />
+			</jaxrs:serviceBeans>
+			<jaxrs:providers>
+				<bean class="org.apache.cxf.jaxrs.provider.JSONProvider">
+					<property name="dropRootElement" value="true" />
+					<property name="supportUnwrapped" value="true" />
+					<property name="ignoreNamespaces" value="true" />
+					<property name="dropCollectionWrapperElement" value="true" />
+				</bean>
+			</jaxrs:providers>
+	</jaxrs:server>
+	
+	<bean id="statusRestService" class="it.gruppoinit.pal.gp.backoffice.web.rest.StatusRestService" />
+	
+	 
+	<jaxrs:server id="restService" address="/api-rest/">
+		 <jaxrs:properties>
+	         <!-- 200K-->
+	         <entry key="attachment-memory-threshold" value="404800"/>
+	         <entry key="org.apache.cxf.endpoint.private" value="true"/>
+	     </jaxrs:properties>
+		<jaxrs:serviceBeans>
+			<ref bean="praticheRestService" />
+			<ref bean="genericiRestService" />
+			<ref bean="configurazioniRestService" />
+		</jaxrs:serviceBeans>
+		<jaxrs:inInterceptors>
+			 <ref bean="interceptorInitializer"/>
+		</jaxrs:inInterceptors>
+		<jaxrs:providers>
+			<bean class="org.apache.cxf.jaxrs.provider.JSONProvider">
+				<property name="dropRootElement" value="true" />
+				<property name="supportUnwrapped" value="true" />
+				<property name="ignoreNamespaces" value="true" />
+				<property name="dropCollectionWrapperElement" value="true" />
+			</bean>
+		</jaxrs:providers>
+	</jaxrs:server>
+	<bean id="interceptorInitializer" class="it.gruppoinit.pal.gp.backoffice.web.rest.interceptors.InterceptorInitializer"/>
+	<bean id="praticheRestService" class="it.gruppoinit.pal.gp.backoffice.web.rest.PraticheRestService" />
+	<bean id="configurazioniRestService" class="it.gruppoinit.pal.gp.backoffice.web.rest.ConfigurazioniRestService" />
+	
+	<jaxrs:server id="restAuthtokenService" address="/rest-auth-token/">
+		 <jaxrs:properties>
+	         <!-- 200K-->
+	         <entry key="attachment-memory-threshold" value="404800"/>
+	         <entry key="org.apache.cxf.endpoint.private" value="true"/>
+	     </jaxrs:properties>
+		<jaxrs:serviceBeans>
+			<ref bean="messaggiRabbitRestService" />
+			<ref bean="bollettazioneRestService" />
+			<ref bean="istanzeRestService" />
+			<ref bean="localizzazioniRestService" />
+			<ref bean="nodoPagamentiRestService" />
+			<ref bean="mercatiRestService" />
+		</jaxrs:serviceBeans>
+		<jaxrs:inInterceptors>
+		     <ref bean="interceptorInTokenHeaderAuth"/>
+		</jaxrs:inInterceptors>
+		<jaxrs:outInterceptors>
+		     <ref bean="interceptorOut"/>
+		</jaxrs:outInterceptors>
+		<jaxrs:providers>
+			<bean class="org.apache.cxf.jaxrs.provider.JSONProvider">
+				<property name="dropRootElement" value="true" />
+				<property name="supportUnwrapped" value="true" />
+				<property name="ignoreNamespaces" value="true" />
+				<property name="dropCollectionWrapperElement" value="true" />
+			</bean>
+		</jaxrs:providers>
+	</jaxrs:server>
+	
+	<bean id="bollettazioneRestService" class="it.gruppoinit.pal.gp.backoffice.web.rest.BollettazioneRestService" />
+	<bean id="istanzeRestService" class="it.gruppoinit.pal.gp.backoffice.web.rest.IstanzeRestService" />
+	<bean id="localizzazioniRestService" class="it.gruppoinit.pal.gp.backoffice.web.rest.LocalizzazioniRestService" />
+	<bean id="nodoPagamentiRestService" class="it.gruppoinit.pal.gp.backoffice.web.rest.NodoPagamentiRestService" />
+	<bean id="genericiRestService" class="it.gruppoinit.pal.gp.backoffice.web.rest.GenericiRestService" />
+	<bean id="mercatiRestService" class="it.gruppoinit.pal.gp.core.features.manifestazioni.rest.MercatiRestService" />
+	<bean id="messaggiRabbitRestService" class="it.gruppoinit.pal.gp.backoffice.web.rest.MessaggiRabbitRestService" />
+	<bean id="interceptorInTokenHeaderAuth" class="it.gruppoinit.pal.gp.backoffice.web.rest.interceptors.InterceptorInTokenHeaderAuth"/>
+	<bean id="interceptorOut" class="it.gruppoinit.pal.gp.backoffice.web.rest.interceptors.InterceptorOut"/>
+	
+	
+	 
+	<!-- INTERCEPTORS -->
+	
+	<bean id="logInbound" class="org.apache.cxf.interceptor.LoggingInInterceptor">
+		<property name="prettyLogging" value="false" />
+		<property name="limit" value="128000" />
+	</bean>
+	<bean id="logOutbound" class="org.apache.cxf.interceptor.LoggingOutInterceptor">
+		<property name="prettyLogging" value="false" />
+		<property name="limit" value="128000" />
+	</bean>
+	<bean id="cxf" class="org.apache.cxf.bus.spring.SpringBus">
+		<property name="inInterceptors">
+			<list>
+				<ref bean="logInbound" />
+			</list>
+		</property>
+		<property name="outInterceptors">
+			<list>
+				<ref bean="logOutbound" />
+			</list>
+		</property>
+		<property name="outFaultInterceptors">
+			<list>
+				<ref bean="logOutbound" />
+			</list>
+		</property>
+		<property name="inFaultInterceptors">
+			<list>
+				<ref bean="logInbound" />
+			</list>
+		</property>
+	</bean>
+</beans>

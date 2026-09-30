@@ -1,0 +1,36 @@
+﻿namespace Init.Sigepro.FrontEnd.CoreServices.PNRR.GestioneWorkflow
+{
+    public enum StepTypeEnum
+    {
+        Unknown,
+        Discard,
+        InformativaPrivacy,
+        Anagrafiche,
+        Sottoscrittori,
+        ListaSchedeDinamiche,
+        DelegaATrasmettere,
+        DomicilioElettronico,
+        TestoLibero,
+        Informativa,
+        AllegatiIntervento,
+        AllegatiSchedeDinamiche,
+        AllegatiEndo,
+        Localizzazioni,
+        LocalizzazioniSIT,
+        DatiIstanza,
+        Procure,
+        Oneri,
+        AmmissibilitaIntervento,
+        TriesteAccessoAtti,
+        PagamentoOnlineOneri,
+        PagamentoOnlinePagamento,
+        FilesExcel,
+        GestioneTransiti,
+        LocalizzazioniModena,
+        LDPBenvenuto,
+        LDPAllegato,
+        LDPIntegrazioneLivorno,
+        LocalizzazioniSITModena,
+        VerificaSoggettiFirmatari
+    }
+}

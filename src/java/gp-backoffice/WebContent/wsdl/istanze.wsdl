@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:sch="http://gruppoinit.it/sigepro/schemas/messages/istanze" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://gruppoinit.it/sigepro/definitions/istanze" targetNamespace="http://gruppoinit.it/sigepro/definitions/istanze">
+	<wsdl:types>
+		<schema xmlns="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://gruppoinit.it/sigepro/schemas/messages/istanze" schemaLocation="istanze.xsd" />
+		</schema>
+	</wsdl:types>
+	<wsdl:message name="SoggettiCollegatiInsertByIdentificativoRequest">
+		<wsdl:part element="sch:SoggettiCollegatiInsertByIdentificativoRequest" name="SoggettiCollegatiInsertByIdentificativoRequest" />
+	</wsdl:message>
+	<wsdl:message name="SoggettiCollegatiInsertByIdentificativoResponse">
+		<wsdl:part element="sch:SoggettiCollegatiInsertByIdentificativoResponse" name="SoggettiCollegatiInsertByIdentificativoResponse" />
+	</wsdl:message>
+	<wsdl:message name="IstanzeRuoliRequest">
+		<wsdl:part element="sch:IstanzeRuoliRequest" name="IstanzeRuoliRequest" />
+	</wsdl:message>
+	<wsdl:message name="IstanzeRuoliResponse">
+		<wsdl:part element="sch:IstanzeRuoliResponse" name="IstanzeRuoliResponse" />
+	</wsdl:message>
+	<wsdl:message name="IstanzeResponsabiliRequest">
+		<wsdl:part element="sch:IstanzeResponsabiliRequest" name="IstanzeResponsabiliRequest" />
+	</wsdl:message>
+	<wsdl:message name="IstanzeResponsabiliResponse">
+		<wsdl:part element="sch:IstanzeResponsabiliResponse" name="IstanzeResponsabiliResponse" />
+	</wsdl:message>		
+	<wsdl:portType name="Istanze">
+		<wsdl:operation name="SoggettiCollegatiInsert">
+			<wsdl:input message="tns:SoggettiCollegatiInsertByIdentificativoRequest" name="SoggettiCollegatiInsertByIdentificativoRequest" />
+			<wsdl:output message="tns:SoggettiCollegatiInsertByIdentificativoResponse" name="SoggettiCollegatiInsertByIdentificativoResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="IstanzeRuoli">
+			<wsdl:input message="tns:IstanzeRuoliRequest" name="IstanzeRuoliRequest" />
+			<wsdl:output message="tns:IstanzeRuoliResponse" name="IstanzeRuoliResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="IstanzeResponsabili">
+			<wsdl:input message="tns:IstanzeResponsabiliRequest" name="IstanzeResponsabiliRequest" />
+			<wsdl:output message="tns:IstanzeResponsabiliResponse" name="IstanzeResponsabiliResponse" />
+		</wsdl:operation>		
+	</wsdl:portType>
+	<wsdl:binding name="IstanzeSOAP" type="tns:Istanze">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="SoggettiCollegatiInsert">
+			<soap:operation soapAction="SoggettiCollegatiInsert" />
+			<wsdl:input name="SoggettiCollegatiInsertByIdentificativoRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="SoggettiCollegatiInsertByIdentificativoResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="IstanzeRuoli">
+			<soap:operation soapAction="IstanzeRuoli" />
+			<wsdl:input name="IstanzeRuoliRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="IstanzeRuoliResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="IstanzeResponsabili">
+			<soap:operation soapAction="IstanzeResponsabili" />
+			<wsdl:input name="IstanzeResponsabiliRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="IstanzeResponsabiliResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="IstanzeService">
+		<wsdl:port binding="tns:IstanzeSOAP" name="IstanzeSOAP">
+			<soap:address location="http://devel9:8080/vbg/services/" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns2="http://services.sia.eu/head" xmlns:ns1="http://services.sia.eu/" name="PaInviaCarrelloPosizioni" targetNamespace="http://services.sia.eu/">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://services.sia.eu/head" version="1.0">
+
+  <xs:element name="paInviaCarrelloPosizioniHeader">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="user" type="xs:string"/>
+        <xs:element name="password" type="xs:string"/>
+        <xs:element name="abiCode" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://services.sia.eu/" targetNamespace="http://services.sia.eu/" version="1.0">
+
+  <xs:element name="paInviaCarrelloPosizioniRequest" type="tns:paInviaCarrelloPosizioniRequest"/>
+
+  <xs:element name="paInviaCarrelloPosizioniResponse" type="tns:paInviaCarrelloPosizioniResponse"/>
+
+  <xs:complexType name="paInviaCarrelloPosizioniRequest">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" name="paInviaCarrelloPosizioniLista" type="tns:paInviaCarrelloPosizioniListaType"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="paInviaCarrelloPosizioniListaType">
+    <xs:sequence>
+      <xs:element name="spontaneo" type="xs:string"/>
+      <xs:element name="identificativoBeneficiario" type="xs:string"/>
+      <xs:element minOccurs="0" name="ccp" type="xs:string"/>
+      <xs:element minOccurs="0" name="codicePa" type="xs:string"/>
+      <xs:element minOccurs="0" name="codiceServizio" type="xs:string"/>
+      <xs:element name="tipoIdPagatore" type="xs:string"/>
+      <xs:element name="identificativoPagatore" type="xs:string"/>
+      <xs:element minOccurs="0" name="anagraficaPagatore" type="xs:string"/>
+      <xs:element minOccurs="0" name="indirizzoPagatore" type="xs:string"/>
+      <xs:element minOccurs="0" name="civicoPagatore" type="xs:string"/>
+      <xs:element minOccurs="0" name="capPagatore" type="xs:string"/>
+      <xs:element minOccurs="0" name="localitaPagatore" type="xs:string"/>
+      <xs:element minOccurs="0" name="provinciaPagatore" type="xs:string"/>
+      <xs:element minOccurs="0" name="codiceNazionePagatore" type="xs:string"/>
+      <xs:element minOccurs="0" name="emailPagatore" type="xs:string"/>
+      <xs:element minOccurs="0" name="dataScadenzaPagamento" type="xs:string"/>
+      <xs:element name="importoPagamento" type="xs:decimal"/>
+      <xs:element name="tipoFirmaRicevuta" type="xs:string"/>
+      <xs:element minOccurs="0" name="tipoRiferimentoCreditore" type="xs:string"/>
+      <xs:element minOccurs="0" name="codiceRiferimentoCreditore" type="xs:string"/>
+      <xs:element minOccurs="0" name="identificativoUnivocoVersamento" type="xs:string"/>
+      <xs:element minOccurs="0" name="tipoContabilita" type="xs:string"/>
+      <xs:element minOccurs="0" name="codiceContabilita" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" name="datiSingoloVersamento" type="tns:datiSingoloVersamentoListaType"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="datiSingoloVersamentoListaType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="marcaBolloDigitale" type="tns:marcaBolloDigitaleType"/>
+      <xs:element name="importoSingoloVersamento" type="xs:decimal"/>
+      <xs:element name="commissioniCaricoPa" type="xs:decimal"/>
+      <xs:element minOccurs="0" name="ibanAccredito" type="xs:string"/>
+      <xs:element minOccurs="0" name="bicAccredito" type="xs:string"/>
+      <xs:element minOccurs="0" name="ibanAppoggio" type="xs:string"/>
+      <xs:element minOccurs="0" name="bicAppoggio" type="xs:string"/>
+      <xs:element minOccurs="0" name="credenzialiPagatore" type="xs:string"/>
+      <xs:element name="causaleVersamento" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="marcaBolloDigitaleType">
+    <xs:sequence>
+      <xs:element name="documento" type="tns:documentoMBDType"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="documentoMBDType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="base64" type="xs:base64Binary"/>
+      <xs:element minOccurs="0" name="hash" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="paInviaCarrelloPosizioniResponse">
+    <xs:sequence>
+      <xs:element name="paInviaCarrelloPosizioniOutput" type="tns:paInviaCarrelloPosizioniOutputType"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="paInviaCarrelloPosizioniOutputType">
+    <xs:sequence>
+      <xs:element name="esito" type="xs:string"/>
+      <xs:element minOccurs="0" name="codiceErrore" type="xs:string"/>
+      <xs:element minOccurs="0" name="descrizione" type="xs:string"/>
+      <xs:element minOccurs="0" name="idTransazione" type="xs:string"/>
+      <xs:element minOccurs="0" name="url" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="iuvLista" nillable="true" type="tns:iuvListaType"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="iuvListaType">
+    <xs:sequence>
+      <xs:element name="identificativoUnivocoVersamento" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="paInviaCarrelloPosizioni">
+    <wsdl:part element="ns2:paInviaCarrelloPosizioniHeader" name="header">
+    </wsdl:part>
+    <wsdl:part element="ns1:paInviaCarrelloPosizioniRequest" name="bodyrichiesta">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="paInviaCarrelloPosizioniResponse">
+    <wsdl:part element="ns1:paInviaCarrelloPosizioniResponse" name="bodyrisposta">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="PaInviaCarrelloPosizioni">
+    <wsdl:operation name="paInviaCarrelloPosizioni">
+      <wsdl:input message="ns1:paInviaCarrelloPosizioni" name="paInviaCarrelloPosizioni">
+    </wsdl:input>
+      <wsdl:output message="ns1:paInviaCarrelloPosizioniResponse" name="paInviaCarrelloPosizioniResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>

@@ -1,0 +1,2016 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns="http://www.muta.servizirl.it/schema/scia/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:muta="http://www.muta.servizirl.it/schema/muta/1.0" targetNamespace="http://www.muta.servizirl.it/schema/scia/1.0" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xsd:import namespace="http://www.muta.servizirl.it/schema/muta/1.0" schemaLocation="muta-schema-muta.xsd"/>
+	<xsd:annotation>
+		<xsd:documentation xml:lang="it">
+			Changelog:
+				21/06/2011 - Aggiornati tipi capType, istatComuneType e istatProvinciaType, da base integer a string
+				20/06/2011 - Aggiornati tipi modelloAschedaA6Type, scheda1VariazioniType e scheda5Type
+				09/06/2011 - Aggiornati elementi A_DISTINTA_ALLEGATI e B_DISTINTA_ALLEGATI
+				29/04/2011 - Modificati tipi modelloAschedaA1Type, scheda2Type e modelloBschedaB3Type
+				01/04/2011 - Modificato maxOccurs di SCHEDA_4 per sciaAvvioModificaAttivitaType e sciaAvvioModificaAttivitaType
+				24/03/2011 - Versione definitiva della SCIA
+				14/03/2011 - Prima emissione SCIA modello A e modello B
+		</xsd:documentation>
+	</xsd:annotation>
+	<!-- Inizio definizione tipi simple -->
+	<xsd:simpleType name="allegatoType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="PROCURA_SPECIALE"/>
+			<xsd:enumeration value="DOC_IDENTITA"/>
+			<xsd:enumeration value="SCHEDA2"/>
+			<xsd:enumeration value="PLANIMETRIA"/>
+			<xsd:enumeration value="DESCRIZ_STRUT"/>
+			<xsd:enumeration value="ELENCO_MEZZI"/>
+			<xsd:enumeration value="REL_TECNICA"/>
+			<xsd:enumeration value="TITOLI_AUTORIZ"/>
+			<xsd:enumeration value="COPIA_ATTO_CESS"/>
+			<xsd:enumeration value="ASSEVERAZIONE"/>
+			<xsd:enumeration value="CONFORMITA"/>
+			<xsd:enumeration value="MODULO_RICHIESTA_FIRMATA"/>
+			<xsd:enumeration value="ALTRO_ALLEGATO"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="articoliType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="ARTICOLO_6"/>
+			<xsd:enumeration value="ARTICOLO_8"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="capType">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[0-9][0-9][0-9][0-9][0-9]"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="codiceFiscaleType">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="11"/>
+			<xsd:maxLength value="16"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="codiceAtecoType">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[0-9][0-9].[0-9][0-9].[0-9][0-9]"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="codiceAteco3CType">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[0-9][0-9].[0-9]"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="durataAttivitaType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="PERMANENTE"/>
+			<xsd:enumeration value="TEMPORANEA"/>
+			<xsd:enumeration value="STAGIONALE"/>
+			<xsd:enumeration value="ALTRI_PERIODI_OCCASIONALI"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="formaGiuridicaType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="AA"/>
+			<xsd:enumeration value="AE"/>
+			<xsd:enumeration value="AI"/>
+			<xsd:enumeration value="AL"/>
+			<xsd:enumeration value="AN"/>
+			<xsd:enumeration value="AS"/>
+			<xsd:enumeration value="AT"/>
+			<xsd:enumeration value="AU"/>
+			<xsd:enumeration value="CF"/>
+			<xsd:enumeration value="CM"/>
+			<xsd:enumeration value="CO"/>
+			<xsd:enumeration value="CZ"/>
+			<xsd:enumeration value="ED"/>
+			<xsd:enumeration value="EI"/>
+			<xsd:enumeration value="EP"/>
+			<xsd:enumeration value="FI"/>
+			<xsd:enumeration value="GE"/>
+			<xsd:enumeration value="LL"/>
+			<xsd:enumeration value="MA"/>
+			<xsd:enumeration value="OC"/>
+			<xsd:enumeration value="SC"/>
+			<xsd:enumeration value="SD"/>
+			<xsd:enumeration value="SE"/>
+			<xsd:enumeration value="SG"/>
+			<xsd:enumeration value="SL"/>
+			<xsd:enumeration value="SM"/>
+			<xsd:enumeration value="SN"/>
+			<xsd:enumeration value="SO"/>
+			<xsd:enumeration value="SP"/>
+			<xsd:enumeration value="SR"/>
+			<xsd:enumeration value="SS"/>
+			<xsd:enumeration value="SU"/>
+			<xsd:enumeration value="SV"/>
+			<xsd:enumeration value="AC"/>
+			<xsd:enumeration value="AF"/>
+			<xsd:enumeration value="AZ"/>
+			<xsd:enumeration value="CE"/>
+			<xsd:enumeration value="CS"/>
+			<xsd:enumeration value="DI"/>
+			<xsd:enumeration value="EE"/>
+			<xsd:enumeration value="EM"/>
+			<xsd:enumeration value="EN"/>
+			<xsd:enumeration value="ER"/>
+			<xsd:enumeration value="FO"/>
+			<xsd:enumeration value="IR"/>
+			<xsd:enumeration value="SA"/>
+			<xsd:enumeration value="ST"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="istatComuneType">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[0-9]{4,6}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="istatProvinciaType">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[0-9]{1,3}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="liquidoType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="MENO_DI_50G"/>
+			<xsd:enumeration value="TRA_50_150G"/>
+			<xsd:enumeration value="PIU_DI_150G"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="materialeType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="GAS"/>
+			<xsd:enumeration value="LIQUIDO_TEMPERATURA_EBOLLIZIONE"/>
+			<xsd:enumeration value="SOLIDO_RESPIRABILITA"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="sessoType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="M"/>
+			<xsd:enumeration value="F"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="solidoType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="NON_RESPIRABILE"/>
+			<xsd:enumeration value="RESPIRABILE"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="statoType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="A"/>
+			<xsd:enumeration value="AAA"/>
+			<xsd:enumeration value="ABU"/>
+			<xsd:enumeration value="ADN"/>
+			<xsd:enumeration value="AFG"/>
+			<xsd:enumeration value="AJ"/>
+			<xsd:enumeration value="AL"/>
+			<xsd:enumeration value="AND"/>
+			<xsd:enumeration value="ARM"/>
+			<xsd:enumeration value="AUS"/>
+			<xsd:enumeration value="B"/>
+			<xsd:enumeration value="BD"/>
+			<xsd:enumeration value="BDS"/>
+			<xsd:enumeration value="BG"/>
+			<xsd:enumeration value="BH"/>
+			<xsd:enumeration value="BL"/>
+			<xsd:enumeration value="BO"/>
+			<xsd:enumeration value="BOS"/>
+			<xsd:enumeration value="BP"/>
+			<xsd:enumeration value="BR"/>
+			<xsd:enumeration value="BRG"/>
+			<xsd:enumeration value="BRM"/>
+			<xsd:enumeration value="BRN"/>
+			<xsd:enumeration value="BRU"/>
+			<xsd:enumeration value="BS"/>
+			<xsd:enumeration value="BUR"/>
+			<xsd:enumeration value="C"/>
+			<xsd:enumeration value="CDN"/>
+			<xsd:enumeration value="CH"/>
+			<xsd:enumeration value="CI"/>
+			<xsd:enumeration value="CK"/>
+			<xsd:enumeration value="CL"/>
+			<xsd:enumeration value="CNB"/>
+			<xsd:enumeration value="CO"/>
+			<xsd:enumeration value="CR"/>
+			<xsd:enumeration value="CRO"/>
+			<xsd:enumeration value="CS"/>
+			<xsd:enumeration value="CSI"/>
+			<xsd:enumeration value="CV"/>
+			<xsd:enumeration value="D"/>
+			<xsd:enumeration value="DDR"/>
+			<xsd:enumeration value="DK"/>
+			<xsd:enumeration value="DY"/>
+			<xsd:enumeration value="DZ"/>
+			<xsd:enumeration value="E"/>
+			<xsd:enumeration value="EAK"/>
+			<xsd:enumeration value="EAT"/>
+			<xsd:enumeration value="EAU"/>
+			<xsd:enumeration value="EC"/>
+			<xsd:enumeration value="EE"/>
+			<xsd:enumeration value="EIR"/>
+			<xsd:enumeration value="EK"/>
+			<xsd:enumeration value="ER"/>
+			<xsd:enumeration value="EST"/>
+			<xsd:enumeration value="ET"/>
+			<xsd:enumeration value="ETH"/>
+			<xsd:enumeration value="F"/>
+			<xsd:enumeration value="FI"/>
+			<xsd:enumeration value="FJI"/>
+			<xsd:enumeration value="FL"/>
+			<xsd:enumeration value="G"/>
+			<xsd:enumeration value="GAB"/>
+			<xsd:enumeration value="GB"/>
+			<xsd:enumeration value="GBA"/>
+			<xsd:enumeration value="GBG"/>
+			<xsd:enumeration value="GBJ"/>
+			<xsd:enumeration value="GBM"/>
+			<xsd:enumeration value="GBY"/>
+			<xsd:enumeration value="GBZ"/>
+			<xsd:enumeration value="GEO"/>
+			<xsd:enumeration value="GH"/>
+			<xsd:enumeration value="GR"/>
+			<xsd:enumeration value="GV"/>
+			<xsd:enumeration value="H"/>
+			<xsd:enumeration value="HK"/>
+			<xsd:enumeration value="HN"/>
+			<xsd:enumeration value="HV"/>
+			<xsd:enumeration value="I"/>
+			<xsd:enumeration value="IL"/>
+			<xsd:enumeration value="IND"/>
+			<xsd:enumeration value="IR"/>
+			<xsd:enumeration value="IRQ"/>
+			<xsd:enumeration value="IS"/>
+			<xsd:enumeration value="J"/>
+			<xsd:enumeration value="JA"/>
+			<xsd:enumeration value="JOR"/>
+			<xsd:enumeration value="K"/>
+			<xsd:enumeration value="KG"/>
+			<xsd:enumeration value="KL"/>
+			<xsd:enumeration value="KWT"/>
+			<xsd:enumeration value="KZ"/>
+			<xsd:enumeration value="L"/>
+			<xsd:enumeration value="LAO"/>
+			<xsd:enumeration value="LET"/>
+			<xsd:enumeration value="LIB"/>
+			<xsd:enumeration value="LIT"/>
+			<xsd:enumeration value="LS"/>
+			<xsd:enumeration value="M"/>
+			<xsd:enumeration value="MA"/>
+			<xsd:enumeration value="MAC"/>
+			<xsd:enumeration value="MAU"/>
+			<xsd:enumeration value="MC"/>
+			<xsd:enumeration value="MD"/>
+			<xsd:enumeration value="MEX"/>
+			<xsd:enumeration value="MG"/>
+			<xsd:enumeration value="MOC"/>
+			<xsd:enumeration value="MOL"/>
+			<xsd:enumeration value="MS"/>
+			<xsd:enumeration value="MT"/>
+			<xsd:enumeration value="N"/>
+			<xsd:enumeration value="NA"/>
+			<xsd:enumeration value="NAM"/>
+			<xsd:enumeration value="NEP"/>
+			<xsd:enumeration value="NF"/>
+			<xsd:enumeration value="NGN"/>
+			<xsd:enumeration value="NIC"/>
+			<xsd:enumeration value="NIG"/>
+			<xsd:enumeration value="NL"/>
+			<xsd:enumeration value="NZ"/>
+			<xsd:enumeration value="OMA"/>
+			<xsd:enumeration value="P"/>
+			<xsd:enumeration value="PA"/>
+			<xsd:enumeration value="PAK"/>
+			<xsd:enumeration value="PAN"/>
+			<xsd:enumeration value="PE"/>
+			<xsd:enumeration value="PL"/>
+			<xsd:enumeration value="PP"/>
+			<xsd:enumeration value="PTM"/>
+			<xsd:enumeration value="PU"/>
+			<xsd:enumeration value="PY"/>
+			<xsd:enumeration value="QAT"/>
+			<xsd:enumeration value="R"/>
+			<xsd:enumeration value="RA"/>
+			<xsd:enumeration value="RB"/>
+			<xsd:enumeration value="RBE"/>
+			<xsd:enumeration value="RC"/>
+			<xsd:enumeration value="RCA"/>
+			<xsd:enumeration value="RCB"/>
+			<xsd:enumeration value="RCF"/>
+			<xsd:enumeration value="RCH"/>
+			<xsd:enumeration value="RCL"/>
+			<xsd:enumeration value="RD"/>
+			<xsd:enumeration value="RH"/>
+			<xsd:enumeration value="RI"/>
+			<xsd:enumeration value="RL"/>
+			<xsd:enumeration value="RM"/>
+			<xsd:enumeration value="RMA"/>
+			<xsd:enumeration value="RMM"/>
+			<xsd:enumeration value="RNR"/>
+			<xsd:enumeration value="RNY"/>
+			<xsd:enumeration value="ROK"/>
+			<xsd:enumeration value="RSA"/>
+			<xsd:enumeration value="RSM"/>
+			<xsd:enumeration value="RSR"/>
+			<xsd:enumeration value="RU"/>
+			<xsd:enumeration value="RWA"/>
+			<xsd:enumeration value="RY"/>
+			<xsd:enumeration value="S"/>
+			<xsd:enumeration value="SA"/>
+			<xsd:enumeration value="SAL"/>
+			<xsd:enumeration value="SCV"/>
+			<xsd:enumeration value="SD"/>
+			<xsd:enumeration value="SER"/>
+			<xsd:enumeration value="SF"/>
+			<xsd:enumeration value="SGP"/>
+			<xsd:enumeration value="SK"/>
+			<xsd:enumeration value="SLK"/>
+			<xsd:enumeration value="SLO"/>
+			<xsd:enumeration value="SLV"/>
+			<xsd:enumeration value="SME"/>
+			<xsd:enumeration value="SN"/>
+			<xsd:enumeration value="SNE"/>
+			<xsd:enumeration value="SOM"/>
+			<xsd:enumeration value="SU"/>
+			<xsd:enumeration value="SUD"/>
+			<xsd:enumeration value="SWA"/>
+			<xsd:enumeration value="SY"/>
+			<xsd:enumeration value="SYR"/>
+			<xsd:enumeration value="T"/>
+			<xsd:enumeration value="TC"/>
+			<xsd:enumeration value="TCH"/>
+			<xsd:enumeration value="TG"/>
+			<xsd:enumeration value="TI"/>
+			<xsd:enumeration value="TN"/>
+			<xsd:enumeration value="TR"/>
+			<xsd:enumeration value="TT"/>
+			<xsd:enumeration value="TWA"/>
+			<xsd:enumeration value="TX"/>
+			<xsd:enumeration value="U"/>
+			<xsd:enumeration value="UAE"/>
+			<xsd:enumeration value="UCR"/>
+			<xsd:enumeration value="USA"/>
+			<xsd:enumeration value="UV"/>
+			<xsd:enumeration value="UZ"/>
+			<xsd:enumeration value="VN"/>
+			<xsd:enumeration value="WAC"/>
+			<xsd:enumeration value="WAG"/>
+			<xsd:enumeration value="WAL"/>
+			<xsd:enumeration value="WAN"/>
+			<xsd:enumeration value="WS"/>
+			<xsd:enumeration value="XXX"/>
+			<xsd:enumeration value="YU"/>
+			<xsd:enumeration value="YV"/>
+			<xsd:enumeration value="ZA"/>
+			<xsd:enumeration value="ZI"/>
+			<xsd:enumeration value="ZRE"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="tipologiaImpiantoType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="CICLO_CHIUSO_SIGILLATO"/>
+			<xsd:enumeration value="CICLO_CHIUSO_CARICO_SCARICO_MANUALE"/>
+			<xsd:enumeration value="CICLO_CHIUSO_LIMITATO_MANUALE"/>
+			<xsd:enumeration value="PROCESSO_OPERATORI_REMOTIZZATI"/>
+			<xsd:enumeration value="MANUALE"/>
+			<xsd:enumeration value="MANUALE_CONDIZIONI_NON_ADEGUATE"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="titolareType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="TITOLARE"/>
+			<xsd:enumeration value="LEGALE_RAPPRESENTATE"/>
+			<xsd:enumeration value="EREDE_AVENTE_CAUSA"/>
+			<xsd:enumeration value="CURATORE_FALLIMENTARE"/>
+			<xsd:enumeration value="ALTRO"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="variazioneAggiuntaEliminaType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="AGGIUNTA"/>
+			<xsd:enumeration value="ELIMINATA"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="variazioneAumentoDiminuzioneType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="AUMENTO"/>
+			<xsd:enumeration value="DIMINUZIONE"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="vitaProdottoType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="PIU_DI_90GG"/>
+			<xsd:enumeration value="TRA_20_90GG"/>
+			<xsd:enumeration value="MENO_DI_20GG"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="albergoType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="ALBERGO_TRADIZIONALE"/>
+			<xsd:enumeration value="ALBERGO_MEUBLE"/>
+			<xsd:enumeration value="MOTEL"/>
+			<xsd:enumeration value="ALBERGO_BENESSERE"/>
+			<xsd:enumeration value="ALBERGO_DIMORAST"/>
+			<xsd:enumeration value="VILLAGGIO_ALBERGO"/>
+			<xsd:enumeration value="RESIDENZA_TURISTICA"/>
+			<xsd:enumeration value="ALBERGO_DIFFUSO"/>
+			<xsd:enumeration value="ALTRO"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="noAlbergoType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="CASA_FERIE"/>
+			<xsd:enumeration value="OSTELLO_GIOVENTU"/>
+			<xsd:enumeration value="AFFITTACAMERE"/>
+			<xsd:enumeration value="B&amp;B"/>
+			<xsd:enumeration value="APPARTAMENTO_VACANZE"/>
+			<xsd:enumeration value="RIFUGIO_ALPINISTICO"/>
+			<xsd:enumeration value="RIFUGIO_ESCURSIONISTICO"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="ariaApertaType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="CAMPEGGIO"/>
+			<xsd:enumeration value="VILLAGGIO_TURISTICO"/>
+			<xsd:enumeration value="AREA_SOSTA"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="albergoStelleType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="1"/>
+			<xsd:enumeration value="2"/>
+			<xsd:enumeration value="3"/>
+			<xsd:enumeration value="4"/>
+			<xsd:enumeration value="5"/>
+			<xsd:enumeration value="LUSSO"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="ariaApertaStelleType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="1"/>
+			<xsd:enumeration value="2"/>
+			<xsd:enumeration value="3"/>
+			<xsd:enumeration value="4"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<!-- Fine definizione tipi simple -->
+	<xsd:complexType name="distintaAllegatiType">
+		<xsd:sequence>
+			<xsd:element name="DESCRIZIONE_ALLEGATO" type="descrizioneAllegatoType" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="descrizioneAllegatoType">
+		<xsd:attribute name="TIPO" type="allegatoType" use="required"/>
+		<xsd:attribute name="FILENAME" type="muta:noEmptyStringType" use="required"/>
+		<xsd:attribute name="NR_PROGRESSIVO" type="xsd:unsignedInt" use="required"/>
+		<xsd:attribute name="DESCRIZIONE" type="muta:noEmptyStringType"/>
+		<xsd:attribute name="FIRMA_DIGITALE" type="xsd:boolean"/>
+	</xsd:complexType>
+	<xsd:complexType name="modelloAschedaA1Type">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="it">
+					29/04/2011 - Aggiornati TIPO26_PRODOTTI_SFUSI e TIPO26_PRODOTTI_CONF, non sono più esclusivi in choice
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<!-- Inizio ATTIVITA' ECONOMICHE NON ALIMENTARI -->
+			<!-- 1.1 Attività produttiva (Industriale, manifatturiera,ecc.) -->
+			<xsd:element name="TIPO11" type="xsd:boolean" default="false"/>
+			<!-- 1.2 Attività di deposito merci -->
+			<xsd:element name="TIPO12" type="xsd:boolean" default="false"/>
+			<!-- 1.3 Commercio di prodotti fitosanitari -->
+			<xsd:element name="TIPO13" type="xsd:boolean" default="false"/>
+			<!-- Inizio sezione 1.4 Attività nel settore dei mangimi -->
+			<xsd:element name="TIPO141" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO142" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO143" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO144" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO145" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO146" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO147" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO148" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO149" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO1410" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO1411" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO1412" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO1413" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO14_NUM_RICON_COMUNIT" type="xsd:string" minOccurs="0"/>
+			<!-- Fine sezione 1.4 -->
+			<!-- Inizio sezione 1.5 Attività di vendita -->
+			<!-- NB: se si sceglie di avviare un' attività ALIMENTARE (punto 2.3), la tipologia di vendita che si potrà selezionare dovrà essere la medesima di quella qui selezionata: si riporta una tabella esplicativa -->
+			<xsd:choice minOccurs="0">
+				<xsd:element name="TIPO151" type="xsd:boolean"/>
+				<xsd:element name="TIPO152" type="xsd:boolean"/>
+				<xsd:element name="TIPO153" type="xsd:boolean"/>
+				<xsd:element name="TIPO154" type="xsd:boolean"/>
+				<xsd:element name="TIPO155" type="xsd:boolean"/>
+			</xsd:choice>
+			<!-- Fine sezione 1.5 -->
+			<!-- Inizio sezione 1.6 Attività di servizi alla persona -->
+			<xsd:element name="TIPO161" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO162" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO163" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO164" type="xsd:boolean" default="false"/>
+			<!-- Se TIPO164 = true allora valorizzare ALTRO_SERVIZI_PERS -->
+			<xsd:element name="ALTRO_SERVIZI_PERS" type="xsd:string" minOccurs="0"/>
+			<!-- Fine sezione 1.6 -->
+			<!-- Inizio sezione 1.7 Altre attività di servizio -->
+			<xsd:element name="TIPO171" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO172" type="xsd:boolean" default="false"/>
+			<!-- Se TIPO172 = true allora valorizzare ALTRO_SERVIZI -->
+			<xsd:element name="ALTRO_SERVIZI" type="xsd:string" minOccurs="0"/>
+			<!-- Fine sezione 1.7 -->
+			<!-- Inizio sezione 1.8 Attività nel settore dei sottoprodotti di origine animale/prodotti derivati (Reg. CE 1069/2009) -->
+			<xsd:element name="TIPO181" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO181_NUM_RICON_COMUNIT" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="TIPO182" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO183" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO184" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO185" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO186" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO187" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO188" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO189" type="xsd:boolean" default="false"/>
+			<!-- Fine sezione 1.8 -->
+			<!-- Inizio sezione 1.9 Attività nel settore della riproduzione animale -->
+			<xsd:element name="TIPO191" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO191_COD_UNIVOCO_NAZ" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="TIPO192" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO192_COD_UNIVOCO_NAZ" type="xsd:string" minOccurs="0"/>
+			<!-- Fine sezione 1.9 -->
+			<!-- Fine ATTIVITA' ECONOMICHE NON ALIMENTARI -->
+			<!-- Inizio ATTIVITA' ECONOMICHE IN CAMPO ALIMENTARE -->
+			<!-- Inizio sezione 2.1 Attività di produzione di alimenti -->
+			<!-- Si possono combinare con solo una voce a scelta nei punti compresi tra 2.2.2 e 2.3.8 -->
+			<xsd:element name="TIPO211" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO212" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO213" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO221" type="xsd:boolean" default="false"/>
+			<!-- Fine sezione 2.1 -->
+			<xsd:choice minOccurs="0">
+				<!-- Inizio sezione 2.2 Attività di trasformazione e/o somministrazione di alimenti -->
+				<xsd:element name="TIPO222" type="xsd:boolean"/>
+				<xsd:element name="TIPO223" type="xsd:boolean"/>
+				<xsd:element name="TIPO224" type="xsd:boolean"/>
+				<xsd:element name="TIPO225" type="xsd:boolean"/>
+				<xsd:element name="TIPO226" type="xsd:boolean"/>
+				<xsd:element name="TIPO227" type="xsd:boolean"/>
+				<xsd:element name="TIPO228" type="xsd:boolean"/>
+				<xsd:element name="TIPO229" type="xsd:boolean"/>
+				<xsd:element name="TIPO2210" type="xsd:boolean"/>
+				<xsd:element name="TIPO2211" type="xsd:boolean"/>
+				<xsd:element name="TIPO2212" type="xsd:boolean"/>
+				<xsd:element name="TIPO2213" type="xsd:boolean"/>
+				<xsd:element name="TIPO2214" type="xsd:boolean"/>
+				<!-- Fine sezione 2.2 -->
+				<!-- Inizio sezione 2.3 Attività di vendita di alimenti, valorizzazione singola -->
+				<xsd:element name="TIPO231" type="xsd:boolean"/>
+				<xsd:element name="TIPO232" type="xsd:boolean"/>
+				<xsd:element name="TIPO233" type="xsd:boolean"/>
+				<xsd:element name="TIPO234" type="xsd:boolean"/>
+				<xsd:element name="TIPO235" type="xsd:boolean"/>
+				<xsd:element name="TIPO236" type="xsd:boolean"/>
+				<xsd:element name="TIPO237" type="xsd:boolean"/>
+				<xsd:element name="TIPO238" type="xsd:boolean"/>
+				<!-- Fine sezione 2.3 -->
+			</xsd:choice>
+			<!-- Se TIPO225 = true allora valorizzare a true TIPO225_PERSONE_ALLOGGIATE o TIPO225_PUBBLICO  -->
+			<xsd:choice minOccurs="0">
+				<xsd:element name="TIPO225_PERSONE_ALLOGGIATE" type="xsd:boolean"/>
+				<xsd:element name="TIPO225_PUBBLICO" type="xsd:boolean"/>
+			</xsd:choice>
+			<!-- Se TIPO2212 = true allora è possibile valorizzare a true TIPO2212_UTIL_GIORNALIERO_300KG  -->
+			<xsd:element name="TIPO2212_UTIL_GIORNALIERO_300KG" type="xsd:boolean" default="false"/>
+			<!-- Inizio sezione 2.4 Attività di deposito di alimenti -->
+			<xsd:element name="TIPO241" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO242" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO243" type="xsd:boolean" default="false"/>
+			<!-- Fine sezione 2.4 -->
+			<!-- Inizio sezione 2.5 Attività di trasporto di alimenti -->
+			<xsd:element name="TIPO251" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO252" type="xsd:boolean" default="false"/>
+			<!-- Fine sezione 2.5 -->
+			<!-- Inizio sezione 2.6 Informazioni relative agli alimenti oggetto dell'attività -->
+			<xsd:element name="TIPO26_PRODOTTI_SFUSI" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO26_PRODOTTI_CONF" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO26_VITA_PRODOTTO" type="vitaProdottoType" minOccurs="0"/>
+			<xsd:element name="TIPO26_CTRL_TEMP_REFRIGERAZIONE" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO26_CTRL_TEMP_SURGELAZIONE" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO26_CTRL_TEMP_AMBIENTE" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO26_NUM_RICON_COMUNIT" type="xsd:string" minOccurs="0"/>
+			<!-- Fine sezione 2.6 -->
+			<!-- Fine ATTIVITA' ECONOMICHE IN CAMPO ALIMENTARE -->
+			<!-- Inizio ALTRE ATTIVITA' -->
+			<!-- Inizio sezione 3.1 Attività turistico ricettiva  -->
+			<xsd:choice minOccurs="0">
+				<xsd:element name="TIPO311" type="xsd:boolean"/>
+				<xsd:element name="TIPO312" type="xsd:boolean"/>
+				<xsd:element name="TIPO313" type="xsd:boolean"/>
+			</xsd:choice>
+			<!-- Fine sezione 3.1 -->
+			<!-- Fine ALTRE ATTIVITA -->
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="modelloAschedaA2Type">
+		<xsd:sequence>
+			<xsd:element name="ANNO_ISCR_CAM_COMM" type="xsd:gYear" minOccurs="0"/>
+			<xsd:element name="ATTIVITA_PRINC" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="COD_ATECO" type="codiceAtecoType"/>
+			<xsd:element name="COD_ATECO_ANNO" type="xsd:gYear"/>
+			<xsd:element name="DESC_MERCEOLOGICA" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="COD_ATECO_2" type="codiceAtecoType" minOccurs="0"/>
+			<!-- Se COD_ATECO_2 valorizzato allora valorizzare COD_ATECO_2_ANNO -->
+			<xsd:element name="COD_ATECO_2_ANNO" type="xsd:gYear" minOccurs="0"/>
+			<xsd:element name="COD_ATECO_3" type="codiceAtecoType" minOccurs="0"/>
+			<!-- Se COD_ATECO_3 valorizzato allora valorizzare COD_ATECO_3_ANNO -->
+			<xsd:element name="COD_ATECO_3_ANNO" type="xsd:gYear" minOccurs="0"/>
+			<xsd:element name="COD_ATECO_4" type="codiceAtecoType" minOccurs="0"/>
+			<!-- Se COD_ATECO_4 valorizzato allora valorizzare COD_ATECO_4_ANNO -->
+			<xsd:element name="COD_ATECO_4_ANNO" type="xsd:gYear" minOccurs="0"/>
+			<xsd:element name="COD_ATECO_5" type="codiceAtecoType" minOccurs="0"/>
+			<!-- Se COD_ATECO_5 valorizzato allora valorizzare COD_ATECO_5_ANNO -->
+			<xsd:element name="COD_ATECO_5_ANNO" type="xsd:gYear" minOccurs="0"/>
+			<xsd:element name="DESC_MERCEOLOGICA_2" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="modelloAschedaA3Type">
+		<xsd:sequence>
+			<xsd:element name="SEDE_VIA" type="muta:noEmptyStringType"/>
+			<xsd:element name="SEDE_NUM" type="muta:noEmptyStringType"/>
+			<xsd:element name="SEDE_CAP" type="capType"/>
+			<xsd:element name="SEDE_EMAIL" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="SEDE_TEL" type="muta:noEmptyStringType"/>
+			<xsd:element name="SEDE_FAX" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="IN_ALTRA_STRUTTURA" type="xsd:boolean" default="false"/>
+			<!-- Se IN_ALTRA_STRUTTURA = true allora valorizzare ALTRASEDE_DESCR -->
+			<xsd:element name="ALTRA_STRUTTURA_DESCR" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="CATASTO_FOGLIO" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="CATASTO_MAPPALE" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="CATASTO_SUBALTERNO" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="CODUL" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="modelloAschedaA4Type">
+		<xsd:sequence>
+			<xsd:element name="DURATA_ATTIVITA" type="durataAttivitaType" minOccurs="0"/>
+			<!-- Se DURATA_ATTIVITA = 'Temporanea' allora valorizzare TEMP_INIZIO e TEMP_FINE -->
+			<xsd:element name="TEMP_INIZIO" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="TEMP_FINE" type="xsd:date" minOccurs="0"/>
+			<!-- Se DURATA_ATTIVITA = 'Stagionale' allora valorizzare almeno una coppia STAG* -->
+			<xsd:element name="STAG_INIZIO" type="xsd:gMonthDay" minOccurs="0"/>
+			<xsd:element name="STAG_FINE" type="xsd:gMonthDay" minOccurs="0"/>
+			<xsd:element name="STAG_2_INIZIO" type="xsd:gMonthDay" minOccurs="0"/>
+			<xsd:element name="STAG_2_FINE" type="xsd:gMonthDay" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="modelloAschedaA5Type">
+		<xsd:sequence>
+			<xsd:element name="NUM_ADDETTI" type="xsd:integer" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="modelloAschedaA6Type">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="it">
+					20/06/2011 - Aggiornata choice elementi TITOLO* con minOccurs="0"
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:choice minOccurs="0">
+				<xsd:element name="TITOLO_PROVVEDIMENTO_ESPRESSO" type="xsd:boolean"/>
+				<xsd:element name="TITOLO_SILENZIO_ASSENSO" type="xsd:boolean"/>
+			</xsd:choice>
+			<xsd:element name="COM_MED_STR" type="xsd:boolean" default="false"/>
+			<!-- Se COM_MED_STR = true allora valorizzare i campi COM_MED_STR*  -->
+			<xsd:element name="COM_MED_STR_NUMPROT" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="COM_MED_STR_DEL" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="COM_MED_STR_ENTE" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="COM_GRA_STR" type="xsd:boolean" default="false"/>
+			<!-- Se COM_GRA_STR = true allora valorizzare i campi COM_GRA_STR*  -->
+			<xsd:element name="COM_GRA_STR_NUMPROT" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="COM_GRA_STR_DEL" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="COM_GRA_STR_ENTE" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="COM_ARE_PUB" type="xsd:boolean" default="false"/>
+			<!-- Se COM_ARE_PUB = true allora valorizzare i campi COM_ARE_PUB*  -->
+			<xsd:element name="COM_ARE_PUB_NUMPROT" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="COM_ARE_PUB_DEL" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="COM_ARE_PUB_ENTE" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="SOMM" type="xsd:boolean" default="false"/>
+			<!-- Se SOMM = true allora valorizzare almeno una delle 4 famiglie di campi SOMM_SCIA*, SOMM_DIAP*, SOMM_DIA* o SOMM_AUT* -->
+			<xsd:element name="SOMM_SCIA" type="xsd:boolean" default="false"/>
+			<xsd:element name="SOMM_SCIA_NUMPROT" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="SOMM_SCIA_DEL" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="SOMM_SCIA_ENTE" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="SOMM_DIAP" type="xsd:boolean" default="false"/>
+			<xsd:element name="SOMM_DIAP_NUMPROT" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="SOMM_DIAP_DEL" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="SOMM_DIAP_ENTE" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="SOMM_DIA" type="xsd:boolean" default="false"/>
+			<xsd:element name="SOMM_DIA_NUMPROT" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="SOMM_DIA_DEL" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="SOMM_DIA_ENTE" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="SOMM_AUT" type="xsd:boolean" default="false"/>
+			<xsd:element name="SOMM_AUT_NUMPROT" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="SOMM_AUT_DEL" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="SOMM_AUT_ENTE" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="INTRATT_68" type="xsd:boolean" default="false"/>
+			<!-- Se INTRATT_68 = true allora valorizzare i campi INTRATT_68* -->
+			<xsd:element name="INTRATT_68_LICENZAPS" type="xsd:boolean" default="false"/>
+			<xsd:element name="INTRATT_68_NUMPROT" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="INTRATT_68_DEL" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="INTRATT_68_ENTE" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="INTRATT_69" type="xsd:boolean" default="false"/>
+			<!-- Se INTRATT_69 = true allora valorizzare i campi INTRATT_69* -->
+			<xsd:element name="INTRATT_69_LICENZAPS" type="xsd:boolean" default="false"/>
+			<xsd:element name="INTRATT_69_NUMPROT" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="INTRATT_69_DEL" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="INTRATT_69_ENTE" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ATT_RICETT" type="xsd:boolean" default="false"/>
+			<!-- Se ATT_RICETT = true allora valorizzare i campi ATT_RICETT* -->
+			<xsd:element name="ATT_RICETT_LICENZAPS" type="xsd:boolean" default="false"/>
+			<xsd:element name="ATT_RICETT_NUMPROT" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ATT_RICETT_DEL" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="ATT_RICETT_ENTE" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ATT_RICETT_CLASS" type="xsd:boolean" default="false"/>
+			<!-- Se ATT_RICETT_CLASS = true allora valorizzare i campi ATT_RICETT_CLASS* -->
+			<xsd:choice minOccurs="0">
+				<xsd:element name="ATT_RICETT_CLASS_DEFIN" type="xsd:boolean"/>
+				<xsd:element name="ATT_RICETT_CLASS_PROVV" type="xsd:boolean"/>
+			</xsd:choice>
+			<xsd:element name="ATT_RICETT_CLASS_NUMPROT" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ATT_RICETT_CLASS_DEL" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="ATT_RICETT_CLASS_ENTE" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ALTRE_ATT" type="xsd:boolean" default="false"/>
+			<!-- Se ALTRE_ATT = true allora valorizzare i campi ALTRE_ATT* -->
+			<xsd:element name="ALTRE_ATT_LICENZAPS" type="xsd:boolean" default="false"/>
+			<xsd:element name="ALTRE_ATT_NUMPROT" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ALTRE_ATT_DEL" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="ALTRE_ATT_ENTE" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="modelloADichiarazioniType">
+		<xsd:sequence>
+			<xsd:element name="IDONEITA_CONDIZ" type="xsd:boolean" default="false"/>
+			<xsd:element name="CONSENSO_ASL" type="xsd:boolean" default="false"/>
+			<!-- Se RP_TITOLARE = true o RP_PREPOSTO = true verificare che sia stata compilata almeno 1 scheda 2 oppure una scheda 3 -->
+			<xsd:element name="RP_TITOLARE" type="xsd:boolean" default="false"/>
+			<xsd:element name="RP_PREPOSTO" type="xsd:boolean" default="false"/>
+			<xsd:element name="NO_MODIFICA_SEDE_LOCALI" type="xsd:boolean" default="false"/>
+			<xsd:element name="NOTIFICA_SETTORE_ALIM" type="xsd:boolean" default="false"/>
+			<xsd:element name="NOTIFICA_SETTORE_MANGIMI" type="xsd:boolean" default="false"/>
+			<xsd:element name="NOTIFICA_SETTORE_SOTTOPROD_ANIMALI" type="xsd:boolean" default="false"/>
+			<xsd:element name="NOTIFICA_LAVOR_INDUSTR" type="xsd:boolean" default="false"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="modelloAAllegatiType">
+		<xsd:sequence>
+			<xsd:element name="DOC_IDENTITA" type="xsd:boolean" default="false"/>
+			<xsd:element name="SCHEDA1" type="xsd:boolean" default="false"/>
+			<xsd:element name="SCHEDA2" type="xsd:boolean" default="false"/>
+			<xsd:element name="SCHEDA3" type="xsd:boolean" default="false"/>
+			<xsd:element name="SCHEDA4" type="xsd:boolean" default="false"/>
+			<xsd:element name="SCHEDA5" type="xsd:boolean" default="false"/>
+			<xsd:element name="SCHEDA6" type="xsd:boolean" default="false"/>
+			<xsd:element name="PLANIMETRIA" type="xsd:boolean" default="false"/>
+			<xsd:element name="DESCRIZ_STRUT" type="xsd:boolean" default="false"/>
+			<xsd:element name="ELENCO_MEZZI" type="xsd:boolean" default="false"/>
+			<xsd:element name="REL_TECNICA" type="xsd:boolean" default="false"/>
+			<xsd:element name="ASSEVERAZIONE" type="xsd:boolean" default="false"/>
+			<!-- Se ASSEVERAZIONE = true allora valorizzare ASSEVERAZIONE_DESCR e ASSEVERAZIONE_TECNICO -->
+			<xsd:element name="ASSEVERAZIONE_DESCR" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ASSEVERAZIONE_TECNICO" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="DICHIARA_CONFORMITA" type="xsd:boolean" default="false"/>
+			<!-- Se DICHIARA_CONFORMITA = true allora valorizzare DICHIARA_CONFORMITA_AGENZIA_DI -->
+			<xsd:element name="DICHIARA_CONFORMITA_AGENZIA_DI" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ALTRO_ALLEGATO" type="xsd:boolean" default="false"/>
+			<!-- Se ALTRO_ALLEGATO = true allora valorizzare DESC_ALTRO_ALLEGATO -->
+			<xsd:element name="DESC_ALTRO_ALLEGATO" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="modelloAType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="it">
+					09/06/2011 - Aggiornato A_DISTINTA_ALLEGATI con minOccurs=0
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="ISTAT_COMUNE" type="istatComuneType"/>
+			<xsd:element name="COGNOME" type="muta:noEmptyStringType"/>
+			<xsd:element name="NOME" type="muta:noEmptyStringType"/>
+			<xsd:element name="CODICE_FISCALE" type="codiceFiscaleType"/>
+			<xsd:element name="DATA_NASCITA" type="xsd:date"/>
+			<xsd:element name="CITTADINANZA" type="statoType"/>
+			<xsd:element name="SESSO" type="sessoType"/>
+			<xsd:element name="LUOGO_NASCITA_STATO" type="statoType"/>
+			<!-- Se LUOGO_NASCITA_STATO = 'I' allora valorizzare LUOGO_NASCITA_COMUNE e LUOGO_NASCITA_PROV -->
+			<xsd:element name="LUOGO_NASCITA_COMUNE" type="istatComuneType" minOccurs="0"/>
+			<xsd:element name="LUOGO_NASCITA_PROV" type="istatProvinciaType" minOccurs="0"/>
+			<xsd:element name="LUOGO_RESIDENZA_STATO" type="statoType"/>
+			<!-- Se LUOGO_RESIDENZA_STATO = 'I' allora valorizzare RESIDENZA_COMUNE e RESIDENZA_PROVINCIA -->
+			<xsd:element name="RESIDENZA_COMUNE" type="istatComuneType" minOccurs="0"/>
+			<xsd:element name="RESIDENZA_PROVINCIA" type="istatProvinciaType" minOccurs="0"/>
+			<xsd:element name="VIA" type="muta:noEmptyStringType"/>
+			<xsd:element name="CIVICO" type="muta:noEmptyStringType"/>
+			<xsd:element name="CAP" type="capType"/>
+			<xsd:element name="EMAIL" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="EMAIL_PEC" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="TELEFONO" type="muta:noEmptyStringType"/>
+			<xsd:element name="FAX" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="TITOLARE" type="titolareType"/>
+			<!-- Se TITOLARE = 'Altro' allora valorizzare TITOLARE_ALTRO -->
+			<xsd:element name="TITOLARE_ALTRO" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="RAGIONE_SOCIALE" type="muta:noEmptyStringType"/>
+			<xsd:element name="TIPO_ATTIVITA" type="formaGiuridicaType"/>
+			<!-- Se TIPO_ATTIVITA = 'Altro' allora valorizzare IMPRESA_ALTRO_TEXT -->
+			<xsd:element name="IMPRESA_ALTRO_TEXT" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="IMPRESA_CODICE_FISCALE" type="codiceFiscaleType"/>
+			<xsd:element name="IMPRESA_PARTITAIVA" type="codiceFiscaleType" minOccurs="0"/>
+			<xsd:element name="IMPRESA_SEDE_LEGALE" type="istatComuneType"/>
+			<xsd:element name="IMPRESA_PROVINCIA" type="istatProvinciaType"/>
+			<xsd:element name="IMPRESA_VIA" type="muta:noEmptyStringType"/>
+			<xsd:element name="IMPRESA_CIVICO" type="muta:noEmptyStringType"/>
+			<xsd:element name="IMPRESA_CAP" type="capType"/>
+			<xsd:element name="IMPRESA_TELEFONO" type="muta:noEmptyStringType"/>
+			<xsd:element name="IMPRESA_FAX" type="xsd:string" minOccurs="0"/>
+			<xsd:choice>
+				<xsd:element name="ISCRITTO_CCIAA" type="xsd:boolean"/>
+				<!-- Se ISCRITTO_CCIAA = true allora valorizzare ISCRITTO_CCIAA_DI e ISCRITTO_CCIAA_NUMERO -->
+				<xsd:element name="ATTESA_CCIAA" type="xsd:boolean"/>
+				<xsd:element name="NON_TENUTO" type="xsd:boolean"/>
+			</xsd:choice>
+			<xsd:element name="ISCRITTO_CCIAA_DI" type="istatProvinciaType" minOccurs="0"/>
+			<xsd:element name="ISCRITTO_CCIAA_NUMERO" type="xsd:string" minOccurs="0"/>
+			<xsd:choice minOccurs="0">
+				<xsd:element name="ISCRITTO_REA" type="xsd:boolean" default="false"/>
+				<!-- Se ISCRITTO_REA = true allora valorizzare ISCRITTO_REA_NUMERO -->
+				<xsd:element name="ATTESA_REA" type="xsd:boolean" default="false"/>
+			</xsd:choice>
+			<xsd:element name="ISCRITTO_REA_NUMERO" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="POSIZIONE_INAIL" type="xsd:boolean" default="false"/>
+			<!-- Se POSIZIONE_INAIL = true allora valorizzare POSIZIONE_INAIL_TEXT -->
+			<xsd:element name="POSIZIONE_INAIL_TEXT" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="CODICE_INAIL" type="xsd:boolean" default="false"/>
+			<!-- Se CODICE_INAIL = true allora valorizzare il campo CODICE_INAIL_TEXT -->
+			<xsd:element name="CODICE_INAIL_TEXT" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ALBO_IMP_AGRI" type="xsd:boolean" default="false"/>
+			<!-- Se ALBO_IMP_AGRI = true allora valorizzare ALBO_IMP_AGR_NUMERO, ALBO_IMP_AGR_DEL e ALBO_IMP_AGR_PROV -->
+			<xsd:element name="ALBO_IMP_AGR_NUMERO" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ALBO_IMP_AGR_DEL" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="ALBO_IMP_AGR_PROV" type="istatProvinciaType" minOccurs="0"/>
+			<xsd:element name="ISCRITTO_ARTIGIANI" type="xsd:boolean" default="false"/>
+			<!-- Se ISCRITTO_ARTIGIANI = true allora valorizzare ISCRITTO_ARTIGIANI_NUM, ISCRITTO_ARTIGIANI_DEL e ISCRITTO_ARTIGIANI_PROV -->
+			<xsd:element name="ISCRITTO_ARTIGIANI_NUM" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ISCRITTO_ARTIGIANI_DEL" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="ISCRITTO_ARTIGIANI_PROV" type="istatProvinciaType" minOccurs="0"/>
+			<xsd:choice>
+				<xsd:element name="SEGNALA_AVVIO" type="xsd:boolean"/>
+				<xsd:element name="SEGNALA_MODIFICA" type="xsd:boolean"/>
+				<!-- Se SEGNALA_MODIFICA = true allora valorizzare a true almeno un campo MODIFICA* -->
+			</xsd:choice>
+			<xsd:element name="MODIFICA_SEDE" type="xsd:boolean" default="false"/>
+			<xsd:element name="MODIFICA_LOCALI_IMPIANTI" type="xsd:boolean" default="false"/>
+			<xsd:element name="MODIFICA_CICLO" type="xsd:boolean" default="false"/>
+			<xsd:element name="MODIFICA_MERCEOLOGICI" type="xsd:boolean" default="false"/>
+			<xsd:element name="MODIFICA_ALTRO" type="xsd:boolean" default="false"/>
+			<!-- -->
+			<xsd:element name="A_SCHEDA_A1" type="modelloAschedaA1Type"/>
+			<xsd:element name="A_SCHEDA_A2" type="modelloAschedaA2Type"/>
+			<xsd:element name="A_SCHEDA_A3" type="modelloAschedaA3Type"/>
+			<xsd:element name="A_SCHEDA_A4" type="modelloAschedaA4Type"/>
+			<xsd:element name="A_SCHEDA_A5" type="modelloAschedaA5Type" minOccurs="0"/>
+			<xsd:element name="A_SCHEDA_A6" type="modelloAschedaA6Type"/>
+			<xsd:element name="A_DICHIARA" type="modelloADichiarazioniType" minOccurs="0"/>
+			<xsd:element name="A_ALLEGATI" type="modelloAAllegatiType"/>
+			<xsd:element name="A_DISTINTA_ALLEGATI" type="distintaAllegatiType" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="modelloBschedaB1aType">
+		<xsd:sequence>
+			<!-- Inizio ATTIVITA' ECONOMICHE NON ALIMENTARI -->
+			<!-- 1.1 Attività produttiva (Industriale, manifatturiera,ecc.) -->
+			<xsd:element name="TIPO11" type="xsd:boolean" default="false"/>
+			<!-- 1.2 Attività di deposito merci -->
+			<xsd:element name="TIPO12" type="xsd:boolean" default="false"/>
+			<!-- 1.3 Commercio di prodotti fitosanitari -->
+			<xsd:element name="TIPO13" type="xsd:boolean" default="false"/>
+			<!-- Inizio sezione 1.4 Attività nel settore dei mangimi -->
+			<xsd:element name="TIPO141" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO142" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO143" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO144" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO145" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO146" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO147" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO148" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO149" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO1410" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO1411" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO1412" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO1413" type="xsd:boolean" default="false"/>
+			<!-- Fine sezione 1.4 -->
+			<!-- Inizio sezione 1.5 Attività di vendita -->
+			<!-- NB: se si sceglie di modificare un'attività ALIMENTARE (punto 2.3), la tipologia di vendita che si potrà selezionare dovrà essere la medesima di quella qui selezionata  -->
+			<xsd:choice minOccurs="0">
+				<xsd:element name="TIPO151" type="xsd:boolean" default="false"/>
+				<xsd:element name="TIPO152" type="xsd:boolean" default="false"/>
+				<xsd:element name="TIPO153" type="xsd:boolean" default="false"/>
+				<xsd:element name="TIPO154" type="xsd:boolean" default="false"/>
+				<xsd:element name="TIPO155" type="xsd:boolean" default="false"/>
+				<xsd:element name="TIPO156" type="xsd:boolean" default="false"/>
+				<xsd:element name="TIPO157" type="xsd:boolean" default="false"/>
+			</xsd:choice>
+			<!-- Fine sezione 1.5 -->
+			<!-- Inizio sezione 1.6 Attività di servizi alla persona -->
+			<!-- In caso di subingresso, se scelta almeno 1 opzione tra 1.6.1, 1.6.2, 1.6.3 dovrà essere compilata la scheda 3 (rispettivamente nei quadri 3.1; 3.2; 3.3) -->
+			<xsd:element name="TIPO161" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO162" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO163" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO164" type="xsd:boolean" default="false"/>
+			<!-- Se TIPO164 = true allora valorizzare ALTRO_SERVIZI_PERS -->
+			<xsd:element name="ALTRO_SERVIZI_PERS" type="xsd:string" minOccurs="0"/>
+			<!-- Fine sezione 1.6 -->
+			<!-- Inizio sezione 1.7 Altre attività di servizio -->
+			<xsd:element name="TIPO171" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO172" type="xsd:boolean" default="false"/>
+			<!-- Se TIPO172 = true allora valorizzare ALTRO_SERVIZI -->
+			<xsd:element name="ALTRO_SERVIZI" type="xsd:string" minOccurs="0"/>
+			<!-- Fine sezione 1.7 -->
+			<!-- Inizio sezione 1.8 Attività nel settore dei sottoprodotti di origine animale/prodotti derivati (Reg. CE 1069/2009) -->
+			<xsd:element name="TIPO181" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO182" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO183" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO184" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO185" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO186" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO187" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO188" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO189" type="xsd:boolean" default="false"/>
+			<!-- Fine sezione 1.8 -->
+			<!-- Inizio sezione 1.9 Attività nel settore della riproduzione animale -->
+			<xsd:element name="TIPO191" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO192" type="xsd:boolean" default="false"/>
+			<!-- Fine sezione 1.9 -->
+			<!-- Fine ATTIVITA' ECONOMICHE NON ALIMENTARI -->
+			<!-- Inizio ATTIVITA' ECONOMICHE IN CAMPO ALIMENTARE -->
+			<!-- Inizio sezione 2.1 Attività di produzione primaria di alimenti -->
+			<xsd:element name="TIPO211" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO212" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO213" type="xsd:boolean" default="false"/>
+			<!-- Fine sezione 2.1 -->
+			<!-- In caso di subingresso (s) , se scelta almeno 1 opzione tra 2.2.3, 2.2.5, da 2.2.7 a 2.2.11, da 2.3.1 a 2.3.5 dovrà essere compilata la scheda 2 -->
+			<!-- Inizio sezione 2.2 Attività di trasformazione e/o somministrazione di alimenti -->
+			<xsd:element name="TIPO221" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO222" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO223" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO224" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO225" type="xsd:boolean" default="false"/>
+			<!-- Se TIPO225 = true allora valorizzare a true TIPO225_PERSONE_ALLOGGIATE o TIPO225_PUBBLICO  -->
+			<xsd:choice minOccurs="0">
+				<xsd:element name="TIPO225_PERSONE_ALLOGGIATE" type="xsd:boolean"/>
+				<xsd:element name="TIPO225_PUBBLICO" type="xsd:boolean"/>
+			</xsd:choice>
+			<xsd:element name="TIPO226" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO227" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO228" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO229" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO2210" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO2211" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO2212" type="xsd:boolean" default="false"/>
+			<!-- Se TIPO2212 = true allora è possibile valorizzare a true TIPO2212_UTIL_GIORNALIERO_300KG  -->
+			<xsd:element name="TIPO2212_UTIL_GIORNALIERO_300KG" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO2213" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO2214" type="xsd:boolean" default="false"/>
+			<!-- Fine sezione 2.2 -->
+			<!-- Inizio sezione 2.3 Attività di vendita di alimenti -->
+			<!-- NB: se si sceglie di modificare un' attività NON ALIMENTARE (punto 1.5), la tipologia di vendita che si potrà selezionare dovrà essere la medesima di quella qui selezionata (esclusa la 2.3.7) -->
+			<xsd:choice minOccurs="0">
+				<xsd:element name="TIPO231" type="xsd:boolean" default="false"/>
+				<xsd:element name="TIPO232" type="xsd:boolean" default="false"/>
+				<xsd:element name="TIPO233" type="xsd:boolean" default="false"/>
+				<xsd:element name="TIPO234" type="xsd:boolean" default="false"/>
+				<xsd:element name="TIPO235" type="xsd:boolean" default="false"/>
+				<xsd:element name="TIPO236" type="xsd:boolean" default="false"/>
+				<!-- Se viene scelta la tipologia 2.3.7, essa ESCLUDE la scelta di qualsiasi altra tipologia di vendita alimentare (gruppo 2.3) e non alimentare (gruppo 1.5) -->
+				<xsd:element name="TIPO237" type="xsd:boolean" default="false"/>
+				<xsd:element name="TIPO238" type="xsd:boolean" default="false"/>
+			</xsd:choice>
+			<!-- Fine sezione 2.3 -->
+			<!-- Inizio sezione 2.4 Attività di deposito di alimenti -->
+			<xsd:element name="TIPO241" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO242" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO243" type="xsd:boolean" default="false"/>
+			<!-- Fine sezione 2.4 -->
+			<!-- Inizio sezione 2.5 Attività di trasporto di alimenti -->
+			<xsd:element name="TIPO251" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO252" type="xsd:boolean" default="false"/>
+			<!-- Fine sezione 2.5 -->
+			<!-- Fine ATTIVITA' ECONOMICHE IN CAMPO ALIMENTARE -->
+			<!-- Inizio ALTRE ATTIVITA' -->
+			<!-- Inizio sezione 3.1 Attività turistico ricettiva  -->
+			<xsd:choice minOccurs="0">
+				<xsd:element name="TIPO311" type="xsd:boolean"/>
+				<xsd:element name="TIPO312" type="xsd:boolean"/>
+				<xsd:element name="TIPO313" type="xsd:boolean"/>
+			</xsd:choice>
+			<!-- Fine sezione 3.1 -->
+			<!-- Fine ALTRE ATTIVITA' -->
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="modelloBschedaB1bType">
+		<xsd:sequence>
+			<xsd:element name="CODUL" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="SEDE_VIA" type="muta:noEmptyStringType"/>
+			<xsd:element name="SEDE_NUM" type="muta:noEmptyStringType"/>
+			<xsd:element name="SEDE_CAP" type="capType"/>
+			<xsd:element name="CATASTO_FOGLIO" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="CATASTO_MAPPALE" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="CATASTO_SUBALTERNO" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="modelloBschedaB2Type">
+		<xsd:sequence>
+			<xsd:choice>
+				<xsd:element name="TRASFERIMENTO" type="xsd:boolean"/>
+				<xsd:element name="CHIUSURA" type="xsd:boolean"/>
+				<!-- Se CHIUSURA = true allora valorizzare CHIUSURA_DATA -->
+				<!-- Se CHIUSURA = true allora valorizzare CESSAZIONE_COMPLETA o INESSERE_ALTREATTIVITA -->
+			</xsd:choice>
+			<xsd:element name="CHIUSURA_DATA" type="xsd:date" minOccurs="0"/>
+			<xsd:choice minOccurs="0">
+				<xsd:element name="CESSAZIONE_COMPLETA" type="xsd:boolean"/>
+				<xsd:element name="INESSERE_ALTREATTIVITA" type="xsd:boolean"/>
+			</xsd:choice>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="modelloBschedaB3Type">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="it">
+				29/04/2011 - Creata choice per SUBING_FINOAL_DATA e SUBING_FINOAL_CONTRATTO
+		</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="IMPRESA_DENOMINAZIONE" type="muta:noEmptyStringType"/>
+			<xsd:element name="IMPRESA_COMUNE_SL" type="istatComuneType"/>
+			<xsd:element name="IMPRESA_PROVINCIA_SL" type="istatProvinciaType"/>
+			<xsd:element name="IMPRESA_SLEG_VIA" type="muta:noEmptyStringType"/>
+			<xsd:element name="IMPRESA_SLEG_CIVICO" type="muta:noEmptyStringType"/>
+			<xsd:element name="IMPRESA_SLEG_CAP" type="capType"/>
+			<xsd:element name="IMPRESA_DADATA" type="xsd:date"/>
+			<xsd:element name="IMPRESA_SOP_VIA" type="muta:noEmptyStringType"/>
+			<xsd:element name="IMPRESA_SOP_CIVICO" type="muta:noEmptyStringType"/>
+			<xsd:element name="IMPRESA_SOP_CAP" type="capType"/>
+			<xsd:element name="CATASTO_FOGLIO" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="CATASTO_MAPPALE" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="CATASTO_SUBALTERNO" type="xsd:string" minOccurs="0"/>
+			<!-- Valorizzare a true almeno uno dei campi ASEGUITO* -->
+			<xsd:element name="ASEGUITO_COMPRAVENDITA" type="xsd:boolean" default="false"/>
+			<xsd:element name="ASEGUITO_DONAZIONE" type="xsd:boolean" default="false"/>
+			<xsd:element name="ASEGUITO_SUCCESSIONE_VIVI" type="xsd:boolean" default="false"/>
+			<xsd:element name="ASEGUITO_FUSIONE" type="xsd:boolean" default="false"/>
+			<xsd:element name="ASEGUITO_AFFITTO" type="xsd:boolean" default="false"/>
+			<xsd:element name="ASEGUITO_CESSAZIONE_AFFITTO" type="xsd:boolean" default="false"/>
+			<xsd:element name="ASEGUITO_SUCCESSIONE_MORTIS" type="xsd:boolean" default="false"/>
+			<xsd:element name="ASEGUITO_ALTRO" type="xsd:boolean" default="false"/>
+			<!-- Se ASEGUITO_ALTRO = true allora valorizzare ASEGUITO_ALTRO_TEXT -->
+			<xsd:element name="ASEGUITO_ALTRO_TEXT" type="xsd:string" minOccurs="0"/>
+			<xsd:choice>
+				<xsd:element name="TIPO_SUBING_TITOLARITA" type="xsd:boolean"/>
+				<xsd:element name="TIPO_SUBING_FINOAL" type="xsd:boolean"/>
+				<!-- Se TIPO_SUBING_FINOAL = true allora valorizzare i campi SUBING_FINOAL_DATA o SUBING_FINOAL_CONTRATTO -->
+			</xsd:choice>
+			<xsd:choice minOccurs="0">
+				<xsd:element name="SUBING_FINOAL_DATA" type="xsd:date"/>
+				<xsd:element name="SUBING_FINOAL_CONTRATTO" type="xsd:boolean"/>
+			</xsd:choice>
+			<xsd:element name="DICHIARA_NOCAMBIO_PLANIMETRIE" type="xsd:boolean" default="false"/>
+			<xsd:element name="DICHIARA_NOCAMBIO_CONDIZIONI" type="xsd:boolean" default="false"/>
+			<xsd:element name="DICHIARA_MODIFICHE_MODELLOA" type="xsd:boolean" default="false"/>
+			<!-- Se valorizzato DICHIARA_TITOLARE_LEGALE oDICHIARA_PREPOSTO_DELEGATO verificare che sia stata compilata almeno 1 scheda 2 oppure una scheda 3 -->
+			<xsd:element name="DICHIARA_TITOLARE_LEGALE" type="xsd:boolean" default="false"/>
+			<xsd:element name="DICHIARA_PREPOSTO_DELEGATO" type="xsd:boolean" default="false"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="modelloBschedaB4Type">
+		<xsd:sequence>
+			<xsd:element name="IMPRESA_SOP_VIA" type="muta:noEmptyStringType"/>
+			<xsd:element name="IMPRESA_SOP_CIVICO" type="muta:noEmptyStringType"/>
+			<xsd:element name="IMPRESA_SOP_CAP" type="capType"/>
+			<xsd:element name="CATASTO_FOGLIO" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="CATASTO_MAPPALE" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="CATASTO_SUBALTERNO" type="xsd:string" minOccurs="0"/>
+			<xsd:choice>
+				<xsd:element name="TIPO_SOSPRIPR_SOSPESA" type="xsd:boolean"/>
+				<xsd:element name="TIPO_SOSPRIPR_RIPRESA" type="xsd:boolean"/>
+				<!-- Se TIPO_SOSPRIPR_SOSPESA = true allora valorizzare i campi SOSPRIPR_SOSPESA_* -->
+				<!-- Se TIPO_SOSPRIPR_RIPRESA = true allora valorizzare i campi SOSPRIPR_RIPRESA_* -->
+			</xsd:choice>
+			<xsd:element name="SOSPRIPR_SOSPESA_FINOAL" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="SOSPRIPR_SOSPESA_MOTIVI" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="SOSPRIPR_RIPRESA_SOSPESADAL" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="SOSPRIPR_RIPRESA_RIPRESADAL" type="xsd:date" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="modelloBschedaB5Type">
+		<xsd:sequence>
+			<xsd:element name="RAGIONE_SOCIALE_ATTUALE" type="muta:noEmptyStringType"/>
+			<xsd:element name="RAGIONE_SOCIALE_NUOVA" type="muta:noEmptyStringType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="modelloBschedaB6Type">
+		<xsd:sequence>
+			<!-- Se compilato almeno 1 nominativo è necessario valorizzare almeno 1 scheda 2 oppure 3 -->
+			<xsd:element name="TITOLAREREQ_NOME1" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="TITOLAREREQ_COGNOME1" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="TITOLAREREQ_CF1" type="codiceFiscaleType" minOccurs="0"/>
+			<xsd:element name="TITOLAREREQ_NOME2" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="TITOLAREREQ_COGNOME2" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="TITOLAREREQ_CF2" type="codiceFiscaleType" minOccurs="0"/>
+			<xsd:element name="TITOLAREREQ_NOME3" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="TITOLAREREQ_COGNOME3" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="TITOLAREREQ_CF3" type="codiceFiscaleType" minOccurs="0"/>
+			<xsd:element name="NUMERO_SCHEDE23" type="xsd:integer" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="modelloBschedaB7Type">
+		<xsd:sequence>
+			<xsd:element name="DICHIARA_NOCAMBIO_PLANIMETRIE" type="xsd:boolean" default="false"/>
+			<xsd:element name="DICHIARA_NOCAMBIO_CONDIZIONI" type="xsd:boolean" default="false"/>
+			<xsd:element name="DICHIARA_MODIFICHE_MODELLOA" type="xsd:boolean" default="false"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="modelloBschedaB8Type">
+		<xsd:sequence>
+			<xsd:choice minOccurs="0">
+				<xsd:element name="COM_VICINATO" type="xsd:boolean"/>
+				<xsd:element name="COM_SPACINT" type="xsd:boolean"/>
+				<xsd:element name="COM_FRMSPEC" type="xsd:boolean"/>
+				<xsd:element name="COM_MED_STR" type="xsd:boolean"/>
+				<xsd:element name="COM_GRA_STR" type="xsd:boolean"/>
+				<xsd:element name="COM_ARE_PUB" type="xsd:boolean"/>
+			</xsd:choice>
+			<!-- Se COM_VICINATO = true allora valorizzare a true COM_SCIA o COM_DIAP -->
+			<xsd:choice minOccurs="0">
+				<xsd:element name="COM_SCIA" type="xsd:boolean"/>
+				<xsd:element name="COM_DIAP" type="xsd:boolean"/>
+			</xsd:choice>
+			<!-- Se COM_SCIA = true allora valorizzare i campi COM_SCIA* -->
+			<xsd:element name="COM_SCIA_NUMPROT" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="COM_SCIA_DEL" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="COM_SCIA_ENTE" type="xsd:string" minOccurs="0"/>
+			<!-- Se COM_DIAP = true allora valorizzare i campi COM_DIAP* -->
+			<xsd:element name="COM_DIAP_NUMPROT" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="COM_DIAP_DEL" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="COM_DIAP_ENTE" type="xsd:string" minOccurs="0"/>
+			<!-- Se COM_SPACINT = true allora valorizzare i campi COM_COM* -->
+			<xsd:element name="COM_COM" type="xsd:boolean" default="false"/>
+			<xsd:element name="COM_COM_NUMPROT" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="COM_COM_DEL" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="COM_COM_ENTE" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="COM_COM_RESTITUZIONE" type="xsd:boolean" default="false"/>
+			<!-- Se COM_FRMSPEC = true allora valorizzare i campi COM_AUT1* -->
+			<xsd:element name="COM_AUT1" type="xsd:boolean" default="false"/>
+			<xsd:element name="COM_AUT1_NUMPROT" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="COM_AUT1_DEL" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="COM_AUT1_ENTE" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="COM_AUT1_RESTITUZIONE" type="xsd:boolean" default="false"/>
+			<!-- Se COM_MED_STR = true allora valorizzare i campi COM_AUT2* -->
+			<xsd:element name="COM_AUT2" type="xsd:boolean" default="false"/>
+			<xsd:element name="COM_AUT2_NUMPROT" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="COM_AUT2_DEL" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="COM_AUT2_ENTE" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="COM_AUT2_RESTITUZIONE" type="xsd:boolean" default="false"/>
+			<!-- Se COM_GRA_STR = true allora valorizzare i campi COM_AUT3* -->
+			<xsd:element name="COM_AUT3" type="xsd:boolean" default="false"/>
+			<xsd:element name="COM_AUT3_NUMPROT" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="COM_AUT3_DEL" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="COM_AUT3_ENTE" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="COM_AUT3_RESTITUZIONE" type="xsd:boolean" default="false"/>
+			<!-- Se COM_ARE_PUB = true allora valorizzare i campi COM_AUT4* -->
+			<xsd:element name="COM_AUT4" type="xsd:boolean" default="false"/>
+			<xsd:element name="COM_AUT4_NUMPROT" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="COM_AUT4_DEL" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="COM_AUT4_ENTE" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="COM_AUT4_RESTITUZIONE" type="xsd:boolean" default="false"/>
+			<!-- Se SOMM = true allora valorizzare almeno una delle 4 famiglie di campi SOMM_SCIA*, SOMM_DIAP*, SOMM_DIA* o SOMM_AUT* -->
+			<xsd:element name="SOMM" type="xsd:boolean" default="false"/>
+			<xsd:element name="SOMM_SCIA" type="xsd:boolean" default="false"/>
+			<xsd:element name="SOMM_SCIA_NUMPROT" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="SOMM_SCIA_DEL" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="SOMM_SCIA_ENTE" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="SOMM_DIAP" type="xsd:boolean" default="false"/>
+			<xsd:element name="SOMM_DIAP_NUMPROT" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="SOMM_DIAP_DEL" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="SOMM_DIAP_ENTE" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="SOMM_DIA" type="xsd:boolean" default="false"/>
+			<xsd:element name="SOMM_DIA_NUMPROT" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="SOMM_DIA_DEL" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="SOMM_DIA_ENTE" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="SOMM_AUT" type="xsd:boolean" default="false"/>
+			<xsd:element name="SOMM_AUT_NUMPROT" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="SOMM_AUT_DEL" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="SOMM_AUT_ENTE" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="SOMM_AUT_RESTITUZIONE" type="xsd:boolean" default="false"/>
+			<!-- Se INTRATT_68 = true allora valorizzare i campi INTRATT_68* -->
+			<xsd:element name="INTRATT_68" type="xsd:boolean" default="false"/>
+			<xsd:element name="INTRATT_68_LICENZAPS" type="xsd:boolean" default="false"/>
+			<xsd:element name="INTRATT_68_NUMPROT" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="INTRATT_68_DEL" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="INTRATT_68_ENTE" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="INTRATT_68_RESTITUZIONE" type="xsd:boolean" default="false"/>
+			<!-- Se INTRATT_69 = true allora valorizzare i campi INTRATT_69* -->
+			<xsd:element name="INTRATT_69" type="xsd:boolean" default="false"/>
+			<xsd:element name="INTRATT_69_LICENZAPS" type="xsd:boolean" default="false"/>
+			<xsd:element name="INTRATT_69_NUMPROT" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="INTRATT_69_DEL" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="INTRATT_69_ENTE" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="INTRATT_69_RESTITUZIONE" type="xsd:boolean" default="false"/>
+			<!-- Se ATT_RICETT = true allora valorizzare le famiglie dei campi ATT_RICETT* -->
+			<xsd:element name="ATT_RICETT" type="xsd:boolean" default="false"/>
+			<xsd:choice minOccurs="0">
+				<xsd:element name="ATT_RICETT_SCIA" type="xsd:boolean"/>
+				<xsd:element name="ATT_RICETT_LICENZAPS" type="xsd:boolean"/>
+			</xsd:choice>
+			<!-- Se ATT_RICETT_SCIA = true allora valorizzare i campi ATT_RICETT_SCIA* -->
+			<xsd:element name="ATT_RICETT_SCIA_NUMPROT" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ATT_RICETT_SCIA_DEL" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="ATT_RICETT_SCIA_ENTE" type="xsd:string" minOccurs="0"/>
+			<!-- Se ATT_RICETT_LICENZAPS = true allora valorizzare i campi ATT_RICETT_LICENZAPS* -->
+			<xsd:element name="ATT_RICETT_LICENZAPS_NUMPROT" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ATT_RICETT_LICENZAPS_DEL" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="ATT_RICETT_LICENZAPS_ENTE" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ATT_RICETT_LICENZAPS_RESTITUZIONE" type="xsd:boolean" default="false"/>
+			<!-- Se ALTRE_ATT = true allora valorizzare i campi ALTRE_ATT* -->
+			<xsd:element name="ALTRE_ATT" type="xsd:boolean" default="false"/>
+			<xsd:element name="ALTRE_ATT_DESCR" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ALTRE_ATT_LICENZAPS" type="xsd:boolean" default="false"/>
+			<xsd:element name="ALTRE_ATT_NUMPROT" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ALTRE_ATT_DEL" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="ALTRE_ATT_ENTE" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ALTRE_ATT_RESTITUZIONE" type="xsd:boolean" default="false"/>
+			<!-- Se ATT_PROD = true allora valorizzare le famiglie dei campi ATT_PROD* -->
+			<xsd:element name="ATT_PROD" type="xsd:boolean" default="false"/>
+			<xsd:choice minOccurs="0">
+				<xsd:element name="ATT_PROD_SCIA" type="xsd:boolean"/>
+				<xsd:element name="ATT_PROD_DIAP" type="xsd:boolean"/>
+			</xsd:choice>
+			<!-- Se ATT_PROD_SCIA = true allora valorizzare i campi ATT_PROD_SCIA* -->
+			<xsd:element name="ATT_PROD_SCIA_NUMPROT" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ATT_PROD_SCIA_DEL" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="ATT_PROD_SCIA_ENTE" type="xsd:string" minOccurs="0"/>
+			<!-- Se ATT_PROD_DIAP = true allora valorizzare i campi ATT_PROD_DIAP* -->
+			<xsd:element name="ATT_PROD_DIAP_NUMPROT" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ATT_PROD_DIAP_DEL" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="ATT_PROD_DIAP_ENTE" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="modelloBAllegatiType">
+		<xsd:sequence>
+			<xsd:element name="DOC_IDENTITA" type="xsd:boolean" default="false"/>
+			<xsd:element name="SCHEDA2" type="xsd:boolean" default="false"/>
+			<xsd:element name="SCHEDA3" type="xsd:boolean" default="false"/>
+			<xsd:element name="TITOLI_AUTORIZ" type="xsd:boolean" default="false"/>
+			<xsd:element name="NUM_TITOLI_AUTORIZ" type="xsd:integer" minOccurs="0"/>
+			<xsd:element name="COPIA_ATTO_CESS" type="xsd:boolean" default="false"/>
+			<xsd:element name="ALTRO_ALLEGATO" type="xsd:boolean" default="false"/>
+			<xsd:element name="DESC_ALTRO_ALLEGATO" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="modelloBType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="it">
+					09/06/2011 - Aggiornato B_DISTINTA_ALLEGATI con minOccurs=0
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="ISTAT_COMUNE" type="istatComuneType"/>
+			<xsd:element name="COGNOME" type="muta:noEmptyStringType"/>
+			<xsd:element name="NOME" type="muta:noEmptyStringType"/>
+			<xsd:element name="CODICE_FISCALE" type="codiceFiscaleType"/>
+			<xsd:element name="DATA_NASCITA" type="xsd:date"/>
+			<xsd:element name="CITTADINANZA" type="statoType"/>
+			<xsd:element name="SESSO" type="sessoType"/>
+			<xsd:element name="LUOGO_NASCITA_STATO" type="statoType"/>
+			<!-- Se LUOGO_NASCITA_STATO = 'I' allora valorizzare LUOGO_NASCITA_COMUNE e LUOGO_NASCITA_PROV -->
+			<xsd:element name="LUOGO_NASCITA_COMUNE" type="istatComuneType" minOccurs="0"/>
+			<xsd:element name="LUOGO_NASCITA_PROV" type="istatProvinciaType" minOccurs="0"/>
+			<xsd:element name="LUOGO_RESIDENZA_STATO" type="statoType"/>
+			<!-- Se LUOGO_RESIDENZA_STATO = 'I' allora valorizzare RESIDENZA_COMUNE e RESIDENZA_PROVINCIA -->
+			<xsd:element name="RESIDENZA_COMUNE" type="istatComuneType" minOccurs="0"/>
+			<xsd:element name="RESIDENZA_PROVINCIA" type="istatProvinciaType" minOccurs="0"/>
+			<xsd:element name="VIA" type="muta:noEmptyStringType"/>
+			<xsd:element name="CIVICO" type="muta:noEmptyStringType"/>
+			<xsd:element name="CAP" type="capType"/>
+			<xsd:element name="EMAIL" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="EMAIL_PEC" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="TELEFONO" type="muta:noEmptyStringType"/>
+			<xsd:element name="FAX" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="TITOLARE" type="titolareType"/>
+			<!-- Se TITOLARE = 'Altro' allora valorizzare TITOLARE_ALTRO -->
+			<xsd:element name="TITOLARE_ALTRO" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="RAGIONE_SOCIALE" type="muta:noEmptyStringType"/>
+			<xsd:element name="TIPO_ATTIVITA" type="formaGiuridicaType"/>
+			<!-- Se TIPO_ATTIVITA = 'Altro' allora valorizzare IMPRESA_ALTRO_TEXT -->
+			<xsd:element name="IMPRESA_ALTRO_TEXT" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="IMPRESA_CODICE_FISCALE" type="codiceFiscaleType"/>
+			<xsd:element name="IMPRESA_PARTITAIVA" type="codiceFiscaleType" minOccurs="0"/>
+			<xsd:element name="IMPRESA_SEDE_LEGALE" type="istatComuneType"/>
+			<xsd:element name="IMPRESA_PROVINCIA" type="istatProvinciaType"/>
+			<xsd:element name="IMPRESA_VIA" type="muta:noEmptyStringType"/>
+			<xsd:element name="IMPRESA_CIVICO" type="muta:noEmptyStringType"/>
+			<xsd:element name="IMPRESA_CAP" type="capType"/>
+			<xsd:element name="IMPRESA_TELEFONO" type="muta:noEmptyStringType"/>
+			<xsd:element name="IMPRESA_FAX" type="xsd:string" minOccurs="0"/>
+			<xsd:choice>
+				<xsd:element name="ISCRITTO_CCIAA" type="xsd:boolean"/>
+				<!-- Se ISCRITTO_CCIAA = true allora valorizzare ISCRITTO_CCIAA_DI e ISCRITTO_CCIAA_NUMERO -->
+				<xsd:element name="ATTESA_CCIAA" type="xsd:boolean"/>
+				<xsd:element name="NON_TENUTO" type="xsd:boolean"/>
+			</xsd:choice>
+			<xsd:element name="ISCRITTO_CCIAA_DI" type="istatProvinciaType" minOccurs="0"/>
+			<xsd:element name="ISCRITTO_CCIAA_NUMERO" type="xsd:string" minOccurs="0"/>
+			<xsd:choice minOccurs="0">
+				<xsd:element name="ISCRITTO_REA" type="xsd:boolean"/>
+				<!-- Se ISCRITTO_REA = true allora valorizzare ISCRITTO_REA_NUMERO -->
+				<xsd:element name="ATTESA_REA" type="xsd:boolean"/>
+			</xsd:choice>
+			<xsd:element name="ISCRITTO_REA_NUMERO" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="POSIZIONE_INAIL" type="xsd:boolean" default="false"/>
+			<!-- Se POSIZIONE_INAIL = true allora valorizzare POSIZIONE_INAIL_TEXT -->
+			<xsd:element name="POSIZIONE_INAIL_TEXT" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="CODICE_INAIL" type="xsd:boolean" default="false"/>
+			<!-- Se CODICE_INAIL = true allora valorizzare il campo CODICE_INAIL_TEXT -->
+			<xsd:element name="CODICE_INAIL_TEXT" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ALBO_IMP_AGRI" type="xsd:boolean" default="false"/>
+			<!-- Se ALBO_IMP_AGRI = true allora valorizzare ALBO_IMP_AGR_NUMERO, ALBO_IMP_AGR_DEL e ALBO_IMP_AGR_PROV -->
+			<xsd:element name="ALBO_IMP_AGR_NUMERO" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ALBO_IMP_AGR_DEL" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="ALBO_IMP_AGR_PROV" type="istatProvinciaType" minOccurs="0"/>
+			<xsd:element name="ISCRITTO_ARTIGIANI" type="xsd:boolean" default="false"/>
+			<!-- Se ISCRITTO_ARTIGIANI = true allora valorizzare ISCRITTO_ARTIGIANI_NUM, ISCRITTO_ARTIGIANI_DEL e ISCRITTO_ARTIGIANI_PROV -->
+			<xsd:element name="ISCRITTO_ARTIGIANI_NUM" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ISCRITTO_ARTIGIANI_DEL" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="ISCRITTO_ARTIGIANI_PROV" type="istatProvinciaType" minOccurs="0"/>
+			<!-- -->
+			<xsd:choice minOccurs="0">
+				<xsd:element name="SEGNALA_SUBINGRESSO" type="xsd:boolean"/>
+				<xsd:element name="SEGNALA_CESSAZIONE" type="xsd:boolean"/>
+				<xsd:element name="SEGNALA_SOSP_RIPRESA" type="xsd:boolean"/>
+			</xsd:choice>
+			<xsd:element name="SEGNALA_CAMBIO_RAGSOC" type="xsd:boolean" default="false"/>
+			<xsd:element name="SEGNALA_MODIFICA_TITOLARI" type="xsd:boolean" default="false"/>
+			<!-- -->
+			<xsd:element name="B_SCHEDA_B1A" type="modelloBschedaB1aType"/>
+			<xsd:element name="B_SCHEDA_B1B" type="modelloBschedaB1bType"/>
+			<xsd:element name="B_SCHEDA_B2" type="modelloBschedaB2Type" minOccurs="0"/>
+			<xsd:element name="B_SCHEDA_B3" type="modelloBschedaB3Type" minOccurs="0"/>
+			<xsd:element name="B_SCHEDA_B4" type="modelloBschedaB4Type" minOccurs="0"/>
+			<xsd:element name="B_SCHEDA_B5" type="modelloBschedaB5Type" minOccurs="0"/>
+			<xsd:element name="B_SCHEDA_B6" type="modelloBschedaB6Type" minOccurs="0"/>
+			<xsd:element name="B_SCHEDA_B7" type="modelloBschedaB7Type" minOccurs="0"/>
+			<xsd:element name="B_SCHEDA_B8" type="modelloBschedaB8Type" minOccurs="0"/>
+			<xsd:element name="B_ALLEGATI" type="modelloBAllegatiType"/>
+			<xsd:element name="B_DISTINTA_ALLEGATI" type="distintaAllegatiType" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="scheda1VariazioniType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="it">
+					20/06/2011 - Aggiunti elementi boolean per le famiglie di campi VARIA_COM* e VARIA_SOMM*
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<!-- Inizio sezione 1.4 -->
+			<xsd:element name="VARIA_CODUL" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="VARIA_SEDE_VIA" type="muta:noEmptyStringType"/>
+			<xsd:element name="VARIA_SEDE_NUM" type="muta:noEmptyStringType"/>
+			<xsd:element name="VARIA_SEDE_CAP" type="capType"/>
+			<xsd:element name="VARIA_ALLINTERNO_AZIENDA" type="xsd:string" minOccurs="0"/>
+			<!-- Fine sezione 1.4 -->
+			<!-- Inizio sezione 1.5 -->
+			<xsd:element name="VARIA_TITOLARE" type="xsd:string" minOccurs="0"/>
+			<!-- Fine sezione 1.5 -->
+			<!-- Inizio sezione 1.6 -->
+			<xsd:choice minOccurs="0">
+				<xsd:element name="VARIA_COM_VICINATO" type="xsd:boolean"/>
+				<xsd:element name="VARIA_COM_SPACINT" type="xsd:boolean"/>
+				<xsd:element name="VARIA_SOMM" type="xsd:boolean"/>
+			</xsd:choice>
+			<!-- Se VARIA_COM_VICINATO o VARIA_COM_SPACINT = true allora valorizzare una delle 4 famiglie di campi VARIA_COM_AUT*, VARIA_COM_COM*, VARIA_COM_DIAP* o VARIA_COM_SCIA* -->
+			<xsd:element name="VARIA_COM_AUT" type="xsd:boolean" default="false"/>
+			<xsd:element name="VARIA_COM_AUT_NUMPROT" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="VARIA_COM_AUT_DEL" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="VARIA_COM_AUT_ENTE" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="VARIA_COM_COM" type="xsd:boolean" default="false"/>
+			<xsd:element name="VARIA_COM_COM_NUMPROT" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="VARIA_COM_COM_DEL" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="VARIA_COM_COM_ENTE" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="VARIA_COM_DIAP" type="xsd:boolean" default="false"/>
+			<xsd:element name="VARIA_COM_DIAP_NUMPROT" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="VARIA_COM_DIAP_DEL" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="VARIA_COM_DIAP_ENTE" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="VARIA_COM_SCIA" type="xsd:boolean" default="false"/>
+			<xsd:element name="VARIA_COM_SCIA_NUMPROT" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="VARIA_COM_SCIA_DEL" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="VARIA_COM_SCIA_ENTE" type="xsd:string" minOccurs="0"/>
+			<!-- Se VARIA_SOMM = true allora valorizzare una delle 4 famiglie di campi SOMM_AUT*, SOMM_DIA*, SOMM_DIAP* o  SOMM_SCIA* -->
+			<xsd:element name="VARIA_SOMM_AUT" type="xsd:boolean" default="false"/>
+			<xsd:element name="VARIA_SOMM_AUT_NUMPROT" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="VARIA_SOMM_AUT_DEL" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="VARIA_SOMM_AUT_ENTE" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="VARIA_SOMM_DIA" type="xsd:boolean" default="false"/>
+			<xsd:element name="VARIA_SOMM_DIA_NUMPROT" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="VARIA_SOMM_DIA_DEL" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="VARIA_SOMM_DIA_ENTE" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="VARIA_SOMM_DIAP" type="xsd:boolean" default="false"/>
+			<xsd:element name="VARIA_SOMM_DIAP_NUMPROT" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="VARIA_SOMM_DIAP_DEL" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="VARIA_SOMM_DIAP_ENTE" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="VARIA_SOMM_SCIA" type="xsd:boolean" default="false"/>
+			<xsd:element name="VARIA_SOMM_SCIA_NUMPROT" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="VARIA_SOMM_SCIA_DEL" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="VARIA_SOMM_SCIA_ENTE" type="xsd:string" minOccurs="0"/>
+			<!-- Fine sezione 1.6 -->
+			<!-- Inizio sezione 1.7 -->
+			<xsd:element name="VARIA_SUPERF_ALIM" type="xsd:boolean" default="false"/>
+			<xsd:element name="VARIA_NUM_SUPERF_ALIM" type="xsd:decimal" minOccurs="0"/>
+			<xsd:element name="VARIA_SUPERF_NONALIM" type="xsd:boolean" default="false"/>
+			<xsd:element name="VARIA_NUM_SUPERF_NONALIM" type="xsd:decimal" minOccurs="0"/>
+			<xsd:element name="VARIA_SPEC_MONOP" type="xsd:boolean" default="false"/>
+			<xsd:element name="VARIA_NUM_SPEC_MONOP" type="xsd:decimal" minOccurs="0"/>
+			<xsd:element name="VARIA_SPEC_FARM" type="xsd:boolean" default="false"/>
+			<xsd:element name="VARIA_NUM_SPEC_FARM" type="xsd:decimal" minOccurs="0"/>
+			<xsd:element name="VARIA_SPEC_CARB" type="xsd:boolean" default="false"/>
+			<xsd:element name="VARIA_NUM_SPEC_CARB" type="xsd:decimal" minOccurs="0"/>
+			<xsd:element name="VARIA_SUP_DI_SOMM" type="xsd:decimal" minOccurs="0"/>
+			<xsd:element name="VARIA_SUP_DI_SVAGO" type="xsd:decimal" minOccurs="0"/>
+			<xsd:element name="VARIA_SUP_ALTRO" type="xsd:decimal" minOccurs="0"/>
+			<xsd:element name="VARIA_DESCRIZIONE_SUP_ALTRO" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="VARIA_SUP_ACCESSORIE" type="xsd:decimal" minOccurs="0"/>
+			<xsd:element name="VARIA_CALCOLO_CONVENZ" type="xsd:boolean" default="false"/>
+			<!-- Fine sezione 1.7 -->
+			<!-- Inizio sezione 1.8 -->
+			<xsd:element name="VARIA_TRASFERIMENTO_SEDE" type="xsd:boolean" default="false"/>
+			<!-- Fine sezione 1.8 -->
+			<!-- Inizio sezione 1.9 -->
+			<xsd:element name="VARIA_SUPERFICIE" type="xsd:boolean" default="false"/>
+			<xsd:element name="VARIA_SUP_ALIMENTARE" type="variazioneAumentoDiminuzioneType" minOccurs="0"/>
+			<!-- Se VARIA_SUP_ALIMENTARE è valorizzato allora valorizzare VARIA_SUP_ALIMENTARE_ENTITA -->
+			<xsd:element name="VARIA_SUP_ALIMENTARE_ENTITA" type="xsd:decimal" minOccurs="0"/>
+			<xsd:element name="VARIA_SUP_NONALIMENTARE" type="variazioneAumentoDiminuzioneType" minOccurs="0"/>
+			<!-- Se VARIA_SUP_NONALIMENTARE è valorizzato allora valorizzare VARIA_SUP_NONALIMENTARE_ENTITA -->
+			<xsd:element name="VARIA_SUP_NONALIMENTARE_ENTITA" type="xsd:decimal" minOccurs="0"/>
+			<xsd:element name="VARIA_SUP_MONOPOLIO" type="variazioneAumentoDiminuzioneType" minOccurs="0"/>
+			<!-- Se VARIA_SUP_MONOPOLIO è valorizzato allora valorizzare VARIA_SUP_MONOPOLIO_ENTITA -->
+			<xsd:element name="VARIA_SUP_MONOPOLIO_ENTITA" type="xsd:decimal" minOccurs="0"/>
+			<xsd:element name="VARIA_SUP_FARMACIE" type="variazioneAumentoDiminuzioneType" minOccurs="0"/>
+			<!-- Se VARIA_SUP_FARMACIE è valorizzato allora valorizzare VARIA_SUP_FARMACIE_ENTITA -->
+			<xsd:element name="VARIA_SUP_FARMACIE_ENTITA" type="xsd:decimal" minOccurs="0"/>
+			<xsd:element name="VARIA_SUP_CARBURANTI" type="variazioneAumentoDiminuzioneType" minOccurs="0"/>
+			<!-- Se VARIA_SUP_CARBURANTI è valorizzato allora valorizzare VARIA_SUP_CARBURANTI_ENTITA -->
+			<xsd:element name="VARIA_SUP_CARBURANTI_ENTITA" type="xsd:decimal" minOccurs="0"/>
+			<xsd:element name="VARIA_SUP_SOMM" type="variazioneAumentoDiminuzioneType" minOccurs="0"/>
+			<!-- Se VARIA_SUP_SOMM è valorizzato allora valorizzare VARIA_SUP_SOMM_ENTITA -->
+			<xsd:element name="VARIA_SUP_SOMM_ENTITA" type="xsd:decimal" minOccurs="0"/>
+			<!-- Fine sezione 1.9 -->
+			<!-- Inizio sezione 1.10 -->
+			<xsd:element name="VARIA_MERCE" type="xsd:boolean" default="false"/>
+			<xsd:element name="VARIA_MERCE_ALIMENTARE" type="variazioneAggiuntaEliminaType" minOccurs="0"/>
+			<xsd:element name="VARIA_MERCE_NONALIMENTARE" type="variazioneAggiuntaEliminaType" minOccurs="0"/>
+			<xsd:element name="VARIA_MERCE_MONOPOLIO" type="variazioneAggiuntaEliminaType" minOccurs="0"/>
+			<xsd:element name="VARIA_MERCE_FARMACIE" type="variazioneAggiuntaEliminaType" minOccurs="0"/>
+			<xsd:element name="VARIA_MERCE_CARBURANTI" type="variazioneAggiuntaEliminaType" minOccurs="0"/>
+			<xsd:element name="VARIA_MERCE_SOMM" type="variazioneAggiuntaEliminaType" minOccurs="0"/>
+			<!-- Fine sezione 1.10 -->
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="scheda1FormeSpecialiVenditaAvvioType">
+		<xsd:sequence>
+			<!-- Inizio sezione 1.11 -->
+			<!-- Scelte multiple, almeno 1 obbligatoria -->
+			<xsd:element name="TIPO_ATTIVITA_CORRISP" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO_ATTIVITA_TV" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO_ATTIVITA_COMMELE" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPO_ATTIVITA_ALTRO" type="xsd:boolean" default="false"/>
+			<!-- Se TIPO_ATTIVITA_ALTRO = true allora valorizzare DESCRIZIONE_ALTRO -->
+			<xsd:element name="DESCRIZIONE_ALTRO" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="DOMICILIO_CONSUMATORE" type="xsd:boolean" default="false"/>
+			<!-- Fine sezione 1.11 -->
+			<!-- Inizio sezione 1.12 -->
+			<xsd:choice>
+				<xsd:element name="INSIEMEAA_LOCALI" type="xsd:boolean"/>
+				<xsd:element name="INSIEMEAA_LOCALI_SEPARATI" type="xsd:boolean"/>
+				<xsd:element name="INSIEMEAA_NO" type="xsd:boolean"/>
+			</xsd:choice>
+			<xsd:element name="AA_COD_ATECO" type="codiceAteco3CType" minOccurs="0"/>
+			<xsd:choice>
+				<xsd:element name="DEPOSITO_MERCI_PROPRIO" type="xsd:boolean"/>
+				<xsd:element name="DEPOSITO_MERCI_TERZI" type="xsd:boolean"/>
+			</xsd:choice>
+			<xsd:element name="DEPOSITO_MERCI_INDIRIZZO" type="muta:noEmptyStringType"/>
+			<!-- Obbligatorio sel nel riquadro 1.11 è selezionato "Commercio elettronico" -->
+			<xsd:element name="COMMELE_WWW_INDIVIDUALE" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="COMMELE_WWW_COLLETTIVO" type="xsd:string" minOccurs="0"/>
+			<!-- -->
+			<xsd:element name="COMMERCIO_DOMICILIO_INCARICATI" type="xsd:boolean" default="false"/>
+			<!-- Fine sezione 1.12 -->
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="scheda1FormeSpecialiVenditaVariazioniType">
+		<xsd:sequence>
+			<!-- Inizio sezione 1.13 -->
+			<xsd:element name="VARIA_TRASF_SEDE" type="xsd:boolean" default="false"/>
+			<xsd:element name="VARIA_MANTIENE_CARATT" type="xsd:boolean" default="false"/>
+			<!-- Fine sezione 1.13 -->
+			<!-- Inizio sezione 1.14 -->
+			<!-- NB: se selezionata opzione "aggiunto" per tipo "alimentare", è OBBLIGATORIA LA COMPILAZIONE DELLA SCHEDA 2 (necessario scegliere tra 1 dei punti dal 3.1 al 3.4) -->
+			<xsd:element name="VARIA_MERCE" type="xsd:boolean" default="false"/>
+			<!-- Se VARIA_MERCE = true allora valorizzare almeno uno dei due campi VARIA_MERCE* -->
+			<xsd:element name="VARIA_MERCE_ALIMENTARE" type="variazioneAggiuntaEliminaType" minOccurs="0"/>
+			<xsd:element name="VARIA_MERCE_NONALIMENTARE" type="variazioneAggiuntaEliminaType" minOccurs="0"/>
+			<!-- Fine sezione 1.14 -->
+			<!-- Inizio sezione 1.15 -->
+			<xsd:element name="VARIA_WWW" type="xsd:boolean" default="false"/>
+			<!-- Se VARIA_WWW = true allora valorizzare almeno uno dei due campi VARIA_WWW* -->
+			<xsd:element name="VARIA_WWW_INDIVIDUALE" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="VARIA_WWW_COLLETTIVO" type="xsd:string" minOccurs="0"/>
+			<!-- Fine sezione 1.15 -->
+			<!-- Inizio sezione 1.16 -->
+			<xsd:element name="VARIA_COMM_DOMICILIO_INCARICATI" type="xsd:boolean" default="false"/>
+			<!-- Fine sezione 1.16 -->
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="scheda1Type">
+		<xsd:sequence>
+			<!-- Inizio sezione 1.1 -->
+			<!-- L'indicazione delle superfici ALIMENTARI è obbligatoria solo se nel modello A vengono scelti i campi 2.3.1. ; 2.3.2. ;  2.3.4. -->
+			<xsd:element name="SUPERF_ALIM" type="xsd:boolean" default="false"/>
+			<xsd:element name="NUM_SUPERF_ALIM" type="xsd:decimal" minOccurs="0"/>
+			<!-- L'indicazione delle superfici NON ALIMENTARI è obbligatoria solo se nel modello A vengono scelti i campi 1.5.1. ; 1.5.2. ; 1.5.4. -->
+			<xsd:element name="SUPERF_NONALIM" type="xsd:boolean" default="false"/>
+			<xsd:element name="NUM_SUPERF_NONALIM" type="xsd:decimal" minOccurs="0"/>
+			<xsd:element name="SPEC_MONOP" type="xsd:boolean" default="false"/>
+			<xsd:element name="NUM_SPEC_MONOP" type="xsd:decimal" minOccurs="0"/>
+			<xsd:element name="SPEC_FARM" type="xsd:boolean" default="false"/>
+			<xsd:element name="NUM_SPEC_FARM" type="xsd:decimal" minOccurs="0"/>
+			<xsd:element name="SPEC_CARB" type="xsd:boolean" default="false"/>
+			<xsd:element name="NUM_SPEC_CARB" type="xsd:decimal" minOccurs="0"/>
+			<!-- Per SUPERFICIE SOMMINISTRAZIONE e SUPERFICIE INTRATTENIMENTO E SVAGO è obbligatorio indicare le superfici (uno o entrambe) nel caso si scelgano nel modello A le opzioni 2.2.3 ; 2.2.5 ; 2.2.7 ; 2.2.8. ; 2.2.9. ; 2.2.10 ; 2.2.11. -->
+			<xsd:element name="SUP_DI_SOMM" type="xsd:decimal" minOccurs="0"/>
+			<xsd:element name="SUP_DI_SVAGO" type="xsd:decimal" minOccurs="0"/>
+			<xsd:element name="SUP_ALTRO" type="xsd:decimal" minOccurs="0"/>
+			<xsd:element name="DESCRIZIONE_SUP_ALTRO" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="SUP_ACCESSORIE" type="xsd:decimal" minOccurs="0"/>
+			<xsd:element name="CALCOLO_CONVENZ" type="xsd:boolean" default="false"/>
+			<!-- Fine sezione 1.1 -->
+			<!-- Inizio sezione 1.2 -->
+			<xsd:element name="ALTRO_ATECO" type="xsd:boolean" default="false"/>
+			<!-- Se ALTRO_ATECO = true allora deve essere valorizzato almeno una delle 3 coppie DESC_ATECO*/TRECIFRE_ATECO* -->
+			<xsd:element name="DESC_ATECO_1" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="TRECIFRE_ATECO_1" type="codiceAteco3CType" minOccurs="0"/>
+			<xsd:element name="DESC_ATECO_2" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="TRECIFRE_ATECO_2" type="codiceAteco3CType" minOccurs="0"/>
+			<xsd:element name="DESC_ATECO_3" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="TRECIFRE_ATECO_3" type="codiceAteco3CType" minOccurs="0"/>
+			<!-- Fine sezione 1.2 -->
+			<!-- Inizio sezione 1.3 -->
+			<xsd:element name="ATT_NEL_DOMICILIO_SN" type="xsd:boolean" default="false"/>
+			<!-- Fine sezione 1.3 -->
+			<xsd:element name="VARIAZIONI" type="scheda1VariazioniType" minOccurs="0"/>
+			<xsd:element name="FORME_SPECIALI_VENDITA_AVVIO" type="scheda1FormeSpecialiVenditaAvvioType" minOccurs="0"/>
+			<xsd:element name="FORME_SPECIALI_VENDITA_VARIA" type="scheda1FormeSpecialiVenditaVariazioniType" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="scheda2Type">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="it">
+					29/04/2011 - Aggiornati COMM_CORSO, SOMM_DIPLOMA, SOMM_PRESTATO e ISCRITTO_REC, non sono più esclusivi in choice
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="COGNOME" type="muta:noEmptyStringType"/>
+			<xsd:element name="NOME" type="muta:noEmptyStringType"/>
+			<xsd:element name="CODICE_FISCALE" type="codiceFiscaleType"/>
+			<xsd:element name="DATA_DI_NASCITA" type="xsd:date"/>
+			<xsd:element name="CITTADINANZA" type="statoType"/>
+			<xsd:element name="S2_SESSO" type="sessoType"/>
+			<xsd:element name="STATO_DI_NASCITA" type="statoType"/>
+			<!-- Se STATO_DI_NASCITA = 'I' allora valorizzare COMUNE_DI_NASCITA e PROVINCIA_DI_NASCITA -->
+			<xsd:element name="COMUNE_DI_NASCITA" type="istatComuneType" minOccurs="0"/>
+			<xsd:element name="PROVINCIA_DI_NASCITA" type="istatProvinciaType" minOccurs="0"/>
+			<xsd:element name="LUOGO_RESIDENZA_STATO" type="statoType"/>
+			<!-- Se LUOGO_RESIDENZA_STATO = 'I' allora valorizzare COMUNE_DI_RESIDENZA e PROV_DI_RESIDENZA -->
+			<xsd:element name="COMUNE_DI_RESIDENZA" type="istatComuneType" minOccurs="0"/>
+			<xsd:element name="PROV_DI_RESIDENZA" type="istatProvinciaType" minOccurs="0"/>
+			<xsd:element name="RESIDENZA_VIA" type="muta:noEmptyStringType"/>
+			<xsd:element name="RESIDENZA_NUM" type="muta:noEmptyStringType"/>
+			<xsd:element name="RESIDENZA_CAP" type="capType"/>
+			<xsd:choice>
+				<xsd:element name="TITOLARE" type="xsd:boolean"/>
+				<xsd:element name="SOCIO" type="xsd:boolean"/>
+				<xsd:element name="MEMBRO" type="xsd:boolean"/>
+				<xsd:element name="LEGALE" type="xsd:boolean"/>
+				<!-- se LEGALE = true allora ovalorizzare LEGALE_NOME_SOCIETA -->
+				<xsd:element name="DELEGATO" type="xsd:boolean"/>
+				<!-- se DELEGATO = true allora valorizzare DELEGATO_NOME_SOCIETA e DELEGATO_IN_DATA -->
+			</xsd:choice>
+			<xsd:element name="LEGALE_NOME_SOCIETA" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="DELEGATO_NOME_SOCIETA" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="DELEGATO_IN_DATA" type="xsd:date" minOccurs="0"/>
+			<!-- -->
+			<!-- se COMM_CORSO = true allora valorizzare COMM_REGIONE, COMM_NOMEISTITUTO, COMM_SEDE, COMM_TIPO e COMM_DATAFINE -->
+			<xsd:element name="COMM_CORSO" type="xsd:boolean" default="false"/>
+			<xsd:element name="COMM_REGIONE" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="COMM_NOMEISTITUTO" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="COMM_SEDE" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="COMM_TIPO" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="COMM_DATAFINE" type="xsd:gYear" minOccurs="0"/>
+			<!-- se SOMM_DIPLOMA = true allora valorizzare SOM_DIPLOMA_TITOLO, SOM_DIPLOMA_NOMEIST, SOM_DIPLOMA_SEDE, SOM_DIPLOMA_TIPO e SOM_DIPLOMA_DATAFINE -->
+			<xsd:element name="SOMM_DIPLOMA" type="xsd:boolean" default="false"/>
+			<xsd:element name="SOM_DIPLOMA_TITOLO" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="SOM_DIPLOMA_NOMEIST" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="SOM_DIPLOMA_SEDE" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="SOM_DIPLOMA_TIPO" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="SOM_DIPLOMA_DATAFINE" type="xsd:gYear" minOccurs="0"/>
+			<!-- se SOMM_PRESTATO = true allora devono valorizzare i campi SOM_PREST* -->
+			<xsd:element name="SOMM_PRESTATO" type="xsd:boolean" default="false"/>
+			<xsd:choice minOccurs="0">
+				<xsd:element name="SOM_PREST_INPROPRIO" type="xsd:boolean"/>
+				<xsd:element name="SOM_PREST_SOCIOLAV" type="xsd:boolean"/>
+				<xsd:element name="SOM_PREST_DIPENDENTE" type="xsd:boolean"/>
+				<xsd:element name="SOM_PREST_COADIUTORE" type="xsd:boolean"/>
+			</xsd:choice>
+			<xsd:element name="SOM_PREST_INPS" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="SOM_PREST_INPS_DEL" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="SOM_PREST_NOMEIMP" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="SOM_PREST_SEDEIMP" type="xsd:string" minOccurs="0"/>
+			<!-- se ISCRITTO_REC = true allora valorizzare ISCRITTO_REC_CCIAA, ISCRITTO_REC_NUM e ISCRITTO_REC_DATA -->
+			<xsd:element name="ISCRITTO_REC" type="xsd:boolean" default="false"/>
+			<xsd:element name="ISCRITTO_REC_CCIAA" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ISCRITTO_REC_NUM" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ISCRITTO_REC_DATA" type="xsd:date" minOccurs="0"/>
+			<!-- Fine sezione dichiara -->
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="scheda3AnagraficaType">
+		<xsd:sequence>
+			<xsd:element name="COGNOME" type="muta:noEmptyStringType"/>
+			<xsd:element name="NOME" type="muta:noEmptyStringType"/>
+			<xsd:element name="CODICE_FISCALE" type="codiceFiscaleType"/>
+			<xsd:element name="DATA_DI_NASCITA" type="xsd:date"/>
+			<xsd:element name="CITTADINANZA" type="statoType"/>
+			<xsd:element name="SESSO" type="sessoType"/>
+			<xsd:element name="STATO_DI_NASCITA" type="statoType"/>
+			<!-- Se STATO_DI_NASCITA = 'I' allora valorizzare COMUNE_DI_NASCITA e PROVINCIA_DI_NASCITA -->
+			<xsd:element name="COMUNE_DI_NASCITA" type="istatComuneType" minOccurs="0"/>
+			<xsd:element name="PROVINCIA_DI_NASCITA" type="istatProvinciaType" minOccurs="0"/>
+			<xsd:element name="COMUNE_DI_RESIDENZA" type="istatComuneType"/>
+			<xsd:element name="PROV_DI_RESIDENZA" type="istatProvinciaType"/>
+			<xsd:element name="RESIDENZA_VIA" type="muta:noEmptyStringType"/>
+			<xsd:element name="RESIDENZA_NUM" type="muta:noEmptyStringType"/>
+			<xsd:element name="RESIDENZA_CAP" type="capType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="scheda3Type">
+		<xsd:sequence>
+			<xsd:element name="ACCONCIATORE" type="xsd:boolean" default="false"/>
+			<!-- Se ACCONCIATORE = true allora valorizzare i campi ACCONCIA* -->
+			<xsd:choice minOccurs="0">
+				<xsd:element name="ACCONCIA_TITOLARE" type="xsd:boolean"/>
+				<xsd:element name="ACCONCIA_SOCIO" type="xsd:boolean"/>
+				<xsd:element name="ACCONCIA_FAM_COL_DIP" type="xsd:boolean"/>
+			</xsd:choice>
+			<xsd:element name="ACCONCIA_ANAGRAFICA" type="scheda3AnagraficaType" minOccurs="0"/>
+			<xsd:element name="ACCONCIA_QUALIFICA" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ACCONCIA_QUALIFICA_DATA" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="ESTETISTA" type="xsd:boolean" default="false"/>
+			<!-- Se ESTETISTA = true allora valorizzare i campi ESTETISTA* -->
+			<xsd:choice minOccurs="0">
+				<xsd:element name="ESTETISTA_TITOLARE" type="xsd:boolean"/>
+				<xsd:element name="ESTETISTA_SOCIO" type="xsd:boolean"/>
+				<xsd:element name="ESTETISTA_FAM_COL_DIP" type="xsd:boolean"/>
+			</xsd:choice>
+			<xsd:element name="ESTETISTA_ANAGRAFICA" type="scheda3AnagraficaType" minOccurs="0"/>
+			<xsd:element name="ESTETISTA_QUALIFICA" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ESTETISTA_QUALIFICA_DATA" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="TATUAGGIO_PIERCING" type="xsd:boolean" default="false"/>
+			<!-- Se TATUAGGIO_PEARCING = true allora è obbligatorio valorizzare i campi TATUPEAR* -->
+			<xsd:choice minOccurs="0">
+				<xsd:element name="TATUPEAR_TITOLARE" type="xsd:boolean"/>
+				<xsd:element name="TATUPEAR_SOCIO" type="xsd:boolean"/>
+				<xsd:element name="TATUPEAR_FAM_COL_DIP" type="xsd:boolean"/>
+			</xsd:choice>
+			<xsd:element name="TATUPEAR_ANAGRAFICA" type="scheda3AnagraficaType" minOccurs="0"/>
+			<xsd:element name="TATUPEAR_QUALIFICA" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="TATUPEAR_QUALIFICA_DATA" type="xsd:date" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="scheda4TipologiaRischiType">
+		<xsd:sequence>
+			<xsd:element name="CANCEROGENI" type="xsd:boolean" default="false"/>
+			<xsd:element name="BIOLOGICI" type="xsd:boolean" default="false"/>
+			<xsd:element name="CHIMICI" type="xsd:boolean" default="false"/>
+			<!-- Se CHIMICI = true allora valorizzare almeno un campo CHIMICI* -->
+			<xsd:element name="CHIMICI_GAS" type="xsd:boolean" default="false"/>
+			<xsd:element name="CHIMICI_POLVERI" type="xsd:boolean" default="false"/>
+			<xsd:element name="CHIMICI_LIQUIDI" type="xsd:boolean" default="false"/>
+			<xsd:element name="FISICI" type="xsd:boolean" default="false"/>
+			<!-- Se FISICI = true allora valorizzare almeno un campo FISICI* -->
+			<xsd:element name="FISICI_RUMORE" type="xsd:boolean" default="false"/>
+			<xsd:element name="FISICI_VIBRAZ" type="xsd:boolean" default="false"/>
+			<xsd:element name="FISICI_VIDEO" type="xsd:boolean" default="false"/>
+			<xsd:element name="FISICI_MICRO" type="xsd:boolean" default="false"/>
+			<xsd:element name="FISICI_RADIAZ" type="xsd:boolean" default="false"/>
+			<xsd:element name="ORGANIZZAZIONE" type="xsd:boolean" default="false"/>
+			<!-- Se ORGANIZZAZIONE = true allora valorizzare almeno un campo ORG* -->
+			<xsd:element name="ORG_CARAT" type="xsd:boolean" default="false"/>
+			<xsd:element name="ORG_MOV_CARICHI" type="xsd:boolean" default="false"/>
+			<xsd:element name="ORG_MOV_ALTRO" type="xsd:boolean" default="false"/>
+			<xsd:element name="INFORTUNI" type="xsd:boolean" default="false"/>
+			<!-- Se INFORTUNI = true allora valorizzare almeno un campo INFORT* -->
+			<xsd:element name="INFORT_ELETTR" type="xsd:boolean" default="false"/>
+			<xsd:element name="INFORT_MECC" type="xsd:boolean" default="false"/>
+			<xsd:element name="INFORT_CADUTA" type="xsd:boolean" default="false"/>
+			<xsd:element name="ESPLOSIONE" type="xsd:boolean" default="false"/>
+			<xsd:element name="INCENDIO" type="xsd:boolean" default="false"/>
+			<xsd:element name="INAIL_1" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="INAIL_3" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="INAIL_2" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="INAIL_4" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="scheda4Type">
+		<xsd:sequence>
+			<xsd:element name="NUM_ADDETTI_DIAP" type="xsd:integer" minOccurs="0"/>
+			<xsd:element name="NUM_ADDETTI_IMPRESE" type="xsd:integer" minOccurs="0"/>
+			<xsd:element name="NUM_ADDETTI_PER_ATT" type="xsd:integer" minOccurs="0"/>
+			<xsd:element name="CODICE_ATECO_1" type="codiceAtecoType"/>
+			<xsd:element name="ANNO_ATECO_1" type="xsd:gYear"/>
+			<xsd:element name="CODICE_ATECO_2" type="codiceAtecoType" minOccurs="0"/>
+			<xsd:element name="ANNO_ATECO_2" type="xsd:gYear" minOccurs="0"/>
+			<xsd:element name="CODICE_ATECO_3" type="codiceAtecoType" minOccurs="0"/>
+			<xsd:element name="ANNO_ATECO_3" type="xsd:gYear" minOccurs="0"/>
+			<xsd:element name="CODICE_ATECO_4" type="codiceAtecoType" minOccurs="0"/>
+			<xsd:element name="ANNO_ATECO_4" type="xsd:gYear" minOccurs="0"/>
+			<xsd:element name="CODICE_ATECO_5" type="codiceAtecoType" minOccurs="0"/>
+			<xsd:element name="ANNO_ATECO_5" type="xsd:gYear" minOccurs="0"/>
+			<xsd:element name="AUTORIZZ_NUM" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="AUTOR_RILASCIO_IL" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="AUTOR_AISENSI" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="MATERIALI_PERALIM" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPOLOGIA_IMPIANTO" type="tipologiaImpiantoType"/>
+			<xsd:element name="MATERIALE_PRODOTTO" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="QUANTITATIVO_ANNUO" type="xsd:decimal" minOccurs="0"/>
+			<xsd:element name="QUANTITATIVO_MISURA" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="MATERIALE" type="materialeType" minOccurs="0"/>
+			<xsd:element name="SE_LIQUIDO" type="liquidoType" minOccurs="0"/>
+			<xsd:element name="SE_SOLIDO" type="solidoType" minOccurs="0"/>
+			<xsd:element name="ENERGIATERMICA" type="xsd:boolean" default="false"/>
+			<xsd:element name="MECCANICA" type="xsd:boolean" default="false"/>
+			<xsd:element name="TIPOLOGIA_RISCHI" type="scheda4TipologiaRischiType" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="scheda5EstremiAutorizzazioneType">
+		<xsd:sequence>
+			<xsd:element name="ESTREMI" type="xsd:string"/>
+			<xsd:element name="DATA" type="xsd:date"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="scheda5TecnicoType">
+		<xsd:sequence>
+			<xsd:element name="NOME" type="muta:noEmptyStringType"/>
+			<xsd:element name="COGNOME" type="muta:noEmptyStringType"/>
+			<xsd:element name="CODICE_FISCALE" type="codiceFiscaleType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="scheda5Type">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="it">
+					20/06/2011 - Per tutti gli elementi di tipo scheda5EstremiAutorizzazioneType introdotto relativo elemento boolean
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="IDRO_DOMESTICO" type="xsd:boolean" default="false"/>
+			<xsd:element name="IDRO_DOMESTICO_ESTREMI" type="scheda5EstremiAutorizzazioneType" minOccurs="0"/>
+			<xsd:element name="IDRO_INDUSTRIALE" type="xsd:boolean" default="false"/>
+			<xsd:element name="IDRO_INDUSTRIALE_ESTREMI" type="scheda5EstremiAutorizzazioneType" minOccurs="0"/>
+			<xsd:element name="IDRO_METEORICO" type="xsd:boolean" default="false"/>
+			<xsd:element name="IDRO_METEORICO_ESTREMI" type="scheda5EstremiAutorizzazioneType" minOccurs="0"/>
+			<xsd:element name="IDRO_FOGNATURA" type="xsd:boolean" default="false"/>
+			<xsd:element name="IDRO_FOGNATURA_ESTREMI" type="scheda5EstremiAutorizzazioneType" minOccurs="0"/>
+			<xsd:element name="IDRO_CORPO_IDRICO" type="xsd:boolean" default="false"/>
+			<xsd:element name="IDRO_CORPO_IDRICO_ESTREMI" type="scheda5EstremiAutorizzazioneType" minOccurs="0"/>
+			<xsd:element name="IDRO_SUOLO_SOTTO" type="xsd:boolean" default="false"/>
+			<xsd:element name="IDRO_SUOLO_SOTTO_ESTREMI" type="scheda5EstremiAutorizzazioneType" minOccurs="0"/>
+			<xsd:element name="EMISS_SCARSA" type="xsd:boolean" default="false"/>
+			<xsd:element name="EMISS_SCARSA_ESTREMI" type="scheda5EstremiAutorizzazioneType" minOccurs="0"/>
+			<xsd:element name="EMISS_DEROGA" type="xsd:boolean" default="false"/>
+			<xsd:element name="EMISS_DEROGA_ESTREMI" type="scheda5EstremiAutorizzazioneType" minOccurs="0"/>
+			<xsd:element name="EMISS_ORDINARIA" type="xsd:boolean" default="false"/>
+			<xsd:element name="EMISS_ORDINARIA_ESTREMI" type="scheda5EstremiAutorizzazioneType" minOccurs="0"/>
+			<xsd:element name="EMISS_UNICA" type="xsd:boolean" default="false"/>
+			<xsd:element name="EMISS_UNICA_ESTREMI" type="scheda5EstremiAutorizzazioneType" minOccurs="0"/>
+			<xsd:element name="RIFIUTI_SEMPLIFICATA" type="xsd:boolean" default="false"/>
+			<xsd:element name="RIFIUTI_SEMPLIFICATA_ESTREMI" type="scheda5EstremiAutorizzazioneType" minOccurs="0"/>
+			<xsd:element name="RIFIUTI_ODINARIA" type="xsd:boolean" default="false"/>
+			<xsd:element name="RIFIUTI_ODINARIA_ESTREMI" type="scheda5EstremiAutorizzazioneType" minOccurs="0"/>
+			<xsd:element name="INTEGRA_CARBURANTE" type="xsd:boolean" default="false"/>
+			<xsd:element name="INTEGRA_CARBURANTE_ESTREMI" type="scheda5EstremiAutorizzazioneType" minOccurs="0"/>
+			<xsd:element name="INTEGRA_GASTOSSICI" type="xsd:boolean" default="false"/>
+			<xsd:element name="INTEGRA_GASTOSSICI_ESTREMI" type="scheda5EstremiAutorizzazioneType" minOccurs="0"/>
+			<xsd:element name="ATTIVITARISCHIO" type="xsd:boolean" default="false"/>
+			<!-- Se ATTIVITARISCHIO = true allora valorizzare ARTICOLI e RISCHIO_DATA_NOTIFICA -->
+			<xsd:element name="ARTICOLI" type="articoliType" minOccurs="0"/>
+			<xsd:element name="RISCHIO_DATA_NOTIFICA" type="xsd:date" minOccurs="0"/>
+			<xsd:choice minOccurs="0">
+				<xsd:element name="INSALUBRI_1CLASSE" type="xsd:boolean"/>
+				<xsd:element name="INSALUBRI_2CLASSE" type="xsd:boolean"/>
+			</xsd:choice>
+			<xsd:element name="PRESENZA_SERBATOI" type="xsd:boolean" default="false"/>
+			<!-- Se PRESENZA_SERBATOI = true allora valorizzare a true almeno uno dei due tra SERBATOI_FUORI e SERBATOI_INTERRATI -->
+			<xsd:element name="SERBATOI_FUORI" type="xsd:boolean" default="false"/>
+			<xsd:element name="SERBATOI_FUORI_DOPPIA" type="xsd:boolean" default="false"/>
+			<xsd:element name="SERBATOI_INTERRATI" type="xsd:boolean" default="false"/>
+			<xsd:element name="SERBATOI_INTERRATI_DOPPIA" type="xsd:boolean" default="false"/>
+			<xsd:element name="IMP_ACUST_DATA" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="IMP_ACUST_TECNICO" type="scheda5TecnicoType" minOccurs="0"/>
+			<xsd:element name="LIMIT_EXPO_DATA" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="LIMIT_EXPO_TECNICO" type="scheda5TecnicoType" minOccurs="0"/>
+			<xsd:element name="RADIOATT_ESTREMI" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="RADIOATT_AUTORITA" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="RADIOATT_DATA" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="INCENDIO_PARERE" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="INCENDIO_PARERE_DATA" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="INCENDIO_DIA" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="INCENDIO_DIA_DATA" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="INCENDIO_RICHIESTA_CPI_DATA" type="xsd:date" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="scheda6DipendenzaType">
+		<xsd:sequence>
+			<xsd:element name="VIA" type="muta:noEmptyStringType"/>
+			<xsd:element name="NUM" type="muta:noEmptyStringType"/>
+			<xsd:element name="CAP" type="capType"/>
+			<xsd:element name="CAMERE_APPARTAMENTI" type="xsd:decimal"/>
+			<xsd:element name="POSTI_LETTO" type="xsd:decimal"/>
+			<xsd:element name="CODUL" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="scheda6AttivitaAlberghieraType">
+		<xsd:sequence>
+			<!-- Se TIPO_ALBERGO = 'ALBERGO_DIFFUSO' allora valorizzare campi sezione 6.8 -->
+			<!-- Se TIPO_ALBERGO = 'MOTEL' allora valorizzare campi SERVIZIO_AUTORIMESSA e SOMM_ALLOGGIATI -->
+			<!-- Se TIPO_ALBERGO = 'ALTRO' allora valorizzare campo TIPO_ALTRO_DESCR -->
+			<xsd:element name="TIPO_ALBERGO" type="albergoType"/>
+			<xsd:element name="TIPO_ALTRO_DESCR" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="DENOMINAZIONE" type="muta:noEmptyStringType"/>
+			<xsd:element name="NUMERO_STELLE" type="albergoStelleType"/>
+			<xsd:element name="NUMERO_CAMERE" type="xsd:decimal"/>
+			<xsd:element name="CAMERE_POSTI_LETTO" type="xsd:decimal"/>
+			<xsd:element name="NUMERO_APPARTAMENTI" type="xsd:decimal"/>
+			<xsd:element name="APPARTAMENTI_POSTI_LETTO" type="xsd:decimal"/>
+			<xsd:element name="SERVIZIO_AUTORIMESSA" type="xsd:boolean" minOccurs="0"/>
+			<xsd:element name="SOMM_ALLOGGIATI" type="xsd:boolean" minOccurs="0"/>
+			<xsd:element name="DIPENDENZE" type="scheda6DipendenzaType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="scheda6AttivitaNoAlberghieraType">
+		<xsd:sequence>
+			<xsd:element name="TIPO_NOALBERGO" type="noAlbergoType"/>
+			<xsd:element name="DENOMINAZIONE" type="muta:noEmptyStringType"/>
+			<xsd:element name="CAMERE_APPARTAMENTI" type="xsd:decimal"/>
+			<xsd:element name="POSTI_LETTO" type="xsd:decimal"/>
+			<xsd:element name="CODUL" type="xsd:string" minOccurs="0"/>
+			<xsd:choice minOccurs="0">
+				<xsd:element name="SOMM_ALLOGGIATI" type="xsd:boolean"/>
+				<xsd:element name="SOMM_PUBBLICO" type="xsd:boolean"/>
+			</xsd:choice>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="scheda6AttivitaAriaApertaType">
+		<xsd:sequence>
+			<xsd:element name="TIPO_ARIAAPERTA" type="ariaApertaType"/>
+			<xsd:element name="DENOMINAZIONE" type="muta:noEmptyStringType"/>
+			<xsd:element name="NUMERO_STELLE" type="ariaApertaStelleType"/>
+			<xsd:element name="SOMM_ALLOGGIATI" type="xsd:boolean" default="false"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="scheda6DipendenzaDiffusoType">
+		<xsd:sequence>
+			<xsd:element name="CAMERE_ALLOGGI" type="xsd:decimal"/>
+			<xsd:element name="POSTI_LETTO" type="xsd:decimal"/>
+			<xsd:element name="COMUNE" type="istatComuneType"/>
+			<xsd:element name="PROV" type="istatProvinciaType"/>
+			<xsd:element name="VIA" type="muta:noEmptyStringType"/>
+			<xsd:element name="NUM" type="muta:noEmptyStringType"/>
+			<xsd:element name="CAP" type="capType"/>
+			<xsd:element name="CODUL" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="scheda6Type">
+		<xsd:sequence>
+			<!-- Inizio sezione 6.1 -->
+			<xsd:element name="ATTIVITA_ALBERGHIERA" type="scheda6AttivitaAlberghieraType" minOccurs="0"/>
+			<!-- Fine sezione 6.1 -->
+			<!-- Inizio sezione 6.2 -->
+			<xsd:element name="ATTIVITA_NONALB" type="scheda6AttivitaNoAlberghieraType" minOccurs="0"/>
+			<!-- Fine sezione 6.2 -->
+			<!-- Inizio sezione 6.3 -->
+			<xsd:element name="ATTIVITA_ARIAAPERTA" type="scheda6AttivitaAriaApertaType" minOccurs="0"/>
+			<!-- Fine sezione 6.3 -->
+			<!-- Inizio sezione 6.4 -->
+			<xsd:element name="TRASFERIMENTO_SEDE" type="xsd:boolean" default="false"/>
+			<!-- Se TRASFERIMENTO_SEDE = true allora valorizzare i campi TRASF_SEDE* -->
+			<xsd:element name="TRASF_SEDE_COMUNE" type="istatComuneType" minOccurs="0"/>
+			<xsd:element name="TRASF_SEDE_PROV" type="istatProvinciaType" minOccurs="0"/>
+			<xsd:element name="TRASF_SEDE_VIA" type="muta:noEmptyStringType" minOccurs="0"/>
+			<xsd:element name="TRASF_SEDE_NUM" type="muta:noEmptyStringType" minOccurs="0"/>
+			<xsd:element name="TRASF_SEDE_CAP" type="capType" minOccurs="0"/>
+			<xsd:element name="TRASFERIMENTO_DIPENDENZA" type="xsd:boolean" default="false"/>
+			<!-- Se TRASFERIMENTO_DIPENDENZA = true allora valorizzare i campi TRASF_DIP* -->
+			<xsd:element name="TRASF_DIP_COMUNE" type="istatComuneType" minOccurs="0"/>
+			<xsd:element name="TRASF_DIP_PROV" type="istatProvinciaType" minOccurs="0"/>
+			<xsd:element name="TRASF_DIP_VIA" type="muta:noEmptyStringType" minOccurs="0"/>
+			<xsd:element name="TRASF_DIP_NUM" type="muta:noEmptyStringType" minOccurs="0"/>
+			<xsd:element name="TRASF_DIP_CAP" type="capType" minOccurs="0"/>
+			<!-- Fine sezione 6.4 -->
+			<!-- Inizio sezione 6.5 -->
+			<xsd:element name="VARIA_CLASSIFICAZIONE" type="xsd:boolean" default="false"/>
+			<!-- Se VARIA_CLASSIFICAZIONE = true allora valorizzare NUMERO_STELLE -->
+			<xsd:element name="NUMERO_STELLE" type="albergoStelleType" minOccurs="0"/>
+			<!-- Fine sezione 6.5 -->
+			<!-- Inizio sezione 6.6 -->
+			<xsd:element name="VARIA_CAMERE_APP_LETTO" type="xsd:boolean" default="false"/>
+			<!-- Se VARIA_CAMERE_APP_LETTO = true allora valorizzare a true uno dei seguenti campi: VARIA_CAMERE, VARIA_APPARTAMENTI o VARIA_POSTI_LETTO -->
+			<xsd:choice minOccurs="0">
+				<xsd:element name="VARIA_CAMERE" type="xsd:boolean"/>
+				<xsd:element name="VARIA_APPARTAMENTI" type="xsd:boolean"/>
+				<xsd:element name="VARIA_POSTI_LETTO" type="xsd:boolean"/>
+			</xsd:choice>
+			<!-- Se VARIA_CAMERE = true allora valorizzare i campi VARIA_CAMERE* -->
+			<xsd:element name="VARIA_CAMERE_TIPO" type="variazioneAumentoDiminuzioneType" minOccurs="0"/>
+			<xsd:element name="VARIA_CAMERE_NUMERO" type="xsd:decimal" minOccurs="0"/>
+			<!-- Se VARIA_APPARTAMENTI = true allora valorizzare i campi VARIA_APP* -->
+			<xsd:element name="VARIA_APP_TIPO" type="variazioneAumentoDiminuzioneType" minOccurs="0"/>
+			<xsd:element name="VARIA_APP_NUMERO" type="xsd:decimal" minOccurs="0"/>
+			<!-- Se VARIA_POSTI_LETTO = true allora valorizzare i campi VARIA_LETTO* -->
+			<xsd:element name="VARIA_LETTO_TIPO" type="variazioneAumentoDiminuzioneType" minOccurs="0"/>
+			<xsd:element name="VARIA_LETTO_NUMERO" type="xsd:decimal" minOccurs="0"/>
+			<!-- Fine sezione 6.6 -->
+			<!-- Inizio sezione 6.7 -->
+			<xsd:element name="VARIA_DIPENDENZE" type="xsd:boolean" default="false"/>
+			<!-- Se VARIA_DIPENDENZE = true allora valorizzare a true uno dei seguenti campi: VARIA_DIP_CAMERE, VARIA_DIP_APP o VARIA_DIP_LETTO -->
+			<xsd:choice minOccurs="0">
+				<xsd:element name="VARIA_DIP_CAMERE" type="xsd:boolean"/>
+				<xsd:element name="VARIA_DIP_APP" type="xsd:boolean"/>
+				<xsd:element name="VARIA_DIP_LETTO" type="xsd:boolean"/>
+			</xsd:choice>
+			<!-- Se VARIA_DIP_CAMERE = true allora valorizzare i campi VARIA_DIP_CAMERE* -->
+			<xsd:element name="VARIA_DIP_CAMERE_TIPO" type="variazioneAumentoDiminuzioneType" minOccurs="0"/>
+			<xsd:element name="VARIA_DIP_CAMERE_NUMERO" type="xsd:decimal" minOccurs="0"/>
+			<!-- Se VARIA_DIP_APP = true allora valorizzare i campi VARIA_DIP_APP* -->
+			<xsd:element name="VARIA_DIP_APP_TIPO" type="variazioneAumentoDiminuzioneType" minOccurs="0"/>
+			<xsd:element name="VARIA_DIP_APP_NUMERO" type="xsd:decimal" minOccurs="0"/>
+			<!-- Se VARIA_DIP_LETTO = true allora valorizzare i campi VARIA_DIP_LETTO* -->
+			<xsd:element name="VARIA_DIP_LETTO_TIPO" type="variazioneAumentoDiminuzioneType" minOccurs="0"/>
+			<xsd:element name="VARIA_DIP_LETTO_NUMERO" type="xsd:decimal" minOccurs="0"/>
+			<!-- Fine sezione 6.7 -->
+			<!-- Inizio sezione 6.8 -->
+			<xsd:element name="ALBERGO_DIFFUSO" type="scheda6DipendenzaDiffusoType" minOccurs="0" maxOccurs="unbounded"/>
+			<!-- Fine sezione 6.8 -->
+			<!-- Inizio sezione 6.9 -->
+			<xsd:element name="TRASFERIMENTO_DIFFUSO" type="xsd:boolean" default="false"/>
+			<!-- Se TRASFERIMENTO_DIFFUSO = true allora valorizzare VARIA_ALBERGO_DIFFUSO -->
+			<xsd:element name="VARIA_ALBERGO_DIFFUSO" type="scheda6DipendenzaDiffusoType" minOccurs="0" maxOccurs="unbounded"/>
+			<!-- Fine sezione 6.9 -->
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- Inizio DICHIARAZIONE AVVIO NUOVA/MODIFICA ATTIVITA' PRODUTTIVA -->
+	<xsd:complexType name="sciaAvvioModificaAttivitaType">
+		<xsd:sequence>
+			<xsd:element name="ID_PRATICA" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="PROTOCOLLO" type="muta:protocolloType" minOccurs="0"/>
+			<xsd:element name="STATO_PRATICA" type="muta:statoPraticaType"/>
+			<xsd:element name="MODELLO_A" type="modelloAType"/>
+			<xsd:element name="SCHEDA_1" type="scheda1Type" minOccurs="0"/>
+			<xsd:element name="SCHEDA_2" type="scheda2Type" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="SCHEDA_3" type="scheda3Type" minOccurs="0"/>
+			<xsd:element name="SCHEDA_4" type="scheda4Type" minOccurs="0"/>
+			<xsd:element name="SCHEDA_5" type="scheda5Type" minOccurs="0"/>
+			<xsd:element name="SCHEDA_6" type="scheda6Type" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- Fine DICHIARAZIONE AVVIO NUOVA ATTIVITA -->
+	<!-- Inizio DICHIARAZIONE SUBINGRESSO / CESSAZIONE / SOSPENSIONE E RIPRESA / CAMBIAMENTO RAGIONE SOCIALE DI ATTIVITA' PRODUTTIVA -->
+	<xsd:complexType name="sciaSubCesSosRipCamAttivitaType">
+		<xsd:sequence>
+			<xsd:element name="ID_PRATICA" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="PROTOCOLLO" type="muta:protocolloType" minOccurs="0"/>
+			<xsd:element name="STATO_PRATICA" type="muta:statoPraticaType"/>
+			<xsd:element name="MODELLO_B" type="modelloBType"/>
+			<xsd:element name="SCHEDA_2" type="scheda2Type" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="SCHEDA_3" type="scheda3Type" minOccurs="0"/>
+			<xsd:element name="SCHEDA_4" type="scheda4Type" minOccurs="0"/>
+			<xsd:element name="SCHEDA_5" type="scheda5Type" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- Fine DICHIARAZIONE SUBINGRESSO / CESSAZIONE / SOSPENSIONE E RIPRESA / CAMBIAMENTO RAGIONE SOCIALE DI ATTIVITA' PRODUTTIVA -->
+	<!-- Elementi ROOT -->
+	<xsd:element name="sciaAvvioModificaAttivita" type="sciaAvvioModificaAttivitaType"/>
+	<xsd:element name="sciaSubCesSosRipCamAttivita" type="sciaSubCesSosRipCamAttivitaType"/>
+</xsd:schema>

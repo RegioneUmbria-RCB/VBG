@@ -1,0 +1,1 @@
+D:\SVILUPPO\apache-cxf-2.5.1\bin\wsdl2java.bat -p it.gruppoinit.ws.wsatti -client -frontend jaxws21 WSatti.wsdl

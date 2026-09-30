@@ -1,0 +1,24 @@
+#if($modelloHelper.isRenderForPrint())
+	<b>$oggettiService.findNomeByCodice($decodedVal)</b>
+#else
+	#set($readonly = $campo.getProprietaCampo("ReadOnly",""))
+	#if($readonly && $readonly == "true")
+		#set($readonly = "readonly='readonly'")
+	#else
+		#set($readonly = "")
+	#end
+	<input type="text" name="${nameAttr}" id="${nameAttr}_ID" value="$decodedVal" $readonly class="$classeCampo"/>
+	#if(!$isTemplate)
+		<script type="text/javascript">
+			jQuery(document).ready(function(){
+				jQuery('#' + '${nameAttr}_ID').uploadDatiDinamici({});
+				initUIControls(jQuery('#' + '${nameAttr}_ID').parent());
+			});
+		</script>
+	#else
+		#set($script = "jQuery('#FLD_${idCampo}_${campo.Indice}_' + newBlockIndex + '_ID').uploadDatiDinamici({});")
+		$blocco.addScript($script)
+		#set($script = "initUIControls(jQuery('#FLD_${idCampo}_${campo.Indice}_' + newBlockIndex + '_ID').parent());")
+		$blocco.addScript($script)
+	#end
+#end

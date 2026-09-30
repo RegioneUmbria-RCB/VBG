@@ -1,0 +1,1 @@
+alter table archiviazioni add CORRETTO number(1,0);

@@ -1,0 +1,2 @@
+
+INSERT INTO clmenu_java (ID, DESCRIZIONE, PAGINA, MENULINK, SOFTWARE, JSP, VERTICALIZZAZIONE, SOFTWAREESCLUSI, LINK_STANDARD, TIPO_FUNZIONALITA, LAYOUTTESTI, MENULINK_V2) VALUES(1056, 'Configurazione APP.IO', 'appioserviziconfig/list.htm?software=SOFTWARE', '786', '*', 'JAVA', NULL, 'PR,FI', 'appioserviziconfig/list.htm?software=SOFTWARE', 'S', NULL, '786');

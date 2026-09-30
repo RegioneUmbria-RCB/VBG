@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:jms="http://www.springframework.org/schema/jms"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+			http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+			http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.2.xsd
+			http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms.xsd">
+
+	<context:annotation-config />
+	  
+	<!-- 
+	<bean id="cacheManager" destroy-method="shutdown" class="net.sf.ehcache.CacheManager">
+		<property name="name" value="ehchache.xml"/>
+	</bean>
+	 -->
+	<context:component-scan base-package="it.gruppoinit.pal.gp">
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+	
+	<context:component-scan base-package="it.gruppoinit.sigepro">
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+	
+	<context:component-scan base-package="it.toscana.regione.suap.sem.service">
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+	
+	<!-- file di configurazione (se modificato, modificare anche le costanti in WebConstants)-->
+	<context:property-placeholder location="classpath:deploy.properties" />
+	
+	<bean id="deployPropertiesBean" class="it.gruppoinit.pal.gp.areariservata.web.util.DeployProperties">
+		<property name="wsTokenPwd" value="${ws.token.pwd}" />
+		<property name="wsTokenUrl" value="${ws.token.url}" />
+		<property name="wsTokenUser" value="${ws.token.user}" />
+		<property name="serviziIdcomunealias" value="${servizi.idcomunealias}" />
+		<property name="serviziSoftware" value="${servizi.software}" />
+		<property name="serviziUserid" value="${servizi.userid}" />
+		<property name="wsStcUrl" value="${ws.stc.url}" />
+		<property name="wsStcUser" value="${ws.stc.user}" />
+		<property name="wsStcPwd" value="${ws.stc.pwd}" />
+		<property name="wsStcIdNodoMitt" value="${ws.stc.id-nodo-mitt}" />
+		<property name="wsStcIdNodoDest" value="${ws.stc.id-nodo-dest}" />
+		<property name="wsStcTimeout" value="${ws.stc.timeout}" />
+		<property name="nlaUserid" value="${nla.userid}" />
+		<property name="cartCodiciEndoRegionaliAttivabili" value="${cart.codici_endo_regionali.attivabili}" />
+		<property name="forceHttps" value="${forceHttps}" />
+		<property name="lineacomuneWsReportUrl" value="${lineacomune.ws.report.url}" />
+		<property name="lineacomuneWsReportEnable" value="${lineacomune.ws.report.enable}" />
+		<property name="idcomuneAliasDefault" value="${ws.token.default.alias}" />
+		<property name="serviziAccediSeAttivaSession" value="${servizi.accedi-se-attiva-session}" />
+		<property name="serviziResolverFilterPathAmmessi" value="${servizi.resolver.filter.path.ammessi}" />
+	</bean>
+<!-- 
+	<bean class="it.gruppoinit.pal.gp.core.service.impl.Dyn2ModellitARJServiceImpl" primary="true">
+	</bean>
+	 -->
+	<!-- configurazione dei messaggi di sigepro2 -->
+	<bean id="messageSource" 
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource"
+		p:basenames="classpath:messages,WEB-INF/areariservata/messages" p:cacheSeconds="0">
+		
+	</bean>
+	
+	<!-- bean specifici per FACCT 
+	<bean class="it.gruppoinit.pal.gp.core.service.impl.EndoRegioneToscanaServiceImpl"/>
+	<bean class="it.gruppoinit.pal.gp.cartfacct.service.impl.ModulisticaServiceImpl"/>
+	<bean class="it.gruppoinit.pal.gp.cartfacct.service.impl.PresentazioneDomandaServiceImpl"/>	
+	<bean class="it.gruppoinit.pal.gp.core.service.impl.DomandeFrontOfficeServiceImpl"/>	
+	fine bean specifici per FACCT -->
+	
+	<!-- Configurazione VelocityEngine -->
+	<bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+		<property name="resourceLoaderPath" value="classpath:templates"/>
+		<property name="velocityProperties">
+	    	<value>
+	      		directive.parse.max.depth=30
+	    	</value>
+	    </property>
+	</bean>
+	<!-- 
+  	<bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean" 
+		p:resourceLoaderPath="WEB-INF/templates" p:preferFileSystemAccess="false"/>
+	 -->
+	<!-- Fine Configurazione VelocityEngine -->
+
+	<bean id="externalDBResolver"
+		class="it.gruppoinit.pal.gp.core.utils.ExternalDBResolverWS">
+		<property name="configurationProperties">
+			<props>
+				<prop key="ws.token.url">${ws.token.url}</prop>
+				<prop key="ws.token.user">${ws.token.user}</prop>
+				<prop key="ws.token.pwd">${ws.token.pwd}</prop>
+				<prop key="ws.token.default.alias">${ws.token.default.alias}</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="dataSourceContainer" class="it.gruppoinit.pal.gp.core.dao.helper.DataSourceContainer">
+		<property name="factoryWrappers">
+			<map></map>
+		</property>
+		<property name="externalDBResolver" ref="externalDBResolver" />
+		<property name="packageToScan" value="it.gruppoinit.pal.gp.core.domain" />
+		<!--
+			lasciare sempre settato l'handler per oracle. quello di default lo carica da solo
+		-->
+		<property name="lobHandler" ref="oracleLobHandler" />
+	</bean>
+
+	<bean id="sessionFactory" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="proxyInterfaces">
+			<list>
+				<value>org.hibernate.SessionFactory</value>
+			</list>
+		</property>
+		<property name="targetSource" ref="sessionFactoryTarget" />
+	</bean>
+
+	<bean id="defaultLobHandler" class="org.springframework.jdbc.support.lob.DefaultLobHandler" />
+
+	<bean id="oracleLobHandler" class="org.springframework.jdbc.support.lob.OracleLobHandler">
+		<property name="nativeJdbcExtractor" ref="nativeJdbcExtractor" />
+	</bean>
+
+	<bean id="nativeJdbcExtractor"
+		class="org.springframework.jdbc.support.nativejdbc.C3P0NativeJdbcExtractor" />
+
+	<bean id="sessionFactoryTarget"
+		class="it.gruppoinit.pal.gp.core.dao.helper.SessionFactoryTargetSource">
+		<property name="dataSourceContainer" ref="dataSourceContainer" />
+	</bean>
+	
+	<bean name="openSessionInViewInterceptor"
+		class="org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor">
+		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="singleSession" value="true" />
+	</bean>
+
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager"
+		p:sessionFactory-ref="sessionFactory" />
+	
+	<bean id="domandeSecurityAspect" class="it.gruppoinit.pal.gp.areariservata.aop.DomandeSecurityAspect" />
+		
+	<!-- ASPECTJ CONFIGURATION -->
+	<aop:aspectj-autoproxy />
+	
+	<aop:config>
+		<aop:pointcut id="webMethods"
+			expression="execution(* (@org.springframework.stereotype.Controller *..*Controller).*(..))" />
+		<aop:pointcut id="serviceMethods"
+			expression="execution(* it.gruppoinit.pal.gp.areariservata.service.*Service.*(..)) || execution(* it.gruppoinit.pal.gp.core.service.*Service.*(..))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="serviceMethods" />	
+		<aop:aspect id="domandeSecurityAspectId" ref="domandeSecurityAspect" >
+			<aop:before method="doCheck" pointcut="execution(* (@org.springframework.stereotype.Controller *..DomandeController).delete(..))" />
+			<aop:before method="doCheck" pointcut="execution(* (@org.springframework.stereotype.Controller *..NuovaIstanzaController).riprendi(..))" />			
+		</aop:aspect>	
+	</aop:config>
+	
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="find*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="is*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="check*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="exist*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="count*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="setVersione" propagation="REQUIRES_NEW" />
+			<tx:method name="runTaskInNewTransaction" propagation="REQUIRES_NEW" />
+			<tx:method name="registraEventoDomandaRFC239" propagation="REQUIRES_NEW" />
+			<tx:method name="registraLogSistemaInNewTransaction" propagation="REQUIRES_NEW" />
+			<tx:method name="bindDomainObject" propagation="REQUIRED" no-rollback-for="it.gruppoinit.pal.gp.core.service.exception.RecuperoDatiAnagraficaException"/>			
+			<tx:method name="updateRientroPagamenti" propagation="REQUIRED" no-rollback-for="java.lang.NumberFormatException,java.io.UnsupportedEncodingException,java.io.FileNotFoundException,javax.xml.transform.TransformerException,java.rmi.RemoteException"/>
+			<tx:method name="*" propagation="REQUIRED" />
+		</tx:attributes>
+	</tx:advice>
+	
+    <bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<property name="corePoolSize" value="5" />
+		<property name="maxPoolSize" value="10" />
+		<property name="queueCapacity" value="25" />
+	</bean>
+	
+	<!-- CONFIGURAZIONE PER IL JOB SCHEDULER -->  	 
+	<bean id="jobDetail"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="jobSchedulerManagerImpl" />
+		<property name="targetMethod" value="schedulePersistentJobsForScheduler" />
+	</bean>
+	<bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="jobDetail" ref="jobDetail" />
+		<property name="startDelay" value="60000" />
+		<property name="repeatInterval" value="120000" />
+		<property name="repeatCount" value="0" />
+	</bean> 
+	<bean name="quartzSchedulerFactory"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="autoStartup" value="false" />
+		<property name="waitForJobsToCompleteOnShutdown" value="true" />		
+		<property name="triggers">
+			<list>
+				<ref bean="simpleTrigger" />
+			</list>
+		</property>		
+	</bean>
+</beans>

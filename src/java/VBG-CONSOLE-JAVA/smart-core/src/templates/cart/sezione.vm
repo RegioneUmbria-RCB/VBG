@@ -1,0 +1,56 @@
+
+#set($idSezione = "sezione_${item.Sezione.Id}")
+#set($idSezione = $helper.getUniqueId(${idSezione},${item.Sezione}))
+#if($isTableTemplate)
+	#set($placeholder = "${esc.D}'{'index{0}'}'")
+	#set($idSezione = "${idSezione}${helper.buildIndexingSuffixWhithPlaceholder($rowIndex,$placeholder,$templateNestingLevel)}")
+#else
+	#set($idSezione = "${idSezione}${helper.buildIndexingSuffix($rowIndex)}")
+#end
+#set($tooltiptext = ${helper.getSezioneHelp($item.Sezione)})
+<div id="$idSezione" class="sezione-cart" #if($tooltiptext)title="${helper.escapeValueForHtmlAttribute($tooltiptext)}"#end>
+	<fieldset>
+		#if(($item.Sezione.Titolo && $item.Sezione.Titolo.length() > 0) || $tooltiptext.length() > 0)
+		<legend>
+			$!{item.Sezione.Titolo}
+    		#if($tooltiptext.length() > 0)
+    			<span class="help_image" id="${idSezione}_help" title="${helper.escapeValueForHtmlAttribute($tooltiptext)}">
+    				<label >(?)</label>
+                </span>
+    		#end			
+        </legend>
+		#end
+		$helper.pushContainerInStack($item, $idSezione)
+		#set($items = $item.Sezione.Item)
+    	#foreach($item in $items)
+    		#parse("/cart/elemento_figlio.vm")
+    	#end
+    	#set($itemWrap = $helper.popContainerFromStack())
+		#set($item = ${itemWrap.Container})
+        #set($idSezione = ${itemWrap.ContainerId})
+	</fieldset>
+</div>
+	#if(!$pdfOutput)
+   		#set($attivo = $helper.evaluateExpression($item.Sezione.Attivo,$rowIndex))
+   		#if(!$attivo || $helper.isEspressioneDinamica($item.Sezione.Attivo))
+			#if(!$isTableTemplate)
+				#set($jsScript = $helper.buildJavascriptToDynamicallyEnableElement($idSezione,$item.Sezione.Attivo,2))
+				#if($jsScript != "")
+                	<script>
+                	##scrittura dello script che attiva e disattiva il campo dinamicamente in base ai valori assunti da altri campi
+        			//$(document).ready(function(){
+        			$(function(){ 
+                	$jsScript
+        			});
+                	</script>
+				#end
+			#else
+				#set($idSezione = $helper.removeIndexingSuffix(${idSezione}))
+				#set($suffix = ${helper.buildIndexingSuffixWhithPlaceholder($rowIndex,"'' + newRowIndex{0} + ''",$templateNestingLevel)})
+				#set($jsScript = $helper.buildJavascriptToDynamicallyEnableElement("${idSezione}",$item.Sezione.Attivo,$suffix,2))
+				#if($jsScript != "")
+					$helper.addScriptToCache($jsScript)
+				#end
+    		#end
+		#end
+	#end

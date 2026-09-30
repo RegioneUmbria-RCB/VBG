@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://www.gruppoinit.it/firmadigitaleweb/services" xmlns:impl="http://www.gruppoinit.it/firmadigitaleweb/services"
+	xmlns:intf="http://www.gruppoinit.it/firmadigitaleweb/services" xmlns:tns1="http://www.gruppoinit.it/firmadigitaleweb/services" xmlns:tns2="http://www.gruppoinit.it/firmadigitaleweb/services/messages"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xmime="http://www.w3.org/2005/05/xmlmime">
+	<wsdl:types>
+		<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.gruppoinit.it/firmadigitaleweb/services/messages" xmlns:xmime="http://www.w3.org/2005/05/xmlmime">
+			<complexType name="infoCertificatoBean">
+				<sequence>
+					<element name="addressCRL" nillable="true" type="xsd:string" />
+					<element name="dataFile" type="xsd:base64Binary" xmime:expectedContentTypes="application/octet-stream" />
+					<element name="issuerDN" nillable="true" type="xsd:string" />
+					<element name="publicKey" nillable="true" type="xsd:string" />
+					<element name="revocato" type="xsd:boolean" />
+					<element name="serialNumber" nillable="true" type="xsd:integer" />
+					<element name="signatureAlgoritmoName" nillable="true" type="xsd:string" />
+					<element name="subject" nillable="true" type="xsd:string" />
+					<element name="tipoAlgoritmo" nillable="true" type="xsd:string" />
+					<element name="valido" type="xsd:boolean" />
+					<element name="validoDa" nillable="true" type="xsd:dateTime" />
+					<element name="validoFinoAl" nillable="true" type="xsd:dateTime" />
+					<element name="descrizioneRevocato" nillable="true" type="xsd:string" />
+					<element name="descrizioneValido" nillable="true" type="xsd:string" />
+				</sequence>
+			</complexType>
+			<complexType name="dataBean">
+				<sequence>
+					<element name="chiavePubblica" nillable="true" type="xsd:string" />
+					<element name="descrizioneFirmato" nillable="true" type="xsd:string" />
+					<element name="descrizioneRevocato" nillable="true" type="xsd:string" />
+					<element name="descrizioneValido" nillable="true" type="xsd:string" />
+					<element name="emittente" nillable="true" type="xsd:string" />
+					<element name="fileInChiaro" type="xsd:base64Binary" xmime:expectedContentTypes="application/octet-stream" />
+					<element name="firmatario" nillable="true" type="xsd:string" />
+					<element name="firmato" type="xsd:boolean" />
+					<element name="indirizzoCRL" nillable="true" type="xsd:string" />
+					<element name="nomeAlgoritmo" nillable="true" type="xsd:string" />
+					<element name="numeroSeriale" nillable="true" type="xsd:integer" />
+					<element name="revocato" type="xsd:boolean" />
+					<element name="tipoAlgoritmo" nillable="true" type="xsd:string" />
+					<element name="valido" type="xsd:boolean" />
+					<element name="validoAl" nillable="true" type="xsd:string" />
+					<element name="validoDa" nillable="true" type="xsd:string" />
+					<element name="verificaFirma" type="xsd:boolean" />
+				</sequence>
+			</complexType>
+			<complexType name="fileContent">
+				<sequence>
+					<element name="dataFile" type="xsd:base64Binary" xmime:expectedContentTypes="application/octet-stream" />
+				</sequence>
+			</complexType>
+		</schema>
+	</wsdl:types>
+	<wsdl:message name="verifyResponse">
+	</wsdl:message>
+	<wsdl:message name="verifyClearFileRequest">
+		<wsdl:part name="fileFirmato" type="tns2:fileContent" />
+	</wsdl:message>
+	<wsdl:message name="getInfoFileRequest">
+		<wsdl:part name="fileFirmato" type="tns2:fileContent" />
+	</wsdl:message>
+	<wsdl:message name="verifySignatureRequest">
+		<wsdl:part name="fileFirmato" type="tns2:fileContent" />
+	</wsdl:message>
+	<wsdl:message name="verifyRequest">
+		<wsdl:part name="fileFirmato" type="tns2:fileContent" />
+	</wsdl:message>
+	<wsdl:message name="verifySignatureResponse">
+		<wsdl:part name="verifySignatureReturn" type="tns2:dataBean" />
+	</wsdl:message>
+	<wsdl:message name="updateCertListRequest">
+	</wsdl:message>
+	<wsdl:message name="getInfoFileResponse">
+		<wsdl:part name="getInfoFileReturn" type="tns2:infoCertificatoBean" />
+	</wsdl:message>
+	<wsdl:message name="updateCertListResponse">
+		<wsdl:part name="updateCertListReturn" type="xsd:string" />
+	</wsdl:message>
+	<wsdl:message name="verifyClearFileResponse">
+		<wsdl:part name="verifyClearFileReturn" type="tns2:fileContent" />
+	</wsdl:message>
+	<wsdl:portType name="FirmaDigitale">
+		<wsdl:operation name="verify">
+			<wsdl:input message="impl:verifyRequest" name="verifyRequest" />
+			<wsdl:output message="impl:verifyResponse" name="verifyResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="getInfoFile">
+			<wsdl:input message="impl:getInfoFileRequest" name="getInfoFileRequest" />
+			<wsdl:output message="impl:getInfoFileResponse" name="getInfoFileResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="verifySignature">
+			<wsdl:input message="impl:verifySignatureRequest" name="verifySignatureRequest" />
+			<wsdl:output message="impl:verifySignatureResponse" name="verifySignatureResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="verifyClearFile">
+			<wsdl:input message="impl:verifyClearFileRequest" name="verifyClearFileRequest" />
+			<wsdl:output message="impl:verifyClearFileResponse" name="verifyClearFileResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="updateCertList">
+			<wsdl:input message="impl:updateCertListRequest" name="updateCertListRequest" />
+			<wsdl:output message="impl:updateCertListResponse" name="updateCertListResponse" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="FirmaDigitaleWSASoapBinding" type="impl:FirmaDigitale">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="verify">
+			<soap:operation soapAction="verify" />
+			<wsdl:input name="verifyRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="verifyResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getInfoFile">
+			<soap:operation soapAction="getInfoFile" />
+			<wsdl:input name="getInfoFileRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="getInfoFileResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="verifySignature">
+			<soap:operation soapAction="verifySignature" />
+			<wsdl:input name="verifySignatureRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="verifySignatureResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="verifyClearFile">
+			<soap:operation soapAction="verifyClearFile" />
+			<wsdl:input name="verifyClearFileRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="verifyClearFileResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="updateCertList">
+			<soap:operation soapAction="updateCertList" />
+			<wsdl:input name="updateCertListRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="updateCertListResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="FirmaDigitaleService">
+		<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Servizio di validazione firma digitale</wsdl:documentation>
+		<wsdl:port binding="impl:FirmaDigitaleWSASoapBinding" name="FirmaDigitaleWSA">
+			<soap:address location="http://devel9:8080/firmadigitaleweb/services/FirmaDigitaleWSA" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://gruppoinit.it/pal/gp/gestionecalendari/schema/types" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema"
+	xmlns:tns="http://gruppoinit.it/pal/gp/gestionecalendari/schema/types">
+
+	<element name="ListaCalendari">
+		<complexType>
+			<sequence>
+				<element name="listaFiereMostre" type="tns:FiereMostreType" minOccurs="0" maxOccurs="unbounded" />
+				<element name="listaFesteSagre" type="tns:FesteSagreType" minOccurs="0" maxOccurs="unbounded" />
+			</sequence>
+		</complexType>
+	</element>
+
+	<complexType name="FiereMostreType">
+		<sequence>
+			<element name="denominazione" type="string" />
+			<element name="comuneSvolgimento" type="tns:ComuneType" />
+			<element name="idIstanza" type="string" minOccurs="0" />
+			<element name="numeroIstanza" type="string" minOccurs="0" />
+			<element name="dataIstanza" type="date" minOccurs="0" />
+			<element name="numProtocolloIstanza" type="string" minOccurs="0" />
+			<element name="numAutorizzazione" type="string" minOccurs="0" />
+			<element name="dataAutorizzazione" type="date" minOccurs="0" />
+			<element name="luogoSvolgimento" type="string" />
+			<element name="organizzatore" type="tns:OrganizzatoreType" />
+			<element name="classificazione" type="tns:ClassificazioneEnumType" />
+			<element name="periodi" type="tns:PeriodoType" minOccurs="1" maxOccurs="unbounded" />
+			<element name="merceologie" type="tns:MerceologiaType" minOccurs="1" maxOccurs="unbounded" />
+		</sequence>
+	</complexType>
+	<complexType name="FesteSagreType">
+		<sequence>
+			<element name="denominazione" type="string" />
+			<element name="comuneSvolgimento" type="tns:ComuneType" />
+			<element name="idIstanza" type="string" minOccurs="0" />
+			<element name="numeroIstanza" type="string" minOccurs="0" />
+			<element name="dataIstanza" type="date" minOccurs="0" />
+			<element name="numProtocolloIstanza" type="string" minOccurs="0" />
+			<element name="numAutorizzazione" type="string" minOccurs="0" />
+			<element name="dataAutorizzazione" type="date" minOccurs="0" />
+			<element name="luogoSvolgimento" type="string" />
+			<element name="organizzatore" type="tns:OrganizzatoreType" />
+			<element name="tipologia" type="tns:TipologiaEnumType" />
+			<element name="periodo" type="tns:PeriodoType" />
+		</sequence>
+	</complexType>
+	<complexType name="OrganizzatoreType">
+		<sequence>
+			<element name="nome" type="string" />
+			<element name="cognome" type="string" />
+			<element name="cf" type="string" />
+			<element name="pIva" type="string" />
+		</sequence>
+	</complexType>
+	<complexType name="PeriodoType">
+		<sequence>
+			<element name="dal" type="date" />
+			<element name="al" type="date" />
+		</sequence>
+	</complexType>
+	<complexType name="ComuneType">
+		<sequence>
+			<element name="codiceCatastale" type="string" />
+		</sequence>
+	</complexType>
+	<complexType name="MerceologiaType">
+		<sequence>
+			<element name="merceologia" type="tns:MerceologiaEnumType" />
+			<element name="merceologiaAltro" type="string" minOccurs="0" />
+		</sequence>
+	</complexType>
+	<simpleType name="MerceologiaEnumType">
+		<restriction base="string">
+			<enumeration value="N01 Agricoltura,Silvicoltura,Zootecnia" />
+			<enumeration value="N02 Food, Bevande, Ospitalita'" />
+			<enumeration value="N03 Sport, Hobby, Intrattenimento, Arte" />
+			<enumeration value="N04 Servizi Business, Commercio" />
+			<enumeration value="N05 Costruzioni, Infrastrutture" />
+			<enumeration value="N06 Viaggi, trasporti" />
+			<enumeration value="N07 Sicurezza, Antincendio, Difesa" />
+			<enumeration value="N08 Formazione, Educazione" />
+			<enumeration value="N09 Energia, Combustibili, Gas" />
+			<enumeration value="N10 Protezione dell'ambiente" />
+			<enumeration value="N11 Stampa, Packaging, Imballaggi" />
+			<enumeration value="N12 Arredamento, Design d'interni" />
+			<enumeration value="N13 Casalinghi, giochi, realistica" />
+			<enumeration value="N14 Bellezza, Cosmetica" />
+			<enumeration value="N15 Real Estate, Immobiliare" />
+			<enumeration value="N16 Automobili, Motocicli" />
+			<enumeration value="N17 Chimica" />
+			<enumeration value="N18 Elettronica, Componenti" />
+			<enumeration value="N19 Industria, Tecnologia, Meccanica" />
+			<enumeration value="N20 Aviazione, Aerospaziale" />
+			<enumeration value="N21 IT e Telecomunicazioni" />
+			<enumeration value="N22 Salute, Attrezzature Ospedaliere" />
+			<enumeration value="N23 Ottica" />
+			<enumeration value="N24 Gioielli, Orologi, Accessori" />
+			<enumeration value="N25 Tessile, Abbigliamento, Moda" />
+			<enumeration value="N26 Trasporti, Logistica, Navigazione" />
+			<enumeration value="N27 Campionarie Generali" />
+			<enumeration value="N28 Altro" />
+		</restriction>
+	</simpleType>
+	<simpleType name="TipologiaEnumType">
+		<restriction base="string">
+			<enumeration value="SAGRA DELL'UMBRIA" />
+			<enumeration value="FESTA POPOLARE" />
+		</restriction>
+	</simpleType>
+	<simpleType name="ClassificazioneEnumType">
+		<restriction base="string">
+			<enumeration value="Fiera generale" />
+			<enumeration value="Fiera specializzata" />
+			<enumeration value="Mostra mercato" />
+			<enumeration value="Esposizione" />
+		</restriction>
+	</simpleType>
+</schema>

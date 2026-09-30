@@ -1,0 +1,40 @@
+﻿@* @using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+@using VBG.BlazorComponentsLibrary.EditFormComponents
+
+@inherits FiltriVisuraControlBase
+
+<VbgForm Id="mainForm" Model="@Model" OnValidSubmit="onValidSubmit" OnInvalidSubmit="onInvalidSubmit">
+    <fieldset> *@
+
+@* Aggiunto per accessibilità *@
+@*         <legend></legend>
+
+        @foreach (var (key, val) in ordered_dictionary)
+        {
+            if (key == -1)
+                continue;
+
+            if (key == m_provider.IdStradario && contieneComuniAssociati)
+            {
+                KeyValuePair<int, DynamicComponent> kvp = ordered_dictionary.FirstOrDefault(x => x.Key == -1);
+
+                <div class="row">
+                    <DynamicComponent Type="@kvp.Value.Type" Parameters="@kvp.Value.Parameters"></DynamicComponent>
+                    <DynamicComponent Type="@val.Type" Parameters="@val.Parameters"></DynamicComponent>
+                </div>
+            }
+            else
+            {
+                <div class="row">
+                    <DynamicComponent Type="@val.Type" Parameters="@val.Parameters"></DynamicComponent>
+                </div>
+            }
+        }
+    </fieldset>
+</VbgForm>
+
+@code {
+
+} *@
+
+

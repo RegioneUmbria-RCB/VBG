@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:ns2="http://schemas.xmlsoap.org/soap/http" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://gruppoinit.it/sigepro/definitions/istanze" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://gruppoinit.it/sigepro/schemas/messages/istanze" name="IstanzeService" targetNamespace="http://gruppoinit.it/sigepro/definitions/istanze" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xs:schema xmlns:tns="http://gruppoinit.it/sigepro/schemas/messages/istanze" xmlns:ns1="http://gruppoinit.it/sigepro/schemas/messages/base" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://gruppoinit.it/sigepro/schemas/messages/istanze" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:import namespace="http://gruppoinit.it/sigepro/schemas/messages/base" />
+      <xs:element name="IstanzeResponsabiliRequest">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element form="qualified" name="token" type="xs:string" />
+            <xs:element form="qualified" name="codiceResponsabile" type="xs:int" />
+            <xs:element form="qualified" name="codiceIstanza" type="xs:int" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="IstanzeResponsabiliResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element form="qualified" name="EsitoOperazioneType" type="ns1:EsitoOperazioneType" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="IstanzeRuoliRequest">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element form="qualified" name="token" type="xs:string" />
+            <xs:element form="qualified" name="codiceRuolo" type="xs:int" />
+            <xs:element form="qualified" name="codiceIstanza" type="xs:int" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="IstanzeRuoliResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element form="qualified" name="EsitoOperazioneType" type="ns1:EsitoOperazioneType" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="SoggettiCollegatiInsertByIdentificativoRequest">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element form="qualified" name="token" type="xs:string" />
+            <xs:element form="qualified" name="identificativiAnagrafeType" type="tns:IdentificativiAnagrafeType" />
+            <xs:element form="qualified" name="codiceTipologiaSoggetto" type="xs:int" />
+            <xs:element form="qualified" name="codiceIstanza" type="xs:int" />
+            <xs:element form="qualified" name="isNonInserireSeTipologiaPresente" type="xs:boolean" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="SoggettiCollegatiInsertByIdentificativoResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" form="qualified" name="codiceSoggetto" type="xs:integer" />
+            <xs:element minOccurs="0" form="qualified" name="nominativo" type="xs:string" />
+            <xs:element form="qualified" name="EsitoOperazioneType" type="ns1:EsitoOperazioneType" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="IdentificativiAnagrafeType">
+        <xs:sequence>
+          <xs:element minOccurs="0" form="qualified" name="partitaIva" type="xs:string" />
+          <xs:element minOccurs="0" form="qualified" name="codiceFiscale" type="xs:string" />
+          <xs:element minOccurs="0" form="qualified" name="codiceAnagrafica" type="xs:int" />
+          <xs:element default="NON_SPECIFICATO" form="qualified" name="tipoanagrafeEnum" type="tns:TipoanagrafeEnum" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:simpleType name="TipoanagrafeEnum">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="G" />
+          <xs:enumeration value="F" />
+          <xs:enumeration value="NON_SPECIFICATO" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:schema>
+    <xs:schema xmlns:tns="http://gruppoinit.it/sigepro/schemas/messages/base" elementFormDefault="qualified" targetNamespace="http://gruppoinit.it/sigepro/schemas/messages/base" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:complexType name="EsitoOperazioneType">
+        <xs:sequence>
+          <xs:element name="esito" type="xs:int" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="listaErrori" nillable="true" type="tns:ErroreBackofficeType" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ErroreBackofficeType">
+        <xs:sequence>
+          <xs:element name="codice" type="xs:string" />
+          <xs:element name="descrizione" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="AllegatoBaseType">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="riferimento" type="tns:RiferimentoOggettoBackofficeType" />
+          <xs:element name="datiFile" type="tns:FileBaseType" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="RiferimentoOggettoBackofficeType">
+        <xs:sequence>
+          <xs:element name="codice" type="xs:int" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="FileBaseType">
+        <xs:sequence>
+          <xs:element name="fileName" type="xs:string" />
+          <xs:element minOccurs="0" name="mimeType" type="xs:string" />
+          <xs:element xmlns:ns1="http://www.w3.org/2005/05/xmlmime" ns1:expectedContentTypes="application/octet-stream" name="binaryData" type="xs:base64Binary" />
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+    <xs:schema xmlns:tns="http://gruppoinit.it/sigepro/schemas/messages/anagrafe" elementFormDefault="qualified" targetNamespace="http://gruppoinit.it/sigepro/schemas/messages/anagrafe" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="InserimentoAnagrafeRequest">
+        <xs:complexType>
+          <xs:all>
+            <xs:element name="token" type="xs:string" />
+            <xs:element name="datiAnagrafici" type="tns:AnagrafeType" />
+            <xs:element minOccurs="0" name="tipoInserimento" type="xs:string" />
+            <xs:element minOccurs="0" name="xmlDatiAnagrafici" type="xs:string" />
+          </xs:all>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="InserimentoAnagrafeResponse">
+        <xs:complexType>
+          <xs:all>
+            <xs:element name="riferimentiAnagrafe" type="tns:RiferimentiAnagrafeType" />
+            <xs:element minOccurs="0" name="errori" type="tns:ErroreType" />
+          </xs:all>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="InserimentoPersonaGiuridicaRequest">
+        <xs:complexType>
+          <xs:all>
+            <xs:element name="token" type="xs:string" />
+            <xs:element name="datiAnagrafici" type="tns:AnagrafeGiuridicaType" />
+          </xs:all>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="RiferimentiAnagrafeType">
+        <xs:sequence>
+          <xs:element name="codiceanagrafe" type="xs:integer" />
+          <xs:element name="idcomune" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ErroreType">
+        <xs:sequence>
+          <xs:element name="numeroErrore" type="xs:string" />
+          <xs:element name="descrizione" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="AnagrafeType">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="riferimentiAnagrafe" type="tns:RiferimentiAnagrafeType" />
+          <xs:element name="nome" type="xs:string" />
+          <xs:element name="cognome" type="xs:string" />
+          <xs:element name="codiceFiscale" type="xs:string" />
+          <xs:element minOccurs="0" name="partitaIva" type="xs:string" />
+          <xs:element minOccurs="0" name="tecnico" type="xs:boolean" />
+          <xs:element minOccurs="0" name="titolo" type="xs:string" />
+          <xs:element name="sesso" type="xs:string" />
+          <xs:element minOccurs="0" name="dataNascita" type="xs:date" />
+          <xs:element minOccurs="0" name="comuneNascita" type="tns:ComuneType" />
+          <xs:element minOccurs="0" name="residenza" type="tns:LocalizzazioneType" />
+          <xs:element minOccurs="0" name="corrispondenza" type="tns:LocalizzazioneType" />
+          <xs:element minOccurs="0" name="telefono" type="xs:string" />
+          <xs:element minOccurs="0" name="fax" type="xs:string" />
+          <xs:element minOccurs="0" name="email" type="xs:string" />
+          <xs:element minOccurs="0" name="pec" type="xs:string" />
+          <xs:element minOccurs="0" name="strongAuthId" type="xs:string" />
+          <xs:element minOccurs="0" name="password" type="xs:string" />
+          <xs:element minOccurs="0" name="disabilitato" type="xs:boolean" />
+          <xs:element minOccurs="0" name="dataDisabilitato" type="xs:date" />
+          <xs:element minOccurs="0" name="note" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ComuneType">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="codiceCatastale" type="xs:string" />
+          <xs:element minOccurs="0" name="codiceIstat" type="xs:string" />
+          <xs:element minOccurs="0" name="comune" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="LocalizzazioneType">
+        <xs:sequence>
+          <xs:element name="indirizzo" type="xs:string" />
+          <xs:element minOccurs="0" name="civico" type="xs:string" />
+          <xs:element minOccurs="0" name="localita" type="xs:string" />
+          <xs:element minOccurs="0" name="cap" type="xs:string" />
+          <xs:element minOccurs="0" name="comune" type="tns:ComuneType" />
+          <xs:element minOccurs="0" name="provincia" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="AnagrafeGiuridicaType">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="riferimentiAnagrafe" type="tns:RiferimentiAnagrafeType" />
+          <xs:element name="denominazione" type="xs:string" />
+          <xs:element minOccurs="0" name="formaGiuridica" type="xs:string" />
+          <xs:element name="codiceFiscale" type="xs:string" />
+          <xs:element name="partitaIva" type="xs:string" />
+          <xs:element minOccurs="0" name="dataCostituzione" type="xs:date" />
+          <xs:element minOccurs="0" name="sedeLegale" type="tns:LocalizzazioneType" />
+          <xs:element minOccurs="0" name="corrispondenza" type="tns:LocalizzazioneType" />
+          <xs:element minOccurs="0" name="nrCCIAA" type="xs:string" />
+          <xs:element minOccurs="0" name="comuneCCIAA" type="tns:ComuneType" />
+          <xs:element minOccurs="0" name="dataCCIAA" type="xs:date" />
+          <xs:element minOccurs="0" name="nrTRIB" type="xs:string" />
+          <xs:element minOccurs="0" name="comuneTRIB" type="tns:ComuneType" />
+          <xs:element minOccurs="0" name="dataTRIB" type="xs:date" />
+          <xs:element minOccurs="0" name="nrREA" type="xs:string" />
+          <xs:element minOccurs="0" name="provinciaREA" type="xs:string" />
+          <xs:element minOccurs="0" name="dataREA" type="xs:date" />
+          <xs:element minOccurs="0" name="telefono" type="xs:string" />
+          <xs:element minOccurs="0" name="cellulare" type="xs:string" />
+          <xs:element minOccurs="0" name="fax" type="xs:string" />
+          <xs:element minOccurs="0" name="email" type="xs:string" />
+          <xs:element minOccurs="0" name="pec" type="xs:string" />
+          <xs:element minOccurs="0" name="referente" type="xs:string" />
+          <xs:element minOccurs="0" name="strongAuthId" type="xs:string" />
+          <xs:element minOccurs="0" name="password" type="xs:string" />
+          <xs:element minOccurs="0" name="disabilitato" type="xs:boolean" />
+          <xs:element minOccurs="0" name="dataDisabilitato" type="xs:date" />
+          <xs:element minOccurs="0" name="note" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="IstanzeRuoli">
+    <wsdl:part name="IstanzeRuoliRequest" element="ns1:IstanzeRuoliRequest" />
+  </wsdl:message>
+  <wsdl:message name="SoggettiCollegatiInsertResponse">
+    <wsdl:part name="SoggettiCollegatiInsertByIdentificativoResponse" element="ns1:SoggettiCollegatiInsertByIdentificativoResponse" />
+  </wsdl:message>
+  <wsdl:message name="IstanzeResponsabili">
+    <wsdl:part name="IstanzeResponsabiliRequest" element="ns1:IstanzeResponsabiliRequest" />
+  </wsdl:message>
+  <wsdl:message name="IstanzeResponsabiliResponse">
+    <wsdl:part name="IstanzeResponsabiliResponse" element="ns1:IstanzeResponsabiliResponse" />
+  </wsdl:message>
+  <wsdl:message name="IstanzeRuoliResponse">
+    <wsdl:part name="IstanzeRuoliResponse" element="ns1:IstanzeRuoliResponse" />
+  </wsdl:message>
+  <wsdl:message name="SoggettiCollegatiInsert">
+    <wsdl:part name="SoggettiCollegatiInsertByIdentificativoRequest" element="ns1:SoggettiCollegatiInsertByIdentificativoRequest" />
+  </wsdl:message>
+  <wsdl:portType name="Istanze">
+    <wsdl:operation name="IstanzeRuoli">
+      <wsdl:input name="IstanzeRuoli" message="tns:IstanzeRuoli" />
+      <wsdl:output name="IstanzeRuoliResponse" message="tns:IstanzeRuoliResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="SoggettiCollegatiInsert">
+      <wsdl:input name="SoggettiCollegatiInsert" message="tns:SoggettiCollegatiInsert" />
+      <wsdl:output name="SoggettiCollegatiInsertResponse" message="tns:SoggettiCollegatiInsertResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="IstanzeResponsabili">
+      <wsdl:input name="IstanzeResponsabili" message="tns:IstanzeResponsabili" />
+      <wsdl:output name="IstanzeResponsabiliResponse" message="tns:IstanzeResponsabiliResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="IstanzeServiceSoapBinding" type="tns:Istanze">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="IstanzeRuoli">
+      <soap:operation soapAction="IstanzeRuoli" style="document" />
+      <wsdl:input name="IstanzeRuoli">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="IstanzeRuoliResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SoggettiCollegatiInsert">
+      <soap:operation soapAction="SoggettiCollegatiInsert" style="document" />
+      <wsdl:input name="SoggettiCollegatiInsert">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="SoggettiCollegatiInsertResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IstanzeResponsabili">
+      <soap:operation soapAction="IstanzeResponsabili" style="document" />
+      <wsdl:input name="IstanzeResponsabili">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="IstanzeResponsabiliResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="IstanzeService">
+    <wsdl:port name="IstanzeSOAP" binding="tns:IstanzeServiceSoapBinding">
+      <soap:address location="http://devel3.init.gruppoinit.it/backend/services/istanze" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

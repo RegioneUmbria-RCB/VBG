@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" targetNamespace="http://modulistica.model.xengine.suap.eng.it" xmlns:tns="http://modulistica.model.xengine.suap.eng.it" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="modulistica" type="tns:modulisticaType"/>
+
+  <xs:complexType name="modulisticaType">
+    <xs:sequence>
+      <xs:element name="modulo" type="tns:moduloType" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="dataGenerazione" type="xs:anySimpleType" use="required"/>
+    <xs:attribute name="dataUltimaVariazione" type="xs:anySimpleType" use="required"/>
+    <xs:attribute name="guidGenerazione" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="moduloType">
+    <xs:sequence>
+      <xs:element name="riferimento" type="tns:riferimentoType"/>
+      <xs:element name="Attivo" type="tns:espressioneType"/>
+      <xs:element name="DestinatariET" type="tns:DestinatariETType" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="quadro" type="tns:quadroType" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="titolo" type="xs:string"/>
+    <xs:attribute name="firmato" type="xs:boolean" use="required"/>
+    <xs:attribute name="nota" type="xs:string"/>
+    <xs:attribute name="help" type="xs:string"/>
+    <xs:attribute name="dataUltimaVariazione" type="xs:anySimpleType" use="required"/>
+    <xs:attribute name="download" type="xs:boolean"/>
+    <xs:attribute name="ripetibile" type="xs:boolean"/>
+  </xs:complexType>
+
+  <xs:complexType name="riferimentoType">
+    <xs:sequence>
+      <xs:element name="codiceModello" type="xs:string" minOccurs="0"/>
+      <xs:element name="codiceEndoProcedimento" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="espressioneType">
+    <xs:sequence>
+      <xs:element name="valore" type="xs:boolean" minOccurs="0"/>
+      <xs:element name="operando" type="tns:operandoType" minOccurs="0"/>
+      <xs:element name="operazione" type="tns:operazioneType" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="operandoType">
+    <xs:sequence/>
+    <xs:attribute name="idSemantico" type="xs:string" use="required"/>
+    <xs:attribute name="operatore" type="tns:operatoreType" use="required"/>
+    <xs:attribute name="valoreConfronto" type="xs:string"/>
+  </xs:complexType>
+
+  <xs:complexType name="operazioneType">
+    <xs:sequence>
+      <xs:element name="espressione" type="tns:espressioneType" maxOccurs="unbounded"/>
+      <xs:element name="operatoreLogico" type="tns:operatoreLogicoType"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="DestinatariETType">
+    <xs:sequence/>
+    <xs:attribute name="tipo" type="xs:string"/>
+  </xs:complexType>
+
+  <xs:complexType name="quadroType">
+    <xs:sequence>
+      <xs:element name="Attivo" type="tns:espressioneType"/>
+      <xs:element name="DestinatariET" type="tns:DestinatariETType" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="item" type="tns:itemType" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="codice" type="xs:string"/>
+    <xs:attribute name="id" type="xs:string" use="required"/>
+    <xs:attribute name="titolo" type="xs:string"/>
+    <xs:attribute name="nota" type="xs:string"/>
+    <xs:attribute name="help" type="xs:string"/>
+    <xs:attribute name="dataUltimaVariazione" type="xs:anySimpleType"/>
+  </xs:complexType>
+
+  <xs:complexType name="itemType">
+    <xs:sequence>
+      <xs:element name="campo" type="tns:campoType" minOccurs="0"/>
+      <xs:element name="testo" type="tns:testoType" minOccurs="0"/>
+      <xs:element name="tabella" type="tns:tabellaType" minOccurs="0"/>
+      <xs:element name="file" type="tns:fileType" minOccurs="0"/>
+      <xs:element name="sezione" type="tns:sezioneType" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="campoType">
+    <xs:sequence>
+      <xs:element name="Obbligatorio" type="tns:espressioneType"/>
+      <xs:element name="Attivo" type="tns:espressioneType"/>
+      <xs:element name="setValori" type="tns:setValoriType"/>
+    </xs:sequence>
+    <xs:attribute name="nome" type="xs:string" use="required"/>
+    <xs:attribute name="id" type="xs:string" use="required"/>
+    <xs:attribute name="idSemantico" type="xs:string" use="required"/>
+    <xs:attribute name="multiValore" type="xs:boolean" use="required"/>
+    <xs:attribute name="nota" type="xs:string"/>
+    <xs:attribute name="help" type="xs:string"/>
+    <xs:attribute name="titolo" type="xs:string"/>
+    <xs:attribute name="size" type="xs:string"/>
+    <xs:attribute name="maxLength" type="xs:string"/>
+    <xs:attribute name="readonly" type="xs:boolean"/>
+  </xs:complexType>
+
+  <xs:complexType name="setValoriType">
+    <xs:sequence>
+      <xs:element name="enumerazione" type="tns:enumerazioneType" minOccurs="0"/>
+      <xs:element name="espressioneRegolare" type="tns:espressioneRegolareType" minOccurs="0"/>
+      <xs:element name="intervallo" type="tns:rangeType" minOccurs="0"/>
+      <xs:element name="calendario" type="tns:calendarioType" minOccurs="0"/>
+      <xs:element name="numerico" type="tns:numericoType" minOccurs="0"/>
+      <xs:element name="alfabetico" type="tns:alfabeticoType" minOccurs="0"/>
+      <xs:element name="codiceFiscalePF" type="tns:CFPersonaFisicaType" minOccurs="0"/>
+      <xs:element name="codiceFiscalePG" type="tns:CFPersonaGiuridicaType" minOccurs="0"/>
+      <xs:element name="partitaIVA" type="tns:PartitaIVAType" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="enumerazioneType">
+    <xs:sequence>
+      <xs:element name="enumItem" type="tns:enumItemType" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="enumItemType">
+    <xs:sequence/>
+    <xs:attribute name="valore" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="espressioneRegolareType">
+    <xs:sequence/>
+    <xs:attribute name="valore" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="rangeType">
+    <xs:sequence/>
+    <xs:attribute name="minimo" type="xs:string" use="required"/>
+    <xs:attribute name="massimo" type="xs:string" use="required"/>
+    <xs:attribute name="minimoIncluso" type="xs:boolean" use="required"/>
+    <xs:attribute name="massimoIncluso" type="xs:boolean" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="calendarioType">
+    <xs:sequence>
+      <xs:element name="rangeValidita" type="tns:rangeDataType" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="pattern" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="rangeDataType">
+    <xs:sequence/>
+    <xs:attribute name="minimo" type="xs:string" use="required"/>
+    <xs:attribute name="massimo" type="xs:string" use="required"/>
+    <xs:attribute name="minimoIncluso" type="xs:boolean" use="required"/>
+    <xs:attribute name="massimoIncluso" type="xs:boolean" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="numericoType">
+    <xs:sequence>
+      <xs:element name="rangeValidita" type="tns:rangeType" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="maxNumeroCifreDecimali" type="xs:nonNegativeInteger" use="required"/>
+    <xs:attribute name="minNumeroCifreDecimali" type="xs:nonNegativeInteger" use="required"/>
+    <xs:attribute name="maxNumeroCifreIntere" type="xs:nonNegativeInteger" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="alfabeticoType">
+    <xs:sequence>
+      <xs:element name="caratteriextra" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="maxNumeroCaratteri" type="xs:nonNegativeInteger" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="CFPersonaFisicaType">
+    <xs:sequence/>
+    <xs:attribute name="pattern" type="tns:cfpfPatternType" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="CFPersonaGiuridicaType">
+    <xs:sequence/>
+    <xs:attribute name="pattern" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="PartitaIVAType">
+    <xs:sequence/>
+    <xs:attribute name="pattern" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="testoType">
+    <xs:sequence>
+      <xs:element name="Attivo" type="tns:espressioneType"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" use="required"/>
+    <xs:attribute name="valore" type="xs:string" use="required"/>
+    <xs:attribute name="nota" type="xs:string"/>
+  </xs:complexType>
+
+  <xs:complexType name="tabellaType">
+    <xs:sequence>
+      <xs:element name="Attivo" type="tns:espressioneType"/>
+      <xs:element name="Obbligatorio" type="tns:espressioneType"/>
+      <xs:element name="colonna" type="tns:colonnaType" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" use="required"/>
+    <xs:attribute name="titolo" type="xs:string"/>
+    <xs:attribute name="nota" type="xs:string"/>
+    <xs:attribute name="help" type="xs:string"/>
+    <xs:attribute name="maxRighe" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="colonnaType">
+    <xs:sequence>
+      <xs:element name="cella" type="tns:itemType"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" use="required"/>
+    <xs:attribute name="titolo" type="xs:string"/>
+  </xs:complexType>
+
+  <xs:complexType name="fileType">
+    <xs:sequence>
+      <xs:element name="Attivo" type="tns:espressioneType"/>
+      <xs:element name="Obbligatorio" type="tns:espressioneType"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" use="required"/>
+    <xs:attribute name="nome" type="xs:string" use="required"/>
+    <xs:attribute name="tipo" type="xs:string"/>
+    <xs:attribute name="titolo" type="xs:string"/>
+    <xs:attribute name="nota" type="xs:string"/>
+    <xs:attribute name="help" type="xs:string"/>
+    <xs:attribute name="idSemantico" type="xs:string" use="required"/>
+    <xs:attribute name="maxUpload" type="xs:string" use="required"/>
+    <xs:attribute name="firmato" type="xs:boolean"/>
+  </xs:complexType>
+
+  <xs:complexType name="sezioneType">
+    <xs:sequence>
+      <xs:element name="Attivo" type="tns:espressioneType"/>
+      <xs:element name="Obbligatorio" type="tns:espressioneType"/>
+      <xs:element name="item" type="tns:itemType" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" use="required"/>
+    <xs:attribute name="titolo" type="xs:string"/>
+    <xs:attribute name="nota" type="xs:string"/>
+    <xs:attribute name="help" type="xs:string"/>
+  </xs:complexType>
+
+  <xs:simpleType name="operatoreType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="EQ"/>
+      <xs:enumeration value="GT"/>
+      <xs:enumeration value="LT"/>
+      <xs:enumeration value="EX"/>
+      <xs:enumeration value="CO"/>
+      <xs:enumeration value="IN"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="operatoreLogicoType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="AND"/>
+      <xs:enumeration value="OR"/>
+      <xs:enumeration value="NOT"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="cfpfPatternType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="[a-zA-Z]{6}[0-9]{2}[a-zA-Z][0-9]{2}[a-zA-Z][0-9]{3}[a-zA-Z]"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
+

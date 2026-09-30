@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema
+	targetNamespace="http://gruppoinit.it/sigepro/schemas/messages/autorizzazioniaccessi"
+	elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema"
+	xmlns:tns="http://gruppoinit.it/sigepro/schemas/messages/autorizzazioniaccessi">
+	<element name="RicercaAutorizzazioniAccessiRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string" maxOccurs="1" minOccurs="1" />
+				<element name="software" type="string" maxOccurs="1"></element>
+				<element name="numeroAutorizzazione" type="string"
+					maxOccurs="1" minOccurs="1">
+				</element>
+				<element name="dataAutorizzazione" type="date" maxOccurs="1"
+					minOccurs="1">
+				</element>
+				<element name="cfImpresa" type="string" maxOccurs="1"
+					minOccurs="1"></element>
+				<element name="pivaImpresa" type="string" maxOccurs="1"
+					minOccurs="0"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="RicercaAutorizzazioniAccessiResponse" type="tns:RicercaAutorizzazioniAccessiResponseType">
+
+	</element>
+
+	<complexType name="RicercaAutorizzazioniAccessiResponseType">
+		<sequence>
+			<element name="autorizzazione" type="tns:DatiAutorizzazioneType"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="operazioni" type="tns:OperazioneAutorizzazioneType"
+				maxOccurs="unbounded" minOccurs="1">
+			</element>
+
+			<element name="operazioniPermesse" type="tns:OperazioniPermesseType"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="numeroTransitiRimanenti" type="integer"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element name="numeroTransitiConsentiti" type="integer"
+				maxOccurs="1" minOccurs="0"></element>
+		</sequence>
+	</complexType>
+
+
+	<complexType name="OperazioniPermesseType">
+		<sequence>
+			<element name="proroga" type="boolean" maxOccurs="1"
+				minOccurs="1"></element>
+			<element name="preavviso" type="boolean" maxOccurs="1"
+				minOccurs="1"></element>
+			<element name="rinnovo" type="boolean" maxOccurs="1"
+				minOccurs="1"></element>
+		</sequence>
+	</complexType>
+
+
+	<complexType name="DatiAutorizzazioneType">
+		<sequence>
+			<element name="id" type="integer" maxOccurs="1" minOccurs="1"></element>
+			<element name="numero" type="string" maxOccurs="1" minOccurs="1"></element>
+			<element name="data" type="date" maxOccurs="1" minOccurs="1"></element>
+			<element name="dataValidita" type="date" maxOccurs="1"
+				minOccurs="0"></element>
+			<element name="dataScadenza" type="date" maxOccurs="1"
+				minOccurs="0"></element>
+			<element name="codiceIstanza" type="integer" maxOccurs="1"
+				minOccurs="1"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="OperazioneAutorizzazioneType">
+		<sequence>
+			<element name="codiceIstanza" type="integer" maxOccurs="1"
+				minOccurs="1"></element>
+			<element name="numeroIstanza" type="string" maxOccurs="1"
+				minOccurs="1"></element>
+			<element name="dataIstanza" type="date" maxOccurs="1"
+				minOccurs="1"></element>
+			<element name="numeroProtocollo" type="string" maxOccurs="1"
+				minOccurs="1"></element>
+			<element name="dataProtocollo" type="date" maxOccurs="1"
+				minOccurs="1"></element>
+			<element name="tipo" type="string" maxOccurs="1" minOccurs="1"></element>
+			<element name="stato" type="string" maxOccurs="1" minOccurs="1"></element>
+			<element name="dataAutorizzazione" type="date"></element>
+		</sequence>
+	</complexType>
+
+</schema>

@@ -1,0 +1,112 @@
+﻿@page "/{IdComune}/{Software}/nuovo-da-copia/{uuidIstanza}"
+@using AreaRiservataCore.Pages.Visura
+@using Init.Sigepro.FrontEnd.AppLogic.Configurazione.V2
+@using Init.Sigepro.FrontEnd.AppLogic.CopiaDomanda
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneVisuraIstanza
+@using Init.Sigepro.FrontEnd.AppLogic.PresentazioneIstanze.Workflow
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.DesignComuni.Spinner
+@using VBG.BlazorComponentsLibrary.RisorseTestuali
+@using static AreaRiservataCore.Pages.Visura.DatiGenerali
+@inherits BasePage
+
+<TitoloPagina>Creazione di una nuova domanda come copia</TitoloPagina>
+
+<RisorsaTestuale IdRisorsa="nuovo-da-copia.testo-pagina">
+    Questa funzionalità permette di creare una nuova pratica riutilizzando i dati immessi in una pratica esistente.<br />
+    La pratica che verrà utilizzata come modello è la seguente:
+</RisorsaTestuale>
+
+@if (this.VisuraDatiGeneraliDataSource is not null)
+{
+    <DatiGenerali MostraDatiProtocollo="true" DataSource="@VisuraDatiGeneraliDataSource" UtenteTester="@this.UtenteTester"></DatiGenerali>
+}
+
+<div class="buttonContainer mb-3">
+    @if (this.VisuraDatiGeneraliDataSource is not null)
+    {
+        <button class="btn btn-primary me-3" @onclick="CopiaDaTemplate">Conferma</button>
+    }
+
+    @* <a href="@GetNavigationPathTo("home")" class="btn btn-light">Chiudi</a> *@
+    <button class="btn btn-light" @onclick="@(() => GotoAsync("benvenuto"))">Chiudi</button>
+</div>
+
+@code {
+
+    [Inject]
+    private CopiaDomandaService _copiaDomandaService { get; set; } = default!;
+    [Inject]
+    private IConfigurazione<ParametriWorkflow> _configurazione { get; set; } = default!;
+    [Inject]
+    private IVisuraService _visuraService { get; set; } = default!;
+
+    [Parameter]
+    public string UuidIstanza { get; set; } = String.Empty;
+
+    [CascadingParameter(Name = "Layout")]
+    public MainLayout Layout { get; set; } = default!;
+
+    VisuraDatiGeneraliDataSource? VisuraDatiGeneraliDataSource = null;
+    string _testoDescrizioneDefault = @"";
+
+    protected override Task OnInitializedAsync()
+    {
+        var baseUrl = $"{_navigationManager.BaseUri}{_authenticationDataResolver.DatiAutenticazione.Alias}/{Software}";
+        var breadcrumbItems = new List<BreadcrumbsItem>()
+            {
+                new BreadcrumbsItem()
+                {
+                    Label = "Istanze presentate",
+                    Url = $"{baseUrl}/istanzepresentate",
+                },
+                new BreadcrumbsItem()
+                {
+                    Label = "Nuova pratica da copia",
+                    Url = $"{baseUrl}/nuovo-da-copia/{UuidIstanza}",
+                    Active = true
+                }
+            };
+
+        this.Layout.SetBreadcrumbItems(breadcrumbItems);
+
+        var istanza = this._visuraService.GetByUuid(UuidIstanza, false);
+
+        if (istanza is not null)
+        {
+
+            this.VisuraDatiGeneraliDataSource = new VisuraDatiGeneraliDataSource
+            {
+                Uuid = istanza.UUID,
+                ComunePratica = istanza.ComuneIstanza.COMUNE,
+                DataPratica = istanza.DATA,
+                DataProtocollo = istanza.DATAPROTOCOLLO,
+                Intervento = istanza.Intervento.SC_DESCRIZIONE,
+                Istruttore = istanza.Istruttore?.RESPONSABILE,
+                NumeroPratica = istanza.NUMEROISTANZA,
+                NumeroProtocollo = istanza.NUMEROPROTOCOLLO,
+                Oggetto = istanza.LAVORI,
+                Operatore = istanza.Operatore?.RESPONSABILE,
+                PosizioneArchivio = istanza.POSIZIONEARCHIVIO,
+                ResponsabileProcedimento = istanza.ResponsabileProc?.RESPONSABILE,
+                Stato = istanza.Stato.Stato
+            };
+        }
+
+        return base.OnInitializedAsync();
+    }
+
+    async Task CopiaDaTemplate()
+    {
+        await _spinnerService.ShowSpinnerAsync(() =>
+            {
+                var idDomanda = this._copiaDomandaService.CopiaDaUUIDTemplate(this.UuidIstanza);
+                var url = GetNavigationPathTo(
+                _configurazione.Parametri.DefaultWorkflow.GetStepUrl(0),
+                idDomanda,
+                0);
+
+                _navigationManager.NavigateTo(url);
+            });
+    }
+}

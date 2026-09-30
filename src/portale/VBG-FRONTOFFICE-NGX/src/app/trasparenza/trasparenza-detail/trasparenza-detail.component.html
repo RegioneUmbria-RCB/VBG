@@ -1,0 +1,49 @@
+<app-inner-page-layout [isLoading]="caricamentoInCorso">
+  @if (dataSource) {
+    <div class="trasparenza dettaglio">
+      <h3>
+        Pratica {{ dataSource.datiGenerali['Pratica']}}
+        @if (dataSource.datiGenerali['Protocollo']) {
+          <small><br />Protocollo {{
+          dataSource.datiGenerali['Protocollo'] }}</small>
+        }
+      </h3>
+      <div class="row">
+        <div class="col-md-3 menu-laterale" cdkScrollable>
+          <div appAffix>
+            <app-menu-laterale [dataSource]="titoliSezioni" [sezioneAttiva]="sezioneAttiva">
+            </app-menu-laterale>
+            <div class="btn btn-primary" (click)="tornaIndietro()">
+              <i class="glyphicon glyphicon-chevron-left"></i> Torna
+              indietro
+            </div>
+          </div>
+        </div>
+        <div class="col-md-9" appScrollSpy [spiedTags]="'h4'" (sectionChange)="onSectionChange($event)">
+          @for (item of this.sezioni; track item) {
+            <div>
+              <h4 id="{{ item.titolo | slugify }}">{{ item.titolo }}</h4>
+              <p>{{ item.corpo }}</p>
+            </div>
+          }
+          @if (
+            dataSource.localizzazioni &&
+            dataSource.localizzazioni.length
+            ) {
+            <div class="localizzazioni">
+              <h4 id="localizzazioni">Localizzazioni</h4>
+              <ul>
+                @for (loc of dataSource.localizzazioni; track loc) {
+                  <li>
+                    {{ loc.indirizzo }}
+                    {{ loc.datiCatastali }}
+                  </li>
+                }
+              </ul>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  }
+</app-inner-page-layout>

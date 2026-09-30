@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" xmlns:tns="management.acaris.acta.doqui.it" xmlns:common="common.acaris.acta.doqui.it" targetNamespace="management.acaris.acta.doqui.it" jaxb:version="2.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://tst-applogic.reteunitaria.piemonte.it/actasrv/managementWS?xsd=ACARIS-Common.xsd" namespace="common.acaris.acta.doqui.it" />
+  <xs:simpleType name="SegnaturaProtocolloXMLType">
+    <xs:restriction base="common:XMLType" />
+  </xs:simpleType>
+  <xs:simpleType name="enumTipoDocType">
+    <xs:restriction base="common:string">
+      <xs:enumeration value="Determinazione" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="enumTipoProvvType">
+    <xs:restriction base="common:string">
+      <xs:enumeration value="ProvvedimentoOriginatore" />
+      <xs:enumeration value="ProvvedimentoDiModifica" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="MovimentazioneType">
+    <xs:sequence>
+      <xs:element name="idMovimentazione" type="common:IdMovimentazioneType" />
+      <xs:element name="idAOORicevente" type="common:IdAOOType" />
+      <xs:element name="idStrutturaRicevente" type="common:IdStrutturaType" />
+      <xs:element name="idNodoRicevente" type="common:IdNodoType" />
+      <xs:element name="dataConsegna" type="common:date" />
+      <xs:element name="dataPianificataRestituz" type="common:date" />
+      <xs:element name="dataRestituzione" type="common:date" />
+      <xs:element name="codFiscaleUtenteRicevente" type="common:CodiceFiscaleType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ProvvedimentoAutorizzatType">
+    <xs:sequence>
+      <xs:element name="idProvvedimentoAutorizzat" type="common:IdProvvedimentoAutorizzatType" />
+      <xs:element name="numero" type="common:string" />
+      <xs:element name="dataAppr" type="common:date" />
+      <xs:element name="organo" type="common:string" />
+      <xs:element name="tipoDoc" type="tns:enumTipoDocType" />
+      <xs:element name="descr" type="common:string" />
+      <xs:element name="tipoProvv" type="tns:enumTipoProvvType" />
+      <xs:element name="note" type="common:string" />
+      <xs:element name="indiceClassDocumento" type="common:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="VitalRecordCodeType">
+    <xs:sequence>
+      <xs:element name="idVitalRecordCode" type="common:IdVitalRecordCodeType" />
+      <xs:element name="descrizione" type="common:string" />
+      <xs:element name="tempoDiVitalita" type="common:integer" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

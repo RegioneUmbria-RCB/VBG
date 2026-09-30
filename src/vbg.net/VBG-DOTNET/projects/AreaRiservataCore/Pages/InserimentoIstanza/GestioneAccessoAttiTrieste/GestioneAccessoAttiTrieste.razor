@@ -1,0 +1,125 @@
+﻿@page "/{IdComune}/{Software}/inserimento-istanza/gestione-accesso-atti-trieste/{idDomanda:int}/{stepId:int}"
+@using Init.Sigepro.FrontEnd.AppLogic.Configurazione.V2;
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneAccessoAtti.Trieste;
+@using Init.Sigepro.FrontEnd.CoreServices.GestionePresentazioneDomanda.Paginatore
+@using Init.Sigepro.FrontEnd.Infrastructure.StepsDomanda.Attributi;
+@using Init.Sigepro.FrontEnd.Infrastructure.UrlsAndPaths;
+@using Microsoft.AspNetCore.WebUtilities;
+@inherits IstanzeStepPage
+
+<style>
+    .trasferimento .progress {
+        margin-bottom: 12px;
+    }
+
+    .trasferimento .panel,
+    .trasferimento .card {
+        max-width: 60%;
+        margin: 0 auto;
+        margin-top: 50px;
+    }
+
+    .trasferimento .panel-heading > h3 {
+    }
+
+    .trasferimento .btn-primary {
+        width: 150px;
+        margin-top: 24px;
+    }
+
+        .trasferimento .btn-primary:last-child {
+            margin-left: 24px;
+        }
+</style>
+
+<div class="trasferimento">
+    <div class="card mb-2 bg-light">
+        <div class="card-header">
+            Ricercare i numeri di protocollo?
+        </div>
+        <div class="card-body">
+            Hai bisogno di effettuare una ricerca per individuare i numeri di protocollo di cui chiedere l’accesso agli atti?
+            <br />
+            <ul>
+                <li>
+                    Seleziona <span class="fw-bold">"Si"</span> se vuoi effettuare una nuova ricerca o se vuoi allegare una ricerca già predisposta in BDEP (andando nella sezione "le mie ricerche" e selezionando il pulsante <span class="fw-bold">"Invia all'istanza"</span>).
+                </li>
+                <li>Seleziona <span class="fw-bold">"No"</span> se non è di interesse farlo o se lo si vorrà fare in un momento successivo.</li>
+            </ul>
+
+
+            <div style="width: 100%; text-align: center">
+                <a href="@_redirUrl" class="btn btn-primary">Si</a>
+                <button class="btn btn-primary" @onclick="GoToNextStep">No</button>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+@code {
+    [Inject]
+    public IConfigurazione<ParametriTriesteAccessoAtti> _configurazione { get; set; } = default!;
+    [Inject]
+    public TriesteAccessoAttiService _accessoAttiService { get; set; } = default!;
+    [Inject]
+    public IUrlEncoder _urlEncoder { get; set; } = default!;
+    [CascadingParameter]
+    private PaginatoreStateService _paginatoreStateService { get; set; } = default!;
+
+    [StepProperty]
+    public int IdCampoOggetto { get; set; } = -1;
+
+    [StepProperty]
+    public int IdCampoPrimoStep { get; set; } = -1;
+
+    [StepProperty]
+    public int IdCampoProtocollo { get; set; } = -1;
+
+    [StepProperty]
+    public int IdCampoSecondoStep { get; set; } = -1;
+
+    string _redirUrl = "";
+
+
+    protected override async Task OnLoadStepAsync()
+    {
+        var isReturning = false;
+
+        var uri = _navigationManager.ToAbsoluteUri(_navigationManager.Uri);
+        if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("returning", out var returning))
+        {
+            isReturning = Convert.ToInt32(returning) == 0 ? false : true;
+        }
+
+        if (isReturning)
+        {
+            this._accessoAttiService.SalvaDatiDinamici(IdDomanda.Value, new MappaturaCampiDinamici
+                {
+                    IdCampoOggetto = this.IdCampoOggetto,
+                    IdCampoPrimoStep = this.IdCampoPrimoStep,
+                    IdCampoProtocollo = this.IdCampoProtocollo,
+                    IdCampoSecondoStep = this.IdCampoSecondoStep
+                });
+
+            await this._paginatoreStateService.GoToNextStepAsync();
+
+            return;
+        }
+
+        var idDomanda = _urlEncoder.UrlEncode(DomandaCorrente.AltriDati.IdentificativoDomanda);
+        var token = _urlEncoder.UrlEncode(this._authenticationDataResolver.DatiAutenticazione.Token);
+        var returnTo = _urlEncoder.UrlEncode(this._navigationManager.ToAbsoluteUri($"endpoints/trieste/accesso-atti/{idDomanda}/{token}").ToString());
+
+        this._redirUrl = $"{this._configurazione.Parametri.UrlTraferimentoControllo}?IdPresentazione={idDomanda}&token={token}&returnto={returnTo}";
+        //pb.Add(new QsReturnTo(GetBaseUrlAssoluto() + "trieste-accesso-atti/" + idDomanda + "/" + token));
+        this._paginatoreStateService.NascondiPaginatore();
+
+    }
+
+    private async Task GoToNextStep()
+    {
+        await this._paginatoreStateService.GoToNextStepAsync();
+    }
+}

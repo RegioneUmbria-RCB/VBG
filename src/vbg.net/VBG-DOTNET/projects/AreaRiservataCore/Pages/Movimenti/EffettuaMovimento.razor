@@ -1,0 +1,117 @@
+﻿@page "/{IdComune}/{Software}/effettuamovimento/{IdMovimento:int}/{Step:int?}/{*GoBackUrl}"
+@using Microsoft.AspNetCore.Components.QuickGrid
+@using VBG.BlazorComponentsLibrary.DesignComuni.Forms
+@using VBG.BlazorComponentsLibrary.DesignComuni.NavScroll
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+@inherits MovimentiBasePage
+
+<TitoloPagina>Riepilogo scadenza</TitoloPagina>
+
+<div id="contenuto-step">
+    <div class="descrizione-step">
+        @_stepDescription
+    </div>
+
+    <NavScrollComponent Title="Indice di pagina">
+
+        <div>
+            @* <h3>Dati scadenza</h3> *@
+            <StepCard Titolo="Dati scadenza">
+                <StepCardItem>
+                    <StepCardInfo Titolo="Attività">
+                        @_dataSource.NomeAttivita
+                    </StepCardInfo>
+                    <StepCardInfo Titolo="Data movimento">
+                        @_dataSource.DataAttivita
+                    </StepCardInfo>
+                    @if (_dataSource.Protocollo.DatiPresenti)
+                    {
+                        <StepCardInfo Titolo="Con protocollo n">
+                            @_dataSource.Protocollo.Numero
+                        </StepCardInfo>
+                    }
+                    @if (_dataSource.Protocollo.DatiPresenti)
+                    {
+                        <StepCardInfo Titolo="Del">
+                            @_dataSource.Protocollo.Data
+                        </StepCardInfo>
+                    }
+                    @if (_dataSource.HaProcedimento)
+                    {
+                        <StepCardInfo Titolo="Procedimento">
+                            @_dataSource.Procedimento
+                        </StepCardInfo>
+                    }
+                    @if (_dataSource.HaAmministrazione)
+                    {
+                        <StepCardInfo Titolo="Amministrazione">
+                            @_dataSource.Amministrazione
+                        </StepCardInfo>
+                    }
+                    @if (_dataSource.PubblicaEsito)
+                    {
+                        <StepCardInfo Titolo="Esito">
+                            @_dataSource.Esito
+                        </StepCardInfo>
+                    }
+                    @if (_dataSource.PubblicaOggetto)
+                    {
+                        <StepCardInfo Titolo="Oggetto">
+                            @_dataSource.Oggetto
+                        </StepCardInfo>
+                    }
+                    @if (_dataSource.Pubblica && PubblicaNote)
+                    {
+                        <StepCardInfo Titolo="Note">
+                            @_dataSource.Note
+                        </StepCardInfo>
+                    }
+                    <StepCardInfo Titolo="Si richiede la seguente attività">
+                        <span>@GetAttivitaRichiesta()</span>
+                    </StepCardInfo>
+                </StepCardItem>
+            </StepCard>
+        </div>
+
+        @if (Convert.ToInt32(_dataSource?.SchedeDinamiche.Count) > 0)
+        {
+            <StepCard Titolo="Schede da compilare">
+                <StepCardItem>
+                    @foreach (var scheda in _dataSource!.SchedeDinamiche)
+                    {
+                        <StepCardInfo Titolo="">
+                            <span>@scheda.NomeScheda</span>
+                        </StepCardInfo>
+                    }
+                </StepCardItem>
+            </StepCard>
+
+        }
+
+        @if (_dataSource?.Allegati?.Count > 0)
+        {
+            <StepCard Titolo="Allegati del movimento">
+                <StepCardItem>
+                    <div>
+                        <QuickGrid Items="_dataSource.Allegati.AsQueryable()" Class="table table-striped table-hover">
+                            <PropertyColumn Title="Descrizione" Property="@(x => x.Descrizione)" />
+                            <PropertyColumn Title="Note" Property="@(x => x.Note)" />
+                            <TemplateColumn Title="Azioni">
+                                <FormDownloadButton CodiceOggetto="@context.IdAllegato" Label="Scarica"></FormDownloadButton>
+                            </TemplateColumn>
+                        </QuickGrid>
+                    </div>
+                </StepCardItem>
+            </StepCard>
+        }
+
+        <div id="bottoniMovimento" class="d-flex gap-3 mb-3">
+            <button class="btn btn-light" @onclick="OnBtnCloseAsync">Chiudi</button>
+            <button class="btn btn-primary" @onclick="OnBtnNextAsync">Procedi</button>
+        </div>
+    </NavScrollComponent>
+</div>
+
+@code {
+
+}

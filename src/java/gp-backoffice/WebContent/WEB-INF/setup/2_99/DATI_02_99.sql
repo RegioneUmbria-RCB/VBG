@@ -1,0 +1,10 @@
+INSERT INTO TIPICONTESTOESPORTAZIONE (CODICE, DESCRIZIONE) VALUES ('AUT','Esportazione di autorizzazione');
+
+INSERT INTO CLMENU_JAVA (ID,DESCRIZIONE,PAGINA,MENULINK,SOFTWARE,JSP,LAYOUTTESTI,VERTICALIZZAZIONE,SOFTWAREESCLUSI,LINK_STANDARD,TIPO_FUNZIONALITA,menulink_v2) VALUES (1050, 'Elaborazione massiva schede dinamiche','elaborazionimassive/list.htm?software=SOFTWARE','784','*','JAVA',0,NULL,'AB,PR,FI','elaborazionimassive/list.htm?software=SOFTWARE','S','784');
+insert into verticalizzazioniparametribase (modulo, parametro, descrizione) values ('WSANAGRAFE_PARIX', 'NET_PATH_CERTIFICATO', 'Path completo del certificato di autenticazione che deve trovarsi nel filesystem della macchina che ospita l''applicazione ASPNET (consigliato: aspnet\certificati). Se il certificato richiede una password specificarla in seguito al path separata da un pipe (es. c:\vbg\aspnet\certificati\cert.p12|password)');
+
+insert into verticalizzazioniparametribase (modulo, parametro, descrizione) values('WSANAGRAFE_PARIX', 'JAVA_PATH_CERTIFICATO', 'Attributi per l''autenticazione client della componente java es caso RFC 63 Regione Toscana. Il valore è composto da più elementi separati dal carattere | (Es. ALIAS|KEYSTORE|TRUSTSTORE|KEYSTOREPWD|TRUSTSTOREPWD). ALIAS rappresenta l''alias del certificato client usato per l''autenticazione. KEYSTORE il path al certificato rilasciato da regione toscana p12. TRUSTSTORE il path al file jks per il trust dei server di regione toscana. KEYSTOREPWD e TRUSTSTOREPWD sono rispettivamente le password per accedere ai due keystore. I path completi del certificato di autenticazione devono trovarsi nel filesystem della macchina che ospita l''applicazione JAVA backend.war.');
+
+INSERT INTO TIPI_SCADENZA (ID, DESCRIZIONE) VALUES ('9', 'Scadenze periodiche fisse');
+
+UPDATE CLMENU_JAVA SET PAGINA = 'tipirateizzazione/list.htm?software=SOFTWARE', JSP = 'JAVA', LINK_STANDARD = 'tipirateizzazione/list.htm?software=SOFTWARE' WHERE ID = 928;

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:oxm="http://www.springframework.org/schema/oxm" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<task:annotation-driven />
+
+	<context:property-placeholder location="classpath:deploy.properties" />
+	<!-- SIGEPRO Security -->
+
+	<bean id="sigeprosecurityWebServiceClient"
+		class="it.gruppoinit.sigeprosecurity.ws.SigeproSecurityWSClient">
+		<property name="sigeproSecurityUrl"
+			value="${ws.token.url}" />
+		<property name="sigeproSecurityUserId" value="${ws.token.user}" />
+		<property name="sigeproSecurityUserPassword" value="${ws.token.pwd}" />
+	</bean>
+	
+	<!-- SIGEPRO Regole -->
+	
+	<bean id="regoleWebServiceClient" class="it.gruppoinit.sigepro.definitions.regole.RegoleWSClient">
+		<property name="backendWsHostURL" value="${ws.backend.url}/backend/services/regole?wsdl" />
+	</bean>
+	
+	<!-- SIGEPRO Eventi -->
+	
+	<bean id="eventiWsClient" class="it.gruppoinit.sigepro.definitions.eventi.EventiWSClient">
+		<property name="mtomEnabled" value="true"/>
+		<property name="timeout" value="30000"/>
+		<property name="eventiWsUrl" value="${ws.backend.url}/backend/services/eventi?wsdl"/>
+	</bean>
+	
+	<bean id="deployProperties" class="it.gruppoinit.service.DeployProperties">
+
+		<property name="wsTokenUrl" value="${ws.token.url}" />
+		<property name="wsTokenUser" value="${ws.token.user}" />
+		<property name="wsTokenPwd" value="${ws.token.pwd}" />
+		<property name="stcUrl" value="${stc.url}" />
+		<property name="stcUserid" value="${stc.userid}" />
+		<property name="stcPassword" value="${stc.password}" />
+		<property name="stcMtom" value="${stc.mtom}" />
+		<property name="stcTimeout" value="${stc.timeout}" />
+		<property name="stcIdNodoMittente" value="${stc.idNodoMittente}" />
+		<property name="stcIdEnteMittente" value="${stc.idEnteMittente}" />
+		<property name="stcIdSportelloMittente" value="${stc.idSportelloMittente}" />
+		<property name="stcIdNodoDestinatario" value="${stc.idNodoDestinatario}" />
+		<property name="stcIdSportelloDestinatario" value="${stc.idSportelloDestinatario}" />
+		<property name="wsOggettiMtom" value="${ws.oggetti.mtom}" />
+		<property name="wsEventiMtom" value="${ws.eventi.mtom}" />
+		<property name="wsBackendUrl" value="${ws.backend.url}" />
+		<property name="consoleOffLineWsUrl" value="${console.offline.ws.url}" />
+	</bean>
+
+	<!-- SIGEPRO STC -->
+	
+	<bean id="stcWebServiceClient" class="it.init.sigepro.rte.definitions.StcWSClient">
+		<property name="timeout" value="${stc.timeout}" />
+		<property name="stcWsUrl" value="${stc.url}" />
+		<!-- UTENTE STC = Username e password di come sieder viene identificato da STC -->
+		<property name="nlaUserId" value="${stc.userid}" />
+		<property name="nlaPassword" value="${stc.password}" />
+		<!-- <property name="idNodoDestinatario" value="400" /> il nodo 400 in laboratorio è il BACKOFFICE
+		<property name="idEnteDestinatario" value="B553" /> L'ente destinatario va popolato dinamicamente con l'ALIAS dell'attivazione
+		<property name="idSportelloDestinatario" value="CE" />
+		Su BACKOFFICE: Archivi - Archivi Base - Amministrazioni
+		<property name="idNodoMittente" value="1234" />
+		<property name="idEnteMittente" value="SIEDER" />
+		<property name="idSportelloMittente" value="SIEDER" /> -->
+		<property name="mtom" value="${stc.mtom}" />
+	</bean>
+	
+	
+	<!-- Configurazione Quartz -->
+	<!-- 
+	<bean id="jobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="it.gruppoinit.service.ProcessaPraticheJob"></property>
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="siederService" value-ref="siederService" />
+				<entry key="aliasDaProcessare" value="${lista.alias.da.processare}" />
+			</map>
+		</property>
+	</bean>
+	<bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+
+		<property name="jobDetail" ref="jobDetail" />
+		
+		<property name="cronExpression" value="${downloadpratiche.cron.trigger.interval}" />
+	</bean>
+	<bean id="schedulerFatcoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="autoStartup" value="${scheduler.enabled}" />
+		<property name="triggers">
+			<list>
+				<ref bean="cronTrigger" />
+			</list>
+		</property>
+	</bean>
+	
+	 -->
+	<!-- Fine Configurazione Quartz -->
+	
+	
+</beans>

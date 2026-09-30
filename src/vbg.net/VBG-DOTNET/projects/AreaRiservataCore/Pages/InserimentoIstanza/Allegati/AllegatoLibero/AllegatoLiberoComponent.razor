@@ -1,0 +1,252 @@
+﻿@using Init.SIGePro.Manager.DTO.Configurazione
+@using Init.Sigepro.FrontEnd.AppLogic.Configurazione.V2;
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneOggetti;
+@using Init.Sigepro.FrontEnd.CoreServices.GestioneOggetti;
+@using VBG.BlazorComponentsLibrary.DesignComuni.Forms
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.DesignComuni.Spinner
+@using VBG.BlazorComponentsLibrary.EditFormComponents
+@using VBG.BlazorComponentsLibrary.EditFormComponents.DropDown
+@using VBG.BlazorComponentsLibrary.EditFormComponents.FileUpload
+
+@if (_showModal)
+{
+    <FormModal OnClose="async () => { await AnnullaCaricamentoAllegatoLibero(); _showModal = false; }" Size="ModalSizeEnum.Large" Model="@_nuovoAllegato" FormId="formAllegato" OnValidSubmit="OnFormSubmit" ValidationCallBack="OnFormValidation">
+        <ModalHeader Titolo="Nuovo allegato libero"></ModalHeader>
+        <ModalBody>
+            <GenericDropDownForm Id="ddlTipoAllegato"
+                                    Label="Categoria*"
+                                    Value="@_nuovoAllegato?.TipoAllegato"
+                                    TItem="CategoriaBindingItem"
+                                    OnChanged="EventCallback.Factory.Create(this, (CategoriaBindingItem s) => _nuovoAllegato.TipoAllegato = s)"
+                                    ValueExpression="() => _nuovoAllegato.TipoAllegato"
+                                    Selector="(x) => x.Descrizione"
+                                    Items="@CategorieSupportate"
+                                    ValueField="Id" TextField="Descrizione"
+                                    ShowEmptyItem="false" EmptyItemValue=""
+                                    ValidationFor="() => _nuovoAllegato.TipoAllegato">
+            </GenericDropDownForm>
+
+            <TextInputForm Id="txtDescrizioneAllegato"
+                            Label="Descrizione*"
+                            @bind-Value="_nuovoAllegato.Descrizione"
+                            ValidationFor="() => _nuovoAllegato.Descrizione" />
+
+            @if (_pnlDimensioniFileVisible)
+            {
+                <h2 class="title-large-semi-bold mb-4">Informazioni sul file</h2>
+
+                <GenericDropDownForm Id="ddlNumeroPagine"
+                                        Label="Numero Pagine"
+                                        Value="@_nuovoAllegato.NumeroPagine"
+                                        TItem="DropDownItem"
+                                        OnChanged="EventCallback.Factory.Create(this, (DropDownItem s) => { _nuovoAllegato.NumeroPagine = s; calcolaDimensioneMassima(); })"
+                                        ValueExpression="() => _nuovoAllegato.NumeroPagine"
+                                        Selector="(x) => x.Text"
+                                        Items="@_numeroPagineDataSource"
+                                        ShowEmptyItem="false"
+                                        ValidationFor="() => _nuovoAllegato.NumeroPagine"
+                                        Required="true">
+                </GenericDropDownForm>
+
+                <GenericDropDownForm Id="ddlFormato"
+                                        Label="Formato*"
+                                        Value="@_nuovoAllegato.Formato"
+                                        TItem="FormatoAllegatoLiberoDto"
+                                        OnChanged="EventCallback.Factory.Create(this, (FormatoAllegatoLiberoDto s) => {_nuovoAllegato.Formato = s; calcolaDimensioneMassima(); } )"
+                                        ValueExpression="() => _nuovoAllegato.Formato"
+                                        Selector="(x) => x.Formato"
+                                        Items="@_formatoDataSource" ValueField="Id" TextField="Formato"
+                                        ShowEmptyItem="true"
+                                        ValidationFor="() => _nuovoAllegato.Formato">
+
+                </GenericDropDownForm>
+                <FormTextReadonly Titolo="Dimensione massima">
+                    <span>@_testoDimensione</span>
+                </FormTextReadonly>
+            }
+
+            <FormUpload Value="@_nuovoAllegato.CodiceOggetto"
+                        ValueChanged="EventCallback.Factory.Create(this, (int? s) => {_nuovoAllegato.CodiceOggetto = s;})"
+                        ValidationFor="() => _nuovoAllegato.CodiceOggetto"
+                        ValueExpression="() => _nuovoAllegato.CodiceOggetto"
+                        Label="File"
+                        DimensioneMassimaFile="@_dimensioneMassimaFile"
+                        EstensioniSupportate=""
+                        VerificaFirmaDigitale="RichiedeFirma"
+                        ValidationCallback="OnValidate"
+                        OnFileChanged="OnFileChange">
+            </FormUpload>
+        </ModalBody>
+        <ModalFooter>
+            <FormSubmitButton Form="formAllegato" IsButtonDisabled="false"></FormSubmitButton>
+            @* <button type="button" class="btn btn-light modal-ko-button" @onclick="AnnullaCaricamentoAllegatoLibero">Annulla</button> *@
+        </ModalFooter>
+    </FormModal>
+}
+
+
+@code {
+
+    [Inject]
+    public IConfigurazione<ParametriDimensioneAllegatiLiberi> _parametriAllegatiLiberi { get; set; } = default!;
+    [Inject]
+    public IPostedFileSpecificationFactoryAsync _postedFileSpecificationFactoryAsync { get; set; } = default!;
+
+    [Inject]
+    protected SpinnerService _spinnerService { get; set; } = default!;
+
+    [Parameter]
+    public List<CategoriaBindingItem> CategorieSupportate { get; set; } = new();
+    [Parameter]
+    public EventCallback<NuovoAllegatoLibero> OnAllegatoLiberoCaricato { get; set; }
+    [Parameter]
+    public EventCallback OnCaricamentoAllegatoAnnullato { get; set; }
+    [Parameter]
+    public bool RichiedeFirma { get; set; }
+
+    private NuovoAllegatoLibero? _nuovoAllegato;
+    private List<DropDownItem>? _numeroPagineDataSource;
+    private List<FormatoAllegatoLiberoDto>? _formatoDataSource;
+    private bool _pnlDimensioniFileVisible = false;
+    private string _testoDimensione = "Specificare il numero di pagine e il formato del file caricato";
+    private IValidPostedFileSpecificationAsync _defaultPostedFileSpecification { get; set; } = default!;
+    private int? _dimensioneMassimaFile = 0;
+    private bool _showModal;
+
+    protected override void OnParametersSet()
+    {
+        this._defaultPostedFileSpecification = this._postedFileSpecificationFactoryAsync.Get(new FileValidationFlags());
+
+        this._numeroPagineDataSource = Enumerable.Range(1, 30)
+                                                .Select(x => new DropDownItem(x.ToString(), x.ToString()))
+                                                .ToList();
+
+        this._formatoDataSource = this._parametriAllegatiLiberi.Parametri.FormatiAllegatiLiberi.ToList();
+
+        this._pnlDimensioniFileVisible = this._parametriAllegatiLiberi.Parametri.FormatiAllegatiLiberi.Length > 0;
+    }
+
+    public void Show()
+    {
+        this._nuovoAllegato = new NuovoAllegatoLibero(this.CategorieSupportate.FirstOrDefault(), this._numeroPagineDataSource.FirstOrDefault());
+        this._nuovoAllegato.Descrizione = String.Empty;
+        this._nuovoAllegato.NomeAllegato = String.Empty;
+        this._nuovoAllegato.Formato = null;
+
+        // ???
+        this.calcolaDimensioneMassima();
+
+        _showModal = true;
+    }
+
+    private void calcolaDimensioneMassima()
+    {
+        if ((this._nuovoAllegato?.Formato?.Id ?? -1) == -1)
+        {
+            this._testoDimensione = "Specificare il numero di pagine e il formato del file caricato";
+            return;
+        }
+
+        int numeroPagine = Convert.ToInt32(this._nuovoAllegato?.NumeroPagine?.Value);
+        int dimensionePagina = Convert.ToInt32(this._nuovoAllegato?.Formato?.DimensioneMaxPagina);
+
+        this._testoDimensione = this.ToHumanReadable(numeroPagine * 1024 * dimensionePagina);
+    }
+
+    private int? GetDimensioneMassima()
+    {
+        if (this._parametriAllegatiLiberi.Parametri.FormatiAllegatiLiberi.Length > 0 &&
+            this._nuovoAllegato?.Formato != null)
+        {
+            var formato = this._parametriAllegatiLiberi.Parametri.FormatiAllegatiLiberi.Where(x => x.Id == this._nuovoAllegato.Formato.Id).FirstOrDefault();
+            var numeroPagine = Convert.ToInt32(this._nuovoAllegato.NumeroPagine?.Value);
+            return formato?.DimensioneMaxPagina * 1024 * numeroPagine;
+        }
+
+        return 0;
+    }
+
+    private void OnValidate(FileUploadChangedEventArgs e)
+    {
+        _dimensioneMassimaFile = GetDimensioneMassima();
+    }
+
+    private void OnFileChange(FormFileChangedEventArgs e)
+    {   
+        if (e.CodiceOggetto != null)
+        {
+            this._nuovoAllegato!.FileAllegato = BinaryFile.FromFileData(e.FileRef?.FileName, e.FileRef?.ContentType, e.FileRef?.FileContent);
+        }
+    }
+
+    private string ToHumanReadable(int len)
+    {
+        var sizes = new string[] { "B", "KB", "MB", "GB", "TB" };
+        var order = 0;
+
+        while (len >= 1024 && order < sizes.Length - 1)
+        {
+            order++;
+            len = len / 1024;
+        }
+
+        return len.ToString("N2") + " " + sizes[order];
+    }
+
+    private async Task OnFormSubmit()
+    {
+        await _spinnerService.ShowSpinnerAsync(async () =>
+        {
+            if (this.OnAllegatoLiberoCaricato.HasDelegate)
+            {
+                await this.OnAllegatoLiberoCaricato.InvokeAsync(this._nuovoAllegato);
+            }
+
+            _showModal = false;
+        });
+    }
+
+    private void OnFormValidation(FormMessageStore e)
+    {
+        if (this._nuovoAllegato!.TipoAllegato == null || string.IsNullOrEmpty(this._nuovoAllegato.TipoAllegato.Descrizione))
+        {
+            e.Add(() => this._nuovoAllegato.TipoAllegato, "Selezionare una categoria di allegato");
+
+            // await Task.CompletedTask;
+            // return;
+        }
+
+        if (string.IsNullOrEmpty(this._nuovoAllegato.Descrizione))
+        {
+            e.Add(() => this._nuovoAllegato.Descrizione, "Specificare una descrizione per l'allegato");
+
+            // await Task.CompletedTask;
+            // return;
+        }
+
+        if (this._nuovoAllegato.Formato == null && _pnlDimensioniFileVisible)
+        {
+            e.Add(() => this._nuovoAllegato.Formato, "Specificare un formato per l'allegato");
+
+            // await Task.CompletedTask;
+            // return;
+        }
+
+        if (this._nuovoAllegato.CodiceOggetto == null)
+        {
+            e.Add(() => this._nuovoAllegato.CodiceOggetto, "L'allegato è mancante o non valido");
+
+            // await Task.CompletedTask;
+            // return;
+        }
+    }
+
+    private async Task AnnullaCaricamentoAllegatoLibero()
+    {
+        if (this.OnCaricamentoAllegatoAnnullato.HasDelegate)
+        {
+            await this.OnCaricamentoAllegatoAnnullato.InvokeAsync();
+        }
+    }
+}

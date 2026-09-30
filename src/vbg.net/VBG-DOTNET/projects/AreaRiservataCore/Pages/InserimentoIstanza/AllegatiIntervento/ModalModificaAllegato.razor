@@ -1,0 +1,132 @@
+﻿@using AreaRiservataCore.Pages.InserimentoIstanza.Allegati
+@using AreaRiservataCore.Pages.InserimentoIstanza.Allegati.AllegatoLibero
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneConversioneFiles
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.DesignComuni.Download
+@using VBG.BlazorComponentsLibrary.DesignComuni.Forms
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.EditFormComponents
+@using VBG.BlazorComponentsLibrary.EditFormComponents.DropDown
+
+@if (Allegato is not null)
+{
+    <FormModal AlwaysVisible="true" OnClose="Annulla" Model="Allegato" FormId="allegatiIntervento" ValidationCallBack="ValidationCallBackAsync" OnValidSubmit="OnValidSubmit">
+        <ModalHeader Titolo="@(Allegato.Id == -1 ? "Nuovo documento" : Allegato.Descrizione)">
+            @((MarkupString)Allegato.Note)
+        </ModalHeader>
+        <ModalBody>
+            @if (Allegato.Id == -1)
+            {
+                <CalcolatoreDimensioniAllegatiLiberi MostraTestoDimensioneMassima="false" OnDimensioneMassimaChanged="OnDimensioneMassimaChanged"></CalcolatoreDimensioniAllegatiLiberi>
+                <TextInputForm Label="Descrizione" @bind-Value="Allegato.Descrizione" ValidationFor="() => Allegato.Descrizione"></TextInputForm>
+            }
+
+            @if ((this.CategorieAllegati?.Count() ?? 0)> 1)
+            {
+                <div class="mb-4">
+                    <GenericDropDownForm Id="dropdown-categorie"
+                                            Label="Categoria"
+                                            TItem="CategoriaBindingItem"
+                                            Items="@CategorieAllegati"
+                                            Value="@Allegato.TipoAllegato"
+                                            OnChanged="EventCallback.Factory.Create(this, (CategoriaBindingItem c) => Allegato.TipoAllegato = c)"
+                                            ValueExpression="() => Allegato.TipoAllegato"
+                                            ValidationFor="() => Allegato.TipoAllegato"
+                                            TextField="Descrizione"
+                                            ValueField="Id"
+                                            Selector="(x) => x.Descrizione"
+                                            ShowEmptyItem="false">
+                    </GenericDropDownForm>
+                </div>                  
+            }
+
+            <FormUpload @bind-Value="Allegato.CodiceOggetto"
+                        Label="Documento"
+                        ValidationFor="() => Allegato.CodiceOggetto"
+                        VerificaFirmaDigitale="@Allegato.RichiedeFirmaDigitale"
+                        DimensioneMassimaFile="@Allegato.DimensioneMassima"
+                        EstensioniSupportate="@Allegato.EstensioniAmmesse"
+                        OnFileChanged="OnFileChanged"
+                        Obbligatorio="@Allegato.Richiesto"></FormUpload>
+
+        </ModalBody>
+        <ModalFooter>
+            <FormSubmitButton Form="allegatiIntervento"></FormSubmitButton>
+        </ModalFooter>
+
+    </FormModal>
+}
+
+@code {
+    [Parameter, EditorRequired]
+    public GrigliaAllegatiBindingItem? Allegato { get; set; }
+
+    [Parameter, EditorRequired]
+    public EventCallback OnAnnulla { get; set; }
+
+    [Parameter, EditorRequired]
+    public EventCallback<GrigliaAllegatiBindingItem> OnConferma { get; set; }
+
+    [Parameter]
+    public IEnumerable<CategoriaBindingItem>? CategorieAllegati { get; set; }
+
+
+    private int? codiceOggettoTemp;
+
+    protected async override Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+
+        codiceOggettoTemp = Allegato?.CodiceOggetto;
+    }
+
+    async Task Annulla()
+    {
+        if (Allegato is not null)
+        {
+            Allegato.CodiceOggetto = codiceOggettoTemp;
+        }
+
+        await this.OnAnnulla.InvokeAsync();
+    }
+
+    async Task OnFileChanged(FormFileChangedEventArgs e)
+    {
+        if(e.CodiceOggetto is not null)
+        {
+            await this.OnConferma.InvokeAsync(this.Allegato);
+        }
+
+        // await Task.CompletedTask;
+    }
+
+    async Task ValidationCallBackAsync(FormMessageStore e)
+    {
+        /*
+        if (this.Allegato == null)
+        {
+            return;
+        }
+
+        if (Allegato.Richiesto && !this.Allegato.CodiceOggetto.HasValue)
+        {
+            e.Add(() => this.Allegato.CodiceOggetto, "Documento obbligatorio");
+        }
+        */
+        await Task.CompletedTask;
+    }
+
+    async Task OnValidSubmit()
+    {
+        await this.OnConferma.InvokeAsync(this.Allegato);
+    }
+
+    void OnDimensioneMassimaChanged(int nuovaDimensioneMassima)
+    {
+        if (Allegato is not null)
+        {
+            Allegato.DimensioneMassima = nuovaDimensioneMassima;
+        }
+    }
+
+}

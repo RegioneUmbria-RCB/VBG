@@ -1,0 +1,63 @@
+﻿@using Init.Sigepro.FrontEnd.AppLogic.GenerazioneDocumentiDomanda.GenerazioneRiepilogoDomanda
+
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneOggetti
+@using Microsoft.Extensions.Logging
+@using Microsoft.JSInterop
+@using VBG.BlazorComponentsLibrary
+@using VBG.BlazorComponentsLibrary.DesignComuni.Spinner
+@using VBG.BlazorComponentsLibrary.DesignComuni.Utils.JsImport
+@using log4net
+@* @inherits MyBaseComponent *@
+@inject IJSRuntime _jsRuntime
+@inject IJsImportedModuleFactory _jsModule;
+@inject GenerazioneRiepilogoDomandaService _generazioneRiepilogoDomandaService
+
+<div class="bwc-DropDown mb-3" id="@_uniqueID">
+    <iframe id="@PdfViewerId" src="js/pdfjs/web/viewer.html" title="Riepilogo in formato PDF" style="width:100%; height: 70vh"></iframe>
+</div>
+
+@code {
+
+    [Inject]
+    protected SpinnerService _spinnerService { get; set; } = default!;
+
+    [Parameter]
+    public Func<Task<BinaryFile>>? DocumentGenerationCallback { get; set; }
+
+    private ILog _log = LogManager.GetLogger(typeof(PDFViewerComponent));
+    private string _uniqueID = "";
+
+    private string PdfViewerId => $"{_uniqueID}_canvas";
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        this._uniqueID = $"pdfviewer_{Guid.NewGuid()}";
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await _spinnerService.ShowSpinnerAsync(async () =>
+            {
+                var pdfViewerUrl = "./js/PDFViewer.js";
+                var jsmodule = _jsModule.CreateJsImportedModule(pdfViewerUrl);
+
+                if (jsmodule != null && DocumentGenerationCallback is not null)
+                {
+                    try
+                    {
+                        var riepilogo = await DocumentGenerationCallback();
+                        await jsmodule.InvokeVoidAsync("loadPdfInIFrame", this.PdfViewerId, Convert.ToBase64String(riepilogo.FileContent));
+                    }
+                    catch (Exception ex)
+                    {
+                        _log.Error($"Errore durante la visualizzazione del file: {ex}");
+                    }
+                }
+            });
+        }
+    }
+}

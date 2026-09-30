@@ -1,0 +1,270 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>File Converter 2.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<link th:href="@{/lib/bootstrap/css/bootstrap.min.css}" rel="stylesheet" />
+
+</head>
+
+<body th:attr="onload=${errorMessage != null &amp;&amp; errorMessage != ''} ? 'showError(\'__${errorMessage}__\')' : null">
+	<nav class="navbar navbar-inverse">
+		<div class="container">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#">File Converter 2.0</a>
+				<a class="navbar-brand" th:href="@{/ws/fileconverter.wsdl}" target="_blank">wsdl</a>
+			</div>
+		</div>
+	</nav>
+
+	<div class="container">
+<!--
+		<div class="row text-center">
+          <a href="#">
+            <img alt="JODConverter" th:src="@{/img/jodconverter_w250.png}" />
+          </a>
+        </div>
+-->        
+        <div class="page-header" id="pageHeader">
+            <h2>FileConverter&nbsp;&nbsp;<small>versione 2.0</small></h2>
+        </div>
+
+        <div id="errorMessage"></div>
+
+		
+<div class="tabbable">
+<ul class="nav nav-tabs">
+	<li class="active"><a href="#convert" data-toggle="tab">Convert HTML</a></li>
+    <li><a href="#convertbinary" data-toggle="tab">Convert</a></li>
+    <li><a href="#merge" data-toggle="tab">Merge</a></li>
+    <li><a href="#mergeexport" data-toggle="tab">Merge and Export</a></li>
+    <li><a href="#mergeconvert" data-toggle="tab">Merge and Convert</a></li>
+</ul>
+<div class="tab-content" id="tabs">
+
+<!-- TAB CONTENT CONVERT HTML -->
+    <div class="tab-pane fade active in" id="convert">
+    	<div class="panel panel-default">
+            <div class="panel-heading"><h4>Convert HTML Documents</h4></div>
+			<div class="panel-body">
+				<form class="form-horizontal" th:action="@{/convert}" enctype="multipart/form-data" method="post">		
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="editor1">Document:</label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+	                            <textarea rows="10" cols="100" id="editor1" name="htmlContent"></textarea>
+                            </div>
+                        </div>
+                    </div>
+					<div class="form-group">
+						<label for="outputFormat0" class="col-sm-2 control-label">Convert To:</label>
+						<div class="col-sm-10">
+							<select class="form-control" id="outputFormat0" name="outputFormat0" required="required" disabled="disabled"></select>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-offset-2 col-sm-10">
+							<button type="submit" id="goButton0" class="btn btn-primary" disabled="disabled">Convert!</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+    </div>
+
+	<!-- TAB CONTENT CONVERT -->
+    <div class="tab-pane" id="convertbinary">
+    	<div class="panel panel-default">
+            <div class="panel-heading"><h4>Convert Documents</h4></div>
+			<div class="panel-body">
+				<form class="form-horizontal" th:action="@{/convertbinary}" enctype="multipart/form-data" method="post">		
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="inputFileText">Document:</label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+	                            <input type="text" class="form-control" id="inputFileText" readonly="readonly" required="required" placeholder="Document to convert..." />
+	                            <span class="input-group-btn">
+	                                <label class="btn btn-default btn-file">
+	                                    <input type="file" id="inputFile" name="inputFile" onchange="onInputFileChange()" style="display: none;" />
+	                                    Browse...
+	                                </label>
+	                            </span>
+                            </div>
+                        </div>
+                    </div>
+					<div class="form-group">
+						<label for="outputFormat" class="col-sm-2 control-label">Convert To:</label>
+						<div class="col-sm-10">
+							<select class="form-control" id="outputFormat" name="outputFormat" required="required" disabled="disabled"></select>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-offset-2 col-sm-10">
+							<button type="submit" id="goButton" class="btn btn-primary" disabled="disabled">Convert!</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+    </div>
+    
+    
+    
+    <!-- TAB CONTENT MERGE -->
+    <div class="tab-pane" id="merge">
+    	<div class="panel panel-default">
+            <div class="panel-heading"><h4>Merge Documents</h4></div>
+			<div class="panel-body">
+				<form class="form-horizontal" th:action="@{/merge}" enctype="multipart/form-data" method="post">		
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="inputFileTextRTF">RTF Document:</label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+	                            <input type="text" class="form-control" id="inputFileTextRTF" readonly="readonly" required="required" placeholder="RTF Document to merge..." />
+	                            <span class="input-group-btn">
+	                                <label class="btn btn-default btn-file">
+	                                    <input type="file" id="inputFileRTF" name="inputFileRTF" onchange="onInputFileRTFChange()" style="display: none;" />
+	                                    Browse...
+	                                </label>
+	                            </span>
+                            </div>
+                        </div>
+                    </div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="inputFileTextXML">XML Document:</label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+	                            <input type="text" class="form-control" id="inputFileTextXML" readonly="readonly" required="required" placeholder="XML Document to merge..." />
+	                            <span class="input-group-btn">
+	                                <label class="btn btn-default btn-file">
+	                                    <input type="file" id="inputFileXML" name="inputFileXML" onchange="onInputFileXMLChange()" style="display: none;" />
+	                                    Browse...
+	                                </label>
+	                            </span>
+                            </div>
+                        </div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-offset-2 col-sm-10">
+							<button type="submit" id="goButtonMerge" class="btn btn-primary" disabled="disabled">Merge!</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+    </div>
+    <!-- TAB CONTENT MERGE AND EXPORT-->
+    <div class="tab-pane" id="mergeexport">
+    	<div class="panel panel-default">
+            <div class="panel-heading"><h4>Merge and Export Documents</h4></div>
+			<div class="panel-body">
+				<form class="form-horizontal" th:action="@{/mergeexport}" enctype="multipart/form-data" method="post">		
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="inputFileTextRTF1">RTF Document:</label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+	                            <input type="text" class="form-control" id="inputFileTextRTF1" readonly="readonly" required="required" placeholder="RTF Document to merge..." />
+	                            <span class="input-group-btn">
+	                                <label class="btn btn-default btn-file">
+	                                    <input type="file" id="inputFileRTF1" name="inputFileRTF1" onchange="onInputFileRTFChange1()" style="display: none;" />
+	                                    Browse...
+	                                </label>
+	                            </span>
+                            </div>
+                        </div>
+                    </div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="inputFileTextXML1">XML Document:</label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+	                            <input type="text" class="form-control" id="inputFileTextXML1" readonly="readonly" required="required" placeholder="XML Document to merge..." />
+	                            <span class="input-group-btn">
+	                                <label class="btn btn-default btn-file">
+	                                    <input type="file" id="inputFileXML1" name="inputFileXML1" onchange="onInputFileXMLChange1()" style="display: none;" />
+	                                    Browse...
+	                                </label>
+	                            </span>
+                            </div>
+                        </div>
+					</div>
+					<div class="form-group">
+						<label for="outputFormat1" class="col-sm-2 control-label">Convert To:</label>
+						<div class="col-sm-10">
+							<select class="form-control" id="outputFormat1" name="outputFormat1" required="required" disabled="disabled"></select>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-offset-2 col-sm-10">
+							<button type="submit" id="goButtonMergeExport" class="btn btn-primary" disabled="disabled">Merge and Export!</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+    </div>
+    <!-- TAB CONTENT MERGE AND CONVERT-->
+    <div class="tab-pane" id="mergeconvert">
+    	<div class="panel panel-default">
+            <div class="panel-heading"><h4>Merge and Convert Documents</h4></div>
+			<div class="panel-body">
+				<form class="form-horizontal" th:action="@{/mergeconvert}" enctype="multipart/form-data" method="post">		
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="inputFileTextXML2">XML Document:</label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+	                            <input type="text" class="form-control" id="inputFileTextXML2" readonly="readonly" required="required" placeholder="XML Document to merge..." />
+	                            <span class="input-group-btn">
+	                                <label class="btn btn-default btn-file">
+	                                    <input type="file" id="inputFileXML2" name="inputFileXML2" onchange="onInputFileXMLChange2()" style="display: none;" />
+	                                    Browse...
+	                                </label>
+	                            </span>
+                            </div>
+                        </div>
+                    </div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="inputFileTextXSL2">XSL Document:</label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+	                            <input type="text" class="form-control" id="inputFileTextXSL2" readonly="readonly" required="required" placeholder="XSL Document to merge..." />
+	                            <span class="input-group-btn">
+	                                <label class="btn btn-default btn-file">
+	                                    <input type="file" id="inputFileXSL2" name="inputFileXSL2" onchange="onInputFileXSLChange2()" style="display: none;" />
+	                                    Browse...
+	                                </label>
+	                            </span>
+                            </div>
+                        </div>
+					</div>
+					<div class="form-group">
+						<label for="outputFormat2" class="col-sm-2 control-label">Convert To:</label>
+						<div class="col-sm-10">
+							<select class="form-control" id="outputFormat2" name="outputFormat2" required="required" disabled="disabled"></select>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-offset-2 col-sm-10">
+							<button type="submit" id="goButtonMergeConvert" class="btn btn-primary" disabled="disabled">Merge and Convert!</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+    </div>
+</div>
+</div>		
+</div>
+
+	<script type="text/javascript" th:src="@{/lib/jquery/jquery.min.js}"></script>
+	<script type="text/javascript" th:src="@{/lib/bootstrap/js/bootstrap.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/documentFormats.js}"></script>
+	<script type="text/javascript" th:src="@{/js/converter.js}"></script>
+	<script type="text/javascript" th:src="@{/lib/ckeditor/ckeditor.js}"></script>
+	<script>
+		CKEDITOR.replace( 'editor1' );
+		onLoad();
+	</script>
+
+</body>
+</html>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:sch="http://gruppoinit.it/sigepro/schemas/messages/mailtipo" xmlns:tns="http://gruppoinit.it/sigepro/definitions/mailtipo" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="http://gruppoinit.it/sigepro/definitions/mailtipo" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <schema xmlns="http://www.w3.org/2001/XMLSchema">
+      <import schemaLocation="http://devel9:8080/vbg/services/mailtipo?xsd=mailtipo.xsd" namespace="http://gruppoinit.it/sigepro/schemas/messages/mailtipo" />
+    </schema>
+  </wsdl:types>
+  <wsdl:message name="MailtipoRequest">
+    <wsdl:part name="MailtipoRequest" element="sch:MailtipoRequest" />
+  </wsdl:message>
+  <wsdl:message name="MailtipoResponse">
+    <wsdl:part name="MailtipoResponse" element="sch:MailtipoResponse" />
+  </wsdl:message>
+  <wsdl:portType name="Mailtipo">
+    <wsdl:operation name="Mailtipo">
+      <wsdl:input name="MailtipoRequest" message="tns:MailtipoRequest" />
+      <wsdl:output name="MailtipoResponse" message="tns:MailtipoResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="MailtipoSoap11" type="tns:Mailtipo">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Mailtipo">
+      <soap:operation soapAction="replaceOggettoCorpo" />
+      <wsdl:input name="MailtipoRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="MailtipoResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="MailtipoService">
+    <wsdl:port name="MailtipoSoap11" binding="tns:MailtipoSoap11">
+      <soap:address location="http://devel9:8080/vbg/services/mailtipo" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

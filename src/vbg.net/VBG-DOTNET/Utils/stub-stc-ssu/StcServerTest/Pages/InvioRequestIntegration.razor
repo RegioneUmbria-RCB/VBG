@@ -1,0 +1,268 @@
+﻿@page "/InvioRequestIntegration"
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Components.Forms
+@using System.Text
+@using ServiceReference1
+
+
+<style type="text/css">
+    .validation-message {
+        color: red;
+    }
+
+    .bottone-invia {
+        background-color: green;
+        color: white;
+        padding-right: 1rem;
+        padding-left: 1rem;
+        padding-top: 0.25rem;
+        padding-bottom: 0.25rem;
+    }
+
+    .bottone-aggiungi {
+        background-color: mediumblue;
+        color: white;
+        padding-right: 1rem;
+        padding-left: 1rem;
+        padding-top: 0.25rem;
+        padding-bottom: 0.25rem;
+    }
+
+    button.bottone-invia:disabled {
+        color: #ccc;
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+
+    .toast {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 5px;
+    }
+
+        .toast.success {
+            background: green;
+        }
+
+        .toast.error {
+            background: red;
+        }
+</style>
+
+<h3>Invia richiesta integrazione</h3>
+<p>Questa pagina consente di simulare l'invio di una <i>REQUEST_INTEGRATION</i>.</p>
+
+
+
+<EditForm Model="model" OnValidSubmit="@Invia">
+
+    <DataAnnotationsValidator />
+
+    @if (!string.IsNullOrEmpty(erroreInvioDomanda))
+    {
+        <div class="validation-message">
+            @erroreInvioDomanda
+        </div>
+    }
+
+    <div style="margin-top: 1.5rem; margin-bottom: 1.5rem;">
+        <label for="idDomanda">Id domanda:</label>
+        <InputText id="idDomanda" style="width:500px" @bind-Value="@model.IdDomanda" oninput="@((ChangeEventArgs e) => ValidaIdDomanda(e))"></InputText>
+
+        @if (!string.IsNullOrEmpty(erroreIdDomanda))
+        {
+            <div class="validation-message">
+                @erroreIdDomanda
+            </div>
+        }
+    </div>
+
+    <div style="margin-bottom: 1.5rem; display: flex;">
+        <label for="txtRichiesta">Richiesta integrazione (json):</label>
+        <InputTextArea id="txtRichiesta" rows="50" cols="150" @bind-Value="@model.RichiestaJson"></InputTextArea>
+        <ValidationMessage For="@(() => model.RichiestaJson)"></ValidationMessage>
+    </div>
+
+
+    <button type="submit" class="bottone-aggiungi">Invia Richiesta</button>
+
+</EditForm>
+
+
+@if (showToast)
+{
+    <div class="toast @toastCssClass">
+        @message
+    </div>
+}
+
+
+
+
+@code {
+    private const string jsonSample = @"[
+        {
+            ""amministrazione"" : {
+                ""codice"" : 123456,
+                ""descrizione"" : ""Nome amministrazione""
+            },
+            ""procedimenti"" : [
+                {
+                    ""codice"" : 123,
+                    ""descrizione"" : ""Nome del procedimento"",
+                    ""richieste"" : [
+                        ""Descrizione della richiesta 1"",
+                        ""Descrizione della richiesta 2""
+                    ]
+                }
+            ],
+            ""allegati"" : {
+                ""codiciOggetto"": [
+                    123,
+                    456,
+                    789
+                ]
+            }
+        }
+
+    ]";
+    public class Model
+    {
+        [Required(ErrorMessage = "Campo obbligatorio")]
+        public string IdDomanda { get; set; } = "";
+
+        [Required(ErrorMessage = "Campo obbligatorio")]
+        public string? RichiestaJson { get; set; } = jsonSample;
+    }
+
+    [Inject]
+    public NlaService nlaService { get; set; } = default!;
+
+    [Inject]
+    public ILogger<InvioRequestIntegration> logger { get; set; } = default!;
+
+    private Model model = new Model();
+    private string erroreIdDomanda = "";
+    string erroreInvioDomanda = "";
+    private bool showToast;
+    private string message = "";
+    private string toastCssClass = "";
+
+    private async Task Invia()
+    {
+        try
+        {
+            var request = PreparaRequest();
+
+            if (request == null)
+            {
+                ShowToastMessage("Si è verificato un errore nella preparazione della request", "error");
+                return;
+            }
+
+            var response = await nlaService.InserimentoAttivitaNLAAsync(request);
+
+            if (response.InserimentoAttivitaNLAResponse.Items.Any(x => x is ErroreType))
+            {
+                foreach (var errore in response.InserimentoAttivitaNLAResponse.Items.OfType<ErroreType>())
+                {
+                    logger.LogError("La chiamata a InserimentoAttivitaNLAAsync ha restituito il seguente errore: numero errore {0}, descrizione: {1}", errore.numeroErrore, errore.descrizione);
+                }
+
+                ShowToastMessage("Si è verificato un errore durante l'invio", "error");
+            }
+            else
+            {
+                ShowToastMessage("Invio integrazione completato con successo", "success");
+            }
+
+            model = new Model();
+        }
+        catch (Exception ex)
+        {
+            ShowToastMessage("Si è verificato un errore durante l'invio", "error");
+            logger.LogError("Errore durante l'invio della richiesta di integrazione: {0}", ex);
+            return;
+        }
+
+    }
+
+    private void ValidaIdDomanda(ChangeEventArgs e)
+    {
+        erroreIdDomanda = "";
+
+        if (string.IsNullOrEmpty(e.Value?.ToString()))
+        {
+            erroreIdDomanda = "Campo obbligatorio";
+        }
+    }
+
+    private InserimentoAttivitaNLARequest? PreparaRequest()
+    {
+        if (model == null || model.RichiestaJson == null)
+        {
+            erroreInvioDomanda = "La richiesta è null.";
+            return null;
+        }
+
+        var request = new InserimentoAttivitaNLARequest();
+
+        var datiAttivita = new DettaglioAttivitaType();
+
+        datiAttivita.idPratica = model.IdDomanda;
+
+        datiAttivita.idAttivita = "REQUEST_INTEGRATION";
+        datiAttivita.tipoAttivita = new TipoAttivitaType
+        {
+            codice = "REQUEST_INTEGRATION",
+            descrizione = "REQUEST_INTEGRATION"
+        };
+
+
+        byte[] bytes = Encoding.UTF8.GetBytes(model.RichiestaJson);
+        string resultBase64 = Convert.ToBase64String(bytes);
+
+        datiAttivita.altriDati = new ParametroType[]
+        {
+            new ParametroType
+            {
+                nome = "SSU_INTEGRAZIONI_RICHIESTE",
+                valore = new ValoreParametroType[]
+                {
+                    new ValoreParametroType
+                    {
+                        codice = resultBase64,
+                        descrizione = resultBase64
+                    }
+                }
+            }
+        };
+
+        request.sportelloMittente = nlaService.GetSportelloMittente();
+
+        request.sportelloDestinatario = nlaService.GetSportelloDestinatario();
+
+        request.datiAttivita = datiAttivita;
+
+        return request;
+    }
+
+    public void ShowToastMessage(string msg, string cssClass)
+    {
+        message = msg;
+        toastCssClass = cssClass;
+        showToast = true;
+        StateHasChanged();
+        _ = HideToastMessage();
+    }
+
+    private async Task HideToastMessage()
+    {
+        await Task.Delay(5000);
+        showToast = false;
+        StateHasChanged();
+    }
+}

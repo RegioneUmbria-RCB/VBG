@@ -1,0 +1,80 @@
+<wsdl:definitions 
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+    xmlns:idpIPP="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpInformativaPagamento" 
+    xmlns:idpE="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpEsito" 
+    xmlns="http://www.cart.rete.toscana.it/servizi/iris_1_1/proxy" 
+    xmlns:h="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpHeader" 
+    xmlns:i="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpInclude" 
+    xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" 
+    targetNamespace="http://www.cart.rete.toscana.it/servizi/iris_1_1/proxy">
+	
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://www.cart.rete.toscana.it/servizi/iris_1_1/proxy">
+			<xsd:import namespace="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpInformativaPagamento" schemaLocation="./Schemi/IdP.InformativaPagamento.xsd"/>
+			<xsd:import namespace="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpEsito" schemaLocation="./Schemi/IdP.Esito.Verifica.xsd"/>
+           			
+			<xsd:element name="IdpVerificaStatoPagamenti">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element ref="idpIPP:IdpVerificaStatoPagamento"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			
+			<xsd:element name="IdpVerificaStatoPagamenti.Esito">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element ref="idpE:IdpEsitoVerifica"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			
+        </xsd:schema>
+    </wsdl:types>
+    
+    <wsdl:message name="IdpInformativaPagamento.EsitoMessage">
+        <wsdl:part name="IdpInformativaPagamento.Esito" element="IdpInformativaPagamento.Esito"/>
+    </wsdl:message>
+	
+	<wsdl:message name="IdpVerificaStatoPagamentiMessage">
+		<wsdl:part name="IdpVerificaStatoPagamenti" element="IdpVerificaStatoPagamenti"/>
+	</wsdl:message>
+	
+	<wsdl:message name="IdpVerificaStatoPagamenti.EsitoMessage">
+		<wsdl:part name="IdpVerificaStatoPagamenti.Esito" element="IdpVerificaStatoPagamenti.Esito"/>
+	</wsdl:message>
+    
+
+
+	<wsdl:portType name="VerificaStatoPagamento">
+		<wsdl:operation name="IdpVerificaStatoPagamenti">
+			<wsdl:input name="IdpVerificaStatoPagamentiMessage" message="IdpVerificaStatoPagamentiMessage"/>
+			<wsdl:output name="IdpVerificaStatoPagamenti.EsitoMessage" message="IdpVerificaStatoPagamenti.EsitoMessage"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	
+
+	
+	<wsdl:binding name="VerificaStatoPagamentoBinding" type="VerificaStatoPagamento">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="IdpVerificaStatoPagamenti">
+			<soap:operation soapAction="IdpVerificaStatoPagamenti"/>
+			<wsdl:input name="IdpVerificaStatoPagamentiMessage">
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="IdpVerificaStatoPagamenti.EsitoMessage">
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	
+    
+	<wsdl:service name="VerificaStatoPagamentoService">
+		<wsdl:port name="VerificaStatoPagamento" binding="VerificaStatoPagamentoBinding">
+			<soap:address location="http://host/verificastatopagamento"/>
+		</wsdl:port>
+	</wsdl:service>
+
+</wsdl:definitions>

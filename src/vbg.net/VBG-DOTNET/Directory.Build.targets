@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+
+	<PropertyGroup>
+		<DestinationFolder>$(ProjectDir)Properties/</DestinationFolder>
+		<AssemblyInfoFilePath>$(DestinationFolder)AssemblyInfo.cs</AssemblyInfoFilePath>
+		<RootAssmblyInfoPath Condition="!Exists($(SolutionDir))">.</RootAssmblyInfoPath>
+		<RootAssmblyInfoPath Condition="Exists($(SolutionDir))">$(SolutionDir)</RootAssmblyInfoPath>
+	</PropertyGroup>
+
+	<Target Name="PreparaAssemblyInfo" AfterTargets="BeforeBuild" Condition="!Exists($(AssemblyInfoFilePath))">
+		<Message Text="SolutionDir = $(SolutionDir)" Importance="high" />
+	    <Copy SourceFiles="$(RootAssmblyInfoPath)/Utils/TortoiseSVN/AssemblyInfo.cs" DestinationFolder="$(DestinationFolder)" />
+	</Target>
+	
+
+	<!--
+	<Target Name="Cleanup" AfterTargets="Clean" Condition="Exists($(VersionFilePath))">
+		<Message Text="Eliminazione del file temporaneo $(VersionFilePath)" Importance="high" />
+		<Delete Files="$(VersionFilePath)" TreatErrorsAsWarnings="True" />  
+	</Target>
+	-->
+</Project>

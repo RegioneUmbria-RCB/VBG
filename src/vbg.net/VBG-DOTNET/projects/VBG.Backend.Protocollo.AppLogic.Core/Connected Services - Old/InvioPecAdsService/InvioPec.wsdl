@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:intf="http://pec.ducd.affarigenerali.finmatica.it" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:impl="http://pec.ducd.affarigenerali.finmatica.it" targetNamespace="http://pec.ducd.affarigenerali.finmatica.it" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema xmlns="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://pec.ducd.affarigenerali.finmatica.it">
+      <xsd:element name="invioPecPG">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="in" type="impl:ParametriIngressoPG" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="ParametriIngressoPG">
+        <xsd:sequence>
+          <xsd:element name="anno" type="xsd:int" />
+          <xsd:element name="listaDestinatari" nillable="true" type="xsd:string" />
+          <xsd:element name="numero" type="xsd:int" />
+          <xsd:element name="tipoRegistro" nillable="true" type="xsd:string" />
+          <xsd:element name="utente_creazione" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="invioPecPGResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="invioPecPGReturn" type="impl:ParametriUscita" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="ParametriUscita">
+        <xsd:sequence>
+          <xsd:element name="codice" type="xsd:int" />
+          <xsd:element name="descrizione" nillable="true" type="xsd:string" />
+          <xsd:element name="msgId" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="invioPec">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="in" type="impl:ParametriIngresso" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="ParametriIngresso">
+        <xsd:sequence>
+          <xsd:element name="idDocumento" type="xsd:int" />
+          <xsd:element name="listaDestinatari" nillable="true" type="xsd:string" />
+          <xsd:element name="utente_creazione" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="invioPecResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="invioPecReturn" type="impl:ParametriUscita" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="invioPecResponse">
+    <wsdl:part name="parameters" element="impl:invioPecResponse" />
+  </wsdl:message>
+  <wsdl:message name="invioPecPGResponse">
+    <wsdl:part name="parameters" element="impl:invioPecPGResponse" />
+  </wsdl:message>
+  <wsdl:message name="invioPecPGRequest">
+    <wsdl:part name="parameters" element="impl:invioPecPG" />
+  </wsdl:message>
+  <wsdl:message name="invioPecRequest">
+    <wsdl:part name="parameters" element="impl:invioPec" />
+  </wsdl:message>
+  <wsdl:portType name="PecSOAPImpl">
+    <wsdl:operation name="invioPecPG">
+      <wsdl:input name="invioPecPGRequest" message="impl:invioPecPGRequest" />
+      <wsdl:output name="invioPecPGResponse" message="impl:invioPecPGResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="invioPec">
+      <wsdl:input name="invioPecRequest" message="impl:invioPecRequest" />
+      <wsdl:output name="invioPecResponse" message="impl:invioPecResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="PecSOAPImplSoapBinding" type="impl:PecSOAPImpl">
+    <wsdlsoap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="invioPecPG">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="invioPecPGRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="invioPecPGResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="invioPec">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="invioPecRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="invioPecResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="PecSOAPImplService">
+    <wsdl:port name="PecSOAPImpl" binding="impl:PecSOAPImplSoapBinding">
+      <wsdlsoap:address location="http://svi-ora03/ducd/services/PecSOAPImpl" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

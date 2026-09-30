@@ -1,0 +1,61 @@
+﻿@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+
+@if (IsLoading)
+{
+    <AccordionContainer>
+        @for (int i = 0; i < PratichePerPagina; i++)
+        {
+            <div id="@($"sk_{i}")">
+                <AccordionItem CollapsibleElementId="@($"sk_{i}")" StartingCollapsed="false">
+                    <div class="skeleton">
+                        <div class="skeleton-text-bold bg-primary"></div>
+                        <div class="skeleton-text"></div>
+                        <br />
+                        <div class="skeleton-rectangle"></div>
+                        <br />                        
+                        <div>
+                            <button type="button" class="btn btn-primary justify-content-center skeleton-button" data-focus-mouse="false" disabled>
+                                Riprendi
+                            </button>
+                            <button type="button" class="btn btn-secondary justify-content-center skeleton-button mt-1" data-focus-mouse="false" disabled>
+                                Elimina
+                            </button>
+                        </div>
+                    </div>
+                </AccordionItem>
+            </div>
+        }
+    </AccordionContainer>
+}
+else
+{
+    if (Items.Any())
+    {
+        <AccordionContainer>
+            @foreach (var item in Items)
+            {
+                <Elemento Item="@item"></Elemento>
+            }
+        </AccordionContainer>
+    }
+    else
+    {
+        <Card Shadow="Card.CardShadow.Small">
+            <Body>
+                Nessuna pratica disponibile
+            </Body>
+        </Card>
+    }
+}
+
+@code {
+    [Parameter, EditorRequired]
+    public IEnumerable<DomandeListItem> Items { get; set; } = default!;
+
+    [Parameter]
+    public int PratichePerPagina { get; set; } = 5;
+
+    [Parameter]
+    public bool IsLoading { get; set; } = true;
+}

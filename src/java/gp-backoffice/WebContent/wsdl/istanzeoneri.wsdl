@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	 xmlns:sch="http://gruppoinit.it/sigepro/schemas/messages/istanzeoneri" 
+	 xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	 xmlns:tns="http://gruppoinit.it/sigepro/definitions/istanzeoneri" 
+	 targetNamespace="http://gruppoinit.it/sigepro/definitions/istanzeoneri" xmlns:p="http://www.w3.org/2001/XMLSchema">
+	<wsdl:types>
+		<schema xmlns="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://gruppoinit.it/sigepro/schemas/messages/istanzeoneri" schemaLocation="istanzeoneri.xsd" />
+		</schema>
+    </wsdl:types>
+	<wsdl:message name="RegistraPagamentoRequest">
+		<wsdl:part element="sch:RegistraPagamentoRequest" name="RegistraPagamentoRequest" />
+	</wsdl:message>
+	
+	<wsdl:message name="RegistraPagamentoResponse">
+		<wsdl:part element="sch:RegistraPagamentoResponse" name="RegistraPagamentoResponse" />
+	</wsdl:message>
+	<wsdl:message name="RegistraPagamentoRataRequest">
+		<wsdl:part name="RegistraPagamentoRataRequest" element="sch:RegistraPagamentoRataRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="RegistraPagamentoRataResponse">
+		<wsdl:part name="RegistraPagamentoResponse" element="sch:RegistraPagamentoResponse"></wsdl:part>
+	</wsdl:message>
+	
+	
+	<wsdl:message name="InsertOnereRequest">
+		<wsdl:part name="InsertOnereRequest" element="sch:InsertOnereRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="InsertOnereResponse">
+		<wsdl:part name="InsertOnereResponse" element="sch:InsertOnereResponse"></wsdl:part>
+	</wsdl:message>
+	
+	<wsdl:message name="EliminaOnereRequest">
+		<wsdl:part name="EliminaOnereRequest" element="sch:EliminaOnereRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="EliminaOnereResponse">
+		<wsdl:part name="EliminaOnereResponse" element="sch:EliminaOnereResponse"></wsdl:part>
+	</wsdl:message>
+	
+	
+	
+	
+	<wsdl:portType name="Istanzeoneri">
+		<wsdl:operation name="RegistraPagamento">
+			<wsdl:input message="tns:RegistraPagamentoRequest" name="RegistraPagamentoRequest" />
+			<wsdl:output message="tns:RegistraPagamentoResponse" name="RegistraPagamentoResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="RegistraPagamentoRata">
+			<wsdl:input message="tns:RegistraPagamentoRataRequest" name="RegistraPagamentoRataRequest"></wsdl:input>
+			<wsdl:output message="tns:RegistraPagamentoRataResponse" name="RegistraPagamentoRataResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="InsertOnere">
+			<wsdl:input message="tns:InsertOnereRequest" name="InsertOnereRequest"></wsdl:input>
+			<wsdl:output message="tns:InsertOnereResponse" name="InsertOnereResponse"></wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="EliminaOnere">
+			<wsdl:input message="tns:EliminaOnereRequest" name="EliminaOnereRequest"></wsdl:input>
+			<wsdl:output message="tns:EliminaOnereResponse" name="EliminaOnereResponse"></wsdl:output>
+		</wsdl:operation>
+	</wsdl:portType>
+	
+	<wsdl:binding name="IstanzeoneriSoap11" type="tns:Istanzeoneri">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="RegistraPagamento">
+			<soap:operation soapAction="RegistraPagamento" />
+			<wsdl:input name="RegistraPagamentoRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="RegistraPagamentoResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>		
+		<wsdl:operation name="RegistraPagamentoRata">
+			<soap:operation soapAction="RegistraPagamentoRata" />
+			<wsdl:input name="RegistraPagamentoRataRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="RegistraPagamentoRataResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="InsertOnere">
+			<soap:operation soapAction="InsertOnere" />
+			<wsdl:input name="InsertOnereRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="InsertOnereResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="EliminaOnere">
+			<soap:operation soapAction="EliminaOnere" />
+			<wsdl:input name="EliminaOnereRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="EliminaOnereResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>					
+		
+	</wsdl:binding>
+	<wsdl:service name="IstanzeoneriWsService">
+		<wsdl:port binding="tns:IstanzeoneriSoap11" name="IstanzeoneriSoap11">
+			<soap:address location="http://devel9:8080/backend/services/" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

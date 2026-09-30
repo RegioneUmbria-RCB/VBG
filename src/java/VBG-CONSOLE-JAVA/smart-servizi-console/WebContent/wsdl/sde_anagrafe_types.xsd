@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://gruppoinit.it/sde/anagrafici/types" 
+	elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" 
+	xmlns:tns="http://gruppoinit.it/sde/anagrafici/types">
+
+    <element name="CercaStradarioRequest">
+    	<complexType>
+    		<sequence>
+    			<element name="codiceCatastaleComune"
+    				type="tns:CodiceCatastaleType">
+    			</element>
+    			<element name="testoDaCercare" minOccurs="1"
+    				maxOccurs="1">
+                    <annotation>
+                    	<documentation>La denominazione estesa (DUG + TOPONIMO) della via da ricercare. Es: "via manzoni"</documentation>
+                    </annotation>
+                    <simpleType>
+    					<restriction base="string">
+    						<minLength value="2"></minLength>
+    					</restriction>
+    				</simpleType>
+    			</element>
+    		</sequence>
+    	</complexType>
+    </element>
+
+    <simpleType name="CodiceCatastaleType">
+        <annotation>
+        	<documentation>Tipo di dato semplice per un comune italiano codificato tramite il codice catastale (Belfiore)</documentation></annotation>
+        <restriction base="string">
+    		<pattern value="[A-L][0-9]{3}|M[0-3]{3}"></pattern>
+    	</restriction>
+    </simpleType>
+
+    <element name="CercaStradarioResponse"
+    	type="tns:ListaStradarioType">
+    </element>
+
+    <complexType name="StradarioType">
+        <annotation>
+        	<documentation></documentation>
+        </annotation>
+        <sequence>
+    		<element name="dug" maxOccurs="1" minOccurs="0">
+    			<annotation>
+    				<documentation>
+    					Denominazione Urbanistica Generica -
+    					qualificatore del toponimo (es. Via, Piazza,
+    					Largo, ecc.)
+    				</documentation>
+    			</annotation>
+    			<simpleType>
+    				<restriction base="string">
+    					<maxLength value="20"></maxLength>
+    				</restriction>
+    			</simpleType>
+    		</element>
+    		<element name="toponimo" maxOccurs="1" minOccurs="1">
+                <annotation>
+                	<documentation>Nome della via es: "alessandro manzoni", "maestà delle volte", ecc</documentation>
+                </annotation>
+                <simpleType>
+    				<restriction base="string">
+    					<maxLength value="128"></maxLength>
+    				</restriction>
+    			</simpleType>
+    		</element>
+    		<element name="cap" maxOccurs="1" minOccurs="0">
+    			<simpleType>
+    				<restriction base="string">
+    					<pattern value="([0-9]{5})"></pattern>
+    					<length value="5"></length>
+    				</restriction>
+    			</simpleType>
+    		</element>
+    		<element name="localita" maxOccurs="1" minOccurs="0">
+                <annotation>
+                	<documentation>Se presente la località/frazione</documentation>
+                </annotation>
+                <simpleType>
+    				<restriction base="string">
+    					<maxLength value="128"></maxLength>
+    				</restriction>
+    			</simpleType>
+    		</element>
+    		<element name="codviario" type="string" maxOccurs="1" minOccurs="0">
+    			<annotation>
+    				<documentation>Il riferimento al codice viario dell'ente</documentation>
+    			</annotation></element>
+    		<element name="codiceCatastaleComune"
+    			type="tns:CodiceCatastaleType" maxOccurs="1" minOccurs="0">
+    		</element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="ListaStradarioType">
+        <annotation>
+        	<documentation>La lista dei risultati della ricerca</documentation>
+        </annotation>
+        <sequence>
+    		<element name="lista" type="tns:StradarioType" maxOccurs="unbounded" minOccurs="0"></element>
+    	</sequence>
+    </complexType>
+
+    <element name="GetPersonaFisicaRequest">
+    	<complexType>
+    		<sequence>
+    			<element name="codiceFiscale" maxOccurs="1" minOccurs="1">
+    				<annotation>
+    					<documentation>
+    						Il codice Fiscale della persona fisica per
+    						la quale ottenere i dati
+    					</documentation>
+    				</annotation>
+    				<simpleType>
+    					<restriction base="string">
+    						<length value="16"></length>
+    					</restriction>
+    				</simpleType>
+    			</element>
+    			<element name="codiceCatastaleComune" type="string" maxOccurs="1" minOccurs="1"></element>
+    		</sequence>
+    	</complexType>
+    </element>
+
+    <element name="GetPersonaFisicaResponse">
+    	<complexType>
+    		<sequence>
+    			<element name="datiAnagrafici"
+    				type="tns:PersonaFisicaType" maxOccurs="1" minOccurs="0">
+    			</element>
+    		</sequence>
+    	</complexType>
+    </element>
+
+    <complexType name="PersonaFisicaType">
+    	<sequence>
+    		<element name="nome" type="string" maxOccurs="1"
+    			minOccurs="1">
+    		</element>
+    		<element name="cognome" type="string" maxOccurs="1"
+    			minOccurs="1">
+    		</element>
+    		<element name="codiceFiscale" type="string" maxOccurs="1"
+    			minOccurs="1">
+    		</element>
+    		<element name="comuneNascita" type="tns:CodiceCatastaleType"
+    			maxOccurs="1" minOccurs="0">
+    		</element>
+    		<element name="dataNascita" type="date" maxOccurs="1"
+    			minOccurs="0">
+    		</element>
+    		<element name="sesso" maxOccurs="1" minOccurs="1">
+    			<simpleType>
+    				<restriction base="string">
+    					<enumeration value="M"></enumeration>
+    					<enumeration value="F"></enumeration>
+    				</restriction>
+    			</simpleType>
+    		</element>
+    		<element name="residenza" type="tns:datiLocalizzativiType"
+    			maxOccurs="1" minOccurs="0">
+    		</element>
+    		<element name="corrispondenza"
+    			type="tns:datiLocalizzativiType" maxOccurs="1" minOccurs="0">
+    		</element>
+    		<element name="telefono" type="string" maxOccurs="1"
+    			minOccurs="0">
+    		</element>
+    		<element name="fax" type="string" maxOccurs="1"
+    			minOccurs="0">
+    		</element>
+    		<element name="email" type="string" maxOccurs="1"
+    			minOccurs="0">
+    		</element>
+    		<element name="pec" type="string" maxOccurs="1"
+    			minOccurs="0">
+    		</element>
+    		<element name="nazioneCittadinanza" type="string" maxOccurs="1" minOccurs="0"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="datiLocalizzativiType">
+    	<sequence>
+    		<element name="indirizzo" type="string" maxOccurs="1" minOccurs="1">
+    			<annotation>
+    				<documentation>L'indirizzo nella forma "Via A. Manzoni,65"</documentation>
+    			</annotation></element>
+    		<element name="cap" type="string" maxOccurs="1" minOccurs="0"></element>
+    		<element name="codiceCatastaleComune"
+    			type="tns:CodiceCatastaleType" maxOccurs="1" minOccurs="0">
+    		</element>
+    		<element name="siglaprovincia" type="string" maxOccurs="1" minOccurs="0"></element>
+    	</sequence>
+    </complexType>
+</schema>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:oxm="http://www.springframework.org/schema/oxm"
+	xmlns:sws="http://www.springframework.org/schema/web-services"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       	http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm-1.5.xsd
+       	http://www.springframework.org/schema/web-services http://www.springframework.org/schema/web-services/web-services-1.5.xsd
+		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.2.xsd">
+
+	<!-- wsdl pubblicato a http://<host>:<port>/<context>/services/nlapec.wsdl -->
+	<bean id="nlapec"
+		class="org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition">
+		<property name="schemaCollection" ref="nlaSchema"/>
+		<property name="portTypeName" value="Nla" />
+		<property name="locationUri" value="/services" />
+		<property name="targetNamespace" value="http://sigepro.init.it/rte/definitions" />
+	</bean>
+	<!-- wsdl pubblicato a http://<host>:<port>/<context>/services/nlaGestioneMail.wsdl -->
+	<bean id="nlaGestioneMail"
+		class="org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition">
+		<property name="schemaCollection" ref="nlaSchemaWSgestioneMail"/>
+		<property name="portTypeName" value="NlaGestioneMail" />
+		<property name="locationUri" value="/services" />
+		<property name="targetNamespace" value="http://gruppoinit.it/nlapec" />
+	</bean>	
+</beans>

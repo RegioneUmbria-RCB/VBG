@@ -1,0 +1,41 @@
+
+#set($idSemantico = $item.Campo.IdSemantico)
+	#set($colspan = 1)
+	#if($item.Campo.Titolo && $item.Campo.Titolo.length() > 0)
+        <span>
+        	$!item.Campo.Titolo
+        </span>
+	#else
+		#set($colspan = 2)
+	#end
+	<span>
+	#set($isCheckBox = $helper.rendersAsCheckbox($item.Campo))
+	#set($isRadioButton = $helper.rendersAsRadioButton($item.Campo))
+	#if($isCheckBox || $isRadioButton)
+		#foreach($enumItem in $item.Campo.SetValori.Enumerazione.EnumItem)
+			#set($checked = " ")
+			#if($helper.contieneValore($idSemantico,$rowIndex,$enumItem.Valore))
+				#set($checked = "X")
+			#end
+			<span class="monospaceboldchar">[$checked]</span> <span>$enumItem.Valore</span><br />
+		#end
+	#else
+		#set($values = $helper.getValoreMultiplo($idSemantico,$rowIndex))
+		#set($numValues = $helper.contaValoriMultipli($idSemantico,$rowIndex))
+		#if ( $numValues == 0 )
+				<b>_____________________________________</b>
+		#end		
+		#foreach($value in $values)
+		
+			#if ( "$!value" == "" )
+				<b>_____________________________________</b>
+			#else
+				<b>$value</b>
+			#end		
+	            
+			#if($velocityCount < $numValues)
+				<br />
+			#end
+		#end
+	#end
+    </span>	

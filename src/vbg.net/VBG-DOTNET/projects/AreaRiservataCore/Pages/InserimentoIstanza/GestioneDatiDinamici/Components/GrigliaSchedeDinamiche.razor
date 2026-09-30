@@ -1,0 +1,56 @@
+﻿@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+
+@if (DataSource is not null && DataSource.Any())
+{
+    <section class="it-page-section" id="@GetId()">
+        <div class="cmp-card mb-40">
+            <div class="card has-bkg-grey shadow-sm">
+                <div class="card-header border-0 p-0 mb-lg-30">
+                    <div class="h4">@Titolo</div>
+                </div>
+                <div class="card-body p-0">
+                    <StepCardItem>
+                        <ul>
+                            @foreach (var scheda in this.DataSource)
+                            {
+                                <li class="elementoListaDatiDinamici d-flex">
+                                    <i class="fa @(scheda.Compilata ? "fa-check" : "fa-pencil")" aria-label="@(scheda.Compilata ? "Compilata correttamente" : "Da compilare")"></i>
+                                    <button type="button" class="titolo-scheda" aria-label="Compila la scheda @scheda.Descrizione" @onclick="() => OnSchedaSelezionata(scheda)">
+                                        @($"{scheda.Descrizione}{(scheda.Facoltativa ? "" : "*")}")
+                                    </button>
+                                    @if (scheda.DaRicompilare)
+                                    {
+                                        <small class="ms-2">
+                                            <BadgeComponent Type="BadgeComponent.BadgeCategoryEnum.WARNING">Compilare nuovamente questa scheda</BadgeComponent>
+                                        </small>
+                                    }
+                                </li>
+                            }
+                        </ul>
+                    </StepCardItem>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+@code {
+    [Parameter]
+    public string Titolo { get; set; } = "";
+    [Parameter]
+    public bool TitoloVisibile { get; set; } = true;
+    [Parameter]
+    public IEnumerable<SchedeBindingItem>? DataSource { get; set; }
+    [Parameter]
+    public EventCallback<SchedeBindingItem> SchedaSelezionata { get; set; }
+
+    void OnSchedaSelezionata(SchedeBindingItem scheda)
+    {
+        this.SchedaSelezionata.InvokeAsync(scheda);
+    }
+
+    private static string GetId()
+    {
+        return "_" + Convert.ToBase64String(Guid.NewGuid().ToByteArray()).Substring(0, 10).Replace("+", "-").Replace("/", "-");
+    }
+}

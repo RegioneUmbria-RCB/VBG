@@ -1,0 +1,239 @@
+﻿@page "/{IdComune}/{Software}/inserimento-istanza/gestione-sottoscriventi/{idDomanda:int}/{stepId:int}"
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneAnagrafiche
+@using Init.Sigepro.FrontEnd.AppLogic.GestionePresentazioneDomanda.GestioneAnagrafiche
+@using Init.Sigepro.FrontEnd.AppLogic.Services.Domanda
+@using VBG.BlazorComponentsLibrary.DesignComuni.Forms
+@using VBG.BlazorComponentsLibrary.DesignComuni.Messaggi
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards.CardButtons
+@using VBG.BlazorComponentsLibrary.EditFormComponents
+@using static Init.Sigepro.FrontEnd.AppLogic.Services.Domanda.ProcureService
+@inherits IstanzeStepPage
+
+@if (this._procureDomanda.Any())
+{
+	<StepCard Titolo=" ">
+		@foreach (var (procura, index) in _procureDomanda.Select((value, i) => (value, i)))
+        {
+            <StepCardItem>
+                <StepCardButtonGroup EditClick="() => ModificaSottoscrizione(procura)"></StepCardButtonGroup>
+                <StepCardItemTitle Titolo="@procura.Nominativo" Sottotitolo="@procura.TipoSoggetto"></StepCardItemTitle>
+                <div class="form-check">
+                    <input id="@($"checkbox-{index}")" type="checkbox" disabled checked="@procura.Sottoscrivente">
+					<label for="@($"checkbox-{index}")" class="disabled">Sottoscrive la pratica</label>
+                </div>
+                @if (!procura.Sottoscrivente)
+                {
+                    <StepCardInfo Titolo="Delegato alla sottoscrizione digitale" CapitalizeText="true">@procura.NominativoProcuratore</StepCardInfo>
+                }
+            </StepCardItem>
+        }
+    </StepCard>
+}
+@if (_editingItem != null)
+{
+    <FormModal OnClose="() => _editingItem = null" AlwaysVisible="true" Model="_editingItem" FormId="modificaSottoscrizione" OnValidSubmit="OnValidSubmit">
+        <ModalHeader Titolo="Modifica sottoscrizione">
+            Specificare se il soggetto <span class="fw-bold">@_editingItem.Nominativo</span> sottoscrive la domanda
+        </ModalHeader>
+
+        <ModalBody>
+            <div class="form-check">
+                <InputCheckbox id="chkSottoscrive" @bind-Value="@_checked" />
+                <label for="chkSottoscrive" class="disabled">Sottoscrive la pratica</label>
+            </div>
+
+            @if (!_checked)
+            {
+                <h4>Indicare il soggetto delegato alla sottoscrizione digitale</h4>
+
+                <InputRadioGroup @bind-Value="_editingItem.CfAventeProcura">
+                    @foreach (var x in _editingItem.PossibiliProcuratori)
+                    {
+                        <div class="cmp-info-button-card mt-2 radio-card @(_editingItem.CfAventeProcura == x.CodiceFiscale ? "has-border-green" : "")">
+                            <div class="form-check p-3">
+                                <InputRadio Value="x.CodiceFiscale" id="@($"radio{x.CodiceFiscale}")"></InputRadio>
+                                <label for="@($"radio{x.CodiceFiscale}")">
+                                    <h4 class="big-title card-header m-0 p-0 pb-2 text-capitalize text-break">@x.NomeCompleto</h4>
+                                </label>
+                                <small id="@($"radio{x.CodiceFiscale}-help")" class="form-text">
+                                    <StepCardInfo Titolo="Codice Fiscale">@x.CodiceFiscale</StepCardInfo>
+                                        <StepCardInfo Titolo="In qualità di">@x.TipoSoggetto</StepCardInfo>
+                                    </small>
+                                </div>
+                            </div>
+                    }
+                </InputRadioGroup>
+            }
+        </ModalBody>
+
+        <ModalFooter>
+            <FormSubmitButton Form="modificaSottoscrizione">Conferma</FormSubmitButton>
+        </ModalFooter>
+    </FormModal>
+}
+
+@code {
+
+	public record class DatiProcuratoreBindingItem(string CodiceFiscale, string NomeCompleto, string TipoSoggetto);
+
+	public class DatiSoggettoSottoscriventeBindingItem
+	{
+		public string CodiceFiscale { get; set; } = "";
+		public string Nominativo { get; set; } = "";
+		public string TipoSoggetto { get; set; } = "";
+		public bool Sottoscrivente { get; set; } = true;
+		public string CfAventeProcura { get; set; } = null;
+		public string NominativoProcuratore { get; set; } = "";
+		public IEnumerable<DatiProcuratoreBindingItem> PossibiliProcuratori { get; set; } = Enumerable.Empty<DatiProcuratoreBindingItem>();
+	}
+
+	[Inject]
+	private ProcureService _procuratoriService { get; set; } = default!;
+
+	IEnumerable<DatiSoggettoSottoscriventeBindingItem> _procureDomanda = Enumerable.Empty<DatiSoggettoSottoscriventeBindingItem>();
+	private DatiSoggettoSottoscriventeBindingItem? _editingItem = null;
+	private bool _checked;
+
+
+	protected override void OnInitializeStep()
+	{
+		var listaRichiedenti = this.DomandaCorrente.Anagrafiche.GetRichiedenti();
+
+		if (listaRichiedenti.Count() == 1)
+		{
+			// Se esiste un solo richiedente ed è l'unica persona fisica all'interno della domanda
+			// allora svuoto la lista dei procuratori e inserisco l'unico richiedente come procuratore di se stesso
+			var lista = this.DomandaCorrente.Anagrafiche
+											.Anagrafiche
+											.Where(r => r.TipoPersona == TipoPersonaEnum.Fisica)
+											.Select(x => x.Codicefiscale);
+
+			if (lista.Distinct().Count() == 1)
+			{
+				var listaProcure = new List<ProcureService.DatiProcuratore>();
+
+				listaProcure.Add(new ProcureService.DatiProcuratore
+					{
+						CodiceFiscaleProcuratore = String.Empty,
+						CodiceFiscaleSottoscrivente = lista.ElementAt(0)
+					});
+
+				_procuratoriService.ImpostaProcuratori(IdDomanda.Value, listaProcure);
+			}
+		}
+
+		base.OnInitializeStep();
+	}
+
+	protected override bool CanEnterStep()
+	{
+		var richiedenti = this.DomandaCorrente.Anagrafiche.GetRichiedenti();
+		var numeroAnagrafiche = this.DomandaCorrente.Anagrafiche.Anagrafiche.Where(x => x.TipoPersona == TipoPersonaEnum.Fisica).Distinct().Count();
+
+		if (richiedenti.Count() == 1 && numeroAnagrafiche == 1)
+			return false;
+
+		return true;
+	}
+
+	protected override void OnLoadStep()
+	{
+		DataBind();
+	}
+
+	void DataBind()
+	{
+		var dataSource = new List<DatiSoggettoSottoscriventeBindingItem>();
+
+		var richiedenti = this.DomandaCorrente.Anagrafiche.GetRichiedenti();
+
+		foreach (var richiedente in richiedenti)
+		{
+			var possibiliProcuratori = this.DomandaCorrente.Anagrafiche
+															.GetPossibiliProcuratoriDi(richiedente.Codicefiscale)
+															.Select(r => new DatiProcuratoreBindingItem(r.Codicefiscale, r.ToString(), r.TipoSoggetto.ToString()));
+
+			var cfProcuratoreAttuale = this.DomandaCorrente.Procure.GetCodiceFiscaleDelProcuratoreDi(richiedente.Codicefiscale);
+
+			var procuratoreAttuale = possibiliProcuratori.Where(x => x.CodiceFiscale == cfProcuratoreAttuale).FirstOrDefault();
+
+			var cfAventeProcura = cfProcuratoreAttuale;
+
+			if (String.IsNullOrEmpty(cfAventeProcura))
+			{
+				// Seleziono il primo dei possibili procuratori ma la lista potrebbe essere vuota
+				// vd. caso dei due soggetti con lo stesso CF ma con qualifiche diverse
+				cfAventeProcura = possibiliProcuratori.FirstOrDefault()?.CodiceFiscale ?? "";
+			}
+
+			var sogg = new DatiSoggettoSottoscriventeBindingItem
+				{
+					CodiceFiscale = richiedente.Codicefiscale,
+					Nominativo = richiedente.ToString(),
+					TipoSoggetto = richiedente.TipoSoggetto.ToString(),
+					PossibiliProcuratori = possibiliProcuratori,
+					CfAventeProcura = cfAventeProcura,
+					Sottoscrivente = String.IsNullOrEmpty(cfProcuratoreAttuale),
+					NominativoProcuratore = procuratoreAttuale?.NomeCompleto ?? ""
+				};
+
+			dataSource.Add(sogg);
+		}
+
+		this._procureDomanda = dataSource;
+	}
+
+	// protected override void OnBeforeExitStep()
+	// {
+	// 	var listaProcure = new List<ProcureService.DatiProcuratore>();
+
+	// 	foreach (var procura in this._procureDomanda)
+	// 	{
+	// 		var datiProcura = new ProcureService.DatiProcuratore
+	// 			{
+	// 				CodiceFiscaleSottoscrivente = procura.CodiceFiscale,
+	// 				CodiceFiscaleProcuratore = procura.Sottoscrivente ? String.Empty : procura.CfAventeProcura
+	// 			};
+
+	// 		listaProcure.Add(datiProcura);
+	// 	}
+
+	// 	_procuratoriService.ImpostaProcuratori(IdDomanda.Value, listaProcure);
+
+	// 	base.OnBeforeExitStep();
+	// }
+
+	void ModificaSottoscrizione(DatiSoggettoSottoscriventeBindingItem sottoscrizione)
+	{
+		this._editingItem = sottoscrizione;
+		_checked = _editingItem.Sottoscrivente;
+	}
+
+	async Task OnValidSubmit()
+	{
+		await _spinnerService.ShowSpinnerAsync(() =>
+		{
+			if (_editingItem is null)
+			{
+				return;
+			}
+			
+			var listaProcure = new List<ProcureService.DatiProcuratore>();
+
+			_editingItem.Sottoscrivente = _checked;
+
+			listaProcure.Add(new ProcureService.DatiProcuratore
+				{
+					CodiceFiscaleProcuratore = _editingItem.Sottoscrivente ? String.Empty : _editingItem.CfAventeProcura,
+					CodiceFiscaleSottoscrivente = _editingItem.CodiceFiscale
+				});
+
+			_procuratoriService.ImpostaProcuratori(IdDomanda.Value, listaProcure);
+
+			this._editingItem = null;
+			DataBind();
+		});
+	}
+}

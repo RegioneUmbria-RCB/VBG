@@ -1,0 +1,57 @@
+﻿@using AreaRiservataCore.Utils
+@using Init.Sigepro.FrontEnd.AppLogic.GenerazioneDocumentiDomanda.GenerazioneDocumentiDomanda
+@using Init.Sigepro.FrontEnd.AppLogic.GenerazioneDocumentiDomanda.GenerazioneRiepilogoDomanda
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneConversioneFiles
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneOggetti
+@using Init.Sigepro.FrontEnd.AppLogic.PrecompilazionePDF
+@using Init.Sigepro.FrontEnd.AppLogic.Utils.DatiDomanda
+@using Microsoft.JSInterop
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.DesignComuni.Spinner
+@using Microsoft.AspNetCore.Components.Web
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+
+
+@* <button class="btn btn-light" title="download" @onclick="OnDownloadFile"><i class="fa fa-file-pdf-o"></i> @Text</button> *@
+<SvgIcon IconId="it-file" CssClass="icon-sm icon-primary"></SvgIcon>
+<button class="btn btn-link p-0"  @onclick="OnDownloadFile">@Text</button>
+
+
+
+@code {
+    [Inject]
+    protected FileDownloadHelper _fileDownloadHelper { get; set; } = default!;
+    [Inject]
+    public GenerazioneRiepilogoDomandaService _generazioneRiepilogoDomandaService { get; set; } = default!;
+    [Inject]
+    public SpinnerService _spinnerService { get; set; } = default!;
+    [Inject]
+    public DatiDomandaDumper _datiDomandaDumper { get; set; } = default!;
+
+    [Parameter]
+    public int IdDomanda { get; set; }
+
+    [Parameter]
+    public bool InserisciSchedeNonFirmate { get; set; } = false;
+
+    [Parameter]
+    public bool DumpXml { get; set; } = false;
+
+    [Parameter]
+    public string Text { get; set; } = "Scarica riepilogo";
+
+    private async Task OnDownloadFile()
+    {
+        await _spinnerService.ShowSpinnerAsync(async () =>
+        {
+            if (DumpXml)
+            {
+                await _datiDomandaDumper.DumpDatiDomandaAsync(IdDomanda);
+            }
+
+            BinaryFile f = await this._generazioneRiepilogoDomandaService.GeneraRiepilogoDomandaAsync(IdDomanda, InserisciSchedeNonFirmate);
+
+            await _fileDownloadHelper.DownloadFileAsync(f);
+        });
+    }
+}

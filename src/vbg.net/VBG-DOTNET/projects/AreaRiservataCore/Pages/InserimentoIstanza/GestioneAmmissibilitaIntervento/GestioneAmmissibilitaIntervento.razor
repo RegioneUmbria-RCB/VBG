@@ -1,0 +1,52 @@
+﻿@page "/{IdComune}/{Software}/inserimento-istanza/gestione-ammissibilita-intervento/{idDomanda:int}/{stepId:int}"
+
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneInterventi;
+@using Init.Sigepro.FrontEnd.CoreServices.GestionePresentazioneDomanda.Paginatore
+@using Init.Sigepro.FrontEnd.Infrastructure.StepsDomanda.Attributi;
+@inherits IstanzeStepPage
+
+<div class="alert alert-danger" role="alert">
+    <span class="fw-bold">Attenzione!</span>
+    <div>@MessaggioErroreDomandaPerInterventoPresentata</div>
+</div>
+
+@code {
+    [Inject]
+    public IInterventiRepository _interventiService { get; set; } = default!;
+    [CascadingParameter]
+    private PaginatoreStateService _paginatoreStateService { get; set; } = default!;
+
+    [StepProperty]
+    public string MessaggioErroreDomandaPerInterventoPresentata { get; set; } = "Non è possibile presentare una domanda per questa attività";
+
+    public bool PuoPresentareDomandaPerIntervento()
+    {
+        var idIntervento = DomandaCorrente.AltriDati.Intervento.Codice;
+
+        if (DomandaCorrente.Anagrafiche.GetRichiedente() == null)
+        {
+            throw new Exception("Richiedente della domanda non trovato. Lo step deve essere posizionato a seguito della step di inserimento anagrafiche");
+        }
+
+        var codiceFiscale = DomandaCorrente.Anagrafiche.GetRichiedente().Codicefiscale;
+        var haPresentatoDomanda = _interventiService.HaPresentatoDomandePerIntervento(idIntervento, codiceFiscale);
+
+        return !haPresentatoDomanda;
+    }
+
+    protected override void OnLoadStep()
+    {
+        this._paginatoreStateService.NascondiBottoneAvanti();
+    }
+
+    protected override bool CanEnterStep()
+    {
+        if (PuoPresentareDomandaPerIntervento())
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+}

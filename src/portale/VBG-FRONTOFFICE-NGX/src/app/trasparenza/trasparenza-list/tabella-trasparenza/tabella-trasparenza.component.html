@@ -1,0 +1,84 @@
+@if (dataSource !== null && dataSource.numero_record > 0) {
+  <div>
+    <div class="link btn btn-primary pull-left" (click)="onNuovaRicercaClick()">
+      Nuova ricerca
+    </div>
+    <div class="item-per-page pull-right imposta-risultati-per-pagina">
+      <span>Risultati per pagina: &nbsp; &nbsp;</span>
+      <ul>
+        @for (risultato of risultatiPerPagina; track risultato) {
+          <li (click)="impostaRisultatiPerPagina(risultato)"
+            [ngClass]="{ attivo: recordsPerPagina === risultato }">
+            {{ risultato }}
+          </li>
+        }
+      </ul>
+    </div>
+    @if (!caricamentoInCorso) {
+      <div>
+        <table class="table table-striped table-hover lista-risultati">
+          <thead>
+            <tr>
+              <th>Istanza</th>
+              <th>Localizzazione</th>
+              <th>Intervento</th>
+              <th>&nbsp;</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of dataSource.lista; track item) {
+              <tr>
+                <td>
+                  Istanza {{ item.numero }} del {{ item.data }}
+                  @if (item.numeroProtocollo) {
+                    <div>
+                      Protocollo {{ item.numeroProtocollo }} del
+                      {{ item.dataProtocollo }}
+                    </div>
+                  }
+                </td>
+                <td>
+                  @if (item.indirizzo) {
+                    <div>
+                      {{ item.indirizzo.indirizzo }} ({{
+                      item.indirizzo.comune
+                      }})
+                    </div>
+                  }
+                </td>
+                <td>
+                  {{ item.intervento }}
+                </td>
+                <td>
+                  <a class="link" [routerLink]="[this.urlIstanze, item.id]">Dettaglio</a>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+    @if (caricamentoInCorso) {
+      <app-loader></app-loader>
+    }
+    <div class="pull-right">
+      <app-pagination class="pagination" [totalItems]="dataSource.numero_record || 0"
+        [itemsPerPage]="recordsPerPagina" [maxSize]="10" (pageChanged)="onPageChanged($event)">
+      </app-pagination>
+    </div>
+    <div class="btn btn-primary" (click)="onNuovaRicercaClick()">
+      Nuova ricerca
+    </div>
+  </div>
+}
+
+@if (dataSource !== null && dataSource.numero_record === 0) {
+  <div>
+    <div class="no-result">
+      Non sono stati trovati risultati corrispondenti al testo cercato
+    </div>
+    <div class="btn btn-primary" (click)="onNuovaRicercaClick()">
+      Nuova ricerca
+    </div>
+  </div>
+}

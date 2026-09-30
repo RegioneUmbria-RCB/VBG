@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://impl.semincassi.mod12.pa.ws.connettore.sia.it/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns3="http://schemas.xmlsoap.org/soap/http" xmlns:ns1="http://services.sia.eu/" name="PaInviaCarrelloPosizioniImplService" targetNamespace="http://impl.semincassi.mod12.pa.ws.connettore.sia.it/">
+  <wsdl:import location="paInviaCarrelloPosizioni_definition.wsdl" namespace="http://services.sia.eu/">
+    </wsdl:import>
+  <wsdl:binding name="PaInviaCarrelloPosizioniImplServiceSoapBinding" type="ns1:PaInviaCarrelloPosizioni">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="paInviaCarrelloPosizioni">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="paInviaCarrelloPosizioni">
+        <soap:header message="ns1:paInviaCarrelloPosizioni" part="header" use="literal">
+        </soap:header>
+        <soap:body parts="bodyrichiesta" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="paInviaCarrelloPosizioniResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="PaInviaCarrelloPosizioniImplService">
+    <wsdl:port binding="tns:PaInviaCarrelloPosizioniImplServiceSoapBinding" name="PaInviaCarrelloPosizioniImplPort">
+      <soap:address location="http://npabet05:8221/connettorenodo/services/soap/paInviaCarrelloPosizioni"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

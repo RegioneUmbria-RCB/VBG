@@ -1,0 +1,574 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.JSInterop
+@using System.Diagnostics.CodeAnalysis
+@using System.Linq.Expressions
+@using System.ComponentModel
+@using System.Globalization;
+@using Vbg.CoreControls.Utils
+@inherits MyBaseFormComponent<TValue>
+@typeparam TItem
+@typeparam TValue
+@inject IJSRuntime _jsRuntime
+
+<style>
+    .ui-widget-content {
+        border: 1px solid #aaaaaa; 
+        background: #ffffff;
+        padding: 0;
+    }
+    .ui-menu {
+        list-style: none;
+        padding: 2px;
+        margin: 0;
+        outline: none;
+    }
+    .ui-menu-item {
+        cursor: pointer;
+    }
+    .ui-autocomplete {
+        position: absolute;
+        width: 100%;
+        cursor: default;
+        z-index: 5;
+    }
+    .ui-corner-all {
+        border-radius: 4px;
+    }
+    .ui-state-focus {
+        background-color: cornflowerblue;
+        color: #FFF;
+    }
+</style>
+
+<div class="bwc-autocomplete mb-3 @CssClassContainer" id="@UniqueID" @attributes="AdditionalAttributes">
+    @if (ShowLabel)
+    {
+        <LabelContainerComponent RelativeControlId="@this.Id" ResourceId="@this.ResourceId" Value="@this.Label" Required="@this.Required" CanEditResourceText="@this.CanEditResourceText"></LabelContainerComponent>
+    }
+    <div class="input-group">
+        <span class="input-group-text"><i class="fa @faicon.Value"></i></span>
+        <input @ref="@inputReference" id="@this.Id" type="text" class="form-control @this.CssClass @cssErrorClass" disabled="@this.IsDisabled"
+            value="@typingText" oninput="@onInput" onblur="@onBlur" onfocus="@onFocus"
+            @onkeydown="onKeydown"
+            aria-describedby="@(string.IsNullOrEmpty(HelpText) ? "" : $"{this.Id}_HelpDescription")"
+            autocomplete="off" />
+    </div>
+    @if (!string.IsNullOrEmpty(HelpText))
+    {
+        <small id="@($"{this.Id}_HelpDescription")" class="help-block">
+            @HelpText
+        </small>
+    }
+    @if (ValidationFor != null)
+    {
+        <div class="form-control-validation help-block">
+            <ValidationMessage For="@ValidationFor" />
+        </div> 
+    }
+    <div @ref="popupReference" id="@PopupID" class="hidden" style="position:relative;">
+        @if (showingResults)
+        {
+            <div class="ui-autocomplete ui-front ui-widget ui-widget-content ui-corner-all" style="display:block; max-height: 200px;">
+                <ul class="ui-menu">
+                    @if (results != null)
+                    {
+                        for (int i = 0; i < results.Length; i++)
+                        {
+                            int index = i;
+                            TItem item = results[index];
+
+                            <li class="ui-menu-item @getSelectedItemClass(item, index)" @onclick="@(() => selectResult(item))" @onmouseover="@((e) => OnMouseOver(e, index))">
+                                <span>@ItemTemplate(item)</span>
+                            </li>
+                        }
+                    }                    
+                </ul>
+            </div>
+        }
+    </div>
+
+</div>
+
+@code {
+    protected internal class FAIcons
+    {
+        private FAIcons(string value) { Value = value; }
+
+        public string Value { get; private set; }
+
+        public static FAIcons Search { get { return new FAIcons("fa-search"); } }
+        public static FAIcons Refresh { get { return new FAIcons("fa-refresh spin"); } }
+
+        public override string ToString()
+        {
+            return Value;
+        }
+    }
+
+    // non è utile usare l'evento OnBlur perchè tutte le verifiche e le validazioni vengono fatte su ValueChanged
+    //[Parameter]
+    //public EventCallback OnBlur { get; set; }
+
+    [Parameter]
+    public string? ValoreMin { get; set; }
+
+    [Parameter]
+    public string? ValoreMax { get; set; }
+
+    /// <summary>
+    /// Use this property to build a custom template to show items inside the popup.
+    /// (If TItem is a custom object you also need to specify TextField property)
+    /// </summary>
+    [Parameter] 
+    public RenderFragment<TItem> ItemTemplate { get; set; }
+
+    /// <summary>
+    /// This is the function called to retrieve matching results
+    /// </summary>
+    [Parameter] 
+    public Func<string, Task<IEnumerable<TItem>>> SearchMethod { get; set; }
+
+    /// <summary>
+    /// This function is needed to specify how to convert a TItem in TValue
+    /// </summary>
+    [Parameter] 
+    public Func<TItem, TValue> ConvertMethod { get; set; }
+
+    /// <summary>
+    /// When is not explicitly declared an ItemTemplate and TItem is a custom objet the
+    /// TextField property is used to generate the ItemTemplate
+    /// </summary>
+    [Parameter]
+    public string TextField { get; set; } = "";
+
+    /// <summary>
+    /// Minimum character number to start match searching
+    /// Note 1: using a value lower than 2 or 3 can cause exceptions caused by the amount of data returned
+    /// Note 2: in some cases value 0 can be used to show all available results on control focus
+    /// </summary>
+    [Parameter]
+    public int MinimumLength { get; set; } = 3;
+
+    /// <summary>
+    /// Max amount of results to Display in the popup
+    /// </summary>
+    [Parameter] 
+    public int MaxResultsToDisplay { get; set; } = 10;
+
+
+    private string PopupID
+    {
+        get => $"popup_{this.Id}";
+    }
+
+    private Delayer delayer;
+    private ElementReference inputReference;
+    private ElementReference popupReference;
+    private int selectedIndex { get; set; } = -1;
+    private bool showingResults { get; set; } = false;
+    private bool activateScrollTo { get; set; }
+    private TItem[] results { get; set; } = new TItem[0];
+    private string typingText { get; set; }
+    private FAIcons faicon { get; set; } = FAIcons.Search;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        if (typeof(TItem) != typeof(string) &&
+            typeof(TItem) != typeof(int) &&
+            typeof(TItem) != typeof(int?) &&
+            ItemTemplate == null &&
+            string.IsNullOrEmpty(TextField))
+            throw new InvalidOperationException("if TItem is a custom object and is not specified an ItemTemplate you must declare TextField property");
+
+        // la proprietà Id è necessaria per il corretto funzionamento del javascript
+        // quindi se non viene impostato dall'utente viene ricavato dallo UniqueID
+        if (string.IsNullOrEmpty(this.Id))
+            this.Id = $"ctrl_{this.UniqueID}";
+
+        delayer = new Delayer();
+
+        setTypingText(CurrentValue);
+    }
+
+    protected override Task OnParametersSetAsync()
+    {
+
+        if (ItemTemplate == null)
+        {
+            ItemTemplate = (TItem item) => builder =>
+            {
+                object content = item;
+
+                if (typeof(TItem) != typeof(string) &&
+                    typeof(TItem) != typeof(int) &&
+                    typeof(TItem) != typeof(int?) &&
+                    !String.IsNullOrEmpty(TextField))
+                {
+                    content = item.GetType().GetProperty(TextField)?.GetValue(item) ?? 
+                                throw new InvalidOperationException($"Il tipo {item.GetType()} non contiene una proprietà con nome {TextField}");
+                }
+
+                builder.AddContent(1, content);
+            };
+
+        }
+
+        return base.OnParametersSetAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // spostato in _Layout.cshtml
+
+            //var targetUrl = "_content/Vbg.CoreControls/js/AutocompleteForm.js";
+            //var loadJs = await _jsRuntime.InvokeAsync<bool>("loadJs", targetUrl);
+
+            //if (loadJs)
+            await _jsRuntime.InvokeVoidAsync("AutocompleteForm.init", inputReference, popupReference);
+        }
+
+        if (activateScrollTo)
+        {
+            activateScrollTo = false;
+            await this._jsRuntime.InvokeVoidAsync("scrollTo", ".ui-state-focus", null, false);
+        }
+
+
+        await _jsRuntime.InvokeVoidAsync("AutocompleteForm.setPopupPosition", inputReference, popupReference);
+    }
+
+    private async Task onFocus()
+    {
+        if (MinimumLength == 0)
+            Search();
+    }
+
+    private async Task onBlur()
+    {
+        //if (OnBlur.HasDelegate)
+        //    OnBlur.InvokeAsync();
+    }
+
+
+    // NOTA: onKeydown event fires right before onInput event
+    private async Task onInput(ChangeEventArgs e)
+    {
+        typingText = e.Value == null ? string.Empty : e.Value.ToString();
+    }
+
+    private async Task onKeydown(KeyboardEventArgs args)
+    {
+        // NOTA: ancora non è possibile gestire la cancellazione degli eventi di input 
+        //  usando @onkeydown:preventDefault si perde la funzione del TAB standard
+        //  dichiarando una variabile bool _preventDefault e usando @onkeydown:_preventDefault la variabile assume il valore corretto solo dopo che il tasto è stato premuto
+        //
+        //  quindi alcune keys per il momento è inutile gestirle (es. Enter fa scattare il form)
+        //  altre possono andare in conflitto (es. ArrowUp e ArrowDown possono essere intercettate ma se si usa <input type="number"> queste modificano anche il valore del campo)
+        if (showingResults)
+        {
+            if (args.Key == "Tab")
+            {
+                if (selectedIndex >= 0 && selectedIndex < results.Count())
+                    await selectResult(results[selectedIndex]);
+
+                showingResults = false;
+            }
+            else if (args.Key == "ArrowDown" || args.Key == "ArrowUp")
+            {
+                MoveSelection(args.Key == "ArrowDown");
+                activateScrollTo = true;
+            }
+            //else if (args.Key == "Enter" && results.Count() == 1)
+            //{
+            //    selectedIndex = 0;
+            //    await selectResult(results[selectedIndex]);
+            //}
+            //else if (args.Key == "Enter" && selectedIndex >= 0 && selectedIndex < results.Count())
+            //{
+            //    await selectResult(results[selectedIndex]);
+            //}
+            else if (args.Key == "Escape")
+            {
+                showingResults = false;
+            }
+            else
+            {
+                delayer.Delay(Search);
+            }
+        }
+        else
+        {
+            if (args.Key == "Tab")
+            {
+                delayer.Cancel();
+
+                if (CurrentValueAsString != typingText)
+                {
+                    if (TryParseValueFromString(typingText, out var parsedValue, out var validationErrorMessage))
+                    {
+                        ClearValidationMessages();
+                        CurrentValue = parsedValue;
+                    }
+                    else
+                    {
+                        AddValidationMessage(validationErrorMessage);
+                        EditContext?.NotifyValidationStateChanged();
+                        EditContext.NotifyFieldChanged(FieldIdentifier);
+                    }
+                }                
+            }
+            else if (args.Key == "ArrowDown")
+            {
+                await ShowResults();
+                await InvokeAsync(StateHasChanged);
+            }
+            else
+            {
+                delayer.Delay(Search);
+            }
+        }
+    }
+
+    private async Task ShowResults()
+    {
+        // NOTA: per ottenere lo switch dell'icona del campo di input
+        // da Search a Refresh è necessario usare un thread separato e invocare StateHasChanged
+        await InvokeAsync(() =>
+        {
+            faicon = FAIcons.Refresh;
+            StateHasChanged();
+        });
+
+        selectedIndex = -1;
+
+        if (typingText == null)
+            typingText = string.Empty;
+
+        results = (await SearchMethod?.Invoke(typingText))?.Take(MaxResultsToDisplay)?.ToArray();
+
+        await InvokeAsync(() =>
+        {
+            showingResults = results != null && results.Length > 0;
+            faicon = FAIcons.Search;
+        });
+    }
+
+    private async Task Search()
+    {
+        if (MinimumLength > 0 && typingText.Length < MinimumLength)
+        {
+            showingResults = false;
+            selectedIndex = -1;
+            results = new TItem[0];
+        }
+        else
+        {
+            await ShowResults();
+        }
+
+        await InvokeAsync(() =>
+        {
+            ClearValidationMessages();
+
+            if (results.Length <= 1)
+            {
+                if (TryParseValueFromString(typingText, out var parsedValue, out var validationErrorMessage))
+                {
+                    if (typeof(TValue) == typeof(string) &&
+                        (CurrentValue == null || CurrentValue.ToString() == "") &&
+                        parsedValue == null)
+                    {
+
+                    }
+                    else
+                        CurrentValue = parsedValue;
+                }
+                else
+                {
+                    AddValidationMessage(validationErrorMessage);
+                    //editContext?.NotifyValidationStateChanged();
+                    EditContext.NotifyFieldChanged(FieldIdentifier);
+                }
+            }
+
+            StateHasChanged();
+        });
+    }
+
+    // NOTA: FormatValueAsString viene sovrascritto per far funzionare correttamente la proprietà CurrentValueAsString
+    protected override string FormatValueAsString(TValue? value)
+    {
+        if (typeof(TValue) == typeof(AutocompleteFormResult))
+        {
+            var result = (AutocompleteFormResult)Convert.ChangeType(value, typeof(AutocompleteFormResult));
+
+            if (result == null)
+                return default;
+
+            return result.Text;
+        }
+
+        return base.FormatValueAsString(value);
+    }
+
+    protected override bool TryParseValueFromString(string value, [MaybeNullWhen(false)] out TValue result, [NotNullWhen(false)] out string validationErrorMessage)
+    {
+        if (string.IsNullOrEmpty(value))
+        {
+            result = default;
+        }
+        else
+        {
+            // NOTA: TItem è diverso da TValue quando si tratta di oggetti complessi.
+            //  In questo caso il valore non può essere digitato dall'utente ma deve essere selezionato tra quelli mostrati nel menù a tendina dal SearchMethod.
+            //  Può essere preso dall'input dell'utente soltanto nel caso in cui SearchMethod restituisca un solo valore.
+            if (typeof(TItem) != typeof(TValue))
+            {
+                if (results.Length == 1)
+                {
+                    result = ConvertMethod(results[0]);
+                }
+                else 
+                {
+                    //TItem? item = results.ToList().Find(x => x.GetType().GetProperty(TextField)?.GetValue(x)?.ToString() == value);
+
+                    //if (item != null)
+                    //{
+                    //    result = ConvertMethod(item);
+                    //}
+                    //else
+                    //{
+                        result = default;
+                        validationErrorMessage = "Il valore inserito non è valido";
+                        return false;
+                    //}
+                }                    
+            }
+            else if (Nullable.GetUnderlyingType(typeof(TValue)) != null)
+            {
+                TypeConverter conv = TypeDescriptor.GetConverter(typeof(TValue));
+                result = (TValue)conv.ConvertFrom(value);
+            }
+            else
+            {
+                result = (TValue)Convert.ChangeType(value, typeof(TValue));
+            }
+        }
+
+        validationErrorMessage = "";
+        return true;
+    }
+
+    private void setTypingText(TValue? tVal)
+    {
+        if (tVal == null)
+            return;
+
+        if (typeof(TValue) == typeof(AutocompleteFormResult))
+        {
+            var result = (AutocompleteFormResult)Convert.ChangeType(tVal, typeof(AutocompleteFormResult));
+
+            if (string.IsNullOrEmpty(result.Value))
+                return;
+
+            typingText = result.Text;
+        }
+        else if (typeof(TValue) == typeof(string) || typeof(TValue) == typeof(int?))
+        {
+            typingText = tVal?.ToString();
+        }
+        else if (typeof(TValue) == typeof(int))
+        {
+            typingText = tVal.ToString();
+        }
+        else
+        {
+            // NOTA: TextField e ValueField sono proprietà che si riferiscono a TItem non TValue
+            // ----------------------------------------------------------------------------------
+
+            //if (tVal.GetType().GetProperty(TextField)?.GetValue(tVal, null) == null)
+            //    return;
+
+            //typingText = tVal.GetType().GetProperty(TextField)?.GetValue(tVal, null)?.ToString();
+        }            
+    }
+
+    private async Task selectResult(TItem item)
+    {
+        var value = ConvertMethod(item);
+
+        setTypingText(value);
+
+        CurrentValue = value;
+
+        showingResults = false;
+    }
+
+    private void MoveSelection(bool increase)
+    {
+        var index = increase ? selectedIndex + 1 : selectedIndex - 1;
+
+        if (index >= results.Length)
+            index = 0;
+
+        if (index < 0)
+            index = results.Length - 1;
+
+        selectedIndex = index;
+    }
+
+    private string getSelectedItemClass(TItem item, int index)
+    {
+        string selectionClass = "ui-state-focus";
+
+        return index == selectedIndex ? selectionClass : string.Empty;
+    }
+
+    protected void OnMouseOver(MouseEventArgs mouseEvent, int index)
+    {
+        selectedIndex = index;
+    }
+
+    protected override bool PerformCustomValidation(FieldIdentifier fieldIdentifier, ValidationMessageStore messageStore)
+    {
+        if (string.IsNullOrEmpty(this.ValoreMin) && string.IsNullOrEmpty(this.ValoreMax))
+            return true;
+
+        var min = double.MinValue;
+        var max = double.MaxValue;
+        var val = 0.0d;
+
+        var formatProvider = CultureInfo.InvariantCulture.NumberFormat;
+        var numberStyles = NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite | NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint;
+
+        if (!String.IsNullOrEmpty(this.ValoreMin))
+        {
+            if (!double.TryParse(this.ValoreMin, numberStyles, formatProvider, out min))
+            {
+                messageStore.Add(this.FieldIdentifier, $"Il valore minimo del campo {this.FieldIdentifier.FieldName} non è un numero valido (valore={this.ValoreMin}), verrà usato double.MinValue come valore minimo");
+                min = double.MinValue;
+            }
+        }
+
+        if (!String.IsNullOrEmpty(this.ValoreMax))
+        {
+            if (!double.TryParse(this.ValoreMax, numberStyles, formatProvider, out max))
+            {
+                messageStore.Add(this.FieldIdentifier, $"Il valore massimo del campo {this.FieldIdentifier.FieldName} non è un numero valido (valore={this.ValoreMax}), verrà usato double.MaxValue come valore massimo");
+                max = double.MaxValue;
+            }
+        }
+
+        if (!double.TryParse(this.CurrentValueAsString, numberStyles, formatProvider, out val))
+        {
+            messageStore.Add(this.FieldIdentifier, $"Il valore del campo {this.FieldIdentifier.FieldName} non è un numero valido (valore={this.CurrentValueAsString}), non verrà effettuata la verifica di appartenenza ad un range di valori");
+            return true;
+        }
+
+        return min <= val && val <= max;
+    }
+}

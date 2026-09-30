@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="distribuzione-applicazione" default="distribuzione">
+	
+	<property environment="env"/>
+	<property name="build.classes.dir" value="${basedir}\build\classes" />
+	<property name="build.src.dir" value="${basedir}\src" />
+	<property name="project.encoding" value="utf-8" />
+	<property name="war.name" value="${env.NOME_FILE_WAR}" />
+
+	<target name="distribuzione">
+	
+		<antcall target="clean" />
+		<antcall target="compile" />
+	
+		<copy todir="${basedir}/build/classes">
+		  <fileset dir="${basedir}/src">
+		  	<exclude name="**/*.java"/>
+		    <include name="**/*.*"/>
+		  	<include name="LICENSE"/>
+		  </fileset>
+	  </copy>
+		<war destfile = "target/${war.name}" webxml="${basedir}/WebContent/WEB-INF/web.xml">
+		      <fileset dir="${basedir}/WebContent" />
+		      <classes dir="${basedir}/build/classes"/>			  
+		 </war>
+	</target>
+
+	<path id="compile.classpath">
+		
+
+		<fileset dir="${basedir}\ext\tomcat">
+		    	<include name="**/*.jar"/>
+		  	</fileset>
+		 
+			<fileset dir="${basedir}\WebContent\WEB-INF\lib">
+		    	<include name="**/*.jar"/>
+		  	</fileset>		
+	</path>
+	
+	
+	<target name="compile" >
+        <mkdir dir="${build.classes.dir}"/>
+        	<javac srcdir="${build.src.dir}" includejavaruntime="true" 
+        			includeantruntime="true" 
+        			source="1.6" target="1.6" 
+        			encoding="${project.encoding}"
+        			destdir="${build.classes.dir}" 
+        			debug="false" fork="true">
+        		<classpath refid="compile.classpath" />
+        	</javac>
+    </target>
+
+    <target name="clean">
+        <delete dir="${build.classes.dir}"/>
+    	<delete dir="target"/>
+    </target>
+	
+	
+</project>

@@ -1,0 +1,121 @@
+﻿@using AreaRiservataCore.Pages.InserimentoIstanza.RiepilogoDomanda
+@using Init.Sigepro.FrontEnd.AppLogic.DatiDinamici
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.DesignComuni.Spinner
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards.CardButtons
+@using VBG.BlazorComponentsLibrary.RisorseTestuali
+
+
+@if (Riepilogo is not null)
+{
+    <ContenitoreRisorseTestuali Nome="allegati-dati-dinamici">
+        <StepCardItem>
+            <StepCardButtonGroup EditText="@(Riepilogo.CodiceOggetto.HasValue ? "Modifica" : "Documenti")"
+                                 EditClick="async () => await Edit.InvokeAsync(Riepilogo)"
+                                 DeleteText="Elimina"
+                                 DeleteVisible="Riepilogo.CodiceOggetto.HasValue"
+                                 DeleteClick="OnDelete"></StepCardButtonGroup>
+            <StepCardItemTitle Titolo="@Riepilogo.Titolo"></StepCardItemTitle>
+            @* <StepCardInfo Titolo=""> *@
+                <StepBadgeContainer>
+                    @if (Riepilogo.CodiceOggetto is not null)
+                    {
+                        <BadgeComponent Type="BadgeComponent.BadgeCategoryEnum.SUCCESS">Compilato con successo</BadgeComponent>
+                    }
+                    else
+                    {
+                        @if (Riepilogo.Richiesto)
+                        {
+                            <BadgeComponent Type="BadgeComponent.BadgeCategoryEnum.DANGER">Obbligatorio</BadgeComponent>
+                        }
+
+                        @if (Riepilogo.RichiedeFirmaDigitale)
+                        {
+                            <BadgeComponent Type="BadgeComponent.BadgeCategoryEnum.WARNING">Richiede firma digitale</BadgeComponent>
+                        }
+                    }
+                </StepBadgeContainer>
+
+                @if (Riepilogo.CodiceOggetto is not null)
+                {
+                    <StepDownloadButton CodiceOggetto="Riepilogo.CodiceOggetto" Titolo="Documento"></StepDownloadButton>
+                }
+                else
+                {
+                    <i class="fw-normal">
+                        Documento non ancora caricato
+                        @if (!Riepilogo.Richiesto)
+                        {
+                            <span class="fw-normal">, il documento verrà generato automaticamente</span>
+                        }
+                    </i>
+                }
+            @* </StepCardInfo> *@
+
+        </StepCardItem>
+
+
+        <ConfirmationModal Titolo="Eliminazione riepilogo" Visible="_showDeleteConfirm" AnnullaClick="() => _showDeleteConfirm = false" ConfermaClick="DeleteUserAttachment">
+            <ModalBody>
+                <RisorsaTestuale IdRisorsa="conferma-eliminazione">
+                    Sei sicuro di voler eliminare il riepilogo selezionato? <b>L'operazione non potrà essere annullata.</b>
+                </RisorsaTestuale>
+            </ModalBody>
+        </ConfirmationModal>
+    </ContenitoreRisorseTestuali>
+}
+
+
+@code {
+    [Inject]
+    public SpinnerService _spinnerService { get; set; } = default!;
+    [Inject]
+    public IRiepiloghiDatiDinamiciAsyncService _riepiloghiService { get; set; } = default!;
+
+    [CascadingParameter]
+    public MessageContainer? messageContainer { get; set; }
+
+    [Parameter]
+    public RiepilogoRichiesto? Riepilogo { get; set; }
+
+    [Parameter]
+    public EventCallback<RiepilogoRichiesto> Edit { get; set; }
+
+    private bool _showDeleteConfirm = false;
+
+    private async Task DeleteUserAttachment()
+    {
+        if (Riepilogo is null)
+        {
+            return;
+        }
+
+        await _spinnerService.ShowSpinnerAsync(async () =>
+            {
+                try
+                {
+                    await this._riepiloghiService.EliminaOggettoRiepilogoAsync(Riepilogo.IdDomanda, Riepilogo.IdModello, Riepilogo.IndiceMolteplicita);
+
+                    Riepilogo.CodiceOggetto = null;
+
+                    _showDeleteConfirm = false;
+
+                    StateHasChanged();
+                }
+                catch (Exception ex)
+                {
+                    this.messageContainer?.AddError($"Si è verificato un errore durante l'eliminazione del file: {ex.Message}");
+                }
+            });
+    }
+
+    private async Task OnDelete()
+    {
+        _showDeleteConfirm = true;
+        // StateHasChanged();
+
+        await Task.CompletedTask;
+    }
+}

@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions 
+	targetNamespace="http://www.suap.regione.toscana.it/sem/service"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+	xmlns:proc="http://www.suap.regione.toscana.it/sem/types/procedimento"
+	xmlns:tns="http://www.suap.regione.toscana.it/sem/service"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://www.suap.regione.toscana.it/sem/service">
+			<xsd:import namespace="http://www.suap.regione.toscana.it/sem/types/procedimento"
+				schemaLocation="procedimentiSuap.xsd" />
+		</xsd:schema>
+	</wsdl:types>
+
+
+	<!-- MESSAGES -->
+
+	<wsdl:message name="inviaStimoloRequest">
+		<wsdl:part name="parameters" element="proc:inviaStimoloRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="inviaStimoloResponse">
+		<wsdl:part name="parameters" element="proc:inviaStimoloResponse"></wsdl:part>
+	</wsdl:message>
+
+	<wsdl:message name="confermaRicezioneRequest">
+		<wsdl:part name="parameters" element="proc:confermaRicezioneReq"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="confermaRicezioneResponse">
+		<wsdl:part name="parameters" element="proc:confermaRicezioneResp"></wsdl:part>
+	</wsdl:message>
+
+	<wsdl:message name="statoMessaggioRequest">
+		<wsdl:part name="parameters" element="proc:statoMessaggioReq"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="statoMessaggioResponse">
+		<wsdl:part name="parameters" element="proc:statoMessaggioResp"></wsdl:part>
+	</wsdl:message>
+
+	<wsdl:message name="statoPraticaRequest">
+		<wsdl:part name="parameters" element="proc:statoPraticaReq"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="statoPraticaResponse">
+		<wsdl:part name="parameters" element="proc:statoPraticaResp"></wsdl:part>
+	</wsdl:message>
+
+	<wsdl:message name="inviaAllegatoRequest">
+		<wsdl:part name="parameters" element="proc:inviaAllegatoReq"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="inviaAllegatoResponse">
+		<wsdl:part name="parameters" element="proc:inviaAllegatoResp"></wsdl:part>
+	</wsdl:message>
+
+	<wsdl:message name="richiediAllegatoRequest">
+		<wsdl:part name="parameters" element="proc:richiediAllegatoReq"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="richiediAllegatoResponse">
+		<wsdl:part name="parameters" element="proc:richiediAllegatoResp"></wsdl:part>
+	</wsdl:message>
+
+	<wsdl:message name="aggiornaStatoPraticaRequest">
+		<wsdl:part name="parameters" element="proc:aggiornaStatoPraticaReq"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="aggiornaStatoPraticaResponse">
+		<wsdl:part name="parameters" element="proc:aggiornaStatoPraticaResp"></wsdl:part>
+	</wsdl:message>
+
+
+	<!-- PORTS -->
+
+	<wsdl:portType name="SemPort">
+		<wsdl:operation name="inviaStimolo">
+			<wsdl:input message="tns:inviaStimoloRequest"></wsdl:input>
+			<wsdl:output message="tns:inviaStimoloResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="confermaRicezione">
+			<wsdl:input message="tns:confermaRicezioneRequest"></wsdl:input>
+			<wsdl:output message="tns:confermaRicezioneResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="statoMessaggio">
+			<wsdl:input message="tns:statoMessaggioRequest"></wsdl:input>
+			<wsdl:output message="tns:statoMessaggioResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="statoPratica">
+			<wsdl:input message="tns:statoPraticaRequest"></wsdl:input>
+			<wsdl:output message="tns:statoPraticaResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="inviaAllegato">
+			<wsdl:input message="tns:inviaAllegatoRequest"></wsdl:input>
+			<wsdl:output message="tns:inviaAllegatoResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="richiediAllegato">
+			<wsdl:input message="tns:richiediAllegatoRequest"></wsdl:input>
+			<wsdl:output message="tns:richiediAllegatoResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="aggiornaStatoPratica">
+			<wsdl:input message="tns:aggiornaStatoPraticaRequest"></wsdl:input>
+			<wsdl:output message="tns:aggiornaStatoPraticaResponse"></wsdl:output>
+		</wsdl:operation>
+
+	</wsdl:portType>
+
+
+	<!-- BINDINGS -->
+
+	<wsdl:binding name="SemBinding" type="tns:SemPort">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="inviaStimolo">
+			<soap:operation soapAction="http://www.suap.regione.toscana.it/sem/service/inviaStimolo" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="confermaRicezione">
+			<soap:operation soapAction="http://www.suap.regione.toscana.it/sem/service/confermaRicezione" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="statoMessaggio">
+			<soap:operation soapAction="http://www.suap.regione.toscana.it/sem/service/statoMessaggio" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="statoPratica">
+			<soap:operation soapAction="http://www.suap.regione.toscana.it/sem/service/statoPratica" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="inviaAllegato">
+			<soap:operation soapAction="http://www.suap.regione.toscana.it/sem/service/inviaAllegato" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="richiediAllegato">
+			<soap:operation soapAction="http://www.suap.regione.toscana.it/sem/service/richiediAllegato" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="aggiornaStatoPratica">
+			<soap:operation
+				soapAction="http://www.suap.regione.toscana.it/sem/service/aggiornaStatoPratica" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+
+
+	<wsdl:service name="SemService">
+		<wsdl:port name="SemPort" binding="tns:SemBinding">
+			<soap:address location="http://servizi.suap.toscana.it/sem/SemService" />
+		</wsdl:port>
+	</wsdl:service>
+
+</wsdl:definitions>

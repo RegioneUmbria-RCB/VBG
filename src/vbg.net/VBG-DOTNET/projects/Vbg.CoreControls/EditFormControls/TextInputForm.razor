@@ -1,0 +1,174 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+@using Vbg.CoreControls
+@using System.Linq.Expressions
+@using System.Globalization
+@inherits MyBaseFormComponent<string>
+
+<div class="mb-3 @CssClassContainer" id="@UniqueID">
+    @if (ShowLabel)
+    {
+        if (ShowCustomLabel)
+        {
+            @CustomLabel
+        }
+        else
+        {
+
+            <LabelContainerComponent RelativeControlId="@this.Id" ResourceId="@this.ResourceId" Value="@this.Label" Required="@this.Required" CanEditResourceText="@this.CanEditResourceText"></LabelContainerComponent>
+        }
+    }
+
+    @if (IsMultiline)
+    {
+        <textarea id='@this.Id' class="form-control @this.CssClass @cssErrorClass" @attributes="this.AdditionalAttributes"
+            disabled="@this.IsDisabled" maxlength="@MaxLength" rows="@Rows"
+            aria-describedby="@(string.IsNullOrEmpty(HelpText) ? "" : $"{this.Id}_HelpDescription")"
+            @onchange="Changed" value="@this.CurrentValue"></textarea>
+    }
+    else
+    {
+        <input id="@this.Id" type="text" class="form-control @this.CssClass @cssErrorClass" @attributes="this.AdditionalAttributes"
+            disabled="@this.IsDisabled" maxlength="@MaxLength"
+            aria-describedby="@(string.IsNullOrEmpty(HelpText) ? "" : $"{this.Id}_HelpDescription")"
+            @onchange="Changed" value="@this.CurrentValue" />
+    }
+
+    @if (!string.IsNullOrEmpty(HelpText))
+    {
+        <small id="@($"{this.Id}_HelpDescription")" class="help-block">
+            @HelpText
+        </small>
+    }
+    @if (ValidationFor != null)
+    {
+        <div class="form-control-validation help-block">
+            <ValidationMessage For="@ValidationFor" />
+        </div>
+    }
+</div>
+
+@code {
+    /// <summary>
+    /// Set to true to use a TextArea instead of Input type="text"
+    /// Default: false
+    /// </summary>
+    [Parameter]
+    public bool IsMultiline { get; set; } = false;
+
+    /// <summary>
+    /// Used only if IsMultiline is set to true
+    /// Set the TextArea Rows property
+    /// </summary>
+    [Parameter]
+    public int Rows { get; set; } = 4;
+
+    /// <summary>
+    /// Set input MaxLength property
+    /// </summary>
+    [Parameter]
+    public int? MaxLength { get; set; } = null;
+
+    /// <summary>
+    /// Show a custom template as label
+    /// You can define the template in CustomLabel property
+    /// </summary>
+    [Parameter]
+    public bool ShowCustomLabel { get; set; } = false;
+
+    private bool _showLabel = true;
+    /// <summary>
+    /// Show a label associated to control
+    /// </summary>
+    [Parameter]
+    public override bool ShowLabel
+    {
+        get => ShowCustomLabel ? true : string.IsNullOrEmpty(Label) ? false : _showLabel;
+        set => _showLabel = value;
+    }
+
+    /// <summary>
+    /// Use a custom html template as label
+    /// Remember to set ShowCustomLabel to true
+    /// </summary>
+    [Parameter]
+    public RenderFragment? CustomLabel { get; set; }
+
+    [Parameter]
+    public string? ValoreMin { get; set; }
+
+    [Parameter]
+    public string? ValoreMax { get; set; }
+
+
+    private async Task Changed(ChangeEventArgs e)
+    {
+        Value = $"{e.Value}";
+
+        await ValueChanged.InvokeAsync(e.Value?.ToString());
+
+        if (FieldIdentifier.FieldName != null)
+        {
+            EditContext?.NotifyFieldChanged(FieldIdentifier);
+        }
+    }
+
+    protected override bool TryParseValueFromString(string? value, out string result, out string validationErrorMessage)
+    {
+        //if (Required && string.IsNullOrEmpty(value))
+        //{
+        //    validationErrorMessage = string.Format(CultureInfo.InvariantCulture, RequiredErrorMessage, DisplayName ?? FieldIdentifier.FieldName);
+        //    result = "";
+        //    return false;
+        //}
+
+        //if (MaxLength != null && value.Length > MaxLength.Value)
+        //{
+        //    validationErrorMessage = string.Format(CultureInfo.InvariantCulture, MaxLengthErrorMessage, DisplayName ?? FieldIdentifier.FieldName, MaxLength);
+        //    result = "";
+        //    return false;
+        //}
+
+        result = value ?? string.Empty;
+        validationErrorMessage = string.Empty;
+        return true;
+    }
+
+    protected override bool PerformCustomValidation(FieldIdentifier fieldIdentifier, ValidationMessageStore messageStore)
+    {
+        if (string.IsNullOrEmpty(this.ValoreMin) && string.IsNullOrEmpty(this.ValoreMax))
+            return true;
+
+        var min = double.MinValue;
+        var max = double.MaxValue;
+        var val = 0.0d;
+
+        var formatProvider = CultureInfo.InvariantCulture.NumberFormat;
+        var numberStyles = NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite | NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint;
+
+        if (!String.IsNullOrEmpty(this.ValoreMin))
+        {
+            if (!double.TryParse(this.ValoreMin, numberStyles, formatProvider, out min))
+            {
+                messageStore.Add(this.FieldIdentifier, $"Il valore minimo del campo {this.FieldIdentifier.FieldName} non è un numero valido (valore={this.ValoreMin}), verrà usato double.MinValue come valore minimo");
+                min = double.MinValue;
+            }
+        }
+
+        if (!String.IsNullOrEmpty(this.ValoreMax))
+        {
+            if (!double.TryParse(this.ValoreMax, numberStyles, formatProvider, out max))
+            {
+                messageStore.Add(this.FieldIdentifier, $"Il valore massimo del campo {this.FieldIdentifier.FieldName} non è un numero valido (valore={this.ValoreMax}), verrà usato double.MaxValue come valore massimo");
+                max = double.MaxValue;
+            }
+        }
+
+        if (!double.TryParse(this.CurrentValueAsString, numberStyles, formatProvider, out val))
+        {
+            messageStore.Add(this.FieldIdentifier, $"Il valore del campo {this.FieldIdentifier.FieldName} non è un numero valido (valore={this.CurrentValueAsString}), non verrà effettuata la verifica di appartenenza ad un range di valori");
+            return true;
+        }
+
+        return min <= val && val <= max;
+    }
+}

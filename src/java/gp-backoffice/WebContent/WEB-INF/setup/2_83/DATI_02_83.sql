@@ -1,0 +1,11 @@
+INSERT INTO FO_CONFIGURAZIONEBASE (CODICE, ETICHETTA, FK_CONTESTO) VALUES (79, 'Fabbricato', 'ISI-FIL');
+
+insert into verticalizzazionibase (modulo, descrizione, flag_gestcomune) values ('AR_URL_SERVIZI_CONSOLE', 'verticalizzazione utilizaata per configurare gli url di accesso ai servizi console. Se non attiva verranno utilizzati gli url configurati nella verticalizzazione AREA_RISERVATA', 1);
+INSERT INTO verticalizzazioniparametribase (modulo, parametro, descrizione) VALUES ('AR_URL_SERVIZI_CONSOLE', 'CROSS_LOGIN_URL',  'Url da chiamare per effettuare l''operazione di cross login (es.http://devel3.init.gruppoinit.it/ibcauthenticationgateway/crossloginute?idcomunealias=CE256&authlevel=1). Se non configurato verrà utilizzato il valore del parametro AREA_RISERVATA.ASMART_CROSS_LOGIN_URL');
+INSERT INTO verticalizzazioniparametribase (modulo, parametro, descrizione) VALUES ('AR_URL_SERVIZI_CONSOLE', 'URL_ISTANZE_IN_SOSPESO', 'Url per accedere alle istanze in sospeso (Es. https://aida2015.comune.livorno.it/aida-smart/areariservata/reserved/IstanzeInSospeso.aspx?idcomune={ALIAS&software={SOFTWARE}). Se non configurato verrà utilizzato il valore del parametro AREA_RISERVATA.ASMART_URL_ISTANZE_IN_SOSPESO');
+INSERT INTO verticalizzazioniparametribase (modulo, parametro, descrizione) VALUES ('AR_URL_SERVIZI_CONSOLE', 'URL_NUOVA_DOMANDA', 'Url di da cui iniziare il processo di presentazione di una nuova domanda (Es. https://aida2015.comune.livorno.it/aida-smart/areariservata/reserved/NuovaIstanza.aspx?idcomune={ALIAS}&software={SOFTWARE}). Se non configurato verrà utilizzato il valore del parametro AREA_RISERVATA.ASMART_URL_NUOVA_DOMANDA');
+
+INSERT INTO CLMENU_JAVA(ID, DESCRIZIONE, PAGINA, MENULINK, SOFTWARE, JSP, SOFTWAREESCLUSI, LINK_STANDARD, TIPO_FUNZIONALITA, MENULINK_V2) VALUES 
+(1047, 'Gestione metadati contesti', 'dyn2metadaticontesti/list.htm?software=TT', '00B4', 'TT', 'JAVA', 'PR,FI', 'dyn2metadaticontesti/list.htm?software=TT', 'S', '00B4');
+
+INSERT INTO pay_connector_config_params (CONFIG_PARAM, DESCRIZIONE) VALUES ('MAX_POSIZIONI', 'Limite massimo di posizioni debitorie che possono essere passate al servizio di pagamento esterno in ciascuna chiata ai servizi');

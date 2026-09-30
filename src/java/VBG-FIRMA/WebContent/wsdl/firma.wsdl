@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:sch="http://firma.pal.gruppoinit.it/ws/schema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://firma.pal.gruppoinit.it/ws" targetNamespace="http://firma.pal.gruppoinit.it/ws">
+	<wsdl:types>
+		<schema xmlns="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://firma.pal.gruppoinit.it/ws/schema" schemaLocation="firma.xsd" />
+		</schema>
+	</wsdl:types>
+	<wsdl:message name="SetFileToSignRequest">
+		<wsdl:part element="sch:SetFileToSignRequest" name="SetFileToSignRequest" />
+	</wsdl:message>
+	<wsdl:message name="SetFileToSignResponse">
+		<wsdl:part element="sch:SetFileToSignResponse" name="SetFileToSignResponse" />
+	</wsdl:message>
+	<wsdl:message name="GetSignedFileRequest">
+		<wsdl:part element="sch:GetSignedFileRequest" name="GetSignedFileRequest" />
+	</wsdl:message>
+	<wsdl:message name="GetSignedFileResponse">
+		<wsdl:part element="sch:GetSignedFileResponse" name="GetSignedFileResponse" />
+	</wsdl:message>
+
+	<wsdl:portType name="Firma">
+
+		<wsdl:operation name="SetFileToSign">
+			<wsdl:input message="tns:SetFileToSignRequest" name="SetFileToSignRequest" />
+			<wsdl:output message="tns:SetFileToSignResponse" name="SetFileToSignResponse" />
+		</wsdl:operation>
+
+		<wsdl:operation name="GetSignedFile">
+			<wsdl:input message="tns:GetSignedFileRequest" name="GetSignedFileRequest" />
+			<wsdl:output message="tns:GetSignedFileResponse" name="GetSignedFileResponse" />
+		</wsdl:operation>
+	</wsdl:portType>
+
+	<wsdl:binding name="FirmaSoap11" type="tns:Firma">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+
+		<wsdl:operation name="SetFileToSign">
+			<soap:operation soapAction="SetFileToSign" />
+			<wsdl:input name="SetFileToSignRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="SetFileToSignResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+
+
+		<wsdl:operation name="GetSignedFile">
+			<soap:operation soapAction="GetSignedFile" />
+			<wsdl:input name="GetSignedFileRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="GetSignedFileResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="FirmaService">
+		<wsdl:port binding="tns:FirmaSoap11" name="FirmaSoap11">
+			<soap:address location="http://localhost:8080/firma/services/" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

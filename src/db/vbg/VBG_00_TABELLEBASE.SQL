@@ -18002,10 +18002,592 @@ insert  into `verticalizzazioniparametribase`(`MODULO`,`PARAMETRO`,`DESCRIZIONE`
 insert  into `verticalizzazioniparametribase`(`MODULO`,`PARAMETRO`,`DESCRIZIONE`) values ('WS_IMPORTAZIONEISTANZA','STATOISTANZA','Imposta lo stato dell\'istanza in base al codice indicato nel parametro. I possibili valori sono quelli contenuti in STATIISTANZA');
 insert  into `verticalizzazioniparametribase`(`MODULO`,`PARAMETRO`,`DESCRIZIONE`) values ('WS_LOGIN','USERID_OPERATORE','User Id dell\'operatore');
 
+INSERT INTO verticalizzazioniparametribase (MODULO, PARAMETRO, DESCRIZIONE) VALUES('AREA_RISERVATA','MAX_RECORDS_RICERCA_PRATICHE','Numero massimo di records restituibili dalla ricerca pratiche (archivio e visura). Default: 200');
+
+INSERT INTO PAY_CONNECTOR_CONFIG_PARAMS(CONFIG_PARAM,DESCRIZIONE,CODICE_CONNETTORE) VALUES ('MIPGE_CODICE_ENTE','CODICE ENTE da specificare nei tracciati',NULL);
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES ('ASSEGNAZIONE_OPERATORI','ASSEGNAZIONE_CAPIENZA_GRUPPO','Parametro che definisce l''assegnazione dei operatori all''istanza secondo la logica del numero di pratiche assegnabili. S usiamo la logica N per il vecchio modo');
+
+
+
+INSERT INTO verticalizzazionibase(MODULO, DESCRIZIONE, FLAG_GESTCOMUNE) VALUES ('SIT_FORLI', 'Parametri di configurazione del sit in uso nel comune di Forlì', 0);
+
+INSERT INTO verticalizzazioniparametribase(MODULO, PARAMETRO, DESCRIZIONE) VALUES ('SIT_FORLI', 'CONNECTIONSTRING_TOPONOMASTICA', 'Connection string (formato Oracle) per il db che contiene le viste della toponomastica');
+
+INSERT INTO verticalizzazioniparametribase(MODULO, PARAMETRO, DESCRIZIONE) VALUES ('SIT_FORLI', 'CONNECTIONSTRING_CATASTO', 'Connection string (formato Oracle) per il db che contiene le viste del catasto');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES ('PROTOCOLLO_ATTIVO','FORZA_FASCICOL_NOT_AUTOMATICA','Parametro che permette di applicare durante la notifica automatica dei movimenti, laddove è attiva anche la protocollazione del movimento, la fascicolazione contestuale. La fascicolazione sarà eseguita se l''istanza è fascicolata e prenderà i dati di fascicolazione dell''istanza. Valori ammessi S o N (predefinito N)');
+
+INSERT INTO verticalizzazioniparametribase(MODULO, PARAMETRO, DESCRIZIONE) VALUES ('SIT_FORLI', 'URL_CARTOGRAFIA_DA_CIVICO', 'Url per aprire la cartografia a partire da un numero civico (per forlì è https://moka.comune.forli.fc.it/mokaApp/applicazioni/VBG_MET01?query=Numeri%20civici,CIVICO=%27$CIVICO$$ESPONENTE$%27%20AND%20VIA_COD=%27$CODICEVIA$%27)');
+
+INSERT INTO verticalizzazioniparametribase(MODULO, PARAMETRO, DESCRIZIONE) VALUES ('SIT_FORLI', 'URL_CARTOGRAFIA_DA_MAPPALE', 'Url per aprire la cartografia a partire da un mappale (per forlì è https://moka.comune.forli.fc.it/mokaApp/applicazioni/VBG_MET01?query=Particelle%20catastali,FOGLIO=%27$FOGLIO$%27%20AND%20PARTICELLA=%27$PARTICELLA$%27');
+
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES ('PROTOCOLLO_URBI','TIPO_INVIO_PEC','Valori ammessi: 0 e 1 (se non impostato vale 1).0: Invia PEC singola; 1: Invia una PEC per ogni destinatario');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES ('PROTOCOLLO_URBI','NO_AVVIO_ITER','Se impostato ad S non avvia l''iter del protocollo (disattiva l''avvio dell''iter di WFA).');
+
+
+INSERT INTO elenchiprofessionalibase(ep_id, ep_descrizione, ep_atribcodice,flag_regionale) VALUES (21,'Albo degli Spedizionieri Doganali',6,0);
+INSERT INTO elenchiprofessionalibase(ep_id, ep_descrizione, ep_atribcodice,flag_regionale) VALUES (22,'Ordine dei chimici e fisici',6,0);
+INSERT INTO elenchiprofessionalibase(ep_id, ep_descrizione, ep_atribcodice,flag_regionale) VALUES (24,'Collegio dei periti edili',6,0);
+ 
+
+update alberoproc_oneri set flag_importo_libero=1 where AO_IMPORTOCAUSALE is null or AO_IMPORTOCAUSALE = 0;
+update inventarioprocedimentioneri set FLAG_IMPORTO_LIBERO=1 where IMPORTO is null or IMPORTO = 0;
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO,PARAMETRO,DESCRIZIONE) VALUES ('STC','LISTANODI_COPIA_PROTOCOLLO','Riporta la lista dei nodi per i quali copiare i riferimenti di protocollo se stessa direzione. Il comportamento viene sovrascritto da FORZA_PROTOCOLLAZIONE. La lista dei nodi è separata da virgola (,) es. 320,150');
+
+INSERT INTO verticalizzazioniparametribase(MODULO,PARAMETRO,DESCRIZIONE) VALUES ('AREA_RISERVATA', 'ATTIVA_COMPILAZIONE_ONCE_ONLY', 'Se impostato a 1 attiva la precompilazione dei dati once only durante la presentazione domanda (default: 0)');
+
+UPDATE clmenu_java SET menulink_v2='0AF' WHERE id=750;
+
+INSERT INTO PAY_CONNECTOR_CONFIG_PARAMS(CONFIG_PARAM,DESCRIZIONE,CODICE_CONNETTORE) VALUES ('ATTIVA_NOTIFICHE_RABBITMQ','Impostare a 1 per attivare le notifiche verso RabbitMQ. Togliere o impostare a 0 per disattivarle',NULL);
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES ('PROTOCOLLO_ACARIS','RICERCA_FASCICOLO_PER_OGGETTO','Può assumere uno dei seguenti valori: 1 o 0 ed indica se la ricerca di un FASCICOLO deve essere fatta per oggetto ( valore 1 ) oppure per codice ( valore 0 ). Di default è 0');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES ('PROTOCOLLO_ACARIS','NUMERO_FASCICOLO','Indica il numero che il fascicolo deve avere in fase di protocollazione. E'' possibile concatenare testo ai seguenti segnaposti [NUMEROISTANZA] o [IDBOLLETTAZIONE] che verranno rispettivamente sostituiti con il numero dell''istanza o con il progressivo della bollettazione. Se non impostato verrà usato il numero dell''istanza');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES ('PROTOCOLLO_ACARIS','INVIA_COPIA_CORTESIA','Solo per le protocollazioni in partenza, ammette i valori 1 o 0. Se attivato ( valore 1 ) il sistema invia una copia di cortesia del documento principale ai destinatari che non hanno un codice IPA valorizzato; se non attivato ( valore 0 o non impostato ) non verrà inviata nessuna copia di cortesia');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('COMPORTAMENTI_ISTANZE','URL_WS_RIEPILOGO_PRATICA','In questa URL va messa l''indirizzo per accedere al web service di rigenerazione riepilogo pratica es: http://devel3.vbg.community/frontoffice/AreaRiservata/webservices/istanze/visura/riepilogo-pratica.asmx?WSDL. Questo parametro, allo stato attuale, genera in automatico il riepilogo dell''istanza solo per le domande appartenenti ad interventi con Pubblica impostato a "Solo Domanda on line"');
+
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('PROTOCOLLO_URBI', 'DATA_SWITCH', 'Valorizzare questo parametro qualora fosse indispensabile utilizzare anche la fascicolazione. In particolare va valorizzato con la data di switch da un protocollo qualsiasi a URBI, e va valorizzato solo se il vecchio protocollo non ha possibilità di essere letto e non ha il dato relativo al fascicolo. Di pari passo va valorizzato anche il parametro ID_FASCICOLO_GENERICO.');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('PROTOCOLLO_URBI', 'ID_FASCICOLO_GENERICO', 'Valorizzare questo dato qualora si voglia indicare un fascicolo generico per protocolli antecedenti ad una certa data valorizzata nel parametro DATA_SWITCH. Questo si rende necessario qualora sia presente una fase transitoria tra un protocollo e URBI e qualora la fascicolazione sia obbligatoria e quando non sia possibile andare a rileggere il fascicolo su un protocollo presente in un altro sistema di protocollazione.');
+
+INSERT INTO VERTICALIZZAZIONIBASE (MODULO, DESCRIZIONE, FLAG_GESTCOMUNE)  VALUES ('WSANAGRAFE2','Gestisce le configurazioni della componente WSANAGRAFE2 per la ricerca dei dati anagrafici di persone fisiche e giuridiche', 0);
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('WSANAGRAFE2','LISTA_COMPONENTI','Lista dei servizi attivi. L''ordine di esecuzione va spoecificato nella relativa configurazione del singolo componente. Es. dei servizi ad oggi censiti: <ul><li>servizioAnagraficaDefaultService(Il WS anagrafe Interno VBG)</li><li>servizioAnagraficaNlaPddService (<b>WSANAGRAFE_NLAPDD</b>)</li><li>servizioAnagraficaCedafService(<b>WSANAGRAFE_CEDAF</b></li><li>servizioAnagraficaCSIServiceImpl(<b>WSANAGRAFE_CSI</b>)</li><li>servizioAnagraficaGenovaServiceImpl(<b>WSANAGRAFE_GENOVA</b>)</li></li><li>servizioAnagraficaMaggioliService(<b>WSANAGRAFE_MAGGIOLI</b>)</li></ul>');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('WSANAGRAFE2','USA_PERSONA_FISICA','Il parametro indica se il servizio di anagrafe di default (WSANAGRAFE .NET) deve essere attivato per la ricerca di persone fisiche. Accetta i valori S o N');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('WSANAGRAFE2','USA_PERSONA_GIURIDICA','Il parametro indica se il servizio di anagrafe di default (WSANAGRAFE .NET) deve essere attivato per la ricerca di persone giuridiche. Accetta i valori S o N.');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('WSANAGRAFE2','ORDINE_ESECUZIONE','Indica l''ordine di esecuzione rispetto alle altre componenti indicate nel parametro LISTA_COMPONENTI della verticalizzazione WSANAGRAFE2');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('WSANAGRAFE2','ERROR_CASE','Il parametro indica se in caso di errore la ricerca deve fermarsi oppure proseguire attivando le altre componenti in ordine di esecuzione. Il parametro è gestito nella componente WSANAGRAFE2. Accetta i valori S o N (default N)');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('WSANAGRAFE2','RETURN_NULL_VALUE','Il parametro indica se in caso di risposta NULLA la ricerca deve fermarsi oppure proseguire attivando le altre componenti in ordine di esecuzione. Il parametro è gestito nella componente WSANAGRAFE2. Accetta i valori S o N (default N)');
+
+
+
+
+INSERT INTO VERTICALIZZAZIONIBASE(MODULO,DESCRIZIONE,FLAG_GESTCOMUNE) VALUES ('WSANAGRAFE_NLAPDD','Se attivato permette di accedere al sistema anagrafico della componente NLA-PDD-RI, tale sistema permette di recuperare SOLO le persone giuridiche interrogando i servizi di impresa in un giorno.',0);
+INSERT INTO VERTICALIZZAZIONIBASE(MODULO,DESCRIZIONE,FLAG_GESTCOMUNE) VALUES ('WSANAGRAFE_CEDAF','Se attivato permette di accedere al sistema anagrafico di CEDAF, tale sistema permette di recuperare SOLO le persone fisiche.',0);
+INSERT INTO VERTICALIZZAZIONIBASE(MODULO,DESCRIZIONE,FLAG_GESTCOMUNE) VALUES ('WSANAGRAFE_CSI','Se attivato permette di accedere al sistema anagrafico di CSI (AEEP), tale sistema permette di recuperare SOLO le persone giuridiche.',0);
+INSERT INTO VERTICALIZZAZIONIBASE(MODULO,DESCRIZIONE,FLAG_GESTCOMUNE) VALUES ('WSANAGRAFE_GENOVA','Se attivato permette di accedere al sistema anagrafico di GENOVA, tale sistema permette di recuperare SOLO persone fisiche.',0);
+
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('WSANAGRAFE_NLAPDD','URL','Indirizzo del ws anagrafe.');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('WSANAGRAFE_CEDAF','URL','Indirizzo del ws anagrafe.');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('WSANAGRAFE_CSI','URL','Indirizzo del ws anagrafe.');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('WSANAGRAFE_GENOVA','URL','Indirizzo del ws anagrafe.');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('WSANAGRAFE_GENOVA','URL_TOKEN','Indirizzo del servizio di autenticazione e recupero del Token anagrafe.');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('WSANAGRAFE_GENOVA','CHIAVE','Consumer Key servizio di autenticazione e recupero del Token per l''interrogazione del WS Anagrafe.');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('WSANAGRAFE_GENOVA','SEGRETO','Secret Key del servizio di autenticazione e recupero del Token per l''interrogazione del WS Anagrafe.');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('WSANAGRAFE_MAGGIOLI','USERNAME','Nome Utente per ottenere il token.');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('WSANAGRAFE_MAGGIOLI','PASSWORD','Password per ottenere il token.');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('WSANAGRAFE_MAGGIOLI','ALIAS','Alias per ottenere il token, di solito uguale all''username.');
+
+
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('WSANAGRAFE_NLAPDD','ORDINE_ESECUZIONE','Indica l''ordine di esecuzione rispetto alle altre componenti indicate nel parametro LISTA_COMPONENTI della verticalizzazione WSANAGRAFE2');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('WSANAGRAFE_CEDAF','ORDINE_ESECUZIONE','Indica l''ordine di esecuzione rispetto alle altre componenti indicate nel parametro LISTA_COMPONENTI della verticalizzazione WSANAGRAFE2');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('WSANAGRAFE_CSI','ORDINE_ESECUZIONE','Indica l''ordine di esecuzione rispetto alle altre componenti indicate nel parametro LISTA_COMPONENTI della verticalizzazione WSANAGRAFE2');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('WSANAGRAFE_GENOVA','ORDINE_ESECUZIONE','Indica l''ordine di esecuzione rispetto alle altre componenti indicate nel parametro LISTA_COMPONENTI della verticalizzazione WSANAGRAFE2');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('WSANAGRAFE_MAGGIOLI','ORDINE_ESECUZIONE','Indica l''ordine di esecuzione rispetto alle altre componenti indicate nel parametro LISTA_COMPONENTI della verticalizzazione WSANAGRAFE2');
+
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('WSANAGRAFE_NLAPDD','ERROR_CASE','Il parametro indica se in caso di errore la ricerca deve fermarsi oppure proseguire attivando le altre componenti in ordine di esecuzione. Il parametro è gestito nella componente WSANAGRAFE2. Accetta i valori S o N (default N)');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('WSANAGRAFE_CEDAF','ERROR_CASE','Il parametro indica se in caso di errore la ricerca deve fermarsi oppure proseguire attivando le altre componenti in ordine di esecuzione. Il parametro è gestito nella componente WSANAGRAFE2. Accetta i valori S o N (default N)');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('WSANAGRAFE_CSI','ERROR_CASE','Il parametro indica se in caso di errore la ricerca deve fermarsi oppure proseguire attivando le altre componenti in ordine di esecuzione. Il parametro è gestito nella componente WSANAGRAFE2. Accetta i valori S o N (default N)');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('WSANAGRAFE_GENOVA','ERROR_CASE','Il parametro indica se in caso di errore la ricerca deve fermarsi oppure proseguire attivando le altre componenti in ordine di esecuzione. Il parametro è gestito nella componente WSANAGRAFE2. Accetta i valori S o N (default N)');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('WSANAGRAFE_MAGGIOLI','ERROR_CASE','Il parametro indica se in caso di errore la ricerca deve fermarsi oppure proseguire attivando le altre componenti in ordine di esecuzione. Il parametro è gestito nella componente WSANAGRAFE2. Accetta i valori S o N (default N)');
+
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('WSANAGRAFE_NLAPDD','RETURN_NULL_VALUE','Il parametro indica se in caso di risposta NULLA la ricerca deve fermarsi oppure proseguire attivando le altre componenti in ordine di esecuzione. Il parametro è gestito nella componente WSANAGRAFE2. Accetta i valori S o N (default N)');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('WSANAGRAFE_CEDAF','RETURN_NULL_VALUE','Il parametro indica se in caso di risposta NULLA la ricerca deve fermarsi oppure proseguire attivando le altre componenti in ordine di esecuzione. Il parametro è gestito nella componente WSANAGRAFE2. Accetta i valori S o N (default N)');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('WSANAGRAFE_CSI','RETURN_NULL_VALUE','Il parametro indica se in caso di risposta NULLA la ricerca deve fermarsi oppure proseguire attivando le altre componenti in ordine di esecuzione. Il parametro è gestito nella componente WSANAGRAFE2. Accetta i valori S o N (default N)');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('WSANAGRAFE_GENOVA','RETURN_NULL_VALUE','Il parametro indica se in caso di risposta NULLA la ricerca deve fermarsi oppure proseguire attivando le altre componenti in ordine di esecuzione. Il parametro è gestito nella componente WSANAGRAFE2. Accetta i valori S o N (default N)');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('WSANAGRAFE_MAGGIOLI','RETURN_NULL_VALUE','Il parametro indica se in caso di risposta NULLA la ricerca deve fermarsi oppure proseguire attivando le altre componenti in ordine di esecuzione. Il parametro è gestito nella componente WSANAGRAFE2. Accetta i valori S o N (default N)');
+
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('WSANAGRAFE_NLAPDD','USA_PERSONA_FISICA','Il parametro indica se il servizio deve essere attivato per la ricerca di persone fisiche. Accetta i valori S o N. Al momento usato solo per persone giuridiche.');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('WSANAGRAFE_CEDAF','USA_PERSONA_FISICA','Il parametro indica se il servizio deve essere attivato per la ricerca di persone fisiche. Accetta i valori S o N. Al momento usato solo per persone fisiche.');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('WSANAGRAFE_CSI','USA_PERSONA_FISICA','Il parametro indica se il servizio deve essere attivato per la ricerca di persone fisiche. Accetta i valori S o N. Al momento usato solo per persone giuridiche');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('WSANAGRAFE_GENOVA','USA_PERSONA_FISICA','Il parametro indica se il servizio deve essere attivato per la ricerca di persone fisiche. Accetta i valori S o N. Al momento usato solo per persone fisiche.');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('WSANAGRAFE_MAGGIOLI','USA_PERSONA_FISICA','Il parametro indica se il servizio deve essere attivato per la ricerca di persone fisiche. Accetta i valori S o N.');
+
+
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('WSANAGRAFE_NLAPDD','USA_PERSONA_GIURIDICA','Il parametro indica se il servizio deve essere attivato per la ricerca di persone giuridiche. Accetta i valori S o N. Al momento usato solo per persone giuridiche.');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('WSANAGRAFE_CEDAF','USA_PERSONA_GIURIDICA','Il parametro indica se il servizio deve essere attivato per la ricerca di persone giuridiche. Accetta i valori S o N. Al momento usato solo per persone fisiche.');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('WSANAGRAFE_CSI','USA_PERSONA_GIURIDICA','Il parametro indica se il servizio deve essere attivato per la ricerca di persone giuridiche. Accetta i valori S o N. Al momento usato solo per persone giuridiche');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('WSANAGRAFE_GENOVA','USA_PERSONA_GIURIDICA','Il parametro indica se il servizio deve essere attivato per la ricerca di persone giuridiche. Accetta i valori S o N. Al momento usato solo per persone fisiche.');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('WSANAGRAFE_MAGGIOLI','USA_PERSONA_GIURIDICA','Il parametro indica se il servizio deve essere attivato per la ricerca di persone giuridiche. Accetta i valori S o N.');
+
+
+INSERT INTO CLMENU_JAVA(ID,DESCRIZIONE,PAGINA,MENULINK,SOFTWARE,JSP,VERTICALIZZAZIONE,SOFTWAREESCLUSI,LINK_STANDARD,TIPO_FUNZIONALITA,LAYOUTTESTI,MENULINK_V2) VALUES (1058,'Gestione firme remote','firmaremota/list.htm?software=TT','00H','TT','JAVA',NULL,NULL,'firmaremota/list.htm?software=TT','S',NULL,'00H');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO, PARAMETRO, DESCRIZIONE) VALUES ('RIC_ANAG_COLL_CSI','DECODIFICHE_TAB_RAGGR_LR','Nella ricerca delle anagrafiche viene fatta una lookup nella tabella DECODIFICHE con la coppia TABELLA/RAGGRUPPAMENTO. Ritorna, se configurata, la lista dati delle cariche AEEP che identificano un soggetto come legale rappresentante o assimilabile di una azienda. Il formato del valore deve essere TABELLA#RAGGRUPPAMENTO (ES: CARICHE_AEEP#LEGALE_RAPPRESENTANTE)');
+        
+INSERT INTO verticalizzazioniparametribase (MODULO, PARAMETRO, DESCRIZIONE) VALUES('COMPORTAMENTI_MERCATI','COD_TIPODOC_STAMPA','Se configurato allora significa che è possibile in APP-AMBULANTI attivare la stampa PDF delle autorizzazioni. Deve corrispondere ad un valore configurato nella tabella/colonna TIPIDOCUMENTO.IDTIPODOCUMENTO. Verra'' preso il documento salvato nella colonna CODICEOGGETTO_XSL. Il documento deve essere in formato XSLT (XSL Transform) per produrre un HTML ed essere convertito in html mediante il merge con i dati XML');
+
+UPDATE CLMENU_JAVA SET DESCRIZIONE = 'Pagamenti Autorizzazioni/Concessioni' WHERE ID = 1057;
+
+INSERT INTO software (CODICE,DESCRIZIONE,MODULOOPZIONALE,DESCRIZIONELUNGA,ACCESSORAPIDO,ORDINE) VALUES ('LT','Locazioni turistiche',1,'Locazioni turistiche',0,42);
+         
+         
+INSERT INTO verticalizzazionibase (MODULO, DESCRIZIONE, FLAG_GESTCOMUNE) VALUES ('PROTOCOLLO_INSIELREST', 'Evoluzione del protocollo INSIEL con servizi di tipo REST, il web service necessita di autenticazione di tipo OAUTH2', 1);
+
+
+
+INSERT INTO verticalizzazioniparametribase (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('PROTOCOLLO_INSIELREST', 'ATTIVA_MONF', 'Viene attivato se assume il valore 1, in tutti gli altri casi non viene attivato. Questo parametro indica se il componente deve seguire le regole imposte dal Comune di Monfalcone in ambito di protocollazione. Le regole riguardano la compilazione della denominazione anagrafica da inviare al protocollo insiel, e sono: <NOME> <COGNOME> <LOCALITA_RESIDENZA> (<LOCALITA_SEDE_RESIDENZA> se azienda); se la località coincide con una provincia allora va indicata la sigla, quindi <NOME> <COGNOME> <SIGLAPROVINCIA>, se la località coincide con MONFALCONE allora va indicato il valore CITTA'', quindi <NOME> <COGNOME> CITTA''');
+INSERT INTO verticalizzazioniparametribase (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('PROTOCOLLO_INSIELREST', 'CLIENT_ID', 'Parametro client_id da passare all''endpoint oauth 2.0');
+INSERT INTO verticalizzazioniparametribase (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('PROTOCOLLO_INSIELREST', 'CLIENT_SECRET', 'Parametro secret da passare all''endpoint oauth 2.0');
+INSERT INTO verticalizzazioniparametribase (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('PROTOCOLLO_INSIELREST', 'CODICEREGISTRO', 'Indicare il registro relativo al protocollo, da questo parametro sarà possibile anche recuperare il parametro officecode che dovrà essere implementato sulla tabella PROTOCOLLO_UFFICIREGISTRI');
+INSERT INTO verticalizzazioniparametribase (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('PROTOCOLLO_INSIELREST', 'CODICEUTENTE', 'E'' l''utente con cui avviene l''autenticazione al web service che coincide con quello cui avviene la protocollazione; se non valorizzato il sistema andrà a cercare il valore nel parametro OPERATORE della verticalizzazione PROTOCOLLO_ATTIVO, in quanto, da questo parametro, è possibile utilizzare dei segnalibri nel caso in cui gli operatori del protocollo siano mappati con quelli del backoffice.');
+INSERT INTO verticalizzazioniparametribase (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('PROTOCOLLO_INSIELREST', 'CODICE_UFFICIO_OPERANTE', 'Indica il codice ufficio operante del protocollo di Insiel DA NON CONFONDERE con il codice ufficio che va configurato sull''amministrazione nel campo RUOLO e va di pari passo con il registro.');
+INSERT INTO verticalizzazioniparametribase (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('PROTOCOLLO_INSIELREST', 'DISABILITA_ANNULLA_PROTOCOLLO', 'Consente di disabilitare la possibilità di annullare il protocollo da backoffice. Il web service di Insiel espone i metodi abilitati ad annullare un protocollo, questo però potrebbe non essere accettato dai responsabili. Al Comune di Pordenone ad esempio è stato espressamente chiesto di non dare la possibilità agli operatori di backoffice di eseguire le operazioni di annullamente, che devono essere adibite solamente agli operatori di protocollo. Se valorizzato a 1 elimina la scritta Annulla presente sotto il numero di protocollo nell''istanza o movimento, se uguale a 0 o non valorizzato la stessa scritta sarà visualizzata con annessa possibilità di annullamento.');
+INSERT INTO verticalizzazioniparametribase (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('PROTOCOLLO_INSIELREST', 'DISABILITA_VALIDAZ_CAP_ITA', 'Valore 1 o 0, se valorizzato a 1 indica che deve essere disabilitato il controllo, da parte del componente che si interfaccia col protocollo, relativo alla validazione di un cap con formato italiano, quindi con solo caratteri numerici e con lunghezza da 4 a 6 caratteri.');
+INSERT INTO verticalizzazioniparametribase (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('PROTOCOLLO_INSIELREST', 'ESCLUDI_CLASSIFICA', 'Se selezionato consente di ignorare i dati di classifica inviati dal backoffice al componente che gestisce il protocollo Insiel, questo in quanto il protocollo considera la classifica come facoltativa mentre, lato backoffice, è un dato obbligatorio che deve necessariamente essere valorizzato per essere validato, il componente .net che fa da tramite tra le due applicazioni si prenderà carico di gestire (se = 0 o assente) o meno (se valorizzato a 1) la classifica in base al valore di questo parametro. Ad esempio il Comune di Trieste non interessa questo tipo di dato mentro quello di Pordenone si.');
+INSERT INTO verticalizzazioniparametribase (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('PROTOCOLLO_INSIELREST', 'INVIA_PEC', 'Valore 1 o 0, indica se deve essere richiesto anche l''invio di una pec per i protocolli in partenza. Valido solo per la versione 3 del PROTOCOLLO_INSIEL.');
+INSERT INTO verticalizzazioniparametribase (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('PROTOCOLLO_INSIELREST', 'MITTENTE_PEC', 'E'' il mittente da utilizzare per fare in modo che il sistema di protocollo determini da chi venga inviata una pec . Tale dato deve necessariamente essere presente anche nel sistema di protocollo. Non è un dato obbligatorio in quanto se non individuato il protocollo userà il proprio principale ma serve nel caso in cui l''ente decida di inviarlo da un mittente dedicato specifico.');
+INSERT INTO verticalizzazioniparametribase (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('PROTOCOLLO_INSIELREST', 'TIPI_DOCUMENTO_WS', 'Indica la modalità di recupero dati dei tipi documento. Questi possono essere recuperati dalla tabella di VBG Protocollo_TipiDocumento, SE VALORIZZATO A 0 OPPURE A NULL, oppure direttamente dal web service di Insiel, invocando il metodo getTipiDoc, SE VALORIZZATO A 1. Nel primo caso i dati saranno più gestibili, ad esempio indicando solamente i tipi documento necessari all''integrazione, nel secondo avremmo un allineamento certo dei dati in quanto vengono invocati direttamente dagli archivi del protocollo, ma potrebbe anche esserci una mole di dati enorme che renderebbe difficoltosa la gestione di questo dato agli operatori; ad esempio al Comune di Trieste sono presenti più di 200 tipi documento, mentre ne viene utilizzato solamente uno, almeno per le pratiche provenienti da VBG.');
+INSERT INTO verticalizzazioniparametribase (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('PROTOCOLLO_INSIELREST', 'TIPO_AGGIORNAMENTO_ANAG', 'Questo parametro determina come deve essere aggiornata un''anagrafica quando si richiede un protocollo. Da notare che questo parametro viene utilizzato solamente per la versione 3 del PROTOCOLLO_INSIEL (valore PROTOCOLLO_INSIEL3 su parametro TIPOPROTOCOLLO della regola PROTOCOLLO_ATTIVO) e solo se la ricerca dell''anagrafica per codice fiscale o partita iva viene soddisfatta, altrimenti inserisce una nuova anagrafica.');
+INSERT INTO verticalizzazioniparametribase (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('PROTOCOLLO_INSIELREST', 'TIPO_GESTIONE_PEC', 'Nome fuorviante, perchè indica come gestire le anagrafiche quando viene richiesto un protocollo, in realtà, serve più che altro per l''invio pec, in quanto non è presente un elemento dove poter indicare l''indirizzo, ma viene recuperato direttamente dall''anagrafe del protocollo, motivo per il quale è comunque il backoffice a gestire questo tipo di dato.');
+INSERT INTO verticalizzazioniparametribase (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('PROTOCOLLO_INSIELREST', 'TIPO_UFFICIO_ITERATTI', 'Inserire in questo parametro il valore necessario a far avviare ITERATTI in fase di protocollazione, di norma viene inserito il parametro DITER.');
+INSERT INTO verticalizzazioniparametribase (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('PROTOCOLLO_INSIELREST', 'URL_OAUTH', 'Endpoint relativo all''autenticazione oauth 2.0 da utilizzare per ottenere il token da usare poi per le chiamate al web service rest. es: https://is.regione.fvg.it/oauth2/token.');
+INSERT INTO verticalizzazioniparametribase (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('PROTOCOLLO_INSIELREST', 'URL_OAUTH_TEST', 'Endpoint di test relativo all''autenticazione oauth 2.0 da utilizzare per ottenere il token da usare poi per le chiamate al web service rest. es: https://is.regione.fvg.it/oauth2/token.');
+INSERT INTO verticalizzazioniparametribase (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('PROTOCOLLO_INSIELREST', 'URL_WSCOLLAUDO', 'Endpoint del web service rest di collaudo.');
+INSERT INTO verticalizzazioniparametribase (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('PROTOCOLLO_INSIELREST', 'URL_WSPRODUZIONE', 'Endpoint del web service rest di produzione.');
+INSERT INTO verticalizzazioniparametribase (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('PROTOCOLLO_INSIELREST', 'USA_LIVELLI_CLASSIFICA', 'Questo parametro indica se il componente che adatta la richiesta da inviare al protocollo, deve utilizzare il valore indicato nella classifica come codice (valore a 0 o non valorizzato); oppure come livelli (valorizzare a 1); nel secondo caso va configurata una classifica a più livelli, separati da un punto ".", ad esempio 8.1.1.4, 8 è il primo livello, 1 il secondo, 1 il terzo e 4 il quarto, il tutto fino a 8 livelli.');
+INSERT INTO verticalizzazioniparametribase (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('PROTOCOLLO_INSIELREST', 'USA_WS_CLASSIFICHE', 'Indica la modalità di recupero dati relativamente alle voci di titolario (classificazione). Se valorizzato a 1 saranno recuperate tramite apposito metodo del web service, altrimenti sarà utilizzato il metodo classico, ossia o da tabella protocollo_classifiche oppure tramite testo libero.');
+INSERT INTO verticalizzazioniparametribase (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('PROTOCOLLO_INSIELREST', 'USA_WS_TEST', 'Se impostato a 1 indica l''utilizzo del WS di collaudo. Se impostato a 0 invece indica l''utilizzo del WS di produzione.');
+INSERT INTO verticalizzazioniparametribase (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('PROTOCOLLO_INSIELREST', 'USA_PREDISPONI_ANAGRAFICA', 'Se impostato a 0 indica l''utilizzo della vecchia logica in cui si chiama prima il metodo di ricerca anagrafica e successivamente quello di creazione o aggiornamento. Se impostato a 1 invece indica l''utilizzo del nuovo metodo predisponi-anagrafica del WS rest. Tenere presente che la nuova logica esegue la ricerca dell''anagrafica per tutti i parametri passati: DENOMINAZIONE, CODICE FISCALE, PARTITA IVA, NOME/COGNOME.');
+
+INSERT INTO VERTICALIZZAZIONIBASE (MODULO,DESCRIZIONE,FLAG_GESTCOMUNE) VALUES ('PRATICA_DA_SISTEMA_ESTERNO','Se attiva sulla funzionalità Azioni Protocollo è possibile inserire direttamente una pratica da un sistema esterno con modellazione Impresa in un giorno e Faldone Telematico',0);
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO,PARAMETRO,DESCRIZIONE) VALUES ('STC','NLA_IDNODO_INFOCAMERE','Identificativo - registrato su STC - del nodo di integrazione con impresainungiorno(nla-infocamere)');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO,PARAMETRO,DESCRIZIONE) VALUES ('PRATICA_DA_SISTEMA_ESTERNO','IDNODO_INFOCAMERE','Identificativo - registrato su STC - del nodo di integrazione con il nodo nla-infocamere');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO,PARAMETRO,DESCRIZIONE) VALUES ('PRATICA_DA_SISTEMA_ESTERNO','NLA_IDNODO','Id del nodo NLA BACKOFFICE registrato su STC');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('PROTOCOLLO_INSIELREST', 'DISATTIVA_CTRL_DOCS', 'Impostando il parametro a 1 indica al componente di protocollazione di Insiel di non procedere con il controllo sulla duplicazione dei documenti, sarà quindi possibile inviare più documenti identici (con lo stesso codice hash), cosa che di default non è possibile fare in quanto il protocollo blocca la protocollazione.');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('SIT_JESI', 'USERNAME', 'Indicare lo username che viene fornito dal fornitore del SIT');
+
+INSERT INTO VERTICALIZZAZIONIBASE(MODULO,DESCRIZIONE,FLAG_GESTCOMUNE) VALUES ('GEECO','Permette la gestione integrata delle localizzazioni tramite il software cartografico Geeco',0);
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('GEECO','AUTH_COMMUNITY_BACK','Indica la community utilizzata per accedere al backend e serve per non dover fare nuovamente login. Es. wrup');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('GEECO','AUTH_COMMUNITY_FRONT','Indica la community utilizzata per accedere al frontend e serve per non dover fare nuovamente login. Es. spid-gaspcmto');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('GEECO','AUTH_LEVEL_BACK','Indica il livello utilizzato per accedere al backend e serve per non dover fare nuovamente login. Es. liv1');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('GEECO','AUTH_LEVEL_FRONT','Indica il livello utilizzato per accedere al frontend e serve per non dover fare nuovamente login. Es. liv1');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('GEECO','APIINFO_UUID_BACK','Contiene il parametro ApiInfo.uuid da passare a GEECO per le chiamate da backend');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('GEECO','APIINFO_UUID_FRONT','Contiene il parametro ApiInfo.uuid da passare a GEECO per le chiamate da frontend');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('GEECO','EDITING_LAYER_BACK','Contiene l''identificativo del livello editabile da passare a GEECO per le chiamate da backend');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('GEECO','EDITING_LAYER_FRONT','Contiene l''identificativo del livello editabile da passare a GEECO per le chiamate da frontend');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('GEECO','URL_COMPONENTE_BACK','Indicare la url del componente di integrazione utilizzato dal backend (es. http://localhost:8080)');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('GEECO','URL_COMPONENTE_FRONT','Indicare la url del componente di integrazione utilizzato dal frontend (es. http://localhost:8080)');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('GEECO','MODELLO_ALTRI_DATI','Inserire il codice testuale della scheda dinamica su cui verranno riportati i dati recuperati tramite l''integrazione');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES('GEECO','CAMPO_ALTRI_DATI','Inserire il nome del campo dinamico su cui verranno riportati i dati recuperati tramite l''integrazione. I dati vengono riportati in formato JSON per essere poi lavorati tramite formule');
+
+INSERT INTO verticalizzazioniparametribase (modulo, parametro, descrizione) VALUES ('AREA_RISERVATA', 'DOL_URL_TERMINI_E_CONDIZIONI', 'Link al file che contiene i termini e condizioni di servizio. Es. per jesi è https://www.comune.jesi.an.it/documents/20119/338749/Termini_condizioni_di_servizio.pdf/9bb0b6d9-d68e-7628-0cc3-ea53146c22d0?t=1715244298881');
+
+INSERT INTO pay_connector_config_params (CONFIG_PARAM,DESCRIZIONE,CODICE_CONNETTORE) VALUES ('CODICE_ABI_ENTE_CREDITORE','Codice Abi dell''ente creditore', null);
+
+UPDATE CLMENU_JAVA SET DESCRIZIONE ='Carica pratiche ZIP' WHERE id=1041;
+INSERT INTO verticalizzazioniparametribase (MODULO,PARAMETRO,DESCRIZIONE) VALUES ('COMPORTAMENTI_MERCATI','APP_AMB_GG_FILTRO_RIC_PAGAM','Parametro che permette di specificare il numero dei giorni a partire dai quali ricercare le pendenze. Questo parametro è usato per limitare la ricerca nell''app ambulanti dei pagamenti. Il valore 180 ad esempio prenderà in considerazione i pagamenti delle giornate a partire da 180 giorni ad oggi');
+
+
+
+INSERT INTO VERTICALIZZAZIONIBASE (MODULO,DESCRIZIONE, FLAG_GESTCOMUNE) VALUES ('WSANAGRAFE_ANPR','Permette di scegilere quale e-service di ANPR',0);
+ 
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO,PARAMETRO,DESCRIZIONE) VALUES ('WSANAGRAFE_ANPR','TIPO_SERVIZIO','Servizio per la consultazione della residenza di un cittadino ai fini di un accertamento Pattern Model applicati(C020) e Servizio per la consultazione dell''id univoco nazionale ai fini di un accertamento Pattern Model applicata(C030)');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO,PARAMETRO,DESCRIZIONE) VALUES ('WSANAGRAFE_ANPR','C030_CHIAVE_PRIVATA','CODIFICA BASE64 DELLA CHIAVE PRIVATA PDND PER IL SERVIZIO C030');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO,PARAMETRO,DESCRIZIONE) VALUES ('WSANAGRAFE_ANPR','C020_CHIAVE_PRIVATA','CODIFICA BASE64 DELLA CHIAVE PRIVATA PDND PER IL SERVIZIO C020');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO,PARAMETRO,DESCRIZIONE) VALUES ('WSANAGRAFE_ANPR','C020_BASEURLAPI','URL DELL''API PER LE CHIAMATE AL SERVIZIO C020');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO,PARAMETRO,DESCRIZIONE) VALUES ('WSANAGRAFE_ANPR','C030_BASEURLAPI','URL DELL''API PER LE CHIAMATE AL SERVIZIO C030');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO,PARAMETRO,DESCRIZIONE) VALUES ('WSANAGRAFE_ANPR','C020_KIDPDND','KID DELLA CHIAVE PUBBLICA CARICATA SU PDND PER IL SERVIZIO C020');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO,PARAMETRO,DESCRIZIONE) VALUES ('WSANAGRAFE_ANPR','C030_KIDPDND','KID DELLA CHIAVE PUBBLICA CARICATA SU PDND PER IL SERVIZIO C030');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO,PARAMETRO,DESCRIZIONE) VALUES ('WSANAGRAFE_ANPR','C030_CLIENTIDPDND','CLIENTID RESTITUITO DA PDND AL CLIENT CENSITO SULLA PIATTAFORMA PER IL SERVIZIO C030');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO,PARAMETRO,DESCRIZIONE) VALUES ('WSANAGRAFE_ANPR','C020_CLIENTIDPDND','CLIENTID RESTITUITO DA PDND AL CLIENT CENSITO SULLA PIATTAFORMA PER IL SERVIZIO C020');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO,PARAMETRO,DESCRIZIONE) VALUES ('WSANAGRAFE_ANPR','C020_PURPOSEIDPDND','PURPOSEID RESTITUITO DALLA PDND A SEGUITO DELLA DICHIARAZIONE DELLA FINALITÀ PER IL SERVIZIO C020');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO,PARAMETRO,DESCRIZIONE) VALUES ('WSANAGRAFE_ANPR','C030_PURPOSEIDPDND','PURPOSEID RESTITUITO DALLA PDND A SEGUITO DELLA DICHIARAZIONE DELLA FINALITÀ PER IL SERVIZIO C030');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO,PARAMETRO,DESCRIZIONE) VALUES ('WSANAGRAFE_ANPR','C020_AUDPDND','USATA PER AUTORIZZAZIONE DELL’AUDIENCE PRESENTE NEL TOKEN PDND PER IL SERVIZIO C020 ES. auth.uat.interop.pagopa.it/client-assertion');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO,PARAMETRO,DESCRIZIONE) VALUES ('WSANAGRAFE_ANPR','C030_AUDPDND','USATA PER AUTORIZZAZIONE DELL’AUDIENCE PRESENTE NEL TOKEN PDND PER IL SERVIZIO C030 ES. auth.uat.interop.pagopa.it/client-assertion');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO,PARAMETRO,DESCRIZIONE) VALUES ('WSANAGRAFE_ANPR','C020_URLTOKENPDND','URL PER STACCARE IL TOKEN JWT DAL PDND PER IL SERVIZIO C020');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO,PARAMETRO,DESCRIZIONE) VALUES ('WSANAGRAFE_ANPR','C030_URLTOKENPDND','URL PER STACCARE IL TOKEN JWT DAL PDND PER IL SERVIZIO C030');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO,PARAMETRO,DESCRIZIONE) VALUES ('WSANAGRAFE_ANPR','C020_AUDTOKENAGIDJWTSIGNATURE','TOKEN AGID-JWT-SIGNATURE PER IL SERVIZIO C020');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO,PARAMETRO,DESCRIZIONE) VALUES ('WSANAGRAFE_ANPR','C030_AUDTOKENAGIDJWTSIGNATURE','TOKEN AGID-JWT-SIGNATURE PER IL SERVIZIO C030');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO,PARAMETRO,DESCRIZIONE) VALUES ('WSANAGRAFE_ANPR','C020_PROXYHOST','URL HOST PER IL PROXY PDND PER IL SERVIZIO C020');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO,PARAMETRO,DESCRIZIONE) VALUES ('WSANAGRAFE_ANPR','C030_PROXYHOST','URL HOST PER IL PROXY PDND PER IL SERVIZIO C030');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO,PARAMETRO,DESCRIZIONE) VALUES ('WSANAGRAFE_ANPR','C020_PROXYPORT','LA PORTA PER IL PROXY PDND PER IL SERVIZIO C020');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO,PARAMETRO,DESCRIZIONE) VALUES ('WSANAGRAFE_ANPR','C030_PROXYPORT','LA PORTA PER IL PROXY PDND PER IL SERVIZIO C030');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO,PARAMETRO,DESCRIZIONE) VALUES ('WSANAGRAFE_ANPR','C020_PROXYUSER','L''UTENTE PER IL PROXY PDND PER IL SERVIZIO C020');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO,PARAMETRO,DESCRIZIONE) VALUES ('WSANAGRAFE_ANPR','C030_PROXYUSER','L''UTENTE PER IL PROXY PDND PER IL SERVIZIO C030');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO,PARAMETRO,DESCRIZIONE) VALUES ('WSANAGRAFE_ANPR','C020_PROXYPWD','PASSWORD  PER IL PROXY PDND PER IL SERVIZIO C020');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO,PARAMETRO,DESCRIZIONE) VALUES ('WSANAGRAFE_ANPR','C030_PROXYPWD','PASSWORD  PER IL PROXY PDND PER IL SERVIZIO C030');
+
+UPDATE CLMENU_JAVA SET JSP = 'JAVA', PAGINA = 'report/createStatisticaPentahoPerModulo.htm?software=SOFTWARE', LINK_STANDARD = 'report/createStatisticaPentahoPerModulo.htm?software=SOFTWARE' WHERE ID = 58;
+UPDATE CLMENU_JAVA SET DESCRIZIONE ='Carica pratiche ZIP' WHERE id=1041;
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES ('SIT_RAVENNA2','URL_WS_VBGRA012','Url del WS utilizzato per le ricerche al posto della vista VWVBGRA012');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES ('SIT_RAVENNA2','URL_WS_VBGPARTICELLECATASTALI','Url del WS utilizzato per le ricerche al posto della vista VWVBGPARTICELLE_CATASTALI');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES ('SIT_RAVENNA2','URL_WS_VBGRA147','Url del WS utilizzato per le ricerche al posto della vista VWVBGRA147');
+
+INSERT INTO comuniassociazioni (CODICEASSOCIAZIONE, ASSOCIAZIONE) VALUES ('AL424', 'AUTORITA'' DI SISTEMA PORTUALE MAR ADRIATICO ORIENTALE');
+
+INSERT INTO comuniassociazioni (CODICEASSOCIAZIONE, ASSOCIAZIONE) VALUES ('AC573', 'UNIONE VALLE DEL SAVIO');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES ('COMPORTAMENTI_MERCATI','ATTIVA_GIORNATE_NULLE','Se attivata, imposta il calcolo delle bollettazioni considerando il tipo di calcolo scelto per le giornate nulle. può assumere il valore S per sì o N per no');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('PROTOCOLLO_ATTIVO' , 'GESTIONE_ACCETTAZIONE', 'Può avere valore 0 o 1; in caso di valore 1 comparirà un bottone a fianco dei protocolli, per notificare al sistema protocollante, l''operatore che sta prendendo in carico il protocollo. Se 0 o non impostato, tale bottone non verrà mostrato');
+
+INSERT INTO verticalizzazioniparametribase (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('COMPORTAMENTI_MERCATI','REGISTRO_AUT_PONTE','Rappresenta i codici della tabella TIPOLOGIAREGISTRI usati per definire le autorizzazioni PONTE ovvero CREATE dalle domande online per essere sostituite con nuove autorizzazioni. È possibile indicare una serie di codici separati da virgola ",".');
+
+INSERT INTO VERTICALIZZAZIONIBASE(MODULO,DESCRIZIONE,FLAG_GESTCOMUNE) VALUES ('CARTOGRAFICO_ATTIVO','Se attivata significa che c''è una integrazione con un sistema cartografico attivato (GEECO, GEOFLORENTIA, ...)',0);
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES ('CARTOGRAFICO_ATTIVO','CONNETTORE','Indica qule cartografico è stato attivato (GEECO, GEOFLORENTIA, ...)');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES ('CARTOGRAFICO_ATTIVO','SERVICE_URL','Indica la url in cui sono esposte le API del connettore per l''interfacciamento con il cartografico');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES ('GEECO','URL_LOCCSI','Se presente, indica la url in cui sono esposte le API della componente che serve a restituire il centroide della via');
+
+INSERT INTO VERTICALIZZAZIONIBASE (MODULO, DESCRIZIONE, FLAG_GESTCOMUNE) VALUES ('GEOFLORENTIA', 'Permette la gestione integrata delle localizzazioni tramite il software cartografico Geoflorentia', 0);
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('GEOFLORENTIA', 'SERVICE_URL', 'Url Servizio Geoflorentia (Es. http://sitaplnew.comune.intranet/geoflorentia)');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('GEOFLORENTIA', 'URLAUTHENTICATION', 'Parametro Urlauthentication da passare a GeoFlorentia');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('GEOFLORENTIA', 'LAYER', 'Parametro Layer da passare a GeoFlorentia, verrà utilizzato anche per valorizzare il parametro LayerOut');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('GEOFLORENTIA', 'CODISTATCOMUNE', 'Codice ISTAT dell''Ente da passare a Geoflorentia');
+
+UPDATE comuni SET COMUNE='VENARIA REALE' WHERE CODICECOMUNE='L727';
+
+
+INSERT INTO clmenu_java ( ID , DESCRIZIONE , PAGINA , MENULINK , SOFTWARE , JSP , VERTICALIZZAZIONE , SOFTWAREESCLUSI , LINK_STANDARD , TIPO_FUNZIONALITA , LAYOUTTESTI , MENULINK_V2 ) VALUES (((SELECT MAX(A.ID) FROM CLMENU_JAVA A )+ 1), 'Comunicazioni massive', 'mercati/listComunicazioniM.htm?software=SOFTWARE', '10H1', '*', 'JAVA', NULL, NULL, 'mercati/listComunicazioniM.htm?software=SOFTWARE', 'E', NULL, '10H1');
+insert into verticalizzazioniparametribase ( MODULO , PARAMETRO , DESCRIZIONE ) values ('PROTOCOLLO_HALLEY2', 'USERNAMEAURI', '(Obbligatorio) Username di autenticazione al web service Auri');
+insert into verticalizzazioniparametribase ( MODULO , PARAMETRO , DESCRIZIONE ) values ('PROTOCOLLO_HALLEY2', 'PASSWORDAURI', '(Obbligatorio) Password di autenticazione al web service Auri');
+insert into verticalizzazioniparametribase ( MODULO , PARAMETRO , DESCRIZIONE ) values ('PROTOCOLLO_HALLEY2', 'URLESTRAIPROTO', '(Obbligatorio) Url per raggiungere il web service Auri EstraiProtocollo');
+insert into verticalizzazioniparametribase ( MODULO , PARAMETRO , DESCRIZIONE ) values ('PROTOCOLLO_HALLEY2', 'URLCONSULTADOCUMENTO', '(Obbligatorio) Url per raggiungere il web service Auri ConsultaDocumento');
+
+UPDATE verticalizzazioniparametribase SET DESCRIZIONE = 'Indica il limite in bytes dei file caricabili per ogni domanda. Il valore di default è 10485760 bytes (10 Mb).' WHERE modulo = 'AREA_RISERVATA' AND parametro = 'DIMENSIONE_MASSIMA_ALLEGATI';
+
+INSERT INTO verticalizzazioniparametribase (modulo, parametro, descrizione) VALUES ('AREA_RISERVATA', 'DOL_MODALITA_INVIO_NOTIFICHE', 'Modalità con cui vengono inviate le notifiche al termine della presentazione domanda. Può assumere i seguenti valori: mail,io,nessuna (default=mail). VALIDO SOLO PER DOL');
+
+INSERT INTO verticalizzazioniparametribase (modulo, parametro, descrizione) VALUES ('AREA_RISERVATA', 'DOL_MODALITA_INVIO_NOTIFICHE', 'Modalità con cui vengono inviate le notifiche al termine della presentazione domanda. Può assumere i seguenti valori: mail,io,nessuna (default=mail). VALIDO SOLO PER DOL');
+
+UPDATE BLACKLIST_MOTIVI SET CONTESTO = 'presenze' WHERE CONTESTO IS NULL;
+
+INSERT INTO layouttestibase (codicetesto,testo,SOFTWARE) VALUES  ('BLACKLIST_PRESENZE','B.L Presenze','TT');
+INSERT INTO layouttestibase (codicetesto,testo,SOFTWARE) VALUES  ('BLACKLIST_BOLLETTAZIONE','B.L Utenze','TT');
+
+
+INSERT INTO verticalizzazioniparametribase ( MODULO , PARAMETRO , DESCRIZIONE ) VALUES ('NODO_PAGAMENTI', 'BLACKLIST_TIME_BOLLETTAZIONE', 'Rappresenta dopo quanto tempo le posizioni debitorie non pagate sulle bollettazioni devono finire in black list. Indicare una durata nel formato ISO come documentato in https://www.w3.org/TR/xmlschema-2/#duration. Esempi: per aggiungere 30 ore specificare P0Y0M0DT30H0M0S.');
+
+INSERT INTO  verticalizzazioniparametribase  ( MODULO , PARAMETRO , DESCRIZIONE ) VALUES ('NODO_PAGAMENTI', 'BLACKLIST_TIME_PRESENZE', 'Rappresenta dopo quanto tempo le posizioni debitorie non pagate sulle presenze devono finire in black list. Indicare una durata nel formato ISO come documentato in https://www.w3.org/TR/xmlschema-2/#duration. Esempi: per aggiungere 30 ore specificare P0Y0M0DT30H0M0S.');
+
+UPDATE VERTICALIZZAZIONIPARAMETRIBASE SET DESCRIZIONE = '(DISMESSO) Al posto di questo parametro sarà usato il nuovo parametro BLACKLIST_TIME_PRESENZE' WHERE MODULO = 'NODO_PAGAMENTI' AND PARAMETRO = 'BLACKLIST_TIME_CHECK_PAGAM';
+
+UPDATE VERTICALIZZAZIONIPARAMETRI SET parametro = 'BLACKLIST_TIME_PRESENZE' WHERE MODULO = 'NODO_PAGAMENTI' AND PARAMETRO = 'BLACKLIST_TIME_CHECK_PAGAM';
+
+INSERT INTO verticalizzazionibase (modulo, descrizione, flag_gestcomune) VALUES ('COMPORTAMENTI_BOLLETTAZIONE', 'Permette di impostare i parametri per gestire alcuni comportamenti della funzionalità bollettazione', 0);
+
+INSERT INTO verticalizzazioniparametribase (modulo, parametro, descrizione) VALUES ('COMPORTAMENTI_BOLLETTAZIONE', 'MOSTRA_FUNZIONE_RETTIFICA', 'Mostra o nasconde la funzionalità di rettifica delle voci, Valori ammessi S/N, se non specificato S');
+
+INSERT INTO verticalizzazioniparametribase (modulo, parametro, descrizione) VALUES ('COMPORTAMENTI_BOLLETTAZIONE', 'MOSTRA_FUNZIONE_AGGIUNGI_RIGA', 'Mostra o nasconde la funzionalità di aggiunta di una nuova voce di importo della bollettazione per l''anagrafica, Valori ammessi S/N, se non specificato S');
+
+INSERT INTO verticalizzazioniparametribase (modulo, parametro, descrizione) VALUES ('COMPORTAMENTI_MERCATI', 'APP_VIGILI_NASCONDI_INS_SPUNT', 'ACCETTA S o N DEFAULT N');
+
+insert into COMUNI (CODICECOMUNE, COMUNE, SIGLAPROVINCIA, PROVINCIA, REGIONE, CAP, CF, CODICEISTAT, CODICEISTATREGIONE, CODICESTATOESTERO) values('M406','BORGOCARBONARA','MN','MANTOVA','LOMBARDIA',NULL,'M406','20073','3',NULL);
+
+INSERT INTO verticalizzazioniparametribase (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('AREA_RISERVATA', 'INTEGR_MSG_TERMINE_INVIO', 'Messaggio da mostrare al termine dell''invio di un movimento dall''area riservata');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES ('CARTOGRAFICO_ATTIVO','CAMPO_ALTRI_DATI','Inserire il nome del campo dinamico su cui verranno riportati i dati recuperati tramite l''integrazione. I dati vengono riportati in formato JSON per essere poi lavorati tramite formule');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES ('CARTOGRAFICO_ATTIVO','MODELLO_ALTRI_DATI','Inserire il codice testuale della scheda dinamica su cui verranno riportati i dati recuperati tramite l''integrazione');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES ('PROTOCOLLO_ACARIS','GESTISCI_SOTTOFASCICOLO','Se impostato a 1 abilita la sottofascicolazione');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES ('PROTOCOLLO_ACARIS','DESCRIZIONE_SOTTOFASCICOLO','OBBLIGATORIO se GESTISCI_SOTTOFASCICOLO = 1');
+
+INSERT INTO verticalizzazioniparametribase (modulo, parametro, descrizione) VALUES ('COMPORTAMENTI_BOLLETTAZIONE', 'MOSTRA_FUNZIONE_COM_MASSIVE', 'Mostra o nasconde la funzionalità di COMUNICAZIONI MASSIVE. Valori ammessi S/N, se non specificato S');
+
+UPDATE TASKPARAMETRIBASE SET DESCRIZIONE = 'Se l''installazione gestisce più comuni va valorizzato con il codice del comune per il quale effettuare la schedulazione. In caso contrario va lasciato vuoto.' WHERE TASK = 'SORTEGGI' AND PARAMETRO = 'CODICECOMUNE';
+INSERT INTO TASKPARAMETRIBASE(TASK,PARAMETRO,DESCRIZIONE,ORDINE) VALUES ('SORTEGGI','CATEGORIA','Se si vuole legare il sorteggio ad una particolare categoria, inserire il codice della categoria','22');
+UPDATE CLMENU_JAVA SET PAGINA = 'taskscheduler/list.htm?software=SOFTWARE', LINK_STANDARD = 'taskscheduler/list.htm?software=SOFTWARE', JSP='JAVA', TIPO_FUNZIONALITA = 'S' WHERE ID = 879;
+
+
+insert into fo_rating_main (idComune, id, tipo, testo) select idcomune, '1','page','Quanto sono chiare le informazioni su questa pagina?' from configurazione where software='TT';
+insert into fo_rating_main (idComune, id, tipo, testo) select idcomune, '2','service','Quanto è stato facile usare questo servizio?' from configurazione where software='TT';
+insert into fo_rating_sub_question (idComune, id, idRatingMain,isPositive,testo) select idcomune, '1','1','1','Quali sono stati gli aspetti che hai preferito?' from configurazione where software='TT';
+insert into fo_rating_sub_question (idComune, id, idRatingMain,isPositive,testo) select idcomune, '2','1','0','Dove hai incontrato le maggiori difficoltà?' from configurazione where software='TT';
+insert into fo_rating_sub_question (idComune, id, idRatingMain,isPositive,testo) select idcomune, '3','2','1','Quali sono stati gli aspetti che hai preferito?' from configurazione where software='TT';
+insert into fo_rating_sub_question (idComune, id, idRatingMain,isPositive,testo) select idcomune, '4','2','0','Dove hai incontrato le maggiori difficoltà?' from configurazione where software='TT';
+insert into fo_rating_choice (idComune,id, idRatingSubQuestion, testo, ordine) select idcomune, '1' ,'1','Le indicazioni erano chiare', '1' from configurazione where software='TT';
+insert into fo_rating_choice (idComune,id, idRatingSubQuestion, testo, ordine) select idcomune, '2' ,'1','Le indicazioni erano complete', '2' from configurazione where software='TT';
+insert into fo_rating_choice (idComune,id, idRatingSubQuestion, testo, ordine) select idcomune, '3' ,'1','Capivo sempre che stavo procedendo correttamente', '3' from configurazione where software='TT';
+insert into fo_rating_choice (idComune,id, idRatingSubQuestion, testo, ordine) select idcomune, '4' ,'1','Non ho avuto problemi tecnici', '4' from configurazione where software='TT';
+insert into fo_rating_choice (idComune,id, idRatingSubQuestion, testo, ordine) select idcomune, '5' ,'1','Altro', '5' from configurazione where software='TT';
+insert into fo_rating_choice (idComune,id, idRatingSubQuestion, testo, ordine) select idcomune, '6' ,'2','A volte le indicazioni non erano chiare', '1' from configurazione where software='TT';
+insert into fo_rating_choice (idComune,id, idRatingSubQuestion, testo, ordine) select idcomune, '7' ,'2','A volte le indicazioni non erano complete', '2' from configurazione where software='TT';
+insert into fo_rating_choice (idComune,id, idRatingSubQuestion, testo, ordine) select idcomune, '8' ,'2','A volte non capivo se stavo procedendo correttamente', '3' from configurazione where software='TT';
+insert into fo_rating_choice (idComune,id, idRatingSubQuestion, testo, ordine) select idcomune, '9' ,'2','Ho avuto problemi tecnici', '4' from configurazione where software='TT';
+insert into fo_rating_choice (idComune,id, idRatingSubQuestion, testo, ordine) select idcomune, '10' ,'2','Altro', '5' from configurazione where software='TT';
+insert into fo_rating_choice (idComune,id, idRatingSubQuestion, testo, ordine) select idcomune, '11' ,'3','Le indicazioni erano chiare', '1' from configurazione where software='TT';
+insert into fo_rating_choice (idComune,id, idRatingSubQuestion, testo, ordine) select idcomune, '12' ,'3','Le indicazioni erano complete', '2' from configurazione where software='TT';
+insert into fo_rating_choice (idComune,id, idRatingSubQuestion, testo, ordine) select idcomune, '13' ,'3','Capivo sempre che stavo procedendo correttamente', '3' from configurazione where software='TT';
+insert into fo_rating_choice (idComune,id, idRatingSubQuestion, testo, ordine) select idcomune, '14' ,'3','Non ho avuto problemi tecnici', '4' from configurazione where software='TT';
+insert into fo_rating_choice (idComune,id, idRatingSubQuestion, testo, ordine) select idcomune, '15' ,'3','Altro', '5' from configurazione where software='TT';
+insert into fo_rating_choice (idComune,id, idRatingSubQuestion, testo, ordine) select idcomune, '16' ,'4','A volte le indicazioni non erano chiare', '1' from configurazione where software='TT';
+insert into fo_rating_choice (idComune,id, idRatingSubQuestion, testo, ordine) select idcomune, '17' ,'4','A volte le indicazioni non erano complete', '2' from configurazione where software='TT';
+insert into fo_rating_choice (idComune,id, idRatingSubQuestion, testo, ordine) select idcomune, '18' ,'4','A volte non capivo se stavo procedendo correttamente', '3' from configurazione where software='TT';
+insert into fo_rating_choice (idComune,id, idRatingSubQuestion, testo, ordine) select idcomune, '19' ,'4','Ho avuto problemi tecnici', '4' from configurazione where software='TT';
+insert into fo_rating_choice (idComune,id, idRatingSubQuestion, testo, ordine) select idcomune, '20' ,'4','Altro', '5' from configurazione where software='TT';
+
+INSERT INTO verticalizzazionibase (modulo, descrizione, flag_gestcomune) VALUES ('AREA_RISERVATA_SSU', 'Parametri per attivare la modalità SSU dell''area riservata', 0);
+
+ 
+
+INSERT INTO verticalizzazioniparametribase (modulo, parametro, descrizione) VALUES ('AREA_RISERVATA_SSU', 'BASE_URL_API_CATALOGO_SERVIZI', 'Url di base su cui sono esposte le API del catalogo dei servizi');
+
+INSERT INTO verticalizzazioniparametribase (modulo, parametro, descrizione) VALUES ('AREA_RISERVATA_SSU', 'ID_NODO_DESTINATARIO', 'Id del nodo STC che riceve le domande SSU');
+
+INSERT INTO verticalizzazioniparametribase (modulo, parametro, descrizione) VALUES ('AREA_RISERVATA_SSU', 'ID_ENTE_DESTINATARIO', 'Id del''ente STC che riceve le domande SSU');
+
+INSERT INTO verticalizzazioniparametribase (modulo, parametro, descrizione) VALUES ('AREA_RISERVATA_SSU', 'ID_SPORTELLO_DESTINATARIO', 'Id sportello STC che riceve le domande SSU');
+
+INSERT INTO verticalizzazioniparametribase (modulo, parametro, descrizione) VALUES ('COMPORTAMENTI_BOLLETTAZIONE', 'INVIO_POSIZIONI_DELAY', 'Durante l''invio delle posizioni debitorie imposta un delay di n millisecondi tra la creazione di una posizione ed un''altra. Se non specificato l''invio avviene in modalit senza delay');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES ('PROTOCOLLO_ACARIS','VALORIZZA_SOGGETTO_FASCICOLO','Indica se valorizzare o meno la proprietà Soggetto del folder di Acaris. Se vuoto o valorizzato a 1: riporta la lista dei soggetti del protocollo separata da un trattino; se valorizzato a 0 non popola la rispettiva proprietà del protocollo Acaris');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES ('PROTOCOLLO_ACARIS','ANNOTA_ALLEGATO_PRINCIPALE','Indica se valorizzare o meno le annotazioni sull''allegato principale. Se vuoto o valorizzato a 1: verranno valorizzate le annotazioni; se valorizzato a 0 le annotazioni non verranno valorizzate');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES ('PROTOCOLLO_ACARIS','ANNOTA_ALLEGATO_SECONDARIO','Indica se valorizzare o meno le annotazioni sugli allegati secondari. Se vuoto o valorizzato a 1: verranno valorizzate le annotazioni; se valorizzato a 0 le annotazioni non verranno valorizzate');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES ('CARTOGRAFICO_ATTIVO','POSIZIONE_LATITUDINE','Indica la posizione (0 o 1) della coordinata che rappresenta la latitudine nella struttura JSON di ritorno. Se vengono invertite le coordinate nel dettaglio della localizzazione è possibile variare questo valore. Se non impostato vale 0'); 
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES ('CARTOGRAFICO_ATTIVO','POSIZIONE_LONGITUDINE','Indica la posizione (0 o 1) della coordinata che rappresenta la longitudine nella struttura JSON di ritorno. Se vengono invertite le coordinate nel dettaglio della localizzazione è possibile variare questo valore. Se non impostato vale 1');
+
+
+INSERT INTO COMUNI (CODICECOMUNE, COMUNE, SIGLAPROVINCIA, PROVINCIA, REGIONE, CAP, CF, CODICEISTAT, CODICEISTATREGIONE, CODICESTATOESTERO) VALUES ('L870','VIGATTO','PR','PARMA','EMILIA ROMAGNA',NULL,'L870','034810','08',NULL);
+
+
+INSERT INTO verticalizzazioniparametribase VALUES ('PEOPLE', 'NUM_FIGURE_SOGGETTI_COLLEGATI', 'Cardinalità delle tipologie dei soggetti collegati, configurati nel file di propertiesmappatureSoggettiCollegati.properties presente nella webapp NLAPeople, se posta a 0 o non valorizzato, non vengono recuperati i soggetti anagrafici presenti nelle dichiarazioni ');
+INSERT INTO verticalizzazioniparametribase VALUES ('PEOPLE', 'ABILITA_INTEGRAZIONI', 'Se valorizzato a 1, viene abilitata la logica applicativa che permette di inserire una pratica come un movimento ad una pratica esistente. Sulla pratica in ingresso di Accesso Unitario deve essere presente un campo marcato con il valore COD_PRATICA_INTEGRAZIONE con il valore utente riportante il numero pratica madre su cui fare l''operazione di inserimentoAttivita. Se non valorizzato o valorizzato a 0, le pratiche di Accesso Unitario verranno inserite sempre come nuova pratica.');
+INSERT INTO verticalizzazioniparametribase VALUES ('PEOPLE', 'TIPOMOV_INTEGRAZIONE_DINAMICA', 'Se valorizzato a 1, ed il parametro ABILITA_INTEGRAZIONI è attivo, il nodo NLAPeople in fase di inserimento del movimento, interroga il backoffice per sapere il codice del movimento da eseguire. Se non non valorizzato il codice movimento è preso dal parametro TIPOMOVIMENTO_DEFAULT');
+INSERT INTO verticalizzazioniparametribase VALUES ('PEOPLE', 'TIPOMOVIMENTO_DEFAULT', 'Va sempre valorizzato nel caso il parametro ABILITA_INTEGRAZIONI è attivo, e contiene il codice del movimento con cui eseguire l''inserimento di un nuovo movimento. Tale valore sarà sovrascritto se il parametro TIPOMOVIMENTO_INTEGRAZIONE_DINAMICO è attivo e il servizio di backoffice restituirà il codice del movimento di inserimento');
+INSERT INTO TIPI_SCADENZA (ID, DESCRIZIONE) VALUES (10, '20 del mese');
+INSERT INTO verticalizzazioniparametribase(modulo, parametro, descrizione) VALUES ('AREA_RISERVATA', 'PAG_PERMETTI_ANNULLAMENTO_MOD3', 'Se impostato a 1 permette l''annullamento di posizioni debitorie create tramite moddello 3 (paga dopo). Default=1');
+INSERT INTO verticalizzazioniparametribase (MODULO,PARAMETRO,DESCRIZIONE) VALUES ('AREA_RISERVATA_SSU', 'BASE_URL_API_VALIDATOR', 'Url di base su cui sono esposte le API del validator');
+
+
+INSERT INTO clmenu_java ( ID , DESCRIZIONE , PAGINA , MENULINK , SOFTWARE , JSP , VERTICALIZZAZIONE, SOFTWAREESCLUSI , LINK_STANDARD , TIPO_FUNZIONALITA, LAYOUTTESTI , MENULINK_V2 )VALUES ( ( ( SELECT MAX(A.ID) FROM CLMENU_JAVA A )+ 1) , 'Accertamenti esecutivi' , 'blacklist/view.htm?software=SOFTWARE&contesto=presenze', '787' , '*' , 'JAVA' , NULL , NULL , 'blacklist/view.htm?software=SOFTWARE&contesto=presenze', 'E' , NULL , '787' );
+
+INSERT INTO SOFTWARE(CODICE,DESCRIZIONE,MODULOOPZIONALE,DESCRIZIONELUNGA,ACCESSORAPIDO,ORDINE) VALUES ('LT','Locazioni turistiche',1,'Locazioni turistiche',0,42);
+
+INSERT INTO contenttypes (CT_MIMETYPE,CT_EXTENSION) VALUES ('application/json',';json;');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('PROTOCOLLO_ACARIS', 'CREA_FASCICOLO_DA_MOVIMENTO', 'Se impostato a 1 permette la creazione del fascicolo, se non presente, durante la protocollazione del movimento; di default è 0');
+
+UPDATE CLMENU_JAVA SET PAGINA = 'configurazionecalcoli/list.htm?software=TT', JSP = 'JAVA', LINK_STANDARD = 'configurazionecalcoli/list.htm?software=TT' WHERE ID = 1053;
+
+INSERT INTO tipicontestoesportazione (codice,descrizione) VALUES ('ABB','Esportazione di abbonamenti/borsellino');
+INSERT INTO verticalizzazionibase (MODULO,DESCRIZIONE,FLAG_GESTCOMUNE) VALUES ('WSANAGRAFE_PARIX_CLOUD','Se attivato permette di recuperare un''anagrafe persona giuridica dai servizi web di PARIX-GATE-CLOUD, la funzionalità viene attivata nelle anagrafiche richiedenti e tecnici sia IN inserimento che per controlli successivi e durante la presentazione della domanda On-line. Questo modulo va abilitato contestualmente ad un altro modulo WSANAGRAFE_XXX (modulo "principale") dove XXX è CESENA, PIACENZA... a condizione che il modulo "principale" sia sviluppato tenendo conto della compatibilità con l''integrazione PARIX-GATE-CLOUD. Le indicazioni se un modulo "principale" è compatibile con PARIX-GATE-CLOUD saranno scritte nella descrizione del modulo "principale".',0);
+
+INSERT INTO verticalizzazioniparametribase (MODULO,PARAMETRO,DESCRIZIONE) VALUES ('WSANAGRAFE_PARIX_CLOUD','BASIC_AUTH_PASSWORD','Password da utilizzare per l''autenticazione quando il servizio viene chiamato attraverso le PDD del CART');
+INSERT INTO verticalizzazioniparametribase (MODULO,PARAMETRO,DESCRIZIONE) VALUES ('WSANAGRAFE_PARIX_CLOUD','BASIC_AUTH_USER','Username da utilizzare per l''autenticazione quando il servizio viene chiamato attraverso le PDD del CART');
+INSERT INTO verticalizzazioniparametribase (MODULO,PARAMETRO,DESCRIZIONE) VALUES ('WSANAGRAFE_PARIX_CLOUD','CERCA_SOLO_CF','Se impostato a 1 allora ricerca le anagrafiche PARIX-GATE-CLOUD solamente per codice fiscale impresa');
+INSERT INTO verticalizzazioniparametribase (MODULO,PARAMETRO,DESCRIZIONE) VALUES ('WSANAGRAFE_PARIX_CLOUD','JAVA_PATH_CERTIFICATO','Attributi per l''autenticazione client della componente java es caso RFC 63 Regione Toscana. Il valore è composto da più elementi separati dal carattere | (Es. ALIAS|KEYSTORE|TRUSTSTORE|KEYSTOREPWD|TRUSTSTOREPWD). ALIAS rappresenta l''alias del certificato client usato per l''autenticazione. KEYSTORE il path al certificato rilasciato da regione toscana p12. TRUSTSTORE il path al file jks per il trust dei server di regione toscana. KEYSTOREPWD e TRUSTSTOREPWD sono rispettivamente le password per accedere ai due keystore. I path completi del certificato di autenticazione devono trovarsi nel filesystem della macchina che ospita l''applicazione JAVA backend.war.');
+INSERT INTO verticalizzazioniparametribase (MODULO,PARAMETRO,DESCRIZIONE) VALUES ('WSANAGRAFE_PARIX_CLOUD','NET_PATH_CERTIFICATO','Path completo del certificato di autenticazione che deve trovarsi nel filesystem della macchina che ospita l''applicazione ASPNET (consigliato: aspnetcertificati). Se il certificato richiede una password specificarla in seguito al path separata da un pipe (es. c:vbgaspnetcertificaticert.p12|password)');
+INSERT INTO verticalizzazioniparametribase (MODULO,PARAMETRO,DESCRIZIONE) VALUES ('WSANAGRAFE_PARIX_CLOUD','PASSWORD','Password dell''utente abilitato alla ricerca');
+INSERT INTO verticalizzazioniparametribase (MODULO,PARAMETRO,DESCRIZIONE) VALUES ('WSANAGRAFE_PARIX_CLOUD','PROXY_ADDRESS','Url nel formato http[s]://INDIRIZZO:PORTA da utilizzare per effettuare le chiamate al web service di PARIX-GATE-CLOUD');
+INSERT INTO verticalizzazioniparametribase (MODULO,PARAMETRO,DESCRIZIONE) VALUES ('WSANAGRAFE_PARIX_CLOUD','SWITCHCONTROL','Parametro che stabilisce se effettuare la ricerca sul servizio nazionale o meno ( "diretto": accesso diretto alò servizio nazionale, "no" non passa mai dal servizio nazionale, ""/" ":passa dal servizio locale ed eventualmente da quello nazionale');
+INSERT INTO verticalizzazioniparametribase (MODULO,PARAMETRO,DESCRIZIONE) VALUES ('WSANAGRAFE_PARIX_CLOUD','URL','Url del web service (wsdl) da invocare per ricavare i dati anagrafici.
+Es. ER: https://regumbw-api.parix.infocamere.it/parixGate/parixGate/service/gate/parixGate.wsdl
+Nel browser del server application aggiungendo alla URL ''?wsdl'' si può verificare se il server raggiunge il servizio.');
+INSERT INTO verticalizzazioniparametribase (MODULO,PARAMETRO,DESCRIZIONE) VALUES('WSANAGRAFE_PARIX_CLOUD','USER','E'' l''utente per accedere ai servizi PARIX-GATE-CLOUD, deve essere fornito dal cliente.');
+INSERT INTO verticalizzazioniparametribase (MODULO,PARAMETRO,DESCRIZIONE) VALUES ('WSANAGRAFE_PARIX_CLOUD','XSD','Percorso degli xsd utili per la validazione dei risultati restituiti dai ws di PARIX-GATE-CLOUD');
+INSERT INTO verticalizzazioniparametribase (MODULO,PARAMETRO,DESCRIZIONE) VALUES ('WSANAGRAFE_PARIX_CLOUD','TARGET_NAMESPACE','Il target namespace presente nel wsdl PARIX-GATE-CLOUD');
+
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES ('PROTOCOLLO_ATTIVO','URL_WS_PROTOCOLLO','Parametro che permette di sovrascrivere l''url del servizio di protocollazione definito tra i parametri della security');
+
+insert into pay_connector_config_params (CONFIG_PARAM, DESCRIZIONE) values ('PAGAMENTI_FUORI_VBG', 'Parametro che serve per capire se elaborare i pagamenti fuori VBG, valore da impostare pagamenti_fuori_vbg');
+
+insert into pay_connector_config_params (CONFIG_PARAM, DESCRIZIONE) values ('PAYER_CLIENT_SECRET', 'Secret dell''api payer');
+insert into pay_connector_config_params (CONFIG_PARAM, DESCRIZIONE) values ('PAYER_CLIENT_KEY', 'Chiave dell''api payer');
+insert into pay_connector_config_params (CONFIG_PARAM, DESCRIZIONE) values ('ALIAS_SINCRONIZZA_POSIZIONI', 'Parametro che ti permette di determinare gli alias per i quali puoi proseguire nella sincornizzazione delle posizioni debitorie');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES ('PROTOCOLLO_KIBERNETES','USA_RUOLO_ENTRATA','Usato nella protocollazione in entrata come valore per destinatari amministrazione. Default: 0 (verrà utilizzato il valore del parametro USERNAME). Se impostato a 1 utilizza il ruolo nei Parametri Protocollo dell''amministrazione relativa al parametro CODICEAMMINISTRAZIONE del PROTOCOLLO_ATTIVO');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES ('PROTOCOLLO_KIBERNETES','USA_RUOLO_USCITA','Usato nella protocollazione in uscita come valore per destinatari amministrazione. Default: 0 (verrà utilizzato il valore del parametro USERNAME). Se impostato a 1 utilizza il ruolo nei Parametri Protocollo dell''amministrazione relativa al parametro CODICEAMMINISTRAZIONE del PROTOCOLLO_ATTIVO');
+
+INSERT INTO comuni (CODICECOMUNE,COMUNE,SIGLAPROVINCIA,PROVINCIA,REGIONE,CAP,CF,CODICEISTAT,CODICEISTATREGIONE,CODICESTATOESTERO) VALUES ('I842','SORBANO','FC','FORLI''','EMILIA ROMAGNA',NULL,'I842','040804','08',NULL);
+
+insert into verticalizzazioniparametribase (MODULO, PARAMETRO, DESCRIZIONE) values ('PROTOCOLLO_AURIGA', 'WS_ALLEGATI_DIMENSIONE_MASSIMA', 'Dimensione massima che si può raggiungere per non inviare zip su sftp');
+insert into verticalizzazioniparametribase (MODULO, PARAMETRO, DESCRIZIONE) values ('PROTOCOLLO_AURIGA', 'SFTP_HOST', 'Host SFTP, es. localhost');
+insert into verticalizzazioniparametribase (MODULO, PARAMETRO, DESCRIZIONE) values ('PROTOCOLLO_AURIGA', 'SFTP_PORT', 'Porta SFTP, es. 22. Se non valorizzata sarà 22');
+insert into verticalizzazioniparametribase (MODULO, PARAMETRO, DESCRIZIONE) values ('PROTOCOLLO_AURIGA', 'SFTP_USER', 'User SFTP, es. test');
+insert into verticalizzazioniparametribase (MODULO, PARAMETRO, DESCRIZIONE) values ('PROTOCOLLO_AURIGA', 'SFTP_PASSWORD', 'Password SFTP, es. password');
+insert into verticalizzazioniparametribase (MODULO, PARAMETRO, DESCRIZIONE) values ('PROTOCOLLO_AURIGA', 'SFTP_ROOT_PATH', 'Root path facoltativa, potrebbe servire se si dovessero portare gli zip sotto uno specifico path, es. ENGRAMMA_TEST');
+
+INSERT INTO software (CODICE,DESCRIZIONE,MODULOOPZIONALE,DESCRIZIONELUNGA,ACCESSORAPIDO,ORDINE) VALUES('AR','Configurazione servizi SSU per areariservata',1,'Configurazione servizi SSU per areariservata',1,14);
+
+INSERT INTO CITTADINANZA (CODICE, CITTADINANZA, CF, DISABILITATO, FLG_PAESE_COMUNITARIO) VALUES(8723, 'SERBIA', 'Z158', 0, 0);
+INSERT INTO CITTADINANZA (CODICE, CITTADINANZA, CF, DISABILITATO, FLG_PAESE_COMUNITARIO) VALUES(8724, 'MONTENEGRO', 'Z159', 0, 0);
+
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES ('PROTOCOLLO_HALLEY2','URLFASCICOLAPROT','Url da inserire per accedere alla funzione FascicolaProtocollo. (https://testsegreteria.halleycih.com/HALLEY/PI0/PIWSCOLFAS.HBL?wsdl)');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES ('PROTOCOLLO_HALLEY2','URLUTILITY','Url da inserire per accedere alla funzione ConsultaFascicoli e InserisciFascicoli. (https://testsegreteria.halleycih.com/HALLEY/PI0/PIWSHALLEY.HBL?wsdl)');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES ('AREA_RISERVATA','VERIFICA_FIRMA_SOGG_RIEPILOGO','Se impostato a 1 attiva la verifica della firma dei soggetti nel riepilogo dell''area riservata (default: 0)');
+
+INSERT INTO VERTICALIZZAZIONIBASE(MODULO,DESCRIZIONE,FLAG_GESTCOMUNE) VALUES ('SUAP_XML','Permette la gestione della generazione del file SUAP XML all''interno delle istanze',1);
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES ('SUAP_XML','URL','Url del servizio che genera il file SUAP XML');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES ('SUAP_XML','GENERA_SU_INSERIMENTO_ISTANZA','Valori attesi 1 o 0 (DEFAULT): indica se in fase di inserimento istanza il sistema deve generare automaticamente il SUAP XML ed inserirlo tra i documenti dell''istanza (la generazione avviene prima della generazione del riepilogo e dell''eventuale protocollazione ). Per generare il file, impostarlo a 1 ');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES ('SUAP_XML','VIS_BOTTONE_SU_PROT_MOVIMENTO','Valori attesi 1 o 0 (DEFAULT): indica se mostrare o meno il bottone per la generazione del SUAP XML nella maschera di protocollazione dei movimenti. Per mostrare il bottone, impostarlo a 1');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES ('SUAP_XML','VALIDA','Valori attesi 1 o 0 (DEFAULT): indica se validare o meno lo schema prima di creare il file xml che rappresenta la pratica. Per effettuare la validazione impostarlo a 1');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES ('PROTOCOLLO_CIVILIANEXT','MARCA_ALLEGATI','Se impostato a 1, ogni file allegato nella Request viene generato come marcato.');
+
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES ('STC','INSERISCI_FILE_ASSERZIONE_SAML','Valori attesi S o N (DEFAULT): Nell''inserimento della pratica, se presente il metadato ASSERZIONE_SAML_AUTENTICAZIONE, inserisce un file ASSERZIONE_SAML_AUTENTICAZIONE.txt con il contenuto del metadato.');
+
+
+UPDATE software SET ordine=0 WHERE codice='TT';
+UPDATE software SET ordine=1 WHERE codice='SU';
+UPDATE software SET ordine=2 WHERE codice='CO';
+UPDATE software SET ordine=3 WHERE codice='CE';
+UPDATE software SET ordine=4 WHERE codice='PU';
+UPDATE software SET ordine=5 WHERE codice='PE';
+UPDATE software SET ordine=6 WHERE codice='SR';
+UPDATE software SET ordine=7 WHERE codice='PR';
+UPDATE software SET ordine=8 WHERE codice='DL';
+UPDATE software SET ordine=9 WHERE codice='CP';
+UPDATE software SET ordine=10 WHERE codice='VP';
+UPDATE software SET ordine=11 WHERE codice='AA';
+UPDATE software SET ordine=12 WHERE codice='PS';
+UPDATE software SET ordine=13 WHERE codice='SS';
+UPDATE software SET ordine=14 WHERE codice='CI';
+UPDATE software SET ordine=15 WHERE codice='DM';
+UPDATE software SET ordine=16 WHERE codice='SA';
+UPDATE software SET ordine=17 WHERE codice='AM';
+UPDATE software SET ordine=18 WHERE codice='CB';
+UPDATE software SET ordine=19 WHERE codice='PA';
+UPDATE software SET ordine=20 WHERE codice='ED';
+UPDATE software SET ordine=21 WHERE codice='SD';
+UPDATE software SET ordine=22 WHERE codice='YE';
+UPDATE software SET ordine=23 WHERE codice='AS';
+UPDATE software SET ordine=24 WHERE codice='IA';
+UPDATE software SET ordine=25 WHERE codice='SP';
+UPDATE software SET ordine=26 WHERE codice='FI';
+UPDATE software SET ordine=27 WHERE codice='LU';
+UPDATE software SET ordine=28 WHERE codice='AB';
+UPDATE software SET ordine=29 WHERE codice='MT';
+UPDATE software SET ordine=30 WHERE codice='PC';
+UPDATE software SET ordine=31 WHERE codice='AI';
+UPDATE software SET ordine=32 WHERE codice='VE';
+UPDATE software SET ordine=33 WHERE codice='VT';
+UPDATE software SET ordine=34 WHERE codice='EF';
+UPDATE software SET ordine=35 WHERE codice='A1';
+UPDATE software SET ordine=36 WHERE codice='P1';
+UPDATE software SET ordine=37 WHERE codice='LT';
+UPDATE software SET ordine=38 WHERE codice='P2';
+UPDATE software SET ordine=39 WHERE codice='P3';
+UPDATE software SET ordine=40 WHERE codice='PI';
+UPDATE software SET ordine=41 WHERE codice='AG';
+UPDATE software SET ordine=42 WHERE codice='GL';
+UPDATE software SET ordine=43 WHERE codice='FQ';
+UPDATE software SET ordine=44 WHERE codice='ST';
+UPDATE software SET ordine=45 WHERE codice='AP';
+UPDATE software SET ordine=46 WHERE codice='CW';
+UPDATE software SET ordine=47 WHERE codice='GC';
+UPDATE software SET ordine=48 WHERE codice='PM';
+UPDATE software SET ordine=49 WHERE codice='CS';
+UPDATE software SET ordine=50 WHERE codice='SG';
+UPDATE software SET ordine=51 WHERE codice='TA';
+UPDATE software SET ordine=52 WHERE codice='XS';
+UPDATE software SET ordine=53 WHERE codice='XE';
+UPDATE software SET ordine=54 WHERE codice='XA';
+UPDATE software SET ordine=55 WHERE codice='XR';
+UPDATE software SET ordine=56 WHERE codice='CN';
+UPDATE software SET ordine=57 WHERE codice='XU';
+UPDATE software SET ordine=58 WHERE codice='A2';
+UPDATE software SET ordine=59 WHERE codice='IN';
+UPDATE software SET ordine=60 WHERE codice='X1';
+UPDATE software SET ordine=61 WHERE codice='MA';
+UPDATE software SET ordine=62 WHERE codice='X2';
+UPDATE software SET ordine=63 WHERE codice='LP';
+UPDATE software SET ordine=64 WHERE codice='UM';
+UPDATE software SET ordine=65 WHERE codice='SN';
+UPDATE software SET ordine=66 WHERE codice='UR';
+UPDATE software SET ordine=67 WHERE codice='P4';
+UPDATE software SET ordine=68 WHERE codice='S1';
+UPDATE software SET ordine=69 WHERE codice='X3';
+UPDATE software SET ordine=70 WHERE codice='XB';
+UPDATE software SET ordine=71 WHERE codice='T1';
+UPDATE software SET ordine=72 WHERE codice='AC';
+UPDATE software SET ordine=73 WHERE codice='BP';
+UPDATE software SET ordine=74 WHERE codice='CU';
+UPDATE software SET ordine=75 WHERE codice='ET';
+UPDATE software SET ordine=76 WHERE codice='LC';
+UPDATE software SET ordine=77 WHERE codice='MC';
+UPDATE software SET ordine=78 WHERE codice='OT';
+UPDATE software SET ordine=79 WHERE codice='PP';
+UPDATE software SET ordine=80 WHERE codice='PZ';
+UPDATE software SET ordine=81 WHERE codice='RI';
+UPDATE software SET ordine=82 WHERE codice='S2';
+UPDATE software SET ordine=83 WHERE codice='SF';
+UPDATE software SET ordine=84 WHERE codice='SI';
+UPDATE software SET ordine=85 WHERE codice='TO';
+UPDATE software SET ordine=86 WHERE codice='VA';
+UPDATE software SET ordine=87 WHERE codice='VU';
+UPDATE software SET ordine=88 WHERE codice='X0';
+UPDATE software SET ordine=89 WHERE codice='X4';
+UPDATE software SET ordine=90 WHERE codice='X5';
+UPDATE software SET ordine=91 WHERE codice='X6';
+UPDATE software SET ordine=92 WHERE codice='X7';
+UPDATE software SET ordine=93 WHERE codice='X8';
+UPDATE software SET ordine=94 WHERE codice='XC';
+UPDATE software SET ordine=95 WHERE codice='XD';
+UPDATE software SET ordine=96 WHERE codice='XI';
+UPDATE software SET ordine=97 WHERE codice='XP';
+UPDATE software SET ordine=98 WHERE codice='Y1';
+UPDATE software SET ordine=99 WHERE codice='Y2';
+UPDATE software SET ordine=100 WHERE codice='Y3';
+UPDATE software SET ordine=101 WHERE codice='Y5';
+UPDATE software SET ordine=102 WHERE codice='Y6';
+UPDATE software SET ordine=103 WHERE codice='Y7';
+UPDATE software SET ordine=104 WHERE codice='Y8';
+UPDATE software SET ordine=105 WHERE codice='Y9';
+UPDATE software SET ordine=106 WHERE codice='YA';
+UPDATE software SET ordine=107 WHERE codice='YB';
+UPDATE software SET ordine=108 WHERE codice='YC';
+UPDATE software SET ordine=109 WHERE codice='YD';
+UPDATE software SET ordine=110 WHERE codice='YF';
+UPDATE software SET ordine=111 WHERE codice='YG';
+UPDATE software SET ordine=112 WHERE codice='Z1';
+UPDATE software SET ordine=113 WHERE codice='Z2';
+UPDATE software SET ordine=114 WHERE codice='Z3';
+UPDATE software SET ordine=115 WHERE codice='Z4';
+UPDATE software SET ordine=116 WHERE codice='Z5';
+UPDATE software SET ordine=117 WHERE codice='Z6';
+UPDATE software SET ordine=118 WHERE codice='Z7';
+UPDATE software SET ordine=119 WHERE codice='Z8';
+
+
 
 /*Data for the table `versione` */
 
-insert  into `versione`(`VERSIONE`,`VERSIONEPRODOTTO`) values ('2.117',NULL);
+insert  into `versione`(`VERSIONE`,`VERSIONEPRODOTTO`) values ('2.127',NULL);
 
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;

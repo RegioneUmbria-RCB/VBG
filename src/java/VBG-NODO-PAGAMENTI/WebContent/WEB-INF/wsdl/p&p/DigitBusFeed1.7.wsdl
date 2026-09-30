@@ -1,0 +1,664 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions name="DigitBusFeed" targetNamespace="http://e-fil.eu/PnP/PlugAndPayFeed" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://e-fil.eu/PnP/PlugAndPayFeed" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+    <xs:schema elementFormDefault="qualified" targetNamespace="http://e-fil.eu/PnP/PlugAndPayFeed" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:import namespace="http://e-fil.eu/PnP/PlugAndPayCommon"/>
+      <xs:element name="CaricaPosizione">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="request" nillable="true" type="tns:RichiestaCaricaPosizione"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="RichiestaCaricaPosizione">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:FeedAuthenticatedRequestBase">
+            <xs:sequence>
+              <xs:element name="Posizione" nillable="true" type="tns:Posizione"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="RichiestaCaricaPosizione" nillable="true" type="tns:RichiestaCaricaPosizione"/>
+      <xs:complexType name="FeedAuthenticatedRequestBase">
+        <xs:sequence>
+          <xs:element name="IdApplicazione" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="FeedAuthenticatedRequestBase" nillable="true" type="tns:FeedAuthenticatedRequestBase"/>
+      <xs:complexType name="RichiestaCaricaPosizioni">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:FeedAuthenticatedRequestBase">
+            <xs:sequence>
+              <xs:element name="Posizioni" nillable="true" type="tns:ArrayOfPosizione"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="RichiestaCaricaPosizioni" nillable="true" type="tns:RichiestaCaricaPosizioni"/>
+      <xs:complexType name="ArrayOfPosizione">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Posizione" nillable="true" type="tns:Posizione"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfPosizione" nillable="true" type="tns:ArrayOfPosizione"/>
+      <xs:complexType name="Posizione">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Accertamenti" nillable="true" type="tns:ArrayOfAccertamento">
+            <xs:annotation>
+              <xs:appinfo>
+                <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/"/>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="Causale" nillable="true" type="xs:string">
+            <xs:annotation>
+              <xs:appinfo>
+                <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/"/>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="CodiceRiferimentoCreditore" nillable="true" type="xs:string"/>
+          <xs:element name="Creditore" nillable="true" type="tns:Creditore">
+            <xs:annotation>
+              <xs:appinfo>
+                <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/"/>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="DataScadenza" nillable="true" type="xs:dateTime"/>
+          <xs:element name="Debitore" nillable="true" type="tns:Debitore">
+            <xs:annotation>
+              <xs:appinfo>
+                <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/"/>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="IdentificativoPosizione" nillable="true" type="xs:string"/>
+          <xs:element name="ImportoInCentesimi" type="xs:long">
+            <xs:annotation>
+              <xs:appinfo>
+                <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/"/>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="ParametriPosizione" nillable="true" type="tns:ArrayOfParametroPosizione"/>
+          <xs:element name="Servizio" nillable="true" type="q1:Servizio" xmlns:q1="http://e-fil.eu/PnP/PlugAndPayCommon"/>
+          <xs:element name="TipoRiferimentoCreditore" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="Posizione" nillable="true" type="tns:Posizione"/>
+      <xs:complexType name="ArrayOfAccertamento">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Accertamento" nillable="true" type="tns:Accertamento"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfAccertamento" nillable="true" type="tns:ArrayOfAccertamento"/>
+      <xs:complexType name="Accertamento">
+        <xs:sequence>
+          <xs:element name="Codice" nillable="true" type="xs:string">
+            <xs:annotation>
+              <xs:appinfo>
+                <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/"/>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="ImportoInCentesimi" type="xs:long">
+            <xs:annotation>
+              <xs:appinfo>
+                <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/"/>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="Accertamento" nillable="true" type="tns:Accertamento"/>
+      <xs:complexType name="Creditore">
+        <xs:sequence>
+          <xs:element name="CodiceEnte" nillable="true" type="xs:string">
+            <xs:annotation>
+              <xs:appinfo>
+                <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/"/>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="CodiceFiscalePartitaIva" nillable="true" type="xs:string">
+            <xs:annotation>
+              <xs:appinfo>
+                <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/"/>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="IBAN" nillable="true" type="xs:string">
+            <xs:annotation>
+              <xs:appinfo>
+                <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/"/>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="Intestazione" nillable="true" type="xs:string">
+            <xs:annotation>
+              <xs:appinfo>
+                <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/"/>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="Creditore" nillable="true" type="tns:Creditore"/>
+      <xs:complexType name="Debitore">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Cellulare" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="Civico" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="CodiceAvviamentoPostale" nillable="true" type="xs:string"/>
+          <xs:element name="CodiceFiscalePartitaIva" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="Email" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="Indirizzo" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="Localita" nillable="true" type="xs:string"/>
+          <xs:element name="Nazione" nillable="true" type="tns:Nazione"/>
+          <xs:element name="Nominativo" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="Provincia" nillable="true" type="xs:string"/>
+          <xs:element name="TipoPagatore" type="q2:TipoPagatore" xmlns:q2="http://e-fil.eu/PnP/PlugAndPayCommon"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="Debitore" nillable="true" type="tns:Debitore"/>
+      <xs:complexType name="Nazione">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CodiceIsoNazione" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="NomeNazione" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="Nazione" nillable="true" type="tns:Nazione"/>
+      <xs:complexType name="ArrayOfParametroPosizione">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="ParametroPosizione" nillable="true" type="tns:ParametroPosizione"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfParametroPosizione" nillable="true" type="tns:ArrayOfParametroPosizione"/>
+      <xs:complexType name="ParametroPosizione">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Chiave" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="Valore" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ParametroPosizione" nillable="true" type="tns:ParametroPosizione"/>
+      <xs:element name="CaricaPosizioneResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="CaricaPosizioneResult" nillable="true" type="tns:RispostaCaricaPosizione"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="RispostaCaricaPosizione">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="EsitoDiCaricamento" nillable="true" type="tns:EsitoDiCaricamento"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="RispostaCaricaPosizione" nillable="true" type="tns:RispostaCaricaPosizione"/>
+      <xs:complexType name="EsitoDiCaricamento">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CodiceRiferimentoCreditore" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="ErroriDiValidazione" nillable="true" type="tns:ArrayOfErroreDiValidazionePosizione"/>
+          <xs:element minOccurs="0" name="Esito" type="tns:Esito"/>
+          <xs:element minOccurs="0" name="IdentificativoPosizione" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="TipoRiferimentoCreditore" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="EsitoDiCaricamento" nillable="true" type="tns:EsitoDiCaricamento"/>
+      <xs:complexType name="ArrayOfErroreDiValidazionePosizione">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="ErroreDiValidazionePosizione" nillable="true" type="tns:ErroreDiValidazionePosizione"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfErroreDiValidazionePosizione" nillable="true" type="tns:ArrayOfErroreDiValidazionePosizione"/>
+      <xs:complexType name="ErroreDiValidazionePosizione">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Codice" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="Descrizione" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ErroreDiValidazionePosizione" nillable="true" type="tns:ErroreDiValidazionePosizione"/>
+      <xs:simpleType name="Esito">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Ok"/>
+          <xs:enumeration value="Nok"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="Esito" nillable="true" type="tns:Esito"/>
+      <xs:complexType name="SoapFaultOperazioneProibita">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:SoapFault">
+            <xs:sequence/>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="SoapFaultOperazioneProibita" nillable="true" type="tns:SoapFaultOperazioneProibita"/>
+      <xs:complexType name="SoapFault">
+        <xs:sequence>
+          <xs:element name="CodiceErrore" nillable="true" type="xs:string">
+            <xs:annotation>
+              <xs:appinfo>
+                <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/"/>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="DescrizioneErrore" nillable="true" type="xs:string">
+            <xs:annotation>
+              <xs:appinfo>
+                <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/"/>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="SoapFault" nillable="true" type="tns:SoapFault"/>
+      <xs:complexType name="SoapFaultErroreInterno">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:SoapFault">
+            <xs:sequence/>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="SoapFaultErroreInterno" nillable="true" type="tns:SoapFaultErroreInterno"/>
+      <xs:complexType name="SoapFaultErroreEasyPA">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:SoapFault">
+            <xs:sequence/>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="SoapFaultErroreEasyPA" nillable="true" type="tns:SoapFaultErroreEasyPA"/>
+      <xs:element name="CaricaPosizioneConEsitoArricchito">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="request" nillable="true" type="tns:RichiestaCaricaPosizione"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="CaricaPosizioneConEsitoArricchitoResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="CaricaPosizioneConEsitoArricchitoResult" nillable="true" type="tns:RispostaCaricaPosizioneConEsitoArricchito"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="RispostaCaricaPosizioneConEsitoArricchito">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="EsitoDiCaricamentoArricchito" nillable="true" type="tns:EsitoDiCaricamentoArricchito"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="RispostaCaricaPosizioneConEsitoArricchito" nillable="true" type="tns:RispostaCaricaPosizioneConEsitoArricchito"/>
+      <xs:complexType name="EsitoDiCaricamentoArricchito">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CodiceRiferimentoCreditore" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="ErroriDiValidazione" nillable="true" type="tns:ArrayOfErroreDiValidazionePosizione"/>
+          <xs:element minOccurs="0" name="Esito" type="tns:Esito"/>
+          <xs:element minOccurs="0" name="IdentificativoPosizione" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="NumeroAvviso" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="TipoRiferimentoCreditore" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="EsitoDiCaricamentoArricchito" nillable="true" type="tns:EsitoDiCaricamentoArricchito"/>
+      <xs:element name="CaricaPosizioni">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="request" nillable="true" type="tns:RichiestaCaricaPosizioni"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="CaricaPosizioniResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="CaricaPosizioniResult" nillable="true" type="tns:RispostaCaricaPosizioni"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="RispostaCaricaPosizioni">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="EsitiDiCaricamento" nillable="true" type="tns:ArrayOfEsitoDiCaricamento"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="RispostaCaricaPosizioni" nillable="true" type="tns:RispostaCaricaPosizioni"/>
+      <xs:complexType name="ArrayOfEsitoDiCaricamento">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="EsitoDiCaricamento" nillable="true" type="tns:EsitoDiCaricamento"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfEsitoDiCaricamento" nillable="true" type="tns:ArrayOfEsitoDiCaricamento"/>
+      <xs:element name="ValidaPosizioni">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="request" nillable="true" type="tns:RichiestaValidaPosizioni"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="RichiestaValidaPosizioni">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:FeedAuthenticatedRequestBase">
+            <xs:sequence>
+              <xs:element name="Posizioni" nillable="true" type="tns:ArrayOfPosizione"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="RichiestaValidaPosizioni" nillable="true" type="tns:RichiestaValidaPosizioni"/>
+      <xs:element name="ValidaPosizioniResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="ValidaPosizioniResult" nillable="true" type="tns:RispostaValidaPosizioni"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="RispostaValidaPosizioni">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="EsitiDiCaricamento" nillable="true" type="tns:ArrayOfEsitoDiValidazione"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="RispostaValidaPosizioni" nillable="true" type="tns:RispostaValidaPosizioni"/>
+      <xs:complexType name="ArrayOfEsitoDiValidazione">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="EsitoDiValidazione" nillable="true" type="tns:EsitoDiValidazione"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfEsitoDiValidazione" nillable="true" type="tns:ArrayOfEsitoDiValidazione"/>
+      <xs:complexType name="EsitoDiValidazione">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CodiceRiferimentoCreditore" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="ErroriDiValidazione" nillable="true" type="tns:ArrayOfErroreDiValidazionePosizione"/>
+          <xs:element minOccurs="0" name="Esito" type="tns:Esito"/>
+          <xs:element minOccurs="0" name="IdentificativoPosizione" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="TipoRiferimentoCreditore" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="EsitoDiValidazione" nillable="true" type="tns:EsitoDiValidazione"/>
+      <xs:element name="RettificaPosizione">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="request" nillable="true" type="tns:RichiestaRettificaPosizione"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="RichiestaRettificaPosizione">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:FeedAuthenticatedRequestBase">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Causale" nillable="true" type="xs:string"/>
+              <xs:element name="CodiceEnte" nillable="true" type="xs:string"/>
+              <xs:element name="CodiceIdentificativo" nillable="true" type="xs:string"/>
+              <xs:element minOccurs="0" name="DataScandenza" nillable="true" type="xs:dateTime"/>
+              <xs:element minOccurs="0" name="ImportoInCentesimi" nillable="true" type="xs:long"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="RichiestaRettificaPosizione" nillable="true" type="tns:RichiestaRettificaPosizione"/>
+      <xs:element name="RettificaPosizioneResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="RettificaPosizioneResult" nillable="true" type="tns:RispostaRettificaPosizione"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="RispostaRettificaPosizione">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Esito" type="tns:Esito"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="RispostaRettificaPosizione" nillable="true" type="tns:RispostaRettificaPosizione"/>
+      <xs:element name="RimuoviPosizione">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="request" nillable="true" type="tns:RichiestaRimuoviPosizione"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="RichiestaRimuoviPosizione">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:FeedAuthenticatedRequestBase">
+            <xs:sequence>
+              <xs:element name="CodiceEnte" nillable="true" type="xs:string"/>
+              <xs:element name="CodiceIdentificativo" nillable="true" type="xs:string"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="RichiestaRimuoviPosizione" nillable="true" type="tns:RichiestaRimuoviPosizione"/>
+      <xs:element name="RimuoviPosizioneResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="RimuoviPosizioneResult" nillable="true" type="tns:RispostaRimuoviPosizione"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="RispostaRimuoviPosizione">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Esito" type="tns:Esito"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="RispostaRimuoviPosizione" nillable="true" type="tns:RispostaRimuoviPosizione"/>
+    </xs:schema>
+    <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/">
+      <xs:element name="anyType" nillable="true" type="xs:anyType"/>
+      <xs:element name="anyURI" nillable="true" type="xs:anyURI"/>
+      <xs:element name="base64Binary" nillable="true" type="xs:base64Binary"/>
+      <xs:element name="boolean" nillable="true" type="xs:boolean"/>
+      <xs:element name="byte" nillable="true" type="xs:byte"/>
+      <xs:element name="dateTime" nillable="true" type="xs:dateTime"/>
+      <xs:element name="decimal" nillable="true" type="xs:decimal"/>
+      <xs:element name="double" nillable="true" type="xs:double"/>
+      <xs:element name="float" nillable="true" type="xs:float"/>
+      <xs:element name="int" nillable="true" type="xs:int"/>
+      <xs:element name="long" nillable="true" type="xs:long"/>
+      <xs:element name="QName" nillable="true" type="xs:QName"/>
+      <xs:element name="short" nillable="true" type="xs:short"/>
+      <xs:element name="string" nillable="true" type="xs:string"/>
+      <xs:element name="unsignedByte" nillable="true" type="xs:unsignedByte"/>
+      <xs:element name="unsignedInt" nillable="true" type="xs:unsignedInt"/>
+      <xs:element name="unsignedLong" nillable="true" type="xs:unsignedLong"/>
+      <xs:element name="unsignedShort" nillable="true" type="xs:unsignedShort"/>
+      <xs:element name="char" nillable="true" type="tns:char"/>
+      <xs:simpleType name="char">
+        <xs:restriction base="xs:int"/>
+      </xs:simpleType>
+      <xs:element name="duration" nillable="true" type="tns:duration"/>
+      <xs:simpleType name="duration">
+        <xs:restriction base="xs:duration">
+          <xs:pattern value="\-?P(\d*D)?(T(\d*H)?(\d*M)?(\d*(\.\d*)?S)?)?"/>
+          <xs:minInclusive value="-P10675199DT2H48M5.4775808S"/>
+          <xs:maxInclusive value="P10675199DT2H48M5.4775807S"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="guid" nillable="true" type="tns:guid"/>
+      <xs:simpleType name="guid">
+        <xs:restriction base="xs:string">
+          <xs:pattern value="[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:attribute name="FactoryType" type="xs:QName"/>
+      <xs:attribute name="Id" type="xs:ID"/>
+      <xs:attribute name="Ref" type="xs:IDREF"/>
+    </xs:schema>
+    <xs:schema elementFormDefault="qualified" targetNamespace="http://e-fil.eu/PnP/PlugAndPayCommon" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://e-fil.eu/PnP/PlugAndPayCommon">
+      <xs:simpleType name="TipoPagatore">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="PersonaFisica"/>
+          <xs:enumeration value="PersonaGiuridica"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="TipoPagatore" nillable="true" type="tns:TipoPagatore"/>
+      <xs:complexType name="Servizio">
+        <xs:sequence>
+          <xs:element name="CodiceServizio" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="Descrizione" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="Servizio" nillable="true" type="tns:Servizio"/>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="IPlugAndPayFeed_CaricaPosizione_InputMessage">
+    <wsdl:part name="parameters" element="tns:CaricaPosizione"/>
+  </wsdl:message>
+  <wsdl:message name="IPlugAndPayFeed_CaricaPosizione_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CaricaPosizioneResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IPlugAndPayFeed_CaricaPosizione_SoapFaultOperazioneProibitaFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:SoapFaultOperazioneProibita"/>
+  </wsdl:message>
+  <wsdl:message name="IPlugAndPayFeed_CaricaPosizione_SoapFaultErroreInternoFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:SoapFaultErroreInterno"/>
+  </wsdl:message>
+  <wsdl:message name="IPlugAndPayFeed_CaricaPosizione_SoapFaultErroreEasyPAFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:SoapFaultErroreEasyPA"/>
+  </wsdl:message>
+  <wsdl:message name="IPlugAndPayFeed_CaricaPosizioneConEsitoArricchito_InputMessage">
+    <wsdl:part name="parameters" element="tns:CaricaPosizioneConEsitoArricchito"/>
+  </wsdl:message>
+  <wsdl:message name="IPlugAndPayFeed_CaricaPosizioneConEsitoArricchito_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CaricaPosizioneConEsitoArricchitoResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IPlugAndPayFeed_CaricaPosizioneConEsitoArricchito_SoapFaultOperazioneProibitaFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:SoapFaultOperazioneProibita"/>
+  </wsdl:message>
+  <wsdl:message name="IPlugAndPayFeed_CaricaPosizioneConEsitoArricchito_SoapFaultErroreInternoFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:SoapFaultErroreInterno"/>
+  </wsdl:message>
+  <wsdl:message name="IPlugAndPayFeed_CaricaPosizioneConEsitoArricchito_SoapFaultErroreEasyPAFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:SoapFaultErroreEasyPA"/>
+  </wsdl:message>
+  <wsdl:message name="IPlugAndPayFeed_CaricaPosizioni_InputMessage">
+    <wsdl:part name="parameters" element="tns:CaricaPosizioni"/>
+  </wsdl:message>
+  <wsdl:message name="IPlugAndPayFeed_CaricaPosizioni_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CaricaPosizioniResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IPlugAndPayFeed_ValidaPosizioni_InputMessage">
+    <wsdl:part name="parameters" element="tns:ValidaPosizioni"/>
+  </wsdl:message>
+  <wsdl:message name="IPlugAndPayFeed_ValidaPosizioni_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ValidaPosizioniResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IPlugAndPayFeed_RettificaPosizione_InputMessage">
+    <wsdl:part name="parameters" element="tns:RettificaPosizione"/>
+  </wsdl:message>
+  <wsdl:message name="IPlugAndPayFeed_RettificaPosizione_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RettificaPosizioneResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IPlugAndPayFeed_RimuoviPosizione_InputMessage">
+    <wsdl:part name="parameters" element="tns:RimuoviPosizione"/>
+  </wsdl:message>
+  <wsdl:message name="IPlugAndPayFeed_RimuoviPosizione_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RimuoviPosizioneResponse"/>
+  </wsdl:message>
+  <wsdl:portType name="IPlugAndPayFeed">
+    <wsdl:operation name="CaricaPosizione">
+      <wsdl:input wsaw:Action="http://e-fil.eu/PnP/PlugAndPayFeed/IPlugAndPayFeed/CaricaPosizione" message="tns:IPlugAndPayFeed_CaricaPosizione_InputMessage"/>
+      <wsdl:output wsaw:Action="http://e-fil.eu/PnP/PlugAndPayFeed/IPlugAndPayFeed/CaricaPosizioneResponse" message="tns:IPlugAndPayFeed_CaricaPosizione_OutputMessage"/>
+      <wsdl:fault wsaw:Action="http://e-fil.eu/PnP/PlugAndPayFeed/IPlugAndPayFeed/CaricaPosizioneSoapFaultOperazioneProibitaFault" name="SoapFaultOperazioneProibitaFault" message="tns:IPlugAndPayFeed_CaricaPosizione_SoapFaultOperazioneProibitaFault_FaultMessage"/>
+      <wsdl:fault wsaw:Action="http://e-fil.eu/PnP/PlugAndPayFeed/IPlugAndPayFeed/CaricaPosizioneSoapFaultErroreInternoFault" name="SoapFaultErroreInternoFault" message="tns:IPlugAndPayFeed_CaricaPosizione_SoapFaultErroreInternoFault_FaultMessage"/>
+      <wsdl:fault wsaw:Action="http://e-fil.eu/PnP/PlugAndPayFeed/IPlugAndPayFeed/CaricaPosizioneSoapFaultErroreEasyPAFault" name="SoapFaultErroreEasyPAFault" message="tns:IPlugAndPayFeed_CaricaPosizione_SoapFaultErroreEasyPAFault_FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="CaricaPosizioneConEsitoArricchito">
+      <wsdl:input wsaw:Action="http://e-fil.eu/PnP/PlugAndPayFeed/IPlugAndPayFeed/CaricaPosizioneConEsitoArricchito" message="tns:IPlugAndPayFeed_CaricaPosizioneConEsitoArricchito_InputMessage"/>
+      <wsdl:output wsaw:Action="http://e-fil.eu/PnP/PlugAndPayFeed/IPlugAndPayFeed/CaricaPosizioneConEsitoArricchitoResponse" message="tns:IPlugAndPayFeed_CaricaPosizioneConEsitoArricchito_OutputMessage"/>
+      <wsdl:fault wsaw:Action="http://e-fil.eu/PnP/PlugAndPayFeed/IPlugAndPayFeed/CaricaPosizioneConEsitoArricchitoSoapFaultOperazioneProibitaFault" name="SoapFaultOperazioneProibitaFault" message="tns:IPlugAndPayFeed_CaricaPosizioneConEsitoArricchito_SoapFaultOperazioneProibitaFault_FaultMessage"/>
+      <wsdl:fault wsaw:Action="http://e-fil.eu/PnP/PlugAndPayFeed/IPlugAndPayFeed/CaricaPosizioneConEsitoArricchitoSoapFaultErroreInternoFault" name="SoapFaultErroreInternoFault" message="tns:IPlugAndPayFeed_CaricaPosizioneConEsitoArricchito_SoapFaultErroreInternoFault_FaultMessage"/>
+      <wsdl:fault wsaw:Action="http://e-fil.eu/PnP/PlugAndPayFeed/IPlugAndPayFeed/CaricaPosizioneConEsitoArricchitoSoapFaultErroreEasyPAFault" name="SoapFaultErroreEasyPAFault" message="tns:IPlugAndPayFeed_CaricaPosizioneConEsitoArricchito_SoapFaultErroreEasyPAFault_FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="CaricaPosizioni">
+      <wsdl:input wsaw:Action="http://e-fil.eu/PnP/PlugAndPayFeed/IPlugAndPayFeed/CaricaPosizioni" message="tns:IPlugAndPayFeed_CaricaPosizioni_InputMessage"/>
+      <wsdl:output wsaw:Action="http://e-fil.eu/PnP/PlugAndPayFeed/IPlugAndPayFeed/CaricaPosizioniResponse" message="tns:IPlugAndPayFeed_CaricaPosizioni_OutputMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="ValidaPosizioni">
+      <wsdl:input wsaw:Action="http://e-fil.eu/PnP/PlugAndPayFeed/IPlugAndPayFeed/ValidaPosizioni" message="tns:IPlugAndPayFeed_ValidaPosizioni_InputMessage"/>
+      <wsdl:output wsaw:Action="http://e-fil.eu/PnP/PlugAndPayFeed/IPlugAndPayFeed/ValidaPosizioniResponse" message="tns:IPlugAndPayFeed_ValidaPosizioni_OutputMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="RettificaPosizione">
+      <wsdl:input wsaw:Action="http://e-fil.eu/PnP/PlugAndPayFeed/IPlugAndPayFeed/RettificaPosizione" message="tns:IPlugAndPayFeed_RettificaPosizione_InputMessage"/>
+      <wsdl:output wsaw:Action="http://e-fil.eu/PnP/PlugAndPayFeed/IPlugAndPayFeed/RettificaPosizioneResponse" message="tns:IPlugAndPayFeed_RettificaPosizione_OutputMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="RimuoviPosizione">
+      <wsdl:input wsaw:Action="http://e-fil.eu/PnP/PlugAndPayFeed/IPlugAndPayFeed/RimuoviPosizione" message="tns:IPlugAndPayFeed_RimuoviPosizione_InputMessage"/>
+      <wsdl:output wsaw:Action="http://e-fil.eu/PnP/PlugAndPayFeed/IPlugAndPayFeed/RimuoviPosizioneResponse" message="tns:IPlugAndPayFeed_RimuoviPosizione_OutputMessage"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IPlugAndPayFeed" type="tns:IPlugAndPayFeed">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="CaricaPosizione">
+      <soap:operation soapAction="http://e-fil.eu/PnP/PlugAndPayFeed/IPlugAndPayFeed/CaricaPosizione" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SoapFaultOperazioneProibitaFault">
+        <soap:fault use="literal" name="SoapFaultOperazioneProibitaFault" namespace=""/>
+      </wsdl:fault>
+      <wsdl:fault name="SoapFaultErroreInternoFault">
+        <soap:fault use="literal" name="SoapFaultErroreInternoFault" namespace=""/>
+      </wsdl:fault>
+      <wsdl:fault name="SoapFaultErroreEasyPAFault">
+        <soap:fault use="literal" name="SoapFaultErroreEasyPAFault" namespace=""/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="CaricaPosizioneConEsitoArricchito">
+      <soap:operation soapAction="http://e-fil.eu/PnP/PlugAndPayFeed/IPlugAndPayFeed/CaricaPosizioneConEsitoArricchito" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SoapFaultOperazioneProibitaFault">
+        <soap:fault use="literal" name="SoapFaultOperazioneProibitaFault" namespace=""/>
+      </wsdl:fault>
+      <wsdl:fault name="SoapFaultErroreInternoFault">
+        <soap:fault use="literal" name="SoapFaultErroreInternoFault" namespace=""/>
+      </wsdl:fault>
+      <wsdl:fault name="SoapFaultErroreEasyPAFault">
+        <soap:fault use="literal" name="SoapFaultErroreEasyPAFault" namespace=""/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="CaricaPosizioni">
+      <soap:operation soapAction="http://e-fil.eu/PnP/PlugAndPayFeed/IPlugAndPayFeed/CaricaPosizioni" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidaPosizioni">
+      <soap:operation soapAction="http://e-fil.eu/PnP/PlugAndPayFeed/IPlugAndPayFeed/ValidaPosizioni" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RettificaPosizione">
+      <soap:operation soapAction="http://e-fil.eu/PnP/PlugAndPayFeed/IPlugAndPayFeed/RettificaPosizione" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RimuoviPosizione">
+      <soap:operation soapAction="http://e-fil.eu/PnP/PlugAndPayFeed/IPlugAndPayFeed/RimuoviPosizione" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="DigitBusFeed">
+    <wsdl:port name="BasicHttpBinding_IPlugAndPayFeed" binding="tns:BasicHttpBinding_IPlugAndPayFeed">
+      <soap:address location="http://localhost:1834/DigitBusFeed.svc"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,644 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified" xmlns="it/lineacomune/pagopa/be/ws/endpoint/shared"
+	targetNamespace="it/lineacomune/pagopa/be/ws/endpoint/shared"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+
+	<xs:complexType name="IuvFeList">
+		<xs:annotation>
+			<xs:documentation xml:lang="it">Lista di Codici Iuv
+				corrispondenti ad altrettanti Pagamenti Attesi
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="IuvFe" minOccurs="1" maxOccurs="unbounded"
+				type="IuvFe" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="IuvFe">
+		<xs:sequence>
+			<xs:element name="iuv" type="xs:string" minOccurs="1"
+				maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="getPagamentoAttesoWs">
+		<xs:annotation>
+			<xs:documentation xml:lang="it">Restituisce le proprietà
+				del Pagamento Atteso
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="id" type="xs:long">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">Id del Pagamento Atteso
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="idBoPagamentoAtteso">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">Identificativo del
+						pagamento atteso del back office che lo ha inserito
+					</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1" />
+						<xs:maxLength value="100" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+
+			<xs:element name="codiceServizio" type="xs:string">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">codice del servizio
+						assegnato da Linea Comune
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="codiceEnte" type="xs:string">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">codice ente assegnato
+						da Linea Comune
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:sequence>
+				<xs:element name="partiteDebitorieWs" type="partitaDebitoriaWs"
+					minOccurs="0" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation xml:lang="it">Se il servizio prevede
+							la contabilità, mostra le Partite Debitorie che compongono il
+							Pagamento Atteso
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+			<xs:element name="anagCap" type="xs:string">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">CAP del debitore
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="anagCfPiva">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">Codice Fiscale/Partita
+						IVA del debitore
+					</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1" />
+						<xs:maxLength value="16" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="anagCivico" type="xs:string">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">Numero Civico del
+						debitore
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="anagDenominazione" type="xs:string">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">Denominazione del
+						debitore
+
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="anagEmail">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">Indirizzo email del
+						debitore
+					</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="[^@]+@[^\.]+\..+" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="anagIndirizzo">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">Indirizzo del debitore
+					</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="[^@]+@[^\.]+\..+" />
+					</xs:restriction>
+				</xs:simpleType>
+
+			</xs:element>
+			<xs:element name="anagLocalita" type="xs:string">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">Località del debitore
+
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="anagNaturaGiuridica" type="xs:string">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">Natura Giuridica del
+						debitore ("F" per persona fisica, "G" per persona giuridica)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="anagNazione" type="xs:string">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">Nazione del
+						debitore
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="anagProvincia" type="xs:string">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">Provincia del
+						debitore
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="causale">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">Causale del Pagamento
+						Atteso
+					</xs:documentation>
+				</xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1" />
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+			</xs:element>
+			<xs:element name="importo">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">
+						Importo del Pagamento
+						Atteso(con due decimali separati dal punto)
+					</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="iuv" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">Identificativo Univoco
+						del Pagamento Atteso (17 caratteri)
+					</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="17" />
+						<xs:maxLength value="18" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="visibileSol" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">indica se il pagamento
+						atteso può essere visualizzato in un eventuale prospetto del
+						cittadino che riassuma la situazione debitoria per intero
+					</xs:documentation>
+				</xs:annotation>
+
+			</xs:element>
+			<xs:element name="dataInizioValidita" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">data e ora dalla quale
+						il pagamento atteso potrà essere visto (se visibile_sol = true) e
+						pagato
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dataScadenza" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">data e ora dalla quale
+						il pagamento atteso potrà essere visto (se visibile_sol = true) e
+						pagato
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+
+			<xs:element name="dataScadenzaStampabile" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">data e ora di scadenza
+						visibile al cittadino. Se presente, deve essere precedente alla
+						data di scadenza
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+
+			<xs:element name="dataScadenzaNote" type="xs:string">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">Messaggio al cittadino
+						nel caso
+						la data di scadenza non sia conosciuta al momento dell'inserimento
+						del pagamento atteso
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+
+			<xs:element name="annullato" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">Mostra se il Pagamento
+						Atteso è stato annullato
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="canalePagamentoExtraPagoPa">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">Canale di Pagamento
+						esterno al circuito PagoPa
+					</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="dataAnnullamento" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">Data in cui è stato
+						effettuato l'annullamento, nel caso di Pagamento Atteso annullato
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dataIncasso" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">Data in cui è stato
+						effettuato l'incasso, nel caso di Pagamento Atteso incassato
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dataPagamento" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">Data in cui è stato
+						effettuato il pagamento, nel caso di Pagamento Atteso pagato
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dataRendicontazione" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">Data in cui è stato
+						effettuata la rendicontazione, nel caso di Pagamento Atteso
+						rendicontato
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="datiSpecificiRiscossione">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">Da specificher agid,
+						rappresenta l’indicazione dell’imputazione della specifica entrata
+						ed è così articolato: [tipo contabilità]/[codice contabilità].
+						Dove [tipo contabilità] ha il seguente significato: 0 - Capitolo
+						e articolo di Entrata del Bilancio dello Stato; 1 - Numero della
+						contabilità speciale; 2 - Codice SIOPE; 9 - Altro codice ad uso
+						dell’Ente Creditore
+            UPDATE: rappresenta il codice tassonomia del servizio di incasso. Il codice è così composto:
+            9/[Codice Ente creditore][Progressivo Macroarea][Codice tipologia servizio][Motivo giuridico riscossione]/[dati liberi per ente]
+					</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1" />
+						<xs:maxLength value="138" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="esitoPagamentoComunicato" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">Mostra se l'esito di
+						pagamento è stato comunicato al responsabile del servizio
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="extraPagoPa" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">Mostra se il Pagamento
+						non fa parte del circuito di PagoPa
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="incassato" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">Mostra se il Pagamento
+						Atteso è stato incassato
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="numeroAvviso">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">Numero Avviso del
+						Pagamento Atteso (18 caratteri)
+					</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="18" />
+						<xs:maxLength value="18" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="pagato" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">Mostra se il Pagamento
+						Atteso è stato pagato
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="rendicontato" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">Mostra se il Pagamento
+						Atteso è stato rendicontato
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ricevutaTelematicaWs" minOccurs="0"
+				maxOccurs="1" type="ricevutaTelematicaWs">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">Se disponibile, mostra
+						la Ricevuta Telematica associata al Pagamento
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="pagabile" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">
+						Mostra se il Pagamento
+						Atteso è ancora pagabile
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="codiceNonPagabile" type="xs:string"
+				nillable="true">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">
+						Mostra il codice del
+						Pagamento Atteso non pagabile
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+      <xs:element name="datiRevoca" minOccurs="0"
+                   type="datiRevoca">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">Se presenti, mostra i dati della richiesta Revoca/Storno associata al Pagamento
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element name="ravvedibile" type="xs:boolean">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">
+            Mostra se il Pagamento
+            Atteso è ravvedibile
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="codiceNonRavvedibile" type="xs:string"
+                  nillable="true">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">
+            Mostra il codice del
+            Pagamento Atteso non ravvedibile
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+
+    </xs:sequence>
+
+	</xs:complexType>
+
+	<xs:complexType name="partitaDebitoriaWs">
+		<xs:annotation>
+			<xs:documentation xml:lang="it">Singolo dettaglio del
+				pagamento. Per esempio, la singola multa, la rata della mensa, etc.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ArticoliDebitoriWs" type="articoloDebitorioWs"
+				maxOccurs="unbounded" />
+			<xs:element name="idBoPartitaDebitoria">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">Identificativo di back
+						office della partita debitoria. Viene registrato dal sistema ma
+						non utilizzato
+					</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1" />
+						<xs:maxLength value="100" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+
+			<xs:element name="descrizione">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">Descrizione della
+						partita debitoria
+					</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1" />
+						<xs:maxLength value="256" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+
+			<xs:element name="importo">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">Importo della partita
+						debitoria. Deve essere pari alla somma degli importi dei relativi
+						articoli debitori. Decimali divisi da virgola o punto.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="articoloDebitorioWs">
+		<xs:annotation>
+			<xs:documentation xml:lang="it">Singolo elemento di
+				entrata che compone la partita debitoria. Per esempio, una partita
+				debitoria multa può essere composta dai seguenti art. debitori: 1)
+				sanzione 2) interessi 3) spese di spedizione 4) costi amministrativi
+				5) etc.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="codiceCapitolo">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">Si tratta del codice
+						capitolo al quale l'entrata è destinata
+					</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1" />
+						<xs:maxLength value="255" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="codiceAccertamento">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">Si tratta del codice
+						accertamento al quale l'entrata è destinata
+					</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1" />
+						<xs:maxLength value="255" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+
+			<xs:element name="codiceEntrata" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">Codice entrata secondo
+						la codifica dell'agenzia delle entrate (non utilizzato dal
+						sistema, utile in casi di rendicontazione per sistemi di back
+						office quali, per esempio, la riscossione coattiva)
+					</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="4" />
+						<xs:maxLength value="4" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+
+			<xs:element name="descrizione">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">
+						Descrizione
+						dell'articolo debitorio
+					</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1" />
+						<xs:maxLength value="256" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+
+			<xs:element name="importo">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">
+						Importo dell'articolo
+						debitorio.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="ricevutaTelematicaWs">
+		<xs:annotation>
+			<xs:documentation xml:lang="it">Restituisce l'xml della
+				Ricevuta Telematica e, se disponibile, il blob della Ricevuta
+				Telematica firmata
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="rtXml" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">Stringa corrispondente
+						al contenuto della Ricevuta Telematica XML
+					</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="rtFirmata" minOccurs="0" maxOccurs="1"
+				type="xs:string">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">Stringa corrispondente
+						al contenuto della Ricevuta Telematica Firmata, se quest'ultima è
+						presente
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+  <xs:complexType name="datiRevoca">
+    <xs:annotation>
+      <xs:documentation xml:lang="it"> Dati riguardanti una richiesta di Revoca/Storno del pagamento
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="tipo">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">Stringa corrispondente
+            al tipo di Richiesta: R Revoca, S Storno
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="S" />
+            <xs:enumeration value="R" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="stato">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">Stringa corrispondente
+            allo stato della Revoca: IN CORSO, ESITO POSITIVO, ESITO NEGATIVO
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="IN CORSO" />
+            <xs:enumeration value="ESITO POSITIVO" />
+            <xs:enumeration value="ESITO NEGATIVO" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="causaleEsito" minOccurs="0" type="xs:string">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">Causale Esito
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="datiAggiuntiviEsito" minOccurs="0" type="xs:string">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">Dati aggiuntivi Esito
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="dataEsito" type="xs:dateTime" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">data e ora dell'esito
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>

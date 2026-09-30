@@ -1,0 +1,188 @@
+﻿@using AreaRiservataCore.Shared.enums
+@using VBG.AppLogic.SSU.DataAccess.Dto
+@using VBG.BlazorComponentsLibrary.DesignComuni.NavigationButtons
+
+<div class="cmp-card">
+    <div class="card">
+        <div class="card-header border-0 p-0 mb-lg-30 m-0">
+            <ListaDomandeFilterComponent Id="filtriPratiche"
+                                         Title="@Titolo"
+                                         FiltriChanged="HandleFiltriChanged"
+                                         RicercaTestuale="@ricercaTestuale"
+                                         RicercaChanged="HandleRicercaChanged"
+                                         OrdinaPer="@ordinaPer"
+                                         OrdinaChanged="HandleOrdineChanged"
+                                         ListaRichiedenti="this._listaRichiedenti?.ToList()"
+                                         Disabled="!(_domandeCache?.Any() ?? false)">
+            </ListaDomandeFilterComponent>
+        </div>
+        <div class="card-body p-0">
+            <CascadingValue Value="this">
+                <ListaDomandeComponent IsLoading="_isLoading" Items="@_domande" PratichePerPagina="PratichePerPagina" TipoLista="TipoLista"></ListaDomandeComponent>
+            </CascadingValue>
+        </div>
+    </div>
+</div>
+
+@if (_domandeCache?.Any() ?? false)
+{
+    <NavigationPager PaginaCorrente="Pagina"
+                     TotalePagine="(int)Math.Ceiling(((double)(_domandeCache.Count())/ PratichePerPagina))"
+                     PaginaChanged="HandlePaginaChanged"
+                     Disabled="_isLoading"
+                     ScrollOnPaginaChanged="NavigationPager.ScrollTo.PageBottom">
+    </NavigationPager>
+}
+
+@code {
+    private IEnumerable<ListaDomandeItem>? _domande;
+    private IEnumerable<ListaDomandeItem>? _domandeCache;
+    private IEnumerable<string>? _listaRichiedenti;
+
+    private bool _isLoading = true;
+
+    [Parameter]
+    public int PratichePerPagina { get; set; }
+    [Parameter]
+    public int Pagina { get; set; } = 1;
+    [Parameter]
+    public string Titolo { get; set; } = "Lista pratiche";
+    [Parameter, EditorRequired]
+    public IEnumerable<ElementoListaDomandeSsuDto> Domande { get; set; } = Enumerable.Empty<ElementoListaDomandeSsuDto>();
+    [Parameter]
+    public EventCallback<ListaDomandeItem> OnActionButtonClicked{ get; set; }
+    [Parameter]
+    public string ActionButtonText { get; set; } = "Action text";
+    [Parameter]
+    public ListaDomandeTypeEnum TipoLista { get; set; } =  ListaDomandeTypeEnum.Correzioni;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        PratichePerPagina = PratichePerPagina == 0 ? 10 : PratichePerPagina;
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+
+        var results = Domande.Select(domanda =>
+        {
+            return new ListaDomandeItem
+            {
+                Id = domanda.Id,
+                DataUltimaModifica = domanda.DataUltimaModifica,
+                Richiedente = domanda.Richiedente ?? "",
+                IdentificativoDomanda = domanda.IdentificativoDomanda,
+                Intervento = (domanda.Intervento ?? "Non definito").Replace(Environment.NewLine, "<br/>"),
+                Oggetto = domanda.Oggetto ?? "",
+            };
+        });
+
+        this._domandeCache = results.ToArray();
+        this._listaRichiedenti = this._domandeCache.Select(x => x.Richiedente).Concat(new[] { "" }).Distinct().OrderBy(x => x);
+
+        await ApplyFiltersAsync();
+    }
+
+    private OrderByDate ordinaPer = OrderByDate.DataDiscendente;
+
+    private async Task HandleOrdineChanged(OrderByDate ordine)
+    {
+        ordinaPer = ordine;
+        Pagina = 1;
+
+        await ApplyFiltersAsync();
+    }
+
+    private string ricercaTestuale = "";
+
+    private async Task HandleRicercaChanged(string text)
+    {
+        ricercaTestuale = text;
+        Pagina = 1;
+
+        await ApplyFiltersAsync();
+    }
+
+    private ListaDomandeFilter? parametriDiFiltro = default;
+
+    private async Task HandleFiltriChanged(ListaDomandeFilter filtri)
+    {
+        parametriDiFiltro = filtri;
+        Pagina = 1;
+
+        await ApplyFiltersAsync();
+    }
+
+    private async Task HandlePaginaChanged(int page)
+    {
+        Pagina = page;
+
+        await ApplyFiltersAsync();
+    }
+
+    private async Task ApplyFiltersAsync()
+    {
+        _isLoading = true;
+
+        await Task.Delay(1);
+
+        try
+        {
+            var results = this._domandeCache;
+
+            if (results is null)
+            {
+                this._domande = Enumerable.Empty<ListaDomandeItem>();
+                return;
+            }
+
+            if (!string.IsNullOrEmpty(ricercaTestuale))
+            {
+                results = results.Where(item =>
+                    item.IdentificativoDomanda.Contains(ricercaTestuale, StringComparison.OrdinalIgnoreCase) ||
+                    item.Intervento.Contains(ricercaTestuale, StringComparison.OrdinalIgnoreCase)
+                );
+            }
+
+            if (parametriDiFiltro != null)
+            {
+                if (parametriDiFiltro.EndDate.HasValue)
+                {
+                    DateTime endDate = parametriDiFiltro.EndDate.Value;
+                    endDate = endDate.AddDays(1).AddSeconds(-1);
+
+                    results = results.Where(x => x.DataUltimaModifica < endDate);
+                }
+
+                if (parametriDiFiltro.StartDate.HasValue)
+                    results = results.Where(x => x.DataUltimaModifica >= parametriDiFiltro.StartDate);
+
+                if (parametriDiFiltro.Richiedente is not null)
+                    results = results.Where(x => x.Richiedente == parametriDiFiltro.Richiedente);
+            }
+
+            results = (ordinaPer == OrderByDate.DataDiscendente) ?
+                        results.OrderByDescending(x => x.DataUltimaModifica) :
+                        results.OrderBy(x => x.DataUltimaModifica);
+
+            if (results.Count() > PratichePerPagina)
+            {
+                int indiceIniziale = (Pagina - 1) * PratichePerPagina;
+
+                results = results
+                    .Skip(indiceIniziale)
+                    .Take(PratichePerPagina);
+            }
+
+            this._domande = results.ToArray();
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+}

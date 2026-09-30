@@ -1,0 +1,422 @@
+﻿<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+	</head>
+	
+	<body>
+		<center style="font-family: Verdana; font-size: 14px">
+			<div style="font-size: 28px; padding: 20px; text-align: center; margin-bottom: 20px;">
+				<xsl:value-of select="suap-ricevuta/ente-denominazione"/>
+			</div>
+			<!--
+			<div style="font-family: Courier; padding: 20px; text-align: center; margin-bottom: 20px;">
+				Sito istituzionale del SUAP ...
+			</div>
+			-->
+			<div style="font-size: 28px; padding: 20px; text-align: center; ">
+				RICEVUTA TELEMATICA <br />
+				DI PRESENTAZIONE
+			</div>
+
+			<!--
+			<div style="margin-bottom: 20px;">
+				(Ricevuta di Segnalazione Certificata Inizio Attività, ai sensi dell'art. 5, comma 4, del DPR 160/2010)
+			</div>
+			-->
+
+			<div style="padding: 5px; margin-top: 20px; text-align: justify; margin-bottom: 20px;">
+				La presente ricevuta telematica attesta l'avvenuta presentazione dell'istanza presso l'ufficio regionale del Genio Civile. I lavori non possono avere inizio prima del rilascio del relativo provvedimento di autorizzazione/deposito sismico.
+			</div>
+
+			<div>
+				<table style="text-align: left;" width="100%">
+					<tr>
+						<td valign="top">Ufficio ricevente:</td>
+						<td valign="top">
+							<b>
+								SERVIZIO DEL GENIO CIVILE DI <xsl:value-of select="/Istanze/ComuneIstanza/PROVINCIA"/>
+							</b>
+						</td>
+					</tr>
+							
+					<tr>
+						<td valign="top">Trasmissione dell'istanza: </td>
+						<td valign="top">
+							<b>
+								<xsl:call-template name="FormatDate">
+									<xsl:with-param name="DateTime" select="/Istanze/DATA"/>
+								</xsl:call-template>
+							</b>
+						</td>
+					</tr>
+					<tr>
+						<td valign="top">N.Pratica:</td>
+						<td valign="top">
+							<b>
+								<xsl:value-of select="Istanze/NUMEROISTANZA"/>
+							</b>
+						</td>
+					</tr>
+			
+					<tr>
+						<td valign="top">Protocollo</td>
+						<td valign="top">
+							N. <b>
+								<xsl:value-of select="Istanze/NUMEROPROTOCOLLO"/>
+							</b> Data. <b>
+								<xsl:call-template name="FormatDate">
+									<xsl:with-param name="DateTime" select="/Istanze/DATAPROTOCOLLO"/>
+								</xsl:call-template>
+							</b>
+						</td>
+					</tr>
+					<tr>
+						<td valign="top">Oggetto:</td>
+						<td valign="top">
+												
+							<xsl:value-of select="Istanze/LAVORI"/>
+						</td>
+					</tr>
+				</table>
+			</div>
+            <xsl:if test="Istanze/AziendaRichiedente">
+                <div style="padding: 5px; text-align: center; font-size: 18px; margin-bottom: 10px;">
+                    DITTA COSTRUTTRICE
+                </div>
+
+                <div>
+                    <table style="text-align: left;" width="100%">
+                        <tr>
+                            <td valign="top">Ragione Sociale:</td>
+                            <td valign="top">
+                                <b>
+                                    <xsl:value-of select="Istanze/AziendaRichiedente/NOMINATIVO" />
+                                </b>
+                            </td>
+                            <td valign="top">P.Iva:</td>
+                            <td valign="top">
+                                <b>
+                                    <xsl:value-of select="Istanze/AziendaRichiedente/PARTITAIVA" />
+                                </b>
+                            </td>
+                            <td valign="top">CF:</td>
+                            <td valign="top" colspan="2">
+                                <b>
+                                    <xsl:value-of select="Istanze/AziendaRichiedente/CODICEFISCALE" />
+                                </b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">Indirizzo Sede:</td>
+                            <td valign="top">Via:</td>
+                            <td valign="top">
+                                <b>
+                                    <xsl:value-of select="Istanze/AziendaRichiedente/INDIRIZZO" />
+                                </b>
+                            </td>
+                            <td valign="top">Comune:</td>
+                            <td valign="top">
+                                <b>
+                                    <xsl:value-of select="Istanze/AziendaRichiedente/ComuneResidenza/COMUNE" />
+                                </b>
+                            </td>
+                            <td valign="top">Prov:</td>
+                            <td valign="top">
+                                <b>
+                                    <xsl:value-of select="Istanze/AziendaRichiedente/PROVINCIA" />
+                                </b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top" colspan="2">Numero Registro Imprese:</td>
+                            <td valign="top" colspan="5">
+                                <b>
+                                    <xsl:value-of select="Istanze/AziendaRichiedente/REGDITTE" />
+                                </b>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </xsl:if>
+
+            <!-- Dati del richiedente -->
+                <div style="padding: 5px; text-align: center; font-size: 18px; margin-bottom: 10px;">
+                    DATI DEL COMMITTENTE
+                </div>
+
+                <div>
+                    <table style="text-align: left;" width="100%">
+                        <tr>
+                            <td valign="top" colspan="6">Dati anagrafici:</td>
+                        </tr>
+                        <tr>
+                            <td valign="top">Nome:</td>
+                            <td valign="top">
+                                <b>
+                                    <xsl:value-of select="Istanze/Richiedente/NOME" />
+                                </b>
+                            </td>
+                            <td valign="top">Cognome:</td>
+                            <td valign="top">
+                                <b>
+                                    <xsl:value-of select="Istanze/Richiedente/NOMINATIVO" />
+                                </b>
+                            </td>
+                            <td valign="top">Nato a:</td>
+                            <td valign="top">
+                                <b>
+                                    <xsl:value-of select="Istanze/Richiedente/ComuneNascita/COMUNE" />
+                                </b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">il:</td>
+                            <td valign="top">
+                                <b>
+                                    <xsl:call-template name="FormatDate">
+                                        <xsl:with-param name="DateTime" select="/Istanze/Richiedente/DATANASCITA" />
+                                    </xsl:call-template>
+                                </b>
+                            </td>
+                            <td valign="top">CF:</td>
+                            <td valign="top" colspan="3">
+                                <b>
+                                    <xsl:value-of select="Istanze/Richiedente/CODICEFISCALE" />
+                                </b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top" colspan="6">Residente in:</td>
+                        </tr>
+                        <tr>
+                            <td valign="top">Via:</td>
+                            <td valign="top">
+                                <b>
+                                    <xsl:value-of select="Istanze/Richiedente/INDIRIZZO" />
+                                </b>
+                            </td>
+                            <td valign="top">Comune:</td>
+                            <td valign="top">
+                                <b>
+                                    <xsl:value-of select="Istanze/Richiedente/ComuneResidenza/COMUNE" />
+                                </b>
+                            </td>
+                            <td valign="top">Prov:</td>
+                            <td valign="top">
+                                <b>
+                                    <xsl:value-of select="Istanze/Richiedente/ComuneResidenza/SIGLAPROVINCIA" />
+                                </b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">in qualità di:</td>
+                            <td valign="top" colspan="5">
+                                <b>
+                                    <xsl:value-of select="Istanze/TipoSoggetto/TIPOSOGGETTO" />
+                                </b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">PEC:</td>
+                            <td valign="top" colspan="2">
+                                <b>
+                                    <xsl:value-of select="Istanze/Richiedente/Pec" />
+                                </b>
+                            </td>
+                            <td valign="top">Mail:</td>
+                            <td valign="top" colspan="2">
+                                <b>
+                                    <xsl:value-of select="Istanze/Richiedente/EMAIL" />
+                                </b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">Telefono:</td>
+                            <td valign="top" colspan="2">
+                                <b>
+                                    <xsl:value-of select="Istanze/Richiedente/TELEFONO" />
+                                </b>
+                            </td>
+                            <td valign="top">Cellulare:</td>
+                            <td valign="top" colspan="2">
+                                <b>
+                                    <xsl:value-of select="Istanze/Richiedente/TELEFONOCELLULARE" />
+                                </b>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            <!-- Fine dati del richiedente-->
+
+
+            <!-- Dati del procuratore-->
+            <xsl:variable name="cfProcuratore" select="substring(Istanze/CODICEPRATICATEL,11,16)">
+            </xsl:variable>
+
+            <xsl:for-each select="/Istanze/Richiedenti/IstanzeRichiedenti/Richiedente[CODICEFISCALE = $cfProcuratore]">
+                <div style="padding: 5px; text-align: center; font-size: 18px; margin-bottom: 10px;">
+                    DATI DEL PROCURATORE
+                </div>
+
+                <div>
+                    <table style="text-align: left;" width="100%">
+                        <tr>
+                            <td valign="top" colspan="6">Dati anagrafici:</td>
+                        </tr>
+                        <tr>
+                            <td valign="top">Nome:</td>
+                            <td valign="top">
+                                <b>
+                                    <xsl:value-of select="NOME" />
+                                </b>
+                            </td>
+                            <td valign="top">Cognome:</td>
+                            <td valign="top">
+                                <b>
+                                    <xsl:value-of select="NOMINATIVO" />
+                                </b>
+                            </td>
+                            <td valign="top">Nato a:</td>
+                            <td valign="top">
+                                <b>
+                                    <xsl:value-of select="ComuneNascita/COMUNE" />
+                                </b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">il:</td>
+                            <td valign="top">
+                                <b>
+                                    <xsl:call-template name="FormatDate">
+                                        <xsl:with-param name="DateTime" select="DATANASCITA" />
+                                    </xsl:call-template>
+                                </b>
+                            </td>
+                            <td valign="top">CF:</td>
+                            <td valign="top" colspan="3">
+                                <b>
+                                    <xsl:value-of select="CODICEFISCALE" />
+                                </b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top" colspan="6">Residente in:</td>
+                        </tr>
+                        <tr>
+                            <td valign="top">Via:</td>
+                            <td valign="top">
+                                <b>
+                                    <xsl:value-of select="INDIRIZZO" />
+                                </b>
+                            </td>
+                            <td valign="top">Comune:</td>
+                            <td valign="top">
+                                <b>
+                                    <xsl:value-of select="ComuneResidenza/COMUNE" />
+                                </b>
+                            </td>
+                            <td valign="top">Prov:</td>
+                            <td valign="top">
+                                <b>
+                                    <xsl:value-of select="ComuneResidenza/SIGLAPROVINCIA" />
+                                </b>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td valign="top">PEC:</td>
+                            <td valign="top" colspan="2">
+                                <b>
+                                    <xsl:value-of select="Pec" />
+                                </b>
+                            </td>
+                            <td valign="top">Mail:</td>
+                            <td valign="top" colspan="2">
+                                <b>
+                                    <xsl:value-of select="EMAIL" />
+                                </b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">Telefono:</td>
+                            <td valign="top" colspan="2">
+                                <b>
+                                    <xsl:value-of select="TELEFONO" />
+                                </b>
+                            </td>
+                            <td valign="top">Cellulare:</td>
+                            <td valign="top" colspan="2">
+                                <b>
+                                    <xsl:value-of select="TELEFONOCELLULARE" />
+                                </b>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </xsl:for-each>
+                <!-- Fine dati del procuratore-->
+                <!--
+        <xsl:if test="count(/Istanze/Richiedenti/IstanzeRichiedenti/OggettoProcura/NOMEFILE) != 0">
+            <div style="padding: 5px; text-align: center; font-size: 18px; margin-bottom: 10px;">
+                PROCURE
+            </div>
+            <ul>
+                <xsl:for-each select="/Istanze/Richiedenti/IstanzeRichiedenti">
+                    <xsl:if test="count(/Istanze/DocumentiIstanza[DOCUMENTO='Delega a trasmettere']) &gt; 0">
+                        <li>
+                            <b>Procuratore: </b>&#160;
+                            <xsl:value-of select="Procuratore/NOMINATIVO" />&#160;
+                            <xsl:value-of select="Procuratore/NOME" /><br />
+                            <b>Procurato: </b>&#160;
+                            <xsl:value-of select="Richiedente/NOMINATIVO" />&#160;
+                            <xsl:value-of select="Richiedente/NOME" /><br />
+                            <b>Nome file:</b>&#160;
+                            <xsl:value-of select="OggettoProcura/NOMEFILE" />
+                        </li>
+                    </xsl:if>
+                </xsl:for-each>
+            </ul>
+        </xsl:if>
+        -->
+
+                <div style="padding: 5px; text-align: center; font-size: 18px">
+                    ELENCO DEI DOCUMENTI DIGITALI ALLEGATI
+                </div>
+
+                <div style="text-align: left;">
+                    <ul>
+                        <xsl:for-each select="Istanze/DocumentiIstanza/DocumentiIstanza">
+                            <li>
+                                <div class="dato">
+                                    <b>
+                                        <xsl:value-of select="DOCUMENTO" />
+                                    </b>
+                                </div>
+                                <xsl:value-of select="Oggetto/NOMEFILE" />
+                            </li>
+                        </xsl:for-each>
+
+                        <xsl:for-each select="Istanze/EndoProcedimenti/IstanzeProcedimenti">
+                            <xsl:if test="count(IstanzeAllegati[PRESENTE = '1']) > 0">
+
+                                <xsl:for-each select="IstanzeAllegati">
+                                    <xsl:if test="PRESENTE != '0'">
+                                        <li>
+                                            <div class="dato">
+                                                <b>
+                                                    <xsl:value-of select="ALLEGATOEXTRA" />
+                                                </b>
+                                            </div>
+                                            <div class="nomeFile">
+                                                <xsl:value-of select="Oggetto/NOMEFILE" />
+                                            </div>
+                                        </li>
+                                    </xsl:if>
+                                </xsl:for-each>
+                            </xsl:if>
+                        </xsl:for-each>
+                    </ul>
+                </div>
+</center>
+	</body>
+</html>

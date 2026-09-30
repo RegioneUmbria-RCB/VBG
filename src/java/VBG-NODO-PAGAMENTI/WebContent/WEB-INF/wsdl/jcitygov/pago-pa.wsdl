@@ -1,0 +1,1178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+				  xmlns:tns="http://schemi.informatica.maggioli.it/ws/pagopa/ServiziInterni"
+				  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/"
+				  targetNamespace="http://schemi.informatica.maggioli.it/ws/pagopa/ServiziInterni">
+	<wsdl:types>
+		<xs:schema targetNamespace="http://schemi.informatica.maggioli.it/ws/pagopa/ServiziInterni" elementFormDefault="qualified">
+			
+			<xs:element name="CreaAvvisiPagamentoRequest" type="tns:RichiestaStandard"/>
+			<xs:element name="CreaAvvisiPagamentoResponse" type="tns:RispostaStandard"/>
+
+			<xs:element name="ScaricaFlussiAgidRequest" type="tns:RichiestaStandard"/>
+			<xs:element name="ScaricaFlussiAgidResponse" type="tns:RispostaStandard"/>
+
+			<!-- 20220208 numvo metodo per la creazione degli avvisi di pagamento -->
+			<xs:element name="InviaDovutiRequest" type="tns:RichiestaStandard"/>
+			<xs:element name="InviaDovutiResponse" type="tns:RispostaStandard"/>
+			
+			<xs:element name="CancellaDovutiRequest" type="tns:RichiestaStandard"/>
+			<xs:element name="CancellaDovutiResponse" type="tns:RispostaStandard"/>
+
+			<xs:element name="AttivaDovutiRequest" type="tns:RichiestaStandard"/>
+			<xs:element name="AttivaDovutiResponse" type="tns:RispostaStandard"/>
+			
+			<xs:element name="ModificaDovutiRequest" type="tns:RichiestaStandard"/>
+			<xs:element name="ModificaDovutiResponse" type="tns:RispostaStandard"/>
+			
+			
+			
+			<!-- 20201214 nuovo metodo per caricamento puntuale  -->
+			<xs:element name="CreaAvvisoPagamentoRequest" type="tns:RichiestaStandard"/>
+			<xs:element name="CreaAvvisoPagamentoResponse" type="tns:RispostaStandard"/>
+			
+			<xs:element name="ModificaContribuenteRequest" type="tns:RichiestaStandard"/>
+			<xs:element name="ModificaContribuenteResponse" type="tns:RispostaStandard"/>
+			<xs:element name="ModificaImportoRequest" type="tns:RichiestaStandard"/>
+			<xs:element name="ModificaImportoResponse" type="tns:RispostaStandard"/>
+			<xs:element name="ModificaCausaleRequest" type="tns:RichiestaStandard"/>
+			<xs:element name="ModificaCausaleResponse" type="tns:RispostaStandard"/>
+			
+			<!-- 20201116 metodi utilizzati da Concilia -->
+			<xs:element name="ModificaAnnoCompetenzaRequest" type="tns:RichiestaStandard"/>			
+			<xs:element name="ModificaAnnoCompetenzaResponse" type="tns:RispostaStandard"/>
+
+			<xs:element name="ModificaDettagliImportoRequest" type="tns:RichiestaStandard"/>
+			<xs:element name="ModificaDettagliImportoResponse" type="tns:RispostaStandard"/>
+
+			<!-- 20201116 metodi utilizzati da Concilia -->
+			
+			<xs:element name="SostituisciAvvisoPagamentoRequest" type="tns:RichiestaStandard"/>
+			<xs:element name="SostituisciAvvisoPagamentoResponse" type="tns:RispostaStandard"/>
+			<xs:element name="EliminaAvvisoPagamentoRequest" type="tns:RichiestaStandard"/>
+			<xs:element name="EliminaAvvisoPagamentoResponse" type="tns:RispostaStandard"/>
+			<xs:element name="AttivaAvvisiPagamentoRequest" type="tns:RichiestaStandard"/>
+			<xs:element name="AttivaAvvisiPagamentoResponse" type="tns:RispostaStandard"/>
+			<xs:element name="AttivaAvvisiPagamentoPerIdLottoRequest" type="tns:RichiestaStandard"/>
+			<xs:element name="AttivaAvvisiPagamentoPerIdLottoResponse" type="tns:RispostaStandard"/>
+			
+			<!-- 20200622 aggiunto il metodo pagadebiti per pos -->
+			<xs:element name="PagaDebitiRequest" type="tns:RichiestaStandard"/>
+			<xs:element name="PagaDebitiResponse" type="tns:RispostaStandard"/>
+
+			<xs:element name="PagaDebitoPOSRequest" type="tns:RichiestaStandard"/>
+			<xs:element name="PagaDebitoPOSResponse" type="tns:RispostaStandard"/>
+
+			<!-- 20200622 aggiunto il metodo pagadebiti per pos -->
+
+			<xs:element name="InfoPagamentoTransazioneRequest" type="tns:RichiestaStandard"/>
+			<xs:element name="InfoPagamentoTransazioneResponse" type="tns:RispostaStandard"/>
+			<xs:element name="InfoPagamentoDebitoRequest" type="tns:RichiestaStandard"/>
+			<xs:element name="InfoPagamentoDebitoResponse" type="tns:RispostaStandard"/>
+			
+			<!-- 20200325 INIZIO METODI PER LA RICONCILIAZIONE -->
+			
+			<!-- METODI CHE ANDRANNO AD ESSERE DEPRECATI -->
+			<xs:element name="InfoRiconciliazioneFlussoRequest" type="tns:RichiestaStandard"/>
+			<xs:element name="InfoRiconciliazioneFlussoResponse" type="tns:RispostaStandard"/>
+			<xs:element name="InfoRiconciliazioneFlussoRendicontazioneRequest" type="tns:RichiestaStandard"/>
+			<xs:element name="InfoRiconciliazioneFlussoRendicontazioneResponse" type="tns:RispostaStandard"/>
+			<xs:element name="InfoRiconciliazioneVersamentoRequest" type="tns:RichiestaStandard"/>
+			<xs:element name="InfoRiconciliazioneVersamentoResponse" type="tns:RispostaStandard"/>
+			<xs:element name="InfoRiconciliazioneFlussoCassaRequest" type="tns:RichiestaStandard"/>
+			<xs:element name="InfoRiconciliazioneFlussoCassaResponse" type="tns:RispostaStandard"/>
+			<!-- METODI CHE ANDRANNO AD ESSERE DEPRECATI -->
+			
+			<!-- UNICO METODO GENERALIZZATO PER GESTIRE LA RICONCILIAZIONE -->			
+			<xs:element name="InfoRiconciliazioneRequest" type="tns:RichiestaStandard"/>
+			<xs:element name="InfoRiconciliazioneResponse" type="tns:RispostaStandard"/>			
+			<!-- UNICO METODO GENERALIZZATO PER GESTIRE LA RICONCILIAZIONE -->		
+						
+			<!-- 20200325 FINE METODI PER LA RICONCILIAZIONE -->
+			
+			<!-- 20180921 INIZIO BOLZANO -->
+			<xs:element name="InfoAvvisoPagamentoPerNumeroAvvisoRequest" type="tns:RichiestaStandard"/>
+			<xs:element name="InfoAvvisoPagamentoPerNumeroAvvisoResponse" type="tns:RispostaStandard"/>
+			<xs:element name="InfoAvvisiPagamentoPerIdPosRequest" type="tns:RichiestaStandard"/>
+			<xs:element name="InfoAvvisiPagamentoPerIdPosResponse" type="tns:RispostaStandard"/>
+			<xs:element name="InfoAvvisoPagamentoPerChiaveDebitoRequest" type="tns:RichiestaStandard"/>
+			<xs:element name="InfoAvvisoPagamentoPerChiaveDebitoResponse" type="tns:RispostaStandard"/>
+			<!-- 20180921 FINE BOLZANO -->
+
+
+			<!-- 20220725 INIZIO -->
+
+			<xs:element name="InfoPagamentoPerIuvRequest" type="tns:RichiestaStandard"/>
+			<xs:element name="InfoPagamentoPerIuvResponse" type="tns:RispostaStandard"/>
+
+			<!-- 20220725 FINE -->
+
+			<!-- 
+			<xs:element name="RecuperaRicevutaTelematicaRequest" type="tns:RichiestaStandard"/>
+			<xs:element name="RecuperaRicevutaTelematicaResponse" type="tns:RispostaStandard"/>
+			-->
+
+			<!-- 20200529 Metodo per recuperare i pagamenti effettuati in un determinato periodo -->
+			
+			<xs:element name="InfoListaPagamentiRequest" type="tns:RichiestaStandard"/>
+			<xs:element name="InfoListaPagamentiResponse" type="tns:RispostaStandard"/>
+			
+			<!-- 20200529 Metodo per recuperare i pagamenti effettuati in un determinato periodo -->
+
+			<!-- 20201210  recupero dei flussi di rendicontazione dalla data alla data -->
+			<xs:element name="InfoListaFlussiRendicontazioneRequest" type="tns:RichiestaStandard"/>
+			<xs:element name="InfoListaFlussiRendicontazioneResponse" type="tns:RispostaStandard"/>
+			<!-- 20201210  recupero dei flussi di rendicontazione dalla data alla data -->			
+			
+			<!-- 20210329 recupero degli scarti per i connettori che ammettono caricamenti -->
+			<xs:element name="InfoListaScartiCaricamentoDebitiPdpRequest" type="tns:RichiestaStandard"/>
+			<xs:element name="InfoListaScartiCaricamentoDebitiPdpResponse" type="tns:RispostaStandard"/>			
+			<!-- 20210329 recupero degli scarti per i connettori che ammettono caricamenti -->
+
+			<!-- 20210531 Recupero avvisi pagamento con criteri di ricerca multipli per BOLZANO -->
+			<xs:element name="InfoAvvisiPagamentoRequest" type="tns:RichiestaStandard"/>
+			<xs:element name="InfoAvvisiPagamentoResponse" type="tns:RispostaStandard"/>
+			<!-- 20210531 Recupero avvisi pagamento con criteri di ricerca multipli per BOLZANO -->
+
+			<!-- 20210611 Metodo per cambio gruppo debito -->
+			<xs:element name="ModificaGruppoDebitiRequest" type="tns:RichiestaStandard"/>
+			<xs:element name="ModificaGruppoDebitiResponse" type="tns:RispostaStandard"/>
+			
+			<!-- 20210702 Metodo per lista terminali pos-->
+			<xs:element name="InfoListaTerminaliPOSRequest" type="tns:RichiestaStandard"/>
+			<xs:element name="InfoListaTerminaliPOSResponse" type="tns:RispostaStandard"/>
+
+			<!-- 20220722 Metodo per il caricamento sincrono dovuto -->
+			<xs:element name="InviaDovutoRequest" type="tns:RichiestaStandard"/>
+			<xs:element name="InviaDovutoResponse" type="tns:RispostaStandard"/>
+						
+			<xs:complexType name="RichiestaStandard">
+				<xs:sequence>
+					<xs:element name="CodiceIPA" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Codice IPA dell'ente che presenta la richiesta
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="CodiceServizio" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Codice servizio che sta effettuando la chiamata version JCG-PagoPA</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="IDOperazione" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Codice identificativo della richiesta</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="DataRichiesta" type="xs:dateTime">
+						<xs:annotation>
+							<xs:documentation>La Data e ora in cui è avvenuta la richiesta (esempio: 2006-12-31T20:45:06Z)</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Versione" type="xs:string" minOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Versione della richiesta</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="DatiDettaglioRichiesta" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Un campo stringa con i dati relativi allo specifico servizio invocato</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="RispostaStandard">
+				<xs:sequence>
+					<xs:element name="CodiceIPA" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Codice IPA dell'ente che fornisce la risposta</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="IDOperazione" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Codice identificativo della risposta</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="DataRisposta" type="xs:dateTime">
+						<xs:annotation>
+							<xs:documentation>La Data e ora in cui è stata fornita la risposta (esempio: 2006-12-31T20:45:06Z)</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="EsitoOperazione">
+						<xs:annotation>
+							<xs:documentation>Restituisce l'esito dell'elaborazione, i valori restituiti possono essere OK o  Error</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:enumeration value="OK"/>
+								<xs:enumeration value="Error"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="Messaggi" minOccurs="0">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Messaggio" maxOccurs="unbounded">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element name="Codice" type="xs:string">
+												<xs:annotation>
+													<xs:documentation>Codice Messaggio di errore</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+											<xs:element name="Descrizione" type="xs:string">
+												<xs:annotation>
+													<xs:documentation>Descrizione Messaggio di errore</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="DatiDettaglioRisposta" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Oggetto di risposta</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+		</xs:schema>
+	</wsdl:types>
+	
+	<wsdl:message name="ScaricaFlussiAgidRequest">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<wsdl:part name="ScaricaFlussiAgidRequest" element="tns:ScaricaFlussiAgidRequest"/>
+	</wsdl:message>
+	<wsdl:message name="ScaricaFlussiAgidResponse">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<wsdl:part name="ScaricaFlussiAgidResponse" element="tns:ScaricaFlussiAgidResponse"/>
+	</wsdl:message>
+
+	
+	<wsdl:message name="CreaAvvisiPagamentoRequest">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<wsdl:part name="CreaAvvisiPagamentoRequest" element="tns:CreaAvvisiPagamentoRequest"/>
+	</wsdl:message>
+	<wsdl:message name="CreaAvvisiPagamentoResponse">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<wsdl:part name="CreaAvvisiPagamentoResponse" element="tns:CreaAvvisiPagamentoResponse"/>
+	</wsdl:message>	
+	<wsdl:message name="InviaDovutiRequest">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<wsdl:part name="InviaDovutiRequest" element="tns:InviaDovutiRequest"/>
+	</wsdl:message>
+	<wsdl:message name="InviaDovutiResponse">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<wsdl:part name="InviaDovutiResponse" element="tns:InviaDovutiResponse"/>
+	</wsdl:message>
+	<wsdl:message name="CancellaDovutiRequest">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<wsdl:part name="CancellaDovutiRequest" element="tns:CancellaDovutiRequest"/>
+	</wsdl:message>
+	<wsdl:message name="CancellaDovutiResponse">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<wsdl:part name="CancellaDovutiResponse" element="tns:CancellaDovutiResponse"/>
+	</wsdl:message>
+	<wsdl:message name="AttivaDovutiRequest">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<wsdl:part name="AttivaDovutiRequest" element="tns:AttivaDovutiRequest"/>
+	</wsdl:message>
+	<wsdl:message name="AttivaDovutiResponse">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<wsdl:part name="AttivaDovutiResponse" element="tns:AttivaDovutiResponse"/>
+	</wsdl:message>
+	<wsdl:message name="ModificaDovutiRequest">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<wsdl:part name="ModificaDovutiRequest" element="tns:ModificaDovutiRequest"/>
+	</wsdl:message>
+	<wsdl:message name="ModificaDovutiResponse">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<wsdl:part name="ModificaDovutiResponse" element="tns:ModificaDovutiResponse"/>
+	</wsdl:message>
+	<wsdl:message name="CreaAvvisoPagamentoRequest">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<wsdl:part name="CreaAvvisoPagamentoRequest" element="tns:CreaAvvisoPagamentoRequest"/>
+	</wsdl:message>
+	<wsdl:message name="CreaAvvisoPagamentoResponse">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<wsdl:part name="CreaAvvisoPagamentoResponse" element="tns:CreaAvvisoPagamentoResponse"/>
+	</wsdl:message>	
+	<wsdl:message name="ModificaContribuenteRequest">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<wsdl:part name="ModificaContribuenteRequest" element="tns:ModificaContribuenteRequest"/>
+	</wsdl:message>
+	<wsdl:message name="ModificaContribuenteResponse">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<wsdl:part name="ModificaContribuenteResponse" element="tns:ModificaContribuenteResponse"/>
+	</wsdl:message>
+	<wsdl:message name="ModificaImportoRequest">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<wsdl:part name="ModificaImportoRequest" element="tns:ModificaImportoRequest"/>
+	</wsdl:message>
+	<wsdl:message name="ModificaImportoResponse">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<wsdl:part name="ModificaImportoResponse" element="tns:ModificaImportoResponse"/>
+	</wsdl:message>	
+	<wsdl:message name="ModificaCausaleRequest">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<wsdl:part name="ModificaCausaleRequest" element="tns:ModificaCausaleRequest"/>
+	</wsdl:message>
+	<wsdl:message name="ModificaCausaleResponse">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<wsdl:part name="ModificaCausaleResponse" element="tns:ModificaCausaleResponse"/>
+	</wsdl:message>
+
+	<wsdl:message name="ModificaAnnoCompetenzaRequest">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<wsdl:part name="ModificaAnnoCompetenzaRequest" element="tns:ModificaAnnoCompetenzaRequest"/>
+	</wsdl:message>
+	<wsdl:message name="ModificaAnnoCompetenzaResponse">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<wsdl:part name="ModificaAnnoCompetenzaResponse" element="tns:ModificaAnnoCompetenzaResponse"/>
+	</wsdl:message>
+	<wsdl:message name="ModificaDettagliImportoRequest">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<wsdl:part name="ModificaDettagliImportoRequest" element="tns:ModificaDettagliImportoRequest"/>
+	</wsdl:message>
+	<wsdl:message name="ModificaDettagliImportoResponse">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<wsdl:part name="ModificaDettagliImportoResponse" element="tns:ModificaDettagliImportoResponse"/>
+	</wsdl:message>
+	<wsdl:message name="SostituisciAvvisoPagamentoRequest">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<wsdl:part name="SostituisciAvvisoPagamentoRequest" element="tns:SostituisciAvvisoPagamentoRequest"/>
+	</wsdl:message>
+	<wsdl:message name="SostituisciAvvisoPagamentoResponse">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<wsdl:part name="SostituisciAvvisoPagamentoResponse" element="tns:SostituisciAvvisoPagamentoResponse"/>
+	</wsdl:message>
+	<wsdl:message name="EliminaAvvisoPagamentoRequest">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<wsdl:part name="EliminaAvvisoPagamentoRequest" element="tns:EliminaAvvisoPagamentoRequest"/>
+	</wsdl:message>
+	<wsdl:message name="EliminaAvvisoPagamentoResponse">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<wsdl:part name="EliminaAvvisoPagamentoResponse" element="tns:EliminaAvvisoPagamentoResponse"/>
+	</wsdl:message>
+	<wsdl:message name="AttivaAvvisiPagamentoRequest">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<wsdl:part name="AttivaAvvisiPagamentoRequest" element="tns:AttivaAvvisiPagamentoRequest"/>
+	</wsdl:message>
+	<wsdl:message name="AttivaAvvisiPagamentoResponse">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<wsdl:part name="AttivaAvvisiPagamentoResponse" element="tns:AttivaAvvisiPagamentoResponse"/>
+	</wsdl:message>
+	
+	<wsdl:message name="AttivaAvvisiPagamentoPerIdLottoRequest">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<wsdl:part name="AttivaAvvisiPagamentoPerIdLottoRequest" element="tns:AttivaAvvisiPagamentoPerIdLottoRequest"/>
+	</wsdl:message>
+	<wsdl:message name="AttivaAvvisiPagamentoPerIdLottoResponse">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<wsdl:part name="AttivaAvvisiPagamentoPerIdLottoResponse" element="tns:AttivaAvvisiPagamentoPerIdLottoResponse"/>
+	</wsdl:message>
+	
+	<wsdl:message name="PagaDebitiRequest">
+		<wsdl:part name="PagaDebitiRequest" element="tns:PagaDebitiRequest"/>
+	</wsdl:message>
+	<wsdl:message name="PagaDebitiResponse">
+		<wsdl:part name="PagaDebitiResponse" element="tns:PagaDebitiResponse"/>
+	</wsdl:message>
+	<wsdl:message name="PagaDebitoPOSRequest">
+		<wsdl:part name="PagaDebitoPOSRequest" element="tns:PagaDebitoPOSRequest"/>
+	</wsdl:message>
+	<wsdl:message name="PagaDebitoPOSResponse">
+		<wsdl:part name="PagaDebitoPOSResponse" element="tns:PagaDebitoPOSResponse"/>
+	</wsdl:message>
+	<wsdl:message name="InfoPagamentoTransazioneRequest">
+		<wsdl:part name="InfoPagamentoTransazioneRequest" element="tns:InfoPagamentoTransazioneRequest"/>
+	</wsdl:message>
+	<wsdl:message name="InfoPagamentoTransazioneResponse">
+		<wsdl:part name="InfoPagamentoTransazioneResponse" element="tns:InfoPagamentoTransazioneResponse"/>
+	</wsdl:message>
+	<wsdl:message name="InfoPagamentoDebitoRequest">
+		<wsdl:part name="InfoPagamentoDebitoRequest" element="tns:InfoPagamentoDebitoRequest"/>
+	</wsdl:message>
+	<wsdl:message name="InfoPagamentoDebitoResponse">
+		<wsdl:part name="InfoPagamentoDebitoResponse" element="tns:InfoPagamentoDebitoResponse"/>
+	</wsdl:message>
+	<wsdl:message name="InfoRiconciliazioneFlussoRequest">
+		<wsdl:part name="InfoRiconciliazioneFlussoRequest" element="tns:InfoRiconciliazioneFlussoRequest"/>
+	</wsdl:message>
+	<wsdl:message name="InfoRiconciliazioneFlussoResponse">
+		<wsdl:part name="InfoRiconciliazioneFlussoResponse" element="tns:InfoRiconciliazioneFlussoResponse"/>
+	</wsdl:message>
+	<wsdl:message name="InfoRiconciliazioneFlussoRendicontazioneRequest">
+		<wsdl:part name="InfoRiconciliazioneFlussoRendicontazioneRequest" element="tns:InfoRiconciliazioneFlussoRendicontazioneRequest"/>
+	</wsdl:message>
+	<wsdl:message name="InfoRiconciliazioneFlussoRendicontazioneResponse">
+		<wsdl:part name="InfoRiconciliazioneFlussoRendicontazioneResponse" element="tns:InfoRiconciliazioneFlussoRendicontazioneResponse"/>
+	</wsdl:message>
+	<wsdl:message name="InfoRiconciliazioneVersamentoRequest">
+		<wsdl:part name="InfoRiconciliazioneVersamentoRequest" element="tns:InfoRiconciliazioneVersamentoRequest"/>
+	</wsdl:message>
+	<wsdl:message name="InfoRiconciliazioneVersamentoResponse">
+		<wsdl:part name="InfoRiconciliazioneVersamentoResponse" element="tns:InfoRiconciliazioneVersamentoResponse"/>
+	</wsdl:message>
+	
+	<wsdl:message name="InfoRiconciliazioneFlussoCassaRequest">
+		<wsdl:part name="InfoRiconciliazioneFlussoCassaRequest" element="tns:InfoRiconciliazioneFlussoCassaRequest"/>
+	</wsdl:message>
+	<wsdl:message name="InfoRiconciliazioneFlussoCassaResponse">
+		<wsdl:part name="InfoRiconciliazioneFlussoCassaResponse" element="tns:InfoRiconciliazioneFlussoCassaResponse"/>
+	</wsdl:message>
+
+	<wsdl:message name="InfoRiconciliazioneRequest">
+		<wsdl:part name="InfoRiconciliazioneRequest" element="tns:InfoRiconciliazioneRequest"/>
+	</wsdl:message>
+	<wsdl:message name="InfoRiconciliazioneResponse">
+		<wsdl:part name="InfoRiconciliazioneResponse" element="tns:InfoRiconciliazioneResponse"/>
+	</wsdl:message>	
+	<wsdl:message name="InfoAvvisoPagamentoPerNumeroAvvisoRequest">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<wsdl:part name="InfoAvvisoPagamentoPerNumeroAvvisoRequest" element="tns:InfoAvvisoPagamentoPerNumeroAvvisoRequest"/>
+	</wsdl:message>
+	<wsdl:message name="InfoAvvisoPagamentoPerNumeroAvvisoResponse">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<wsdl:part name="InfoAvvisoPagamentoPerNumeroAvvisoResponse" element="tns:InfoAvvisoPagamentoPerNumeroAvvisoResponse"/>
+	</wsdl:message>
+	<wsdl:message name="InfoAvvisiPagamentoPerIdPosRequest">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<wsdl:part name="InfoAvvisiPagamentoPerIdPosRequest" element="tns:InfoAvvisiPagamentoPerIdPosRequest"/>
+	</wsdl:message>
+	<wsdl:message name="InfoAvvisiPagamentoPerIdPosResponse">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<wsdl:part name="InfoAvvisiPagamentoPerIdPosResponse" element="tns:InfoAvvisiPagamentoPerIdPosResponse"/>
+	</wsdl:message>
+	<wsdl:message name="InfoAvvisoPagamentoPerChiaveDebitoRequest">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<wsdl:part name="InfoAvvisoPagamentoPerChiaveDebitoRequest" element="tns:InfoAvvisoPagamentoPerChiaveDebitoRequest"/>
+	</wsdl:message>
+	<wsdl:message name="InfoAvvisoPagamentoPerChiaveDebitoResponse">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<wsdl:part name="InfoAvvisoPagamentoPerChiaveDebitoResponse" element="tns:InfoAvvisoPagamentoPerChiaveDebitoResponse"/>
+	</wsdl:message>
+
+	<!-- 20220725 -->
+	<wsdl:message name="InfoPagamentoPerIuvRequest">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<wsdl:part name="InfoPagamentoPerIuvRequest" element="tns:InfoPagamentoPerIuvRequest"/>
+	</wsdl:message>
+	<wsdl:message name="InfoPagamentoPerIuvResponse">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<wsdl:part name="InfoPagamentoPerIuvResponse" element="tns:InfoPagamentoPerIuvResponse"/>
+	</wsdl:message>
+	<!-- 20220725 -->
+	<!-- 20200529 -->
+	<wsdl:message name="InfoListaPagamentiRequest">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<wsdl:part name="InfoListaPagamentiRequest" element="tns:InfoListaPagamentiRequest"/>
+	</wsdl:message>
+	<wsdl:message name="InfoListaPagamentiResponse">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<wsdl:part name="InfoListaPagamentiResponse" element="tns:InfoListaPagamentiResponse"/>
+	</wsdl:message>
+	<!-- 20200529 -->
+
+	<!-- 20201210 -->
+	<wsdl:message name="InfoListaFlussiRendicontazioneRequest">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<wsdl:part name="InfoListaFlussiRendicontazioneRequest" element="tns:InfoListaFlussiRendicontazioneRequest"/>
+	</wsdl:message>
+	<wsdl:message name="InfoListaFlussiRendicontazioneResponse">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<wsdl:part name="InfoListaFlussiRendicontazioneResponse" element="tns:InfoListaFlussiRendicontazioneResponse"/>
+	</wsdl:message>
+	<!-- 20201210 -->
+
+	<!-- 20210329 -->
+	<wsdl:message name="InfoListaScartiCaricamentoDebitiPdpRequest">
+		<wsdl:part name="InfoListaScartiCaricamentoDebitiPdpRequest" element="tns:InfoListaScartiCaricamentoDebitiPdpRequest"/>
+	</wsdl:message>
+	<wsdl:message name="InfoListaScartiCaricamentoDebitiPdpResponse">
+		<wsdl:part name="InfoListaScartiCaricamentoDebitiPdpResponse" element="tns:InfoListaScartiCaricamentoDebitiPdpResponse"/>
+	</wsdl:message>
+	<!-- 20210329 -->
+
+	<!-- 20210531 -->
+	<wsdl:message name="InfoAvvisiPagamentoRequest">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<wsdl:part name="InfoAvvisiPagamentoRequest" element="tns:InfoAvvisiPagamentoRequest"/>
+	</wsdl:message>
+	<wsdl:message name="InfoAvvisiPagamentoResponse">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<wsdl:part name="InfoAvvisiPagamentoResponse" element="tns:InfoAvvisiPagamentoResponse"/>
+	</wsdl:message>
+	<!-- 20210531 -->
+
+	<!-- 20210611 -->
+	<wsdl:message name="ModificaGruppoDebitiRequest">
+		<wsdl:part name="ModificaGruppoDebitiRequest" element="tns:ModificaGruppoDebitiRequest"/>
+	</wsdl:message>
+	<wsdl:message name="ModificaGruppoDebitiResponse">
+		<wsdl:part name="ModificaGruppoDebitiResponse" element="tns:ModificaGruppoDebitiResponse"/>
+	</wsdl:message>
+	<!-- 20210611 -->
+	
+	<!-- 20210702 -->
+	<wsdl:message name="InfoListaTerminaliPOSRequest">
+		<wsdl:part name="InfoListaTerminaliPOSRequest" element="tns:InfoListaTerminaliPOSRequest"/>
+	</wsdl:message>
+	<wsdl:message name="InfoListaTerminaliPOSResponse">
+		<wsdl:part name="InfoListaTerminaliPOSResponse" element="tns:InfoListaTerminaliPOSResponse"/>
+	</wsdl:message>
+	<!-- 20210702 -->
+
+	<!-- 20220722 -->
+	<wsdl:message name="InviaDovutoRequest">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<wsdl:part name="InviaDovutoRequest" element="tns:InviaDovutoRequest"/>
+	</wsdl:message>
+	<wsdl:message name="InviaDovutoResponse">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<wsdl:part name="InviaDovutoResponse" element="tns:InviaDovutoResponse"/>
+	</wsdl:message>
+	<!-- 20220722 -->
+
+	<wsdl:portType name="PagoPAInternalEndpoint">
+		<wsdl:operation name="CreaAvvisiPagamento">
+			<wsdl:input name="CreaAvvisiPagamentoRequest" message="tns:CreaAvvisiPagamentoRequest"/>
+			<wsdl:output name="CreaAvvisiPagamentoResponse" message="tns:CreaAvvisiPagamentoResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="InviaDovuti">
+			<wsdl:input name="InviaDovutiRequest" message="tns:InviaDovutiRequest"/>
+			<wsdl:output name="InviaDovutiResponse" message="tns:InviaDovutiResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="CancellaDovuti">
+			<wsdl:input name="CancellaDovutiRequest" message="tns:CancellaDovutiRequest"/>
+			<wsdl:output name="CancellaDovutiResponse" message="tns:CancellaDovutiResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="AttivaDovuti">
+			<wsdl:input name="AttivaDovutiRequest" message="tns:AttivaDovutiRequest"/>
+			<wsdl:output name="AttivaDovutiResponse" message="tns:AttivaDovutiResponse"/>
+		</wsdl:operation>		
+		<wsdl:operation name="ModificaDovuti">
+			<wsdl:input name="ModificaDovutiRequest" message="tns:ModificaDovutiRequest"/>
+			<wsdl:output name="ModificaDovutiResponse" message="tns:ModificaDovutiResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="CreaAvvisoPagamento">
+			<wsdl:input name="CreaAvvisoPagamentoRequest" message="tns:CreaAvvisoPagamentoRequest"/>
+			<wsdl:output name="CreaAvvisoPagamentoResponse" message="tns:CreaAvvisoPagamentoResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="ModificaContribuenteAvvisoPagamento">
+			<wsdl:input name="ModificaContribuenteRequest" message="tns:ModificaContribuenteRequest"/>
+			<wsdl:output name="ModificaContribuenteResponse" message="tns:ModificaContribuenteResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="ModificaImportoAvvisoPagamento">
+			<wsdl:input name="ModificaImportoRequest" message="tns:ModificaImportoRequest"/>
+			<wsdl:output name="ModificaImportoResponse" message="tns:ModificaImportoResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="ModificaCausaleAvvisoPagamento">
+			<wsdl:input name="ModificaCausaleRequest" message="tns:ModificaCausaleRequest"/>
+			<wsdl:output name="ModificaCausaleResponse" message="tns:ModificaCausaleResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="ModificaAnnoCompetenza">
+			<wsdl:input name="ModificaAnnoCompetenzaRequest" message="tns:ModificaAnnoCompetenzaRequest"/>
+			<wsdl:output name="ModificaAnnoCompetenzaResponse" message="tns:ModificaAnnoCompetenzaResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="ModificaDettagliImporto">
+			<wsdl:input name="ModificaDettagliImportoRequest" message="tns:ModificaDettagliImportoRequest"/>
+			<wsdl:output name="ModificaDettagliImportoResponse" message="tns:ModificaDettagliImportoResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="SostituisciAvvisoPagamento">
+			<wsdl:input name="SostituisciAvvisoPagamentoRequest" message="tns:SostituisciAvvisoPagamentoRequest"/>
+			<wsdl:output name="SostituisciAvvisoPagamentoResponse" message="tns:SostituisciAvvisoPagamentoResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="EliminaAvvisoPagamento">
+			<wsdl:input name="EliminaAvvisoPagamentoRequest" message="tns:EliminaAvvisoPagamentoRequest"/>
+			<wsdl:output name="EliminaAvvisoPagamentoResponse" message="tns:EliminaAvvisoPagamentoResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="AttivaAvvisiPagamento">
+			<wsdl:input name="AttivaAvvisiPagamentoRequest" message="tns:AttivaAvvisiPagamentoRequest"/>
+			<wsdl:output name="AttivaAvvisiPagamentoResponse" message="tns:AttivaAvvisiPagamentoResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="AttivaAvvisiPagamentoPerIdLotto">
+			<wsdl:input name="AttivaAvvisiPagamentoPerIdLottoRequest" message="tns:AttivaAvvisiPagamentoPerIdLottoRequest"/>
+			<wsdl:output name="AttivaAvvisiPagamentoPerIdLottoResponse" message="tns:AttivaAvvisiPagamentoPerIdLottoResponse"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="ScaricaFlussiAgid">
+			<wsdl:input name="ScaricaFlussiAgidRequest" message="tns:ScaricaFlussiAgidRequest"/>
+			<wsdl:output name="ScaricaFlussiAgidResponse" message="tns:ScaricaFlussiAgidResponse"/>
+		</wsdl:operation>
+		
+		
+		<wsdl:operation name="PagaDebiti">
+			<wsdl:input name="PagaDebitiRequest" message="tns:PagaDebitiRequest"/>
+			<wsdl:output name="PagaDebitiResponse" message="tns:PagaDebitiResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="PagaDebitoPOS">
+			<wsdl:input name="PagaDebitoPOSRequest" message="tns:PagaDebitoPOSRequest"/>
+			<wsdl:output name="PagaDebitoPOSResponse" message="tns:PagaDebitoPOSResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="InfoPagamentoTransazione">
+			<wsdl:input name="InfoPagamentoTransazioneRequest" message="tns:InfoPagamentoTransazioneRequest"/>
+			<wsdl:output name="InfoPagamentoTransazioneResponse" message="tns:InfoPagamentoTransazioneResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="InfoPagamentoDebito">
+			<wsdl:input name="InfoPagamentoDebitoRequest" message="tns:InfoPagamentoDebitoRequest"/>
+			<wsdl:output name="InfoPagamentoDebitoResponse" message="tns:InfoPagamentoDebitoResponse"/>
+		</wsdl:operation>
+		<!-- DEPRECATO: UTILIZZARE  InfoRiconciliazioneFlussoRendicontazione -->
+		<wsdl:operation name="InfoRiconciliazioneFlusso">
+			<wsdl:input name="InfoRiconciliazioneFlussoRequest" message="tns:InfoRiconciliazioneFlussoRequest"/>
+			<wsdl:output name="InfoRiconciliazioneFlussoResponse" message="tns:InfoRiconciliazioneFlussoResponse"/>
+		</wsdl:operation>
+		<!--  DEPRECATO -->
+		<wsdl:operation name="InfoRiconciliazioneFlussoRendicontazione">
+			<wsdl:input name="InfoRiconciliazioneFlussoRendicontazioneRequest" message="tns:InfoRiconciliazioneFlussoRendicontazioneRequest"/>
+			<wsdl:output name="InfoRiconciliazioneFlussoRendicontazioneResponse" message="tns:InfoRiconciliazioneFlussoRendicontazioneResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="InfoRiconciliazioneVersamento">
+			<wsdl:input name="InfoRiconciliazioneVersamentoRequest" message="tns:InfoRiconciliazioneVersamentoRequest"/>
+			<wsdl:output name="InfoRiconciliazioneVersamentoResponse" message="tns:InfoRiconciliazioneVersamentoResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="InfoRiconciliazioneFlussoCassa">
+			<wsdl:input name="InfoRiconciliazioneFlussoCassaRequest" message="tns:InfoRiconciliazioneFlussoCassaRequest"/>
+			<wsdl:output name="InfoRiconciliazioneFlussoCassaResponse" message="tns:InfoRiconciliazioneFlussoCassaResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="InfoRiconciliazione">
+			<wsdl:input name="InfoRiconciliazioneRequest" message="tns:InfoRiconciliazioneRequest"/>
+			<wsdl:output name="InfoRiconciliazioneResponse" message="tns:InfoRiconciliazioneResponse"/>
+		</wsdl:operation>		
+				
+		<!-- 20180921 BOLZANO -->
+		<wsdl:operation name="InfoAvvisoPagamentoPerNumeroAvviso">
+			<wsdl:input name="InfoAvvisoPagamentoPerNumeroAvvisoRequest" message="tns:InfoAvvisoPagamentoPerNumeroAvvisoRequest"/>
+			<wsdl:output name="InfoAvvisoPagamentoPerNumeroAvvisoResponse" message="tns:InfoAvvisoPagamentoPerNumeroAvvisoResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="InfoAvvisiPagamentoPerIdPos">
+			<wsdl:input name="InfoAvvisiPagamentoPerIdPosRequest" message="tns:InfoAvvisiPagamentoPerIdPosRequest"/>
+			<wsdl:output name="InfoAvvisiPagamentoPerIdPosResponse" message="tns:InfoAvvisiPagamentoPerIdPosResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="InfoAvvisoPagamentoPerChiaveDebito">
+			<wsdl:input name="InfoAvvisoPagamentoPerChiaveDebitoRequest" message="tns:InfoAvvisoPagamentoPerChiaveDebitoRequest"/>
+			<wsdl:output name="InfoAvvisoPagamentoPerChiaveDebitoResponse" message="tns:InfoAvvisoPagamentoPerChiaveDebitoResponse"/>
+		</wsdl:operation>
+		<!-- 20180921 BOLZANO -->
+
+		<!-- 20220725 -->
+		<wsdl:operation name="InfoPagamentoPerIuv">
+			<wsdl:input name="InfoPagamentoPerIuvRequest" message="tns:InfoPagamentoPerIuvRequest"/>
+			<wsdl:output name="InfoPagamentoPerIuvResponse" message="tns:InfoPagamentoPerIuvResponse"/>
+		</wsdl:operation>
+		<!-- 20220725 -->
+		
+		<!-- 20200529 -->
+		<wsdl:operation name="InfoListaPagamenti">
+			<wsdl:input name="InfoListaPagamentiRequest" message="tns:InfoListaPagamentiRequest"/>
+			<wsdl:output name="InfoListaPagamentiResponse" message="tns:InfoListaPagamentiResponse"/>
+		</wsdl:operation>		
+		<!-- 20200529 -->
+
+		<!-- 20201210 -->
+		<wsdl:operation name="InfoListaFlussiRendicontazione">
+			<wsdl:input name="InfoListaFlussiRendicontazioneRequest" message="tns:InfoListaFlussiRendicontazioneRequest"/>
+			<wsdl:output name="InfoListaFlussiRendicontazioneResponse" message="tns:InfoListaFlussiRendicontazioneResponse"/>
+		</wsdl:operation>		
+		<!-- 20201210 -->
+
+		<!-- 20210329 -->
+		<wsdl:operation name="InfoListaScartiCaricamentoDebitiPdp">
+			<wsdl:input name="InfoListaScartiCaricamentoDebitiPdpRequest" message="tns:InfoListaScartiCaricamentoDebitiPdpRequest"/>
+			<wsdl:output name="InfoListaScartiCaricamentoDebitiPdpResponse" message="tns:InfoListaScartiCaricamentoDebitiPdpResponse"/>
+		</wsdl:operation>		
+		<!-- 20210329 -->
+
+		<!-- 20210531 -->
+		<wsdl:operation name="InfoAvvisiPagamento">
+			<wsdl:input name="InfoAvvisiPagamentoRequest" message="tns:InfoAvvisiPagamentoRequest"/>
+			<wsdl:output name="InfoAvvisiPagamentoResponse" message="tns:InfoAvvisiPagamentoResponse"/>
+		</wsdl:operation>
+		<!-- 20210531 -->
+
+		<!-- 20210611 -->
+		<wsdl:operation name="ModificaGruppoDebiti">
+			<wsdl:input name="ModificaGruppoDebitiRequest" message="tns:ModificaGruppoDebitiRequest"/>
+			<wsdl:output name="ModificaGruppoDebitiResponse" message="tns:ModificaGruppoDebitiResponse"/>
+		</wsdl:operation>
+		<!-- 20210611 -->
+		
+		<!-- 20210702 -->
+		<wsdl:operation name="InfoListaTerminaliPOS">
+			<wsdl:input name="InfoListaTerminaliPOSRequest" message="tns:InfoListaTerminaliPOSRequest"/>
+			<wsdl:output name="InfoListaTerminaliPOSResponse" message="tns:InfoListaTerminaliPOSResponse"/>
+		</wsdl:operation>
+		<!-- 20210702 -->
+
+		<!-- 20220722 -->
+		<wsdl:operation name="InviaDovuto">
+			<wsdl:input name="InviaDovutoRequest" message="tns:InviaDovutoRequest"/>
+			<wsdl:output name="InviaDovutoResponse" message="tns:InviaDovutoResponse"/>
+		</wsdl:operation>
+		<!-- 20220722 -->
+
+	</wsdl:portType>
+	
+	<wsdl:binding name="PagoPAInternalBinding" type="tns:PagoPAInternalEndpoint">
+		<wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="CreaAvvisiPagamento">
+			<wsdlsoap:operation soapAction="http://schemi.informatica.maggioli.it/ws/pagopa/ServiziInterni/CreaAvvisiPagamento"/>
+			<wsdl:input name="CreaAvvisiPagamentoRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="CreaAvvisiPagamentoResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="InviaDovuti">
+			<wsdlsoap:operation soapAction="http://schemi.informatica.maggioli.it/ws/pagopa/ServiziInterni/InviaDovuti"/>
+			<wsdl:input name="InviaDovutiRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="InviaDovutiResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="CancellaDovuti">
+			<wsdlsoap:operation soapAction="http://schemi.informatica.maggioli.it/ws/pagopa/ServiziInterni/CancellaDovuti"/>
+			<wsdl:input name="CancellaDovutiRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="CancellaDovutiResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ScaricaFlussiAgid">
+			<wsdlsoap:operation soapAction="http://schemi.informatica.maggioli.it/ws/pagopa/ServiziInterni/ScaricaFlussiAgid"/>
+			<wsdl:input name="ScaricaFlussiAgidRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="ScaricaFlussiAgidResponse">
+				<mime:multipartRelated>
+		        	<mime:part>
+		          		<wsdlsoap:body use="literal" />
+		        	</mime:part>
+		      	</mime:multipartRelated>
+			</wsdl:output>
+		</wsdl:operation>		
+		<wsdl:operation name="AttivaDovuti">
+			<wsdlsoap:operation soapAction="http://schemi.informatica.maggioli.it/ws/pagopa/ServiziInterni/AttivaDovuti"/>
+			<wsdl:input name="AttivaDovutiRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="AttivaDovutiResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>		
+		<wsdl:operation name="ModificaDovuti">
+			<wsdlsoap:operation soapAction="http://schemi.informatica.maggioli.it/ws/pagopa/ServiziInterni/ModificaDovuti"/>
+			<wsdl:input name="ModificaDovutiRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="ModificaDovutiResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>		
+		<wsdl:operation name="CreaAvvisoPagamento">
+			<wsdlsoap:operation soapAction="http://schemi.informatica.maggioli.it/ws/pagopa/ServiziInterni/CreaAvvisoPagamento"/>
+			<wsdl:input name="CreaAvvisoPagamentoRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="CreaAvvisoPagamentoResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ModificaContribuenteAvvisoPagamento">
+			<wsdlsoap:operation soapAction="http://schemi.informatica.maggioli.it/ws/pagopa/ServiziInterni/ModificaContribuenteAvvisoPagamento"/>
+			<wsdl:input name="ModificaContribuenteRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="ModificaContribuenteResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ModificaImportoAvvisoPagamento">
+			<wsdlsoap:operation soapAction="http://schemi.informatica.maggioli.it/ws/pagopa/ServiziInterni/ModificaImportoAvvisoPagamento"/>
+			<wsdl:input name="ModificaImportoRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="ModificaImportoResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ModificaCausaleAvvisoPagamento">
+			<wsdlsoap:operation soapAction="http://schemi.informatica.maggioli.it/ws/pagopa/ServiziInterni/ModificaCausaleAvvisoPagamento"/>
+			<wsdl:input name="ModificaCausaleRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="ModificaCausaleResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ModificaAnnoCompetenza">
+			<wsdlsoap:operation soapAction="http://schemi.informatica.maggioli.it/ws/pagopa/ServiziInterni/ModificaAnnoCompetenza"/>
+			<wsdl:input name="ModificaAnnoCompetenzaRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="ModificaAnnoCompetenzaResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ModificaDettagliImporto">
+			<wsdlsoap:operation soapAction="http://schemi.informatica.maggioli.it/ws/pagopa/ServiziInterni/ModificaDettagliImporto"/>
+			<wsdl:input name="ModificaDettagliImportoRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="ModificaDettagliImportoResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="SostituisciAvvisoPagamento">
+			<wsdlsoap:operation soapAction="http://schemi.informatica.maggioli.it/ws/pagopa/ServiziInterni/SostituisciAvvisoPagamento"/>
+			<wsdl:input name="SostituisciAvvisoPagamentoRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="SostituisciAvvisoPagamentoResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="EliminaAvvisoPagamento">
+			<wsdlsoap:operation soapAction="http://schemi.informatica.maggioli.it/ws/pagopa/ServiziInterni/EliminaAvvisoPagamento"/>
+			<wsdl:input name="EliminaAvvisoPagamentoRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="EliminaAvvisoPagamentoResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="AttivaAvvisiPagamento">
+			<wsdlsoap:operation soapAction="http://schemi.informatica.maggioli.it/ws/pagopa/ServiziInterni/AttivaAvvisiPagamento"/>
+			<wsdl:input name="AttivaAvvisiPagamentoRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="AttivaAvvisiPagamentoResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="AttivaAvvisiPagamentoPerIdLotto">
+			<wsdlsoap:operation soapAction="http://schemi.informatica.maggioli.it/ws/pagopa/ServiziInterni/AttivaAvvisiPagamentoPerIdLotto"/>
+			<wsdl:input name="AttivaAvvisiPagamentoPerIdLottoRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="AttivaAvvisiPagamentoPerIdLottoResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="PagaDebiti">
+			<wsdlsoap:operation soapAction="http://schemi.informatica.maggioli.it/ws/pagopa/ServiziInterni/PagaDebiti"/>
+			<wsdl:input name="PagaDebitiRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="PagaDebitiResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="PagaDebitoPOS">
+			<wsdlsoap:operation soapAction="http://schemi.informatica.maggioli.it/ws/pagopa/ServiziInterni/PagaDebitoPOS"/>
+			<wsdl:input name="PagaDebitoPOSRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="PagaDebitoPOSResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="InfoPagamentoTransazione">
+			<wsdlsoap:operation soapAction="http://schemi.informatica.maggioli.it/ws/pagopa/ServiziInterni/InfoPagamentoTransazione"/>
+			<wsdl:input name="InfoPagamentoTransazioneRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="InfoPagamentoTransazioneResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="InfoPagamentoDebito">
+			<wsdlsoap:operation soapAction="http://schemi.informatica.maggioli.it/ws/pagopa/ServiziInterni/InfoPagamentoDebito"/>
+			<wsdl:input name="InfoPagamentoDebitoRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="InfoPagamentoDebitoResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="InfoRiconciliazioneFlusso">
+			<wsdlsoap:operation soapAction="http://schemi.informatica.maggioli.it/ws/pagopa/Riconciliazione/InfoRiconciliazioneFlusso"/>
+			<wsdl:input name="InfoRiconciliazioneFlussoRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="InfoRiconciliazioneFlussoResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="InfoRiconciliazioneFlussoRendicontazione">
+			<wsdlsoap:operation soapAction="http://schemi.informatica.maggioli.it/ws/pagopa/Riconciliazione/InfoRiconciliazioneFlussoRendicontazione"/>
+			<wsdl:input name="InfoRiconciliazioneFlussoRendicontazioneRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="InfoRiconciliazioneFlussoRendicontazioneResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="InfoRiconciliazioneVersamento">
+			<wsdlsoap:operation soapAction="http://schemi.informatica.maggioli.it/ws/pagopa/Riconciliazione/InfoRiconciliazioneVersamento"/>
+			<wsdl:input name="InfoRiconciliazioneVersamentoRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="InfoRiconciliazioneVersamentoResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="InfoRiconciliazioneFlussoCassa">
+			<wsdlsoap:operation soapAction="http://schemi.informatica.maggioli.it/ws/pagopa/Riconciliazione/InfoRiconciliazioneFlussoCassa"/>
+			<wsdl:input name="InfoRiconciliazioneFlussoCassaRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="InfoRiconciliazioneFlussoCassaResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="InfoRiconciliazione">
+			<wsdlsoap:operation soapAction="http://schemi.informatica.maggioli.it/ws/pagopa/Riconciliazione/InfoRiconciliazione"/>
+			<wsdl:input name="InfoRiconciliazioneRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="InfoRiconciliazioneResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<!-- 20180921 BOLZANO -->
+		<wsdl:operation name="InfoAvvisoPagamentoPerNumeroAvviso">
+			<wsdlsoap:operation soapAction="http://schemi.informatica.maggioli.it/ws/pagopa/ServiziInterni/InfoAvvisoPagamentoPerNumeroAvviso"/>
+			<wsdl:input name="InfoAvvisoPagamentoPerNumeroAvvisoRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="InfoAvvisoPagamentoPerNumeroAvvisoResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="InfoAvvisiPagamentoPerIdPos">
+			<wsdlsoap:operation soapAction="http://schemi.informatica.maggioli.it/ws/pagopa/ServiziInterni/InfoAvvisiPagamentoPerIdPos"/>
+			<wsdl:input name="InfoAvvisiPagamentoPerIdPosRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="InfoAvvisiPagamentoPerIdPosResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="InfoAvvisoPagamentoPerChiaveDebito">
+			<wsdlsoap:operation soapAction="http://schemi.informatica.maggioli.it/ws/pagopa/ServiziInterni/InfoAvvisoPagamentoPerChiaveDebito"/>
+			<wsdl:input name="InfoAvvisoPagamentoPerChiaveDebitoRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="InfoAvvisoPagamentoPerChiaveDebitoResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<!-- 20180921 BOLZANO -->
+
+		<!-- 20220725 -->
+		<wsdl:operation name="InfoPagamentoPerIuv">
+			<wsdlsoap:operation soapAction="http://schemi.informatica.maggioli.it/ws/pagopa/ServiziInterni/InfoAvvisoPagamentoPerChiaveDebito"/>
+			<wsdl:input name="InfoPagamentoPerIuvRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="InfoPagamentoPerIuvResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<!-- 20220725 -->
+		
+		<!-- 20200529 -->
+		<wsdl:operation name="InfoListaPagamenti">
+			<wsdlsoap:operation soapAction="http://schemi.informatica.maggioli.it/ws/pagopa/ServiziInterni/InfoListaPagamenti"/>
+			<wsdl:input name="InfoListaPagamentiRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="InfoListaPagamentiResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>		
+		<!-- 20200529 -->
+
+		<!-- 20201210 -->
+		<wsdl:operation name="InfoListaFlussiRendicontazione">
+			<wsdlsoap:operation soapAction="http://schemi.informatica.maggioli.it/ws/pagopa/ServiziInterni/InfoListaFlussiRendicontazione"/>
+			<wsdl:input name="InfoListaFlussiRendicontazioneRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="InfoListaFlussiRendicontazioneResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>		
+		<!-- 20201210 -->
+
+		<!-- 20210329 -->
+		<wsdl:operation name="InfoListaScartiCaricamentoDebitiPdp">
+			<wsdlsoap:operation soapAction="http://schemi.informatica.maggioli.it/ws/pagopa/ServiziInterni/InfoListaScartiCaricamentoDebitiPdp"/>
+			<wsdl:input name="InfoListaScartiCaricamentoDebitiPdpRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="InfoListaScartiCaricamentoDebitiPdpResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>		
+		<!-- 20210329 -->
+
+		<!-- 20210531 -->
+		<wsdl:operation name="InfoAvvisiPagamento">
+			<wsdlsoap:operation soapAction="http://schemi.informatica.maggioli.it/ws/pagopa/ServiziInterni/InfoAvvisiPagamento"/>
+			<wsdl:input name="InfoAvvisiPagamentoRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="InfoAvvisiPagamentoResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<!-- 20210531 -->
+
+		<!-- 20210611 -->
+		<wsdl:operation name="ModificaGruppoDebiti">
+			<wsdlsoap:operation soapAction="http://schemi.informatica.maggioli.it/ws/pagopa/ServiziInterni/ModificaGruppoDebiti"/>
+			<wsdl:input name="ModificaGruppoDebitiRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="ModificaGruppoDebitiResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<!-- 20210611 -->
+		
+		<!-- 20210702 -->
+		<wsdl:operation name="InfoListaTerminaliPOS">
+			<wsdlsoap:operation soapAction="http://schemi.informatica.maggioli.it/ws/pagopa/ServiziInterni/InfoListaTerminaliPOS"/>
+			<wsdl:input name="InfoListaTerminaliPOSRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="InfoListaTerminaliPOSResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<!-- 20210702 -->
+
+		<!-- 20220722 -->
+		<wsdl:operation name="InviaDovuto">
+			<wsdlsoap:operation soapAction="http://schemi.informatica.maggioli.it/ws/pagopa/ServiziInterni/InviaDovuto"/>
+			<wsdl:input name="InviaDovutoRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="InviaDovutoResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<!-- 20220722 -->
+		
+	</wsdl:binding>
+	<wsdl:service name="PagoPAInternalFacetService">
+		<wsdl:port name="PagoPAInternalPort" binding="tns:PagoPAInternalBinding">
+			<wsdlsoap:address location="http://az001-cloud-ppat.cloudapp.net/jcitygov-pagopa/ws/PagoPAInternal"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:intf="urn:ProtocolloEmailWebService" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns1="http://ws.folium.agora" xmlns:tns2="http://type.ws.folium.agora" xmlns:impl="urn:ProtocolloEmailWebService" targetNamespace="urn:ProtocolloEmailWebService" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ws.folium.agora">
+      <xsd:import namespace="urn:ProtocolloEmailWebService" />
+      <xsd:import namespace="http://type.ws.folium.agora" />
+      <xsd:import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+      <xsd:complexType name="WSAuthentication">
+        <xsd:sequence>
+          <xsd:element name="aoo" nillable="true" type="soapenc:string" />
+          <xsd:element name="applicazione" nillable="true" type="soapenc:string" />
+          <xsd:element name="ente" nillable="true" type="soapenc:string" />
+          <xsd:element name="password" nillable="true" type="soapenc:string" />
+          <xsd:element name="username" nillable="true" type="soapenc:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="WSEsito">
+        <xsd:sequence>
+          <xsd:element name="codiceEsito" nillable="true" type="soapenc:string" />
+          <xsd:element name="descrizioneEsito" nillable="true" type="soapenc:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://type.ws.folium.agora">
+      <xsd:import namespace="urn:ProtocolloEmailWebService" />
+      <xsd:import namespace="http://ws.folium.agora" />
+      <xsd:import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+      <xsd:complexType name="MittenteDestinatario">
+        <xsd:sequence>
+          <xsd:element name="codiceMezzoSpedizione" nillable="true" type="xsd:string" />
+          <xsd:element name="denominazione" type="xsd:string" />
+          <xsd:element name="email" nillable="true" type="xsd:string" />
+          <xsd:element name="indirizzo" nillable="true" type="xsd:string" />
+          <xsd:element name="invioPC" nillable="true" type="xsd:boolean" />
+          <xsd:element name="codiceMittenteDestinatario" nillable="true" type="xsd:string" />
+          <xsd:element name="citta" nillable="true" type="soapenc:string" />
+          <xsd:element name="cognome" nillable="true" type="soapenc:string" />
+          <xsd:element name="nome" nillable="true" type="soapenc:string" />
+          <xsd:element name="tipo" nillable="true" type="soapenc:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="DocumentoProtocollato">
+        <xsd:sequence>
+          <xsd:element name="contenuto" nillable="true" type="soapenc:base64Binary" />
+          <xsd:element name="dataDocumento" nillable="true" type="xsd:dateTime" />
+          <xsd:element name="dataProtocollo" nillable="true" type="xsd:dateTime" />
+          <xsd:element name="esito" nillable="true" type="tns1:WSEsito" />
+          <xsd:element name="id" nillable="true" type="soapenc:long" />
+          <xsd:element name="isContenuto" type="xsd:boolean" />
+          <xsd:element name="mittentiDestinatari" nillable="true" type="impl:ArrayOf_tns3_MittenteDestinatario" />
+          <xsd:element name="nomeFileContenuto" nillable="true" type="soapenc:string" />
+          <xsd:element name="note" nillable="true" type="soapenc:string" />
+          <xsd:element name="numeroProtocollo" nillable="true" type="soapenc:string" />
+          <xsd:element name="numeroProtocolloEsterno" nillable="true" type="soapenc:string" />
+          <xsd:element name="oggetto" nillable="true" type="soapenc:string" />
+          <xsd:element name="registro" nillable="true" type="soapenc:string" />
+          <xsd:element name="timbro" type="xsd:boolean" />
+          <xsd:element name="tipoProtocollo" nillable="true" type="soapenc:string" />
+          <xsd:element name="ufficioCompetente" nillable="true" type="soapenc:string" />
+          <xsd:element name="vociTitolario" nillable="true" type="impl:ArrayOf_soapenc_string" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:ProtocolloEmailWebService">
+      <xsd:import namespace="http://ws.folium.agora" />
+      <xsd:import namespace="http://type.ws.folium.agora" />
+      <xsd:import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+      <xsd:complexType name="ArrayOf_tns3_MittenteDestinatario">
+        <xsd:complexContent mixed="false">
+          <xsd:restriction base="soapenc:Array">
+            <xsd:attribute wsdl:arrayType="tns2:MittenteDestinatario[]" ref="soapenc:arrayType" />
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOf_soapenc_string">
+        <xsd:complexContent mixed="false">
+          <xsd:restriction base="soapenc:Array">
+            <xsd:attribute wsdl:arrayType="soapenc:string[]" ref="soapenc:arrayType" />
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="inviaEmailResponse">
+    <wsdl:part name="inviaEmailReturn" type="tns1:WSEsito" />
+  </wsdl:message>
+  <wsdl:message name="inviaEmailRequest">
+    <wsdl:part name="autenticazione" type="tns1:WSAuthentication" />
+    <wsdl:part name="idProfilo" type="xsd:long" />
+  </wsdl:message>
+  <wsdl:message name="protocollaResponse">
+    <wsdl:part name="protocollaReturn" type="tns2:DocumentoProtocollato" />
+  </wsdl:message>
+  <wsdl:message name="protocollaRequest">
+    <wsdl:part name="autenticazione" type="tns1:WSAuthentication" />
+    <wsdl:part name="documento" type="tns2:DocumentoProtocollato" />
+    <wsdl:part name="completo" type="xsd:boolean" />
+  </wsdl:message>
+  <wsdl:portType name="ProtocolloEmailWebService">
+    <wsdl:operation name="protocolla" parameterOrder="autenticazione documento completo">
+      <wsdl:input name="protocollaRequest" message="impl:protocollaRequest" />
+      <wsdl:output name="protocollaResponse" message="impl:protocollaResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="inviaEmail" parameterOrder="autenticazione idProfilo">
+      <wsdl:input name="inviaEmailRequest" message="impl:inviaEmailRequest" />
+      <wsdl:output name="inviaEmailResponse" message="impl:inviaEmailResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ProtocolloEmailWebServiceSoapBinding" type="impl:ProtocolloEmailWebService">
+    <wsdlsoap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc" />
+    <wsdl:operation name="protocolla">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="protocollaRequest">
+        <wsdlsoap:body use="encoded" namespace="urn:ProtocolloEmailWebService" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="protocollaResponse">
+        <wsdlsoap:body use="encoded" namespace="urn:ProtocolloEmailWebService" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="inviaEmail">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="inviaEmailRequest">
+        <wsdlsoap:body use="encoded" namespace="urn:ProtocolloEmailWebService" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="inviaEmailResponse">
+        <wsdlsoap:body use="encoded" namespace="urn:ProtocolloEmailWebService" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ProtocolloEmailWebServiceService">
+    <wsdl:port name="ProtocolloEmailWebService" binding="impl:ProtocolloEmailWebServiceSoapBinding">
+      <wsdlsoap:address location="http://195.62.166.124:8081/Folium/services/ProtocolloEmailWebService" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,119 @@
+<%@ Master Language="C#" AutoEventWireup="true" Inherits="SigeproNetMaster" CodeBehind="SigeproNetMaster.master.cs" %>
+
+<%@ Register Src="CustomControls/ControlloIntestazione.ascx" TagName="ControlloIntestazione" TagPrefix="uc2" %>
+<!DOCTYPE html>
+<html lang="it">
+<%--
+L'inclusione del foglio di stile e del javascript di avvio avviene nel metodo OnPreRender della BasePage
+--%>
+<head id="pageHead" runat="server">
+    <title>Untitled Page</title>
+    <base target="_self" />
+    <meta http-equiv="Content-Type" content="text/html; utf-8" />
+    <link rel="stylesheet" type="text/css" media="all" href="~/Stili/Sigepro.css?_cb=2" />
+    <link rel="stylesheet" type="text/css" media="all" href="~/Stili/jqueryui/jquery-ui.custom.min.css" />
+    <link rel="stylesheet" type="text/css" media="all" href="~/fonts/font-awesome-4.7/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" media="all" href="~/lib/bootstrap-3.4.1/css/bootstrap-glyphicons.min.css" />
+    <link rel="stylesheet" type="text/css" media="all" href="~/stili/vbg-modern/style.css" />
+    <script type="text/javascript" src="<%= ResolveClientUrl("~/js/jquery.min.js") %>"></script>
+    <script type="text/javascript" src="<%= ResolveClientUrl("~/js/jquery-ui.min.js") %>"></script>
+    <script type="text/javascript" src="<%= ResolveClientUrl("~/js/jquery.tooltip.fix.js") %>"></script>
+    <script type="text/javascript" src="<%= ResolveClientUrl("~/js/jquery.form.js") %>"></script>
+    <script type="text/javascript" src='<%= ResolveClientUrl("~/js/JSON.js")%>'></script>
+    <script type="text/javascript" src="<%= ResolveClientUrl("~/js/Sigepronet.js") %>"></script>
+  <%--  <script type="text/javascript" src="<%= ResolveClientUrl("~/lib/bootstrap-3.4.1/js/bootstrap.min.js") %>"></script>--%>
+    <script type="text/javascript" src="<%= ResolveClientUrl("~/js/vbg/vbg-modal.js") %>"></script>
+    <script type="text/javascript" src="<%= ResolveClientUrl("~/js/vbg/vbg-input-filters.js") %>"></script>
+    <script type="text/javascript" src="<%= ResolveClientUrl("~/js/vbg/vbg-ready.js") %>"></script>
+
+    <script type="text/javascript">
+
+        vbg.ready(()  => {
+            /*
+            $('fieldset>legend').each(function () {
+                $(this).html("<span>" + $(this).html() + "</span>");
+            });
+            FixLayout();
+
+            $.datepicker.setDefaults({
+                dateFormat: "dd/mm/yy"
+            });
+            */
+            vbg.initializeModals();
+            vbg.initializeInputFilters();
+            // document.getElementById("modal-attendere-prego").show();
+        });
+
+        function mostraModalCaricamento() {
+            document.getElementById("modal-attendere-prego").show();
+        }
+
+        function nascondiModalCaricamento() {
+            document.getElementById("modal-attendere-prego").hide();
+        }
+    </script>
+
+    <asp:ContentPlaceHolder ID="headPagina" runat="server">
+    </asp:ContentPlaceHolder>
+
+</head>
+<body class="pb-3">
+
+
+    <form id="form1" runat="server">
+
+
+        <div id="BloccoIntestazione">
+            <div id="TitoloPagina">
+                <uc2:ControlloIntestazione runat="server" ID="intestazionePagina" />
+            </div>
+            <div id="BoxHelp">
+                <%--<uc1:SigeproHelp ID="SigeproHelp1" runat="server" />--%>
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        <div id="CorpoPagina">
+            <asp:Repeater runat="server" ID="rptErrori" EnableViewState="false">
+                <HeaderTemplate>
+                    <div class="riepilogoErrori">
+                        Sono stati riscontrati i seguenti errori:
+					<ul>
+                </HeaderTemplate>
+                <ItemTemplate>
+                    <li>
+                        <asp:Literal runat="server" ID="ltrErrore" Text='<%# DataBinder.Eval(Container,"DataItem") %>' /></li>
+                </ItemTemplate>
+                <FooterTemplate>
+                    </ul>
+					</div>
+                </FooterTemplate>
+            </asp:Repeater>
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+        <div id="HelpContainer"></div>
+
+        <div class="vbg-modal" id="modal-attendere-prego" data-no-auto-hide="1">
+            <div class="vbg-modal-body">
+                <h1>Invio dei dati in corso, attendere prego...</h1>
+
+                <p>
+                    L'invio dei dati potrebbe richiedere anche alcuni minuti, si prega di attendere senza effettuare altre operazioni.
+                </p>
+
+                <div class="progress progress-striped active" style="margin-bottom: 0;">
+                      <div class="progress-bar" style="width: 100%"></div>
+                </div>
+
+<%--                <div class="vbg-modal-footer">
+                    <a href="#" data-role='toggle-popup'>Chiudimi
+                    </a>
+                </div>--%>
+            </div>
+        </div>
+    </form>
+
+
+</body>
+</html>

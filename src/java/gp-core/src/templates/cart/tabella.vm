@@ -1,0 +1,161 @@
+
+#set($table = $item.Tabella)
+$rowIndex.incrementaLivello($table)
+#set($rowValues = ${helper.getListOfRows($item,$rowIndex,$isTableTemplate)})
+#set($maxProg = ${rowValues.size()})
+#set($maxProg = $maxProg - 1)
+##set($tableId = "tabella_$table.Id")
+#if($isTableTemplate)
+	#set($placeholder = "${index}")
+	#set($tableId = $helper.getIdTabellaWhithPlaceholder(${table},${helper.countUniqueIds("tabella_${table.Id}")},$rowIndex, $placeholder))
+#else
+	#set($tableId = $helper.getIdTabella(${table},${helper.countUniqueIds("tabella_${table.Id}")},$rowIndex))
+#end
+
+<div id="$tableId" class="tabella-cart campo-cart-container" title="${helper.escapeValueForHtmlAttribute($table.Help)}">
+    	##-ciclo sulle righe di dati per predisporre i campi hidden che associano al progressivo della riga l'indice dei dati nell'id semantico
+    	##-foreach($row in $rowValues) 
+    		##-set($indexStr = $helper.buildIndexingSuffix($rowIndex))##assegno il reale indice della riga quando si caricano i dati già trasmessi
+    		##-<input type="hidden" name="${tableId}${indexStr}_dataindex" id="${tableId}${indexStr}_dataindex" value="${rowIndex.getIndice()}"/>
+    	##end
+    	##-campo hidden che riporta in numero massimo del progressivo riga raggiunto dalla tabella 
+    	##-(utilizzato per la lettura dei dati indicizzati lato server)
+    	<input type="hidden" name="${table.Id}_idcount" id="${table.Id}_idcount" value="${helper.countUniqueIds("tabella_${table.Id}")}"/>
+    	<input type="hidden" name="tabella_${tableId}_maxindex" id="tabella_${tableId}_maxindex" value="${maxProg}"/>
+    	<input type="hidden" name="tabella_${tableId}_maxprog" id="tabella_${tableId}_maxprog" value="${maxProg}"/>
+    	##-set($rowIndex = 0)
+    	#set($tooltiptext = ${helper.getTabellaHelp($table)})
+    	<span class="titolo-tabella">$!table.Titolo</span>
+    	#if($tooltiptext.length() > 0)
+    		<span class="help_image" id="${tableId}_help" title="${helper.escapeValueForHtmlAttribute($tooltiptext)}">
+    			<label >(?)</label>
+            </span>
+    	#end
+		<span class="error_image" style="display:none;" title="">
+			<label >(!)</label>
+        </span>
+		<span class="warning_image" style="display:none;" title="">
+			<label >(!)</label>
+        </span>
+    	<table id="$tableId" name="${tableId}" class="tabella-cart" width="">
+    		<thead >
+                <tr>
+        		#foreach($column in $table.Colonna)
+        			<th>$!column.Titolo</th>
+    			#end
+    			#if(!$pdfOutput)
+    				<th></th>
+    			#end
+                </tr>
+            </thead>
+    		<tbody>
+    			$helper.pushContainerInStack($item,$tableId)
+    			#foreach($row in $rowValues) ##ciclo sulle righe di dati effettivamente trasmesse durante la compilazione del modulo
+        			<tr id="riga_${rowIndex.getIndice()}_${tableId}">
+            		#foreach($column in $table.Colonna)
+            			<td valign="top" class="column-cart">
+        					##<div>
+            				#set($item = $column.Cella)
+                    		#parse("/cart/elemento_figlio.vm")
+        					##</div>
+        				</td>
+    				#end
+    				#set($itemWrap = $helper.peekContainerFromStack())
+    				#set($item = ${itemWrap.Container})
+    				#set($table = $item.Tabella)
+    				#set($tableId = ${itemWrap.getContainerId()})
+					#if(!$pdfOutput)
+    					<td>
+    						<input class="bottone-cart cart-delete-row-button" type="button" name="${tableId}_row_${rowIndex.getIndice()}_delbutton" id="${tableId}_row_${rowIndex.getIndice()}_delbutton" value="elimina"/>
+							<input type="hidden" name="${tableId}_row_${rowIndex.getIndice()}" id="${tableId}_row_${rowIndex.getIndice()}" value="1"/>
+                        </td>
+					#end
+                    </tr>
+                    $rowIndex.incrementaIndice()
+    			#end ##fine loop sulle righe
+    			$rowIndex.resettaIndice()
+				#set($itemWrap = ${helper.popContainerFromStack()})
+				#set($item = ${itemWrap.Container})
+				#set($table = $item.Tabella)
+				#set($tableId = ${itemWrap.getContainerId()})
+            </tbody>
+        </table>
+    	<div id="divbottone_${tableId}">
+    		<input type="button" id="bottone_${tableId}" value="Aggiungi" name="bottone_${tableId}" title="Aggiungi una nuova riga" class="bottone-cart"/>
+        </div>
+        
+		#set($maxRighe = $table.MaxRighe)
+		#set($numRighe = ${rowValues.size()})
+		#if($maxRighe == 'unbounded')
+			#set($maxRighe = 100000)
+		#end
+		#if(!$isTableTemplate)
+			#set($jsScript = $helper.buildJavascriptToDynamicallyEnableElement($tableId,$table.Attivo,2))
+        	<script>
+        	//script che attiva e disattiva la tabella dinamicamente in base ai valori assunti da altri campi
+			$(document).ready(function(){
+				#if($jsScript != "")
+            		$jsScript
+				#end
+        		initializeTable("$tableId",$maxRighe,$numRighe);
+			});
+        	</script>
+		#else
+			#set($placeholder = "' + newRowIndex + '")
+			#set($tableIdPh = $helper.getIdTabellaWhithPlaceholder(${table},${helper.countUniqueIds("tabella_${table.Id}")},$rowIndex, $placeholder))
+			#set($jsScript = $helper.buildJavascriptToDynamicallyEnableElement($helper.getUniqueId("tabella_$table.Id",$table),$item.Campo.Attivo,$tableIdPh, 2))
+			#if($jsScript != "")
+				$helper.addScriptToCache($jsScript)
+			#end
+			$helper.addScriptToCache("initializeTable('$tableIdPh',$maxRighe,$numRighe);")
+		#end
+		#if(!$isTableTemplate)
+		#set($templateNestingLevel = $rowIndex.contaLivelli())
+		#set($templateNestingLevel = ($templateNestingLevel - 1))
+		#set($uTableId = $helper.getUniqueId(${table.Id},${table}))
+    	<script id="template_$uTableId" type="text/x-jquery-tmpl">
+    			$helper.pushContainerInStack($item,$tableId)
+    			<tr id="riga_${index}_${tableId}">
+    			#set($isTableTemplate = true)
+    			#set($table = $item.Tabella)
+        		#foreach($column in $table.Colonna)
+        			<td valign="top" class="column-cart">
+    					<div>
+        				#set($item = $column.Cella)
+                		#parse("/cart/elemento_figlio.vm")
+    					</div>
+    				</td>
+        		#end
+    				#set($itemWrap = $helper.peekContainerFromStack())
+    				#set($tableId = ${itemWrap.getContainerId()})
+					<td>
+						<input class="bottone-cart" type="button" name="${tableId}_row_${index}_delbutton" id="${tableId}_row_${index}_delbutton" value="elimina"/>
+						<input type="hidden" name="${tableId}_row_${index}" id="${tableId}_row_${index}" value="1"/>
+                    </td>
+    			#set($isTableTemplate = false)
+                </tr>
+				#set($itemWrap = $helper.popContainerFromStack())
+				#set($item = $itemWrap.Container)
+				#set($table = $item.Tabella)
+				#set($tableId = ${itemWrap.getContainerId()})
+        </script>
+        #set($templateNestingLevel = -1)
+        #set($uTableId = $helper.getUniqueId(${table.Id},${table}))
+    	<script>
+			#set($funcName = "attivaNuovaRiga_${uTableId}")
+			#set($funcName = ${helper.escapeForJsVariableName($funcName)})
+			#set($tableIdCssEscaped = ${helper.escapeForCssSelector($tableId)})
+    		var $funcName = function(newRowIndex){
+    			#foreach($js in $helper.JsCache)
+    				$js
+    			#end
+				initializeDeleteButton("$tableId",newRowIndex);
+				$helper.clearJsCache();
+    		}
+        </script>
+        #else
+        ##
+        #end
+	#set($table = false)
+	#set($foo = $rowIndex.decrementaLivello())
+</div>

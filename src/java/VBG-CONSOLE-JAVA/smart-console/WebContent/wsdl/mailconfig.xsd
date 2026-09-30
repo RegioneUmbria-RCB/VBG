@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://gruppoinit.it/sigepro/schemas/messages/mailconfig" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema"
+	xmlns:tns="http://gruppoinit.it/sigepro/schemas/messages/mailconfig">
+	<element name="MailConfigRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string" />
+				<element name="software" type="string" />
+				<element name="action" type="tns:actionType" />
+			</sequence>
+		</complexType>
+	</element>
+	<element name="MailConfigResponse">
+		<complexType>
+			<sequence>
+				<element name="user" type="string" minOccurs="0" maxOccurs="1" />
+				<element name="password" type="string" minOccurs="0" maxOccurs="1" />
+				<element name="useAuthentication" type="boolean" />
+				<element name="url" type="string" />
+				<element name="port" type="integer" />
+				<element name="protocol" type="tns:protocolType" />
+				<element name="senderEmailAddress" type="string" minOccurs="0" maxOccurs="1" />
+			</sequence>
+		</complexType>
+	</element>
+	<simpleType name="protocolType">
+		<restriction base="string">
+			<enumeration value="SMTP" />
+			<enumeration value="SMTP_SSL" />
+			<enumeration value="SSMTP_SMTPS" />
+			<enumeration value="POP3" />
+			<enumeration value="IMAP" />
+			<enumeration value="SSL_POP3" />
+			<enumeration value="SSL_IMAP" />
+		</restriction>
+	</simpleType>
+	<simpleType name="actionType">
+		<restriction base="string">
+			<enumeration value="READ" />
+			<enumeration value="SEND" />
+		</restriction>
+	</simpleType>
+</schema>

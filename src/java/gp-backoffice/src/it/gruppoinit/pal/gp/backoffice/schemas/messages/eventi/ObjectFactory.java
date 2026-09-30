@@ -1,0 +1,99 @@
+package it.gruppoinit.pal.gp.backoffice.schemas.messages.eventi;
+
+import it.gruppoinit.pal.gp.backoffice.schemas.messages.base.AllegatoBaseType;
+import it.gruppoinit.pal.gp.backoffice.schemas.messages.base.ErroreBackofficeType;
+import it.gruppoinit.pal.gp.backoffice.schemas.messages.base.EsitoOperazioneType;
+
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.annotation.XmlElementDecl;
+import javax.xml.bind.annotation.XmlRegistry;
+import javax.xml.namespace.QName;
+
+/**
+ * This object contains factory methods for each Java content interface and Java element interface generated in the
+ * it.gruppoinit.pal.gp.backoffice.schemas.messages.eventi package.
+ * <p>
+ * An ObjectFactory allows you to programatically construct new instances of the Java representation for XML content.
+ * The Java representation of XML content can consist of schema derived interfaces and classes representing the binding
+ * of schema type definitions, element declarations and model groups. Factory methods for each of these are provided in
+ * this class.
+ * 
+ */
+@XmlRegistry
+public class ObjectFactory {
+
+    private final static QName _EventoInsertResponse_QNAME = new QName("http://gruppoinit.it/sigepro/schemas/messages/eventi", "EventoInsertResponse");
+
+    /**
+     * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package:
+     * it.gruppoinit.pal.gp.backoffice.schemas.messages.eventi
+     * 
+     */
+    public ObjectFactory() {
+
+    }
+
+    /**
+     * Create an instance of {@link EventoBackofficeInsertRequest }
+     * 
+     */
+    public EventoBackofficeInsertRequest createEventoBackofficeInsertRequest() {
+
+	return new EventoBackofficeInsertRequest();
+    }
+
+    /**
+     * Create an instance of {@link EventoIstanzaInsertRequest }
+     * 
+     */
+    public EventoIstanzaInsertRequest createEventoIstanzaInsertRequest() {
+
+	return new EventoIstanzaInsertRequest();
+    }
+
+    /**
+     * Create an instance of {@link EsitoOperazioneType }
+     * 
+     */
+    public EsitoOperazioneType createEsitoOperazioneType() {
+
+	return new EsitoOperazioneType();
+    }
+
+    /**
+     * Create an instance of {@link EventoMovimentoInsertRequest }
+     * 
+     */
+    public EventoMovimentoInsertRequest createEventoMovimentoInsertRequest() {
+
+	return new EventoMovimentoInsertRequest();
+    }
+
+    /**
+     * Create an instance of {@link ErroreBackofficeType }
+     * 
+     */
+    public ErroreBackofficeType createErroreBackofficeType() {
+
+	return new ErroreBackofficeType();
+    }
+
+    /**
+     * Create an instance of {@link AllegatoBaseType }
+     * 
+     */
+    public AllegatoBaseType createAllegatoBaseType() {
+
+	return new AllegatoBaseType();
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link EsitoOperazioneType }{@code >}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://gruppoinit.it/sigepro/schemas/messages/eventi", name = "EventoInsertResponse")
+    public JAXBElement<EsitoOperazioneType> createEventoInsertResponse(EsitoOperazioneType value) {
+
+	return new JAXBElement<EsitoOperazioneType>(_EventoInsertResponse_QNAME, EsitoOperazioneType.class, null, value);
+    }
+}

@@ -1,0 +1,60 @@
+#set($valoriString = $campo.getProprietaCampo("ElementiLista",""))
+#set($valoriListaTemp = $valoriString.split(";"))
+#set($valoriLista = [])
+#foreach($valoreTemp in $valoriListaTemp)
+	#set($foo = $valoriLista.add($valoreTemp))
+#end
+#set($multiple = "")
+#set($valoriCount = 1)
+#set($selectedValues = [])
+#if($isMultiLista)
+	#set($multiselezione = $campo.getProprietaCampo("Multiselezione","true"))
+	#if($multiselezione == "true")
+		#set($multiple = "multiple='multiple'")
+	#end
+	#set($valoriCount = $modelloHelper.contaElementi($valoriLista))
+	#set($selectedValues = $val.split(";"))
+#else
+	#set($foo = $selectedValues.add($campo.getValore()))
+#end
+#set($ivb = $campo.getProprietaCampo("IgnoraErroriBinding","true"))
+#if($ivb == "true" && !$isTemplate && !$modelloHelper.isContestoIndefinito())
+	#foreach($selectedValue in $selectedValues)
+		#set($selValueFound = false)
+		#foreach($valorelista in $valoriLista)
+			#if($selectedValue == $valorelista)
+				#set($selValueFound = true)
+			#end
+		#end
+		#if(!$selValueFound && !$modelloHelper.isNullOrEmpty($selectedValue))
+			#set($foo = $valoriLista.add($selectedValue))
+		#end
+	#end
+#end
+#if($modelloHelper.isRenderForPrint())
+	<b>
+	#foreach($selVal in $selectedValues)
+		#if($velocityCount > 1)
+		,
+		#end
+		$selVal
+	#end
+	</b>
+#else
+	<select name="${nameAttr}" id="${nameAttr}_ID" ${multiple} size=${valoriCount} class="$classeCampo">
+	#if(!$isMultiLista)
+		<option value=""></option>
+	#end
+	#foreach($valorelista in $valoriLista)
+		#set($selected = "")
+		#if(!$isTemplate)
+			#foreach($selectedValue in $selectedValues)
+				#if($selectedValue == $valorelista)
+					#set($selected = "selected='selected'")
+				#end
+			#end
+		#end
+		<option value="${valorelista}" $selected>$valorelista</option>
+	#end
+	</select>
+#end

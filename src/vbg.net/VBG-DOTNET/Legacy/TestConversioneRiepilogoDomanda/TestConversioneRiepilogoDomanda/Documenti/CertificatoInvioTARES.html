@@ -1,0 +1,211 @@
+﻿<html>
+      <head>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+        <style media="all">
+					.etichetta{background-color: #efefef;}
+					.dato{font-weight: bold;}
+        </style>
+
+      </head>
+      <body style="font-family: Tahoma; font-size: 11px;background-color:#ffffff">
+        <center style="font-size: 14px;">
+			<!--  style="font-size: 16px;" -->
+			<div style="font-family: Times New Roman;font-size: 18px;">Comune di Bari</div>
+			<div style="font-weight:bold">Ripartizione Tributi</div>
+			<div style="font-weight:bold;font-size: 11px;">
+				Corso Vittorio Emanuele II, 113<br />
+				70122 - BARI
+			</div>
+        </center>
+		
+		<br />
+		
+		<div style="width:100%;border: 1px solid #000000;text-align:center;padding: 5px;">
+			<div style="font-family: Times New Roman;font-size: 18px;">TRIBUTO COMUNALE SUI RIFIUTI E SUI SERVIZI - TARES</div>
+			<div style="font-weight:bold;font-size: 10px;">Art. 14 D.L. n. 201 del 06/12/2011 e s.m.i.</div>
+		</div>
+
+		<br />
+		
+		<center style="font-size: 14px;font-weight:bold;">
+			CERTIFICATO DI INVIO <br />
+		</center>		
+		<div style="padding: 5px; margin-top: 20px; text-align: justify; margin-bottom: 20px;">
+			La presente ricevuta telematica attesta l'avvenuta ricezione della richiesta presso il Servizio ripartizione Tributi del Comune di Bari.
+		</div>
+		<div>
+			<table style="text-align: left;" width="100%">
+				<tr>
+					<td valign="top">Ufficio ricevente:</td>
+					<td valign="top">
+						<b>
+							<xsl:value-of select="Istanze/ConfigurazioneComune/DENOMINAZIONE"/>
+						</b>
+					</td>
+				</tr>
+				
+				<tr>
+					<td valign="top">Responsabile:</td>
+					<td valign="top">
+						<b>
+							<xsl:value-of select="Istanze/Operatore/RESPONSABILE"/>
+						</b>
+					</td>
+				</tr>
+				<tr>
+					<td valign="top">Trasmissione della richiesta: </td>
+					<td valign="top">
+						<b>
+							<xsl:call-template name="FormatDate">
+								<xsl:with-param name="DateTime" select="/Istanze/DATA"/>
+							</xsl:call-template>
+						</b>
+					</td>
+				</tr>
+				<tr>
+					<td valign="top">N. Richiesta Telematica:</td>
+					<td valign="top">
+						<b>
+							<xsl:value-of select="Istanze/NUMEROISTANZA"/>
+						</b>
+					</td>
+				</tr>
+				<tr>
+					<td valign="top">Protocollo</td>
+					<td valign="top">
+						N. <b>
+							<xsl:value-of select="Istanze/NUMEROPROTOCOLLO"/>
+						</b> Data. <b>
+							<xsl:call-template name="FormatDate">
+								<xsl:with-param name="DateTime" select="/Istanze/DATAPROTOCOLLO"/>
+							</xsl:call-template>
+						</b>
+					</td>
+				</tr>
+			</table>
+		</div>
+		
+		<div style="width:100%;border: 1px solid #000000;padding: 5px;">
+			<b><u>Dati principali della richiesta:</u></b>
+		</div>
+		
+		<br />
+		
+		<center style="font-size: 14px;font-weight:bold;">
+			MODULO DI RICHIESTA AGEVOLAZIONI TARES <br />
+			UTENZE DOMESTICHE
+		</center>
+		
+		<br />
+		
+		<br />
+		
+		<table width="100%" style="border:1px solid #ffffff">
+			<tr>
+				<td width="25%" class="etichetta">Cognome/Nome</td>
+				<td class="dato" width="25%">
+					<xsl:value-of select="/Istanze/Richiedente/NOMINATIVO"/>&#160;
+					<xsl:value-of select="/Istanze/Richiedente/NOME" />
+				</td>
+				<td width="25%" class="etichetta">Codice Fiscale</td>
+				<td class="dato" width="25%">
+					<xsl:value-of select="/Istanze/Richiedente/CODICEFISCALE" />
+				</td>
+			</tr>
+
+			<tr>
+				<td width="25%" class="etichetta">Nato/a a</td>
+				<td class="dato" width="25%">
+					<xsl:value-of select="/Istanze/Richiedente/ComuneNascita/COMUNE" />
+				</td>
+				<td width="25%" class="etichetta">Il</td>
+				<td class="dato" width="25%">
+					<xsl:call-template name="FormatDate">
+						<xsl:with-param name="DateTime" select="/Istanze/Richiedente/DATANASCITA"/>
+					</xsl:call-template>
+				</td>
+			</tr>
+
+			<tr>
+				<td width="25%" class="etichetta">Residente in</td>
+				<td class="dato" width="75%" colspan="3">
+					<xsl:value-of select="/Istanze/Richiedente/ComuneResidenza/COMUNE" />
+				</td>
+			</tr>
+
+			<tr>
+				<td width="25%" class="etichetta">Via/Loc. </td>
+				<td colspan="3" class="dato" width="75%">
+					<xsl:value-of select="/Istanze/Richiedente/INDIRIZZO"/>
+				</td>
+			</tr>
+
+			<tr>
+				<td width="25%" class="etichetta">E-mail </td>
+				<td colspan="3" class="dato" width="75%">
+					<xsl:value-of select="/Istanze/Richiedente/EMAIL" />
+				</td>
+			</tr>	
+		</table>
+		
+		<div style="padding: 5px; text-align: center; font-size: 18px">
+			ELENCO DEI DOCUMENTI DIGITALI ALLEGATI
+		</div>
+
+		<div style="text-align: left;">
+			<ul>
+			<xsl:for-each select="Istanze/DocumentiIstanza/DocumentiIstanza">
+				<li>
+					<div class="dato">
+						<b>
+						<xsl:value-of select="DOCUMENTO"/>
+						</b>
+					</div>
+					<xsl:value-of select="Oggetto/NOMEFILE"/>
+				</li>
+			</xsl:for-each>
+
+			<xsl:for-each select="Istanze/EndoProcedimenti/IstanzeProcedimenti/IstanzeAllegati/IstanzeAllegati">
+				<xsl:if test="PRESENTE != '0'">
+					<li>
+						<div class="dato">
+							<b>
+								<xsl:value-of select="ALLEGATOEXTRA"/>
+							</b>
+						</div>
+						<xsl:value-of select="Oggetto/NOMEFILE"/>
+					</li>
+				</xsl:if>
+			</xsl:for-each>
+			</ul>
+		</div>
+
+		<div style="padding: 5px; text-align: center; font-size: 18px">
+			SEZIONE INFORMATIVA
+		</div>
+
+		<div style="margin-bottom: 20px; text-align: justify;">
+			<p>
+				L'amministrazione competente, in caso di accertata carenza dei requisiti e dei presupposti di cui al
+				comma 1 L. 30 luglio 2010 , n. 122, nel termine di sessanta giorni dal ricevimento della segnalazione di cui al medesimo comma,
+				ha facoltà di adottare motivati provvedimenti di divieto di prosecuzione dell'attività e di rimozione degli eventuali effetti dannosi di essa,
+				salvo che, ove ciò sia possibile, l'interessato provveda a conformare alla normativa vigente detta attività ed i suoi effetti entro un termine
+				fissato dall'amministrazione, in ogni caso non inferiore a trenta giorni.
+			</p>
+			<p>
+				E' fatto comunque salvo il potere dell'amministrazione competente di assumere determinazioni in via di autotutela,
+				ai sensi degli articoli 21-quinquies e 21-nonies L. 30 luglio 2010 , n. 122.
+				In caso di dichiarazioni sostitutive di certificazione e dell'atto di notorieta' false o mendaci,
+				l'amministrazione, ferma restando l'applicazione delle sanzioni penali di cui al comma 6,
+				nonché di quelle di cui al capo VI del testo unico di cui al decreto del Presidente della Repubblica 28 dicembre 2000, n. 445,
+				può sempre e in ogni tempo adottare i provvedimenti di cui al primo periodo.
+			</p>
+			<p>
+				Rimedi esperibili in caso di provvedimento negativo di divieto di prosecuzione dell'attività e/o di rimozione
+				degli eventuali effetti dannosi di essa e/o determinazioni in via di autotutela: <b>ricorso al TAR</b>
+			</p>
+		</div>
+
+      </body>
+
+    </html>

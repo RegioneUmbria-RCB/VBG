@@ -1,0 +1,128 @@
+﻿@page "/{IdComune}/{Software}/inserimento-istanza/ssu/gestione-dati-dinamici/{idDomanda:int}/{stepId:int}"
+@page "/{IdComune}/{Software}/inserimento-istanza/ssu/gestione-schede/{idDomanda:int}/{stepId:int}"
+@using Init.Sigepro.FrontEnd.CoreServices.GestionePresentazioneDomanda.Paginatore
+@using VBG.AppLogic.SSU.APICatalogoServizi.Client
+@using VBG.AppLogic.SSU.GestioneDatiDinamici
+@using VBG.AppLogic.SSU.GestioneProcedimenti
+
+@inherits IstanzeStepPage
+
+<ContenitoreRisorseTestuali Nome="ssu-riepilogo-procedimenti">
+    <CascadingValue Name="IdDomanda" Value="@IdDomanda">
+        @if (_dataSource is not null)
+        {
+            foreach (var procedimento in _dataSource)
+            {
+                <div class="shadow mb-4 p-4 pe-2">
+                    <div class="d-flex pb-4">
+                        <div class="w-75">
+                            <h3>@procedimento.Procedimento.Descrizione</h3>
+                        </div>
+                        <div class="w-25 d-flex justify-content-end me-4 pe-2">
+                            <div>
+                                @* <button class="btn btn-outline-primary" type="button" @onclick="() => MarcaPerEliminazione(Procedimento)">
+                            Elimina
+                        </button> *@
+                            </div>
+                        </div>
+                    </div>
+                    <div class="it-list-wrapper mb-4 p-2">
+                        <ul class="it-list">
+                            @foreach (var scheda in procedimento.Schede!)
+                            {
+                                <li>
+                                    <div class="list-item">
+                                        <div class="it-right-zone">
+                                            <div>
+                                                @if (SchedaCompilata(scheda))
+                                                {
+                                                    <span class="badge bg-success">Compilata correttamente</span>
+                                                }
+                                                else
+                                                {
+                                                    @if (scheda.Obbligatoria)
+                                                    {
+                                                        <span class="badge bg-warning me-2">Obbligatoria</span>
+                                                    }
+                                                    <span class="badge bg-danger">Da compilare</span>
+                                                }
+                                                <h4>@scheda.Titolo</h4>
+                                                @* <span class="fs-6 mb-2 text-muted">Compilata correttamente</span> *@
+                                            </div>
+                                            <span class="it-multiple">
+
+                                                <button class="btn btn-outline-primary" type="button" @onclick="() => Compila(scheda)">
+                                                    Compila
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            }
+        }
+        @if (_schedaInCompilazione is not null)
+        {
+            <ModalCompilazioneScheda OnClose="TerminaCompilazione" Scheda="_schedaInCompilazione" ></ModalCompilazioneScheda>
+        }
+    </CascadingValue>
+</ContenitoreRisorseTestuali>
+@code {
+
+    [Inject]
+    public SsuDatiDinamiciService _ssuDatiDinamiciService { get; set; } = default!;
+    [Inject]
+    public SsuDatiDinamiciDomandaSyncService _syncService { get; set; } = default!;
+    [CascadingParameter]
+    private PaginatoreStateService _paginatoreStateService { get; set; } = default!;
+
+    IEnumerable<ElementoListaSchedePerProcedimento>? _dataSource;
+    SchedaDinamica? _schedaInCompilazione;
+
+    protected override async Task OnInitializeStepAsync()
+    {
+        await _spinnerService.ShowSpinnerAsync(async () =>
+        {
+            try
+            {
+                await this._spinnerService.ShowSpinnerAsync(async() =>
+                {
+                    await base.OnInitializeStepAsync();
+
+                    _dataSource = await _ssuDatiDinamiciService.GetDatiDinamiciAsync(this.IdDomanda.Value);
+
+                    await _syncService.SincronizzaModelliDomandaAsync(this.IdDomanda.Value, _dataSource);
+                });
+                
+            }
+            catch (Exception)
+            {
+                MessageContainer.AddError("Si è verificato un errore durante il recupero dei dati dinamici");
+                this._paginatoreStateService.NascondiBottoneAvanti();
+            }
+            
+        });
+    }
+
+    bool SchedaCompilata(SchedaDinamica scheda)
+    {
+        return DomandaCorrente.DatiDinamici
+                                .Modelli
+                                .Where(x => x.IdModello == scheda.Id)
+                                .FirstOrDefault()?
+                                .Compilato ?? false;
+    }
+
+    void Compila(SchedaDinamica scheda)
+    {
+        _schedaInCompilazione = scheda;
+    }
+
+    void TerminaCompilazione()
+    {
+        _schedaInCompilazione = null;
+    }
+}

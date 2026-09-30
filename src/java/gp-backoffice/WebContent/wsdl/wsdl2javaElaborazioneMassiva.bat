@@ -1,0 +1,1 @@
+C:\sviluppo\apache-cxf\apache-cxf-2.5.1\bin\wsdl2java.bat -p it.gruppoinit.pal.gp.core.features.istanze.datidinamici.elaborazionemassiva.ws.model -all -frontend jaxws21 ElaborazioneMassivaSchedeIstanza.wsdl

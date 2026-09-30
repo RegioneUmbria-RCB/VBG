@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+    xmlns:nontutela="http://www.agid.gov.it/MODULI_PA/SUAP/modulo_zone_non_tutelate"
+    xmlns:suapcommon="http://www.agid.gov.it/MODULI_PA/SUAP/suap_common_components"
+    xmlns:moduli="http://www.agid.gov.it/MODULI_PA/moduli_common_components"
+    xmlns:aggregate="http://www.agid.gov.it/AgID_aggregate_components"
+    xmlns:basic="http://www.agid.gov.it/AgID_basic_components"
+    xmlns:enumeration="http://www.agid.gov.it/AgID_enumeration"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    
+    targetNamespace="http://www.agid.gov.it/MODULI_PA/SUAP/modulo_zone_non_tutelate"
+
+    elementFormDefault="qualified" attributeFormDefault="qualified" version="1.3.0">
+
+    
+    
+    
+    <xs:import namespace="http://www.agid.gov.it/MODULI_PA/SUAP/suap_common_components" schemaLocation="SUAP_common_components.xsd"/>    
+    <xs:import namespace="http://www.agid.gov.it/MODULI_PA/moduli_common_components" schemaLocation="../MODULI_common_components.xsd"/>
+    <xs:import namespace="http://www.agid.gov.it/AgID_basic_components" schemaLocation="../../AgID_Vocabularies/AgID_basic_components.xsd"/>
+    <xs:import namespace="http://www.agid.gov.it/AgID_aggregate_components" schemaLocation="../../AgID_Vocabularies/AgID_aggregate_components.xsd"/>
+    <xs:import namespace="http://www.agid.gov.it/AgID_enumeration" schemaLocation="../../AgID_Vocabularies/AgID_enumeration.xsd"/>
+    
+    <!-- // Modulo modulo_zone_non_tutelate ## internal code ref 008 // -->
+    
+    <!-- ROOT ELEMENT -->
+    <xs:element name="ModuloZoneNonTutelate" type="nontutela:ModuloZoneNonTutelateType"/>
+    
+    <!-- AGGREGATE COMPONENTS TYPE -->
+    <xs:complexType name="ModuloZoneNonTutelateType">
+        <xs:annotation>
+            <xs:documentation>
+                SEGNALAZIONE CERTIFICATA DI INIZIO ATTIVITÀ PER BAR, RISTORANTI E ALTRI ESERCIZI DI SOMMINISTRAZIONE DI ALIMENTI E BEVANDE
+                (IN ZONE NON TUTELATE) 
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="schedaAnagrafica" type="suapcommon:SchedaAnagraficaSUAPType"/>
+            <xs:element name="integrazioneAnagrafica" type="suapcommon:IntegrazioneAnagraficaType"/>
+            <xs:choice>
+                <xs:element name="apertura" type="nontutela:AperturaType"/>
+                <xs:element name="trasferimento" type="nontutela:TrasferimentoType"/>
+                <xs:element name="ampliamento" type="nontutela:AmpliamentoType"/>
+            </xs:choice>
+            <xs:element name="dichiarazioni" type="suapcommon:DichiarazioniType"/>
+            <xs:element name="altreDichiarazioni" type="nontutela:AltreDichiarazioniType" />
+            <xs:element name="dichiarazionePresaVisioneInformativaPrivacy" type="xs:boolean" />
+            <xs:element name="tabellaAllegati" type="nontutela:TabellaAllegatiType"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="CarattereEsercizioType">        
+        <xs:sequence><!-- scelta multipla -->
+            <xs:element name="CaratterePermanente"  minOccurs="0" maxOccurs="1" />
+            <xs:element name="CarattereStagionale" type="suapcommon:CarattereStagionaleType" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="AltreDichiarazioniType">        
+        <xs:sequence>
+            <xs:choice>
+                <xs:element name="possessoRequisitiDiSovergliabilita" type="basic:EmptyType" />
+                <xs:element name="consensoControlliAutoritaCompetenti" type="basic:AbstractBaseType" >
+                    <xs:annotation>
+                        <xs:documentation>
+                            nel caso in cui l'eservcizio dell'attività venga svolta presso la propria abitazione (home restaurant)
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+            </xs:choice>
+            <xs:element name="altro" type="suapcommon:AltreDichiarazioniAltroBaseType" minOccurs="0"/> 
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="AllegatiSCIAType">
+        <xs:sequence>
+            <xs:element name="allegatoProcuraDelega" type="moduli:AllegatoType" minOccurs="0"/>
+            <xs:element name="allegatoDocumentoIdentitaTitolare" type="moduli:AllegatoType"  minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="allegatoPlanimetrieLocali" type="moduli:AllegatoType"  />
+            <xs:element name="allegatoPossessoRequisitiAltriSoci" type="suapcommon:AllegatoPossessoRequisitiAltriSociType" minOccurs="0" maxOccurs="unbounded" />
+            <!-- ALLEGATO DICHIARAZIONE PREPOSTO INCLUSO IN DICHIARAZIONI -->
+            <xs:element name="allegatoNotificaSanitaria" type="suapcommon:AllegatoNotificaSanitariaType" minOccurs="1"/>
+            <xs:element name="allegatoComunicazioneImpattoAcustico" type="moduli:AllegatoType" minOccurs="0"/>
+            <xs:element name="allegatoSCIAInsegnaEsercizio" type="moduli:AllegatoType" minOccurs="0"/>
+        </xs:sequence>                                
+    </xs:complexType>
+    
+    <xs:complexType name="AllegatiSCIACondizionataType">
+        <xs:sequence>
+            <xs:element name="allegatoNullaOstaImpattoAcustico" type="moduli:AllegatoType" minOccurs="0"/>
+            <xs:element name="allegatoAutorizzazioneInsegnaEsercizio" type="moduli:AllegatoType" minOccurs="0" /> 
+        </xs:sequence>                                
+    </xs:complexType>
+        
+    <xs:complexType name="TabellaAllegatiType">
+        <xs:sequence>
+            <xs:element name="allegatiSCIA" type="nontutela:AllegatiSCIAType"/>            
+            <xs:element name="allegatiSCIACondizionata" type="nontutela:AllegatiSCIACondizionataType"/>
+            <xs:element name="allegatiAltri" type="suapcommon:AllegatiAltriType"/>
+        </xs:sequence>
+    </xs:complexType>
+        
+    <xs:complexType name="AperturaType">
+        <xs:sequence>
+            <xs:element name="denominazioneInsegna" type="xs:string" minOccurs="0"/>
+            <xs:element name="carattereEsercizio" type="nontutela:CarattereEsercizioType"/>
+            <xs:element name="inCentroCommerciale" type="suapcommon:InCentroCommercialeBaseType"/>
+            <xs:element name="superficieEsercizio" type="suapcommon:SuperficieEsercizioBaseType"/>
+        </xs:sequence>
+    </xs:complexType>    
+
+    <xs:complexType name="TrasferimentoType">
+        <xs:sequence>
+            <xs:element name="protocolloTrasferimento" type="aggregate:ProtocolloStandardType"/>
+            <xs:element name="trasferimentoDaA" type="suapcommon:TrasferimentoDaAType"/>
+            <xs:element name="inCentroCommerciale" type="suapcommon:InCentroCommercialeBaseType"/> 
+            <xs:element name="superficieEsercizio" type="suapcommon:SuperficieEsercizioBaseType" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="AmpliamentoType">
+        <xs:sequence>
+            <xs:element name="protocolloAmpliamento" type="aggregate:ProtocolloStandardType"/>
+            <xs:element name="ampliamentoSuperficieVendita" type="suapcommon:SuperficieDaABaseType" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <!-- BASIC COMPONENTS TYPE -->
+
+    <!-- ENUMERATION -->
+
+    
+</xs:schema>

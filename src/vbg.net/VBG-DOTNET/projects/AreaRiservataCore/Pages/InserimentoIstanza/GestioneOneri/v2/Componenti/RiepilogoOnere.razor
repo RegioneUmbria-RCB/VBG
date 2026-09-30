@@ -1,0 +1,47 @@
+﻿@using Init.Sigepro.FrontEnd.AppLogic.GestioneOneri;
+@using VBG.BlazorComponentsLibrary.DesignComuni.Messaggi
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards.CardButtons
+
+@if (Onere is not null)
+{
+    <StepCardItem>
+        <StepCardButtonGroup EditClick="Edit"></StepCardButtonGroup>
+        <StepCardItemTitle Titolo="@Onere.Causale"></StepCardItemTitle>
+        <StepCardItemSubtitle>
+            @Onere.Note
+
+            <div class="mt-4">
+                @foreach (var error in Onere.Errori)
+                {
+                    <ErrorMessage>@error</ErrorMessage>
+                }
+            </div>
+        </StepCardItemSubtitle>
+        <StepCardInfo Titolo="Importo dovuto">€ @Onere.ImportoPagato.ToString("N2")</StepCardInfo>
+
+        @if (!Onere.ModalitaPagamentoNonImpostata)
+        {
+            <StepCardInfo Titolo="Modalità di pagamento">@Onere.ModalitaPagamento?.Text</StepCardInfo>
+        }
+
+        @if (Onere.ModalitaPagamentoAsEnum == ModalitaPagamentoOnereEnum.GiaPagato)
+        {
+            <StepCardInfo Titolo="Tipo pagamento">@Onere.TipoPagamento?.Descrizione</StepCardInfo>
+            <StepCardInfo Titolo="Data pagamento">@Onere.DataPagamento?.ToString("dd/MM/yyyy")</StepCardInfo>
+            <StepCardInfo Titolo="Riferimenti pagamento">@Onere.RiferimentoPagamento</StepCardInfo>
+        }
+    </StepCardItem>
+}
+
+@code {
+    [Parameter, EditorRequired]
+    public GrigliaOneriItem? Onere { get; set; }
+    [Parameter, EditorRequired]
+    public EventCallback<GrigliaOneriItem> OnEdit { get; set; }
+
+    async Task Edit()
+    {
+        await this.OnEdit.InvokeAsync(this.Onere);
+    }
+}

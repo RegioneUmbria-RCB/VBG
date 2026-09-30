@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Init.SIGePro.Manager.DTO.Scadenzario" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Init.SIGePro.Manager.DTO.Scadenzario" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:2640/sigepro.net/WebServices/WsAreaRiservata/WcfServices/Scadenzario/WsScadenzarioService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:import schemaLocation="http://localhost:2640/sigepro.net/WebServices/WsAreaRiservata/WcfServices/Scadenzario/WsScadenzarioService.svc?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:complexType name="RichiestaListaScadenzeDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CodEnte" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CodSportello" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CodiceFiscaleSoggetto" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DatiAmministrazione" nillable="true" type="tns:DatiAmministrazioneDto" />
+      <xs:element minOccurs="0" name="FiltroFoSoggettiEsterni" type="tns:FoTipiSoggettiEsterniEnum" />
+      <xs:element minOccurs="0" name="IdPratica" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="NumeroPratica" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="NumeroProtocollo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PartitaIvaSoggetto" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Stato" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RichiestaListaScadenzeDto" nillable="true" type="tns:RichiestaListaScadenzeDto" />
+  <xs:complexType name="DatiAmministrazioneDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="PartitaIva" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DatiAmministrazioneDto" nillable="true" type="tns:DatiAmministrazioneDto" />
+  <xs:simpleType name="FoTipiSoggettiEsterniEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="FrontofficeRichiedenti">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FrontofficeAmministrazioni">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">2</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="FoTipiSoggettiEsterniEnum" nillable="true" type="tns:FoTipiSoggettiEsterniEnum" />
+  <xs:complexType name="ArrayOfElementoListaScadenzeDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ElementoListaScadenzeDto" nillable="true" type="tns:ElementoListaScadenzeDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfElementoListaScadenzeDto" nillable="true" type="tns:ArrayOfElementoListaScadenzeDto" />
+  <xs:complexType name="ElementoListaScadenzeDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CodiceIstanza" type="xs:int" />
+      <xs:element minOccurs="0" name="CodiceScadenza" type="xs:int" />
+      <xs:element minOccurs="0" name="DataScadenzaStr" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DatiAzienda" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DatiMovimento" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DatiRichiedente" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DatiTecnico" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DescrMovimentoDaFare" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DescrStatoIstanza" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Localizzazione" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ModuloSoftware" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="NumeroIstanza" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Uuid" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ElementoListaScadenzeDto" nillable="true" type="tns:ElementoListaScadenzeDto" />
+  <xs:complexType name="ScadenzaDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AmmAmministrazione" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="AmmPartitaiva" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CodEnte" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CodMovimento" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CodMovimentoDaFare" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CodSportello" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CodStatoIstanza" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CodiceAmministrazione" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CodiceInventario" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CodiceIstanza" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CodiceScadenza" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DataProtocollo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DataScadenza" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DatiAzienda" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DatiMovimento" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DatiRichiedente" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DatiTecnico" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DescrMovimentoDaFare" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DescrStatoIstanza" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ModuloSoftware" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="NumeroIstanza" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="NumeroProtocollo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Procedimento" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Procedura" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Responsabile" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Uuid" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ScadenzaDto" nillable="true" type="tns:ScadenzaDto" />
+  <xs:complexType name="DatiMovimentoDaEffettuareDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Allegati" nillable="true" type="tns:ArrayOfMovimentiAllegatiDto" />
+      <xs:element minOccurs="0" name="Amministrazione" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CodiceInventario" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CodiceIstanza" type="xs:int" />
+      <xs:element minOccurs="0" name="CodiceMovimento" type="xs:int" />
+      <xs:element minOccurs="0" name="DataIstanza" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="DataMovimento" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="DataProtocollo" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="DataProtocolloIstanza" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="DescInventario" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Descrizione" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Esito" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="IdComune" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Note" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="NumeroIstanza" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="NumeroProtocollo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="NumeroProtocolloIstanza" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Parere" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Pubblica" type="xs:boolean" />
+      <xs:element minOccurs="0" name="PubblicaSchede" type="xs:boolean" />
+      <xs:element minOccurs="0" name="SchedeDinamiche" nillable="true" type="tns:ArrayOfSchedaDinamicaMovimentoDto" />
+      <xs:element minOccurs="0" name="Software" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TipoMovimento" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="VisualizzaEsito" type="xs:boolean" />
+      <xs:element minOccurs="0" name="VisualizzaParere" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DatiMovimentoDaEffettuareDto" nillable="true" type="tns:DatiMovimentoDaEffettuareDto" />
+  <xs:complexType name="ArrayOfMovimentiAllegatiDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="MovimentiAllegatiDto" nillable="true" type="tns:MovimentiAllegatiDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfMovimentiAllegatiDto" nillable="true" type="tns:ArrayOfMovimentiAllegatiDto" />
+  <xs:complexType name="MovimentiAllegatiDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CodiceOggetto" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="Descrizione" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Note" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="MovimentiAllegatiDto" nillable="true" type="tns:MovimentiAllegatiDto" />
+  <xs:complexType name="ArrayOfSchedaDinamicaMovimentoDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="SchedaDinamicaMovimentoDto" nillable="true" type="tns:SchedaDinamicaMovimentoDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfSchedaDinamicaMovimentoDto" nillable="true" type="tns:ArrayOfSchedaDinamicaMovimentoDto" />
+  <xs:complexType name="SchedaDinamicaMovimentoDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="IdCampiContenuti" nillable="true" type="q1:ArrayOfint" />
+      <xs:element minOccurs="0" name="Titolo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Valori" nillable="true" type="tns:ArrayOfValoreDatoDinamicoMovimentoDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SchedaDinamicaMovimentoDto" nillable="true" type="tns:SchedaDinamicaMovimentoDto" />
+  <xs:complexType name="ArrayOfValoreDatoDinamicoMovimentoDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ValoreDatoDinamicoMovimentoDto" nillable="true" type="tns:ValoreDatoDinamicoMovimentoDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfValoreDatoDinamicoMovimentoDto" nillable="true" type="tns:ArrayOfValoreDatoDinamicoMovimentoDto" />
+  <xs:complexType name="ValoreDatoDinamicoMovimentoDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Indice" type="xs:int" />
+      <xs:element minOccurs="0" name="Valore" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ValoreDecodificato" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ValoreDatoDinamicoMovimentoDto" nillable="true" type="tns:ValoreDatoDinamicoMovimentoDto" />
+  <xs:complexType name="DocumentiIstanzaSostituibiliDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="DocumentiEndo" nillable="true" type="tns:ArrayOfListaDocumentiSostituibiliDto" />
+      <xs:element minOccurs="0" name="DocumentiIntervento" nillable="true" type="tns:ListaDocumentiSostituibiliDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DocumentiIstanzaSostituibiliDto" nillable="true" type="tns:DocumentiIstanzaSostituibiliDto" />
+  <xs:complexType name="ArrayOfListaDocumentiSostituibiliDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ListaDocumentiSostituibiliDto" nillable="true" type="tns:ListaDocumentiSostituibiliDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfListaDocumentiSostituibiliDto" nillable="true" type="tns:ArrayOfListaDocumentiSostituibiliDto" />
+  <xs:complexType name="ListaDocumentiSostituibiliDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Descrizione" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Documenti" nillable="true" type="tns:ArrayOfDocumentoSostituibileMovimentoDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ListaDocumentiSostituibiliDto" nillable="true" type="tns:ListaDocumentiSostituibiliDto" />
+  <xs:complexType name="ArrayOfDocumentoSostituibileMovimentoDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="DocumentoSostituibileMovimentoDto" nillable="true" type="tns:DocumentoSostituibileMovimentoDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfDocumentoSostituibileMovimentoDto" nillable="true" type="tns:ArrayOfDocumentoSostituibileMovimentoDto" />
+  <xs:complexType name="DocumentoSostituibileMovimentoDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CodiceOggetto" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="Descrizione" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="IdDocumento" type="xs:int" />
+      <xs:element minOccurs="0" name="NomeFile" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Origine" type="tns:DocumentoSostituibileMovimentoDto.OrigineDocumentoEnum" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DocumentoSostituibileMovimentoDto" nillable="true" type="tns:DocumentoSostituibileMovimentoDto" />
+  <xs:simpleType name="DocumentoSostituibileMovimentoDto.OrigineDocumentoEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Intervento" />
+      <xs:enumeration value="Endoprocedimento" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="DocumentoSostituibileMovimentoDto.OrigineDocumentoEnum" nillable="true" type="tns:DocumentoSostituibileMovimentoDto.OrigineDocumentoEnum" />
+  <xs:complexType name="ConfigurazioneMovimentoDaEffettuareDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="PermetteSostituzioneDocumentale" type="xs:boolean" />
+      <xs:element minOccurs="0" name="RichiedeFirmaDocumenti" type="xs:boolean" />
+      <xs:element minOccurs="0" name="RichiedeInterazioneConSIT" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ConfigurazioneMovimentoDaEffettuareDto" nillable="true" type="tns:ConfigurazioneMovimentoDaEffettuareDto" />
+</xs:schema>

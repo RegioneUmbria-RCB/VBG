@@ -1,0 +1,34 @@
+﻿@{
+    var boxes = InfoBoxes?.ToList() ?? new();
+    var hasChildContent = ChildContent != null;
+}
+
+<div class="card border-light shadow-sm rounded">
+    @if (hasChildContent)
+    {
+        @ChildContent
+    }
+    else
+    {
+        @for (int i = 0; i < boxes.Count; i++)
+        {
+            <DashboardInfoBox IconClass="@boxes[i].IconClass"
+                              Title="@boxes[i].Title"
+                              Text="@boxes[i].Text" />
+
+            @if (i < boxes.Count - 1)
+            {
+                <hr class="my-1 border-top" />
+            }
+        }
+    }
+</div>
+
+@code {
+    [Parameter]
+    public IEnumerable<DashboardInfoBox> InfoBoxes { get; set; }
+        = Enumerable.Empty<DashboardInfoBox>();
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+}

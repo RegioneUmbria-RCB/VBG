@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	xsi:schemaLocation="http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
+	 	http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+	
+	<!-- <import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" /> -->
+	
+	<!--  
+	<jaxrs:server id="restService" address="/rest">
+        <jaxrs:serviceBeans>
+            <ref bean="istanzeSieder"/>
+        </jaxrs:serviceBeans>
+        <jaxrs:extensionMappings>
+            <entry key="json" value="application/json"/>
+        </jaxrs:extensionMappings>
+        <jaxrs:features>
+           <bean class="org.apache.cxf.feature.LoggingFeature" />
+        </jaxrs:features>
+        
+    </jaxrs:server>
+    -->
+    <!--   se riattivato va dopo </jaxrs:features> -->
+    <!-- 
+        <jaxrs:providers>
+            <bean class="org.apache.cxf.jaxrs.provider.JSONProvider" />
+        </jaxrs:providers>
+         -->
+    
+    <!--   <bean id="istanzeSieder" class="it.gruppoinit.service.IstanzeRestService" /> -->
+	
+	
+	<bean id="nlaPort" class="it.init.sigepro.rte.definitions.NlaSoap11Impl" />
+	
+	<context:component-scan base-package="it"/>
+	
+	<jaxws:endpoint xmlns:tns="http://sigepro.init.it/rte/definitions"
+		id="nla" implementor="#nlaPort"
+		wsdlLocation="wsdl/Nla.wsdl" endpointName="tns:NlaSoap11" serviceName="tns:NlaService"
+		address="/NlaSoap11">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+	</jaxws:endpoint>
+	
+	<bean id="pddEntePort" class="it.gov.impresainungiorno.suap.scrivania.ente.PddPortEnteImpl" />
+	
+	<jaxws:endpoint xmlns:tns="http://www.impresainungiorno.gov.it/suap/scrivania"
+		id="pddente" implementor="#pddEntePort"
+		wsdlLocation="wsdl/PddServiceEnte.wsdl" endpointName="tns:PddPortEnte" serviceName="tns:PddServiceEnte"
+		address="/PddPortEnte">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+	</jaxws:endpoint>
+	
+	
+	
+	
+	<bean id="logInbound" class="org.apache.cxf.interceptor.LoggingInInterceptor">
+		<property name="prettyLogging" value="false" />
+		<property name="limit" value="10240" />
+	</bean>
+	<bean id="logOutbound" class="org.apache.cxf.interceptor.LoggingOutInterceptor">
+		<property name="prettyLogging" value="false" />
+		<property name="limit" value="10240" />
+	</bean>
+	<bean id="cxf" class="org.apache.cxf.bus.spring.SpringBus">
+		<property name="inInterceptors">
+			<list>
+				<ref bean="logInbound" />
+			</list>
+		</property>
+		<property name="outInterceptors">
+			<list>
+				<ref bean="logOutbound" />
+			</list>
+		</property>
+		<property name="outFaultInterceptors">
+			<list>
+				<ref bean="logOutbound" />
+			</list>
+		</property>
+		<property name="inFaultInterceptors">
+			<list>
+				<ref bean="logInbound" />
+			</list>
+		</property>
+	</bean>
+	
+</beans>

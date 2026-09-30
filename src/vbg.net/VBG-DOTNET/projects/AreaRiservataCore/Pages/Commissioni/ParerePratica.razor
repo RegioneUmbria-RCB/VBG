@@ -1,0 +1,95 @@
+﻿@page "/{IdComune}/{Software}/parerepratica/{idCommissione:int}/{idPratica}"
+
+@using Init.SIGePro.Manager.DTO.Commissioni.Votazioni
+@using VBG.BlazorComponentsLibrary
+@using VBG.BlazorComponentsLibrary.DesignComuni.Forms
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.EditFormComponents
+@using VBG.BlazorComponentsLibrary.EditFormComponents.DropDown
+@using VBG.BlazorComponentsLibrary.EditFormComponents.FileUpload
+@using VBG.BlazorComponentsLibrary.RisorseTestuali
+@inherits CommissioniBasePage
+
+<TitoloPagina>Parere Pratica</TitoloPagina>
+
+@switch(currentStep)
+{
+    case 0:
+        foreach (var item in ParereDataItems)
+        {
+            ParereDataDropDownItems.Add(new DropDownItem(item.Id.ToString(), item.Descrizione) { });
+        }
+        <VbgForm @ref="myForm" Id="mainForm" Model="@model" OnValidSubmit="OnValidSubmit">
+            <div class="row">
+                <DropDownForm Id="parere"
+                              @bind-Value="model.CommissioniVotiBaseDropDownItem"
+                              TItem="DropDownItem"
+                              Items="@ParereDataDropDownItems"
+                              OnChanged="EventCallback.Factory.Create(this,() => model.CommissioniVotiBase = new CommissioniVotiBaseDto() {Id = Convert.ToInt32(model.CommissioniVotiBaseDropDownItem.Value), Descrizione = model.CommissioniVotiBaseDropDownItem.Text })"
+                              ShowEmptyItem="true" Label="Parere" ValidationFor="() => model.CommissioniVotiBaseDropDownItem">
+                </DropDownForm>
+                @* <DropDownForm Id="parere"
+                    Value="model.CommissioniVotiBase"
+                    TItem="CommissioniVotiBaseDto"
+                    OnChanged="EventCallback.Factory.Create(this, (CommissioniVotiBaseDto s) => model.CommissioniVotiBase = s)"
+                    ValueExpression="() => model.CommissioniVotiBase" Selector="(x) => x.Descrizione"
+                    CssClassContainer="col-md-6" Items="@ParereDataItems" ValueField="Id" TextField="Descrizione"
+                    ShowEmptyItem="true" Label="Parere" ValidationFor="() => model.CommissioniVotiBase">
+                </DropDownForm> *@
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <TextInputForm Id="note" @bind-Value="model.Note" IsMultiline="true" Label="Note" ValidationFor="() => model.Note" />
+
+                </div>
+            </div>
+            <div class="row">
+                <FormUpload @bind-Value="model.CodiceOggetto"
+                            Label="File"
+                            Obbligatorio="@RichiedeFirmaDigitale"
+                            VerificaFirmaDigitale="@RichiedeFirmaDigitale"
+                            ValidationFor="() => model.CodiceOggetto">
+                </FormUpload>
+                @* <UploadInputForm Id="upldFile" @bind-Value="model.FileName" CssClassContainer="col-md-6" Label="File" 
+                    Required="@model.IsUploaderRequired" CodiceOggetto="@model.CodiceOggetto" 
+                    OnChanged="@((UploadInputFormResult r) => UploadFile_OnChanged(r))"
+                    PostedFileSpecifications="@validPostedFileSpecificationAsync" ValidationFor="() => model.FileName"></UploadInputForm> *@
+            </div>
+        </VbgForm>
+
+        <div class="buttonContainer">
+            @if (isBtnConfermaParereVisible)
+            {
+                <input type="submit" form="mainForm" class="btn btn-primary vbg-show-spinner" value="Conferma parere"/>
+            }
+            <button class="btn btn-light vbg-show-spinner" @onclick="OnBtnCloseAsync">Chiudi</button>
+        </div>
+
+        <ConfirmationModal Titolo="Conferma parere espresso" Visible="_showModal" ConfermaClick="@OnBtnSalvaVotoAsync" AnnullaClick="() => _showModal = false" TestoBottoneConferma="Conferma e invia parere" TestoBottoneAnnulla="Annulla e modifica il parere">
+            <ModalBody>
+                <RisorsaTestuale IdRisorsa="parere-commissione.messaggio.conferma-parere">
+                    <span class="fw-bold">Attenzione!</span> Il parere può essere espresso una sola volta e non potrà essere modificato.
+                    <br />
+                    <br />
+                    Confermi l'invio del parere?
+                </RisorsaTestuale>
+            </ModalBody>
+        </ConfirmationModal>
+
+        break;
+    case 1:
+        <div class="alert alert-success" role="alert">
+            <RisorsaTestuale IdRisorsa="parere-commissione.messaggio.salvataggio-riuscito">
+                Parere salvato con successo, premi Chiudi per tornare alla pratica.
+            </RisorsaTestuale>
+        </div>
+        
+        <div class="buttonContainer">
+            <button class="btn btn-light vbg-show-spinner" @onclick="OnBtnCloseAsync">Chiudi</button>
+        </div>
+        break;
+}
+
+@code {
+
+}

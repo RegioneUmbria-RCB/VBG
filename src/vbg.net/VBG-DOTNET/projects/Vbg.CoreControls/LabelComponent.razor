@@ -1,0 +1,58 @@
+﻿@using Init.Sigepro.FrontEnd.CoreServices.LabelUpdater
+@using Vbg.CoreControls
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneRisorseTestuali
+@inherits MyBaseComponentMin
+@inject IRisorseTestualiService _risorseService
+@inject LabelUpdaterService _labelUpdaterService
+
+@if (CanEditResourceText)
+{
+    <div class="risorsa-testuale" data-id-risorsa="@ResourceId">                    
+        <div class="evidenzia"></div>
+        <div class="risorsa-testuale-edit" @onclick="OnModificaClick">
+            <i class=" fa fa-pencil"></i>Modifica
+        </div>
+        <div class="editabile">@_renderFragment</div>
+    </div>
+    @if (Required)
+    {
+        <sup>*</sup>
+    }
+}
+else
+{
+    <label class="form-label">@_renderFragment @if (Required) { <sup>*</sup> } </label>
+}
+
+
+@code {
+
+    private RenderFragment _renderFragment => (mybuilder) =>
+    {
+        mybuilder.AddMarkupContent(0, $"<text>{this.Value}</text>");
+    };
+
+    protected override Task OnInitializedAsync()
+    {
+        _labelUpdaterService.OnRefreshLabelAsync += Refresh;
+
+        if (!string.IsNullOrEmpty(ResourceId))
+            this.Value = this._risorseService.GetRisorsa(ResourceId, this.Value);        
+
+        return base.OnInitializedAsync();
+    }
+
+    private async Task OnModificaClick()
+    {
+        _labelUpdaterService.ShowAsync(ResourceId, this);
+    }
+
+    private async Task Refresh(string newValue, object labelComponent)
+    {
+        if (this == labelComponent as LabelComponent)
+        {
+            this.Value = newValue;
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+}

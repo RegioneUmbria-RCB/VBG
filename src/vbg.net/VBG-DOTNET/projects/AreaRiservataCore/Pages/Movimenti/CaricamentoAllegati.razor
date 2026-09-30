@@ -1,0 +1,128 @@
+﻿@page "/{IdComune}/{Software}/caricamentoallegati/{IdMovimento:int}/{Step:int?}/{*GoBackUrl}"
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneOggetti
+@using VBG.BlazorComponentsLibrary
+@using VBG.BlazorComponentsLibrary.DesignComuni.Download
+@using VBG.BlazorComponentsLibrary.DesignComuni.Forms
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.DesignComuni.NavScroll
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards.CardButtons
+@using VBG.BlazorComponentsLibrary.EditFormComponents
+@using VBG.BlazorComponentsLibrary.EditFormComponents.FileUpload
+@using VBG.BlazorComponentsLibrary.RisorseTestuali
+
+
+@inherits MovimentiBasePage
+
+<TitoloPagina>Caricamento Allegati</TitoloPagina>
+
+<div class="inputForm">
+    @if (_showUploadModal)
+    {
+        <FormModal OnClose="() => CloseUpdateModal() " Model="@AttachmentModel" FormId="uploadForm" OnValidSubmit="@AddAttachment">
+            <ModalHeader Titolo="">
+                <h2 class="title-large-semi-bold mb-4">
+                    <RisorsaTestuale IdRisorsa="MOVIMENTI.CARICAMENTO_ALLEGATI.TITOLO_AGGIUNTA_ALLEGATO">
+                        Aggiungi allegato
+                    </RisorsaTestuale>
+                </h2>
+            </ModalHeader>
+            <ModalBody>
+                @if (PermettiNoteAllegato)
+                {
+                    <TextInputForm @bind-Value="AttachmentModel.Note" Id="txtNote" IsMultiline="true" Label="Descrizione" Required="true" ValidationFor="() => AttachmentModel.Note" />
+                }
+
+                @* <VbgFileUpload Label="Allegato"
+                               FileName="@AttachmentModel.FileName"
+                               ValidationFor="() => AttachmentModel.FileName"
+                               OnValidUpload="UploadFile_OnChanged"
+                               ValidationCallback="OnValidateAsync"
+                               OnDelete="EliminaFileCaricato"
+                               Id="prova">
+                </VbgFileUpload> *@
+
+                <FormUpload @bind-Value="AttachmentModel.CodiceOggetto"
+                Label="Allegato"
+                VerificaFirmaDigitale="@RichiedeFirmaDigitale"
+                ValidationFor="() => AttachmentModel.CodiceOggetto"
+                OnFileChanged="(FormFileChangedEventArgs e) => _binaryFile = BinaryFile.FromFileData(e.FileRef?.FileName, e.FileRef?.ContentType, e.FileRef?.FileContent)">
+                </FormUpload>
+
+                @if (RichiedeFirmaDigitale)
+                {
+                    <p class="help-block">Il file deve essere firmato digitalmente</p>
+                }
+            </ModalBody>
+            @if (AttachmentModel.CodiceOggetto.HasValue)
+            {
+                <ModalFooter>
+                    <FormSubmitButton Form="uploadForm"></FormSubmitButton>
+                </ModalFooter>
+            }
+            else
+            {
+            //submit button nascosto per accessibilità
+                <button type="submit" class="d-none" aria-hidden="true"></button>
+            }
+        </FormModal>
+    }
+
+    <div class="descrizioneStep mb-3">
+        <RisorsaTestuale IdRisorsa="MOVIMENTI.CARICAMENTO_ALLEGATI.DESCRIZIONE_PASSAGGIO">
+            In questo passaggio è possibile caricare documenti che verranno trasmessi allo sportello. Fare click su 'Aggiungi allegato' per aggiungere un nuovo documento.
+        </RisorsaTestuale>
+    </div>
+
+    <NavScrollComponent Title="Indice di pagina">
+        @* @if (MovimentoDaEffettuare.Allegati.Count() > 0)
+        { *@
+        <div id="fldSetAllegati" runat="server" visible='<%# Convert.ToInt32(DataBinder.Eval( MovimentoDaEffettuare,"Allegati.Count" )) > 0 %>'>
+
+            <StepCard Titolo="Allegati inseriti">
+                @if (MovimentoDaEffettuare.Allegati.Any())
+                {
+                    <StepCardItem>
+                        @foreach (var item in MovimentoDaEffettuare.Allegati)
+                        {
+                            <StepCardInfo Titolo="@item.Descrizione">
+                                <div class="float-end">
+                                    <button class="text-decoration-none ms-2" aria-labelledby="@($"buttonEliminaAllegato-{item.IdAllegato}")" data-focus-mouse="false" @onclick="() => ShowConfirmationModal(item.IdAllegato)">
+                                        <span id="@($"buttonEliminaAllegato-{item.IdAllegato}")" class="text-button-sm-semi t-alert">Elimina</span>
+                                    </button>
+                                </div>
+                                <DownloadButton CodiceOggetto="item.IdAllegato" NomeOggetto="@item.Note"></DownloadButton>
+                                @if (RichiedeFirmaDigitale && !item.FirmatoDigitalmente)
+                                {
+                                    <div>
+                                        <span class="errori">Attenzione, il file non è firmato digitalmente oppure non contiene firme digitali valide</span>
+                                    </div>
+                                }
+                            </StepCardInfo>
+                        }
+                    </StepCardItem>
+                }
+                else 
+                {
+                    <div class="alert alert-info" role="alert">
+                        Non sono stati caricati allegati. 
+                    </div>
+                }
+                <button class="btn btn-primary" @onclick="() => _showUploadModal = true">Aggiungi allegato</button>
+            </StepCard>
+        </div>
+        @* }     *@
+
+        <div id="bottoniMovimento" class="d-flex gap-3 mb-3">
+            <button class="btn btn-light" @onclick="OnBtnBackAsync">Torna indietro</button>
+            
+            <button class="btn btn-primary" @onclick="OnBtnNextAsync">Procedi</button>
+        </div>
+    </NavScrollComponent>
+</div>
+
+<ConfirmationModal Titolo="Conferma eliminazione" Visible="_showConfirmationModal" ConfermaClick="@(() => RemoveAttachment(_idAllegatoDaEliminare))" AnnullaClick="() => _showConfirmationModal = false" >
+    <ModalBody>
+        Eliminare l'allegato selezionato?
+    </ModalBody>
+</ConfirmationModal>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:sch="http://gruppoinit.it/sigepro/schemas/messages/utilititypagopa" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://gruppoinit.it/sigepro/definitions/utilititypagopa" targetNamespace="http://gruppoinit.it/sigepro/definitions/utilititypagopa">
+	<wsdl:types>
+		<schema xmlns="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://gruppoinit.it/sigepro/schemas/messages/utilititypagopa" schemaLocation="utilititypagopa.xsd" />
+		</schema>
+	</wsdl:types>
+	
+	<!-- DEFINIZIONE REQUEST -->
+	
+	<wsdl:message name="BollettinopagopaRequest">
+		<wsdl:part element="sch:BollettinopagopaRequest" name="BollettinopagopaRequest" />
+	</wsdl:message>
+	
+
+	<!-- DEFINIZIONE RESPONSE -->
+	
+	<wsdl:message name="BollettinopagopaResponse">
+		<wsdl:part element="sch:BollettinopagopaResponse" name="BollettinopagopaResponse" />
+	</wsdl:message>
+	
+
+	<!-- DEFINIZIONE OPERAZIONI -->
+		
+	<wsdl:portType name="Utilititypagopa">
+		<wsdl:operation name="generabollettinopagopa">
+			<wsdl:input message="tns:BollettinopagopaRequest" name="BollettinopagopaRequest" />
+			<wsdl:output message="tns:BollettinopagopaResponse" name="BollettinopagopaResponse" />
+		</wsdl:operation>
+		
+	</wsdl:portType>
+	
+	
+	<wsdl:binding name="Utilititypagopa11" type="tns:Utilititypagopa">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="generabollettinopagopa">
+			<soap:operation soapAction="generabollettinopagopa" />
+			<wsdl:input name="BollettinopagopaRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="BollettinopagopaResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+
+	</wsdl:binding>
+	<wsdl:service name="UtilititypagopaService">
+		<wsdl:port binding="tns:Utilititypagopa11" name="Utilititypagopa11">
+			<soap:address location="http://localhost:8080/bollettinopagopa/services/" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

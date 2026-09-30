@@ -1,0 +1,47 @@
+# See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
+
+# This stage is used when running from VS in fast mode (Default for Debug configuration)
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
+ENV TZ=Europe/Rome
+RUN apt-get update && \
+    apt-get install -y curl
+USER $APP_UID
+WORKDIR /app
+EXPOSE 8080
+
+
+# This stage is used to build the service project
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+ARG BUILD_CONFIGURATION=Release
+ARG PAT
+WORKDIR /src
+
+COPY ["projects/aspnet-core-services/AspnetCoreServices.csproj", "projects/aspnet-core-services/"]
+COPY ["projects/SIGePro.Exceptions/SIGePro.Exceptions.csproj", "projects/SIGePro.Exceptions/"]
+COPY ["projects/SIGePro.Data/SIGePro.Data.csproj", "projects/SIGePro.Data/"]
+COPY ["projects/Init.Utils/Init.Utils.csproj", "projects/Init.Utils/"]
+COPY ["projects/PersonalLib2/PersonalLib2.csproj", "projects/PersonalLib2/"]
+COPY ["projects/SIGePro.Manager.DTO/SIGePro.Manager.DTO.csproj", "projects/SIGePro.Manager.DTO/"]
+COPY ["projects/SIGePro.Manager/SIGePro.Manager.csproj", "projects/SIGePro.Manager/"]
+COPY ["projects/Vbg.EventBus/Vbg.EventBus.csproj", "projects/Vbg.EventBus/"]
+COPY ["projects/VBG.Shared.Infrastructure/VBG.Shared.Infrastructure.csproj", "projects/VBG.Shared.Infrastructure/"]
+COPY ["projects/IntegrazioneCUnicoWS/IntegrazioneCUnicoWS.csproj", "projects/IntegrazioneCUnicoWS/"]
+
+RUN dotnet nuget add source "https://pkgs.dev.azure.com/pa-evolution/FP/_packaging/VBG-LIBRARY/nuget/v3/index.json" --name "vbg_library" --username "non_usato" --password "${PAT}" --store-password-in-clear-text
+
+RUN dotnet restore "./projects/aspnet-core-services/AspnetCoreServices.csproj" 
+COPY . .
+WORKDIR "/src/projects/aspnet-core-services"
+# RUN dotnet build "./AspnetCoreServices.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
+# This stage is used to publish the service project to be copied to the final stage
+FROM build AS publish
+ARG BUILD_CONFIGURATION=ReleaseNoSVN
+RUN dotnet publish "./AspnetCoreServices.csproj" -c $BUILD_CONFIGURATION --no-restore -o /app/publish /p:UseAppHost=false
+
+# This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
+FROM base AS final
+HEALTHCHECK CMD curl --fail http://localhost:8080/health || exit
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "AspnetCoreServices.dll"]

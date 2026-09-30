@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- <task:annotation-driven/>  -->
+	<mvc:annotation-driven/>
+	<context:component-scan base-package="it.gruppoinit.pal.gp.pay.web" />
+	<context:component-scan base-package="it.gruppoinit.pal.gp.pay.connector.payer.web" />
+	<context:component-scan base-package="it.gruppoinit.pal.gp.pay.connector.jcitygov.web" />
+	<!-- 
+	<bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping">
+		 <property name="interceptors">
+		 	<list>
+				<ref bean="localeChangeInterceptor" />
+				<ref bean="openSessionInViewInterceptor" />
+			</list>
+		 </property>
+		 <property name="basePackage" value="it.gruppoinit.pal.gp.pay.web"></property>
+		 <property name="order" value="1"></property>
+	</bean>
+	
+	<bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+    	<property name="paramName" value="lang" />
+	</bean>
+	 -->
+	
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+		<property name="defaultLocale" value="it" />
+	</bean>
+    <!--
+      // View resolver that delegates to other view resolvers based on the
+      // content type
+	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+		<property name="contentNegotiationManager" ref="cnManager" />
+	</bean>
+    
+    <!-
+      // Setup a simple strategy:
+      //  1. Only path extension is taken into account, Accept headers
+      //      are ignored.
+      //  2. Return HTML by default when not sure.
+	<bean id="cnManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+		<property name="ignoreAcceptHeader" value="true" />
+		<property name="favorPathExtension" value="false" />
+		<property name="favorParameter" value="true" />
+		<property name="defaultContentType" value="text/html" />
+    	<property name="useJaf" value="false"/>
+	</bean> 
+	-->
+	<bean class="org.springframework.web.servlet.view.XmlViewResolver" 
+		p:location="/WEB-INF/views.xml" 
+		p:order="1" />
+	<!--
+		- This bean configures the 'prefix' and 'suffix' properties of 
+		- InternalResourceViewResolver, which resolves logical view names 
+		- returned by Controllers. For example, a logical view name of "operatori" 
+		- will be mapped to "/WEB-INF/jsp/operatori.jsp".
+	-->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" 
+		p:prefix="/WEB-INF/jsp/"
+		p:suffix=".jsp" />
+		
+	
+	<!-- MultipartResolver for parsing file uploads, implementation for Commons FileUpload 
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+	
+	<bean id="themeChangeInterceptor" class="org.springframework.web.servlet.theme.ThemeChangeInterceptor" />	
+	
+	<bean id="themeResolver" class="org.springframework.web.servlet.theme.CookieThemeResolver" />
+	-->
+
+</beans>

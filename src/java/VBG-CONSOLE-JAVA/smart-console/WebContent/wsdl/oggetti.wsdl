@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:sch="http://gruppoinit.it/sigepro/schemas/messages/oggetti" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://gruppoinit.it/sigepro/definitions/oggetti" targetNamespace="http://gruppoinit.it/sigepro/definitions/oggetti">
+	<wsdl:types>
+		<schema xmlns="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://gruppoinit.it/sigepro/schemas/messages/oggetti" schemaLocation="oggetti.xsd" />
+		</schema>
+	</wsdl:types>
+	<wsdl:message name="OggettiInsertRequest">
+		<wsdl:part element="sch:OggettiInsertRequest" name="OggettiInsertRequest" />
+	</wsdl:message>
+	<wsdl:message name="OggettiFindRequest">
+		<wsdl:part element="sch:OggettiFindRequest" name="OggettiFindRequest" />
+	</wsdl:message>
+	<wsdl:message name="OggettiUpdateRequest">
+		<wsdl:part element="sch:OggettiUpdateRequest" name="OggettiUpdateRequest" />
+	</wsdl:message>
+	<wsdl:message name="OggettiDeleteResponse">
+		<wsdl:part element="sch:OggettiDeleteResponse" name="OggettiDeleteResponse" />
+	</wsdl:message>
+	<wsdl:message name="OggettiUpdateResponse">
+		<wsdl:part element="sch:OggettiUpdateResponse" name="OggettiUpdateResponse" />
+	</wsdl:message>
+	<wsdl:message name="OggettiFindNomeRequest">
+		<wsdl:part element="sch:OggettiFindNomeRequest" name="OggettiFindNomeRequest" />
+	</wsdl:message>
+	<wsdl:message name="OggettiFindNomeResponse">
+		<wsdl:part element="sch:OggettiFindNomeResponse" name="OggettiFindNomeResponse" />
+	</wsdl:message>
+	<wsdl:message name="OggettiInsertResponse">
+		<wsdl:part element="sch:OggettiInsertResponse" name="OggettiInsertResponse" />
+	</wsdl:message>
+	<wsdl:message name="OggettiDeleteRequest">
+		<wsdl:part element="sch:OggettiDeleteRequest" name="OggettiDeleteRequest" />
+	</wsdl:message>
+	<wsdl:message name="OggettiFindResponse">
+		<wsdl:part element="sch:OggettiFindResponse" name="OggettiFindResponse" />
+	</wsdl:message>
+	<wsdl:portType name="Oggetti">
+		<wsdl:operation name="OggettiUpdate">
+			<wsdl:input message="tns:OggettiUpdateRequest" name="OggettiUpdateRequest" />
+			<wsdl:output message="tns:OggettiUpdateResponse" name="OggettiUpdateResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="OggettiFind">
+			<wsdl:input message="tns:OggettiFindRequest" name="OggettiFindRequest" />
+			<wsdl:output message="tns:OggettiFindResponse" name="OggettiFindResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="OggettiFindNome">
+			<wsdl:input message="tns:OggettiFindNomeRequest" name="OggettiFindNomeRequest" />
+			<wsdl:output message="tns:OggettiFindNomeResponse" name="OggettiFindNomeResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="OggettiDelete">
+			<wsdl:input message="tns:OggettiDeleteRequest" name="OggettiDeleteRequest" />
+			<wsdl:output message="tns:OggettiDeleteResponse" name="OggettiDeleteResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="OggettiInsert">
+			<wsdl:input message="tns:OggettiInsertRequest" name="OggettiInsertRequest" />
+			<wsdl:output message="tns:OggettiInsertResponse" name="OggettiInsertResponse" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="OggettiSoap11" type="tns:Oggetti">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="OggettiUpdate">
+			<soap:operation soapAction="oggettiUpdate" />
+			<wsdl:input name="OggettiUpdateRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="OggettiUpdateResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="OggettiFind">
+			<soap:operation soapAction="oggettiFind" />
+			<wsdl:input name="OggettiFindRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="OggettiFindResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="OggettiFindNome">
+			<soap:operation soapAction="oggettiFindNome" />
+			<wsdl:input name="OggettiFindNomeRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="OggettiFindNomeResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="OggettiDelete">
+			<soap:operation soapAction="oggettiDelete" />
+			<wsdl:input name="OggettiDeleteRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="OggettiDeleteResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="OggettiInsert">
+			<soap:operation soapAction="oggettiInsert" />
+			<wsdl:input name="OggettiInsertRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="OggettiInsertResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="OggettiService">
+		<wsdl:port binding="tns:OggettiSoap11" name="OggettiSoap11">
+			<soap:address location="http://devel9:8080/vbg/services/" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

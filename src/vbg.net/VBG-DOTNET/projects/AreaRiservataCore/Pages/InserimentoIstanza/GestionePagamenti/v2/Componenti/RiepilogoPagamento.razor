@@ -1,0 +1,47 @@
+﻿@using Init.Sigepro.FrontEnd.AppLogic.GestioneOneri;
+@using VBG.BlazorComponentsLibrary.DesignComuni.Messaggi
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards.CardButtons
+
+@if (Pagamento is not null)
+{
+    <StepCardItem>
+        <StepCardButtonGroup EditClick="Edit"></StepCardButtonGroup>
+        <StepCardItemTitle Titolo="@Pagamento.Causale"></StepCardItemTitle>
+        <StepCardItemSubtitle>
+            @Pagamento.Note
+
+            <div class="mt-4">
+                @foreach (var error in Pagamento.Errori)
+                {
+                    <ErrorMessage>@error</ErrorMessage>
+                }
+            </div>
+        </StepCardItemSubtitle>
+        <StepCardInfo Titolo="Importo dovuto">€ @Pagamento.ImportoPagato.ToString("N2")</StepCardInfo>
+
+        @if (!Pagamento.ModalitaPagamentoNonImpostata)
+        {
+            <StepCardInfo Titolo="Modalità di pagamento">@Pagamento.ModalitaPagamento?.Text</StepCardInfo>
+        }
+
+        @if (Pagamento.ModalitaPagamentoAsEnum == ModalitaPagamentoOnereEnum.GiaPagato)
+        {
+            <StepCardInfo Titolo="Tipo pagamento">@Pagamento.TipoPagamento?.Descrizione</StepCardInfo>
+            <StepCardInfo Titolo="Data pagamento">@Pagamento.DataPagamento?.ToString("dd/MM/yyyy")</StepCardInfo>
+            <StepCardInfo Titolo="Riferimenti pagamento">@Pagamento.RiferimentoPagamento</StepCardInfo>
+        }
+    </StepCardItem>
+}
+
+@code {
+    [Parameter, EditorRequired]
+    public GrigliaPagamentiItem? Pagamento { get; set; }
+    [Parameter, EditorRequired]
+    public EventCallback<GrigliaPagamentiItem> OnEdit { get; set; }
+
+    async Task Edit()
+    {
+        await this.OnEdit.InvokeAsync(this.Pagamento);
+    }
+}

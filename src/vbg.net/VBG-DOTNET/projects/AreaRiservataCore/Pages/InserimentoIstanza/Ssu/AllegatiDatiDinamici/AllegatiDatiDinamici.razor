@@ -1,0 +1,162 @@
+﻿@page "/{IdComune}/{Software}/inserimento-istanza/ssu/allegati-dati-dinamici/{idDomanda:int}/{stepId:int}"
+
+@using AreaRiservataCore.Pages.InserimentoIstanza.AllegatiDatiDinamici
+@using Init.Sigepro.FrontEnd.AppLogic.DatiDinamici
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneOggetti
+@using Init.Sigepro.FrontEnd.CoreServices.GestionePresentazioneDomanda.Paginatore
+@using Init.Sigepro.FrontEnd.Infrastructure.StepsDomanda.Attributi
+@using VBG.AppLogic.SSU.GestioneDatiDinamici
+
+@inherits IstanzeStepPage
+
+@if (_dataSource.Any())
+{
+    <div class="shadow mb-4 p-4 pe-2">
+        <div class="pb-4">
+            <div class="w-75">
+                <h3>Riepilogo schede compilate</h3>
+                <span class="mb-2 text-muted">Cliccare su "Documenti" per scaricare il modello da firmare e caricare il file relativo alla scheda</span>
+            </div>     
+        </div>
+        <div class="it-list-wrapper mb-4 p-2">
+            <ul class="it-list">
+                @foreach (var item in _dataSource)
+                {
+                    <AllegatiDatiDinamiciItem Riepilogo="item" Edit="OnEdit"></AllegatiDatiDinamiciItem>
+                }
+            </ul>
+        </div>
+    </div>    
+
+    @if (_editingItem is not null)
+    {
+        <AllegatiDatiDinamiciV2EditForm Riepilogo="_editingItem"
+                                        OnCancel="() => _editingItem = null"
+                                        CallbackGenerazioneRiepilogo="RigeneraModelloRiepilogo"
+                                        OnError="OnUploadError"
+                                        OnUploadSuccesful="OnUploadSuccesful"></AllegatiDatiDinamiciV2EditForm>
+    }
+}
+
+@code {
+    [CascadingParameter]
+    private PaginatoreStateService _paginatoreStateService { get; set; } = default!;
+
+    [StepProperty]
+    public bool IgnoraObbligoFirmaDigitale { get; set; } = false;
+
+    [StepProperty]
+    public bool GeneraRiepilogoSchedeCheNonRichiedonoFirma { get; set; } = true;
+
+    [Inject]
+    public SsuDatiDinamiciService _ssuDatiDinamiciService { get; set; } = default!;
+
+    [Inject]
+    public IRiepiloghiDatiDinamiciAsyncService _riepiloghiService { get; set; } = default!;
+
+
+    private SsuStrutturaModelloDinamicoRepository? _strutturaModelloDinamicoRepository;
+    IEnumerable<RiepilogoRichiesto> _dataSource = Enumerable.Empty<RiepilogoRichiesto>();
+    RiepilogoRichiesto? _editingItem;
+
+    protected override async Task OnInitializeStepAsync()
+    {
+        try
+        {
+            await base.OnInitializeStepAsync();
+
+            await this._spinnerService.ShowSpinnerAsync(async() =>
+            {
+                await this.DataBindAsync();
+                await InizializzaRepositorySchedeDinamiche();
+            });
+        }
+        catch (Exception)
+        {
+            MessageContainer.AddError("Si è verificato un errore durante il recupero degli allegati dei dati dinamici");
+            this._paginatoreStateService.NascondiBottoneAvanti();
+        }
+
+    }
+
+    protected override bool CanEnterStep()
+    {
+        return _dataSource.Any();
+    }
+
+    private async Task DataBindAsync()
+    {
+        _dataSource = await _riepiloghiService.GetRiepiloghiRichiestiAsync(IdDomanda!.Value, GeneraRiepilogoSchedeCheNonRichiedonoFirma, IgnoraObbligoFirmaDigitale);
+    }
+
+    private async Task InizializzaRepositorySchedeDinamiche()
+    {
+        var schedePerProcedimento = await _ssuDatiDinamiciService.GetDatiDinamiciAsync(this.IdDomanda!.Value);
+
+        var schedeDomanda = schedePerProcedimento.Where(x => x.Schede is not null).SelectMany(x => x.Schede!);
+
+        _strutturaModelloDinamicoRepository = new SsuStrutturaModelloDinamicoRepository(schedeDomanda);
+    }
+
+    private async Task<BinaryFile> RigeneraModelloRiepilogo(RiepilogoRichiesto riepilogo)
+    {
+        return await _riepiloghiService.GeneraRiepilogoAsync(riepilogo.IdDomanda, riepilogo.IdModello, riepilogo.IndiceMolteplicita, this._strutturaModelloDinamicoRepository);
+    }
+
+    protected override async Task<bool> CanExitStepAsync()
+    {
+        var listaErrori = this.DomandaCorrente.DatiDinamici.VerificaUploadModelliRichiesti(this.IgnoraObbligoFirmaDigitale);
+
+        this.MessageContainer.AddError(listaErrori);
+
+        if (listaErrori.Any())
+        {
+            return false;
+        }
+
+        var result = true;
+
+        await _spinnerService.ShowSpinnerAsync(async () =>
+        {
+            try
+            {
+                var riepiloghiDaGenerare = _dataSource.Where(x => !x.Richiesto && !x.CodiceOggetto.HasValue);
+                await _riepiloghiService.GeneraRiepiloghiEAllegaADomandaAsync(IdDomanda!.Value, riepiloghiDaGenerare, this._strutturaModelloDinamicoRepository);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error($"Errore durante il salvataggio degli allegati: {ex.Message}");
+                MessageContainer.AddError("Errore durante il salvataggio degli allegati");
+
+                result = false;
+            }
+        });
+
+        return result;
+    }
+
+    async Task OnEdit(RiepilogoRichiesto riepilogo)
+    {
+        _editingItem = riepilogo;
+
+        await Task.CompletedTask;
+    }
+
+    Task OnUploadError(string message)
+    {
+        MessageContainer.AddError(message);
+
+        return Task.CompletedTask;
+    }
+
+    async Task OnUploadSuccesful()
+    {
+        await this._spinnerService.ShowSpinnerAsync(async() =>
+        {
+            await DataBindAsync();
+            _editingItem = null;
+        });
+        
+    }
+
+}

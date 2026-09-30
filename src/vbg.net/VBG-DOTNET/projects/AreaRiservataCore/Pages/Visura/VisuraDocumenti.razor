@@ -1,0 +1,35 @@
+﻿@using AreaRiservataCore.Shared.DetailCards
+@using VBG.BlazorComponentsLibrary.DesignComuni.Download
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards.CardButtons
+
+@if (DataSource?.Any() ?? false)
+{
+    <DetailCardGroup Title="Documenti">
+
+        <DetailCardList Items="DataSource">
+            <ItemTemplate Context="item">
+                @if (PermettiDownload)
+                {
+                    <DetailCardAction Text="Scarica" OnClick="() => DownloadAttachmentAsync(item.CodiceOggetto)"></DetailCardAction>
+                }
+                <DetailCardTitle>@item.Descrizione</DetailCardTitle>
+
+                @if (item.Data.HasValue)
+                {
+                    <DetailCardSubtitle>Caricato il @item.Data.Value.ToString("dd/MM/yyyy")</DetailCardSubtitle>
+                }
+
+                @if (item.HasMd5)
+                {
+                    <DetailCardInfo Title="Md5">@item.Md5</DetailCardInfo>
+                }
+            </ItemTemplate>
+        </DetailCardList>
+
+    </DetailCardGroup>
+}
+
+@code {
+
+}

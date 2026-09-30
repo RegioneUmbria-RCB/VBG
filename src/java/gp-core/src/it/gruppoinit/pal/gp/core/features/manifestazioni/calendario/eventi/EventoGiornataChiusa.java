@@ -1,0 +1,19 @@
+package it.gruppoinit.pal.gp.core.features.manifestazioni.calendario.eventi;
+
+import it.gruppoinit.pal.gp.core.features.buslightyear.interfaces.IEvent;
+
+public class EventoGiornataChiusa implements IEvent {
+
+    private Integer idGiornata;
+
+    public EventoGiornataChiusa(Integer idGiornata) {
+
+	super();
+	this.idGiornata = idGiornata;
+    }
+
+    public Integer getIdGiornata() {
+
+	return idGiornata;
+    }
+}

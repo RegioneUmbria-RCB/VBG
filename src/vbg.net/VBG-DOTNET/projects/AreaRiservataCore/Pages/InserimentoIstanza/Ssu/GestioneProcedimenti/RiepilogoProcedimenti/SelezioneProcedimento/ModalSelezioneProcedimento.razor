@@ -1,0 +1,169 @@
+﻿@using VBG.AppLogic.SSU.APICatalogoServizi.Client
+@using VBG.AppLogic.SSU.GestioneEventiDellaVita
+@using VBG.AppLogic.SSU.GestioneProcedimenti
+@using VBG.AppLogic.SSU.GestioneTipologie
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.EditFormComponents
+
+
+<BasicModal AlwaysVisible="true" OnClose="OnClose">
+    <ModalHeader Size="ModalHeaderSizeEnum.Small" Titolo="Seleziona un procedimento"></ModalHeader>
+    <ModalBody>
+        <VbgForm Model="@_model">
+            <div class="row">
+                <div class="col">
+                    <TipologieAutocomplete ValueChanged="OnTipologiaChanged"></TipologieAutocomplete>
+                </div>
+                <div class="col">
+                    <DropDownEventiDellaVita ValueChanged="OnEventoVitaChanged"></DropDownEventiDellaVita>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <DebouncedTextInput DebounceTimeout="300" Icon="it-search" DebouncedValueChanged="DebouncedValueChanged"/>
+                </div>
+            </div>
+            <div>
+                @if (_isLoading)
+                {
+                    <MessaggioCaricamento></MessaggioCaricamento>
+                }
+                else
+                {
+                    @if (_procedimenti?.Items?.Any() ?? false)
+                    {
+                        <div class="it-list-wrapper">
+                            <ul class="it-list">
+                                @foreach (var procedimento in _procedimenti.Items)
+                                {
+                                    this._isGiaSelezionato = this._procedimentiSelezionati != null ? this._procedimentiSelezionati.Procedimenti.Any(x => x.Id == procedimento.Id) : false;
+
+                                    <li style="@(this._isGiaSelezionato ? "pointer-events: none" : "cursor: pointer")" @onclick ="() => OnProcedimentoSelezionato(procedimento)" class="@(procedimento == _model.Procedimento || this._isGiaSelezionato ? "border border-success shadow" : "")">
+                                        <div class="list-item">
+                                            <div class="it-right-zone">                                        
+                                                <div>
+                                                    @if (this._isGiaSelezionato)
+                                                    {
+                                                        <div class="d-flex me-4 pe-0 gap-1">
+                                                            <span class="badge bg-success fs-6">Procedimento già selezionato</span>
+                                                        </div>
+                                                    }
+                                                    <h4 class="text m-0">@procedimento.Descrizione</h4>
+                                                    <p class="small m-0">@procedimento.DescrizioneEstesa.</p>
+                                                </div>
+                                                <span class="it-multiple">
+                                                    @if (procedimento == _model.Procedimento || this._isGiaSelezionato)
+                                                    {
+                                                        <SvgIcon CssClass="icon-secondary" IconId="it-check-circle" AriaLabel="selezionato"></SvgIcon>
+                                                    }
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="muted">Non sono stati trovati procedimenti corrispondenti ai criteri di ricerca selezionati</div>
+                    }
+                }
+            </div>
+        </VbgForm>
+    </ModalBody>
+    <ModalFooter>
+        <button type="button" class="btn btn-primary flex-even fw-bold" disabled="@(_model?.Procedimento is null)" @onclick="OnProseguiClick">Prosegui</button>
+    </ModalFooter>
+</BasicModal>
+
+
+
+@code {
+    public class Model
+    {
+        public int? EventoDellaVita { get; set; }
+        public int? Tipologia { get; set; }
+        public string SearchText { get; set; } = "";
+        public Procedimento? Procedimento { get; set; }
+    }
+
+
+    [Inject]
+    public SsuProcedimentiService _procedimentiService { get; set; } = default!;
+
+
+    [CascadingParameter(Name = "IdDomanda")]
+    public int? IdDomanda { get; set; }
+
+    [CascadingParameter(Name = "ProcedimentiDomanda")]
+    public SsuProcedimentiDomanda? ProcedimentiDomanda { get; set; }
+
+    [Parameter]
+    public EventCallback OnClose { get; set; }
+    [Parameter]
+    public EventCallback<Procedimento> ProcedimentoSelezionato { get; set; }
+
+
+    private Model _model = new();
+    private string _titolo = "Seleziona un procedimento";
+    private PagedItemsOfProcedimento? _procedimenti;
+    private bool _isLoading = false;
+    private SsuProcedimentiDomanda? _procedimentiSelezionati;
+    private bool _isGiaSelezionato;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        this._procedimentiSelezionati = ProcedimentiDomanda;
+        this._model = new();
+
+        await RefreshDataSourceAsync();
+    }
+
+    async Task OnTipologiaChanged(int? tipologiaId)
+    {
+        this._model.Tipologia = tipologiaId;
+
+        await RefreshDataSourceAsync();
+    }
+
+    async Task OnEventoVitaChanged(int? idEvento)
+    {
+        this._model.EventoDellaVita = idEvento;
+
+        await RefreshDataSourceAsync();
+    }
+
+    async Task RefreshDataSourceAsync()
+    {
+        this._isLoading = true;
+
+        _procedimenti = await _procedimentiService.GetProcedimentiAsync(IdDomanda.Value, this._model.EventoDellaVita, this._model.Tipologia, this._model.SearchText);
+        this._model.Procedimento = null;
+
+        this._isLoading = false;
+    }
+
+    async Task OnProcedimentoSelezionato(Procedimento procedimento)
+    {
+        this._model.Procedimento = procedimento;
+
+        await Task.CompletedTask;
+    }
+
+    async Task DebouncedValueChanged(string text)
+    {
+        this._model.SearchText = text;
+        await RefreshDataSourceAsync();
+    }
+
+    async Task OnProseguiClick()
+    {
+        if(_model?.Procedimento is not null)
+        {
+            await ProcedimentoSelezionato.InvokeAsync(_model.Procedimento);
+        }
+    }
+}

@@ -1,0 +1,81 @@
+﻿@using AreaRiservataCore.Shared.DetailCards
+@using VBG.BlazorComponentsLibrary.DesignComuni.Download
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards.CardButtons
+@using VBG.BlazorComponentsLibrary.RisorseTestuali
+@using static VBG.BlazorComponentsLibrary.DesignComuni.Download.AttachmentsMenu
+
+
+@if (DataSource?.Any() ?? false)
+{
+    <DetailCardGroup Title="Movimenti">
+
+        <DetailCardList Items="DataSource">
+            <ItemTemplate Context="item">
+
+                @if (PermettiDownload && (item.Allegati?.Any() ?? false))
+                {
+                    <DetailCardAction Text="@((item.Allegati.Count()) == 1 ? "Scarica" : $"{item.Allegati.Count()} Allegati")" OnClick="() => MostraAllegatiAsync(item.Allegati)"></DetailCardAction>
+                }
+
+                <DetailCardTitle>@item.Descrizione</DetailCardTitle>
+
+                @if (item.Data.HasValue)
+                {
+                    <DetailCardSubtitle>@item.Data.Value.ToString("dd/MM/yyyy")</DetailCardSubtitle>
+                }
+                @if (!String.IsNullOrEmpty(item.Parere))
+                {
+                    <DetailCardInfo Title="Parere">@item.Parere</DetailCardInfo>
+                }
+                @if (!String.IsNullOrEmpty(item.NumeroProtocollo))
+                {
+                    <DetailCardInfo Title="Protocollo">n. @item.NumeroProtocollo del @(item.DataProtocollo != null ? item.DataProtocollo.Value.ToString("dd/MM/yyyy") : string.Empty)</DetailCardInfo>
+                }
+
+                @if (MostraPraticheCollegate)
+                {
+                    if (item.HaPraticaCollegata)
+                    {
+                        <DetailCardInfo Title="Pratiche collegate">
+                            <a href="#" class="effettua-sub-visura" data-id-pratica-collegata='@item.UuidPraticaCollegata'>
+                                <i class="fa fa-external-link"></i>Visualizza
+                                <div class="loader" style="display: none"></div>
+                            </a>
+                        </DetailCardInfo>
+                    }
+                }
+            </ItemTemplate>
+        </DetailCardList>
+        @if (_allegatiScaricabili?.Any() ?? false)
+        {
+            <BasicModal OnClose="() => _allegatiScaricabili = null" AlwaysVisible="true" Size="ModalSizeEnum.Small">
+                <ModalHeader Titolo="Scarica allegati" Size="ModalHeaderSizeEnum.Small">
+                </ModalHeader>
+                <ModalBody>
+                    <ul class="list-group">
+                        @foreach (var allegato in _allegatiScaricabili)
+                        {
+                            <li class="list-group-item d-flex justify-content-between align-items-start">
+                                <div class="ms-2 me-auto">
+                                    <div class="fw-bold">@allegato.DESCRIZIONE</div>
+                                    <small class="text-muted">Caricato il @allegato.DATAREGISTRAZIONE?.ToString("dd/MM/yyyy")</small>
+                                </div>
+                                <small><button @onclick="() => DownloadAttachmentAsync(Convert.ToInt32(allegato.CodiceOggetto))">Scarica</button></small>
+                            </li>
+                        }
+                    </ul>
+                </ModalBody>
+                <ModalFooter CancelText="Chiudi">
+                </ModalFooter>
+            </BasicModal>
+        }
+    </DetailCardGroup>
+
+}
+
+
+@code {
+
+}

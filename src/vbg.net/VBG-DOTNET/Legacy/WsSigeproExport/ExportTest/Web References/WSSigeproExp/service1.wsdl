@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://init.sigepro.it" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://init.sigepro.it" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://init.sigepro.it">
+      <s:element name="ListExp">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="sToken" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListExpResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="LISTAESPORTAZIONI" nillable="true" type="tns:CListaEsportazione" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="CListaEsportazione">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ESPORTAZIONE" type="tns:CEsportazione" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="CEsportazione">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DESCRIZIONE" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CONTESTO" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LISTAPARAMETRI" type="tns:ArrayOfParametro" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfParametro">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="PARAMETRO" nillable="true" type="tns:Parametro" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Parametro">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="NOME" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DESCRIZIONE" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="VALORE" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ListExpContext">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="sToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sContext" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListExpContextResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="LISTAESPORTAZIONI" nillable="true" type="tns:CListaEsportazione" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetEsportazione">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="iIDExp" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetEsportazioneResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="ESPORTAZIONE" nillable="true" type="tns:CEsportazione" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Export">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="sToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sXmlFile" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="iIDExp" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="pParColl" type="tns:ArrayOfParametro1" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfParametro1">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Parametro" nillable="true" type="tns:Parametro" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ExportResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ExportResult" type="s:base64Binary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LISTAESPORTAZIONI" nillable="true" type="tns:CListaEsportazione" />
+      <s:element name="ESPORTAZIONE" nillable="true" type="tns:CEsportazione" />
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="ListExpSoapIn">
+    <wsdl:part name="parameters" element="tns:ListExp" />
+  </wsdl:message>
+  <wsdl:message name="ListExpSoapOut">
+    <wsdl:part name="parameters" element="tns:ListExpResponse" />
+  </wsdl:message>
+  <wsdl:message name="ListExpContextSoapIn">
+    <wsdl:part name="parameters" element="tns:ListExpContext" />
+  </wsdl:message>
+  <wsdl:message name="ListExpContextSoapOut">
+    <wsdl:part name="parameters" element="tns:ListExpContextResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetEsportazioneSoapIn">
+    <wsdl:part name="parameters" element="tns:GetEsportazione" />
+  </wsdl:message>
+  <wsdl:message name="GetEsportazioneSoapOut">
+    <wsdl:part name="parameters" element="tns:GetEsportazioneResponse" />
+  </wsdl:message>
+  <wsdl:message name="ExportSoapIn">
+    <wsdl:part name="parameters" element="tns:Export" />
+  </wsdl:message>
+  <wsdl:message name="ExportSoapOut">
+    <wsdl:part name="parameters" element="tns:ExportResponse" />
+  </wsdl:message>
+  <wsdl:message name="ListExpHttpGetIn">
+    <wsdl:part name="sToken" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ListExpHttpGetOut">
+    <wsdl:part name="Body" element="tns:LISTAESPORTAZIONI" />
+  </wsdl:message>
+  <wsdl:message name="ListExpContextHttpGetIn">
+    <wsdl:part name="sToken" type="s:string" />
+    <wsdl:part name="sContext" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ListExpContextHttpGetOut">
+    <wsdl:part name="Body" element="tns:LISTAESPORTAZIONI" />
+  </wsdl:message>
+  <wsdl:message name="GetEsportazioneHttpGetIn">
+    <wsdl:part name="iIDExp" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetEsportazioneHttpGetOut">
+    <wsdl:part name="Body" element="tns:ESPORTAZIONE" />
+  </wsdl:message>
+  <wsdl:message name="ListExpHttpPostIn">
+    <wsdl:part name="sToken" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ListExpHttpPostOut">
+    <wsdl:part name="Body" element="tns:LISTAESPORTAZIONI" />
+  </wsdl:message>
+  <wsdl:message name="ListExpContextHttpPostIn">
+    <wsdl:part name="sToken" type="s:string" />
+    <wsdl:part name="sContext" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ListExpContextHttpPostOut">
+    <wsdl:part name="Body" element="tns:LISTAESPORTAZIONI" />
+  </wsdl:message>
+  <wsdl:message name="GetEsportazioneHttpPostIn">
+    <wsdl:part name="iIDExp" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetEsportazioneHttpPostOut">
+    <wsdl:part name="Body" element="tns:ESPORTAZIONE" />
+  </wsdl:message>
+  <wsdl:portType name="CWSSigeproExpSoap">
+    <wsdl:operation name="ListExp">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Metodo usato per ottenere la lista delle esportazioni</wsdl:documentation>
+      <wsdl:input message="tns:ListExpSoapIn" />
+      <wsdl:output message="tns:ListExpSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ListExpContext">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Metodo usato per ottenere la lista delle esportazioni appartenenti ad uno specifico contesto</wsdl:documentation>
+      <wsdl:input message="tns:ListExpContextSoapIn" />
+      <wsdl:output message="tns:ListExpContextSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetEsportazione">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Metodo usato per ottenere i dettagli di una specifica esportazione</wsdl:documentation>
+      <wsdl:input message="tns:GetEsportazioneSoapIn" />
+      <wsdl:output message="tns:GetEsportazioneSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Export">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Metodo usato per effettuare l'esportazione utilizzando una lista di parametri</wsdl:documentation>
+      <wsdl:input message="tns:ExportSoapIn" />
+      <wsdl:output message="tns:ExportSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="CWSSigeproExpHttpGet">
+    <wsdl:operation name="ListExp">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Metodo usato per ottenere la lista delle esportazioni</wsdl:documentation>
+      <wsdl:input message="tns:ListExpHttpGetIn" />
+      <wsdl:output message="tns:ListExpHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ListExpContext">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Metodo usato per ottenere la lista delle esportazioni appartenenti ad uno specifico contesto</wsdl:documentation>
+      <wsdl:input message="tns:ListExpContextHttpGetIn" />
+      <wsdl:output message="tns:ListExpContextHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetEsportazione">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Metodo usato per ottenere i dettagli di una specifica esportazione</wsdl:documentation>
+      <wsdl:input message="tns:GetEsportazioneHttpGetIn" />
+      <wsdl:output message="tns:GetEsportazioneHttpGetOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="CWSSigeproExpHttpPost">
+    <wsdl:operation name="ListExp">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Metodo usato per ottenere la lista delle esportazioni</wsdl:documentation>
+      <wsdl:input message="tns:ListExpHttpPostIn" />
+      <wsdl:output message="tns:ListExpHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ListExpContext">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Metodo usato per ottenere la lista delle esportazioni appartenenti ad uno specifico contesto</wsdl:documentation>
+      <wsdl:input message="tns:ListExpContextHttpPostIn" />
+      <wsdl:output message="tns:ListExpContextHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetEsportazione">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Metodo usato per ottenere i dettagli di una specifica esportazione</wsdl:documentation>
+      <wsdl:input message="tns:GetEsportazioneHttpPostIn" />
+      <wsdl:output message="tns:GetEsportazioneHttpPostOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="CWSSigeproExpSoap" type="tns:CWSSigeproExpSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ListExp">
+      <soap:operation soapAction="http://init.sigepro.it/ListExp" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListExpContext">
+      <soap:operation soapAction="http://init.sigepro.it/ListExpContext" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetEsportazione">
+      <soap:operation soapAction="http://init.sigepro.it/GetEsportazione" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Export">
+      <soap:operation soapAction="http://init.sigepro.it/Export" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="CWSSigeproExpSoap12" type="tns:CWSSigeproExpSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ListExp">
+      <soap12:operation soapAction="http://init.sigepro.it/ListExp" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListExpContext">
+      <soap12:operation soapAction="http://init.sigepro.it/ListExpContext" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetEsportazione">
+      <soap12:operation soapAction="http://init.sigepro.it/GetEsportazione" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Export">
+      <soap12:operation soapAction="http://init.sigepro.it/Export" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="CWSSigeproExpHttpGet" type="tns:CWSSigeproExpHttpGet">
+    <http:binding verb="GET" />
+    <wsdl:operation name="ListExp">
+      <http:operation location="/ListExp" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListExpContext">
+      <http:operation location="/ListExpContext" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetEsportazione">
+      <http:operation location="/GetEsportazione" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="CWSSigeproExpHttpPost" type="tns:CWSSigeproExpHttpPost">
+    <http:binding verb="POST" />
+    <wsdl:operation name="ListExp">
+      <http:operation location="/ListExp" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListExpContext">
+      <http:operation location="/ListExpContext" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetEsportazione">
+      <http:operation location="/GetEsportazione" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="CWSSigeproExp">
+    <wsdl:port name="CWSSigeproExpSoap" binding="tns:CWSSigeproExpSoap">
+      <soap:address location="http://devel3/wssigeproexport/service1.asmx" />
+    </wsdl:port>
+    <wsdl:port name="CWSSigeproExpSoap12" binding="tns:CWSSigeproExpSoap12">
+      <soap12:address location="http://devel3/wssigeproexport/service1.asmx" />
+    </wsdl:port>
+    <wsdl:port name="CWSSigeproExpHttpGet" binding="tns:CWSSigeproExpHttpGet">
+      <http:address location="http://devel3/wssigeproexport/service1.asmx" />
+    </wsdl:port>
+    <wsdl:port name="CWSSigeproExpHttpPost" binding="tns:CWSSigeproExpHttpPost">
+      <http:address location="http://devel3/wssigeproexport/service1.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,272 @@
+﻿@using Init.Sigepro.FrontEnd.AppLogic.Adapters;
+@using Init.Sigepro.FrontEnd.AppLogic.Autenticazione.Vbg.AutenticazioneUtente;
+@using System.Text.RegularExpressions;
+@using System.Text;
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneAnagrafiche;
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneAnagrafiche.RicercaAnagrafiche
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneComuni;
+@using Init.Sigepro.FrontEnd.AppLogic.GestionePresentazioneDomanda.GestioneAnagrafiche;
+@using System.ComponentModel.DataAnnotations;
+@using VBG.BlazorComponentsLibrary.DesignComuni.Forms
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.EditFormComponents
+@using VBG.BlazorComponentsLibrary.EditFormComponents.DropDown
+
+
+<ModalBody>
+    <VbgForm id="ricercaAnagraficaForm" Model="_model" ValidationCallBack="ValidationCallback" OnValidSubmit="OnValidSubmit">
+
+        @if (_tipoPersonaDataItems.Count > 1)
+        {
+            <div class="mb-4">
+
+                <DropDownForm @bind-Value="_model.TipoPersona"
+                              Id="cmbTipoPersona"
+                              Label="Tipo soggetto"
+                              OnChanged="(DropDownItem i) => OnTipoPersonaChanged()"
+                              Items="@_tipoPersonaDataItems"
+                              ShowEmptyItem="false"
+                              ValidationFor="() => _model.TipoPersona"
+                              Required="true">
+                </DropDownForm>
+            </div>
+        }
+        @if (!String.IsNullOrEmpty(_labelCodiceFiscaleDefaultValue))
+        {
+            <div class="mb-4">
+                <TextInputForm Id="txtCodiceFiscale"
+                @bind-Value="_model.CodiceFiscale"
+                               ValidationFor="() => _model.CodiceFiscale"
+                               Required="true"
+                               ResourceId="@_labelCodiceFicaleResourceId"
+                               Label="@_labelCodiceFiscaleDefaultValue">
+                </TextInputForm>
+            </div>
+        }
+        
+    </VbgForm>
+</ModalBody>
+
+<ModalFooter>
+    <button type="button" class="btn btn-primary fw-bold flex-even" @onclick="UsaDatiUtenteCorrente">Utilizza i miei dati</button>
+    <FormSubmitButton Form="ricercaAnagraficaForm">Cerca</FormSubmitButton>    
+</ModalFooter>
+
+
+@code {
+    [Inject]
+    public ILogger<RicercaAnagrafica> _log { get; set; } = default!;
+    [Inject]
+    public IAnagraficheService _anagraficheService { get; set; } = default!;
+    [Inject]
+    public IRicercheAnagraficheService _ricercheAnagraficheService { get; set; } = default!;
+    [Inject]
+    public IAuthenticationDataResolver _authDataResolver { get; set; } = default!;
+    [Inject]
+    public IComuniService _comuniService { get; set; } = default!;
+
+    [CascadingParameter(Name = "IdDomanda")]
+    public int IdDomanda { get; set; }
+
+    [Parameter, EditorRequired]
+    public bool IgnoraRicercaBackofficePerPersoneFisiche { get; set; } = true;
+
+    [Parameter, EditorRequired]
+    public EventCallback<AnagraficaDomanda> AnagraficaTrovata { get; set; }
+
+    [Parameter, EditorRequired]
+    public bool EsistonoSoggettiPersoneFisiche { get; set; }
+    [Parameter, EditorRequired]
+    public bool EsistonoSoggettiPersoneGiuridiche { get; set; }
+
+    private ModelAnagrafica _model = new ModelAnagrafica();
+    private List<DropDownItem> _tipoPersonaDataItems { get; set; } = new List<DropDownItem>();
+    private string _labelVerifica = "CFF";
+    private string _errore = "";
+    private string _labelCodiceFicaleResourceId = "";
+    private string _labelCodiceFiscaleDefaultValue = "";
+
+    // private int _tipoPersona;
+
+    private enum TipoVerificaCodiceFiscale
+    {
+        CodiceFiscale,
+        PartitaIva,
+        CodiceFiscalePersonaGiuridica
+    }
+
+    public class ModelAnagrafica
+    {
+        [Required(ErrorMessage = "Campo obbligatorio")]
+        public DropDownItem? TipoPersona { get; set; } = null;
+
+        [Required(ErrorMessage = "Campo obbligatorio")]
+        public string CodiceFiscale { get; set; } = "";
+    }
+
+    private void OnTipoPersonaChanged()
+    {
+        var currVal = _model.TipoPersona;
+
+        if (currVal is null)
+        {
+            return;
+        }
+
+        var tipoVerifica = currVal.GetExtraValue<TipoVerificaCodiceFiscale>("data-verifica");
+
+        _labelCodiceFicaleResourceId = "";
+        _labelCodiceFiscaleDefaultValue = "";
+
+        switch (tipoVerifica)
+        {
+            case TipoVerificaCodiceFiscale.CodiceFiscale:
+                {
+                    _labelCodiceFicaleResourceId = "gestione-anagrafiche.ricerca.codice-fiscale";
+                    _labelCodiceFiscaleDefaultValue = "Codice fiscale";
+                    return;
+                }
+
+            case TipoVerificaCodiceFiscale.PartitaIva:
+                {
+                    _labelCodiceFicaleResourceId = "gestione-anagrafiche.codice-fiscale-impresa";
+                    _labelCodiceFiscaleDefaultValue = "Codice fiscale impresa";
+                    return;
+                }
+
+            case TipoVerificaCodiceFiscale.CodiceFiscalePersonaGiuridica:
+                {
+                    _labelCodiceFicaleResourceId = "gestione-anagrafiche.codice-fiscale-titolare";
+                    _labelCodiceFiscaleDefaultValue = "Codice fiscale titolare";
+                    return;
+                }
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        this.BindTipoPersona();
+
+        if (this._tipoPersonaDataItems.Count() == 1)
+        {
+            _model = new ModelAnagrafica();
+            _model.TipoPersona = this._tipoPersonaDataItems.FirstOrDefault();
+
+            OnTipoPersonaChanged();
+        }
+    }
+
+    private async Task ValidationCallback(FormMessageStore store)
+    {
+        this._model.CodiceFiscale = this._model.CodiceFiscale.ToUpper();
+
+        // if (!String.IsNullOrEmpty(_labelCodiceFiscaleDefaultValue))
+        // {
+        //     if (this._model.TipoPersona.Value == "F")
+        //     {
+        //         store.Add(() => this._model.CodiceFiscale, "Inserire un codice fiscale");
+        //     }
+        //     else
+        //     {
+        //         store.Add(() => this._model.CodiceFiscale, "Inserire un codice fiscale o una partita iva");
+        //     }
+        // }
+        // else
+        // {
+
+        if (!String.IsNullOrEmpty(this._model.CodiceFiscale) && !Regex.IsMatch(this._model.CodiceFiscale, "^[a-zA-Z0-9]+$"))
+        {
+            var messaggioErrore = new StringBuilder();
+
+            messaggioErrore.Append((this._model.TipoPersona?.Value ?? "") == "F" ? "Il codice fiscale immesso" : "La partita iva immessa");
+            messaggioErrore.Append(" contiene caratteri non validi.");
+
+            store.Add(() => this._model.CodiceFiscale, messaggioErrore.ToString());
+        }
+        // }
+
+        await Task.CompletedTask;
+    }
+
+    private async Task OnValidSubmit()
+    {
+        if (_model?.TipoPersona is null)
+        {
+            return;
+        }
+
+        var tipoPersonaEnum = this._model.TipoPersona.Value == "F" ? TipoPersonaEnum.Fisica : TipoPersonaEnum.Giuridica;
+
+        var anagrafe = this.TrovaAnagraficaDaCodiceFiscaleOPartitaIva(tipoPersonaEnum, _model.CodiceFiscale);
+
+        if (anagrafe is not null)
+        {
+            await this.AnagraficaTrovata.InvokeAsync(anagrafe);
+        }
+    }
+
+    private AnagraficaDomanda? TrovaAnagraficaDaCodiceFiscaleOPartitaIva(TipoPersonaEnum tipoPersona, string codiceFiscale)
+    {
+        this._errore = "";
+
+        try
+        {
+            return this._ricercheAnagraficheService.RicercaAnagrafica(this.IdDomanda, tipoPersona, codiceFiscale, this.IgnoraRicercaBackofficePerPersoneFisiche);
+
+        }
+        catch (Exception ex) // Errore di comunicazione con il web service... Come lo gestiamo?
+        {
+            this._errore = "Si è verificato un errore durante la ricerca dell'anagrafica, verificare l'errore nei logs";
+            // await this.scrollToTop();
+            _log.LogError(ex.ToString());
+
+            return null;
+        }
+    }
+
+    private async Task UsaDatiUtenteCorrente()
+    {
+
+        var anagrafe = this._authDataResolver.DatiAutenticazione.DatiUtente.ToAnagraficaDomanda(this._comuniService);
+
+        if (anagrafe is not null)
+        {
+            await this.AnagraficaTrovata.InvokeAsync(anagrafe);
+        }
+    }
+
+    private void BindTipoPersona()
+    {
+        if (this._tipoPersonaDataItems?.Any() ?? false)
+        {
+            return;
+        }
+
+        var dataItems = new List<DropDownItem>();
+
+        if (EsistonoSoggettiPersoneFisiche)
+        {
+            dataItems.Add(new DropDownItem("F", "Persona fisica", new Dictionary<string, object>
+                    {
+                        { "data-verifica", TipoVerificaCodiceFiscale.CodiceFiscale}
+                    }));
+        }
+
+        if (EsistonoSoggettiPersoneGiuridiche)
+        {
+            dataItems.Add(new DropDownItem("G1", "Società", new Dictionary<string, object>
+                {
+                    { "data-verifica", TipoVerificaCodiceFiscale.PartitaIva }
+                }));
+
+            dataItems.Add(new DropDownItem("G2", "Impresa individuale", new Dictionary<string, object>
+                    {
+                        {"data-verifica", TipoVerificaCodiceFiscale.CodiceFiscalePersonaGiuridica }
+                    }));
+        }
+
+        this._tipoPersonaDataItems = dataItems;
+    }
+}

@@ -1,0 +1,119 @@
+﻿@page "/{IdComune}/{Software}/inserimento-istanza/allegati-dati-dinamici/{idDomanda:int}/{stepId:int}"
+
+@using Init.Sigepro.FrontEnd.AppLogic.DatiDinamici
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneOggetti
+@using Init.Sigepro.FrontEnd.Infrastructure.StepsDomanda.Attributi
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+@inherits IstanzeStepPage
+
+@if (_dataSource.Any())
+{
+    <StepCard Titolo="Riepilogo schede compilate" Sottotitolo="@("Cliccare su \"Documenti\" per scaricare il modello da firmare e caricare il file relativo alla scheda")">
+
+        @foreach (var item in _dataSource)
+        {
+            <AllegatiDatiDinamiciV2Item Riepilogo="item" Edit="OnEdit"></AllegatiDatiDinamiciV2Item>
+        }
+
+    </StepCard>
+
+    @if (_editingItem is not null)
+    {
+        <AllegatiDatiDinamiciV2EditForm Riepilogo="_editingItem"
+                                        OnCancel="() => _editingItem = null"
+                                        CallbackGenerazioneRiepilogo="RigeneraModelloRiepilogo"
+                                        OnError="OnUploadError"
+                                        OnUploadSuccesful="OnUploadSuccesful"></AllegatiDatiDinamiciV2EditForm>
+    }
+}
+
+@code {
+    [Inject]
+    public IRiepiloghiDatiDinamiciAsyncService _riepiloghiService { get; set; } = default!;
+
+    [StepProperty]
+    public bool IgnoraObbligoFirmaDigitale { get; set; } = false;
+
+    [StepProperty]
+    public bool GeneraRiepilogoSchedeCheNonRichiedonoFirma { get; set; } = true;
+
+    IEnumerable<RiepilogoRichiesto> _dataSource = Enumerable.Empty<RiepilogoRichiesto>();
+    RiepilogoRichiesto? _editingItem;
+
+    protected override async Task OnInitializeStepAsync()
+    {
+        await base.OnInitializeStepAsync();
+
+        await this.DataBindAsync();
+    }
+
+    protected override bool CanEnterStep()
+    {
+        return _dataSource.Any();
+    }
+
+    private async Task DataBindAsync()
+    {
+        await _spinnerService.ShowSpinnerAsync(async () =>
+        {
+            _dataSource = await _riepiloghiService.GetRiepiloghiRichiestiAsync(IdDomanda!.Value, GeneraRiepilogoSchedeCheNonRichiedonoFirma, IgnoraObbligoFirmaDigitale);
+        });
+    }
+
+    private async Task<BinaryFile> RigeneraModelloRiepilogo(RiepilogoRichiesto riepilogo)
+    {
+        return await _riepiloghiService.GeneraRiepilogoAsync(riepilogo.IdDomanda, riepilogo.IdModello, riepilogo.IndiceMolteplicita);
+    }
+
+    protected override async Task<bool> CanExitStepAsync()
+    {
+        var listaErrori = this.DomandaCorrente.DatiDinamici.VerificaUploadModelliRichiesti(this.IgnoraObbligoFirmaDigitale);
+
+        this.MessageContainer.AddError(listaErrori);
+
+        if(listaErrori.Any())
+        {
+            return false;
+        }
+
+        var result = true;
+
+        await _spinnerService.ShowSpinnerAsync(async () =>
+        {
+            try
+            {
+                var riepiloghiDaGenerare = _dataSource.Where(x => !x.Richiesto && !x.CodiceOggetto.HasValue);
+                await _riepiloghiService.GeneraRiepiloghiEAllegaADomandaAsync(IdDomanda!.Value, riepiloghiDaGenerare);
+            }
+            catch(Exception ex)
+            {
+                Logger.Error($"Errore durante il salvataggio degli allegati: {ex.Message}");
+                MessageContainer.AddError("Errore durante il salvataggio degli allegati");
+
+                result = false;
+            }
+        }); 
+
+        return result;
+    }
+
+    async Task OnEdit(RiepilogoRichiesto riepilogo)
+    {
+        _editingItem = riepilogo;
+
+        await Task.CompletedTask;
+    }
+
+    Task OnUploadError(string message)
+    {
+        MessageContainer.AddError(message);
+
+        return Task.CompletedTask;
+    }
+
+    async Task OnUploadSuccesful()
+    {
+        await DataBindAsync();
+        _editingItem = null;
+    }
+}

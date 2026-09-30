@@ -1,0 +1,56 @@
+﻿@page "/{IdComune}/{Software}/datiinviaticonsuccesso/{IdMovimento:int?}/{Step:int?}/{*GoBackUrl}"
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneVisuraIstanza
+@using Init.Sigepro.FrontEnd.AppLogic.WebServiceReferences.IstanzeService
+@using Init.Sigepro.FrontEnd.GestioneMovimenti.GestioneMovimento.GestioneMovimentoDaEffettuare
+@using Init.Sigepro.FrontEnd.GestioneMovimenti.GestioneMovimento.GestioneMovimentoDiOrigine
+@using Init.Sigepro.FrontEnd.GestioneMovimenti.Persistence
+@using VBG.BlazorComponentsLibrary.RisorseTestuali
+
+@inherits BasePage
+
+<TitoloPagina>Dati inviati con successo</TitoloPagina>
+
+<div class="alert alert-success" role="alert">
+    <RisorsaTestuale IdRisorsa="movimenti-messaggio-invio-riuscito">
+        Dati trasmessi correttamente allo sportello
+    </RisorsaTestuale>
+
+</div>
+
+<div class="buttonContainer">
+    <button class="btn btn-light me-2" @onclick="@(() => GotoAsync(GoBackUrl ??"home"))">Chiudi</button>
+
+    @if (!String.IsNullOrEmpty(_uuidIstanza))
+    {
+        <button class="btn btn-light" @onclick="@(() => GotoAsync("dettaglioistanzaex", _uuidIstanza))">Vai alla pratica</button>
+    }
+</div>
+
+@code {
+    [Inject]
+    public IMovimentiDaEffettuareRepository _movimentiDaEffettuareRepository { get; set; } = default!;
+    [Inject]
+    public IVisuraService _visuraService { get; set; } = default!;
+    [Inject]
+    protected IIdMovimentoResolver _idMovimentoResolver { get; set; } = default!;
+
+    [Parameter]
+    public int Step { get; set; } = 0;
+
+    [Parameter]
+    public int IdMovimento { get; set; } = 0;
+    [Parameter]
+    public string? GoBackUrl { get; set; }
+
+    string? _uuidIstanza;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        _idMovimentoResolver.SetIdMovimento(IdMovimento);
+
+        var movimento = _movimentiDaEffettuareRepository.GetById(IdMovimento);
+        this._uuidIstanza = _visuraService.GetUUIDDaCodiceIstanza(movimento.CodiceIstanza);
+    }
+}

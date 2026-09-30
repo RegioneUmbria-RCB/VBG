@@ -1,0 +1,448 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions name="DigitBusDeliver" targetNamespace="http://e-fil.eu/PnP/PlugAndPayDeliver" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="http://e-fil.eu/PnP/PlugAndPayDeliver" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing">
+	<wsp:Policy wsu:Id="BasicHttpsBinding_IPlugAndPayDeliver_policy">
+		<wsp:ExactlyOne>
+			<wsp:All>
+				<sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+					<wsp:Policy>
+						<sp:TransportToken>
+							<wsp:Policy>
+								<sp:HttpsToken RequireClientCertificate="false"/>
+							</wsp:Policy>
+						</sp:TransportToken>
+						<sp:AlgorithmSuite>
+							<wsp:Policy>
+								<sp:Basic256/>
+							</wsp:Policy>
+						</sp:AlgorithmSuite>
+						<sp:Layout>
+							<wsp:Policy>
+								<sp:Strict/>
+							</wsp:Policy>
+						</sp:Layout>
+					</wsp:Policy>
+				</sp:TransportBinding>
+			</wsp:All>
+		</wsp:ExactlyOne>
+	</wsp:Policy>
+	<wsdl:types>
+		<xs:schema elementFormDefault="qualified" targetNamespace="http://e-fil.eu/PnP/PlugAndPayDeliver" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+			<xs:import namespace="http://e-fil.eu/PnP/PlugAndPayCommon"/>
+			<xs:import namespace="http://schemas.datacontract.org/2004/07/PlugAndPay.DigitBusNodoPA.Erogazione.QueryStack.Model"/>
+			<xs:element name="RicercaPosizioniPerCodiceFiscalePartitaIva">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="request" nillable="true" type="tns:RichiestaRicercaPosizioniPerCodiceFiscalePartitaIva"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="RichiestaRicercaPosizioniPerCodiceFiscalePartitaIva">
+				<xs:complexContent mixed="false">
+					<xs:extension base="tns:DeliverAuthenticatedRequestBase">
+						<xs:sequence>
+							<xs:element name="CodiceEnte" nillable="true" type="xs:string"/>
+							<xs:element name="CodiceFiscale" nillable="true" type="xs:string"/>
+							<xs:element name="StatoPosizione" type="tns:StatoPosizioneFilter"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:element name="RichiestaRicercaPosizioniPerCodiceFiscalePartitaIva" nillable="true" type="tns:RichiestaRicercaPosizioniPerCodiceFiscalePartitaIva"/>
+			<xs:complexType name="DeliverAuthenticatedRequestBase">
+				<xs:sequence>
+					<xs:element name="IdApplicazione" nillable="true" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="DeliverAuthenticatedRequestBase" nillable="true" type="tns:DeliverAuthenticatedRequestBase"/>
+			<xs:complexType name="RichiestaRicercaPosizionePerIdentificavo">
+				<xs:complexContent mixed="false">
+					<xs:extension base="tns:DeliverAuthenticatedRequestBase">
+						<xs:sequence>
+							<xs:element name="CodiceEnte" nillable="true" type="xs:string"/>
+							<xs:element name="CodiceIdentificativo" nillable="true" type="xs:string"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:element name="RichiestaRicercaPosizionePerIdentificavo" nillable="true" type="tns:RichiestaRicercaPosizionePerIdentificavo"/>
+			<xs:complexType name="RichiestaRicercaPagamentiGiornalieri">
+				<xs:complexContent mixed="false">
+					<xs:extension base="tns:DeliverAuthenticatedRequestBase">
+						<xs:sequence>
+							<xs:element name="CodiceEnte" nillable="true" type="xs:string"/>
+							<xs:element name="Codiceservizio" nillable="true" type="xs:string"/>
+							<xs:element name="Data" type="xs:dateTime"/>
+							<xs:element minOccurs="0" name="OraFine" nillable="true" type="xs:int"/>
+							<xs:element minOccurs="0" name="OraInizio" nillable="true" type="xs:int"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:element name="RichiestaRicercaPagamentiGiornalieri" nillable="true" type="tns:RichiestaRicercaPagamentiGiornalieri"/>
+			<xs:simpleType name="StatoPosizioneFilter">
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="NonPagata"/>
+					<xs:enumeration value="Pagata"/>
+					<xs:enumeration value="PagataParzialmente"/>
+					<xs:enumeration value="Tutti"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:element name="StatoPosizioneFilter" nillable="true" type="tns:StatoPosizioneFilter"/>
+			<xs:element name="RicercaPosizioniPerCodiceFiscalePartitaIvaResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="RicercaPosizioniPerCodiceFiscalePartitaIvaResult" nillable="true" type="tns:RispostaRicercaPosizioniPerCodiceFiscalePartitaIva"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="RispostaRicercaPosizioniPerCodiceFiscalePartitaIva">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="Posizioni" nillable="true" type="tns:ArrayOfPosizione"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="RispostaRicercaPosizioniPerCodiceFiscalePartitaIva" nillable="true" type="tns:RispostaRicercaPosizioniPerCodiceFiscalePartitaIva"/>
+			<xs:complexType name="ArrayOfPosizione">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="unbounded" name="Posizione" nillable="true" type="tns:Posizione"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="ArrayOfPosizione" nillable="true" type="tns:ArrayOfPosizione"/>
+			<xs:complexType name="Posizione">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="Causale" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="CodiceRiferimentoCreditore" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Creditore" nillable="true" type="tns:Creditore"/>
+					<xs:element minOccurs="0" name="DataScadenza" nillable="true" type="xs:dateTime"/>
+					<xs:element minOccurs="0" name="Debitore" nillable="true" type="tns:Debitore"/>
+					<xs:element minOccurs="0" name="IdentificativoFlusso" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="IdentificativoPosizione" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="ImportoInCentesimi" type="xs:long"/>
+					<xs:element minOccurs="0" name="NumeroAvviso" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="ParametriPosizione" nillable="true" type="tns:ArrayOfParametroPosizione"/>
+					<xs:element minOccurs="0" name="Servizio" nillable="true" type="q1:Servizio" xmlns:q1="http://e-fil.eu/PnP/PlugAndPayCommon"/>
+					<xs:element minOccurs="0" name="StatoPosizione" type="tns:StatoPosizione"/>
+					<xs:element minOccurs="0" name="TipoRiferimentoCreditore" nillable="true" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="Posizione" nillable="true" type="tns:Posizione"/>
+			<xs:complexType name="Creditore">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="CodiceEnte" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="CodiceFiscalePartitaIva" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="IBAN" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Intestazione" nillable="true" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="Creditore" nillable="true" type="tns:Creditore"/>
+			<xs:complexType name="Debitore">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="Civico" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="CodiceAvviamentoPostale" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="CodiceFiscalePartitaIva" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Email" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Indirizzo" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Localita" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Nominativo" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Provincia" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="TipoPagatore" type="q2:TipoPagatore" xmlns:q2="http://e-fil.eu/PnP/PlugAndPayCommon"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="Debitore" nillable="true" type="tns:Debitore"/>
+			<xs:complexType name="ArrayOfParametroPosizione">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="unbounded" name="ParametroPosizione" nillable="true" type="tns:ParametroPosizione"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="ArrayOfParametroPosizione" nillable="true" type="tns:ArrayOfParametroPosizione"/>
+			<xs:complexType name="ParametroPosizione">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="Chiave" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Valore" nillable="true" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="ParametroPosizione" nillable="true" type="tns:ParametroPosizione"/>
+			<xs:simpleType name="StatoPosizione">
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="NonPagata"/>
+					<xs:enumeration value="Pagata"/>
+					<xs:enumeration value="PagataParzialmente"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:element name="StatoPosizione" nillable="true" type="tns:StatoPosizione"/>
+			<xs:element name="RicercaPosizionePerIdentificavo">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="request" nillable="true" type="tns:RichiestaRicercaPosizionePerIdentificavo"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="RicercaPosizionePerIdentificavoResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="RicercaPosizionePerIdentificavoResult" nillable="true" type="tns:RispostaRicercaPosizionePerIdentificavo"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="RispostaRicercaPosizionePerIdentificavo">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="Posizione" nillable="true" type="tns:Posizione"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="RispostaRicercaPosizionePerIdentificavo" nillable="true" type="tns:RispostaRicercaPosizionePerIdentificavo"/>
+			<xs:element name="RicercaArricchitaPosizionePerIdentificavo">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="request" nillable="true" type="tns:RichiestaRicercaPosizionePerIdentificavo"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="RicercaArricchitaPosizionePerIdentificavoResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="RicercaArricchitaPosizionePerIdentificavoResult" nillable="true" type="tns:RispostaRicercaArricchitaPosizionePerIdentificavo"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="RispostaRicercaArricchitaPosizionePerIdentificavo">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="Posizione" nillable="true" type="tns:PosizioneArricchita"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="RispostaRicercaArricchitaPosizionePerIdentificavo" nillable="true" type="tns:RispostaRicercaArricchitaPosizionePerIdentificavo"/>
+			<xs:complexType name="PosizioneArricchita">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="Causale" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="CodiceRiferimentoCreditore" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Creditore" nillable="true" type="tns:Creditore"/>
+					<xs:element minOccurs="0" name="DataPagamento" nillable="true" type="xs:dateTime"/>
+					<xs:element minOccurs="0" name="DataScadenza" nillable="true" type="xs:dateTime"/>
+					<xs:element minOccurs="0" name="Debitore" nillable="true" type="tns:Debitore"/>
+					<xs:element minOccurs="0" name="IdentificativoFlusso" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="IdentificativoPosizione" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="ImportoInCentesimi" type="xs:long"/>
+					<xs:element minOccurs="0" name="NumeroAvviso" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="ParametriPosizione" nillable="true" type="tns:ArrayOfParametroPosizione"/>
+					<xs:element minOccurs="0" name="Servizio" nillable="true" type="q3:Servizio" xmlns:q3="http://e-fil.eu/PnP/PlugAndPayCommon"/>
+					<xs:element minOccurs="0" name="StatoPosizione" type="tns:StatoPosizione"/>
+					<xs:element minOccurs="0" name="TipoRiferimentoCreditore" nillable="true" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="PosizioneArricchita" nillable="true" type="tns:PosizioneArricchita"/>
+			<xs:element name="RicercaPagamentiGiornalieri">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="request" nillable="true" type="tns:RichiestaRicercaPagamentiGiornalieri"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="RicercaPagamentiGiornalieriResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="RicercaPagamentiGiornalieriResult" nillable="true" type="tns:RispostaRicercaPagamentiGiornalieri"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="RispostaRicercaPagamentiGiornalieri">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="Pagamenti" nillable="true" type="tns:ArrayOfPagamentoGiornaliero"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="RispostaRicercaPagamentiGiornalieri" nillable="true" type="tns:RispostaRicercaPagamentiGiornalieri"/>
+			<xs:complexType name="ArrayOfPagamentoGiornaliero">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="unbounded" name="PagamentoGiornaliero" nillable="true" type="tns:PagamentoGiornaliero"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="ArrayOfPagamentoGiornaliero" nillable="true" type="tns:ArrayOfPagamentoGiornaliero"/>
+			<xs:complexType name="PagamentoGiornaliero">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="CanaleDiPagamento" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Causale" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="CodiceFiscalePartitaIva" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="CodiceRiferimentoCreditore" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="DataDiPagamento" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="DataRegistrazionePagamento" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="DataRegolamento" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Esito" nillable="true" type="q4:EsitoPagamento" xmlns:q4="http://schemas.datacontract.org/2004/07/PlugAndPay.DigitBusNodoPA.Erogazione.QueryStack.Model"/>
+					<xs:element minOccurs="0" name="IdCanaleDiPagamento" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="IdFlussoRiversamento" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="IdRiscossione" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="IdentificativoPagamento" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="ImportoPagato" type="xs:long"/>
+					<xs:element minOccurs="0" name="ModalitaDiPagamento" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="NominativoDebitore" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="OraRegistrazionePagamento" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="TipoRiferimentoCreditore" nillable="true" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="PagamentoGiornaliero" nillable="true" type="tns:PagamentoGiornaliero"/>
+		</xs:schema>
+		<xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/">
+			<xs:element name="anyType" nillable="true" type="xs:anyType"/>
+			<xs:element name="anyURI" nillable="true" type="xs:anyURI"/>
+			<xs:element name="base64Binary" nillable="true" type="xs:base64Binary"/>
+			<xs:element name="boolean" nillable="true" type="xs:boolean"/>
+			<xs:element name="byte" nillable="true" type="xs:byte"/>
+			<xs:element name="dateTime" nillable="true" type="xs:dateTime"/>
+			<xs:element name="decimal" nillable="true" type="xs:decimal"/>
+			<xs:element name="double" nillable="true" type="xs:double"/>
+			<xs:element name="float" nillable="true" type="xs:float"/>
+			<xs:element name="int" nillable="true" type="xs:int"/>
+			<xs:element name="long" nillable="true" type="xs:long"/>
+			<xs:element name="QName" nillable="true" type="xs:QName"/>
+			<xs:element name="short" nillable="true" type="xs:short"/>
+			<xs:element name="string" nillable="true" type="xs:string"/>
+			<xs:element name="unsignedByte" nillable="true" type="xs:unsignedByte"/>
+			<xs:element name="unsignedInt" nillable="true" type="xs:unsignedInt"/>
+			<xs:element name="unsignedLong" nillable="true" type="xs:unsignedLong"/>
+			<xs:element name="unsignedShort" nillable="true" type="xs:unsignedShort"/>
+			<xs:element name="char" nillable="true" type="tns:char"/>
+			<xs:simpleType name="char">
+				<xs:restriction base="xs:int"/>
+			</xs:simpleType>
+			<xs:element name="duration" nillable="true" type="tns:duration"/>
+			<xs:simpleType name="duration">
+				<xs:restriction base="xs:duration">
+					<xs:pattern value="\-?P(\d*D)?(T(\d*H)?(\d*M)?(\d*(\.\d*)?S)?)?"/>
+					<xs:minInclusive value="-P10675199DT2H48M5.4775808S"/>
+					<xs:maxInclusive value="P10675199DT2H48M5.4775807S"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:element name="guid" nillable="true" type="tns:guid"/>
+			<xs:simpleType name="guid">
+				<xs:restriction base="xs:string">
+					<xs:pattern value="[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:attribute name="FactoryType" type="xs:QName"/>
+			<xs:attribute name="Id" type="xs:ID"/>
+			<xs:attribute name="Ref" type="xs:IDREF"/>
+		</xs:schema>
+		<xs:schema elementFormDefault="qualified" targetNamespace="http://e-fil.eu/PnP/PlugAndPayCommon" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://e-fil.eu/PnP/PlugAndPayCommon">
+			<xs:simpleType name="TipoPagatore">
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="PersonaFisica"/>
+					<xs:enumeration value="PersonaGiuridica"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:element name="TipoPagatore" nillable="true" type="tns:TipoPagatore"/>
+			<xs:complexType name="Servizio">
+				<xs:sequence>
+					<xs:element name="CodiceServizio" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Descrizione" nillable="true" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="Servizio" nillable="true" type="tns:Servizio"/>
+		</xs:schema>
+		<xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/PlugAndPay.DigitBusNodoPA.Erogazione.QueryStack.Model" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.datacontract.org/2004/07/PlugAndPay.DigitBusNodoPA.Erogazione.QueryStack.Model">
+			<xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/"/>
+			<xs:simpleType name="EsitoPagamento">
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="PagamentoEseguito"/>
+					<xs:enumeration value="PagamentoRevocato">
+						<xs:annotation>
+							<xs:appinfo>
+								<EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">3</EnumerationValue>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="PagamentoInAassenzaRPT">
+						<xs:annotation>
+							<xs:appinfo>
+								<EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">9</EnumerationValue>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:enumeration>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:element name="EsitoPagamento" nillable="true" type="tns:EsitoPagamento"/>
+		</xs:schema>
+	</wsdl:types>
+	<wsdl:message name="IPlugAndPayDeliver_RicercaPosizioniPerCodiceFiscalePartitaIva_InputMessage">
+		<wsdl:part name="parameters" element="tns:RicercaPosizioniPerCodiceFiscalePartitaIva"/>
+	</wsdl:message>
+	<wsdl:message name="IPlugAndPayDeliver_RicercaPosizioniPerCodiceFiscalePartitaIva_OutputMessage">
+		<wsdl:part name="parameters" element="tns:RicercaPosizioniPerCodiceFiscalePartitaIvaResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IPlugAndPayDeliver_RicercaPosizionePerIdentificavo_InputMessage">
+		<wsdl:part name="parameters" element="tns:RicercaPosizionePerIdentificavo"/>
+	</wsdl:message>
+	<wsdl:message name="IPlugAndPayDeliver_RicercaPosizionePerIdentificavo_OutputMessage">
+		<wsdl:part name="parameters" element="tns:RicercaPosizionePerIdentificavoResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IPlugAndPayDeliver_RicercaArricchitaPosizionePerIdentificavo_InputMessage">
+		<wsdl:part name="parameters" element="tns:RicercaArricchitaPosizionePerIdentificavo"/>
+	</wsdl:message>
+	<wsdl:message name="IPlugAndPayDeliver_RicercaArricchitaPosizionePerIdentificavo_OutputMessage">
+		<wsdl:part name="parameters" element="tns:RicercaArricchitaPosizionePerIdentificavoResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IPlugAndPayDeliver_RicercaPagamentiGiornalieri_InputMessage">
+		<wsdl:part name="parameters" element="tns:RicercaPagamentiGiornalieri"/>
+	</wsdl:message>
+	<wsdl:message name="IPlugAndPayDeliver_RicercaPagamentiGiornalieri_OutputMessage">
+		<wsdl:part name="parameters" element="tns:RicercaPagamentiGiornalieriResponse"/>
+	</wsdl:message>
+	<wsdl:portType name="IPlugAndPayDeliver">
+		<wsdl:operation name="RicercaPosizioniPerCodiceFiscalePartitaIva">
+			<wsdl:input wsaw:Action="http://e-fil.eu/PnP/PlugAndPayDeliver/IPlugAndPayDeliver/RicercaPosizioniPerCodiceFiscalePartitaIva" message="tns:IPlugAndPayDeliver_RicercaPosizioniPerCodiceFiscalePartitaIva_InputMessage"/>
+			<wsdl:output wsaw:Action="http://e-fil.eu/PnP/PlugAndPayDeliver/IPlugAndPayDeliver/RicercaPosizioniPerCodiceFiscalePartitaIvaResponse" message="tns:IPlugAndPayDeliver_RicercaPosizioniPerCodiceFiscalePartitaIva_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="RicercaPosizionePerIdentificavo">
+			<wsdl:input wsaw:Action="http://e-fil.eu/PnP/PlugAndPayDeliver/IPlugAndPayDeliver/RicercaPosizionePerIdentificavo" message="tns:IPlugAndPayDeliver_RicercaPosizionePerIdentificavo_InputMessage"/>
+			<wsdl:output wsaw:Action="http://e-fil.eu/PnP/PlugAndPayDeliver/IPlugAndPayDeliver/RicercaPosizionePerIdentificavoResponse" message="tns:IPlugAndPayDeliver_RicercaPosizionePerIdentificavo_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="RicercaArricchitaPosizionePerIdentificavo">
+			<wsdl:input wsaw:Action="http://e-fil.eu/PnP/PlugAndPayDeliver/IPlugAndPayDeliver/RicercaArricchitaPosizionePerIdentificavo" message="tns:IPlugAndPayDeliver_RicercaArricchitaPosizionePerIdentificavo_InputMessage"/>
+			<wsdl:output wsaw:Action="http://e-fil.eu/PnP/PlugAndPayDeliver/IPlugAndPayDeliver/RicercaArricchitaPosizionePerIdentificavoResponse" message="tns:IPlugAndPayDeliver_RicercaArricchitaPosizionePerIdentificavo_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="RicercaPagamentiGiornalieri">
+			<wsdl:input wsaw:Action="http://e-fil.eu/PnP/PlugAndPayDeliver/IPlugAndPayDeliver/RicercaPagamentiGiornalieri" message="tns:IPlugAndPayDeliver_RicercaPagamentiGiornalieri_InputMessage"/>
+			<wsdl:output wsaw:Action="http://e-fil.eu/PnP/PlugAndPayDeliver/IPlugAndPayDeliver/RicercaPagamentiGiornalieriResponse" message="tns:IPlugAndPayDeliver_RicercaPagamentiGiornalieri_OutputMessage"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="BasicHttpsBinding_IPlugAndPayDeliver" type="tns:IPlugAndPayDeliver">
+		<wsp:PolicyReference URI="#BasicHttpsBinding_IPlugAndPayDeliver_policy"/>
+		<soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="RicercaPosizioniPerCodiceFiscalePartitaIva">
+			<soap:operation soapAction="http://e-fil.eu/PnP/PlugAndPayDeliver/IPlugAndPayDeliver/RicercaPosizioniPerCodiceFiscalePartitaIva" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="RicercaPosizionePerIdentificavo">
+			<soap:operation soapAction="http://e-fil.eu/PnP/PlugAndPayDeliver/IPlugAndPayDeliver/RicercaPosizionePerIdentificavo" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="RicercaArricchitaPosizionePerIdentificavo">
+			<soap:operation soapAction="http://e-fil.eu/PnP/PlugAndPayDeliver/IPlugAndPayDeliver/RicercaArricchitaPosizionePerIdentificavo" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="RicercaPagamentiGiornalieri">
+			<soap:operation soapAction="http://e-fil.eu/PnP/PlugAndPayDeliver/IPlugAndPayDeliver/RicercaPagamentiGiornalieri" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="DigitBusDeliver">
+		<wsdl:port name="BasicHttpsBinding_IPlugAndPayDeliver" binding="tns:BasicHttpsBinding_IPlugAndPayDeliver">
+			<soap:address location="https://services.plugandpay.it/Deliver/DigitBusDeliver.svc"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

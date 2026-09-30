@@ -1,0 +1,1 @@
+C:\sviluppo\frameworks\apache-cxf-2.5.1\bin\wsdl2java.bat -b ProtocolloBindings.xml -p it.gruppoinit.protocollo.schemas.messages -client -frontend jaxws21 protocollazioneservice.wsdl

@@ -1,0 +1,100 @@
+﻿@using AreaRiservataCore.Pages.InserimentoIstanza.GestionePagamenti.v2
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneOneri
+@using VBG.BlazorComponentsLibrary.DesignComuni.Forms
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.EditFormComponents
+
+
+@if (Pagamento is not null)
+{
+    <FormModal OnClose="OnCancelEdit" AlwaysVisible="true" Size="ModalSizeEnum.Large" Model="Pagamento" FormId="formPagamenti" OnValidSubmit="OnValidEdit" ValidationCallBack="ValidationCallback">
+        <ModalHeader Titolo="@Pagamento.Causale"></ModalHeader>
+        <ModalBody>
+            <div class="mt-5">
+                <DropDownForm @bind-Value="Pagamento.ModalitaPagamento"
+                              Id="pagamento-modalita-pagamento"
+                              Label="Modalità pagamento"
+                              Items="ModalitaPagamento"
+                              ValidationFor="() => Pagamento.ModalitaPagamento"
+                              Required="true"></DropDownForm>
+            </div>
+            @if (Pagamento.ModalitaPagamentoAsEnum != ModalitaPagamentoOnereEnum.NonDovuto)
+            {
+                if (!PermetteModificaImporto)
+                {
+                    <FormTextReadonly Id="pagamento-importo-readonly" Titolo="Importo">€ @Pagamento.Importo.ToString("N2")</FormTextReadonly>
+                }
+                else
+                {
+                    <NumericInputForm @bind-Value="Pagamento.ImportoPagato"
+                                      Id="pagamento-importo-pagato"
+                                      Label="Importo"
+                                      ValoreMin="0.001"
+                                      ValoreMax="99999"
+                                      Required="true"
+                                      ValidationFor="() => Pagamento.ImportoPagato"></NumericInputForm>
+                }
+            }
+
+            @if (Pagamento.ModalitaPagamentoAsEnum == ModalitaPagamentoOnereEnum.GiaPagato)
+            {
+                <GenericDropDownForm @bind-Value="Pagamento.TipoPagamento"
+                                     Id="pagamento-tipo-pagamento"
+                                     Label="Tipo pagamento"
+                                     Items="TipiPagamento"
+                                     ValueField="@nameof(TipoPagamento.Codice)"
+                                     TextField="@nameof(TipoPagamento.Descrizione)"
+                                     Selector="(x) => x?.Descrizione"
+                                     ValidationFor="() => Pagamento.TipoPagamento"
+                                     Required="true"></GenericDropDownForm>
+
+                <DateInputForm @bind-Value="Pagamento.DataPagamento"
+                               Id="pagamento-data-pagamento"
+                               Label="Data pagamento"
+                               ValidationFor="() => Pagamento.DataPagamento"
+                               Required="true"></DateInputForm>
+
+                <TextInputForm @bind-Value="Pagamento.RiferimentoPagamento"
+                               Id="pagamento-riferimento-pagamento"
+                               Label="Riferimenti pagamento"
+                               Required="true"
+                               ValidationFor="() => Pagamento.RiferimentoPagamento"></TextInputForm>
+            }
+        </ModalBody>
+        <ModalFooter>
+            <FormSubmitButton Form="formPagamenti"></FormSubmitButton>
+        </ModalFooter>
+    </FormModal>
+}
+
+@code {
+    [Parameter, EditorRequired]
+    public GrigliaPagamentiItem? Pagamento { get; set; }
+    [Parameter, EditorRequired]
+    public IEnumerable<TipoPagamento> TipiPagamento { get; set; } = Enumerable.Empty<TipoPagamento>();
+    [Parameter, EditorRequired]
+    public IEnumerable<DropDownItem> ModalitaPagamento { get; set; } = new List<DropDownItem>();
+
+    [Parameter, EditorRequired]
+    public EventCallback OnCancelEdit { get; set; }
+    [Parameter, EditorRequired]
+    public EventCallback<GrigliaPagamentiItem> OnAcceptEdit { get; set; }
+
+    [Parameter]
+    public bool PermetteModificaImporto { get; set; }
+
+
+
+    void ValidationCallback(FormMessageStore msg)
+    {
+        if (this.Pagamento == null)
+        {
+            return;
+        }
+    }
+
+    async Task OnValidEdit()
+    {
+        await this.OnAcceptEdit.InvokeAsync(this.Pagamento);
+    }
+}

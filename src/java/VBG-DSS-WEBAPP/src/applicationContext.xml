@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- CXF Bus + transport servlet: senza cxf-servlet.xml gli endpoint non sono visibili alla CXFServlet ("No service was found") -->
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+
+	<!-- Verificatore certificati DSS 6.x con trust anchor dalla LOTL UE (CIE e provider italiani) -->
+	<bean id="certificateVerifier" class="eu.europa.esig.dss.spi.validation.CommonCertificateVerifier" />
+
+	<!-- Caricamento LOTL (List of Trusted Lists) europea: popola i trust anchor per validare
+	     firme CIE e di tutti i provider italiani/europei. Eseguito all'avvio del contesto Spring.
+	     OBBLIGATORIO: ojKeystorePath deve puntare al keystore OJ (es. da dss-demo-webapp) per verificare
+	     la firma della LOTL e caricare le TSL nazionali (Italia/CIE). -->
+	<bean id="lotlLoader" class="it.gruppoinit.dss.config.LotlLoader" depends-on="certificateVerifier">
+		<property name="certificateVerifier" ref="certificateVerifier" />
+		<!-- Keystore certificati Official Journal (Gazzetta UE) per verifica firma LOTL - come nella demo DSS -->
+		<property name="ojKeystorePath" value="classpath:keystore.p12" />
+		<property name="ojKeystorePassword" value="testpass" />
+		<property name="ojKeystoreType" value="PKCS12" />
+		<property name="ojUrl" value="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.C_.2019.276.01.0001.01.ENG" />
+		<!-- Opzionale: keystore con radici aggiuntive (es. CIE) se la TSL non le include -->
+		<!-- <property name="trustedKeystorePath" value="classpath:trusted-roots.p12" /> -->
+		<!-- <property name="trustedKeystorePassword" value="" /> -->
+		<!-- <property name="trustedKeystoreType" value="PKCS12" /> -->
+	</bean>
+
+	<!-- Servizio di validazione firme (DSS 5.x/6.x) - stesso nome bean usato dal servlet -->
+	<bean id="dss.validation.validationservice" class="it.gruppoinit.dss.validation.Dss5SignatureValidationService" depends-on="lotlLoader">
+		<constructor-arg ref="certificateVerifier" />
+	</bean>
+
+	<!-- API validazione come in legacy: servizio remoto DSS (DataToValidateDTO → WSReportsDTO) -->
+	<bean id="remoteDocumentValidationService" class="eu.europa.esig.dss.ws.validation.common.RemoteDocumentValidationService">
+		<property name="verifier" ref="certificateVerifier" />
+	</bean>
+
+	<!-- Implementazione SOAP DSS (espone validateSignature) -->
+	<bean id="soapDocumentValidationService" class="eu.europa.esig.dss.ws.validation.soap.SoapDocumentValidationServiceImpl">
+		<property name="validationService" ref="remoteDocumentValidationService" />
+	</bean>
+
+	<!-- Adapter che espone il contratto SOAP legacy: validateDocument(WSDocument, WSDocument, Boolean) → WSValidationReport -->
+	<bean id="legacyValidationServiceAdapter" class="it.gruppoinit.dss.ws.LegacyValidationServiceAdapter">
+		<property name="certificateVerifier" ref="certificateVerifier" />
+	</bean>
+
+	<!-- Pubblicazione endpoint SOAP /wservice/validation (service/port legacy + operazione validateDocument) -->
+	<bean id="cxfSoapValidationEndpointPublisher" class="it.gruppoinit.dss.config.CxfSoapValidationEndpointPublisher" depends-on="lotlLoader">
+		<property name="bus" ref="cxf" />
+		<property name="validationEndpoint" ref="legacyValidationServiceAdapter" />
+	</bean>
+</beans>

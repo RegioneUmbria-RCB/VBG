@@ -1,0 +1,266 @@
+openapi: 3.0.1
+info:
+  title: FIRMA REMOTA ARUBA
+  description: Componente di firma remota per integrazione con provider ARUBA
+  version: 1.0.0
+servers:
+  - url: REDACTED
+    description: Local Environment
+  - url: REDACTED
+    description: Test Environment
+  - url: REDACTED
+    description: Production Environment
+
+paths:
+  /configurazione:
+    get:
+      summary: Configurazione del connettore
+      description: Recupera l'elenco di tutti i parametri da configurare per integrarsi con il componente di firma remota
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Param"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+  /processi:
+    post:
+      summary: Avvio del processo di firma
+      description: Utilizzato per avviare le fasi che porteranno poi alla firma ( richiesta otp, .... )
+      requestBody:
+        description: File da firmare
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AvviaProcessoRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SessionId"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+  /processi/{sessionid}:
+    get:
+      summary: Info del processo
+      description: Stato avanzamento del processo
+      parameters:
+        - in: path
+          name: sessionid
+          schema:
+            type: string
+          required: true
+          description: Id della sessione di firma restituita dall'attivazione del processo
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InfoProcesso"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+  /processi/{sessionid}/documenti:
+    put:
+      summary: Caricamento del file da firmare
+      description: Caricamento del file da firmare
+      parameters:
+        - in: path
+          name: sessionid
+          schema:
+            type: string
+          required: true
+          description: Id della sessione di firma restituita dall'attivazione del processo
+      requestBody:
+        description: File da firmare
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Documento'
+      responses:
+        "200":
+          description: OK
+        "400":
+          $ref: "#/components/responses/BadRequest"
+  /processi/{sessionid}/firma:
+    post:
+      summary: Firma
+      description: Firma del documento
+      parameters:
+        - in: path
+          name: sessionid
+          schema:
+            type: string
+          required: true
+          description: Id della sessione di firma restituita dall'attivazione del processo
+      requestBody:
+        description: File da firmare
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FirmaRequest'
+      responses:
+        "200":
+          description: OK
+        "400":
+          $ref: "#/components/responses/BadRequest"
+  /processi/{sessionid}/documenti/{guid}:
+    get:
+      summary: Recupero file firmato digitalmente
+      description: Recupero file firmato digitalmente
+      parameters:
+        - in: path
+          name: sessionid
+          schema:
+            type: string
+          required: true
+          description: Id della sessione di firma restituita dall'attivazione del processo
+        - in: path
+          name: guid
+          schema:
+            type: string
+          required: true
+          description: GUID del documento messo alla firma
+      responses:
+        "200":
+          description: OK
+          headers:
+            X-Nome-File:
+              schema:
+                type: string
+              description: Nome del file completo di estensione
+            X-GUID:
+              schema:
+                type: string
+              description: GUID del documento
+            X-Tipo-Firma:
+              schema:
+                type: string
+              description: CADES o PADES a seconda di come è stato avviato il processo di firma
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+                description: Documento firmato digitalmente
+        "400":
+          $ref: "#/components/responses/BadRequest"
+components:
+  responses:
+    BadRequest:
+      description: Bad Request
+      content:
+        application/problem+json:
+          schema:
+            $ref: "#/components/schemas/Errore"
+  schemas:
+    InfoProcesso:
+      type: object
+      properties:
+        stato:
+          $ref: "#/components/schemas/StatoProcesso"
+        documenti:
+          $ref: "#/components/schemas/InfoDocumentiProcesso"
+    InfoDocumentiProcesso:
+      type: object
+      properties:
+        caricati: 
+          type: integer
+          example: "5"
+        firmati:
+          type: integer
+          example: 3
+    StatoProcesso:
+      type: string
+      enum:
+        - AVVIATO
+        - FIRMA_CONCLUSA
+        - FIRMA_IN_CORSO
+        - IN_ERRORE
+      example: FIRMA_IN_CORSO
+      
+    AvviaProcessoRequest:
+      type: object
+      properties:
+        configurazione:
+              $ref: '#/components/schemas/Configurazione'
+    Errore:
+      type: object
+      properties:
+        codice:
+          type: string
+          example: "400"
+        messaggio:
+          type: string
+          example: "Parametro URL_SERVIZIO non valorizzato nella configurazione E256-TT"
+        dettaglio:
+          type: string
+          example: "Stack dell'errore o qualsiasi log applicativo utile"
+    Documento:
+      type: object
+      properties:
+        guid:
+          type: string
+          description: GUID del file
+          example: "ASDSADPK-EDSOFKSDFOK3-242"
+        nome:
+          type: string
+          description: Nome del file completo di estensione
+          example: "prova.rtf.p7m"
+        content:
+          type: string
+          format: binary
+          description: File
+    Configurazione:
+      type: object
+      properties:
+          params:
+            type: array
+            items:
+                  $ref: "#/components/schemas/Param"
+    FirmaRequest:
+      type: object
+      properties:
+        configurazione:
+              $ref: '#/components/schemas/Configurazione'
+        documenti:
+          type: array
+          items:
+            type: string
+            description: Guid dei file trasmessi da firmare per una verifica
+    Param:
+      type: object
+      properties:
+        chiave:
+          type: string
+          example: "URL_SERVIZIO"
+        descrizione:
+          type: string
+          example: "Url del servizio di firma remota ARUBA"
+        valore:
+          type: string
+          example: "https://test.proxysign.it/"
+        obbligatorio:
+          type: boolean
+          example: "true"
+    SessionId:
+      type: object
+      properties:
+        sessionid: 
+          type: string
+          example: "asijdsoiajoiasdjojoji-12112"
+    Tipo:
+      type: string
+      enum:
+        - CADES
+        - PADES
+      example: CADES

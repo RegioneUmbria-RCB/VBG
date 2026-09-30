@@ -1,0 +1,734 @@
+<html>
+      <head>
+        <style media="all">
+					.etichetta{background-color: #efefef;}
+					.dato{font-weight: bold;}
+        </style>
+
+      </head>
+      <body style="font-family: Verdana; font-size: 12px;background-color:#ffffff">
+        <center style="font-size: 16px;font-weight:bold;">
+          Presentazione Segnalazione certificata inizio attivit&#224; / comunicazione
+        </center>
+        <table width="100%" border="1px" cellpadding="0" cellspacing="0" height="100px">
+          <tr>
+            <td width="50%">
+                <span class="dato"><xsl:value-of select="/Istanze/ConfigurazioneComune/DENOMINAZIONE" /></span>
+            </td>
+            <td width="50%">
+              <span class="dato">Pratica n. 
+              <xsl:value-of select="/Istanze/NUMEROISTANZA" /></span>
+              <br/>
+              <br />
+            </td>
+          </tr>
+        </table>
+
+		  <br />
+		  <br />
+		<div style="width:100%;text-align:left;">
+			<xsl:for-each select="/Istanze/Richiedenti/IstanzeRichiedenti">
+				<xsl:if test="count(Procuratore) &gt; 0" >
+					<table width="100%" border="1px" cellpadding="0" cellspacing="0">
+						<tr>
+							<td width="25%" class="etichetta">Il sottoscritto</td>
+							<td class="dato" width="25%">
+								<xsl:value-of select="Procuratore/NOMINATIVO"/>&#160;
+								<xsl:value-of select="Procuratore/NOME" />
+							</td>
+							<td width="25%" class="etichetta">Codice Fiscale</td>
+							<td class="dato" width="25%">
+								<xsl:value-of select="Procuratore/CODICEFISCALE" />
+							</td>
+						</tr>
+
+						<tr>
+							<td width="25%" class="etichetta">Nato/a a</td>
+							<td class="dato" width="25%">
+								<xsl:value-of select="Procuratore/ComuneNascita/COMUNE" />
+							</td>
+							<td width="25%" class="etichetta">Il</td>
+							<td class="dato" width="25%">
+								<xsl:call-template name="FormatDate">
+									<xsl:with-param name="DateTime" select="Procuratore/DATANASCITA"/>
+								</xsl:call-template>
+							</td>
+						</tr>
+
+
+						<tr>
+							<td width="25%" class="etichetta">Residente in</td>
+							<td class="dato" width="25%">
+								<xsl:value-of select="Procuratore/ComuneResidenza/COMUNE" />
+							</td>
+							<td width="25%" class="etichetta">Prov.</td>
+							<td class="dato" width="25%">
+								<xsl:value-of select="Procuratore/PROVINCIA" />
+							</td>
+						</tr>
+
+						<tr>
+							<td width="25%" class="etichetta">Via/Loc.</td>
+							<td colspan="3" class="dato" width="75%">
+								<xsl:value-of select="Procuratore/ComuneResidenza/COMUNE" />
+							</td>
+						</tr>
+
+						<tr>
+							<td width="25%" class="etichetta">E-mail</td>
+							<td colspan="3" class="dato" width="75%">
+								<xsl:value-of select="Procuratore/EMAIL" />
+							</td>
+						</tr>
+
+						<xsl:variable name="codicefiscaleParam" select="Procuratore/CODICEFISCALE"/>
+						<xsl:variable name="tipodatoParam" select="../IstanzeRichiedenti/Richiedente/CODICEFISCALE[.=$codicefiscaleParam]/../../TipoSoggetto/TIPODATO"/>
+
+						<tr>
+							<td colspan="4" width="100%" class="etichetta">
+								<xsl:if test="$tipodatoParam = 'T'" >
+									In qualit&#224; di <span class="dato">Procuratore Speciale </span> di
+								</xsl:if>
+								<xsl:if test="$tipodatoParam !='T'" >
+									In qualit&#224; di <span class="dato">
+										<xsl:value-of select="../IstanzeRichiedenti/Richiedente/CODICEFISCALE[.=$codicefiscaleParam]/../../DESCRSOGGETTO" />
+									</span>
+								</xsl:if>
+								<xsl:if test="$tipodatoParam =''" >
+									di
+								</xsl:if>
+							</td>
+						</tr>
+						<xsl:if test="(../IstanzeRichiedenti/Richiedente/CODICEFISCALE[.=$codicefiscaleParam]/../../AnagrafeCollegata/NOMINATIVO != '')" >
+							<tr>
+								<td width="25%" class="etichetta">Di</td>
+								<td class="dato" width="25%">
+									<xsl:value-of select="../IstanzeRichiedenti/Richiedente/CODICEFISCALE[.=$codicefiscaleParam]/../../AnagrafeCollegata/NOMINATIVO"/>
+								</td>
+								<td width="25%" class="etichetta">C.F./P.IVA</td>
+								<td class="dato" width="25%">
+									<xsl:value-of select="../IstanzeRichiedenti/Richiedente/CODICEFISCALE[.=$codicefiscaleParam]/../../AnagrafeCollegata/CODICEFISCALE"/>
+									<xsl:value-of select="../IstanzeRichiedenti/Richiedente/CODICEFISCALE[.=$codicefiscaleParam]/../../AnagrafeCollegata/PARTITAIVA"/>
+								</td>
+							</tr>
+							<tr>
+								<td width="25%" class="etichetta">Con sede in</td>
+								<td class="dato" width="25%">
+									<xsl:value-of select="../IstanzeRichiedenti/Richiedente/CODICEFISCALE[.=$codicefiscaleParam]/../../AnagrafeCollegata/COMUNERESIDENZA"/>
+								</td>
+								<td width="25%" class="etichetta">Via/Loc.</td>
+								<td class="dato" width="25%">
+									<xsl:value-of select="../IstanzeRichiedenti/Richiedente/CODICEFISCALE[.=$codicefiscaleParam]/../../AnagrafeCollegata/INDIRIZZO"/>
+								</td>
+							</tr>
+						</xsl:if>
+
+						<xsl:if test="$tipodatoParam !='T' and $tipodatoParam !=''">
+							<tr>
+								<td colspan="4" width="100%" class="etichetta">e <span class="dato">Procuratore Speciale</span></td>
+							</tr>
+						</xsl:if>
+
+						<tr>
+							<td width="25%" class="etichetta">Cognome/Nome</td>
+							<td class="dato" width="25%">
+								<xsl:value-of select="Richiedente/NOMINATIVO"/>&#160;
+								<xsl:value-of select="Richiedente/NOME" />
+							</td>
+							<td width="25%" class="etichetta">Codice Fiscale</td>
+							<td class="dato" width="25%">
+								<xsl:value-of select="Richiedente/CODICEFISCALE" />
+							</td>
+						</tr>
+
+						<tr>
+							<td width="25%" class="etichetta">Nato/a a</td>
+							<td class="dato" width="25%">
+								<xsl:value-of select="Richiedente/ComuneNascita/COMUNE" />
+							</td>
+							<td width="25%" class="etichetta">Il</td>
+							<td class="dato" width="25%">
+								<xsl:call-template name="FormatDate">
+									<xsl:with-param name="DateTime" select="Richiedente/DATANASCITA"/>
+								</xsl:call-template>
+							</td>
+						</tr>
+
+						<tr>
+							<td width="25%" class="etichetta">Residente in</td>
+							<td class="dato" width="75%" colspan="3">
+								<xsl:value-of select="Richiedente/ComuneResidenza/COMUNE" />
+							</td>
+						</tr>
+
+						<tr>
+							<td width="25%" class="etichetta">Via/Loc. </td>
+							<td colspan="3" class="dato" width="75%">
+								<xsl:value-of select="Richiedente/INDIRIZZO"/>
+							</td>
+						</tr>
+
+						<tr>
+							<td width="25%" class="etichetta">E-mail </td>
+							<td colspan="3" class="dato" width="75%">
+								<xsl:value-of select="Richiedente/EMAIL" />
+							</td>
+						</tr>
+
+						<xsl:if test="(AnagrafeCollegata/NOMINATIVO != '')" >
+							<tr>
+								<td colspan="4" width="100%" class="etichetta">
+									In qualit&#224; di <span class="dato"><xsl:value-of select="DESCRSOGGETTO" /></span>
+								</td>
+							</tr>
+
+							<tr>
+								<td width="25%" class="etichetta">Di</td>
+								<td class="dato" width="25%">
+									<xsl:value-of select="AnagrafeCollegata/NOMINATIVO"/>
+								</td>
+								<td width="25%" class="etichetta">C.F./P.IVA</td>
+								<td class="dato" width="25%">
+									<xsl:value-of select="AnagrafeCollegata/CODICEFISCALE"/>
+									<xsl:value-of select="AnagrafeCollegata/PARTITAIVA"/>
+								</td>
+							</tr>
+
+							<tr>
+								<td width="25%" class="etichetta">Con sede in </td>
+								<td class="dato" width="25%">
+									<xsl:value-of select="AnagrafeCollegata/ComuneResidenza/COMUNE"/>
+								</td>
+								<td width="25%" class="etichetta">Via/Loc.</td>
+								<td class="dato" width="25%">
+									<xsl:value-of select="AnagrafeCollegata/INDIRIZZO"/>
+								</td>
+							</tr>
+
+						</xsl:if>
+					</table>
+				</xsl:if>
+
+
+
+				<xsl:if test="count(Procuratore) = 0" >
+					<xsl:variable name="codicefiscaleRic" select="Richiedente/CODICEFISCALE"/>
+					<xsl:if test="count(../IstanzeRichiedenti/Procuratore/CODICEFISCALE[.=$codicefiscaleRic]) = 0" >
+						<xsl:if test="TipoSoggetto/TIPODATO = 'R' and TipoSoggetto/TIPODATO != 'T' and CODICETIPOSOGGETTO != 9" >
+							<table width="100%" border="1px" cellpadding="0" cellspacing="0">
+								<tr>
+									<td width="25%" class="etichetta">Il sottoscritto</td>
+									<td width="25%" class="dato">
+										<xsl:value-of select="Richiedente/NOMINATIVO"/>&#160;
+										<xsl:value-of select="Richiedente/NOME" />
+									</td>
+									<td width="25%" class="etichetta">Codice Fiscale</td>
+									<td width="25%" class="dato">
+										<xsl:value-of select="Richiedente/CODICEFISCALE" />
+									</td>
+
+								</tr>
+
+								<tr>
+									<td width="25%" class="etichetta">Nato/a a</td>
+									<td width="25%" class="dato">
+										<xsl:value-of select="Richiedente/ComuneNascita/COMUNE" />
+									</td>
+									<td width="25%" class="etichetta">Il </td>
+									<td width="25%" class="dato">
+										<xsl:call-template name="FormatDate">
+											<xsl:with-param name="DateTime" select="Richiedente/DATANASCITA"/>
+										</xsl:call-template>
+									</td>
+
+								</tr>
+
+								<tr>
+									<td width="25%" class="etichetta">Residente in</td>
+									<td width="75%" class="dato" colspan="3">
+										<xsl:value-of select="Richiedente/ComuneResidenza/COMUNE" />
+									</td>
+
+								</tr>
+
+								<tr>
+									<td width="25%" class="etichetta">Via/Loc.</td>
+									<td width="75%" colspan="3" class="dato">
+										<xsl:value-of select="Richiedente/INDIRIZZO"/>
+									</td>
+								</tr>
+
+								<tr>
+									<td width="25%" class="etichetta">E-mail</td>
+									<td width="75%" colspan="3" class="dato">
+										<xsl:value-of select="Richiedente/EMAIL" />
+									</td>
+								</tr>
+
+								<tr>
+									<td width="100%" colspan="4" class="etichetta">
+										In qualit&#224; di <span class="dato"><xsl:value-of select="DESCRSOGGETTO" /></span> 
+									</td>
+								</tr>
+								<xsl:if test="(AnagrafeCollegata/NOMINATIVO != '')" >
+									<tr>
+										<td width="25%" class="etichetta">Di</td>
+										<td width="25%" class="dato">
+											<xsl:value-of select="AnagrafeCollegata/NOMINATIVO"/>
+										</td>
+										<td width="25%" class="etichetta">C.F./P.IVA</td>
+										<td width="25%" class="dato">
+											<xsl:value-of select="AnagrafeCollegata/CODICEFISCALE"/>
+											<xsl:value-of select="AnagrafeCollegata/PARTITAIVA"/>
+										</td>
+									</tr>
+
+									<tr>
+										<td width="25%" class="etichetta">Con sede in</td>
+										<td width="25%" class="dato">
+											<xsl:value-of select="AnagrafeCollegata/COMUNERESIDENZA"/>
+										</td>
+										<td width="25%" class="etichetta">Via/Loc.</td>
+										<td width="25%" class="dato">
+											<xsl:value-of select="AnagrafeCollegata/INDIRIZZO"/>
+										</td>
+									</tr>
+
+								</xsl:if>
+							</table>
+						</xsl:if>
+					</xsl:if>
+				</xsl:if>
+			</xsl:for-each>
+
+			<table width="100%" border="1px" cellpadding="0" cellspacing="0">
+				<tr>
+					<td width="25%" class="etichetta">Inoltra la domanda per </td>
+					<td colspan="3" width="75%" style="font-weight:bold">
+						<xsl:value-of select="/Istanze/LAVORI" />
+					</td>
+				</tr>
+			</table>
+
+			<hr />
+			<style type="text/css" media="all">
+		body{font-family:Arial;font-size:12px;}
+		TABLE
+		{
+			font-family:Arial;font-size:12px;
+			border-collapse: collapse;
+			width: 100%;
+		}
+		
+		.Titolo
+		{
+			background-color: #deddcc;
+			width:100%;
+			font-weight: bold;
+			margin-bottom: 10px;
+			margin-top: 10px;
+		}
+		
+		.EtichettaControllo
+		{
+		    font-weight:bold;
+		}
+		
+		#datiDinamici
+		{
+			width: 100%;
+		}
+
+		#datiDinamici .bloccoMultiplo
+		{
+			border: 1px solid #666;
+			margin-top: 3px;
+			margin-bottom: 5px;
+		}
+
+		#datiDinamici .bloccoMultiplo TABLE
+		{
+			border: 0px;
+		}
+		#datiDinamici img
+		{
+			display:none;
+		}
+
+		#datiDinamici .descrizioneCampoDinamico
+		{
+			display:none;
+		}
+	</style><div id='datiDinamici'><div style='font-size: 16px; font-weight: bold;'>MODELLO B6 - MODIFICA SOGGETTI TITOLARI DEI REQUISITI</div><br /><div class="DatiDinamici" id="renderer">
+	<table width="100%" class="tabellaDatiDinamici">
+		<tr>
+			<td><div class="Titolo">
+				MODIFICA SOGGETTI TITOLARI DEI REQUISITI
+			</div></td>
+		</tr>
+		<tr>
+			<td><span id="renderer_-10_1_I0_i__InnerControl"><b>Cessano la titolarità dei requisiti :</b></span></td>
+		</tr>
+		<tr>
+			<td><table class="righeMultiple" width="100%" border="1" cellpadding="0" cellspacing="0">
+				<tr class="Titolo">
+					<td>Cognome</td>
+					<td>Nome</td>
+					<td>CF</td>
+				</tr>
+				<tr class="rigaAltRigheMultiple">
+					<td><span id="renderer_campo713_r20_m0__InnerControl">TOTARO</span></td>
+					<td><span id="renderer_campo714_r20_m0__InnerControl">MARGHERITA</span></td>
+					<td><span id="renderer_campo715_r20_m0__InnerControl">TTRMGH79H48C933S</span></td>
+				</tr>
+				<tr class="rigaRigheMultiple">
+					<td><span id="renderer_campo713_r20_m1__InnerControl">LE NOCI</span></td>
+					<td><span id="renderer_campo714_r20_m1__InnerControl">GIUSEPPE</span></td>
+					<td><span id="renderer_campo715_r20_m1__InnerControl">LNCGPP75S11B639R</span></td>
+				</tr>
+			</table>
+			<br /></td>
+		</tr>
+	</table>
+
+</div><br /><hr /><br /><div style='font-size: 16px; font-weight: bold;'>SCHEDA 2 - Requisiti morali</div><br /><div class="DatiDinamici" id="renderer">
+	<table width="100%" class="tabellaDatiDinamici">
+		<tr>
+			<td><div class="bloccoMultiplo" style="border:1px solid #000;"><table width="100%" border="1" bordercolor="#000000" rules="none" cellpadding="0" cellspacing="0">
+				<tr>
+					<td colspan="4"><div class="Titolo">
+						REQUISITI MORALI
+					</div></td>
+				</tr>
+				<tr>
+					<td colspan="4"><span id="renderer_-2_1_I0_i__InnerControl"><font size="1"><b><center>NOTA DI COMPILAZIONE</center></b>
+I requisiti morali devono essere posseduti e dichiarati da ciascuno dei seguenti soggetti: titolare o legale rappresentanete, preposto o delegato se designato, ciascuno dei soci e degli amministratori in caso di società ai sensi dell'art. 2 DPR 252/1998.<br />Vanno allegati i documenti di identità di tutti i soggetti che compilano la presente scheda 2.<br />QUALORA UN SOGGETTO NON COMPAIA NEL FORM SOTTOSTANTE, TORNARE ALLO STEP 2 PER L'INSERIMENTO DELL'ANAGRAFICA</font></span></td>
+				</tr>
+				<tr>
+					<td><span class="EtichettaControllo">Cognome:</span></td>
+					<td><span id="renderer_784_I0_i__InnerControl">LE NOCI</span></td>
+					<td><span class="EtichettaControllo">Nome:</span></td>
+					<td><span id="renderer_785_I0_i__InnerControl">MICHELE</span></td>
+				</tr>
+				<tr>
+					<td><span class="EtichettaControllo">C.F.:</span></td>
+					<td colspan="3"><span id="renderer_786_I0_i__InnerControl">LNCMHL55S06F631A</span></td>
+				</tr>
+				<tr>
+					<td><span class="EtichettaControllo">Data di nascita:</span></td>
+					<td><span id="renderer_787_I0_i__InnerControl">06/11/1955</span></td>
+					<td><span class="EtichettaControllo">Comune di nascita:</span></td>
+					<td><span id="renderer_788_I0_i__InnerControl">MONTE SANT'ANGELO</span></td>
+				</tr>
+				<tr>
+					<td colspan="4"><span id="renderer_-10_1_I0_i__InnerControl"><b><center>consapevole delle conseguenze penali e amministrative previste dagli artt. 75 e 76 del DPR 445/2000 in caso di dichiarazioni mendaci e formazione o uso di atti falsi,<br />DICHIARA</center></b></span></td>
+				</tr>
+				<tr>
+					<td><span class="EtichettaControllo">1. Di essere in possesso dei requisiti morali previsti dall'art.71 del D.Lgs. 59/2010:</span></td>
+					<td colspan="3"><span id="renderer_782_I0_i__InnerControl">[X]</span></td>
+				</tr>
+				<tr>
+					<td><span class="EtichettaControllo">2. Che non sussistono nei propri confronti &quot;cause di divieto, di decadenza o di sospensione di cui all'art. 10 della L. 31/05/65, n. 575&quot; (antimafia):</span></td>
+					<td colspan="3"><span id="renderer_783_I0_i__InnerControl">[X]</span></td>
+				</tr>
+			</table>
+			</div><div class="bloccoMultiplo" style="border:1px solid #000;"><table width="100%" border="1" bordercolor="#000000" rules="none" cellpadding="0" cellspacing="0">
+				<tr>
+					<td colspan="4"><div class="Titolo">
+						REQUISITI MORALI
+					</div></td>
+				</tr>
+				<tr>
+					<td colspan="4"><span id="renderer_-2_1_I1_i__InnerControl"><font size="1"><b><center>NOTA DI COMPILAZIONE</center></b>
+I requisiti morali devono essere posseduti e dichiarati da ciascuno dei seguenti soggetti: titolare o legale rappresentanete, preposto o delegato se designato, ciascuno dei soci e degli amministratori in caso di società ai sensi dell'art. 2 DPR 252/1998.<br />Vanno allegati i documenti di identità di tutti i soggetti che compilano la presente scheda 2.<br />QUALORA UN SOGGETTO NON COMPAIA NEL FORM SOTTOSTANTE, TORNARE ALLO STEP 2 PER L'INSERIMENTO DELL'ANAGRAFICA</font></span></td>
+				</tr>
+				<tr>
+					<td><span class="EtichettaControllo">Cognome:</span></td>
+					<td><span id="renderer_784_I1_i__InnerControl">LE NOCI</span></td>
+					<td><span class="EtichettaControllo">Nome:</span></td>
+					<td><span id="renderer_785_I1_i__InnerControl">FRANCESCO</span></td>
+				</tr>
+				<tr>
+					<td><span class="EtichettaControllo">C.F.:</span></td>
+					<td colspan="3"><span id="renderer_786_I1_i__InnerControl">LNCFNC78H17C933M</span></td>
+				</tr>
+				<tr>
+					<td><span class="EtichettaControllo">Data di nascita:</span></td>
+					<td><span id="renderer_787_I1_i__InnerControl">17/06/1978</span></td>
+					<td><span class="EtichettaControllo">Comune di nascita:</span></td>
+					<td><span id="renderer_788_I1_i__InnerControl">COMO</span></td>
+				</tr>
+				<tr>
+					<td colspan="4"><span id="renderer_-10_1_I1_i__InnerControl"><b><center>consapevole delle conseguenze penali e amministrative previste dagli artt. 75 e 76 del DPR 445/2000 in caso di dichiarazioni mendaci e formazione o uso di atti falsi,<br />DICHIARA</center></b></span></td>
+				</tr>
+				<tr>
+					<td><span class="EtichettaControllo">1. Di essere in possesso dei requisiti morali previsti dall'art.71 del D.Lgs. 59/2010:</span></td>
+					<td colspan="3"><span id="renderer_782_I1_i__InnerControl">[X]</span></td>
+				</tr>
+				<tr>
+					<td><span class="EtichettaControllo">2. Che non sussistono nei propri confronti &quot;cause di divieto, di decadenza o di sospensione di cui all'art. 10 della L. 31/05/65, n. 575&quot; (antimafia):</span></td>
+					<td colspan="3"><span id="renderer_783_I1_i__InnerControl">[X]</span></td>
+				</tr>
+			</table>
+			</div><div class="bloccoMultiplo" style="border:1px solid #000;"><table width="100%" border="1" bordercolor="#000000" rules="none" cellpadding="0" cellspacing="0">
+				<tr>
+					<td colspan="4"><div class="Titolo">
+						REQUISITI MORALI
+					</div></td>
+				</tr>
+				<tr>
+					<td colspan="4"><span id="renderer_-2_1_I2_i__InnerControl"><font size="1"><b><center>NOTA DI COMPILAZIONE</center></b>
+I requisiti morali devono essere posseduti e dichiarati da ciascuno dei seguenti soggetti: titolare o legale rappresentanete, preposto o delegato se designato, ciascuno dei soci e degli amministratori in caso di società ai sensi dell'art. 2 DPR 252/1998.<br />Vanno allegati i documenti di identità di tutti i soggetti che compilano la presente scheda 2.<br />QUALORA UN SOGGETTO NON COMPAIA NEL FORM SOTTOSTANTE, TORNARE ALLO STEP 2 PER L'INSERIMENTO DELL'ANAGRAFICA</font></span></td>
+				</tr>
+				<tr>
+					<td><span class="EtichettaControllo">Cognome:</span></td>
+					<td><span id="renderer_784_I2_i__InnerControl">MIUCCI</span></td>
+					<td><span class="EtichettaControllo">Nome:</span></td>
+					<td><span id="renderer_785_I2_i__InnerControl">MARIA</span></td>
+				</tr>
+				<tr>
+					<td><span class="EtichettaControllo">C.F.:</span></td>
+					<td colspan="3"><span id="renderer_786_I2_i__InnerControl">MCCMRA56A69F631L</span></td>
+				</tr>
+				<tr>
+					<td><span class="EtichettaControllo">Data di nascita:</span></td>
+					<td><span id="renderer_787_I2_i__InnerControl">29/01/1956</span></td>
+					<td><span class="EtichettaControllo">Comune di nascita:</span></td>
+					<td><span id="renderer_788_I2_i__InnerControl">MONTE SANT'ANGELO</span></td>
+				</tr>
+				<tr>
+					<td colspan="4"><span id="renderer_-10_1_I2_i__InnerControl"><b><center>consapevole delle conseguenze penali e amministrative previste dagli artt. 75 e 76 del DPR 445/2000 in caso di dichiarazioni mendaci e formazione o uso di atti falsi,<br />DICHIARA</center></b></span></td>
+				</tr>
+				<tr>
+					<td><span class="EtichettaControllo">1. Di essere in possesso dei requisiti morali previsti dall'art.71 del D.Lgs. 59/2010:</span></td>
+					<td colspan="3"><span id="renderer_782_I2_i__InnerControl">[X]</span></td>
+				</tr>
+				<tr>
+					<td><span class="EtichettaControllo">2. Che non sussistono nei propri confronti &quot;cause di divieto, di decadenza o di sospensione di cui all'art. 10 della L. 31/05/65, n. 575&quot; (antimafia):</span></td>
+					<td colspan="3"><span id="renderer_783_I2_i__InnerControl">[X]</span></td>
+				</tr>
+			</table>
+			</div></td>
+		</tr>
+	</table>
+
+</div><br /><hr /><br /><div style='font-size: 16px; font-weight: bold;'>SCHEDA 2 - Requisiti professionali (alimenti e bevande)</div><br /><div class="DatiDinamici" id="renderer">
+	<table width="100%" class="tabellaDatiDinamici">
+		<tr>
+			<td><div class="Titolo">
+				<center>REQUISITI PROFESSIONALI PER LE ATTIVITA' DI VENDITA E SOMMINISTRAZIONE DI ALIMENTI E BEVANDE</center>
+			</div></td>
+		</tr>
+		<tr>
+			<td><span id="renderer_-3_1_I0_i__InnerControl"><center><b>Note di compilazione:</b></center></span></td>
+		</tr>
+		<tr>
+			<td><span id="renderer_-5_1_I0_i__InnerControl"><B>1)</B> Il primo riquadro NOME - COGNOME - CODICE FISCALE è generato in modo automatico e riporta tutti i dati delle persone inserite nello step 3.<br /><b><center><u>QUI LASCIARE SOLAMENTE LA PERSONA IN POSSESSO DEI REQUISITI PROFESSIONALI ED ELIMINARE TUTTE LE ALTRE</u></center></b></span></td>
+		</tr>
+		<tr>
+			<td><span id="renderer_-6_1_I0_i__InnerControl"></span></td>
+		</tr>
+		<tr>
+			<td><span id="renderer_-7_1_I0_i__InnerControl"><b>2) QUALORA IL SOGGETTO IN POSSESSO DEI REQUISITI PROFESSIONALI NON COMPAIA NEI RIQUDRI SOTTOSTANTI, TORNARE ALLO STEP 3 PER L'INSERIMENTO DELL'ANAGRAFICA</b></span></td>
+		</tr>
+		<tr>
+			<td><span id="renderer_-8_1_I0_i__InnerControl"></span></td>
+		</tr>
+		<tr>
+			<td><span id="renderer_-9_1_I0_i__InnerControl"><b>3) PER RIVEDERE LA LISTA COMPLETA DEI SOGGETTI:</b> 
+
+<br /><b>• eliminare tutti i riquadri
+<br />• salvare e tornare alla lista delle schede 
+<br />• ricaricare la Scheda 2 - Requisiti professionali.</b></span></td>
+		</tr>
+		<tr>
+			<td><div class="bloccoMultiplo" style="border:1px solid #000;"><table width="100%" border="1" bordercolor="#000000" rules="none" cellpadding="0" cellspacing="0">
+				<tr>
+					<td><span class="EtichettaControllo">Cognome:</span></td>
+					<td><span id="renderer_776_I0_i__InnerControl">LE NOCI</span></td>
+					<td><span class="EtichettaControllo">Nome:</span></td>
+					<td colspan="3"><span id="renderer_777_I0_i__InnerControl">FRANCESCO</span></td>
+				</tr>
+				<tr>
+					<td><span class="EtichettaControllo">C.F.:</span></td>
+					<td><span id="renderer_778_I0_i__InnerControl">LNCFNC78H17C933M</span></td>
+					<td><span class="EtichettaControllo">Data di nascita:</span></td>
+					<td><span id="renderer_779_I0_i__InnerControl">17/06/1978</span></td>
+					<td><span class="EtichettaControllo">Comune di nascita:</span></td>
+					<td><span id="renderer_780_I0_i__InnerControl">COMO</span></td>
+				</tr>
+				<tr>
+					<td colspan="6"><span id="renderer_-25_1_I0_i__InnerControl"><b><center>consapevole delle conseguenze penali e amministrative previste dagli artt. 75 e 76 del DPR 445/2000 in caso di dichiarazioni mendaci e formazione o uso di atti falsi,<br />DICHIARA</center></b></span></td>
+				</tr>
+				<tr>
+					<td colspan="6"><span id="renderer_-30_1_I0_i__InnerControl"><b>REQUISITI PROFESSIONALI</b></span></td>
+				</tr>
+				<tr>
+					<td colspan="6"><span id="renderer_-32_1_I0_i__InnerControl">3. Di essere in possesso di uno dei seguenti requisiti professionali ai sensi dell'art. 71, co. 6, D.Lgs. 59/2010</span></td>
+				</tr>
+				<tr>
+					<td><span class="EtichettaControllo">3.1:</span></td>
+					<td><span id="renderer_459_I0_i__InnerControl">[..]</span></td>
+					<td colspan="4"><span id="renderer_-34_2_I0_i__InnerControl">aver frequentato con esito positivo il corso professionale per il commercio, la preparazione o la somministrazione degli alimenti riconosciuto da</span></td>
+				</tr>
+				<tr>
+					<td><span class="EtichettaControllo">Regione:</span></td>
+					<td colspan="5"><span id="renderer_1025_I0_i__InnerControl"></span></td>
+				</tr>
+				<tr>
+					<td><span class="EtichettaControllo">nome dell'Istituto:</span></td>
+					<td><span id="renderer_460_I0_i__InnerControl"></span></td>
+					<td><span class="EtichettaControllo">sede:</span></td>
+					<td colspan="3"><span id="renderer_461_I0_i__InnerControl"></span></td>
+				</tr>
+				<tr>
+					<td><span class="EtichettaControllo">oggetto del corso:</span></td>
+					<td><span id="renderer_462_I0_i__InnerControl"></span></td>
+					<td><span class="EtichettaControllo">anno di conclusione:</span></td>
+					<td colspan="3"><span id="renderer_463_I0_i__InnerControl"></span></td>
+				</tr>
+				<tr>
+					<td><span class="EtichettaControllo">3.2:</span></td>
+					<td><span id="renderer_464_I0_i__InnerControl">[..]</span></td>
+					<td colspan="4"><span id="renderer_-38_2_I0_i__InnerControl">di essere in possesso di diploma di scuola secondaria superiore o di laurea, anche triennale, o di altra scuola ad indirizzo professionale, almeno triennale purchè nel corso di studi siano previste materie attinenti al commercio, alla preparazione o alla somministrazione degli alimenti</span></td>
+				</tr>
+				<tr>
+					<td><span class="EtichettaControllo">Tipologia di Titolo:</span></td>
+					<td colspan="5"><span id="renderer_465_I0_i__InnerControl"></span></td>
+				</tr>
+				<tr>
+					<td><span class="EtichettaControllo">nome dell'Istituto:</span></td>
+					<td><span id="renderer_466_I0_i__InnerControl"></span></td>
+					<td><span class="EtichettaControllo">sede:</span></td>
+					<td colspan="3"><span id="renderer_467_I0_i__InnerControl"></span></td>
+				</tr>
+				<tr>
+					<td><span class="EtichettaControllo">oggetto del corso:</span></td>
+					<td><span id="renderer_468_I0_i__InnerControl"></span></td>
+					<td><span class="EtichettaControllo">anno di conclusione:</span></td>
+					<td colspan="3"><span id="renderer_469_I0_i__InnerControl"></span></td>
+				</tr>
+				<tr>
+					<td><span class="EtichettaControllo">3.3:</span></td>
+					<td><span id="renderer_470_I0_i__InnerControl">[X]</span></td>
+					<td colspan="4"><span id="renderer_-42_2_I0_i__InnerControl">aver prestato la propria opera, per almeno 2 anni, anche non continuativi, nel quinquennio precedente, presso imprese esercenti l'attività nel settore alimentare o della somministrazione di alimenti e bevande</span></td>
+				</tr>
+				<tr>
+					<td><span class="EtichettaControllo">in qualit&#224; di:</span></td>
+					<td colspan="5"><span id="renderer_471_I0_i__InnerControl">socio lavoratore</span></td>
+				</tr>
+				<tr>
+					<td><span class="EtichettaControllo">comprovata dalla iscrizione INPS n.:</span></td>
+					<td><span id="renderer_479_I0_i__InnerControl">2411744544</span></td>
+					<td><span class="EtichettaControllo">del:</span></td>
+					<td colspan="3"><span id="renderer_480_I0_i__InnerControl"></span></td>
+				</tr>
+				<tr>
+					<td><span class="EtichettaControllo">nome impresa:</span></td>
+					<td colspan="5"><span id="renderer_481_I0_i__InnerControl">ORTOFRUTTA ARCOBALENO SNC DI LE NOCI MICHELE & C.</span></td>
+				</tr>
+				<tr>
+					<td><span class="EtichettaControllo">sede impresa:</span></td>
+					<td colspan="5"><span id="renderer_482_I0_i__InnerControl">COMO</span></td>
+				</tr>
+				<tr>
+					<td><span class="EtichettaControllo">3.4:</span></td>
+					<td><span id="renderer_483_I0_i__InnerControl">[..]</span></td>
+					<td colspan="4"><span id="renderer_-47_2_I0_i__InnerControl">essere stato iscritto al REC di cui alla L. 426/71 per uno dei gruppi merceologici individuati dalle lett. a) b) e c) dell'art. 12,c. 2 del DM 375/88 o per la somministrazionedi alimenti e bevande</span></td>
+				</tr>
+				<tr>
+					<td><span class="EtichettaControllo">presso la CCIAA di:</span></td>
+					<td><span id="renderer_506_I0_i__InnerControl"></span></td>
+					<td><span class="EtichettaControllo">N&#176;:</span></td>
+					<td><span id="renderer_507_I0_i__InnerControl"></span></td>
+					<td><span class="EtichettaControllo">in data:</span></td>
+					<td><span id="renderer_508_I0_i__InnerControl"></span></td>
+				</tr>
+			</table>
+			</div></td>
+		</tr>
+	</table>
+
+</div><br /><hr /><br /><div style='font-size: 16px; font-weight: bold;'>TITOLI AUTORIZZATIVI - ESERCIZI DI VICINATO</div><br /><div class="DatiDinamici" id="renderer">
+	<table width="100%" class="tabellaDatiDinamici">
+		<tr>
+			<td colspan="2"><span id="renderer_-5_1_I0_i__InnerControl"><b>ESTREMI TITOLI AUTORIZZATIVI POSSEDUTI PER ATTIVITA' COMMERCIALI</b></span></td>
+		</tr>
+		<tr>
+			<td><span class="EtichettaControllo">Commercio di vicinato:</span></td>
+			<td><span id="renderer_1172_I0_i__InnerControl">[X]</span></td>
+		</tr>
+		<tr>
+			<td><span class="EtichettaControllo">Titolo:</span></td>
+			<td><span id="renderer_1176_I0_i__InnerControl"></span></td>
+		</tr>
+		<tr>
+			<td><span class="EtichettaControllo">n&#176; prot.:</span></td>
+			<td><span id="renderer_1177_I0_i__InnerControl"></span></td>
+		</tr>
+		<tr>
+			<td><span class="EtichettaControllo">del:</span></td>
+			<td><span id="renderer_1179_I0_i__InnerControl"></span></td>
+		</tr>
+		<tr>
+			<td><span class="EtichettaControllo">Ente:</span></td>
+			<td><span id="renderer_1180_I0_i__InnerControl">COMUNE</span></td>
+		</tr>
+		<tr>
+			<td><span class="EtichettaControllo">BARRARE LA CASELLA SE IL TITOLO SI RESTITUISCE PER CESSAZIONE:</span></td>
+			<td><span id="renderer_1182_I0_i__InnerControl">[..]</span></td>
+		</tr>
+	</table>
+
+</div><br /><hr /><br /></div>
+			
+			<br/>
+			<br/>
+			<xsl:if test="count(/Istanze/DocumentiIstanza/DocumentiIstanza) != 0" >
+				<div  style="font-size: 16px;font-weight:bold;">Allegati presentati:</div>
+				<ul>
+					<xsl:for-each select="/Istanze/DocumentiIstanza/DocumentiIstanza">
+						<li>
+							<div class="dato">
+								<xsl:value-of select="DOCUMENTO"/>&#160;
+							</div><xsl:value-of select="Oggetto/NOMEFILE"/>
+						</li>
+					</xsl:for-each>
+				</ul>
+			</xsl:if>
+			<br/>
+			<br/>
+		</div>
+		  
+        <div  style="font-size: 16px;font-weight:bold;">Sottoscrittori:</div>
+        <ul>
+          <xsl:for-each select="Istanze/Richiedenti/IstanzeRichiedenti">
+            <xsl:if test="count(Procuratore) = 0" >
+              <xsl:variable name="codiceFiscaleAnagrafica" select="Richiedente/CODICEFISCALE"/>
+              <xsl:if test="count(../IstanzeRichiedenti/Procuratore/CODICEFISCALE[.=$codiceFiscaleAnagrafica]) != 0" >
+                <li>
+                  <xsl:value-of select="Richiedente/NOMINATIVO"/>&#160;
+                  <xsl:value-of select="Richiedente/NOME" />
+                </li>
+              </xsl:if>
+            </xsl:if>
+          </xsl:for-each>
+			
+          <xsl:for-each select="Istanze/Richiedenti/IstanzeRichiedenti">
+            <xsl:if test="count(Procuratore) = 0" >
+              <xsl:variable name="codicefiscaleRic" select="Richiedente/CODICEFISCALE"/>
+              <xsl:if test="count(../IstanzeRichiedenti/Procuratore/CODICEFISCALE[.=$codicefiscaleRic]) = 0" >
+                <xsl:if test="TipoSoggetto/TIPODATO = 'R' and TipoSoggetto/TIPODATO != 'T'" >
+                  <li>
+                    <xsl:value-of select="Richiedente/NOMINATIVO"/>&#160;
+                    <xsl:value-of select="Richiedente/NOME" />
+                  </li>
+                </xsl:if>
+              </xsl:if>
+            </xsl:if>
+          </xsl:for-each>
+        </ul>
+
+      </body>
+
+    </html>

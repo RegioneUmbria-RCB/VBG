@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+		<link type="text/css" href="../css/layout.css" rel="stylesheet"></link>
+		<link type="text/css" href="../css/default.css" rel="stylesheet"></link>
+		<link type="text/css" href="../css/pager.css" rel="stylesheet"></link>
+		<link type="text/css" href="../css/smoothness/jquery-ui-1.9.2.custom.css" rel="stylesheet"></link>
+		<link type="text/css" href="../css/autocompiler/init-autocompiler.css" rel="stylesheet"></link>
+		<script type="text/javascript" src="../js/jquery-1.8.3.js"></script>
+		<script type="text/javascript" src="../js/jquery-ui-1.9.2.custom.js"></script>
+		<script type="text/javascript" src="../js/autocompiler/init-autocompiler.js"></script>
+
+<title>Insert title here</title>
+</head>
+<body>
+<h5>Prova init-autocompiler</h5>
+<div>
+	<form action="">
+		<label for="nome_id">Nome</label>
+		<input type="text" name="nome" id="nome_id"/>
+		<br/>
+		<label for="cognome_id">Cognome</label>
+		<input type="text" name="cognome" id="cognome_id"/>
+		<br/>
+		<label for="data_nascita_id">Data di nascita</label>
+		<input type="text" name="data_nascita" id="data_nascita_id"/>
+		<br/>
+		<label for="segno">Segno zodiacale</label>
+		<input type="text" name="segno" id="segno"/>
+		<script>
+			$(document).ready(function(){
+				var attrMappings = [];
+				attrMappings["nome"] = "nome_id";
+				attrMappings["nominativo"] = "cognome_id";
+				attrMappings["datanascita"] = "data_nascita_id";
+				$('#nome_id').autocompiler({fieldSelectorPattern: "#{field}", mappings: attrMappings, url:"http://localhost:8080/AreaRiservata/ajaxdata/findAnagraficaPF.htm"});
+			});
+		</script>
+	</form>
+</div>
+</body>
+</html>

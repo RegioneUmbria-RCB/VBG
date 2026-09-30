@@ -1,0 +1,149 @@
+﻿@using Init.Sigepro.FrontEnd.AppLogic.GestioneOggetti
+@using Init.Sigepro.FrontEnd.AppLogic.VerificaFirmaDigitale
+@using Init.Sigepro.FrontEnd.CoreServices.GestioneOggetti
+
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.DesignComuni.Download
+@using VBG.BlazorComponentsLibrary.DesignComuni.Messaggi
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.DesignComuni.Spinner
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards.CardButtons
+
+@inherits BaseSharedPage
+
+@if (File == null)
+{
+	<InputFile class="@(this.Errori.Any() ? " upload is-invalid" : " upload")" id="@Id"
+			OnChange="OnFileUpload"
+			aria-label="Delega a trasmettere" />
+	<label for="@Id">
+		<SvgIcon IconId="it-upload" CssClass="icon-sm me-0"></SvgIcon>
+		<span>Carica</span>
+	</label>
+
+	@foreach (var err in this.Errori)
+	{
+		<div class="help-block valid-feedback">
+			@err
+		</div>
+	}
+}
+
+@if (File is not null)
+{
+	<div class="float-end mt-2">
+		<button @onclick="() => _showConfirmationModal = true" class="text-decoration-none me-2"><span class="text-button-sm-semi t-alert">Elimina</span></button>
+	</div>
+	<StepDownloadButton Titolo="Documento caricato" CodiceOggetto="@this.File.CodiceOggetto"></StepDownloadButton>
+
+	@if (RichiedeFirmaDigitale && !File.FirmatoDigitalmente)
+	{
+		<ErrorMessage>Il file deve essere firmato digitalmente</ErrorMessage>						
+	}
+}
+				
+
+<ConfirmationModal Titolo="Sostituire il file caricato?" Visible="_showConfirmationModal" ConfermaClick="OnSostituisciFile" AnnullaClick="() => _showConfirmationModal = false">
+	<ModalBody>
+		L'operazione non potrà essere annullata, vuoi proseguire?
+	</ModalBody>
+</ConfirmationModal>
+
+
+@code {
+
+	public record class FileCaricatoBindingItem(int CodiceOggetto, string NomeFile, bool FirmatoDigitalmente);
+
+	[Inject]
+	private IValidPostedFileSpecificationAsync _defaultPostedFileSpecification { get; set; } = default!;
+	[Inject]
+	private IVerificaFirmaDigitaleService _firmaDigitaleService { get; set; } = default!;
+
+
+	[Parameter]
+	public string? Id { get; set; }
+	[Parameter]
+	public FileCaricatoBindingItem? File { get; set; }
+	[Parameter]
+	public string Titolo { get; set; } = "";
+	[Parameter]
+	public RenderFragment? ChildContent { get; set; }
+	[Parameter]
+	public bool RichiedeFirmaDigitale { get; set; } = false;
+	[Parameter]
+	public int DimensioneMassimaFile { get; set; } = 0;
+	[Parameter]
+	public string EstensioniAmmesse { get; set; } = "";
+	[Parameter]
+	public EventCallback<BinaryFile> RichiestoCaricamentoFile { get; set; }
+	[Parameter]
+	public EventCallback<FileCaricatoBindingItem> RichiestaCancellazioneFile { get; set; }
+
+	long DimensioneMassimaInBytes => DimensioneMassimaFile * 1024;
+	List<string> Errori = new List<string>();
+	private bool _showConfirmationModal;
+
+	private async Task OnFileUpload(InputFileChangeEventArgs e)
+	{
+		this.Errori = new List<string>();
+
+		await _spinnerService.ShowSpinnerAsync(async () =>
+			{
+				try
+				{
+					if (e.FileCount == 0)
+					{
+						throw new InvalidOperationException("Non sono stati caricati files");
+					}
+
+					if (e.FileCount > 1)
+					{
+						throw new InvalidOperationException("Errore interno (è stato caricato più di un file)");
+					}
+
+					var specification = this._defaultPostedFileSpecification;
+
+					if (this.DimensioneMassimaFile > 0)
+					{
+						specification = new SizeBasedValidPostedFileSpecification((int)this.DimensioneMassimaInBytes);
+					}
+
+					specification = specification.And(new EstensioneValidaPostedFileSpecification(this.EstensioniAmmesse));
+
+					if (this.RichiedeFirmaDigitale)
+					{
+						specification = specification.And(new FirmatoDigitalmentePostedFileSpecification(this._firmaDigitaleService));
+					}
+
+					var file = await e.File.ToBinaryFileAsync(specification);
+
+					await this.RichiestoCaricamentoFile.InvokeAsync(file);
+				}
+				catch (Exception ex)
+				{
+					this.Errori.Add(ex.Message);
+					MessageContainer.AddError(ex.Message);
+				}
+			});
+	}
+
+	async Task OnSostituisciFile()
+	{
+		this.Errori = new List<string>();
+
+		await _spinnerService.ShowSpinnerAsync(async () =>
+			{
+				try
+				{
+					await this.RichiestaCancellazioneFile.InvokeAsync(this.File);
+					_showConfirmationModal = false;
+				}
+				catch (Exception ex)
+				{
+					this.Errori.Add(ex.Message);
+				}
+			});
+	}
+
+
+}

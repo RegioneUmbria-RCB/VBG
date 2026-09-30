@@ -1,0 +1,228 @@
+﻿@using System.Linq.Expressions
+@using System.Globalization
+@using System.Diagnostics.CodeAnalysis
+@using Vbg.CoreControls
+@using Microsoft.AspNetCore.Components.Forms
+@inherits MyBaseFormComponent<TItem>
+@typeparam TItem
+
+<div class="mb-3 @CssClassContainer" id="@UniqueID">
+    @if (ShowLabel)
+    {
+        <LabelContainerComponent RelativeControlId="@this.Id" ResourceId="@this.ResourceId" Value="@this.Label" Required="@this.Required" CanEditResourceText="@this.CanEditResourceText"></LabelContainerComponent>
+    }
+    <select name='@this.Id' id='@this.Id' class="form-control form-select @this.CssClass @cssErrorClass" disabled="@this.IsDisabled" 
+            @attributes="this.AdditionalAttributes" @onchange="HandleInput" value="@this.CurrentValueAsString"
+            aria-describedby="@(string.IsNullOrEmpty(HelpText) ? "" : $"{this.Id}_HelpDescription")">
+
+        @if (ShowEmptyItem)
+        {
+            <option value="@EmptyItemValue">@EmptyItemText</option>
+        }
+        @foreach (var (id, item) in idDictionary)
+        {
+            <option value="@id">@Selector(item)</option>
+        }
+    </select>
+    @if (!string.IsNullOrEmpty(HelpText))
+    {
+        <small id="@($"{this.Id}_HelpDescription")" class="help-block">
+            @HelpText
+        </small>
+    }
+    @if (ValidationFor != null)
+    {
+        <div class="form-control-validation help-block">
+            <ValidationMessage For="@ValidationFor" />
+        </div> 
+    }
+</div>
+
+@code {
+    /// <summary>
+    /// This is the component datasource.
+    /// Can contain an Enumerable of any type of object. Use TItem property to specify object type
+    /// </summary>
+    [Parameter]
+    public IEnumerable<TItem>? Items { get; set; }
+
+    /// <summary>
+    /// This function is used to populate the DropDown <option> items.
+    /// If TItem is a simple type (int, string, ...) the default value is enought to show datas
+    /// If TItem is a custom object use this function to build the desidered output string
+    /// </summary>
+    [Parameter]
+    public Func<TItem, string> Selector { get; set; } = (x) => x?.ToString() ?? string.Empty;
+
+    /// <summary>
+    /// Set to true to add en empty item to the <option> items.
+    /// (You could specify EmptyItemValue and EmptyItemText properties also)
+    /// Default: false
+    /// </summary>
+    [Parameter]
+    public bool ShowEmptyItem { get; set; } = false;
+
+    /// <summary>
+    /// The value setted in <option value="" 
+    /// Default: "-1"
+    /// </summary>
+    [Parameter]
+    public string EmptyItemValue { get; set; } = "-1";
+
+    /// <summary>
+    /// The text to show inside <option>Text</option>
+    /// Default: ""
+    /// </summary>
+    [Parameter]
+    public string EmptyItemText { get; set; } = "";
+
+    /// <summary>
+    /// When TItem is a custom object specify the object property used as value in <option value=""
+    /// If TItem is DropDownItem or a simple type, this property is not used
+    /// </summary>
+    [Parameter]
+    public string ValueField { get; set; } = "";
+
+    /// <summary>
+    /// When TItem is a custom object specify the object property used as text to show inside <option>Text</option>
+    /// If TItem is DropDownItem or a simple type, this property is not used
+    /// </summary>
+    [Parameter]
+    public string TextField { get; set; } = "";
+
+    /// <summary>
+    /// En event that fires when the selected item is changed and pass as input parameter the selected TItem
+    /// (Usually used to update the model value)
+    /// </summary>
+    [Parameter]
+    public EventCallback<TItem> OnChanged { get; set; }
+
+    private Dictionary<string, TItem> idDictionary;
+
+    protected async Task HandleInput(ChangeEventArgs e)
+    {
+        string val = e.Value?.ToString() ?? String.Empty;
+
+        if (idDictionary.TryGetValue(val, out var selectedItem))
+        {
+            Value = selectedItem;
+            CurrentValueAsString = val;
+        }
+        else
+            CurrentValueAsString = EmptyItemValue;
+
+        await ValueChanged.InvokeAsync(selectedItem);
+
+        if (OnChanged.HasDelegate)
+            await OnChanged.InvokeAsync(selectedItem);
+
+        if (FieldIdentifier.FieldName != null) 
+        { 
+            EditContext?.NotifyFieldChanged(FieldIdentifier); 
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        idDictionary = new Dictionary<string, TItem>();
+
+        if (Items == null)
+            return;
+
+        if (typeof(TItem) == typeof(string) || 
+            typeof(TItem) == typeof(int) || 
+            typeof(TItem) == typeof(int?) ||
+            typeof(TItem) == typeof(short) ||
+            typeof(TItem) == typeof(short?) ||
+            typeof(TItem) == typeof(long) || 
+            typeof(TItem) == typeof(long?) ||
+            typeof(TItem) == typeof(decimal) ||
+            typeof(TItem) == typeof(decimal?) ||
+            typeof(TItem) == typeof(float) ||
+            typeof(TItem) == typeof(float?))
+        {
+            Items.ToList().ForEach(x => idDictionary.Add(x?.ToString() ?? string.Empty, (TItem)x));
+        }
+        else if (typeof(TItem) == typeof(DropDownItem))
+        {
+            Items.ToList().ForEach(x => idDictionary.Add(x.GetType().GetProperty("Value")?.GetValue(x, null)?.ToString() ?? string.Empty, x));
+        }
+        else
+        {
+            if (string.IsNullOrEmpty(ValueField))
+                ValueField = TextField;
+
+            Items.ToList().ForEach(x => idDictionary.Add(x.GetType().GetProperty(ValueField)?.GetValue(x, null)?.ToString() ?? string.Empty, x));
+        }
+    }
+
+    protected override bool PerformCustomValidation(FieldIdentifier fieldIdentifier, ValidationMessageStore messageStore)
+    {
+
+        if (this.ShowEmptyItem && this.Required && this.CurrentValueAsString == this.EmptyItemValue)
+        {
+            messageStore.Add(fieldIdentifier, $"Il campo {this.Label} è obbligatorio");
+            return false;
+        }
+
+        return true;
+    }
+
+    protected override bool TryParseValueFromString(string value, [MaybeNullWhen(false)] out TItem result, [NotNullWhen(false)] out string validationErrorMessage)
+    {
+        if (string.Equals(value, EmptyItemValue))
+        {
+            result = default;
+            validationErrorMessage = "";
+
+            if (this.Required && result == null)
+            {
+                validationErrorMessage = $"Il campo {this.Label} è obbligatorio";
+                return false;
+            }
+            return true;
+        }
+        else if (idDictionary.TryGetValue(value, out var parsedValue))
+        {
+            result = parsedValue;
+            validationErrorMessage = "";
+            return true;
+        }
+
+        result = default;
+        validationErrorMessage = $"The {Label ?? DisplayName ?? FieldIdentifier.FieldName} field is not valid.";
+        return false;
+    }
+
+    protected override string FormatValueAsString(TItem? value)
+    {
+        if (value == null)
+            if (ShowEmptyItem)
+                return EmptyItemValue;
+            else
+                return string.Empty;
+
+        string s = string.Empty;
+
+        if (typeof(TItem) == typeof(string) ||
+            typeof(TItem) == typeof(int) ||
+            typeof(TItem) == typeof(int?) ||
+            typeof(TItem) == typeof(short) ||
+            typeof(TItem) == typeof(short?) ||
+            typeof(TItem) == typeof(long) ||
+            typeof(TItem) == typeof(long?) ||
+            typeof(TItem) == typeof(decimal) ||
+            typeof(TItem) == typeof(decimal?) ||
+            typeof(TItem) == typeof(float) ||
+            typeof(TItem) == typeof(float?))
+            s = value?.ToString() ?? string.Empty;
+        else if (typeof(TItem) == typeof(DropDownItem))
+            s = value.GetType().GetProperty("Value")?.GetValue(value, null)?.ToString() ?? string.Empty;
+        else
+            s = value.GetType().GetProperty(ValueField)?.GetValue(value, null)?.ToString() ?? string.Empty;
+
+        return s;
+    }
+}

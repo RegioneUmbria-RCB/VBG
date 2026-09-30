@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://gruppoinit.it/sigepro/schemas/messages/qrcode" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xmime="http://www.w3.org/2005/05/xmlmime">
+   
+    <element name="VisurapraticaRequest">
+		<complexType>
+			<sequence>
+				<element name="codiceIstanza" type="integer" />
+				<element name="tipoAuth" type="string" />
+				<element name="token" type="string"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="VisurapraticaResponse">
+		<complexType>
+			<sequence>
+				<element name="qrcode" type="base64Binary"
+					xmime:expectedContentTypes="application/octet-stream" />
+				<element name="url" type="string"></element>
+			</sequence>
+		</complexType>
+	</element>
+
+
+	<element name="DownloadAllegatiMovimentiRequest">
+		<complexType>
+			<sequence>
+				<element name="codiceMovimento" type="integer" />
+				<element name="tipoAuth" type="string" />
+				<element name="token" type="string"></element>
+			</sequence>
+		</complexType>
+	</element>
+
+	<element name="DownloadAllegatiMovimentiResponse">
+		<complexType>
+			<sequence>
+				<element name="qrcode" type="base64Binary"
+					xmime:expectedContentTypes="application/octet-stream" />
+				<element name="url" type="string"></element>
+			</sequence>
+		</complexType>
+	</element>
+    
+    <element name="DownloadAllegatiTipoMovimentoRequest">
+    <complexType>
+			<sequence>
+				<element name="codiceTipoMovimento" type="string" />
+				<element name="codiceIstanza" type="integer" />
+				<element name="tipoAuth" type="string" />
+				<element name="token" type="string"></element>
+			</sequence>
+    </complexType>
+    </element>
+    
+    <element name="DownloadAllegatiTipoMovimentoResponse">
+    	<complexType>
+			<sequence>
+				<element name="qrcode" type="base64Binary"
+					xmime:expectedContentTypes="application/octet-stream" />
+				<element name="url" type="string"></element>
+			</sequence>
+    	</complexType>
+    </element>
+</schema>

@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="KSD.Services.AreaAmministrativa.Protocollo" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="KSD.Services.AreaAmministrativa.Protocollo" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="KSD.Services.AreaAmministrativa.Protocollo">
+      <s:element name="GetAllegatiProtocollo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AuthInfo" type="tns:AuthInfo" />
+            <s:element minOccurs="1" maxOccurs="1" name="IdProtocollo" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="AuthInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="NomeUtente" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetAllegatiProtocolloResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAllegatiProtocolloResult" type="tns:ArrayOfExportResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfExportResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ExportResult" nillable="true" type="tns:ExportResult" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ExportResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Buffer" type="s:base64Binary" />
+          <s:element minOccurs="0" maxOccurs="1" name="FileName" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetProtocolliDati">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AuthInfo" type="tns:AuthInfo" />
+            <s:element minOccurs="0" maxOccurs="1" name="Dati" type="tns:ProtocolloDatiFilterArgs" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ProtocolloDatiFilterArgs">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Tipo" nillable="true" type="tns:TipoProtocollo" />
+          <s:element minOccurs="1" maxOccurs="1" name="Anno" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumeroDa" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumeroA" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Oggetto" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataDa" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataA" type="s:dateTime" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="TipoProtocollo">
+        <s:restriction base="s:string">
+          <s:enumeration value="Entrata" />
+          <s:enumeration value="Uscita" />
+          <s:enumeration value="Interno" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="GetProtocolliDatiResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetProtocolliDatiResult" type="tns:ArrayOfProtocolloBaseDati" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfProtocolloBaseDati">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ProtocolloBaseDati" nillable="true" type="tns:ProtocolloBaseDati" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ProtocolloBaseDati">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Tipo" type="tns:TipoProtocollo" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataOra" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="Anno" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Numero" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Oggetto" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Stato" type="tns:TipoStato" />
+          <s:element minOccurs="0" maxOccurs="1" name="InfoMittente" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="InfoDestinatari" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AutoreDefinizioneCompleta" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="TipoStato">
+        <s:restriction base="s:string">
+          <s:enumeration value="Attivo" />
+          <s:enumeration value="Annullato" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="InviaMail">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AuthInfo" type="tns:AuthInfo" />
+            <s:element minOccurs="0" maxOccurs="1" name="Dati" type="tns:DatiEmailUscita" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="DatiEmailUscita">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:DatiProtocolloUscita">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="MittenteEmail" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="CorpoMessaggio" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="DatiProtocolloUscita">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Oggetto" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Mittente" type="tns:SoggettoInterno" />
+          <s:element minOccurs="0" maxOccurs="1" name="Destinatari" type="tns:ArrayOfSoggetto" />
+          <s:element minOccurs="0" maxOccurs="1" name="VoceTitolario" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Allegati" type="tns:ArrayOfDataToImport" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="SoggettoInterno">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="UO" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="NomeUtente" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfSoggetto">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Soggetto" nillable="true" type="tns:Soggetto" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Soggetto">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Esterno" type="tns:SoggettoEsterno" />
+          <s:element minOccurs="0" maxOccurs="1" name="Interno" type="tns:SoggettoInterno" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="SoggettoEsterno">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:AnagraficaDatiBase" />
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="AnagraficaDatiBase">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:AnagraficaDatiBaseCore">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="IdRubrica" nillable="true" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="CodiceFiscale" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="PartitaIVA" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="CAP" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Telefono" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Cellulare" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Fax" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="PEC" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="WEB" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="EmailAlias" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="AnagraficaDatiBaseCore" abstract="true">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Denominazione" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Nome" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Indirizzo" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Citta" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="ISTAT" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfDataToImport">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="DataToImport" nillable="true" type="tns:DataToImport" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="DataToImport">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:DataFile" />
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="DataFile">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="NomeFile" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Buffer" type="s:base64Binary" />
+          <s:element minOccurs="0" maxOccurs="1" name="DescrizioneFile" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="InviaMailResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="InviaMailResult" type="tns:ResponseInfo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ResponseInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Messaggio" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Status" type="tns:StatusCode" />
+          <s:element minOccurs="0" maxOccurs="1" name="Errori" type="tns:ArrayOfString" />
+          <s:element minOccurs="0" maxOccurs="1" name="ProtocolloResponse" type="tns:ProtocolloResponseDataBase" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="StatusCode">
+        <s:restriction base="s:string">
+          <s:enumeration value="Ok" />
+          <s:enumeration value="Errore" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ProtocolloResponseDataBase">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Numero" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Anno" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Tipo" type="tns:TipoProtocollo" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="CreaUscita">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AuthInfo" type="tns:AuthInfo" />
+            <s:element minOccurs="0" maxOccurs="1" name="Dati" type="tns:DatiProtocolloUscita" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CreaUscitaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CreaUscitaResult" type="tns:ResponseInfo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CreaEntrata">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AuthInfo" type="tns:AuthInfo" />
+            <s:element minOccurs="0" maxOccurs="1" name="Dati" type="tns:DatiProtocolloEntrata" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="DatiProtocolloEntrata">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Oggetto" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Mittente" type="tns:SoggettoEsterno" />
+          <s:element minOccurs="0" maxOccurs="1" name="Destinatari" type="tns:ArrayOfSoggettoInterno" />
+          <s:element minOccurs="0" maxOccurs="1" name="VoceTitolario" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Allegati" type="tns:ArrayOfDataToImport" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfSoggettoInterno">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="SoggettoInterno" nillable="true" type="tns:SoggettoInterno" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="CreaEntrataResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CreaEntrataResult" type="tns:ResponseInfo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InviaAllegato">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AuthInfo" type="tns:AuthInfo" />
+            <s:element minOccurs="0" maxOccurs="1" name="Documento" type="tns:DocumentiDati" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="DocumentiDati">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Anno" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Numero" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Documento" type="tns:ExportResult" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="InviaAllegatoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="InviaAllegatoResult" type="tns:ResponseInfo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GetAllegatiProtocolloSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAllegatiProtocollo" />
+  </wsdl:message>
+  <wsdl:message name="GetAllegatiProtocolloSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAllegatiProtocolloResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetProtocolliDatiSoapIn">
+    <wsdl:part name="parameters" element="tns:GetProtocolliDati" />
+  </wsdl:message>
+  <wsdl:message name="GetProtocolliDatiSoapOut">
+    <wsdl:part name="parameters" element="tns:GetProtocolliDatiResponse" />
+  </wsdl:message>
+  <wsdl:message name="InviaMailSoapIn">
+    <wsdl:part name="parameters" element="tns:InviaMail" />
+  </wsdl:message>
+  <wsdl:message name="InviaMailSoapOut">
+    <wsdl:part name="parameters" element="tns:InviaMailResponse" />
+  </wsdl:message>
+  <wsdl:message name="CreaUscitaSoapIn">
+    <wsdl:part name="parameters" element="tns:CreaUscita" />
+  </wsdl:message>
+  <wsdl:message name="CreaUscitaSoapOut">
+    <wsdl:part name="parameters" element="tns:CreaUscitaResponse" />
+  </wsdl:message>
+  <wsdl:message name="CreaEntrataSoapIn">
+    <wsdl:part name="parameters" element="tns:CreaEntrata" />
+  </wsdl:message>
+  <wsdl:message name="CreaEntrataSoapOut">
+    <wsdl:part name="parameters" element="tns:CreaEntrataResponse" />
+  </wsdl:message>
+  <wsdl:message name="InviaAllegatoSoapIn">
+    <wsdl:part name="parameters" element="tns:InviaAllegato" />
+  </wsdl:message>
+  <wsdl:message name="InviaAllegatoSoapOut">
+    <wsdl:part name="parameters" element="tns:InviaAllegatoResponse" />
+  </wsdl:message>
+  <wsdl:portType name="protocolloSoap">
+    <wsdl:operation name="GetAllegatiProtocollo">
+      <wsdl:input message="tns:GetAllegatiProtocolloSoapIn" />
+      <wsdl:output message="tns:GetAllegatiProtocolloSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetProtocolliDati">
+      <wsdl:input message="tns:GetProtocolliDatiSoapIn" />
+      <wsdl:output message="tns:GetProtocolliDatiSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InviaMail">
+      <wsdl:input message="tns:InviaMailSoapIn" />
+      <wsdl:output message="tns:InviaMailSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CreaUscita">
+      <wsdl:input message="tns:CreaUscitaSoapIn" />
+      <wsdl:output message="tns:CreaUscitaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CreaEntrata">
+      <wsdl:input message="tns:CreaEntrataSoapIn" />
+      <wsdl:output message="tns:CreaEntrataSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InviaAllegato">
+      <wsdl:input message="tns:InviaAllegatoSoapIn" />
+      <wsdl:output message="tns:InviaAllegatoSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="protocolloSoap" type="tns:protocolloSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetAllegatiProtocollo">
+      <soap:operation soapAction="KSD.Services.AreaAmministrativa.Protocollo/GetAllegatiProtocollo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProtocolliDati">
+      <soap:operation soapAction="KSD.Services.AreaAmministrativa.Protocollo/GetProtocolliDati" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InviaMail">
+      <soap:operation soapAction="KSD.Services.AreaAmministrativa.Protocollo/InviaMail" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreaUscita">
+      <soap:operation soapAction="KSD.Services.AreaAmministrativa.Protocollo/CreaUscita" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreaEntrata">
+      <soap:operation soapAction="KSD.Services.AreaAmministrativa.Protocollo/CreaEntrata" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InviaAllegato">
+      <soap:operation soapAction="KSD.Services.AreaAmministrativa.Protocollo/InviaAllegato" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="protocolloSoap12" type="tns:protocolloSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetAllegatiProtocollo">
+      <soap12:operation soapAction="KSD.Services.AreaAmministrativa.Protocollo/GetAllegatiProtocollo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProtocolliDati">
+      <soap12:operation soapAction="KSD.Services.AreaAmministrativa.Protocollo/GetProtocolliDati" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InviaMail">
+      <soap12:operation soapAction="KSD.Services.AreaAmministrativa.Protocollo/InviaMail" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreaUscita">
+      <soap12:operation soapAction="KSD.Services.AreaAmministrativa.Protocollo/CreaUscita" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreaEntrata">
+      <soap12:operation soapAction="KSD.Services.AreaAmministrativa.Protocollo/CreaEntrata" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InviaAllegato">
+      <soap12:operation soapAction="KSD.Services.AreaAmministrativa.Protocollo/InviaAllegato" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="protocollo">
+    <wsdl:port name="protocolloSoap" binding="tns:protocolloSoap">
+      <soap:address location="http://bossolini.portaldemo.kibernetes.net/Services/ws/areaamministrativa/protocollo.asmx" />
+    </wsdl:port>
+    <wsdl:port name="protocolloSoap12" binding="tns:protocolloSoap12">
+      <soap12:address location="http://bossolini.portaldemo.kibernetes.net/Services/ws/areaamministrativa/protocollo.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

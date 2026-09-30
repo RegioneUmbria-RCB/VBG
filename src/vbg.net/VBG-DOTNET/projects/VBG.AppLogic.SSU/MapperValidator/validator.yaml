@@ -1,0 +1,180 @@
+openapi: 3.0.3
+info:
+  title: Validator SSU API
+  version: 1.0.0
+  description: API per validazione pratiche NLA e gestione file associati
+
+security:
+  - XSecurityToken: REDACTED
+
+paths:
+
+  /api/v1/pratiche/validate:
+    post:
+      summary: Valida una pratica
+      description: Verifica la presenza dei campi obbligatori nella pratica XML codificata Base64
+      security:
+        - XSecurityToken: REDACTED
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pratica'
+      responses:
+        '200':
+          description: Validazione completata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '400':
+          description: Errori di validazione
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/ErrorResponse'
+                  - $ref: '#/components/schemas/ValidationErrorsResponse'
+        '401':
+          description: Token mancante o non valido
+        '500':
+          description: Errore interno
+
+  /api/v1/pratiche/validate-and-save:
+    post:
+      summary: Valida e salva una pratica
+      description: |
+        Valida la pratica e salva il relativo InstanceDescriptor nel GestoreFile.
+        L'idOggetto restituito rappresenta il riferimento al file InstanceDescriptor.json
+        associato alla pratica.
+      security:
+        - XSecurityToken: REDACTED
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pratica'
+      responses:
+        '201':
+          description: Pratica validata e salvata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidateAndSaveResponse'
+        '400':
+          description: Errori di validazione
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/ErrorResponse'
+                  - $ref: '#/components/schemas/ValidationErrorsResponse'
+        '401':
+          description: Token mancante o non valido
+        '500':
+          description: Errore interno
+
+  /api/v1/pratiche/files/{idDomanda}:
+    get:
+      summary: Recupera i file associati ad una domanda
+      security:
+        - XSecurityToken: REDACTED
+      parameters:
+        - name: idDomanda
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: File recuperati
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FilesResponse'
+        '400':
+          description: ID non valido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Token mancante o non valido
+        '404':
+          description: Domanda non trovata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Errore interno
+
+components:
+
+  securitySchemes:
+    XSecurityToken:REDACTED
+      type: apiKey
+      in: header
+      name: X-Security-Token
+      description: Token di sicurezza fornito da AR
+
+  schemas:
+
+    Pratica:
+      type: object
+      required:
+        - praticaXml
+      properties:
+        praticaXml:
+          type: string
+          description: XML della pratica codificato in Base64
+
+    SuccessResponse:
+      type: object
+      properties:
+        esito:
+          type: string
+          example: OK
+        messaggio:
+          type: string
+          example: Validazione completata
+
+    ValidateAndSaveResponse:
+      type: object
+      properties:
+        esito:
+          type: string
+          example: OK
+        idOggetto:
+          type: integer
+          format: int64
+          description: Identificativo del file InstanceDescriptor.json salvato
+        messaggio:
+          type: string
+          example: Pratica validata e salvata con successo
+
+    ErrorResponse:
+      type: object
+      properties:
+        errore:
+          type: string
+
+    ValidationErrorsResponse:
+      type: object
+      properties:
+        errori:
+          type: array
+          items:
+            type: string
+
+    FilesResponse:
+      type: object
+      properties:
+        filesByIdDomanda:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string

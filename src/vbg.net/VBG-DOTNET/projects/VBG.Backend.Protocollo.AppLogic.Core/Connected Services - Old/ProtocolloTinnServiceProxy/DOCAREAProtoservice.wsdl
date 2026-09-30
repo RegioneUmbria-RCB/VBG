@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://tempuri.org" name="DOCAREAProtoservice" targetNamespace="http://tempuri.org/" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <xs:schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://tempuri.org">
+      <xs:complexType name="TRispostaLogin">
+        <xs:sequence>
+          <xs:element name="strDST" type="xs:string" />
+          <xs:element name="IngErrNumber" type="xs:int" />
+          <xs:element name="strErrString" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="TRispostaInserimento">
+        <xs:sequence>
+          <xs:element name="IngDocID" type="xs:int" />
+          <xs:element name="IngErrNumber" type="xs:int" />
+          <xs:element name="strErrString" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="TRispostaProtocollazione">
+        <xs:sequence>
+          <xs:element name="IngNumPG" type="xs:int" />
+          <xs:element name="IngAnnoPG" type="xs:int" />
+          <xs:element name="StrDataPG" type="xs:string" />
+          <xs:element name="IngErrNumber" type="xs:int" />
+          <xs:element name="strErrString" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+  </types>
+  <message name="Login0Request">
+    <part name="CodiceEnte" type="xs:string" />
+    <part name="Username" type="xs:string" />
+    <part name="UserPassword" type="xs:string" />
+  </message>
+  <message name="Login0Response">
+    <part name="return" type="ns1:TRispostaLogin" />
+  </message>
+  <message name="Inserimento1Request">
+    <part name="Username" type="xs:string" />
+    <part name="DSTLogin" type="xs:string" />
+    <part name="FileBinario" type="xs:base64Binary" />
+  </message>
+  <message name="Inserimento1Response">
+    <part name="return" type="ns1:TRispostaInserimento" />
+  </message>
+  <message name="Protocollazione2Request">
+    <part name="Username" type="xs:string" />
+    <part name="DSTLogin" type="xs:string" />
+    <part name="FileXML" type="xs:base64Binary" />
+  </message>
+  <message name="Protocollazione2Response">
+    <part name="return" type="ns1:TRispostaProtocollazione" />
+  </message>
+  <portType name="DOCAREAProto">
+    <operation name="Login">
+      <input message="tns:Login0Request" />
+      <output message="tns:Login0Response" />
+    </operation>
+    <operation name="Inserimento">
+      <input message="tns:Inserimento1Request" />
+      <output message="tns:Inserimento1Response" />
+    </operation>
+    <operation name="Protocollazione">
+      <input message="tns:Protocollazione2Request" />
+      <output message="tns:Protocollazione2Response" />
+    </operation>
+  </portType>
+  <binding name="DOCAREAProtobinding" type="tns:DOCAREAProto">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc" />
+    <operation name="Login">
+      <soap:operation soapAction="http://tempuri.org/#Login" style="rpc" />
+      <input>
+        <soap:body use="encoded" namespace="http://tempuri.org/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="http://tempuri.org/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+    </operation>
+    <operation name="Inserimento">
+      <soap:operation soapAction="http://tempuri.org/#Inserimento" style="rpc" />
+      <input>
+        <soap:body use="encoded" namespace="http://tempuri.org/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="http://tempuri.org/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+    </operation>
+    <operation name="Protocollazione">
+      <soap:operation soapAction="http://tempuri.org/#Protocollazione" style="rpc" />
+      <input>
+        <soap:body use="encoded" namespace="http://tempuri.org/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="http://tempuri.org/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+    </operation>
+  </binding>
+  <service name="DOCAREAProtoservice">
+    <port name="DOCAREAProtoPort" binding="tns:DOCAREAProtobinding">
+      <soap:address location="http://5.98.16.12:7099/soap/DOCAREAProto" />
+    </port>
+  </service>
+</definitions>

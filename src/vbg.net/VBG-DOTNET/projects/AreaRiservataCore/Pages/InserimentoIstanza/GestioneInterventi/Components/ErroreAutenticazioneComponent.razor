@@ -1,0 +1,35 @@
+﻿
+@if (_erroreAutenticazione is not null)
+{
+    <div class="descrizioneStep alert alert-warning" role="alert">
+        Il servizio che si sta tentando di attivare prevede una autenticazione di tipo:
+        <ul>
+            <li>@_erroreAutenticazione.Value.LivelloRichiesto</li>
+        </ul>
+        L’utente attualmente connesso ha un livello di autenticazione che è il seguente:
+        <ul>
+            <li>@_erroreAutenticazione.Value.LivelloAttuale</li>
+        </ul>
+        <u>Non è possibile proseguire.</u>
+        <br /><br />
+
+        Informazioni:
+        <ul>
+            <li><span class="fw-bold">Identità anonima:</span> l’utente ha acceduto al sistema senza digitare credenziali</li>
+            <li><span class="fw-bold">Identità verificata:</span> l’utente ha acceduto al sistema con le sue credenziali che sono associate ad un dispositivo di CNS o di CRS oppure è stato riconosciuto de VISU, dopo la presentazione di apposito documento d’identità, dal personale addetto al riconoscimento (non tutti i sistemi di autenticazione prevedono questo tipo di riconoscimento)</li>
+            <li><span class="fw-bold">Identità non verificata:</span> l’utente ha acceduto al sistema con le sue credenziale ma non ha attivato le procedure atte a certificare la sua identità (vedi Identità verificata)</li>
+        </ul>
+    </div>
+    <div class="bottoni">
+        <button class="btn btn-primary" @onclick="OnSelezionaIntervento">@TestoPulsanteModificaIntervento</button>
+    </div>
+}
+
+@code {
+    [Parameter,EditorRequired]
+    public ErroreAutenticazioneModel? _erroreAutenticazione { get; set; }
+    [Parameter, EditorRequired]
+    public string TestoPulsanteModificaIntervento { get; set; } = "Cambia l’intervento selezionato";
+    [Parameter, EditorRequired]
+    public EventCallback OnSelezionaIntervento { get; set; }
+}

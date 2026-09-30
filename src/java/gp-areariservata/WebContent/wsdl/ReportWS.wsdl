@@ -1,0 +1,138 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.lineacomune.it/"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="ReporImplPortService" targetNamespace="http://ws.lineacomune.it/">
+	<wsdl:types>
+		<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ws.lineacomune.it/" elementFormDefault="unqualified"
+			targetNamespace="http://ws.lineacomune.it/" version="1.0">
+			<xs:element name="createAccesso" type="tns:createAccesso" />
+			<xs:element name="createAccessoResponse" type="tns:createAccessoResponse" />
+			<xs:element name="createPratica" type="tns:createPratica" />
+			<xs:element name="createPraticaResponse" type="tns:createPraticaResponse" />
+			<xs:element name="createTransazione" type="tns:createTransazione" />
+			<xs:element name="createTransazioneResponse" type="tns:createTransazioneResponse" />
+			<xs:complexType name="createAccesso">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="arg0" type="xs:string" />
+					<xs:element name="arg1" type="xs:int" />
+					<xs:element name="arg2" type="xs:int" />
+					<xs:element name="arg3" type="xs:int" />
+					<xs:element minOccurs="0" name="arg4" type="xs:string" />
+					<xs:element minOccurs="0" name="arg5" type="xs:string" />
+					<xs:element minOccurs="0" name="arg6" type="xs:string" />
+					<xs:element minOccurs="0" name="arg7" type="xs:string" />
+					<xs:element minOccurs="0" name="arg8" type="xs:string" />
+					<xs:element minOccurs="0" name="arg9" type="xs:string" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="createAccessoResponse">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="return" type="xs:string" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="createTransazione">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="arg0" type="xs:string" />
+					<xs:element name="arg1" type="xs:int" />
+					<xs:element minOccurs="0" name="arg2" type="xs:string" />
+					<xs:element minOccurs="0" name="arg3" type="xs:string" />
+					<xs:element minOccurs="0" name="arg4" type="xs:string" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="createTransazioneResponse">
+				<xs:sequence>
+					<xs:element name="return" type="xs:boolean" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="createPratica">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="arg0" type="xs:string" />
+					<xs:element minOccurs="0" name="arg1" type="xs:string" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="createPraticaResponse">
+				<xs:sequence>
+					<xs:element name="return" type="xs:boolean" />
+				</xs:sequence>
+			</xs:complexType>
+		</xs:schema>
+	</wsdl:types>
+	<wsdl:message name="createAccessoResponse">
+		<wsdl:part element="tns:createAccessoResponse" name="parameters">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="createTransazioneResponse">
+		<wsdl:part element="tns:createTransazioneResponse" name="parameters">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="createAccesso">
+		<wsdl:part element="tns:createAccesso" name="parameters">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="createTransazione">
+		<wsdl:part element="tns:createTransazione" name="parameters">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="createPraticaResponse">
+		<wsdl:part element="tns:createPraticaResponse" name="parameters">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="createPratica">
+		<wsdl:part element="tns:createPratica" name="parameters">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:portType name="ReportWS">
+		<wsdl:operation name="createAccesso">
+			<wsdl:input message="tns:createAccesso" name="createAccesso">
+			</wsdl:input>
+			<wsdl:output message="tns:createAccessoResponse" name="createAccessoResponse">
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="createTransazione">
+			<wsdl:input message="tns:createTransazione" name="createTransazione">
+			</wsdl:input>
+			<wsdl:output message="tns:createTransazioneResponse" name="createTransazioneResponse">
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="createPratica">
+			<wsdl:input message="tns:createPratica" name="createPratica">
+			</wsdl:input>
+			<wsdl:output message="tns:createPraticaResponse" name="createPraticaResponse">
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="ReporImplPortServiceSoapBinding" type="tns:ReportWS">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="createAccesso">
+			<soap:operation soapAction="" style="document" />
+			<wsdl:input name="createAccesso">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="createAccessoResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="createPratica">
+			<soap:operation soapAction="" style="document" />
+			<wsdl:input name="createPratica">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="createPraticaResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="createTransazione">
+			<soap:operation soapAction="" style="document" />
+			<wsdl:input name="createTransazione">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="createTransazioneResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="ReporImplPortService">
+		<wsdl:port binding="tns:ReporImplPortServiceSoapBinding" name="ReporImplPort">
+			<soap:address location="http://amministrazione.sp2con-demo.it/ReportWSServer/ReporPort" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,95 @@
+<app-inner-page-layout [isLoading]="!caricamentoCompletato">
+  <h2>Modulistica</h2>
+
+  <div class="ricerca-testuale">
+    <input type="text" class="form-control" (keyup)="onKeyUp($event)" placeholder="Cerca tra la modulistica..." />
+  </div>
+
+  @if (!dataSource.length) {
+    <div class="nessun-risultato-trovato">
+      Non sono stati trovati risultati corrispondenti al testo cercato
+    </div>
+  }
+
+  @if (dataSource.length) {
+    <div class="lista-modulistica">
+      <div class="row">
+        <div class="col-md-3 menu-laterale" cdkScrollable>
+          <div appAffix>
+            <app-menu-laterale [dataSource]="listaCategorie" [sezioneAttiva]="sezioneAttiva">
+            </app-menu-laterale>
+            <div class="controlli-ricerca">
+              <div role="group" class="btn btn-primary" (click)="mostraInPrimoPiano()"
+                [ngClass]="{ active: dataSource === elementiTop }">
+                @if (dataSource === elementiTop) {
+                  <i class="glyphicon glyphicon-ok" style="margin-left: -24px"
+                  ></i>
+                }
+                In primo piano
+              </div>
+              <div role="group" class="btn btn-primary" (click)="mostraListaCompleta()"
+                [ngClass]="{ active: dataSource === listaCompleta }">
+                @if (dataSource === listaCompleta) {
+                  <i class="glyphicon glyphicon-ok" style="margin-left: -24px"
+                  ></i>
+                }
+                Lista completa
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-9 elenco-modulistica" appScrollSpy [spiedTags]="'h3'"
+          (sectionChange)="onSectionChange($event)">
+          @for (categoria of dataSource; track categoria) {
+            <ng-container class="categoria">
+              <div class="titolo-categoria" id="mod-{{ categoria.codice }}">
+                        <h3 id="{{
+                                categoria.nome || 'Modulistica generale'
+                                    | slugify
+                            }}">
+                  {{ categoria.nome || "Modulistica generale" }}
+                </h3>
+              </div>
+              @for (item of categoria.modulistica; track item) {
+                <div class="elemento-lista-moulistica">
+                  <div class="row">
+                    <div class="col-md-10 descrizione-modulistica">
+                      <h4>
+                        {{ item.titolo | stripHtml }}
+                      </h4>
+                      @if (
+                        (item.descrizione || '').trim().length >
+                        0
+                        ) {
+                        <p [innerHTML]="item.descrizione"></p>
+                      }
+                    </div>
+                    <div class="col-md-2">
+                      @if (item.fileId) {
+                        <a href="{{ urlDownload(item.fileId) }}" class="btn btn-primary" target="_blank"
+                          >
+                          <i class="glyphicon glyphicon-download-alt"></i>
+                          Scarica
+                        </a>
+                      }
+                    </div>
+                  </div>
+                </div>
+              }
+            </ng-container>
+          }
+        </div>
+        <!--
+        <div class="col-md-3">
+          <div class="lista-scorciatoie">
+            <div *ngFor="let categoria of dataSource" class="scorciatoia color-inverse link" pageScroll
+              href="#mod-{{categoria.codice}}">
+              {{categoria.nome || "Modulistica generale"}}
+            </div>
+          </div>
+        </div>
+        -->
+      </div>
+    </div>
+  }
+</app-inner-page-layout>

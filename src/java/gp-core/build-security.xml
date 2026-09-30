@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Dep_chreportFormat">
+	
+	<!-- CONFIGURAZIONI SPECIFICHE PER PROGETTO -->
+	<property name="project.name" value="gp-core" />	
+
+	<!-- CONFIGURAZIONI AMBIENTE DEPENDENCY CHECKER -->
+	
+	<property name="dependency-check.home" value="C:\\sviluppo\\frameworks\\dependency-check-ant-12.2.0-release\\dependency-check-ant" />
+	<path id="dependency-check.path">
+		<pathelement location="${dependency-check.home}/dependency-check-ant.jar" />
+		<fileset dir="${dependency-check.home}/lib">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+	<taskdef resource="dependency-check-taskdefs.properties">
+		<classpath refid="dependency-check.path" />
+	</taskdef>
+	<target name="dependency-check" description="Dependency-Check Analysis">
+		<dependency-check projectname="${project.name}" 
+						  reportoutputdirectory="c:\sviluppo\reports\security\${project.name}" 
+						  reportformat="HTML">
+			<!--
+			<suppressionfile path="${basedir}/resources/dc-suppression.xml" />
+			-->
+			<retirejsFilter regex="copyright.*jeremy long" />
+			<fileset dir="WebContent/WEB-INF/lib">
+				<include name="**/*.jar" />
+			</fileset>
+		</dependency-check>
+	</target>
+</project>

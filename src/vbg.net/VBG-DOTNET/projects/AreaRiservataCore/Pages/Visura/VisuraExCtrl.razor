@@ -1,0 +1,83 @@
+﻿@using AreaRiservataCore.Shared.DetailCards
+@using Init.SIGePro.Manager.DTO.Scadenzario
+@using VBG.BlazorComponentsLibrary.DesignComuni.NavScroll
+@inherits BaseSharedPage
+
+<NavScrollComponent Title="Indice di pagina">
+
+    @if (ChildContent is not null)
+    {
+        @ChildContent
+    }
+
+    @if (MostraScadenze && NumeroScadenze > 0 && ShowTab(7))
+    {
+        <div class="alert alert-warning" role="alert" aria-live="polite">
+            Attenzione! La domanda contiene @NumeroScadenze scadenze.
+        </div>
+    }
+
+    @if (LivelloAccessoVisura.DatiGenerali && ShowTab(0))
+    {
+
+        <DatiGenerali MostraDatiProtocollo="@MostraDatiProtocollo()" DataSource="@VisuraDatiGeneraliDataSource" UtenteTester="@this.UtenteTester"></DatiGenerali>
+        <VisuraSoggetti DataSource="@VisuraSoggettiDataSource"></VisuraSoggetti>
+
+        @if (NumeroMovimenti > 0 && this.LivelloAccessoVisura.MovimentiEffettuati)
+        {
+            <VisuraMovimenti MostraPraticheCollegate="@MostraPraticheCollegate" PermettiDownload="@GetVisuraSuStessoComune()" DataSource="@VisuraMovimentiDataSource"></VisuraMovimenti>
+        }
+
+    }
+    @if (NumeroLocalizzazioni > 0 && ShowTab(1))
+    {
+        <VisuraLocalizzazioni DataSource="@VisuraLocalizzazioniDataSource" MostraDatiCatastaliEstesi="@MostraDatiCatastaliEstesi"></VisuraLocalizzazioni>
+
+    }
+    @if (GetVisuraSuStessoComune() && LivelloAccessoVisura.Schede && ConteggioSchede > 0 && ShowTab(2))
+    {
+        <VisuraSchedeDinamiche DataSource="@SchedeDinamicheDataSource" Istanza="Istanza"></VisuraSchedeDinamiche>
+
+    }
+    @if (NumeroDocumenti > 0 && LivelloAccessoVisura.Documenti && ShowTab(3))
+    {
+        <VisuraDocumenti DataSource="@VisuraDocumentiDataSource" PermettiDownload="@GetVisuraSuStessoComune()"></VisuraDocumenti>
+
+    }
+    @if (NumeroEndo > 0 && this.LivelloAccessoVisura.Endoprocedimenti && ShowTab(4))
+    {
+        <VisuraEndoprocedimenti DataSource="@VisuraEndoprocedimentiDataSource" PermettiDownload="@GetVisuraSuStessoComune()"></VisuraEndoprocedimenti>
+
+    }
+    @if (NumeroOneri > 0 && this.LivelloAccessoVisura.Oneri && ShowTab(5))
+    {
+        <VisuraOneri DataSource="@VisuraOneriDataSource"></VisuraOneri>
+
+    }
+    @if (NumeroAutorizzazioni > 0 && this.LivelloAccessoVisura.Autorizzazioni && ShowTab(6))
+    {
+        <VisuraAutorizzazioni DataSource="@VisuraAutorizzazioniDataSource"></VisuraAutorizzazioni>
+
+    }
+    @if (MostraScadenze && NumeroScadenze > 0 && ShowTab(7))
+    {
+        <DetailCardGroup Title="Scadenze">
+            @if (ScadenzeDataSource.Any())
+            {
+                @foreach (ElementoListaScadenzeDto item in ScadenzeDataSource)
+                {
+                    <DetailCard class="border-start border-warning border-4">
+                        <DetailCardAction OnClick="() => ApriScadenzaAsync(item.CodiceScadenza)" Text="Perfeziona la richiesta"></DetailCardAction>
+                        <DetailCardTitle>@item.DescrMovimentoDaFare</DetailCardTitle>
+                        @if (item.DataScadenza != null)
+                        {
+                            <DetailCardInfo Title="Scadenza">@item.DataScadenza.Value.ToShortDateString()</DetailCardInfo>
+                        }
+                    </DetailCard>
+                }
+            }
+        </DetailCardGroup>
+    }
+
+    @Bottoni
+</NavScrollComponent>

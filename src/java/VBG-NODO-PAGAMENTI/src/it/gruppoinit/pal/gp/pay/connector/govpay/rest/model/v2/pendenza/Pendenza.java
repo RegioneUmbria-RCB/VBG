@@ -1,0 +1,711 @@
+package it.gruppoinit.pal.gp.pay.connector.govpay.rest.model.v2.pendenza;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlSchemaType;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.datatype.XMLGregorianCalendar;
+
+import it.gruppoinit.pal.gp.pay.connector.govpay.rest.model.v2.RppIndex;
+import it.gruppoinit.pal.gp.pay.connector.govpay.rest.model.v2.Soggetto;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "", propOrder = { "idA2A", "idPendenza", "idTipoPendenza", "dominio", "unitaOperativa", "stato", "descrizioneStato", "segnalazioni",
+	"iuvAvviso", "iuvPagamento", "dataPagamento", "causale", "soggettoPagatore", "importo", "numeroAvviso", "dataCaricamento", "dataValidita",
+	"dataScadenza", "annoRiferimento", "cartellaPagamento", "datiAllegati", "tassonomia", "tassonomiaAvviso", "direzione", "divisione",
+	"documento", "tipo", "voci", "rpp" })
+public class Pendenza {
+
+    @XmlElement(name = "idA2A")
+    private String idA2A = null;
+    @XmlElement(name = "idPendenza")
+    private String idPendenza = null;
+    @XmlElement(name = "idTipoPendenza")
+    private String idTipoPendenza = null;
+    @XmlElement(name = "dominio")
+    private Dominio dominio = null;
+    @XmlElement(name = "unitaOperativa")
+    private UnitaOperativa unitaOperativa = null;
+    @XmlElement(name = "stato")
+    private StatoPendenza stato = null;
+    @XmlElement(name = "descrizioneStato")
+    private String descrizioneStato = null;
+    @XmlElement(name = "segnalazioni")
+    private List<Segnalazione> segnalazioni = null;
+    @XmlElement(name = "iuvAvviso")
+    private String iuvAvviso = null;
+    @XmlElement(name = "iuvPagamento")
+    private String iuvPagamento = null;
+    @XmlElement(name = "dataPagamento")
+    @XmlSchemaType(name = "date")
+    private XMLGregorianCalendar dataPagamento = null;
+    @XmlElement(name = "causale")
+    private String causale = null;
+    @XmlElement(name = "soggettoPagatore")
+    private Soggetto soggettoPagatore = null;
+    @XmlElement(name = "importo")
+    private BigDecimal importo = null;
+    @XmlElement(name = "numeroAvviso")
+    private String numeroAvviso = null;
+    @XmlElement(name = "dataCaricamento")
+    @XmlSchemaType(name = "date")
+    private XMLGregorianCalendar dataCaricamento = null;
+    @XmlElement(name = "dataValidita")
+    @XmlSchemaType(name = "date")
+    private XMLGregorianCalendar dataValidita = null;
+    @XmlElement(name = "dataScadenza")
+    @XmlSchemaType(name = "date")
+    private XMLGregorianCalendar dataScadenza = null;
+    @XmlElement(name = "annoRiferimento")
+    private BigDecimal annoRiferimento = null;
+    @XmlElement(name = "cartellaPagamento")
+    private String cartellaPagamento = null;
+    @XmlElement(name = "datiAllegati")
+    private Object datiAllegati = null;
+    @XmlElement(name = "tassonomia")
+    private String tassonomia = null;
+    @XmlElement(name = "tassonomiaAvviso")
+    private TassonomiaAvviso tassonomiaAvviso = null;
+    @XmlElement(name = "direzione")
+    private String direzione = null;
+    @XmlElement(name = "divisione")
+    private String divisione = null;
+    @XmlElement(name = "documento")
+    private Documento documento = null;
+    @XmlElement(name = "tipo")
+    private TipoPendenzaTipologia tipo = null;
+    @XmlElement(name = "voci")
+    private List<VocePendenza> voci = new ArrayList<>();
+    @XmlElement(name = "rpp")
+    private List<RppIndex> rpp = new ArrayList<>();
+
+    /**
+     * Identificativo del gestionale responsabile della pendenza
+     **/
+    public Pendenza idA2A(String idA2A) {
+
+	this.idA2A = idA2A;
+	return this;
+    }
+
+    public String getIdA2A() {
+
+	return idA2A;
+    }
+
+    public void setIdA2A(String idA2A) {
+
+	this.idA2A = idA2A;
+    }
+
+    /**
+     * Identificativo della pendenza nel gestionale responsabile
+     **/
+    public Pendenza idPendenza(String idPendenza) {
+
+	this.idPendenza = idPendenza;
+	return this;
+    }
+
+    public String getIdPendenza() {
+
+	return idPendenza;
+    }
+
+    public void setIdPendenza(String idPendenza) {
+
+	this.idPendenza = idPendenza;
+    }
+
+    /**
+     * Identificativo della tipologia pendenza
+     **/
+    public Pendenza idTipoPendenza(String idTipoPendenza) {
+
+	this.idTipoPendenza = idTipoPendenza;
+	return this;
+    }
+
+    public String getIdTipoPendenza() {
+
+	return idTipoPendenza;
+    }
+
+    public void setIdTipoPendenza(String idTipoPendenza) {
+
+	this.idTipoPendenza = idTipoPendenza;
+    }
+
+    /**
+     **/
+    public Pendenza dominio(Dominio dominio) {
+
+	this.dominio = dominio;
+	return this;
+    }
+
+    public Dominio getDominio() {
+
+	return dominio;
+    }
+
+    public void setDominio(Dominio dominio) {
+
+	this.dominio = dominio;
+    }
+
+    /**
+     **/
+    public Pendenza unitaOperativa(UnitaOperativa unitaOperativa) {
+
+	this.unitaOperativa = unitaOperativa;
+	return this;
+    }
+
+    public UnitaOperativa getUnitaOperativa() {
+
+	return unitaOperativa;
+    }
+
+    public void setUnitaOperativa(UnitaOperativa unitaOperativa) {
+
+	this.unitaOperativa = unitaOperativa;
+    }
+
+    /**
+     **/
+    public Pendenza stato(StatoPendenza stato) {
+
+	this.stato = stato;
+	return this;
+    }
+
+    public StatoPendenza getStato() {
+
+	return stato;
+    }
+
+    public void setStato(StatoPendenza stato) {
+
+	this.stato = stato;
+    }
+
+    /**
+     * Descrizione estesa dello stato di elaborazione della pendenza
+     **/
+    public Pendenza descrizioneStato(String descrizioneStato) {
+
+	this.descrizioneStato = descrizioneStato;
+	return this;
+    }
+
+    public String getDescrizioneStato() {
+
+	return descrizioneStato;
+    }
+
+    public void setDescrizioneStato(String descrizioneStato) {
+
+	this.descrizioneStato = descrizioneStato;
+    }
+
+    /**
+     **/
+    public Pendenza segnalazioni(List<Segnalazione> segnalazioni) {
+
+	this.segnalazioni = segnalazioni;
+	return this;
+    }
+
+    public List<Segnalazione> getSegnalazioni() {
+
+	return segnalazioni;
+    }
+
+    public void setSegnalazioni(List<Segnalazione> segnalazioni) {
+
+	this.segnalazioni = segnalazioni;
+    }
+
+    /**
+     * Iuv avviso, assegnato se pagabile da psp
+     **/
+    public Pendenza iuvAvviso(String iuvAvviso) {
+
+	this.iuvAvviso = iuvAvviso;
+	return this;
+    }
+
+    public String getIuvAvviso() {
+
+	return iuvAvviso;
+    }
+
+    public void setIuvAvviso(String iuvAvviso) {
+
+	this.iuvAvviso = iuvAvviso;
+    }
+
+    /**
+     * Iuv dell'ultimo pagamento eseguito con successo
+     **/
+    public Pendenza iuvPagamento(String iuvPagamento) {
+
+	this.iuvPagamento = iuvPagamento;
+	return this;
+    }
+
+    public String getIuvPagamento() {
+
+	return iuvPagamento;
+    }
+
+    public void setIuvPagamento(String iuvPagamento) {
+
+	this.iuvPagamento = iuvPagamento;
+    }
+
+    /**
+     * Data di pagamento della pendenza
+     **/
+    public Pendenza dataPagamento(XMLGregorianCalendar dataPagamento) {
+
+	this.dataPagamento = dataPagamento;
+	return this;
+    }
+
+    public XMLGregorianCalendar getDataPagamento() {
+
+	return dataPagamento;
+    }
+
+    public void setDataPagamento(XMLGregorianCalendar dataPagamento) {
+
+	this.dataPagamento = dataPagamento;
+    }
+
+    /**
+     * Descrizione da inserire nell'avviso di pagamento
+     **/
+    public Pendenza causale(String causale) {
+
+	this.causale = causale;
+	return this;
+    }
+
+    public String getCausale() {
+
+	return causale;
+    }
+
+    public void setCausale(String causale) {
+
+	this.causale = causale;
+    }
+
+    /**
+     **/
+    public Pendenza soggettoPagatore(Soggetto soggettoPagatore) {
+
+	this.soggettoPagatore = soggettoPagatore;
+	return this;
+    }
+
+    public Soggetto getSoggettoPagatore() {
+
+	return soggettoPagatore;
+    }
+
+    public void setSoggettoPagatore(Soggetto soggettoPagatore) {
+
+	this.soggettoPagatore = soggettoPagatore;
+    }
+
+    /**
+     * Importo della pendenza. Deve corrispondere alla somma delle singole voci.
+     **/
+    public Pendenza importo(BigDecimal importo) {
+
+	this.importo = importo;
+	return this;
+    }
+
+    public BigDecimal getImporto() {
+
+	return importo;
+    }
+
+    public void setImporto(BigDecimal importo) {
+
+	this.importo = importo;
+    }
+
+    /**
+     * Identificativo univoco versamento, assegnato se pagabile da psp
+     **/
+    public Pendenza numeroAvviso(String numeroAvviso) {
+
+	this.numeroAvviso = numeroAvviso;
+	return this;
+    }
+
+    public String getNumeroAvviso() {
+
+	return numeroAvviso;
+    }
+
+    public void setNumeroAvviso(String numeroAvviso) {
+
+	this.numeroAvviso = numeroAvviso;
+    }
+
+    /**
+     * Data di emissione della pendenza
+     **/
+    public Pendenza dataCaricamento(XMLGregorianCalendar dataCaricamento) {
+
+	this.dataCaricamento = dataCaricamento;
+	return this;
+    }
+
+    public XMLGregorianCalendar getDataCaricamento() {
+
+	return dataCaricamento;
+    }
+
+    public void setDataCaricamento(XMLGregorianCalendar dataCaricamento) {
+
+	this.dataCaricamento = dataCaricamento;
+    }
+
+    /**
+     * Data di validita dei dati della pendenza, decorsa la quale la pendenza può subire variazioni.
+     **/
+    public Pendenza dataValidita(XMLGregorianCalendar dataValidita) {
+
+	this.dataValidita = dataValidita;
+	return this;
+    }
+
+    public XMLGregorianCalendar getDataValidita() {
+
+	return dataValidita;
+    }
+
+    public void setDataValidita(XMLGregorianCalendar dataValidita) {
+
+	this.dataValidita = dataValidita;
+    }
+
+    /**
+     * Data di scadenza della pendenza, decorsa la quale non è più pagabile.
+     **/
+    public Pendenza dataScadenza(XMLGregorianCalendar dataScadenza) {
+
+	this.dataScadenza = dataScadenza;
+	return this;
+    }
+
+    public XMLGregorianCalendar getDataScadenza() {
+
+	return dataScadenza;
+    }
+
+    public void setDataScadenza(XMLGregorianCalendar dataScadenza) {
+
+	this.dataScadenza = dataScadenza;
+    }
+
+    /**
+     * Anno di riferimento della pendenza
+     **/
+    //    public Pendenza annoRiferimento(BigDecimal annoRiferimento) {
+    //
+    //	this.annoRiferimento = annoRiferimento;
+    //	return this;
+    //    }
+    public BigDecimal getAnnoRiferimento() {
+
+	return annoRiferimento;
+    }
+
+    public void setAnnoRiferimento(BigDecimal annoRiferimento) {
+
+	this.annoRiferimento = annoRiferimento;
+    }
+
+    /**
+     * Identificativo della cartella di pagamento a cui afferisce la pendenza
+     **/
+    public Pendenza cartellaPagamento(String cartellaPagamento) {
+
+	this.cartellaPagamento = cartellaPagamento;
+	return this;
+    }
+
+    public String getCartellaPagamento() {
+
+	return cartellaPagamento;
+    }
+
+    public void setCartellaPagamento(String cartellaPagamento) {
+
+	this.cartellaPagamento = cartellaPagamento;
+    }
+
+    /**
+     * Dati applicativi allegati dal gestionale secondo un formato proprietario.
+     **/
+    public Pendenza datiAllegati(Object datiAllegati) {
+
+	this.datiAllegati = datiAllegati;
+	return this;
+    }
+
+    public Object getDatiAllegati() {
+
+	return datiAllegati;
+    }
+
+    public void setDatiAllegati(Object datiAllegati) {
+
+	this.datiAllegati = datiAllegati;
+    }
+
+    /**
+     * Macro categoria della pendenza secondo la classificazione del creditore
+     **/
+    public Pendenza tassonomia(String tassonomia) {
+
+	this.tassonomia = tassonomia;
+	return this;
+    }
+
+    public String getTassonomia() {
+
+	return tassonomia;
+    }
+
+    public void setTassonomia(String tassonomia) {
+
+	this.tassonomia = tassonomia;
+    }
+
+    /**
+     **/
+    public Pendenza tassonomiaAvviso(TassonomiaAvviso tassonomiaAvviso) {
+
+	this.tassonomiaAvviso = tassonomiaAvviso;
+	return this;
+    }
+
+    public TassonomiaAvviso getTassonomiaAvviso() {
+
+	return tassonomiaAvviso;
+    }
+
+    public void setTassonomiaAvviso(TassonomiaAvviso tassonomiaAvviso) {
+
+	this.tassonomiaAvviso = tassonomiaAvviso;
+    }
+
+    /**
+     * Identificativo della direzione interna all'ente creditore
+     **/
+    public Pendenza direzione(String direzione) {
+
+	this.direzione = direzione;
+	return this;
+    }
+
+    public String getDirezione() {
+
+	return direzione;
+    }
+
+    public void setDirezione(String direzione) {
+
+	this.direzione = direzione;
+    }
+
+    /**
+     * Identificativo della divisione interna all'ente creditore
+     **/
+    public Pendenza divisione(String divisione) {
+
+	this.divisione = divisione;
+	return this;
+    }
+
+    public String getDivisione() {
+
+	return divisione;
+    }
+
+    public void setDivisione(String divisione) {
+
+	this.divisione = divisione;
+    }
+
+    /**
+     **/
+    public Pendenza documento(Documento documento) {
+
+	this.documento = documento;
+	return this;
+    }
+
+    public Documento getDocumento() {
+
+	return documento;
+    }
+
+    public void setDocumento(Documento documento) {
+
+	this.documento = documento;
+    }
+
+    /**
+     **/
+    public Pendenza tipo(TipoPendenzaTipologia tipo) {
+
+	this.tipo = tipo;
+	return this;
+    }
+
+    public TipoPendenzaTipologia getTipo() {
+
+	return tipo;
+    }
+
+    public void setTipo(TipoPendenzaTipologia tipo) {
+
+	this.tipo = tipo;
+    }
+
+    /**
+     **/
+    public Pendenza voci(List<VocePendenza> voci) {
+
+	this.voci = voci;
+	return this;
+    }
+
+    public List<VocePendenza> getVoci() {
+
+	return voci;
+    }
+
+    public void setVoci(List<VocePendenza> voci) {
+
+	this.voci = voci;
+    }
+
+    /**
+     **/
+    public Pendenza rpp(List<RppIndex> rpp) {
+
+	this.rpp = rpp;
+	return this;
+    }
+
+    public List<RppIndex> getRpp() {
+
+	return rpp;
+    }
+
+    public void setRpp(List<RppIndex> rpp) {
+
+	this.rpp = rpp;
+    }
+
+    @Override
+    public boolean equals(java.lang.Object o) {
+
+	if (this == o) {
+	    return true;
+	}
+	if (o == null || getClass() != o.getClass()) {
+	    return false;
+	}
+	Pendenza pendenza = (Pendenza) o;
+	return Objects.equals(idA2A, pendenza.idA2A) && Objects.equals(idPendenza, pendenza.idPendenza)
+		&& Objects.equals(idTipoPendenza, pendenza.idTipoPendenza) && Objects.equals(dominio, pendenza.dominio)
+		&& Objects.equals(unitaOperativa, pendenza.unitaOperativa) && Objects.equals(stato, pendenza.stato)
+		&& Objects.equals(descrizioneStato, pendenza.descrizioneStato) && Objects.equals(segnalazioni, pendenza.segnalazioni)
+		&& Objects.equals(iuvAvviso, pendenza.iuvAvviso) && Objects.equals(iuvPagamento, pendenza.iuvPagamento)
+		&& Objects.equals(dataPagamento, pendenza.dataPagamento) && Objects.equals(causale, pendenza.causale)
+		&& Objects.equals(soggettoPagatore, pendenza.soggettoPagatore) && Objects.equals(importo, pendenza.importo)
+		&& Objects.equals(numeroAvviso, pendenza.numeroAvviso) && Objects.equals(dataCaricamento, pendenza.dataCaricamento)
+		&& Objects.equals(dataValidita, pendenza.dataValidita) && Objects.equals(dataScadenza, pendenza.dataScadenza)
+		&& Objects.equals(annoRiferimento, pendenza.annoRiferimento) && Objects.equals(cartellaPagamento, pendenza.cartellaPagamento)
+		&& Objects.equals(datiAllegati, pendenza.datiAllegati) && Objects.equals(tassonomia, pendenza.tassonomia)
+		&& Objects.equals(tassonomiaAvviso, pendenza.tassonomiaAvviso) && Objects.equals(direzione, pendenza.direzione)
+		&& Objects.equals(divisione, pendenza.divisione) && Objects.equals(documento, pendenza.documento)
+		&& Objects.equals(tipo, pendenza.tipo) && Objects.equals(voci, pendenza.voci) && Objects.equals(rpp, pendenza.rpp);
+    }
+
+    @Override
+    public int hashCode() {
+
+	return Objects.hash(idA2A, idPendenza, idTipoPendenza, dominio, unitaOperativa, stato, descrizioneStato, segnalazioni, iuvAvviso,
+		iuvPagamento, dataPagamento, causale, soggettoPagatore, importo, numeroAvviso, dataCaricamento, dataValidita, dataScadenza,
+		annoRiferimento, cartellaPagamento, datiAllegati, tassonomia, tassonomiaAvviso, direzione, divisione, documento, tipo, voci, rpp);
+    }
+
+    @Override
+    public String toString() {
+
+	StringBuilder sb = new StringBuilder();
+	sb.append("class Pendenza {\n");
+	sb.append("    ").append(toIndentedString(super.toString())).append("\n");
+	sb.append("    idA2A: ").append(toIndentedString(idA2A)).append("\n");
+	sb.append("    idPendenza: ").append(toIndentedString(idPendenza)).append("\n");
+	sb.append("    idTipoPendenza: ").append(toIndentedString(idTipoPendenza)).append("\n");
+	sb.append("    dominio: ").append(toIndentedString(dominio)).append("\n");
+	sb.append("    unitaOperativa: ").append(toIndentedString(unitaOperativa)).append("\n");
+	sb.append("    stato: ").append(toIndentedString(stato)).append("\n");
+	sb.append("    descrizioneStato: ").append(toIndentedString(descrizioneStato)).append("\n");
+	sb.append("    segnalazioni: ").append(toIndentedString(segnalazioni)).append("\n");
+	sb.append("    iuvAvviso: ").append(toIndentedString(iuvAvviso)).append("\n");
+	sb.append("    iuvPagamento: ").append(toIndentedString(iuvPagamento)).append("\n");
+	sb.append("    dataPagamento: ").append(toIndentedString(dataPagamento)).append("\n");
+	sb.append("    causale: ").append(toIndentedString(causale)).append("\n");
+	sb.append("    soggettoPagatore: ").append(toIndentedString(soggettoPagatore)).append("\n");
+	sb.append("    importo: ").append(toIndentedString(importo)).append("\n");
+	sb.append("    numeroAvviso: ").append(toIndentedString(numeroAvviso)).append("\n");
+	sb.append("    dataCaricamento: ").append(toIndentedString(dataCaricamento)).append("\n");
+	sb.append("    dataValidita: ").append(toIndentedString(dataValidita)).append("\n");
+	sb.append("    dataScadenza: ").append(toIndentedString(dataScadenza)).append("\n");
+	sb.append("    annoRiferimento: ").append(toIndentedString(annoRiferimento)).append("\n");
+	sb.append("    cartellaPagamento: ").append(toIndentedString(cartellaPagamento)).append("\n");
+	sb.append("    datiAllegati: ").append(toIndentedString(datiAllegati)).append("\n");
+	sb.append("    tassonomia: ").append(toIndentedString(tassonomia)).append("\n");
+	sb.append("    tassonomiaAvviso: ").append(toIndentedString(tassonomiaAvviso)).append("\n");
+	sb.append("    direzione: ").append(toIndentedString(direzione)).append("\n");
+	sb.append("    divisione: ").append(toIndentedString(divisione)).append("\n");
+	sb.append("    documento: ").append(toIndentedString(documento)).append("\n");
+	sb.append("    tipo: ").append(toIndentedString(tipo)).append("\n");
+	sb.append("    voci: ").append(toIndentedString(voci)).append("\n");
+	sb.append("    rpp: ").append(toIndentedString(rpp)).append("\n");
+	sb.append("}");
+	return sb.toString();
+    }
+
+    /**
+     * Convert the given object to string with each line indented by 4 spaces (except the first line).
+     */
+    private String toIndentedString(java.lang.Object o) {
+
+	if (o == null) {
+	    return "null";
+	}
+	return o.toString().replace("\n", "\n    ");
+    }
+}

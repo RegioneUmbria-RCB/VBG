@@ -1,0 +1,27 @@
+﻿@using AreaRiservataCore.Shared.Utils
+
+
+<div @attributes=UnmatchedAttributes class="@_computedClass">
+    <div class="text-paragraph-small">@Title</div>
+    <div>
+        <strong>@ChildContent</strong>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+    [Parameter, EditorRequired]
+    public string Title { get; set; } = "";
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object> UnmatchedAttributes { get; set; } = new();
+
+    private string _computedClass = "";
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        _computedClass = UnmatchedAttributeUtils.ExtractCssClass(this.UnmatchedAttributes, "single-line-info mt-2"); ;
+    }
+}

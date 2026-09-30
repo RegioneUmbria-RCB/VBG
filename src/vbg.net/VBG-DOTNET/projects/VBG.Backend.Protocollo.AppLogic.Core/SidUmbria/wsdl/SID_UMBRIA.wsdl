@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:tns="http://ws.apache.org/axis2" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://ws.apache.org/axis2" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types />
+  <wsdl:message name="in" />
+  <wsdl:message name="out" />
+  <wsdl:portType name="SID_UMBRIAPortType">
+    <wsdl:operation name="mediate">
+      <wsdl:input wsaw:Action="urn:mediate" message="tns:in" />
+      <wsdl:output wsaw:Action="urn:mediateResponse" message="tns:out" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="SID_UMBRIASoap11Binding" type="tns:SID_UMBRIAPortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="mediate">
+      <soap:operation soapAction="urn:mediate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="SID_UMBRIASoap12Binding" type="tns:SID_UMBRIAPortType">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="mediate">
+      <soap12:operation soapAction="urn:mediate" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="SID_UMBRIAHttpBinding" type="tns:SID_UMBRIAPortType">
+    <http:binding verb="POST" />
+    <wsdl:operation name="mediate">
+      <http:operation location="mediate" />
+      <wsdl:input>
+        <mime:content part="parameters" type="text/xml" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="parameters" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="SID_UMBRIA">
+    <wsdl:port name="SID_UMBRIAHttpSoap11Endpoint" binding="tns:SID_UMBRIASoap11Binding">
+      <soap:address location="http://esb.umbriadigitale.it:8281/services/SID_UMBRIA.SID_UMBRIAHttpSoap11Endpoint" />
+    </wsdl:port>
+    <wsdl:port name="SID_UMBRIAHttpsSoap11Endpoint" binding="tns:SID_UMBRIASoap11Binding">
+      <soap:address location="https://esb.umbriadigitale.it:8244/services/SID_UMBRIA.SID_UMBRIAHttpsSoap11Endpoint" />
+    </wsdl:port>
+    <wsdl:port name="SID_UMBRIAHttpsSoap12Endpoint" binding="tns:SID_UMBRIASoap12Binding">
+      <soap12:address location="https://esb.umbriadigitale.it:8244/services/SID_UMBRIA.SID_UMBRIAHttpsSoap12Endpoint" />
+    </wsdl:port>
+    <wsdl:port name="SID_UMBRIAHttpSoap12Endpoint" binding="tns:SID_UMBRIASoap12Binding">
+      <soap12:address location="http://esb.umbriadigitale.it:8281/services/SID_UMBRIA.SID_UMBRIAHttpSoap12Endpoint" />
+    </wsdl:port>
+    <wsdl:port name="SID_UMBRIAHttpEndpoint" binding="tns:SID_UMBRIAHttpBinding">
+      <http:address location="http://esb.umbriadigitale.it:8281/services/SID_UMBRIA.SID_UMBRIAHttpEndpoint" />
+    </wsdl:port>
+    <wsdl:port name="SID_UMBRIAHttpsEndpoint" binding="tns:SID_UMBRIAHttpBinding">
+      <http:address location="https://esb.umbriadigitale.it:8244/services/SID_UMBRIA.SID_UMBRIAHttpsEndpoint" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

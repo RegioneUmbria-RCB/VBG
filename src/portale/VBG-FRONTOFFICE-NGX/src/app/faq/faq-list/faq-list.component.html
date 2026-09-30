@@ -1,0 +1,32 @@
+<app-inner-page-layout [isLoading]="!caricamentoCompletato">
+  <div class="faq-list">
+    <h2>Domande frequenti</h2>
+
+    <div class="row">
+      <div class="col-md-3 menu-laterale" cdkScrollable>
+        <div appAffix>
+          <app-menu-laterale [dataSource]="listaCategorie$ | async" [sezioneAttiva]="sezioneAttiva">
+          </app-menu-laterale>
+        </div>
+      </div>
+
+      <div class="col-md-9" appScrollSpy [spiedTags]="'h3'" (sectionChange)="onSectionChange($event)">
+        @for (modulo of fullList$ | async; track modulo) {
+          <div class="elemento-lista-faq">
+            <h3 id="{{ modulo.descrizione | slugify }}">
+              {{ modulo.descrizione }}
+            </h3>
+            <ol>
+              @for (faq of modulo.faq; track faq) {
+                <li [ngClass]="{ active: faq.visibile }" id="faq-{{ faq.id }}">
+                  <h4 [innerHtml]="faq.titolo" (click)="attiva(faq)"></h4>
+                  <p [innerHtml]="faq.descrizione"></p>
+                </li>
+              }
+            </ol>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</app-inner-page-layout>

@@ -1,0 +1,123 @@
+﻿@using AreaRiservataCore.AppLogic.GestionePagamenti
+@using AreaRiservataCore.Utils
+@using Init.Sigepro.FrontEnd.AppLogic.Pagamenti.NodoPagamenti
+@using Microsoft.Extensions.Options
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.DesignComuni.Utils.JsImport
+@using VBG.Pagamenti.NodoPagamenti
+@if (_isVisible)
+{
+
+    @if (!_timeoutGenerazioneAvviso)
+    {
+         
+        <BasicModal OnClose="NascondiPopupDownload" AlwaysVisible="true" Size="ModalSizeEnum.Small">
+            <ModalHeader Titolo="Generazione della ricevuta in corso"></ModalHeader>
+            <ModalBody>
+
+                L'operazione potrebbe richiedere anche alcuni minuti, si prega di attendere senza effettuare altre operazioni...<br />
+
+                <div class="progress-panel">
+                    <div class="progress progress-striped active" style="margin-bottom: 0;">
+                        <div class="progress-bar" style="width: 100%"></div>
+                    </div>
+                    <small>Tentativo <span id="indicatoreTentativi">@(_numeroTentativi + 1) di @_maxTentativi</span></small>
+                </div>
+            </ModalBody>
+        </BasicModal>
+    }
+    else
+    {
+        <BasicModal OnClose="NascondiPopupDownload" AlwaysVisible="true" Size="ModalSizeEnum.Small">
+            <ModalHeader Titolo="Impossibile scaricare la ricevuta"></ModalHeader>
+            <ModalBody>
+                Non è stato possibile recuperare la ricevuta nel tempo stabilito, si prega di riprovare in un secondo momento
+            </ModalBody>
+            <ModalFooter></ModalFooter>
+        </BasicModal>
+    }
+}
+
+
+@code {
+    [Inject]
+    protected IPagamentiNodoPagamentiService _nodoPagamentiService { get; set; } = default!;
+    [Inject]
+    protected FileDownloadHelper _fileDownloadHelper { get; set; } = default!;
+    [Inject]
+    protected NavigationManager _navManager { get; set; } = default!;
+    [Inject]
+    protected IOptions<PagamentiOptions> _pagamentiSettings { get; set; } = default!;
+
+    [Parameter]
+    public int IdDomanda { get; set; }
+
+    int _intervalloTentativi => _pagamentiSettings.Value.DownloadRicevuta.IntervalloTentativi;
+    int _maxTentativi => _pagamentiSettings.Value.DownloadRicevuta.MaxTentativi;
+
+    int _numeroTentativi = 0;
+    bool _isVisible = false;
+    bool _timeoutGenerazioneAvviso = false;
+
+    public async Task Show(string uidOnere)
+    {
+        this._numeroTentativi = 0;
+        this._isVisible = true;
+        this._timeoutGenerazioneAvviso = false;
+
+        var downloadCompleted = false;
+
+        this.StateHasChanged();
+
+        await Task.Delay(1);
+
+        while (this._numeroTentativi < _maxTentativi && this._isVisible)
+        {
+            downloadCompleted = await DownloadRicevuta(uidOnere);
+
+            if (downloadCompleted)
+            {
+                break;
+            }
+
+            await Task.Delay(_intervalloTentativi);
+
+            this.StateHasChanged();
+
+            this._numeroTentativi++;
+        }
+
+        if (!downloadCompleted)
+        {
+            this._timeoutGenerazioneAvviso = true;
+            this.StateHasChanged();
+        }
+        else
+        {
+            NascondiPopupDownload();
+        }
+    }
+
+    private async Task<bool> DownloadRicevuta(string uidOnere)
+    {
+
+        // TODO: Rendere la chiamata asincrona
+        var avvisoPagamento = this._nodoPagamentiService.ScaricaRicevutaTelematica(IdDomanda, uidOnere);
+
+        if (avvisoPagamento.Stato == RicevutaTelematica.StatoRicevutaEnum.DISPONIBILE)
+        {
+            await _fileDownloadHelper.DownloadFileAsync(avvisoPagamento.File);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private void NascondiPopupDownload()
+    {
+        _isVisible = false;
+
+        this.StateHasChanged();
+    }
+}

@@ -1,0 +1,285 @@
+﻿@page "/{IdComune}/{Software}/inserimento-istanza/gestione-interventi/{idDomanda:int}/{stepId:int}"
+@inherits IstanzeStepPage
+
+
+@using AreaRiservataCore.Pages.InserimentoIstanza.GestioneInterventi.Components
+@using Init.SIGePro.Manager.DTO.Interventi
+@using Init.Sigepro.FrontEnd.AppLogic.Autenticazione.Vbg
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneInterventi
+@using Init.Sigepro.FrontEnd.AppLogic.Services.Domanda
+@using Init.Sigepro.FrontEnd.AppLogic.WsInterventi
+@using Init.Sigepro.FrontEnd.CoreServices.GestionePresentazioneDomanda.Paginatore
+@using Init.Sigepro.FrontEnd.Infrastructure.StepsDomanda.Attributi
+
+
+<style type="text/css">
+    .selected {
+        color: var(--main-primary) !important;
+        font-weight: bold;
+    }
+
+    .intervento {
+        text-decoration: none;
+        color: black;
+        max-width: 90%;
+    }
+
+        .intervento :hover {
+            text-decoration: none;
+        }
+</style>
+
+
+@switch (_currentView)
+{
+    case ViewsEnum.SelezioneIntervento:
+        {
+            @if (!String.IsNullOrEmpty(IntestazioneRicercaIntervento))
+            {
+                <h2>@IntestazioneRicercaIntervento</h2>
+            }
+            <div>@TestoRicercaIntervento</div>
+            <div class="mt-4 mb-4">
+                <AlberoInterventi NodoSelezionato="@OnNodoSelezionato"
+                                  MostraInformazioniIntervento="@MostraInformazioniIntervento"
+                                  PercorsoSelezionato="@_alberaturaInterventoSelezionato"
+                                  CodiceComune="@CodiceComune"></AlberoInterventi>
+            </div>
+
+            @if (SelezioneInterventoAvvenuta)
+            {
+                <div class="buttonContainer">
+                    <button class="btn btn-light" @onclick="AnnullaRicerca">Annulla</button>
+                </div>
+            }
+
+            break;
+        }
+
+    case ViewsEnum.Dettaglio:
+        {
+            <div>
+                <h2>@IntestazioneDettaglio</h2>
+                <div>
+                    @TestoDettaglio
+                </div>
+                <!-- Intervento selezionato -->
+                <div class="mt-4 mb-4">
+                    <ul style="list-style-type: none">
+                        @foreach (var elemento in _alberaturaInterventoSelezionato.Select((x, i) => new { x.Descrizione, Indice = i, IsLast = x == _alberaturaInterventoSelezionato.Last!.Value }))
+                        {
+                            <li style="padding-left: @($"{elemento.Indice}em")">
+                                @if (!elemento.IsLast)
+                                {
+                                    <i class="fa fa-folder-open" aria-hidden="true" />
+                                }
+                                else
+                                {
+                                    <i class="fa fa-square-list" aria-hidden="true" />
+                                }
+
+                                @{
+                                    var cssClass = elemento.IsLast ? "selected" : "";
+                                }
+
+                                <span class="intervento @cssClass" style="margin-left: 0.5rem;">@elemento.Descrizione</span>
+                                @* <span class="ms-2">
+							        @elemento.Descrizione
+						        </span> *@
+                            </li>
+                        }
+                    </ul>
+                </div>
+
+                @if (!SolaLettura && PermettiModificaIntervento)
+                {
+                    <button class="btn btn-light modifica-intervento" @onclick="SelezionaIntervento">@TestoPulsanteModificaIntervento</button>
+                }
+
+            </div>
+            break;
+        }
+
+    case ViewsEnum.Errore:
+        {
+            <ErroreAutenticazioneComponent _erroreAutenticazione="_erroreAutenticazione" TestoPulsanteModificaIntervento="TestoPulsanteModificaIntervento" OnSelezionaIntervento="SelezionaIntervento" />
+            break;
+        }
+}
+
+@code {
+
+    private enum ViewsEnum
+    {
+        Dettaglio,
+        SelezioneIntervento,
+        Errore
+    }
+
+    ;
+
+    [Inject]
+    private IInterventiRepository _interventiRepository { get; set; } = default!;
+    [Inject]
+    private DatiDomandaService _datiDomandaService { get; set; } = default!;
+    [CascadingParameter]
+    private PaginatoreStateService _paginatoreStateService { get; set; } = default!;
+
+    [StepProperty]
+    public bool PopolaDescrizioneLavoriDaIntervento { get; set; } = true;
+    [StepProperty]
+    public string TestoPulsanteModificaIntervento { get; set; } = "Cambia l’intervento selezionato";
+    [StepProperty]
+    public string TestoDettaglio { get; set; } = "";
+    [StepProperty]
+    public string IntestazioneDettaglio { get; set; } = "Intervento selezionato:";
+    [StepProperty]
+    public string TestoRicercaIntervento { get; set; } = "";
+    [StepProperty]
+    public string IntestazioneRicercaIntervento { get; set; } = "";
+    [StepProperty]
+    public string TestoIntroduzione { get; set; } = "";
+    [StepProperty]
+    public bool PermettiModificaIntervento { get; set; } = true;
+    [StepProperty("Se impostato a false nasconderà il punto interrogativo che permette di visualizzare il popup di informazioni dell'intervento (default=true)")]
+    public bool MostraInformazioniIntervento { get; set; } = true;
+
+    int? _idInterventoSelezionato = null;
+    int? IdInterventoSelezionato
+    {
+        get => _idInterventoSelezionato;
+
+        set
+        {
+            _idInterventoSelezionato = value;
+
+            SelezioneInterventoAvvenuta = value != null;
+        }
+    }
+
+    private string CodiceComune => DomandaCorrente.AltriDati.CodiceComune;
+
+    bool SelezioneInterventoAvvenuta = false;
+    ViewsEnum _currentView = ViewsEnum.SelezioneIntervento;
+    ErroreAutenticazioneModel? _erroreAutenticazione = null;
+
+    LinkedList<InterventoDto> _alberaturaInterventoSelezionato = new LinkedList<InterventoDto>();
+
+
+    protected override void OnInitializeStep()
+    {
+
+    }
+
+    protected override void OnLoadStep()
+    {
+        base.OnLoadStep();
+
+        if (DomandaCorrente.AltriDati.Intervento != null)
+            this.IdInterventoSelezionato = DomandaCorrente.AltriDati.Intervento.Codice;
+
+        if (!this.IdInterventoSelezionato.HasValue)
+        {
+            MostraFormSelezione();
+        }
+        else
+        {
+            BindDettaglio();
+        }
+    }
+
+    private bool VerificaPermessiInterventoSelezionato()
+    {
+        if(this.IdInterventoSelezionato is null)
+        {
+            return false;
+        }
+
+        var esitoVerifica = this._interventiRepository.VerificaAccessoIntervento(IdInterventoSelezionato.Value, CodiceComune);
+
+        if (esitoVerifica.Is(TipoAccessibilitaIntervento.InterventoNonAttivo) || esitoVerifica.Is(TipoAccessibilitaIntervento.NonPubblicato))
+        {
+            MessageContainer.ClearErrors();
+            MessageContainer.AddError($"{esitoVerifica.MessaggioErrore}. Selezionare un nuovo intervento.");
+
+            MostraFormSelezione();
+
+            return false;
+        }
+
+        if (esitoVerifica.Is(TipoAccessibilitaIntervento.LivelloAutenticazioneNonSufficiente))
+        {
+            MostraFormErroreAutenticazione();
+
+            return false;
+        }
+
+        return true;
+    }
+
+    private void MostraFormErroreAutenticazione()
+    {
+        this._currentView = ViewsEnum.Errore;
+
+        var autenticazioneServizio = _interventiRepository.GetNomeLivelloAutenticazionePerInterventi(IdInterventoSelezionato.Value);
+        var autenticazioneUtente = DecodeLivelloIntervento.FromLivelloAutenticazione(this.UserAuthenticationResult.LivelloAutenticazione);
+
+        this._erroreAutenticazione = new ErroreAutenticazioneModel(autenticazioneServizio, autenticazioneUtente);
+
+        this._paginatoreStateService.NascondiBottoneAvanti();
+
+        // this.StateHasChanged();
+
+    }
+
+    void BindDettaglio()
+    {
+        if (IdInterventoSelezionato is null)
+        {
+            return;
+        }
+
+        if (VerificaPermessiInterventoSelezionato())
+        {
+            SelezioneInterventoAvvenuta = true;
+
+            this._currentView = ViewsEnum.Dettaglio;
+
+            this._alberaturaInterventoSelezionato = this._interventiRepository.GetAlberaturaNodoDaId2(IdInterventoSelezionato.Value);
+
+            this._paginatoreStateService.MostraBottoneAvanti();
+
+            // this.StateHasChanged();
+        }
+    }
+
+    private async Task OnNodoSelezionato(InterventoDto intervento)
+    {
+        this.IdInterventoSelezionato = intervento.Codice;
+
+        if (VerificaPermessiInterventoSelezionato())
+        {
+            _datiDomandaService.ImpostaIdIntervento(IdDomanda!.Value, intervento.Codice, null, PopolaDescrizioneLavoriDaIntervento);
+            _paginatoreStateService.MostraBottoneAvanti();
+            await _paginatoreStateService.GoToNextStepAsync();
+        }
+    }
+
+    void MostraFormSelezione()
+    {
+        this._currentView = ViewsEnum.SelezioneIntervento;
+        this.IdInterventoSelezionato = null;
+        this._paginatoreStateService.NascondiBottoneAvanti();
+        this.StateHasChanged();
+    }
+
+    void SelezionaIntervento()
+    {
+        this.MostraFormSelezione();
+    }
+
+    private void AnnullaRicerca()
+    {
+        BindDettaglio();
+    }
+}

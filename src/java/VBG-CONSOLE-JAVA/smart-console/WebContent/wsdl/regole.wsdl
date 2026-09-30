@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	 xmlns:sch="http://gruppoinit.it/sigepro/schemas/messages/regole" 
+	 xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	 xmlns:tns="http://gruppoinit.it/sigepro/definitions/regole" 
+	 targetNamespace="http://gruppoinit.it/sigepro/definitions/regole" xmlns:p="http://www.w3.org/2001/XMLSchema">
+	<wsdl:types>
+		<schema xmlns="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://gruppoinit.it/sigepro/schemas/messages/regole" schemaLocation="regole.xsd" />
+		</schema>
+    </wsdl:types>
+	<wsdl:message name="GetRegolaRequest">
+		<wsdl:part element="sch:GetRegolaRequest" name="GetRegolaRequest" />
+	</wsdl:message>
+	
+	<wsdl:message name="GetRegolaResponse">
+		<wsdl:part element="sch:GetRegolaResponse" name="GetRegolaResponse" />
+	</wsdl:message>
+	<wsdl:message name="GetParametroRegolaRequest">
+		<wsdl:part name="GetParametroRegolaRequest" element="sch:GetParametroRegolaRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="GetParametroRegolaResponse">
+		<wsdl:part name="GetParametroRegolaResponse" element="sch:GetParametroRegolaResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:portType name="Regole">
+		<wsdl:operation name="GetRegola">
+			<wsdl:input message="tns:GetRegolaRequest" name="GetRegolaRequest" />
+			<wsdl:output message="tns:GetRegolaResponse" name="GetRegolaResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="GetParametroRegola">
+			<wsdl:input message="tns:GetParametroRegolaRequest" name="GetParametroRegolaRequest"></wsdl:input>
+			<wsdl:output message="tns:GetParametroRegolaResponse" name="GetParametroRegolaResponse"></wsdl:output>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="RegoleWs" type="tns:Regole">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="GetRegola">
+			<soap:operation soapAction="GetRegola" />
+			<wsdl:input name="GetRegolaRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="GetRegolaResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>		
+		<wsdl:operation name="GetParametroRegola">
+			<soap:operation soapAction="GetParametroRegola" />
+			<wsdl:input name="GetParametroRegolaRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="GetParametroRegolaResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>	
+				
+	</wsdl:binding>
+	<wsdl:service name="RegoleWsService">
+		<wsdl:port binding="tns:RegoleWs" name="RegoleWs">
+			<soap:address location="http://devel9:8080/backend/services/" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

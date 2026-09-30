@@ -1,0 +1,441 @@
+﻿@page "/{IdComune}/{Software}/inserimento-istanza/ssu/gestione-oneri/{idDomanda:int}/{stepId:int}"
+@using AreaRiservataCore.Pages.InserimentoIstanza.GestioneOneri.v2
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneOneri
+@using Init.Sigepro.FrontEnd.AppLogic.GestionePresentazioneDomanda
+@using Init.Sigepro.FrontEnd.CoreServices.GestionePresentazioneDomanda.Paginatore
+@using Init.Sigepro.FrontEnd.Infrastructure
+@using Init.Sigepro.FrontEnd.Infrastructure.StepsDomanda.Attributi
+@using VBG.AppLogic.SSU.APICatalogoServizi.Client
+@using VBG.AppLogic.SSU.GestioneOneri
+@using VBG.AppLogic.SSU.GestioneProcedimenti
+@using VBG.BlazorComponentsLibrary.DesignComuni.Download
+@using VBG.BlazorComponentsLibrary.DesignComuni.Forms
+@using AreaRiservataCore.Pages.InserimentoIstanza.Ssu.GestioneOneri.Specifications
+
+
+@inherits IstanzeStepPage
+
+@if (DomandaCorrente is not null && _model is not null)
+{
+    @if (_model.ContieneOneriEndo)
+    {
+        <div class="shadow mb-4 p-4 pe-2">
+            <div class="pb-4">
+                <div class="w-75">
+                    <h3>Oneri Endo</h3>
+                </div>
+            </div>
+
+            @foreach (var onere in _model.OneriEndo)
+            {
+                <RiepilogoOnere OnEdit="@OpenEditorAsync" Onere="onere" SolaLettura="SolaLettura"></RiepilogoOnere>
+            }
+
+        </div>
+    }
+
+    <EditorOnere Onere="@_editingItem"
+                 ModalitaPagamento="@_modalitaPagamento"
+                 TipiPagamento="@_tipiPagamento"
+                 PermetteModificaImporto="@this._permetteModificaImporto"
+                 OnCancelEdit="AnnullaModificheAsync"
+                 OnAcceptEdit="SalvaModificheAsync"></EditorOnere>
+
+    <div class="shadow mb-4 p-4 pe-2">
+        <div class="pb-4">
+            <div class="w-75">
+                <h3>Riepilogo</h3>
+                @if (!String.IsNullOrEmpty(DomandaCorrente?.AltriDati.Intervento?.Descrizione))
+                {
+                    <span class="mb-2 text-muted">@DomandaCorrente?.AltriDati.Intervento?.Descrizione</span>
+                }
+            </div>
+        </div>
+
+        <div class="p-2">
+            <div class="it-list-wrapper mb-4 p-2">
+                <ul class="it-list">
+                    <li>
+                        <div class="list-item">
+                            <div class="it-right-zone">
+                                <div>
+                                    <h4 class="text m-0">Pratica </h4>
+                                    <span class="fs-6 mb-2 text-muted"> @DomandaCorrente?.AltriDati.IdentificativoDomanda</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="list-item">
+                            <div class="it-right-zone">
+                                <div>
+                                    <h4 class="text m-0">Richiedente </h4>
+                                    <span class="fs-6 mb-2 text-muted"> @(DomandaCorrente?.Anagrafiche.GetRichiedente()?.NomeEsteso ?? "")</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="list-item">
+                            <div class="it-right-zone">
+                                <div>
+                                    <h4 class="text m-0">Totale da pagare </h4>
+                                    <span class="fs-6 mb-2 text-muted"> € @_model.TotaleDaPagare.ToString("N2")</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    @if (_model.OneriGiaPagati.Any())
+    {
+        <div class="shadow mb-4 p-4 pe-2">
+            <div class="pb-4">
+                <div class="w-75">
+                    <h3>@TitoloCaricamentoBollettino</h3>
+                </div>
+            </div>
+
+            <div class="p-2">
+
+                @if (!_model.CodiceOggettoAttestazionePagamento.HasValue)
+                {
+                    <span class="fs-6 mb-2 text-muted"> @((MarkupString)DescrizioneCaricamentoBollettino)</span>
+                }
+                else
+                {
+                    <span class="fs-6 mb-2 text-muted"> @((MarkupString)DescrizioneCaricamentoBollettinoEffettuato)</span>
+                }
+
+                @if (SolaLettura)
+                {
+                    <DownloadButton CodiceOggetto="_model.CodiceOggettoAttestazionePagamento"></DownloadButton>
+                }
+                else
+                {
+                    var uploadData = new UploadInputFormData();
+                    uploadData.Modal.Title = "Carica";
+                    uploadData.Form.Model.CodiceOggetto = _model.CodiceOggettoAttestazionePagamento;
+                    uploadData.Form.Model.DigitalSignRequired = VerificaFirmaDigitaleBollettino;
+
+                    <FormDownloadUploadComponent Data="uploadData"
+                                                 OnFormSubmit="async() => await OnUploadFileChangedAsync(uploadData)"
+                                                 OnFileDelete="async () => await OnUploadFileDeleteAsync()">
+                    </FormDownloadUploadComponent>
+                }
+
+            </div>
+        </div>
+
+    }
+    else
+    {
+        <div class="shadow mb-4 p-4 pe-2">
+            <div class="pb-4">
+                <div class="w-75">
+                    <h3>Dichiarazione assenza oneri da pagare</h3>
+                </div>
+            </div>
+            <div class="p-2">
+                <div class="form-check">
+                    <InputCheckbox id="chkAssenzaOneri" @bind-Value="@_model.DichiaraDiNonAvereOneriDaPagare" @onclick="() => OnFlagAssenzaOneriChanged()" disabled="@SolaLettura" />
+                    <label for="chkAssenzaOneri">
+                        @TestoDichiarazioneAssenzaOneri
+                    </label>
+                </div>
+            </div>
+        </div>
+
+    }
+}
+
+@code {
+
+    #region parametri letti dal file xml
+
+    [StepProperty]
+    public bool VerificaFirmaDigitaleBollettino { get; set; } = false;
+
+    [StepProperty]
+    public string EtichettaColonnaEndoprocedimento { get; set; } = "";
+
+    [StepProperty]
+    public string EtichettaColonnaCausaleEndo { get; set; } = "";
+
+    [StepProperty]
+    public string TitoloCaricamentoBollettino { get; set; } = "";
+
+    [StepProperty]
+    public string DescrizioneCaricamentoBollettino { get; set; } = "";
+
+    [StepProperty]
+    public string DescrizioneCaricamentoBollettinoEffettuato { get; set; } = "";
+
+    [StepProperty]
+    public string TestoDichiarazioneAssenzaOneri { get; set; } = "Dichiaro di non avere oneri da pagare";
+
+    [StepProperty]
+    public string TestoOnereNonDovuto { get; set; } = "Non dovuto";
+
+    #endregion
+
+    [Inject]
+    public SsuOneriService _ssuOneriService { get; set; } = default!;
+    [Inject]
+    public IOneriDomandaService _oneriDomandaService { get; set; } = default!;
+    [CascadingParameter]
+    private PaginatoreStateService _paginatoreStateService { get; set; } = default!;
+
+    private GestioneOneriBindingModel? _model;
+    private List<DropDownItem> _modalitaPagamento { get; set; } = new List<DropDownItem>();
+    private List<TipoPagamento> _tipiPagamento = new List<TipoPagamento>();
+    private GrigliaOneriItem? _editingItem;
+    private bool _permetteModificaImporto;
+    List<ElementoListaOneriProcedimento> _listaOneriSsu = new List<ElementoListaOneriProcedimento>();
+    Dictionary<string, List<DropDownItem>> _dizionarioModalitaPagamento = new Dictionary<string, List<DropDownItem>>();
+
+    protected override async Task OnInitializeStepAsync()
+    {
+        try
+        {
+            await base.OnInitializeStepAsync();
+
+            await this._spinnerService.ShowSpinnerAsync(async () =>
+            {
+                await this._ssuOneriService.SincronizzaOneriAsync(this.IdDomanda.Value);
+
+                this._listaOneriSsu = await _ssuOneriService.GetOneriAsync(IdDomanda.Value);
+
+                var modalitaPagamento = new List<DropDownItem>();
+
+                foreach (var item in this._listaOneriSsu)
+                {
+                    if (item.Oneri != null && item.Oneri.Any())
+                    {
+                        foreach (var onere in item.Oneri)
+                        {
+                            modalitaPagamento = new List<DropDownItem>()
+                    {
+                        new DropDownItem("-1", "") { },
+                        new DropDownItem("2", "Effettuato") { },
+                    };
+
+                            if (onere.PermetteneNonDovuto)
+                            {
+                                modalitaPagamento.Add(new DropDownItem("0", TestoOnereNonDovuto));
+                            }
+
+                            this._dizionarioModalitaPagamento.Add($"{item.Procedimento.Id}-{onere.Id}", modalitaPagamento);
+                        }
+                    }
+                }
+
+                await this.DataBindAsync();
+            });
+
+
+        }
+        catch (Exception)
+        {
+            MessageContainer.AddError("Si è verificato un errore durante il recupero degli oneri");
+            this._paginatoreStateService.NascondiBottoneAvanti();
+        }
+
+    }
+
+    protected override bool CanEnterStep()
+    {
+        return this.DomandaCorrente.Oneri.Oneri.Count() > 0;
+    }
+
+    protected override async Task OnBeforeExitStepAsync()
+    {
+        await base.OnBeforeExitStepAsync();
+
+        await SpecificaEstremiPagamentoAsync();
+    }
+
+    protected override bool CanExitStep()
+    {
+        if (this.MessageContainer.HasErrors())
+            return false;
+
+        if (_model.ContieneErrori)
+        {
+            this.MessageContainer.AddError(_model.TuttiGliOneri.SelectMany(x => x.Errori));
+            return false;
+        }
+
+        if (_model.OneriGiaPagati.Any())
+        {
+            if (this.VerificaFirmaDigitaleBollettino && new DomandaContieneAttestazioneDiPagamento().And(new AttestazioneDiPagamentoFirmataDigitalmente()).IsSatisfiedBy(this.DomandaCorrente))
+                return true;
+
+            if (!this.VerificaFirmaDigitaleBollettino && new DomandaContieneAttestazioneDiPagamento().IsSatisfiedBy(this.DomandaCorrente))
+                return true;
+
+            this.MessageContainer.AddError("Per poter proseguire è necessario allegare una copia firmata digitalmente della ricevuta attestante l'avvenuto pagamento");
+
+            return false;
+        }
+        else
+        {
+            var check = new ImportoDaPagareUgualeAZero().And(new UtenteDichiaraDiNonAvereOneri());
+
+            if (check.IsSatisfiedBy(this.DomandaCorrente))
+                return true;
+            else
+            {
+                this.MessageContainer.AddError(check.ErrorMessage);
+                return false;
+            }
+        }
+    }
+
+    private async Task DataBindAsync()
+    {
+        await _spinnerService.ShowSpinnerAsync(() =>
+        {
+            if (DomandaCorrente is null)
+            {
+                return;
+            }
+
+            var oneri = DomandaCorrente.Oneri;
+
+            this._model = new GestioneOneriBindingModel(
+                Array.Empty<GrigliaOneriItem>(),
+                oneri.OneriEndoprocedimenti.Select(x => x.ToGrigliaOneriItem(this._dizionarioModalitaPagamento[$"{x.EndoOInterventoOrigine.Codice}-{x.Causale.Codice}"])).ToArray(),
+                oneri.AttestazioneDiPagamento?.CodiceOggetto
+            );
+
+            this._model.DichiaraDiNonAvereOneriDaPagare = oneri.DichiaraDiNonAvereOneriDaPagare;
+
+        });
+    }
+
+    private async Task OpenEditorAsync(GrigliaOneriItem onere)
+    {
+        await _spinnerService.ShowSpinnerAsync(() =>
+        {
+            var onereSsu = this._listaOneriSsu.FirstOrDefault(el => el.Procedimento.Id == onere.CodiceEndoOInterventoOrigine)?
+                                                .Oneri?
+                                                .FirstOrDefault(o => o.Id == onere.CodiceCausale);
+
+            if (onereSsu != null)
+            {
+                if (onereSsu.ModalitaPagamento != null && onereSsu.ModalitaPagamento.Any())
+                {
+                    this._tipiPagamento = onereSsu.ModalitaPagamento.Select(x => new TipoPagamento(x.Id.ToString(), x.Descrizione)).ToList();
+                }
+
+                this._permetteModificaImporto = onereSsu.PermetteModificaImporto;
+
+                this._modalitaPagamento = this._dizionarioModalitaPagamento[$"{onere.CodiceEndoOInterventoOrigine}-{onere.CodiceCausale}"];
+            }
+
+            this._editingItem = onere;
+
+        });
+    }
+
+    private async Task SalvaModificheAsync(GrigliaOneriItem onere)
+    {
+        if (this._model is null)
+        {
+            return;
+        }
+
+        await _spinnerService.ShowSpinnerAsync(async () =>
+        {
+            await SpecificaEstremiPagamentoAsync();
+
+            this._editingItem = null;
+
+            await DataBindAsync();
+        });
+    }
+
+    private async Task SpecificaEstremiPagamentoAsync()
+    {
+        var oneriPagati = this._model?.OneriEndo.Select(x => x.ToOnerePagato());
+
+        await this._oneriDomandaService.SpecificaEstremiPagamentoAsync(this.IdDomanda.Value, oneriPagati);
+    }
+
+    async Task AnnullaModificheAsync()
+    {
+        this._editingItem = null;
+
+        await DataBindAsync();
+    }
+
+    private async Task OnUploadFileChangedAsync(UploadInputFormData data)
+    {
+        this.MessageContainer.ClearErrors();
+
+        try
+        {
+            await _spinnerService.ShowSpinnerAsync(async () =>
+            {
+                await SpecificaEstremiPagamentoAsync();
+
+                if (data.Form.Model.CodiceOggetto.HasValue)
+                {
+                    this._oneriDomandaService.InserisciAttestazioneDiPagamento(this.IdDomanda.Value, data.Form.Model.CodiceOggetto.Value);
+                }
+
+            });
+
+            await this.DataBindAsync();
+        }
+        catch (Exception ex)
+        {
+            //this._logger.ErrorFormat("Errore durante il caricamento del bollettino in gestioneoneri.aspx: {0}", ex.ToString());
+
+            this.MessageContainer.AddError("Errore durante l'inserimento dell'attestazione di pagamento");
+            Logger.Error($"Errore durante l'inserimento dell'attestazione di pagamento: {ex.Message}");
+        }
+    }
+
+    private async Task OnUploadFileDeleteAsync()
+    {
+        try
+        {
+            await SpecificaEstremiPagamentoAsync();
+
+            this._oneriDomandaService.EliminaAttestazioneDiPagamento(this.IdDomanda.Value);
+
+            await this.DataBindAsync();
+        }
+        catch (Exception ex)
+        {
+            this.MessageContainer.AddError("Errore durante l'eliminazione dell'attestazione di pagamento");
+            Logger.Error($"Errore durante l'eliminazione dell'attestazione di pagamento: {ex.Message}");
+        }
+    }
+
+    private void OnFlagAssenzaOneriChanged()
+    {
+        this.MessageContainer.ClearErrors();
+
+        if (this._model != null)
+        {
+            this._model.DichiaraDiNonAvereOneriDaPagare = !this._model.DichiaraDiNonAvereOneriDaPagare;
+
+            if (this._model.DichiaraDiNonAvereOneriDaPagare)
+            {
+                this._oneriDomandaService.ImpostaDichiarazioneDiAssenzaOneriDaPagare(this.IdDomanda.Value);
+            }
+            else
+            {
+                this._oneriDomandaService.RimuoviDichiarazioneDiAssenzaOneriDaPagare(this.IdDomanda.Value);
+            }
+        }
+
+    }
+
+}

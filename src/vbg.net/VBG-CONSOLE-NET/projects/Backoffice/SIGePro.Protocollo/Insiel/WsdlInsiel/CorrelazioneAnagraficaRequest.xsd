@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2005 rel. 3 U (http://www.altova.com) by any (INSIEL S.p.A.) -->
+<xs:schema xmlns:corAnaReq="http://insiel.it/protocollo/schemixsd/CorrelazioneAnagraficaRequest" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tgen="http://insiel.it/protocollo/schemixsd/TipiGenerali" targetNamespace="http://insiel.it/protocollo/schemixsd/CorrelazioneAnagraficaRequest" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:import namespace="http://insiel.it/protocollo/schemixsd/TipiGenerali" schemaLocation="tipi_generali.xsd"/>
+	<xs:element name="CorrelazioneAnagraficaRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Utente" type="tgen:Utente"/>
+				<xs:element name="anagrafica" type="corAnaReq:anagrafica"/>
+				<xs:element name="anagraficaCorrelata" type="corAnaReq:anagraficaCorrelata" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="tipoCorrelazione" type="corAnaReq:tipoCorrelazione"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="anagrafica">
+		<xs:choice>
+			<xs:element name="cod_ana" type="xs:string"/>
+			<xs:element name="desc_ana" type="xs:string"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="anagraficaCorrelata">
+		<xs:choice>
+			<xs:element name="cod_ana" type="xs:string" nillable="true"/>
+			<xs:element name="desc_ana" type="xs:string" nillable="true"/>
+			<xs:element name="fl_no_albero" nillable="true" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:maxInclusive value="1"/>
+						<xs:minInclusive value="0"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="vedi_sopra" nillable="true" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="vedi_sotto" nillable="true" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="vedi_abilitazioni" nillable="true" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="fl_ereditato" nillable="true" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="prog_correlato_c" nillable="true" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:minInclusive value="0"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:simpleType name="tipoCorrelazione">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="livInferiore"/>
+			<xs:enumeration value="livSuperiore"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

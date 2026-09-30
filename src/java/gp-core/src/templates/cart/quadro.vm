@@ -1,0 +1,25 @@
+
+<div id="quadro_${helper.getIdQuadro($quadro)}" class="quadro-cart" style="display: inline;">
+	#if($quadro.Titolo)
+	<h4 class="quadro-cart-title">
+		$quadro.Titolo
+    </h4>
+	#end
+	#set($idFormQuadro = "conferma_${helper.getIdModulo()}_${helper.getIdQuadro($quadro)}")
+	<form action="/confermaQuadro.htm?disableMR=1" name="$idFormQuadro" id="$idFormQuadro" method="post" enctype="multipart/form-data">
+		<input type="hidden" name="CART_ID_MODULO" value="$helper.getIdModulo()"/>
+		<input type="hidden" name="CART_ID_QUADRO" value="${helper.getIdQuadro($quadro)}"/>
+		
+	#foreach($item in $quadro.Item)
+		#parse("/cart/elemento_figlio.vm")
+	#end
+    </form>
+	<script >
+		$(document).ready(function(){
+			$('#$helper.escapeForCssSelector($idFormQuadro)').submit(function(){
+				goToNextQuadro();
+				return false;
+			});
+		});
+    </script>
+</div>

@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="urn:protocollowsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns="http://schemas.xmlsoap.org/wsdl/" targetNamespace="urn:protocollowsdl" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="urn:protocollowsdl">
+      <xsd:import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+      <xsd:import namespace="http://schemas.xmlsoap.org/wsdl/" />
+      <xsd:complexType name="Allegato">
+        <xsd:all>
+          <xsd:element name="name" type="xsd:string" />
+          <xsd:element name="file" type="xsd:base64Binary" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="Allegati">
+        <xsd:all>
+          <xsd:element name="IdAllegato" type="xsd:int" />
+          <xsd:element name="NomeFile" type="xsd:string" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="AllegatiArray">
+        <xsd:complexContent mixed="false">
+          <xsd:restriction base="SOAP-ENC:Array">
+            <xsd:attribute wsdl:arrayType="tns:Allegati[]" ref="SOAP-ENC:arrayType" />
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="Protocollo">
+        <xsd:all>
+          <xsd:element name="CodiceRegistro" type="xsd:string" />
+          <xsd:element name="Anno" type="xsd:int" />
+          <xsd:element name="Progressivo" type="xsd:int" />
+          <xsd:element name="DataProtocollo" type="xsd:date" />
+          <xsd:element name="OraProtocollo" type="xsd:time" />
+          <xsd:element name="DataDocumento" type="xsd:date" />
+          <xsd:element name="OraDocumento" type="xsd:time" />
+          <xsd:element name="Tipo" type="xsd:string" />
+          <xsd:element name="TipoLettera" type="xsd:string" />
+          <xsd:element name="Oggetto" type="xsd:string" />
+          <xsd:element name="Mittente" type="xsd:string" />
+          <xsd:element name="Destinatario" type="xsd:string" />
+          <xsd:element name="Conoscenza" type="xsd:string" />
+          <xsd:element name="Stato" type="xsd:string" />
+          <xsd:element name="MotivoRespingimento" type="xsd:string" />
+          <xsd:element name="NumeroAttoAnnullamento" type="xsd:int" />
+          <xsd:element name="DataAttoAnnullamento" type="xsd:date" />
+          <xsd:element name="UsernameProtocollatore" type="xsd:string" />
+          <xsd:element name="UsernameAnnullatore" type="xsd:string" />
+          <xsd:element name="UsernameRespingitore" type="xsd:string" />
+          <xsd:element name="TimestampCreazione" type="xsd:dateTime" />
+          <xsd:element name="TimestampUltimaModifica" type="xsd:dateTime" />
+          <xsd:element name="UsernameUltimaModifica" type="xsd:string" />
+          <xsd:element name="ClassificazioneLiv1" type="xsd:string" />
+          <xsd:element name="ClassificazioneLiv2" type="xsd:string" />
+          <xsd:element name="AnnoFascicolo" type="xsd:int" />
+          <xsd:element name="ProgressivoFascicolo" type="xsd:int" />
+          <xsd:element name="DataInizioPubblicazione" type="xsd:date" />
+          <xsd:element name="DataFinePubblicazione" type="xsd:date" />
+          <xsd:element name="DataRicezione" type="xsd:date" />
+          <xsd:element name="OraRicezione" type="xsd:time" />
+          <xsd:element name="Rif_Esterno" type="xsd:string" />
+          <xsd:element name="Allegati" type="tns:AllegatiArray" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="TipoLettera">
+        <xsd:all>
+          <xsd:element name="Codice" type="xsd:string" />
+          <xsd:element name="Descrizione" type="xsd:string" />
+          <xsd:element name="Attivo" type="xsd:boolean" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="TipoLetteraArray">
+        <xsd:complexContent mixed="false">
+          <xsd:restriction base="SOAP-ENC:Array">
+            <xsd:attribute wsdl:arrayType="tns:TipoLettera[]" ref="SOAP-ENC:arrayType" />
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="MittentiDestinatari">
+        <xsd:all>
+          <xsd:element name="Codice" type="xsd:string" />
+          <xsd:element name="Descrizione" type="xsd:string" />
+          <xsd:element name="Attivo" type="xsd:boolean" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="MittentiDestinatariArray">
+        <xsd:complexContent mixed="false">
+          <xsd:restriction base="SOAP-ENC:Array">
+            <xsd:attribute wsdl:arrayType="tns:MittentiDestinatari[]" ref="SOAP-ENC:arrayType" />
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="getAllegatoRequest">
+    <wsdl:part name="CodiceRegistro" type="xsd:string" />
+    <wsdl:part name="Anno" type="xsd:int" />
+    <wsdl:part name="Progressivo" type="xsd:int" />
+    <wsdl:part name="IdAllegato" type="xsd:int" />
+    <wsdl:part name="username" type="xsd:string" />
+    <wsdl:part name="password" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="getAllegatoResponse">
+    <wsdl:part name="return" type="tns:Allegato" />
+  </wsdl:message>
+  <wsdl:message name="getProtocolloRequest">
+    <wsdl:part name="CodiceRegistro" type="xsd:string" />
+    <wsdl:part name="Anno" type="xsd:int" />
+    <wsdl:part name="Progressivo" type="xsd:int" />
+    <wsdl:part name="username" type="xsd:string" />
+    <wsdl:part name="password" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="getProtocolloResponse">
+    <wsdl:part name="return" type="tns:Protocollo" />
+  </wsdl:message>
+  <wsdl:message name="insertProtocolloRequest">
+    <wsdl:part name="Protocollo" type="tns:Protocollo" />
+    <wsdl:part name="username" type="xsd:string" />
+    <wsdl:part name="password" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="insertProtocolloResponse">
+    <wsdl:part name="return" type="tns:Protocollo" />
+  </wsdl:message>
+  <wsdl:message name="uploadAllegatoRequest">
+    <wsdl:part name="CodiceRegistro" type="xsd:string" />
+    <wsdl:part name="Anno" type="xsd:int" />
+    <wsdl:part name="Progressivo" type="xsd:int" />
+    <wsdl:part name="name" type="xsd:string" />
+    <wsdl:part name="file" type="xsd:base64Binary" />
+    <wsdl:part name="username" type="xsd:string" />
+    <wsdl:part name="password" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="uploadAllegatoResponse">
+    <wsdl:part name="IdAllegato" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="getTipiLetteraRequest">
+    <wsdl:part name="username" type="xsd:string" />
+    <wsdl:part name="password" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="getTipiLetteraResponse">
+    <wsdl:part name="return" type="tns:TipoLetteraArray" />
+  </wsdl:message>
+  <wsdl:message name="getMittentiDestinatariRequest">
+    <wsdl:part name="username" type="xsd:string" />
+    <wsdl:part name="password" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="getMittentiDestinatariResponse">
+    <wsdl:part name="return" type="tns:MittentiDestinatariArray" />
+  </wsdl:message>
+  <wsdl:portType name="PROTOCOLLO-WSDLPortType">
+    <wsdl:operation name="getAllegato">
+      <documentation>Recupera il nome ed il file dell'allegato al protocollo richiesto </documentation>
+      <wsdl:input message="tns:getAllegatoRequest" />
+      <wsdl:output message="tns:getAllegatoResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getProtocollo">
+      <documentation>Recupera il protocollo richiesto </documentation>
+      <wsdl:input message="tns:getProtocolloRequest" />
+      <wsdl:output message="tns:getProtocolloResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="insertProtocollo">
+      <documentation>Inserisce il protocollo passato e ritorna il Protocollo inserito con gli opportuni campi valorizzati(es Anno,Progressivo,Data ed Ora Protocollo)</documentation>
+      <wsdl:input message="tns:insertProtocolloRequest" />
+      <wsdl:output message="tns:insertProtocolloResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="uploadAllegato">
+      <documentation>Effettua l'inserimento di un allegato nel protocollo, ritorna il progressivo allegato oppuer un messaggio di errore</documentation>
+      <wsdl:input message="tns:uploadAllegatoRequest" />
+      <wsdl:output message="tns:uploadAllegatoResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getTipiLettera">
+      <documentation>Ritorna l'elenco dei Tipi Documento Codice/Descrizione</documentation>
+      <wsdl:input message="tns:getTipiLetteraRequest" />
+      <wsdl:output message="tns:getTipiLetteraResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getMittentiDestinatari">
+      <documentation>Ritorna l'elenco dei Mittenti Destinatari Codice/Descrizione</documentation>
+      <wsdl:input message="tns:getMittentiDestinatariRequest" />
+      <wsdl:output message="tns:getMittentiDestinatariResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="PROTOCOLLO-WSDLBinding" type="tns:PROTOCOLLO-WSDLPortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc" />
+    <wsdl:operation name="getAllegato">
+      <soap:operation soapAction="urn:protocollowsdl#getAllegato" style="rpc" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:protocollowsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:protocollowsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getProtocollo">
+      <soap:operation soapAction="urn:protocollowsdl#getProtocollo" style="rpc" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:protocollowsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:protocollowsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="insertProtocollo">
+      <soap:operation soapAction="urn:protocollowsdl#insertProtocollo" style="rpc" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:protocollowsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:protocollowsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="uploadAllegato">
+      <soap:operation soapAction="urn:protocollowsdl#uploadAllegato" style="rpc" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:protocollowsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:protocollowsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getTipiLettera">
+      <soap:operation soapAction="urn:protocollowsdl#getTipiLettera" style="rpc" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:protocollowsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:protocollowsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getMittentiDestinatari">
+      <soap:operation soapAction="urn:protocollowsdl#getMittentiDestinatari" style="rpc" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:protocollowsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:protocollowsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="PROTOCOLLO-WSDL">
+    <wsdl:port name="PROTOCOLLO-WSDLPort" binding="tns:PROTOCOLLO-WSDLBinding">
+      <soap:address location="http://crm.deltainf.it/protocollo/services/index.php" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

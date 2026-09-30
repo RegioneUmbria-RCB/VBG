@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="gp-areariservata" default="configurazione-sviluppo">
+	<target name="configurazione-sviluppo">
+		<propertyfile file="src/deploy.properties">
+			<entry key="ws.stc.url" type="string" value="http://devel9:8080/ibcstc/services/stc?wsdl" />
+			<entry key="ws.token.url" type="string" value="http://devel9:8080/ibcsecurity/services/sigeproSecurity.wsdl" />
+		</propertyfile>
+		<propertyfile file="src/db.properties">
+			<entry key="hibernate.c3p0.min_size" type="string" value="1" />
+			<entry key="hibernate.c3p0.max_size" type="string" value="2" />
+			<entry key="hibernate.c3p0.acquire_increment" type="string" value="1" />
+			<entry key="c3p0.numHelperThreads" type="string" value="1" />
+			<entry key="c3p0.checkoutTimeout" type="string" value="10000" />
+		</propertyfile>
+		<propertyfile file="src/log4j.properties">
+			<entry key="log4j.rootLogger" type="string" value="WARN, stdout" />
+		</propertyfile>
+	</target>
+	<target name="configurazione-produzione">
+		<propertyfile file="src/deploy.properties">
+			<entry key="ws.stc.url" type="string" value="http://localhost:8080/ibcstc/services/stc?wsdl" />
+			<entry key="ws.token.url" type="string" value="http://localhost:8080/ibcsecurity/services/sigeproSecurity.wsdl" />
+		</propertyfile>
+		<propertyfile file="src/db.properties">
+			<entry key="hibernate.c3p0.min_size" type="string" value="10" />
+			<entry key="hibernate.c3p0.max_size" type="string" value="100" />
+			<entry key="hibernate.c3p0.acquire_increment" type="string" value="5" />
+			<entry key="c3p0.numHelperThreads" type="string" value="3" />
+			<entry key="c3p0.checkoutTimeout" type="string" value="10000" />
+		</propertyfile>
+		<propertyfile file="src/log4j.properties">
+			<entry key="log4j.rootLogger" type="string" value="WARN, logfile" />
+		</propertyfile>
+	</target>
+</project>

@@ -1,0 +1,51 @@
+<definitions name="PddServiceSUAP" targetNamespace="http://www.impresainungiorno.gov.it/suap/scrivania" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.impresainungiorno.gov.it/suap/scrivania" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<types>
+		<xs:schema targetNamespace="http://www.impresainungiorno.gov.it/suap/scrivania" version="1.0" 
+		xmlns:ns1="http://www.impresainungiorno.gov.it/schema/suap/ente" 
+		xmlns:tns="http://www.impresainungiorno.gov.it/suap/scrivania"
+		 xmlns:xs="http://www.w3.org/2001/XMLSchema">
+			<xs:import namespace="http://www.impresainungiorno.gov.it/schema/suap/ente" schemaLocation="./SUAP-ente-1.1.1.xsd"/>
+			<xs:element name="inviaEnteSUAP" type="tns:inviaEnteSUAP"/>
+			<xs:element name="inviaEnteSUAPResponse" type="tns:inviaEnteSUAPResponse"/>
+			<xs:complexType name="inviaEnteSUAP">
+				<xs:sequence>
+					<xs:element name="CooperazioneEnteSUAP" type="ns1:CooperazioneEnteSUAP"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="inviaEnteSUAPResponse">
+				<xs:sequence>
+					<xs:element name="return" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+		</xs:schema>
+	</types>
+	<message name="PddServiceSUAP_inviaEnteSUAP">
+		<part element="tns:inviaEnteSUAP" name="inviaEnteSUAP"/>
+	</message>
+	<message name="PddServiceSUAP_inviaEnteSUAPResponse">
+		<part element="tns:inviaEnteSUAPResponse" name="inviaEnteSUAPResponse"/>
+	</message>
+	<portType name="PddServiceSUAP">
+		<operation name="inviaEnteSUAP" parameterOrder="inviaEnteSUAP">
+			<input message="tns:PddServiceSUAP_inviaEnteSUAP"/>
+			<output message="tns:PddServiceSUAP_inviaEnteSUAPResponse"/>
+		</operation>
+	</portType>
+	<binding name="PddServiceSUAPBinding" type="tns:PddServiceSUAP">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<operation name="inviaEnteSUAP">
+			<soap:operation soapAction="inviaEnteSUAP"/>
+			<input>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+	</binding>
+	<service name="PddServiceSUAP">
+		<port binding="tns:PddServiceSUAPBinding" name="PddPortSUAP">
+			<soap:address location="http://127.0.0.1:8080/bosuap/pddServiceSUAP"/>
+		</port>
+	</service>
+</definitions>

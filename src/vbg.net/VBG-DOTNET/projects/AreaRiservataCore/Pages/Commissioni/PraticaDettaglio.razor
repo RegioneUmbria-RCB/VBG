@@ -1,0 +1,109 @@
+﻿@page "/{IdComune}/{Software}/praticadettaglio/{idCommissione:int}/{idPratica}"
+@using Init.SIGePro.Manager.DTO.Commissioni
+@using VBG.BlazorComponentsLibrary.DesignComuni.Download
+@using VBG.BlazorComponentsLibrary.DesignComuni.NavScroll
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+
+
+@inherits CommissioniBasePage
+
+<style>
+    .descrizione-allegato {
+        width: 600px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+</style>
+
+
+
+<NavScrollComponent Title="Indice di pagina">
+    @if (DataSource != null)
+    {
+        <TitoloPagina>@($"Pratica {DataSource.NumeroData.ToLower()}")</TitoloPagina>
+        <StepCard Titolo="Dati generali">
+            <StepCardItem>
+                <StepCardInfo Titolo="Comune">@DataSource.Comune</StepCardInfo>
+                <StepCardInfo Titolo="Protocollo">@DataSource.DatiProtocollo</StepCardInfo>
+                <StepCardInfo Titolo="Richiedente">@DataSource.Richiedente</StepCardInfo>
+                <StepCardInfo Titolo="Intervento">@DataSource.Intervento</StepCardInfo>
+                <StepCardInfo Titolo="Descrizione lavori">@DataSource.DescrizioneLavori</StepCardInfo>
+            </StepCardItem>
+        </StepCard>
+    }
+
+
+    @if (LocalizzazioniDataSource != null && LocalizzazioniDataSource.Any())
+    {
+        <StepCard Titolo="Localizzazioni">  
+            @foreach (LocalizzazionePraticaCommissioneDto pratica in LocalizzazioniDataSource)
+            {
+                <StepCardItem>
+                    <StepCardInfo Titolo="Toponimo">@pratica.Toponimo</StepCardInfo>
+                    <StepCardInfo Titolo="Mappali">@pratica.Mappali</StepCardInfo>
+                </StepCardItem>
+            }
+        </StepCard>
+    }
+
+    @if (DataSource != null && !string.IsNullOrEmpty(DataSource.DescrizioneParere))
+    {
+        <StepCard Titolo="Esito">
+            <StepCardItem>
+                <StepCardInfo Titolo="Tipologia parere">@DataSource.DescrizioneParere</StepCardInfo>
+                <StepCardInfo Titolo="Parere">@DataSource.ParereEsteso</StepCardInfo>
+            </StepCardItem>
+        </StepCard>
+    }
+
+    @if (ParereDataSource != null)
+    {
+        string numeroProtocollo = String.IsNullOrEmpty(ParereDataSource.NumeroProtocollo) ?
+                    "Non protocollato" :
+                    $"N.{ParereDataSource.NumeroProtocollo} del {ParereDataSource.DataProtocollo}";
+
+        <StepCard Titolo="Parere espresso">
+            <StepCardItem>
+                <StepCardInfo Titolo="Voto">@ParereDataSource.DescrizioneParere</StepCardInfo>
+                <StepCardInfo Titolo="Note">@ParereDataSource.Note</StepCardInfo>
+                <StepCardInfo Titolo="Protocollo">@numeroProtocollo</StepCardInfo>
+            </StepCardItem>
+        </StepCard>
+    }
+
+    @if (DocumentiDataSource != null && DocumentiDataSource.Any())
+    {
+        <StepCard Titolo="Documenti della pratica">
+            @foreach (DocumentoPraticaCommissioneDto item in DocumentiDataSource)
+            {
+                <StepCardItem>
+                    <StepCardItemTitle Titolo="@item.NomeFile"></StepCardItemTitle>
+                    <StepCardInfo Titolo="Categoria">@item.Categoria</StepCardInfo>
+                    <StepCardInfo Titolo="Descrizione">@item.Descrizione</StepCardInfo>
+                    @if (item.CodiceOggetto.HasValue)
+                    {
+                        <div class="mt-3">
+                            <DownloadButton NomeOggetto="Scarica file" CodiceOggetto="item.CodiceOggetto.Value" OnCanDownload="@onVerificaAccesso(item.CodiceOggetto.Value)" OnCanDownloadFailed="async() => await ErroreAccessoAsync()"></DownloadButton>
+                        </div>
+                    } 
+                </StepCardItem>
+            }
+        </StepCard>
+    }
+
+    <div class="buttonContainer mb-3">
+        @if (isBtnParereVisible)
+        {
+            <button class="btn btn-primary vbg-show-spinner" style="margin-right:1rem;" @onclick="OnBtnEsprimiParereAsync">Esprimi parere</button>
+        }
+        <button class="btn btn-light vbg-show-spinner" @onclick="OnBtnCloseAsync">Chiudi</button>
+    </div>
+</NavScrollComponent>
+
+
+
+@code {
+
+}

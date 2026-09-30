@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.Web">
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<LangVersion>preview</LangVersion>
+		<UserSecretsId>7c572fbe-3c8b-4cb4-98b2-e40767571aec</UserSecretsId>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+		<DockerfileContext>..\..</DockerfileContext>
+		<DockerfileBuildArguments>--build-arg PAT=$(PAT)</DockerfileBuildArguments>
+		<DockerfileTag>vbg.area-riservata-ricevute-ssu</DockerfileTag>
+	</PropertyGroup>
+	<ItemGroup>
+		<!--<PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.2.9" />-->
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.23.0" />
+		<PackageReference Include="Serilog.AspNetCore" Version="10.0.0" />
+		<PackageReference Include="Serilog.Sinks.Console" Version="6.1.1" />
+		<PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
+		<PackageReference Include="Serilog.Sinks.Graylog" Version="3.1.1" />
+		<PackageReference Include="VBG.DatiDinamici.Agid" Version="10.1.10" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Frontoffice\Init.Sigepro.FrontEnd.AppLogic\Init.Sigepro.FrontEnd.AppLogic.csproj" />
+		<ProjectReference Include="..\Frontoffice\Init.Sigepro.FrontEnd.Infrastructure\Init.Sigepro.FrontEnd.Infrastructure.csproj" />
+		<ProjectReference Include="..\Init.Sigepro.FrontEnd.CoreServices\Init.Sigepro.FrontEnd.CoreServices.csproj" />
+		<ProjectReference Include="..\VBG.AppLogic.SSU\VBG.AppLogic.SSU.csproj" />
+	</ItemGroup>
+</Project>

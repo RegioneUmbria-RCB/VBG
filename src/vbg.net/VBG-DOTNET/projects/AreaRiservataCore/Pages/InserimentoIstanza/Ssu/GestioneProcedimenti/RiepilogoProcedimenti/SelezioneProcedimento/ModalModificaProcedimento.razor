@@ -1,0 +1,107 @@
+﻿@using VBG.AppLogic.SSU.APICatalogoServizi.Client
+@using VBG.AppLogic.SSU.GestioneEventiDellaVita
+@using VBG.AppLogic.SSU.GestioneFattispecie
+@using VBG.AppLogic.SSU.GestioneProcedimenti
+@using VBG.AppLogic.SSU.GestioneTipologie
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.EditFormComponents
+
+@if (_faseAttuale == FasiWorkflow.SelezioneProcedimento)
+{
+    <ModalSelezioneProcedimento ProcedimentoSelezionato="OnProcedimentoSelezionato" OnClose="OnClose"></ModalSelezioneProcedimento>
+}
+
+@if (_faseAttuale == FasiWorkflow.SelezioneFattispeciePrimarie)
+{
+    <ModalSelezioneFattispeciePrimarie Procedimento="_procedimentoSelezionato"
+                                       OnClose="OnClose"
+                                       FattispecieSelezionate="OnFattispecieSelezionate"></ModalSelezioneFattispeciePrimarie>
+}
+
+@if (_faseAttuale == FasiWorkflow.SelezioneFattispecieSecondarie)
+{
+    <ModalSelezioneFattispecieSecondarie Procedimento="_procedimentoSelezionato"
+                                         OnClose="OnClose"
+                                         FattispecieSelezionate="OnFattispecieSecondarieSelezionate"></ModalSelezioneFattispecieSecondarie>
+}
+
+
+@code {
+    [Inject]
+    public SsuFattispecieService _fattispecieService { get; set; } = default!;
+
+    public enum FasiWorkflow
+    {
+        SelezioneProcedimento,
+        SelezioneFattispeciePrimarie,
+        SelezioneFattispecieSecondarie
+    }
+
+    [CascadingParameter(Name = "IdDomanda")]
+    public int? IdDomanda { get; set; }
+
+    [Parameter, EditorRequired]
+    public EventCallback OnClose { get; set; }
+    [Parameter, EditorRequired]
+    public EventCallback<SsuProcedimentoDomanda> ProcedimentoSelezionato { get; set; }
+
+    private FasiWorkflow _faseAttuale = FasiWorkflow.SelezioneProcedimento;
+    private SsuProcedimentoDomanda? _procedimentoSelezionato;
+
+
+    async Task OnProcedimentoSelezionato(Procedimento procedimento)
+    {
+        this._procedimentoSelezionato = procedimento.ToProcedimentoDomanda();
+
+        this._faseAttuale = FasiWorkflow.SelezioneFattispeciePrimarie;
+
+        await Task.CompletedTask;
+    }
+
+    void OnFattispecieSelezionate(List<Fattispecie> fattispecie)
+    {
+        if (this._procedimentoSelezionato is null)
+        {
+            return;
+        }
+
+        this._procedimentoSelezionato.FattispeciePrimarie = fattispecie.Select(x => new SsuFattispeciePrimariaDomanda
+        {
+            Id = x.Id,
+            Descrizione = x.Descrizione,
+            DescrizioneEstesa = x.DescrizioneEstesa,
+            Obbligatoria = x.Obbligatoria
+        }).ToList();
+
+        this._faseAttuale = FasiWorkflow.SelezioneFattispecieSecondarie;
+    }
+
+    async Task OnFattispecieSecondarieSelezionate(Dictionary<int, List<Fattispecie>> fattispecieSecondarie)
+    {
+        if (this._procedimentoSelezionato is null)
+        {
+            return;
+        }
+
+        foreach (var primaria in this._procedimentoSelezionato.FattispeciePrimarie)
+        {
+            var secondarie = fattispecieSecondarie.GetValueOrDefault(primaria.Id) ?? new();
+
+            foreach (var x in secondarie)
+            {
+                var secondaria = new SsuFattispecieSecondariaDomanda
+                {
+                    Descrizione = x.Descrizione,
+                    DescrizioneEstesa = x.DescrizioneEstesa,
+                    Id = x.Id,
+                    Obbligatoria = x.Obbligatoria,
+                    Procedimento = (await _fattispecieService.GetProcedimentoByIdFattispecieAsync(this.IdDomanda!.Value, x.Id)).ToProcedimentoBaseDomanda()
+                };
+
+                primaria.FattispecieSecondarie.Add(secondaria);
+            }
+        }
+
+        await ProcedimentoSelezionato.InvokeAsync(this._procedimentoSelezionato);
+    }
+}

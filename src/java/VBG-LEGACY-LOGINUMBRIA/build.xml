@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="login-umbria-dist" default="configurazione">
+
+	<input message="ricercare la stringa http://vpratiche.pa.umbria.it e sostituirla con l'url dell'ambiente del cliente (es: https://suape.regione.umbria.it o http://pratiche.pa.umbria.it)" addproperty="UrlFrontendLogin" />
+
+	
+	<target name="configurazione">		
+		<replace casesensitive="true" file="WebContent/WEB-INF/web.xml" token="http://vpratiche.pa.umbria.it" value="${UrlFrontendLogin}"></replace>
+		<replace casesensitive="true" file="WebContent/resources/metadata/metadata.xml" token="http://vpratiche.pa.umbria.it" value="${UrlFrontendLogin}"></replace>
+	</target>
+
+</project>

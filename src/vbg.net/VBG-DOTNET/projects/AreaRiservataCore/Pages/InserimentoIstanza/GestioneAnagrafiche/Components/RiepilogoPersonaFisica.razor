@@ -1,0 +1,63 @@
+﻿@using Init.Sigepro.FrontEnd.AppLogic.GestioneComuni;
+@using Init.Sigepro.FrontEnd.AppLogic.GestionePresentazioneDomanda.GestioneAnagrafiche;
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+
+
+@if (Anagrafica is not null)
+{
+    <StepCollapsibleContentItem Titolo="Anagrafica">
+        <StepCardInfo Titolo="Nome" CapitalizeText="true">@Anagrafica.Nome</StepCardInfo>
+        <StepCardInfo Titolo="Cognome" CapitalizeText="true">@Anagrafica.Nominativo</StepCardInfo>
+        <StepCardInfo Titolo="Codice Fiscale" CssClass="text-uppercase">@Anagrafica.Codicefiscale</StepCardInfo>
+        <StepCardInfo Titolo="Data di nascita">@Anagrafica.DatiNascita?.Data?.ToString("dd/MM/yyyy")</StepCardInfo>
+        <StepCardInfo Titolo="Luogo di nascita" CapitalizeText="true">@GetComune(Anagrafica.DatiNascita?.CodiceComune)</StepCardInfo>
+        <StepCardInfo Titolo="Sesso" CapitalizeText="true">@Anagrafica.Sesso</StepCardInfo>
+        <StepCardInfo Titolo="Nazionalità" CapitalizeText="true">@GetCittadinanza(Anagrafica.IdCittadinanza)</StepCardInfo>
+    </StepCollapsibleContentItem>
+
+    <StepCollapsibleContentItem Titolo="Indirizzi">
+        <StepCardInfo Titolo="Residenza" CapitalizeText="true">@Anagrafica.IndirizzoResidenza?.ToString(_comuniService)</StepCardInfo>
+    </StepCollapsibleContentItem>
+
+    <StepCollapsibleContentItem Titolo="Contatti">
+        <StepCardInfo Titolo="Telefono">@Anagrafica.Contatti.Telefono</StepCardInfo>
+        <StepCardInfo Titolo="Cellulare">@Anagrafica.Contatti.TelefonoCellulare</StepCardInfo>
+        <StepCardInfo Titolo="PEC">@Anagrafica.Contatti.Pec</StepCardInfo>
+        <StepCardInfo Titolo="Email">@Anagrafica.Contatti.Email</StepCardInfo>
+    </StepCollapsibleContentItem>
+}
+
+
+@code {
+    [Inject]
+    public IComuniService _comuniService { get; set; } = default!;
+    [Inject]
+    public ICittadinanzeService _cittadinanzeService { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public AnagraficaDomanda? Anagrafica { get; set; }
+
+    private string GetCittadinanza(int? id)
+    {
+        if(id.HasValue)
+        {
+            return _cittadinanzeService.GetCittadinanzaDaId(id.Value).Descrizione;
+        }
+
+        return String.Empty;
+    }
+
+    private string GetComune(string? codiceComune)
+    {
+        if (String.IsNullOrEmpty(codiceComune))
+        {
+            return String.Empty;
+        }
+
+        var comune = _comuniService.GetByCodiceComune(codiceComune);
+
+        return $"{comune.Comune} ({comune.SiglaProvincia})";
+    }
+}
+
+

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+	VERSIONE 02 del 08/10/2013
+	Modifiche apportate: 
+	1) vincolato l'attributo EdificioACI/RiferimentoGeografico/gml:MultiSurface/@srsName ai seguenti valori: 3003, 3004, 23032, 23033, 32632, 25832, 32633, 25833, 4326, 4258
+ -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.opengis.net/gml" xmlns:gml="http://www.opengis.net/gml" targetNamespace="http://www.opengis.net/gml" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="Point">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="pos" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>Ad esempio "13.763 39.991"</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="srsName" type="xs:anyURI" use="optional">
+				<xs:annotation>
+					<xs:documentation>Ad esempio "urn:x-ogc:def:crs:EPSG:4326"</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Polygon">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="exterior">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="LinearRing"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="interior" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="LinearRing"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MultiSurface">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="surfaceMember" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="Polygon"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="srsName" use="required">
+				<xs:annotation>
+					<xs:documentation>Ad esempio "urn:x-ogc:def:crs:EPSG:4326" per indicare che le coordinate sono fornite nel sistema di riferimento WGS84 geografico.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="urn:x-ogc:def:crs:EPSG:3003"/>
+						<xs:enumeration value="urn:x-ogc:def:crs:EPSG:3004"/>
+						<xs:enumeration value="urn:x-ogc:def:crs:EPSG:23032"/>
+						<xs:enumeration value="urn:x-ogc:def:crs:EPSG:23033"/>
+						<xs:enumeration value="urn:x-ogc:def:crs:EPSG:32632"/>
+						<xs:enumeration value="urn:x-ogc:def:crs:EPSG:25832"/>
+						<xs:enumeration value="urn:x-ogc:def:crs:EPSG:32633"/>
+						<xs:enumeration value="urn:x-ogc:def:crs:EPSG:25833"/>
+						<xs:enumeration value="urn:x-ogc:def:crs:EPSG:4326"/>
+						<xs:enumeration value="urn:x-ogc:def:crs:EPSG:4258"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="LinearRing">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="posList" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>Coppie di coordinate separate da spazio. Ad esempio "13.763 39.991 13.827 39.985 15.584 41.489".</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

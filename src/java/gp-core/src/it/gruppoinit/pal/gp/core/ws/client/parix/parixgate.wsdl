@@ -1,0 +1,798 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions
+	targetNamespace="http://parixgate.infocamere.it/services/gate"
+	xmlns:apachesoap="http://xml.apache.org/xml-soap"
+	xmlns:impl="http://parixgate.infocamere.it/services/gate"
+	xmlns:intf="http://parixgate.infocamere.it/services/gate"
+	xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<!--WSDL created by Apache Axis version: 1.4 Built on Apr 22, 2006 (06:55:48 
+		PDT) -->
+
+	<wsdl:types>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+			targetNamespace="http://parixgate.infocamere.it/services/gate">
+			<xsd:simpleType
+				name="RicercaImpreseNonCessatePerCodiceFiscaleReturn">
+				<xsd:restriction base="xsd:string">
+				 <xsd:minLength value="1"></xsd:minLength></xsd:restriction>
+				
+			</xsd:simpleType>
+
+		</xsd:schema>
+	</wsdl:types>
+
+	<wsdl:message
+		name="RicercaImpreseNonCessatePerCodiceFiscaleResponse">
+
+		<wsdl:part
+			name="RicercaImpreseNonCessatePerCodiceFiscaleReturn"
+
+			type="impl:RicercaImpreseNonCessatePerCodiceFiscaleReturn" />
+		<!-- type="xsd:string" /> -->
+	</wsdl:message>
+
+
+	<wsdl:message
+		name="RicercaPersoneNonCessatePerCodiceFiscaleResponse">
+
+		<wsdl:part
+			name="RicercaPersoneNonCessatePerCodiceFiscaleReturn"
+			type="xsd:string" />
+
+	</wsdl:message>
+
+	<wsdl:message
+		name="RicercaImpresePerPeriodoVariazioneRequest">
+
+		<wsdl:part name="dt_ult_agg_ri_1" type="xsd:string" />
+
+		<wsdl:part name="dt_ult_agg_ri_2" type="xsd:string" />
+
+		<wsdl:part name="cciaa_regz" type="xsd:string" />
+
+		<wsdl:part name="user" type="xsd:string" />
+
+		<wsdl:part name="password" type="xsd:string" />
+
+	</wsdl:message>
+
+	<wsdl:message
+		name="RicercaImpresePerCodiceFiscaleResponse">
+
+		<wsdl:part name="RicercaImpresePerCodiceFiscaleReturn"
+			type="xsd:string" />
+
+	</wsdl:message>
+
+	<wsdl:message name="DettaglioUnitaLocaliImpresaResponse">
+
+		<wsdl:part name="DettaglioUnitaLocaliImpresaReturn"
+			type="xsd:string" />
+
+	</wsdl:message>
+
+	<wsdl:message
+		name="RicercaPersoneNonCessatePerCodiceFiscaleRequest">
+
+		<wsdl:part name="codice_fiscale" type="xsd:string" />
+
+		<wsdl:part name="codice_carica" type="xsd:string" />
+
+		<wsdl:part name="user" type="xsd:string" />
+
+		<wsdl:part name="password" type="xsd:string" />
+
+	</wsdl:message>
+
+	<wsdl:message name="RicercaImpresePerDenominazioneRequest">
+
+		<wsdl:part name="denominazione_sede" type="xsd:string" />
+
+		<wsdl:part name="switch_control" type="xsd:string" />
+
+		<wsdl:part name="user" type="xsd:string" />
+
+		<wsdl:part name="password" type="xsd:string" />
+
+	</wsdl:message>
+
+	<wsdl:message
+		name="RicercaImpresePerDenominazioneResponse">
+
+		<wsdl:part name="RicercaImpresePerDenominazioneReturn"
+			type="xsd:string" />
+
+	</wsdl:message>
+
+
+
+	<wsdl:message name="DettaglioUnitaLocaleImpresaResponse">
+
+		<wsdl:part name="DettaglioUnitaLocaleImpresaReturn"
+			type="xsd:string" />
+
+	</wsdl:message>
+
+	<wsdl:message name="DettaglioRidottoImpresaResponse">
+
+		<wsdl:part name="DettaglioRidottoImpresaReturn"
+			type="xsd:string" />
+
+	</wsdl:message>
+
+	<wsdl:message name="DettaglioUnitaLocaliImpresaRequest">
+
+		<wsdl:part name="fk_rea_cciaa_regz" type="xsd:string" />
+
+		<wsdl:part name="fk_rea_n_rea" type="xsd:string" />
+
+		<wsdl:part name="switch_control" type="xsd:string" />
+
+		<wsdl:part name="user" type="xsd:string" />
+
+		<wsdl:part name="password" type="xsd:string" />
+
+	</wsdl:message>
+
+	<wsdl:message name="DettaglioPersonaConCaricaResponse">
+
+		<wsdl:part name="DettaglioPersonaConCaricaReturn"
+			type="xsd:string" />
+
+	</wsdl:message>
+
+	<wsdl:message name="DettaglioUnitaLocaleImpresaRequest">
+
+		<wsdl:part name="fk_rea_cciaa_regz" type="xsd:string" />
+
+		<wsdl:part name="fk_rea_n_rea" type="xsd:string" />
+
+		<wsdl:part name="pro_localizzazione" type="xsd:string" />
+
+		<wsdl:part name="switch_control" type="xsd:string" />
+
+		<wsdl:part name="user" type="xsd:string" />
+
+		<wsdl:part name="password" type="xsd:string" />
+
+	</wsdl:message>
+
+	<wsdl:message name="DettaglioRidottoImpresaRequest">
+
+		<wsdl:part name="sgl_prv_sede" type="xsd:string" />
+
+		<wsdl:part name="n_rea_sede" type="xsd:string" />
+
+		<wsdl:part name="switch_control" type="xsd:string" />
+
+		<wsdl:part name="user" type="xsd:string" />
+
+		<wsdl:part name="password" type="xsd:string" />
+
+	</wsdl:message>
+
+	<wsdl:message name="DettaglioCompletoImpresaResponse">
+
+		<wsdl:part name="DettaglioCompletoImpresaReturn"
+			type="xsd:string" />
+
+	</wsdl:message>
+
+	<wsdl:message
+		name="RicercaPersonePerCodiceFiscaleResponse">
+
+		<wsdl:part name="RicercaPersonePerCodiceFiscaleReturn"
+			type="xsd:string" />
+
+	</wsdl:message>
+
+	<wsdl:message name="DettaglioPersoneConCaricaResponse">
+
+		<wsdl:part name="DettaglioPersoneConCaricaReturn"
+			type="xsd:string" />
+
+	</wsdl:message>
+
+	<wsdl:message
+		name="RicercaImpreseNonCessatePerCodiceFiscaleRequest">
+
+		<wsdl:part name="codice_fiscale" type="xsd:string" />
+
+		<wsdl:part name="switch_control" type="xsd:string" />
+
+		<wsdl:part name="user" type="xsd:string" />
+
+		<wsdl:part name="password" type="xsd:string" />
+
+	</wsdl:message>
+
+	<wsdl:message
+		name="RicercaImpreseNonCessatePerDenominazioneResponse">
+
+		<wsdl:part
+			name="RicercaImpreseNonCessatePerDenominazioneReturn"
+			type="xsd:string" />
+
+	</wsdl:message>
+
+	<wsdl:message name="RicercaImpresePerCodiceFiscaleRequest">
+
+		<wsdl:part name="codice_fiscale" type="xsd:string" />
+
+		<wsdl:part name="switch_control" type="xsd:string" />
+
+		<wsdl:part name="user" type="xsd:string" />
+
+		<wsdl:part name="password" type="xsd:string" />
+
+	</wsdl:message>
+
+	<wsdl:message name="DettaglioPersonaConCaricaRequest">
+
+		<wsdl:part name="fk_pri_cciaa_regz" type="xsd:string" />
+
+		<wsdl:part name="fk_pri_n_rea" type="xsd:string" />
+
+		<wsdl:part name="pro_persona" type="xsd:string" />
+
+		<wsdl:part name="switch_control" type="xsd:string" />
+
+		<wsdl:part name="user" type="xsd:string" />
+
+		<wsdl:part name="password" type="xsd:string" />
+
+	</wsdl:message>
+
+	<wsdl:message name="DettaglioPersoneConCaricaRequest">
+
+		<wsdl:part name="fk_pri_cciaa_regz" type="xsd:string" />
+
+		<wsdl:part name="fk_pri_n_rea" type="xsd:string" />
+
+		<wsdl:part name="switch_control" type="xsd:string" />
+
+		<wsdl:part name="user" type="xsd:string" />
+
+		<wsdl:part name="password" type="xsd:string" />
+
+	</wsdl:message>
+
+	<wsdl:message
+		name="RicercaImpreseNonCessatePerDenominazioneRequest">
+
+		<wsdl:part name="denominazione_sede" type="xsd:string" />
+
+		<wsdl:part name="switch_control" type="xsd:string" />
+
+		<wsdl:part name="user" type="xsd:string" />
+
+		<wsdl:part name="password" type="xsd:string" />
+
+	</wsdl:message>
+
+	<wsdl:message name="RicercaPersonePerCodiceFiscaleRequest">
+
+		<wsdl:part name="codice_fiscale" type="xsd:string" />
+
+		<wsdl:part name="codice_carica" type="xsd:string" />
+
+		<wsdl:part name="user" type="xsd:string" />
+
+		<wsdl:part name="password" type="xsd:string" />
+
+	</wsdl:message>
+
+	<wsdl:message name="DettaglioCompletoImpresaRequest">
+
+		<wsdl:part name="sgl_prv_sede" type="xsd:string" />
+
+		<wsdl:part name="n_rea_sede" type="xsd:string" />
+
+		<wsdl:part name="switch_control" type="xsd:string" />
+
+		<wsdl:part name="user" type="xsd:string" />
+
+		<wsdl:part name="password" type="xsd:string" />
+
+	</wsdl:message>
+
+	<wsdl:message
+		name="RicercaImpresePerPeriodoVariazioneResponse">
+
+		<wsdl:part name="RicercaImpresePerPeriodoVariazioneReturn"
+			type="xsd:string" />
+
+	</wsdl:message>
+
+	<wsdl:portType name="ICRSimpleWSImpl">
+
+		<wsdl:operation
+			name="RicercaImpreseNonCessatePerCodiceFiscale"
+			parameterOrder="codice_fiscale switch_control user password">
+
+			<wsdl:input
+				message="impl:RicercaImpreseNonCessatePerCodiceFiscaleRequest"
+				name="RicercaImpreseNonCessatePerCodiceFiscaleRequest" />
+
+			<wsdl:output
+				message="impl:RicercaImpreseNonCessatePerCodiceFiscaleResponse"
+				name="RicercaImpreseNonCessatePerCodiceFiscaleResponse" />
+
+		</wsdl:operation>
+
+		<wsdl:operation name="RicercaImpresePerCodiceFiscale"
+			parameterOrder="codice_fiscale switch_control user password">
+
+			<wsdl:input
+				message="impl:RicercaImpresePerCodiceFiscaleRequest"
+				name="RicercaImpresePerCodiceFiscaleRequest" />
+
+			<wsdl:output
+				message="impl:RicercaImpresePerCodiceFiscaleResponse"
+				name="RicercaImpresePerCodiceFiscaleResponse" />
+
+		</wsdl:operation>
+
+		<wsdl:operation
+			name="RicercaImpreseNonCessatePerDenominazione"
+			parameterOrder="denominazione_sede switch_control user password">
+
+			<wsdl:input
+				message="impl:RicercaImpreseNonCessatePerDenominazioneRequest"
+				name="RicercaImpreseNonCessatePerDenominazioneRequest" />
+
+			<wsdl:output
+				message="impl:RicercaImpreseNonCessatePerDenominazioneResponse"
+				name="RicercaImpreseNonCessatePerDenominazioneResponse" />
+
+		</wsdl:operation>
+
+		<wsdl:operation name="RicercaImpresePerDenominazione"
+			parameterOrder="denominazione_sede switch_control user password">
+
+			<wsdl:input
+				message="impl:RicercaImpresePerDenominazioneRequest"
+				name="RicercaImpresePerDenominazioneRequest" />
+
+			<wsdl:output
+				message="impl:RicercaImpresePerDenominazioneResponse"
+				name="RicercaImpresePerDenominazioneResponse" />
+
+		</wsdl:operation>
+
+		<wsdl:operation
+			name="RicercaPersoneNonCessatePerCodiceFiscale"
+			parameterOrder="codice_fiscale codice_carica user password">
+
+			<wsdl:input
+				message="impl:RicercaPersoneNonCessatePerCodiceFiscaleRequest"
+				name="RicercaPersoneNonCessatePerCodiceFiscaleRequest" />
+
+			<wsdl:output
+				message="impl:RicercaPersoneNonCessatePerCodiceFiscaleResponse"
+				name="RicercaPersoneNonCessatePerCodiceFiscaleResponse" />
+
+		</wsdl:operation>
+
+		<wsdl:operation name="RicercaPersonePerCodiceFiscale"
+			parameterOrder="codice_fiscale codice_carica user password">
+
+			<wsdl:input
+				message="impl:RicercaPersonePerCodiceFiscaleRequest"
+				name="RicercaPersonePerCodiceFiscaleRequest" />
+
+			<wsdl:output
+				message="impl:RicercaPersonePerCodiceFiscaleResponse"
+				name="RicercaPersonePerCodiceFiscaleResponse" />
+
+		</wsdl:operation>
+
+		<wsdl:operation
+			name="RicercaImpresePerPeriodoVariazione"
+			parameterOrder="dt_ult_agg_ri_1 dt_ult_agg_ri_2 cciaa_regz user password">
+
+			<wsdl:input
+				message="impl:RicercaImpresePerPeriodoVariazioneRequest"
+				name="RicercaImpresePerPeriodoVariazioneRequest" />
+
+			<wsdl:output
+				message="impl:RicercaImpresePerPeriodoVariazioneResponse"
+				name="RicercaImpresePerPeriodoVariazioneResponse" />
+
+		</wsdl:operation>
+
+		<wsdl:operation name="DettaglioCompletoImpresa"
+			parameterOrder="sgl_prv_sede n_rea_sede switch_control user password">
+
+			<wsdl:input message="impl:DettaglioCompletoImpresaRequest"
+				name="DettaglioCompletoImpresaRequest" />
+
+			<wsdl:output
+				message="impl:DettaglioCompletoImpresaResponse"
+				name="DettaglioCompletoImpresaResponse" />
+
+		</wsdl:operation>
+
+		<wsdl:operation name="DettaglioRidottoImpresa"
+			parameterOrder="sgl_prv_sede n_rea_sede switch_control user password">
+
+			<wsdl:input message="impl:DettaglioRidottoImpresaRequest"
+				name="DettaglioRidottoImpresaRequest" />
+
+			<wsdl:output
+				message="impl:DettaglioRidottoImpresaResponse"
+				name="DettaglioRidottoImpresaResponse" />
+
+		</wsdl:operation>
+
+		<wsdl:operation name="DettaglioUnitaLocaliImpresa"
+			parameterOrder="fk_rea_cciaa_regz fk_rea_n_rea switch_control user password">
+
+			<wsdl:input
+				message="impl:DettaglioUnitaLocaliImpresaRequest"
+				name="DettaglioUnitaLocaliImpresaRequest" />
+
+			<wsdl:output
+				message="impl:DettaglioUnitaLocaliImpresaResponse"
+				name="DettaglioUnitaLocaliImpresaResponse" />
+
+		</wsdl:operation>
+
+		<wsdl:operation name="DettaglioUnitaLocaleImpresa"
+			parameterOrder="fk_rea_cciaa_regz fk_rea_n_rea pro_localizzazione switch_control user password">
+
+			<wsdl:input
+				message="impl:DettaglioUnitaLocaleImpresaRequest"
+				name="DettaglioUnitaLocaleImpresaRequest" />
+
+			<wsdl:output
+				message="impl:DettaglioUnitaLocaleImpresaResponse"
+				name="DettaglioUnitaLocaleImpresaResponse" />
+
+		</wsdl:operation>
+
+		<wsdl:operation name="DettaglioPersoneConCarica"
+			parameterOrder="fk_pri_cciaa_regz fk_pri_n_rea switch_control user password">
+
+			<wsdl:input
+				message="impl:DettaglioPersoneConCaricaRequest"
+				name="DettaglioPersoneConCaricaRequest" />
+
+			<wsdl:output
+				message="impl:DettaglioPersoneConCaricaResponse"
+				name="DettaglioPersoneConCaricaResponse" />
+
+		</wsdl:operation>
+
+		<wsdl:operation name="DettaglioPersonaConCarica"
+			parameterOrder="fk_pri_cciaa_regz fk_pri_n_rea pro_persona switch_control user password">
+
+			<wsdl:input
+				message="impl:DettaglioPersonaConCaricaRequest"
+				name="DettaglioPersonaConCaricaRequest" />
+
+			<wsdl:output
+				message="impl:DettaglioPersonaConCaricaResponse"
+				name="DettaglioPersonaConCaricaResponse" />
+
+		</wsdl:operation>
+
+	</wsdl:portType>
+
+	<wsdl:binding name="gateSoapBinding"
+		type="impl:ICRSimpleWSImpl">
+
+		<wsdlsoap:binding style="rpc"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+
+		<wsdl:operation
+			name="RicercaImpreseNonCessatePerCodiceFiscale">
+
+			<wsdlsoap:operation soapAction="" />
+
+			<wsdl:input
+				name="RicercaImpreseNonCessatePerCodiceFiscaleRequest">
+
+				<wsdlsoap:body namespace="http://ws.icr.ic.it"
+					use="literal" />
+
+			</wsdl:input>
+
+			<wsdl:output
+				name="RicercaImpreseNonCessatePerCodiceFiscaleResponse">
+
+				<wsdlsoap:body
+
+					namespace="http://parixgate.infocamere.it/services/gate"
+					use="literal" />
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="RicercaImpresePerCodiceFiscale">
+
+			<wsdlsoap:operation soapAction="" />
+
+			<wsdl:input name="RicercaImpresePerCodiceFiscaleRequest">
+
+				<wsdlsoap:body namespace="http://ws.icr.ic.it"
+					use="literal" />
+
+			</wsdl:input>
+
+			<wsdl:output
+				name="RicercaImpresePerCodiceFiscaleResponse">
+
+				<wsdlsoap:body
+
+					namespace="http://parixgate.infocamere.it/services/gate"
+					use="literal" />
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation
+			name="RicercaImpreseNonCessatePerDenominazione">
+
+			<wsdlsoap:operation soapAction="" />
+
+			<wsdl:input
+				name="RicercaImpreseNonCessatePerDenominazioneRequest">
+
+				<wsdlsoap:body namespace="http://ws.icr.ic.it"
+					use="literal" />
+
+			</wsdl:input>
+
+			<wsdl:output
+				name="RicercaImpreseNonCessatePerDenominazioneResponse">
+
+				<wsdlsoap:body
+					namespace="http://parixgate.infocamere.it/services/gate"
+					use="literal" />
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="RicercaImpresePerDenominazione">
+
+			<wsdlsoap:operation soapAction="" />
+
+			<wsdl:input name="RicercaImpresePerDenominazioneRequest">
+
+				<wsdlsoap:body namespace="http://ws.icr.ic.it"
+					use="literal" />
+
+			</wsdl:input>
+
+			<wsdl:output
+				name="RicercaImpresePerDenominazioneResponse">
+
+				<wsdlsoap:body
+					namespace="http://parixgate.infocamere.it/services/gate"
+					use="literal" />
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation
+			name="RicercaPersoneNonCessatePerCodiceFiscale">
+
+			<wsdlsoap:operation soapAction="" />
+
+			<wsdl:input
+				name="RicercaPersoneNonCessatePerCodiceFiscaleRequest">
+
+				<wsdlsoap:body namespace="http://ws.icr.ic.it"
+					use="literal" />
+
+			</wsdl:input>
+
+			<wsdl:output
+				name="RicercaPersoneNonCessatePerCodiceFiscaleResponse">
+
+				<wsdlsoap:body
+
+					namespace="http://parixgate.infocamere.it/services/gate"
+					use="literal" />
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="RicercaPersonePerCodiceFiscale">
+
+			<wsdlsoap:operation soapAction="" />
+
+			<wsdl:input name="RicercaPersonePerCodiceFiscaleRequest">
+
+				<wsdlsoap:body namespace="http://ws.icr.ic.it"
+					use="literal" />
+
+			</wsdl:input>
+
+			<wsdl:output
+				name="RicercaPersonePerCodiceFiscaleResponse">
+
+				<wsdlsoap:body
+					namespace="http://parixgate.infocamere.it/services/gate"
+					use="literal" />
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation
+			name="RicercaImpresePerPeriodoVariazione">
+
+			<wsdlsoap:operation soapAction="" />
+
+			<wsdl:input
+				name="RicercaImpresePerPeriodoVariazioneRequest">
+
+				<wsdlsoap:body namespace="http://ws.icr.ic.it"
+					use="literal" />
+
+			</wsdl:input>
+
+			<wsdl:output
+				name="RicercaImpresePerPeriodoVariazioneResponse">
+
+				<wsdlsoap:body
+					namespace="http://parixgate.infocamere.it/services/gate"
+					use="literal" />
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="DettaglioCompletoImpresa">
+
+			<wsdlsoap:operation soapAction="" />
+
+			<wsdl:input name="DettaglioCompletoImpresaRequest">
+
+				<wsdlsoap:body namespace="http://ws.icr.ic.it"
+					use="literal" />
+
+			</wsdl:input>
+
+			<wsdl:output name="DettaglioCompletoImpresaResponse">
+
+				<wsdlsoap:body
+					namespace="http://parixgate.infocamere.it/services/gate"
+					use="literal" />
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="DettaglioRidottoImpresa">
+
+			<wsdlsoap:operation soapAction="" />
+
+			<wsdl:input name="DettaglioRidottoImpresaRequest">
+
+				<wsdlsoap:body namespace="http://ws.icr.ic.it"
+					use="literal" />
+
+			</wsdl:input>
+
+			<wsdl:output name="DettaglioRidottoImpresaResponse">
+
+				<wsdlsoap:body
+
+					namespace="http://parixgate.infocamere.it/services/gate"
+					use="literal" />
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="DettaglioUnitaLocaliImpresa">
+
+			<wsdlsoap:operation soapAction="" />
+
+			<wsdl:input name="DettaglioUnitaLocaliImpresaRequest">
+
+				<wsdlsoap:body namespace="http://ws.icr.ic.it"
+					use="literal" />
+
+			</wsdl:input>
+
+			<wsdl:output name="DettaglioUnitaLocaliImpresaResponse">
+
+				<wsdlsoap:body
+					namespace="http://parixgate.infocamere.it/services/gate"
+					use="literal" />
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="DettaglioUnitaLocaleImpresa">
+
+			<wsdlsoap:operation soapAction="" />
+
+			<wsdl:input name="DettaglioUnitaLocaleImpresaRequest">
+
+				<wsdlsoap:body namespace="http://ws.icr.ic.it"
+					use="literal" />
+
+			</wsdl:input>
+
+			<wsdl:output name="DettaglioUnitaLocaleImpresaResponse">
+
+				<wsdlsoap:body
+					namespace="http://parixgate.infocamere.it/services/gate"
+					use="literal" />
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="DettaglioPersoneConCarica">
+
+			<wsdlsoap:operation soapAction="" />
+
+			<wsdl:input name="DettaglioPersoneConCaricaRequest">
+
+				<wsdlsoap:body namespace="http://ws.icr.ic.it"
+					use="literal" />
+
+			</wsdl:input>
+
+			<wsdl:output name="DettaglioPersoneConCaricaResponse">
+
+				<wsdlsoap:body
+
+					namespace="http://parixgate.infocamere.it/services/gate"
+					use="literal" />
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="DettaglioPersonaConCarica">
+
+			<wsdlsoap:operation soapAction="" />
+
+			<wsdl:input name="DettaglioPersonaConCaricaRequest">
+
+				<wsdlsoap:body namespace="http://ws.icr.ic.it"
+					use="literal" />
+
+			</wsdl:input>
+
+			<wsdl:output name="DettaglioPersonaConCaricaResponse">
+
+				<wsdlsoap:body
+
+					namespace="http://parixgate.infocamere.it/services/gate"
+					use="literal" />
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+	</wsdl:binding>
+
+	<wsdl:service name="ICRSimpleWSImplService">
+
+		<wsdl:port binding="impl:gateSoapBinding" name="gate">
+
+			<wsdlsoap:address
+				location="http://80.17.46.109:8080/parixgate/services/gate" />
+
+		</wsdl:port>
+
+	</wsdl:service>
+
+</wsdl:definitions>

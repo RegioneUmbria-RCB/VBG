@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:sch="http://gruppoinit.it/sigepro/schemas/messages/mailconfig" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://gruppoinit.it/sigepro/definitions/mailconfig" targetNamespace="http://gruppoinit.it/sigepro/definitions/mailconfig">
+	<wsdl:types>
+		<schema xmlns="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://gruppoinit.it/sigepro/schemas/messages/mailconfig" schemaLocation="mailconfig.xsd" />
+		</schema>
+	</wsdl:types>
+	<wsdl:message name="MailConfigResponse">
+		<wsdl:part element="sch:MailConfigResponse" name="MailConfigResponse" />
+	</wsdl:message>
+	<wsdl:message name="MailConfigRequest">
+		<wsdl:part element="sch:MailConfigRequest" name="MailConfigRequest" />
+	</wsdl:message>
+	<!-- Request e Response per gestione nuova configurazione multi account -->
+	<wsdl:message name="MailConfigResponse2">
+		<wsdl:part element="sch:MailConfigResponse2" name="MailConfigResponse2" />
+	</wsdl:message>
+	<wsdl:message name="MailConfigRequest2">
+		<wsdl:part element="sch:MailConfigRequest2" name="MailConfigRequest2" />
+	</wsdl:message>
+	
+	<wsdl:portType name="MailConfig">
+		<wsdl:operation name="MailConfig">
+			<wsdl:input message="tns:MailConfigRequest" name="MailConfigRequest" />
+			<wsdl:output message="tns:MailConfigResponse" name="MailConfigResponse" />
+		</wsdl:operation>
+		<!-- Nuovo metodo per la gestion per gestione nuova configurazione multi account (sostituisce il  MailConfig)-->
+		<wsdl:operation name="MailConfig2">
+			<wsdl:input message="tns:MailConfigRequest2" name="MailConfigRequest2" />
+			<wsdl:output message="tns:MailConfigResponse2" name="MailConfigResponse2" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="MailConfigSoap11" type="tns:MailConfig">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="MailConfig">
+			<soap:operation soapAction="mailConfig" />
+			<wsdl:input name="MailConfigRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="MailConfigResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<!-- Nuovo metodo per la gestion per gestione nuova configurazione multi account (sostituisce il  MailConfig)-->
+		<wsdl:operation name="MailConfig2">
+			<soap:operation soapAction="mailConfig2" />
+			<wsdl:input name="MailConfigRequest2">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="MailConfigResponse2">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="MailConfigService">
+		<wsdl:port binding="tns:MailConfigSoap11" name="MailConfigSoap11">
+			<soap:address location="http://devel9:8080/vbg/services/" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

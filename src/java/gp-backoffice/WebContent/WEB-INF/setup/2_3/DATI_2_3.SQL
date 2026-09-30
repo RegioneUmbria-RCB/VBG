@@ -1,0 +1,15 @@
+delete from VERTICALIZZAZIONIPARAMETRI where MODULO='STC' and PARAMETRO='PEOPLE_ID_ENTE';
+delete from VERTICALIZZAZIONIPARAMETRI where MODULO='STC' and PARAMETRO='PEOPLE_ID_SPORTELLO';
+delete from VERTICALIZZAZIONIPARAMETRI where MODULO='STC' and PARAMETRO='AREARISERVATA_ID_ENTE';
+delete from VERTICALIZZAZIONIPARAMETRI where MODULO='STC' and PARAMETRO='AREARISERVATA_ID_SPORTELLO';
+
+insert into VERTICALIZZAZIONIPARAMETRIBASE (DESCRIZIONE,MODULO,PARAMETRO) values ('Id del nodo NLA BACKOFFICE registrato su STC','STC','NLA_IDNODO');
+insert into VERTICALIZZAZIONIPARAMETRIBASE (DESCRIZIONE,MODULO,PARAMETRO) values ('Id del nodo NLA PEOPLE registrato su STC (utilizzato per individuare le chiamate provenienti da people)','STC','NLA_IDNODO_PEOPLE');
+insert into VERTICALIZZAZIONIPARAMETRIBASE (DESCRIZIONE,MODULO,PARAMETRO) values ('Id del nodo NLA AREARISERVATA registrato su STC (utilizzato per individuare le chiamate provenienti dall''area riservata)','STC','NLA_IDNODO_AREARISERVATA');
+insert into VERTICALIZZAZIONIPARAMETRIBASE (DESCRIZIONE,MODULO,PARAMETRO) values ('Il codice del tipo soggetto di default da associare alle domande provenienti da STC qualora fallisse la logica di Lookup a partire dall''Xml ricevuto','STC','TIPO_SOGGETTO_DEFAULT');
+
+update VERTICALIZZAZIONIPARAMETRIBASE set DESCRIZIONE='Utente per il login al sistema STC' where MODULO='STC' and PARAMETRO='NLA_USERNAME';
+update VERTICALIZZAZIONIPARAMETRIBASE set descrizione='Password per il login al sistema STC' where MODULO='STC' and PARAMETRO='NLA_PASSWORD';
+
+UPDATE CLMENU_JAVA SET SOFTWAREESCLUSI = 'PR,FI,AB' WHERE ID = 157;
+INSERT INTO SOFTWARE(CODICE, DESCRIZIONE, MODULOOPZIONALE, DESCRIZIONELUNGA, ACCESSORAPIDO, ORDINE) VALUES ('AG', 'Agricoltura',1, 'Agricoltura',0,45);

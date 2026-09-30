@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:ns2="http://schemas.xmlsoap.org/soap/http" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://gruppoinit.it/sigepro/definitions/istanzeoneri" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://gruppoinit.it/sigepro/schemas/messages/istanzeoneri" name="IstanzeoneriWsService" targetNamespace="http://gruppoinit.it/sigepro/definitions/istanzeoneri" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xs:schema xmlns:tns="http://gruppoinit.it/sigepro/schemas/messages/istanzeoneri" xmlns:ns1="http://gruppoinit.it/sigepro/schemas/messages/base" elementFormDefault="qualified" targetNamespace="http://gruppoinit.it/sigepro/schemas/messages/istanzeoneri" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:import namespace="http://gruppoinit.it/sigepro/schemas/messages/base" />
+      <xs:element name="EliminaOnereRequest">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="token" type="xs:string" />
+            <xs:element name="codiceonere" type="xs:integer" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="EliminaOnereResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="esitoOperazione" type="ns1:EsitoOperazioneType" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="InsertOnereRequest">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="token" type="xs:string" />
+            <xs:element name="riferimentoIstanza" type="xs:integer" />
+            <xs:element name="importo" type="xs:decimal" />
+            <xs:element name="riferimentoCausale" type="xs:integer" />
+            <xs:element minOccurs="0" name="riferimentoEndoprocedimento" type="xs:integer" />
+            <xs:element minOccurs="0" name="codiceresponsabile" type="xs:integer" />
+            <xs:element minOccurs="0" name="datascadenza" type="xs:dateTime" />
+            <xs:element minOccurs="0" name="dataPagamento" type="xs:dateTime" />
+            <xs:element minOccurs="0" name="modalitaPagamento" type="tns:ModalitaPagamentoType" />
+            <xs:element minOccurs="0" name="importopagato" type="xs:decimal" />
+            <xs:element minOccurs="0" name="codiceamministrazioni" type="xs:integer" />
+            <xs:element minOccurs="0" name="numerorata" type="xs:integer" />
+            <xs:element minOccurs="0" name="importoInteresse" type="xs:decimal" />
+            <xs:element minOccurs="0" name="onereRateizzato" type="xs:boolean" />
+            <xs:element minOccurs="0" name="riferimentiPagamento" type="xs:string" />
+            <xs:element minOccurs="0" name="note" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="InsertOnereResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="codiceonere" type="xs:integer" />
+            <xs:element name="esitoOperazione" type="ns1:EsitoOperazioneType" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="RegistraPagamentoRataRequest">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="token" type="xs:string" />
+            <xs:element name="riferimentoIstanza" type="xs:integer" />
+            <xs:element name="riferimentoCausale" type="xs:integer" />
+            <xs:element name="numeroRata" type="xs:integer" />
+            <xs:element name="importo" type="xs:decimal" />
+            <xs:element name="dataPagamento" type="xs:date" />
+            <xs:element minOccurs="0" name="modalitaPagamento" type="tns:ModalitaPagamentoType" />
+            <xs:element minOccurs="0" name="riferimentiPagamento" type="xs:string" />
+            <xs:element minOccurs="0" name="note" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="RegistraPagamentoRequest">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="token" type="xs:string" />
+            <xs:element name="riferimentoOnere" type="xs:integer" />
+            <xs:element name="importo" type="xs:decimal" />
+            <xs:element name="dataPagamento" type="xs:date" />
+            <xs:element minOccurs="0" name="modalitaPagamento" type="tns:ModalitaPagamentoType" />
+            <xs:element minOccurs="0" name="riferimentiPagamento" type="xs:string" />
+            <xs:element minOccurs="0" name="note" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="RegistraPagamentoResponse" type="ns1:EsitoOperazioneType" />
+      <xs:complexType name="ModalitaPagamentoType">
+        <xs:sequence>
+          <xs:element name="codice" type="xs:string" />
+          <xs:element name="descrizione" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+    <xs:schema xmlns:tns="http://gruppoinit.it/sigepro/schemas/messages/base" elementFormDefault="qualified" targetNamespace="http://gruppoinit.it/sigepro/schemas/messages/base" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:complexType name="EsitoOperazioneType">
+        <xs:sequence>
+          <xs:element name="esito" type="xs:int" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="listaErrori" nillable="true" type="tns:ErroreBackofficeType" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ErroreBackofficeType">
+        <xs:sequence>
+          <xs:element name="codice" type="xs:string" />
+          <xs:element name="descrizione" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="AllegatoBaseType">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="riferimento" type="tns:RiferimentoOggettoBackofficeType" />
+          <xs:element name="datiFile" type="tns:FileBaseType" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="RiferimentoOggettoBackofficeType">
+        <xs:sequence>
+          <xs:element name="codice" type="xs:int" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="FileBaseType">
+        <xs:sequence>
+          <xs:element name="fileName" type="xs:string" />
+          <xs:element minOccurs="0" name="mimeType" type="xs:string" />
+          <xs:element xmlns:ns1="http://www.w3.org/2005/05/xmlmime" ns1:expectedContentTypes="application/octet-stream" name="binaryData" type="xs:base64Binary" />
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="RegistraPagamentoRataResponse">
+    <wsdl:part name="RegistraPagamentoResponse" element="ns1:RegistraPagamentoResponse" />
+  </wsdl:message>
+  <wsdl:message name="RegistraPagamento">
+    <wsdl:part name="RegistraPagamentoRequest" element="ns1:RegistraPagamentoRequest" />
+  </wsdl:message>
+  <wsdl:message name="EliminaOnereResponse">
+    <wsdl:part name="EliminaOnereResponse" element="ns1:EliminaOnereResponse" />
+  </wsdl:message>
+  <wsdl:message name="RegistraPagamentoResponse">
+    <wsdl:part name="RegistraPagamentoResponse" element="ns1:RegistraPagamentoResponse" />
+  </wsdl:message>
+  <wsdl:message name="InsertOnere">
+    <wsdl:part name="InsertOnereRequest" element="ns1:InsertOnereRequest" />
+  </wsdl:message>
+  <wsdl:message name="EliminaOnere">
+    <wsdl:part name="EliminaOnereRequest" element="ns1:EliminaOnereRequest" />
+  </wsdl:message>
+  <wsdl:message name="InsertOnereResponse">
+    <wsdl:part name="InsertOnereResponse" element="ns1:InsertOnereResponse" />
+  </wsdl:message>
+  <wsdl:message name="RegistraPagamentoRata">
+    <wsdl:part name="RegistraPagamentoRataRequest" element="ns1:RegistraPagamentoRataRequest" />
+  </wsdl:message>
+  <wsdl:portType name="Istanzeoneri">
+    <wsdl:operation name="RegistraPagamento">
+      <wsdl:input name="RegistraPagamento" message="tns:RegistraPagamento" />
+      <wsdl:output name="RegistraPagamentoResponse" message="tns:RegistraPagamentoResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="EliminaOnere">
+      <wsdl:input name="EliminaOnere" message="tns:EliminaOnere" />
+      <wsdl:output name="EliminaOnereResponse" message="tns:EliminaOnereResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="RegistraPagamentoRata">
+      <wsdl:input name="RegistraPagamentoRata" message="tns:RegistraPagamentoRata" />
+      <wsdl:output name="RegistraPagamentoRataResponse" message="tns:RegistraPagamentoRataResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="InsertOnere">
+      <wsdl:input name="InsertOnere" message="tns:InsertOnere" />
+      <wsdl:output name="InsertOnereResponse" message="tns:InsertOnereResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="IstanzeoneriWsServiceSoapBinding" type="tns:Istanzeoneri">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="EliminaOnere">
+      <soap:operation soapAction="EliminaOnere" style="document" />
+      <wsdl:input name="EliminaOnere">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="EliminaOnereResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RegistraPagamento">
+      <soap:operation soapAction="RegistraPagamento" style="document" />
+      <wsdl:input name="RegistraPagamento">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="RegistraPagamentoResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RegistraPagamentoRata">
+      <soap:operation soapAction="RegistraPagamentoRata" style="document" />
+      <wsdl:input name="RegistraPagamentoRata">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="RegistraPagamentoRataResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InsertOnere">
+      <soap:operation soapAction="InsertOnere" style="document" />
+      <wsdl:input name="InsertOnere">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="InsertOnereResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="IstanzeoneriWsService">
+    <wsdl:port name="IstanzeoneriSoap11" binding="tns:IstanzeoneriWsServiceSoapBinding">
+      <soap:address location="http://localhost:8080/backend/services/istanzeoneri" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

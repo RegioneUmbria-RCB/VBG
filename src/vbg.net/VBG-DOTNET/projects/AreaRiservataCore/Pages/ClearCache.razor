@@ -1,0 +1,158 @@
+﻿@page "/{alias}/{software}/clearcache"
+@page "/{alias}/{software}/clearcache/{kill}"
+@using Init.Sigepro.FrontEnd.AppLogic.Autenticazione.Vbg.AutenticazioneUtente;
+@using Init.Sigepro.FrontEnd.AppLogic.Configurazione.V2
+@using VBG.Shared.Infrastructure.Caching;
+@using log4net;
+
+<style>
+    @@media (prefers-color-scheme: dark) {
+        body {
+            background-color: black;
+            color: white;
+        }
+
+        .app-domain {
+            color: black;
+        }
+    }
+</style>
+@foreach (var operazione in _operazioni)
+{
+    @((MarkupString)operazione)
+    <br />
+}
+
+@code {
+    [Inject]
+    public IApplicationCache _applicationCache { get; set; } = default!;
+    [Inject]
+    public ISessionCache _sessionCache { get; set; } = default!;
+    [Inject]
+    public IContextCache _contextCache { get; set; } = default!;
+    [Inject]
+    protected IAuthenticationDataResolver _authenticationDataResolver { get; set; } = default!;
+    [Inject]
+    public ITimedCache _timedCache { get; set; } = default!;
+    [Inject]
+    public Microsoft.AspNetCore.Hosting.IApplicationLifetime _applicationLifetime { get; set; } = default!;
+    [Inject]
+    public IConfigurazione<ParametriSigeproSecurity> _parametriSecurity { get; set; } = default!;
+    [Inject]
+    public IHttpClientFactory _httpClientFactory { get; set; } = default!;
+
+    [Parameter]
+    public string Alias { get; set; } = "";
+    [Parameter]
+    public string Software { get; set; } = "";
+    [Parameter]
+    public string Kill { get; set; } = "";
+
+    List<string> _operazioni = new List<string>();
+    ILog _log = LogManager.GetLogger(typeof(ClearCache));
+
+    protected override async Task OnInitializedAsync()
+    {
+        var utente = _authenticationDataResolver.DatiAutenticazione.DatiUtente;
+
+        _log.Fatal($"L'utente {utente.Nome} {utente.Nominativo} (codice: {Alias} {utente.Codiceanagrafe}) sta pulendo la cache");
+
+
+        _operazioni = new List<string>();
+
+        _operazioni.Add("Pulizia della cache dell'applicazione");
+        _applicationCache.Clear();
+        _operazioni.Add("Pulizia della cache di sessione");
+        _sessionCache.Clear();
+        _operazioni.Add("Pulizia della cache di contesto");
+        _contextCache.Clear();
+        _operazioni.Add("Pulizia della cache a tempo");
+        _timedCache.Clear();
+
+        await SvuotaCacheRemotaAsync();
+
+        if (!String.IsNullOrEmpty(Kill))
+        {
+            _log.Fatal($"L'utente {utente.Nome} {utente.Nominativo} (codice: {Alias} {utente.Codiceanagrafe}) sta arrestando l'applicazione");
+
+            _operazioni.Add("<div style='color:red;font-weight:bold'>L'appliazione verrà arrestata in 5 secondi e probabilmente andrà riavviata a mano!!!</div>");
+            await Task.Run(async () =>
+            {
+                await Task.Delay(5000);
+                _applicationLifetime.StopApplication();
+            });
+        }
+
+        _operazioni.Add(Cow);
+
+        await base.OnInitializedAsync();
+    }
+
+    private async Task SvuotaCacheRemotaAsync()
+    {
+        try
+        {
+            if (String.IsNullOrEmpty(_parametriSecurity.Parametri.AspnetClearCacheUrl))
+            {
+                _operazioni.Add("Servizio di clear cache per AspnetCoreServices non configurato");
+
+                return;
+            }
+
+            using var httpClient = _httpClientFactory.CreateClient();
+            var response = await httpClient.GetAsync(_parametriSecurity.Parametri.AspnetClearCacheUrl);
+
+
+            response.EnsureSuccessStatusCode();
+
+            _operazioni.Add("Pulizia della cache remota completata");
+        }
+        catch (Exception ex)
+        {
+            _log.Error($"Errore durante la pulizia della cache remota: {ex.Message}", ex);
+            _operazioni.Add($"Errore nella pulizia della cache remota: {ex.Message}");
+        }
+    }
+
+
+    const string Cow = @"<pre>
+                                                      >*
+                                               #      >*
+                                               #  ###>***~~~~~|
+                                               ####  *****^^^#
+                                          _____|       *#####
+                                         | ^^^#   \/ \/ #
+                                        ##^^###         |
+                                         ### ##*        *
+ |_                                ********~~|_____>         *
+ \\|_                 ________************        #>>***    ***
+ \\\\|_             __|     *************        ## >>>*  *****
+ |___  |______   __|         ***********       ##>### ^^^^^^^^^^
+    |____    |__|           **********       >>>>## ^<^^^^^@^^^^^
+     #          ***      ********      **>>>># ^<^^@^^^@^^^^^
+      #      ***********    ******     *>>>## ^<<^^^^^^^^<<<
+      #      ***********    ******    **>>>## ^<<<<^^^<<<<<
+     #        *********      ****   ***>>>#### ^<<<<<<<<<
+     #         **********          ****>>>###### <<<<<
+     ##        **********          ****>>>>##      ##
+     ##         **  ***             ****>>>>        #     ##XXX
+     ##**                            *******         ##>>>>#XX
+      >>*                             ******         #######XXX
+      >>*****                           ***         ##__
+       >>*****   **** ***               **    *****     \__
+       >># **    *********              *********>>>#      XXX
+       ##        *********              *******>>>>>##     XXX
+    |~~           ********                 *>>>>> >#######XXX
+    X~~~~ ###          *********          ######>          >>>XXXX
+  XXX  #>>>##          ********>>##  #######
+   XXX#>      #   ##>>>>>>>>>>>>>###UUUUU^^
+   XXX        #  ####>>>>>>>>>>UUUUUUUUU^^
+          #  >>           UUUUUU^^^<()
+         #  >              U()^<()  ()
+       *#  *>               ()  ()
+      **** #
+        ***
+        **
+</pre>";
+
+}

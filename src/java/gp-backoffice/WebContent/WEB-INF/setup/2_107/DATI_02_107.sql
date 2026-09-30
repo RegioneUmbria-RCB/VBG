@@ -1,0 +1,6 @@
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO,PARAMETRO,DESCRIZIONE) VALUES ('PROTOCOLLO_ITALSOFT','URL_FASCICOLAZIONE','Url del WS di fascicolazione');
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE (MODULO, PARAMETRO, DESCRIZIONE) VALUES ('PROTOCOLLO_PRISMA', 'DISABILITA_WS_CLASSIFICHE', 'Se impostato a 1 consente di disabilitare il recupero dei valori di classificazione tramite ws.');
+ 
+INSERT INTO verticalizzazioniparametribase (modulo, parametro, descrizione) VALUES ('AREA_RISERVATA', 'USA_AR_CORE', 'Se impostato a 1 attiva l''integrazione tra vecchia area riservata e area riservata core (default: 0)');
+INSERT INTO verticalizzazioniparametribase (modulo, parametro, descrizione) VALUES ('AREA_RISERVATA', 'BASE_URL_FRAMEWORK', 'Forza l''utilizzo dell''url impostato per configurare gli url che puntano all''area riservata Framework (non deve terminare con uno slash). Se non impostato l''url viene calcolato dal path attuale dell''applicazione.');
+INSERT INTO verticalizzazioniparametribase (modulo, parametro, descrizione) VALUES ('AREA_RISERVATA', 'BASE_URL_CORE', 'Forza l''utilizzo dell''url impostato per configurare gli url che puntano all''area riservata Core (non deve terminare con uno slash). Se non impostato l''url viene calcolato dal path attuale dell''applicazione.');

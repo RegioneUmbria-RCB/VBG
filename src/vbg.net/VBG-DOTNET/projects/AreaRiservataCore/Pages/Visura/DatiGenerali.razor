@@ -1,0 +1,87 @@
+﻿@using AreaRiservataCore.Shared.DetailCards
+@using VBG.BlazorComponentsLibrary.DesignComuni.Forms
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+@using VBG.BlazorComponentsLibrary.EditFormComponents
+
+
+@if (DataSource != null)
+{
+    <TitoloPagina>@($"Pratica {DataSource.NumeroPratica} del {DataSource.DataPratica?.ToString("dd/MM/yyyy")}")</TitoloPagina>
+
+    <DetailCardGroup Title="Dati generali">
+        <DetailCard PaddingLevel="0" HasShadow="false">
+            <DetailCardInfo Title="Ente">
+                @DataSource.ComunePratica
+            </DetailCardInfo>
+
+            @if (this.MostraDatiProtocollo && !String.IsNullOrEmpty(DataSource.NumeroProtocollo) && DataSource.DataProtocollo.HasValue)
+            {
+                <div class="row">
+                    <DetailCardInfo Title="Numero protocollo" class="col">
+                        @DataSource.NumeroProtocollo
+                    </DetailCardInfo>
+                    <DetailCardInfo Title="Data protocollo" class="col" ">
+                        @(DataSource.DataProtocollo.HasValue? DataSource.DataProtocollo.Value.ToShortDateString() : "")
+                    </DetailCardInfo>
+                </div>
+            }
+@* 
+            <div class="row">
+                <DetailCardInfo Title="Numero pratica" class="col">
+                    @DataSource.NumeroPratica
+                </DetailCardInfo>
+                <DetailCardInfo Title="Data presentazione" class="col">
+                    @(DataSource.DataPratica.HasValue? DataSource.DataPratica.Value.ToShortDateString() : "")
+                </DetailCardInfo>
+            </div> *@
+
+            @if (this.MostraPosizioneArchivio && !String.IsNullOrEmpty(DataSource.PosizioneArchivio))
+            {
+                <DetailCardInfo Title="Posizione in archivio" ResourceId="visura.posizione_in_archivio">
+                    @DataSource.PosizioneArchivio
+                </DetailCardInfo>
+            }
+
+            @if (!String.IsNullOrEmpty(DataSource.Oggetto))
+            {
+                <DetailCardInfo Title="Oggetto" ResourceId="visura.oggetto">
+                    @DataSource.Oggetto
+                </DetailCardInfo>
+            }
+
+
+            @if (!String.IsNullOrEmpty(DataSource.Intervento))
+            {
+                <DetailCardInfo Title="Intervento" ResourceId="visura.tipo_intervento">
+                    @DataSource.Intervento
+                </DetailCardInfo>
+            }
+            @if (this.MostraStatoPratica)
+            {
+                <DetailCardInfo Title="Stato" ResourceId="visura.stato">
+                    @DataSource.Stato
+                </DetailCardInfo>
+            }
+        </DetailCard>
+
+        @if (this.MostraRiferimenti)
+        {
+            <DetailCard>
+                <DetailCardTitle>Riferimenti</DetailCardTitle>
+                <DetailCardInfo Title="Responsabile procedimento">
+                    @DataSource.ResponsabileProcedimento
+                </DetailCardInfo>
+                <DetailCardInfo Title="Istruttore">
+                    @DataSource.Istruttore
+                </DetailCardInfo>
+                <DetailCardInfo Title="Operatore">
+                    @DataSource.Operatore
+                </DetailCardInfo>
+            </DetailCard>
+        }
+
+    </DetailCardGroup>
+
+
+
+}

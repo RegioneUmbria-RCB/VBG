@@ -1,0 +1,225 @@
+﻿@using Init.Sigepro.FrontEnd.CoreServices.GestionePresentazioneDomanda.Paginatore;
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.RisorseTestuali
+
+
+<style type="text/css">
+    .skipped {
+        cursor: not-allowed;
+        color: var(--main-primary);
+        background-color: whitesmoke;
+        border-top: 1px solid hsl(210deg, 4%, 78%) !important;
+    }
+
+    .help-descrizione-step {
+        display: block;
+        font-size: 14px !important;
+        color: hsl(210deg, 17%, 44%);
+    }
+</style>
+
+<div class="d-flex justify-content-center">
+    <div class="d-flex align-items-center">
+        <div class="d-flex flex-column align-items-center pe-4">
+            <div class="x-small mb-0 lh-sm">
+                @($"{(CurrentState?.CurrentStepId + 1)}/{CurrentState?.Steps.Count()}")
+            </div>
+            <div class="d-none d-sm-block mt-0 lh-sm fw-bold">@CurrentState?.TitoloPagina</div>
+        </div>
+
+        <div class="p-0 ps-2 border-start">
+            <button style="background-color: var(--bs-body-bg-rgb);border: 0;" @onclick="ShowModalDoveSono" aria-haspopup="true" aria-expanded="@_isVisibleModal" aria-label="Dove sono?">
+                <SvgIcon IconId="it-help-circle" CssClass="icon-expand icon-lg p-2 icon-primary"></SvgIcon>
+            </button>
+        </div>
+
+    </div>
+</div>
+
+<BasicModal @ref="_modalDoveSono" OnClose="HideModalDoveSono">
+    <ModalHeader Titolo="">
+        <h2 class="title-large-semi-bold">
+            <RisorsaTestuale IdRisorsa="modal-paginatore.titolo">
+                <ChildContent>
+                    Step presentazione istanza
+                </ChildContent>
+            </RisorsaTestuale>
+        </h2>
+    </ModalHeader>
+    <ModalBody>
+        <div class="it-list-wrapper">
+            <ul class="it-list">
+
+                @foreach (var step in this._vociWorkflow)
+                {
+                    if (step.Corrente || (step.Attivo && StepCompletati.Contains(step.IndiceStep)))
+                    {
+                        _cssClass = "active";
+                    }
+                    else if (step.IndiceStep < CurrentState?.CurrentStepId)
+                    {
+                        _cssClass = "skipped";
+                    }
+                    else
+                    {
+                        _cssClass = "";
+                    }
+
+                    <li>
+                        <div class="list-item @_cssClass">
+                            <div class="it-right-zone">
+                                <span class="text w-75">@step.Titolo<p class="help-descrizione-step fw-light fs-6">@((MarkupString)step.Descrizione)</p></span>
+                                <span class="metadata">
+
+                                    @if (step.Attivo && StepCompletati.Contains(step.IndiceStep))
+                                    {
+                                        <a style="text-decoration:underline;" @onclick="() => GoToStep(step.IndiceStep)" href="#" @onclick:preventDefault>Torna allo step</a>
+                                    }
+
+                                    @if (step.Corrente)
+                                    {
+                                        <span>Ti trovi qui</span>
+                                    }
+                                </span>
+                            </div>
+                        </div>
+                    </li>
+                }
+                @*
+                @foreach (var step in this.CurrentState.Steps)
+                {
+                <li>
+
+                @if (step.IsEnabled)
+                {
+                <a class="list-item @GetCssClass(step)" @onclick="() => OnGoToStep.InvokeAsync(step.IndiceStep - 1)">
+                <span>
+                @step.NomeStep
+                </span>
+                </a>
+                }
+                else
+                {
+                if (step.IsCurrent)
+                {
+                <a class="list-item @GetCssClass(step) pe-none">
+                <span>
+                @step.NomeStep
+                </span>
+                </a>
+                }
+                else
+                {
+                <a class="list-item @GetCssClass(step)">
+                <span>
+                @step.NomeStep
+                </span>
+                </a>
+                }
+                }
+
+                </li>
+                }*@
+            </ul>
+        </div>
+    </ModalBody>
+</BasicModal>
+
+
+@code {
+    [Parameter]
+    public PaginatoreState? CurrentState { get; set; }
+    [Parameter]
+    public EventCallback<int> OnGoToStep { get; set; }
+
+    [Parameter]
+    public List<int> StepCompletati { get; set; } = default!;
+
+    private BasicModal? _modalDoveSono;
+    private List<ElementoLista> _vociWorkflow = new List<ElementoLista>();
+
+    private bool _isVisibleModal;
+
+    private string _cssClass = "";
+
+    private class ElementoLista
+    {
+        public string Titolo { get; set; } = "Titolo";
+        public string Descrizione { get; set; } = "Lorem ipsum dolor sit amet";
+        public bool Attivo { get; set; }
+        public bool Corrente { get; set; }
+        public int IndiceStep { get; set; }
+    }
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        @if (this.CurrentState is not null)
+        {
+            _vociWorkflow = this.CurrentState.Steps.Select(x => new ElementoLista
+                {
+                    Titolo = x.NomeStep,
+                    Descrizione = AccorciaDescrizioneStep(x.DescrizioneStep),
+                    Attivo = x.IsEnabled,
+                    Corrente = x.IsCurrent,
+                    IndiceStep = x.IndiceStepZeroBased
+                })
+            .ToList();
+        }
+    }
+
+    string GetCssClass(Step step)
+    {
+        //var sb = new List<string>();
+        if (step.IsCurrent)
+        {
+            return "active-list-item";
+        }
+
+        if (!step.IsEnabled)
+        {
+            return "disabled";
+        }
+
+
+        return "";
+        //return String.Join(" ", sb);
+    }
+
+    private string AccorciaDescrizioneStep(string descrizioneStep)
+    {
+        if (descrizioneStep == null)
+        {
+            return "Descrizione non disponibile";
+        }
+        var idx = descrizioneStep.IndexOf(".");
+
+        if(idx != -1)
+        {
+            return descrizioneStep.Substring(0, idx);
+        }
+
+        return descrizioneStep;
+    }
+
+    private void GoToStep(int indiceStep)
+    {
+        HideModalDoveSono();
+
+        OnGoToStep.InvokeAsync(indiceStep);
+    }
+
+    private void ShowModalDoveSono()
+    {
+        this._modalDoveSono?.Show();
+        _isVisibleModal = true;
+    }
+
+    private void HideModalDoveSono()
+    {
+        this._modalDoveSono?.Hide();
+        _isVisibleModal = false;
+    }
+}

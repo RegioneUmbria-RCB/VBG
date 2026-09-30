@@ -1,0 +1,175 @@
+<schema targetNamespace="http://gruppoinit.it/sigepro/schemas/messages/archiviBackoffice" 
+	xmlns:tns="http://gruppoinit.it/sigepro/schemas/messages/archiviBackoffice"
+	xmlns="http://www.w3.org/2001/XMLSchema" 
+	xmlns:xmime="http://www.w3.org/2005/05/xmlmime"
+	elementFormDefault="qualified">
+	
+	<!-- Definizioni request e response -->
+	
+	<element name="AlberoRequest">
+		<complexType>
+			<sequence>
+				<element name="albero" type="tns:Albero" minOccurs="1" maxOccurs="1" />
+				<element name="software" type="string" minOccurs="1" maxOccurs="1" />
+				<element name="token" type="string" minOccurs="1" maxOccurs="1" ></element>
+				<element name="aggiorna" type="boolean" minOccurs="1" maxOccurs="1" /> 	
+			</sequence>
+		</complexType>	
+	</element>
+	
+	<element name="AlberoResponse">
+		<complexType>
+			<sequence>
+				<element name="esito" type="string" minOccurs="1" maxOccurs="1" />
+			</sequence>
+		</complexType>	
+	</element>
+	
+	
+	<element name="EndoprocedimentiRequest">
+		<complexType>
+			<sequence>
+			    <element name="famigliaEndoprocedimento" type="tns:FamigliaEndoprocedimento" minOccurs="1" maxOccurs="unbounded" />
+				<element name="software" type="string" minOccurs="1" maxOccurs="1" />
+				<element name="token" type="string" minOccurs="1" maxOccurs="1" />
+				<element name="aggiorna" type="boolean" minOccurs="1" maxOccurs="1" />
+			</sequence>
+		</complexType>	 		
+	</element>
+	
+	
+	<element name="EndoprocedimentiResponse">
+		<complexType>
+			<sequence>
+				<element name="esito" type="string" minOccurs="1" maxOccurs="1" />
+			</sequence>
+		</complexType>	
+	</element>
+	
+	<element name="AlberoprocEndoRequest">
+		<complexType>
+			<sequence>
+				<element name="alberoprocEndo" type="tns:AlberoprocEndo" minOccurs="1" maxOccurs="unbounded"/>
+				<element name="software" type="string" minOccurs="1" maxOccurs="1" />
+				<element name="token" type="string" minOccurs="1" maxOccurs="1" />
+				</sequence>
+		</complexType>	
+	</element>
+	
+	<element name="AlberoprocEndoResponse">
+		<complexType>
+			<sequence>
+				<element name="esito" type="string" minOccurs="1" maxOccurs="1" />
+			</sequence>
+		</complexType>	
+	</element>
+
+	
+	<!-- Definizioni tipi complessi -->
+	
+	<complexType name="Albero">
+		<sequence>
+			<element name="iniziaDallaRadice" type="boolean" minOccurs="1" maxOccurs="1" ></element> 
+			<element name="nodoIniziale" type="tns:NodoAlbero" minOccurs="0" maxOccurs="1" /> 	
+		</sequence>
+	</complexType>
+	
+	<complexType name="NodoAlbero">
+		<sequence>		
+			<element name="proprietaBase" type="tns:ProprietaBase" minOccurs="1" maxOccurs="1" /> 
+			<element name="procedura" type="tns:Procedura" minOccurs="0" maxOccurs="1" />
+			<element name="hasChilds" type="boolean" minOccurs="0" maxOccurs="1" ></element> 	
+			<element name="nodoFiglio" type="tns:NodoAlbero" minOccurs="0" maxOccurs="unbounded" /> 	
+		</sequence>
+	</complexType>
+	
+	
+	<complexType name="FamigliaEndoprocedimento">
+		<sequence>
+		    <element name="proprietaBase" type="tns:ProprietaBase" minOccurs="0"/>
+			<element name="categoriaEndoprocedimento" type="tns:CategoriaEndoprocedimento" minOccurs="0" maxOccurs="unbounded" />
+		</sequence>
+	</complexType>
+	
+	<complexType name="CategoriaEndoprocedimento">
+		<sequence>
+			<element name="proprietaBase" type="tns:ProprietaBase" minOccurs="1" maxOccurs="1" />
+			<element name="endoprocedimento" type="tns:Endoprocedimento" minOccurs="0" maxOccurs="unbounded" />
+			<element name="principale" type="boolean" minOccurs="1" maxOccurs="1" ></element>
+		</sequence>
+	</complexType>
+	
+	<complexType name="Endoprocedimento">
+		<sequence>
+			<element name="proprietaBase" type="tns:ProprietaBase" minOccurs="1" maxOccurs="1" />
+			<element name="tempistiche" type="tns:Tempistiche" minOccurs="1" maxOccurs="1" />
+			<element name="natureEndo" type="tns:NatureEndo" minOccurs="1" maxOccurs="1" />
+			<element name="amministrazione" type="tns:Amministrazione" minOccurs="1" maxOccurs="1" />
+			<element name="prefixMapping" type="string" minOccurs="1" maxOccurs="1" />
+		</sequence>
+	</complexType>
+
+	<complexType name="AlberoprocEndo">
+		<sequence>
+			<element name="nodo" type="tns:NodoAlbero" minOccurs="1" maxOccurs="1" />
+			<element name="endoprocedimento" type="tns:Endoprocedimento" minOccurs="1" maxOccurs="1" />
+			<element name="azione" type="tns:Azione" minOccurs="0" maxOccurs="1" />
+			<element name="flagRichiesto" type="boolean" minOccurs="1" maxOccurs="1" />
+			<element name="flagPrincipale" type="boolean" minOccurs="1" maxOccurs="1" />
+			<element name="flagPubblicato" type="boolean" minOccurs="1" maxOccurs="1" />
+			<element name="flagUsaNelBack" type="boolean" minOccurs="1" maxOccurs="1" />
+			</sequence>
+	</complexType>	
+	
+	
+	
+	
+	<complexType name="Azione">
+		<sequence>
+			<element name="proprietaBase" type="tns:ProprietaBase" minOccurs="1" maxOccurs="1" />
+		</sequence>
+	</complexType>
+	
+	<complexType name="NatureEndo">
+		<sequence>
+			<element name="proprietaBase" type="tns:ProprietaBase" minOccurs="1" maxOccurs="1" />
+		</sequence>
+	</complexType>
+	
+	<complexType name="Tempistiche">
+		<sequence>
+			<element name="proprietaBase" type="tns:ProprietaBase" minOccurs="1" maxOccurs="1" />
+		</sequence>
+	</complexType>
+	
+	
+	<complexType name="Amministrazione">
+		<sequence>
+			<element name="proprietaBase" type="tns:ProprietaBase" minOccurs="1" maxOccurs="1" />
+		</sequence>
+	</complexType>
+	
+	<complexType name="Procedura">
+		<sequence>
+			<element name="proprietaBase" type="tns:ProprietaBase" minOccurs="1" maxOccurs="1" />
+		</sequence>
+	</complexType>
+	
+	
+	
+	
+
+	<complexType name="ProprietaBase">
+		<annotation>
+			<documentation>
+				Proprieta minime per un elemento
+			</documentation>
+		</annotation>
+		<sequence>
+			<element name="codiceBackoffice" type="string" minOccurs="0" maxOccurs="1" /> 	
+			<element name="codiceSistemaEsterno" type="string" minOccurs="0" maxOccurs="1" /> 	
+			<element name="descrizione" type="string" minOccurs="1" maxOccurs="1" /> 	
+		</sequence>
+	</complexType>
+	
+</schema>

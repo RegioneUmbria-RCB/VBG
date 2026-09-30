@@ -1,0 +1,581 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:ns1="http://org.apache.axis2/xsd" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:ax23="http://model.repertorio.webred.it/xsd" xmlns:ax21="http://repertorio.webred.it/xsd" xmlns:ns="http://ws.repertorio.webred.it" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="http://ws.repertorio.webred.it">
+    <wsdl:documentation>
+		Please Type your service description here
+	</wsdl:documentation>
+    <wsdl:types>
+        <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://repertorio.webred.it/xsd">
+    <xs:complexType name="RepositoryManagerException">
+        <xs:sequence/>
+    </xs:complexType>
+</xs:schema>
+        <xs:schema xmlns:ax22="http://repertorio.webred.it/xsd" xmlns:ax24="http://model.repertorio.webred.it/xsd" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://ws.repertorio.webred.it">
+    <xs:import namespace="http://repertorio.webred.it/xsd"/>
+    <xs:import namespace="http://model.repertorio.webred.it/xsd"/>
+    <xs:element name="RepertorioWSRepositoryManagerException">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="RepositoryManagerException" nillable="true" type="ax21:RepositoryManagerException"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="uploadProcedimento">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="bustaXML" nillable="true" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="uploadProcedimentoResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="return" type="xs:boolean"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="getVersioneRemota">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="servizio" nillable="true" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="getVersioneRemotaResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="ax23:RepositoryVersion"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="getVersione">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="servizio" nillable="true" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="getVersioneResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="ax23:RepositoryVersion"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="getUltimaVersione">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="servizio" nillable="true" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="getUltimaVersioneResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="return" nillable="true" type="ax23:RepositoryVersion"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="downloadRepositoryLocale">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="servizio" nillable="true" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="downloadRepositoryLocaleResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="return" nillable="true" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="downloadRepositoryByVersLocale">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="repVers" nillable="true" type="ax23:RepositoryVersion"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="downloadRepositoryByVersLocaleResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="return" nillable="true" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="downloadRepositoryByVers">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="repVers" nillable="true" type="ax23:RepositoryVersion"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="downloadRepositoryByVersResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="return" nillable="true" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="downloadRepository">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="servizio" nillable="true" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="downloadRepositoryResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="return" nillable="true" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="creaNuovoRepository">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="bustaXML" nillable="true" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="creaNuovoRepositoryResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="return" type="xs:boolean"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
+        <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://model.repertorio.webred.it/xsd">
+    <xs:complexType name="RepositoryVersion">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="localVers" nillable="true" type="xs:string"/>
+            <xs:element minOccurs="0" name="note" nillable="true" type="xs:string"/>
+            <xs:element minOccurs="0" name="remoteVers" nillable="true" type="xs:string"/>
+            <xs:element minOccurs="0" name="servizio" nillable="true" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>
+    </wsdl:types>
+    <wsdl:message name="downloadRepositoryRequest">
+        <wsdl:part name="parameters" element="ns:downloadRepository"/>
+    </wsdl:message>
+    <wsdl:message name="downloadRepositoryResponse">
+        <wsdl:part name="parameters" element="ns:downloadRepositoryResponse"/>
+    </wsdl:message>
+    <wsdl:message name="RepertorioWSRepositoryManagerException">
+        <wsdl:part name="parameters" element="ns:RepertorioWSRepositoryManagerException"/>
+    </wsdl:message>
+    <wsdl:message name="downloadRepositoryLocaleRequest">
+        <wsdl:part name="parameters" element="ns:downloadRepositoryLocale"/>
+    </wsdl:message>
+    <wsdl:message name="downloadRepositoryLocaleResponse">
+        <wsdl:part name="parameters" element="ns:downloadRepositoryLocaleResponse"/>
+    </wsdl:message>
+    <wsdl:message name="downloadRepositoryByVersLocaleRequest">
+        <wsdl:part name="parameters" element="ns:downloadRepositoryByVersLocale"/>
+    </wsdl:message>
+    <wsdl:message name="downloadRepositoryByVersLocaleResponse">
+        <wsdl:part name="parameters" element="ns:downloadRepositoryByVersLocaleResponse"/>
+    </wsdl:message>
+    <wsdl:message name="uploadProcedimentoRequest">
+        <wsdl:part name="parameters" element="ns:uploadProcedimento"/>
+    </wsdl:message>
+    <wsdl:message name="uploadProcedimentoResponse">
+        <wsdl:part name="parameters" element="ns:uploadProcedimentoResponse"/>
+    </wsdl:message>
+    <wsdl:message name="getVersioneRemotaRequest">
+        <wsdl:part name="parameters" element="ns:getVersioneRemota"/>
+    </wsdl:message>
+    <wsdl:message name="getVersioneRemotaResponse">
+        <wsdl:part name="parameters" element="ns:getVersioneRemotaResponse"/>
+    </wsdl:message>
+    <wsdl:message name="creaNuovoRepositoryRequest">
+        <wsdl:part name="parameters" element="ns:creaNuovoRepository"/>
+    </wsdl:message>
+    <wsdl:message name="creaNuovoRepositoryResponse">
+        <wsdl:part name="parameters" element="ns:creaNuovoRepositoryResponse"/>
+    </wsdl:message>
+    <wsdl:message name="getUltimaVersioneRequest">
+        <wsdl:part name="parameters" element="ns:getUltimaVersione"/>
+    </wsdl:message>
+    <wsdl:message name="getUltimaVersioneResponse">
+        <wsdl:part name="parameters" element="ns:getUltimaVersioneResponse"/>
+    </wsdl:message>
+    <wsdl:message name="getVersioneRequest">
+        <wsdl:part name="parameters" element="ns:getVersione"/>
+    </wsdl:message>
+    <wsdl:message name="getVersioneResponse">
+        <wsdl:part name="parameters" element="ns:getVersioneResponse"/>
+    </wsdl:message>
+    <wsdl:message name="downloadRepositoryByVersRequest">
+        <wsdl:part name="parameters" element="ns:downloadRepositoryByVers"/>
+    </wsdl:message>
+    <wsdl:message name="downloadRepositoryByVersResponse">
+        <wsdl:part name="parameters" element="ns:downloadRepositoryByVersResponse"/>
+    </wsdl:message>
+    <wsdl:portType name="RepertorioWSPortType">
+        <wsdl:operation name="downloadRepository">
+            <wsdl:input message="ns:downloadRepositoryRequest" wsaw:Action="urn:downloadRepository"/>
+            <wsdl:output message="ns:downloadRepositoryResponse" wsaw:Action="urn:downloadRepositoryResponse"/>
+            <wsdl:fault message="ns:RepertorioWSRepositoryManagerException" name="RepertorioWSRepositoryManagerException" wsaw:Action="urn:downloadRepositoryRepertorioWSRepositoryManagerException"/>
+        </wsdl:operation>
+        <wsdl:operation name="downloadRepositoryLocale">
+            <wsdl:input message="ns:downloadRepositoryLocaleRequest" wsaw:Action="urn:downloadRepositoryLocale"/>
+            <wsdl:output message="ns:downloadRepositoryLocaleResponse" wsaw:Action="urn:downloadRepositoryLocaleResponse"/>
+            <wsdl:fault message="ns:RepertorioWSRepositoryManagerException" name="RepertorioWSRepositoryManagerException" wsaw:Action="urn:downloadRepositoryLocaleRepertorioWSRepositoryManagerException"/>
+        </wsdl:operation>
+        <wsdl:operation name="downloadRepositoryByVersLocale">
+            <wsdl:input message="ns:downloadRepositoryByVersLocaleRequest" wsaw:Action="urn:downloadRepositoryByVersLocale"/>
+            <wsdl:output message="ns:downloadRepositoryByVersLocaleResponse" wsaw:Action="urn:downloadRepositoryByVersLocaleResponse"/>
+            <wsdl:fault message="ns:RepertorioWSRepositoryManagerException" name="RepertorioWSRepositoryManagerException" wsaw:Action="urn:downloadRepositoryByVersLocaleRepertorioWSRepositoryManagerException"/>
+        </wsdl:operation>
+        <wsdl:operation name="uploadProcedimento">
+            <wsdl:input message="ns:uploadProcedimentoRequest" wsaw:Action="urn:uploadProcedimento"/>
+            <wsdl:output message="ns:uploadProcedimentoResponse" wsaw:Action="urn:uploadProcedimentoResponse"/>
+            <wsdl:fault message="ns:RepertorioWSRepositoryManagerException" name="RepertorioWSRepositoryManagerException" wsaw:Action="urn:uploadProcedimentoRepertorioWSRepositoryManagerException"/>
+        </wsdl:operation>
+        <wsdl:operation name="getVersioneRemota">
+            <wsdl:input message="ns:getVersioneRemotaRequest" wsaw:Action="urn:getVersioneRemota"/>
+            <wsdl:output message="ns:getVersioneRemotaResponse" wsaw:Action="urn:getVersioneRemotaResponse"/>
+            <wsdl:fault message="ns:RepertorioWSRepositoryManagerException" name="RepertorioWSRepositoryManagerException" wsaw:Action="urn:getVersioneRemotaRepertorioWSRepositoryManagerException"/>
+        </wsdl:operation>
+        <wsdl:operation name="creaNuovoRepository">
+            <wsdl:input message="ns:creaNuovoRepositoryRequest" wsaw:Action="urn:creaNuovoRepository"/>
+            <wsdl:output message="ns:creaNuovoRepositoryResponse" wsaw:Action="urn:creaNuovoRepositoryResponse"/>
+            <wsdl:fault message="ns:RepertorioWSRepositoryManagerException" name="RepertorioWSRepositoryManagerException" wsaw:Action="urn:creaNuovoRepositoryRepertorioWSRepositoryManagerException"/>
+        </wsdl:operation>
+        <wsdl:operation name="getUltimaVersione">
+            <wsdl:input message="ns:getUltimaVersioneRequest" wsaw:Action="urn:getUltimaVersione"/>
+            <wsdl:output message="ns:getUltimaVersioneResponse" wsaw:Action="urn:getUltimaVersioneResponse"/>
+            <wsdl:fault message="ns:RepertorioWSRepositoryManagerException" name="RepertorioWSRepositoryManagerException" wsaw:Action="urn:getUltimaVersioneRepertorioWSRepositoryManagerException"/>
+        </wsdl:operation>
+        <wsdl:operation name="getVersione">
+            <wsdl:input message="ns:getVersioneRequest" wsaw:Action="urn:getVersione"/>
+            <wsdl:output message="ns:getVersioneResponse" wsaw:Action="urn:getVersioneResponse"/>
+            <wsdl:fault message="ns:RepertorioWSRepositoryManagerException" name="RepertorioWSRepositoryManagerException" wsaw:Action="urn:getVersioneRepertorioWSRepositoryManagerException"/>
+        </wsdl:operation>
+        <wsdl:operation name="downloadRepositoryByVers">
+            <wsdl:input message="ns:downloadRepositoryByVersRequest" wsaw:Action="urn:downloadRepositoryByVers"/>
+            <wsdl:output message="ns:downloadRepositoryByVersResponse" wsaw:Action="urn:downloadRepositoryByVersResponse"/>
+            <wsdl:fault message="ns:RepertorioWSRepositoryManagerException" name="RepertorioWSRepositoryManagerException" wsaw:Action="urn:downloadRepositoryByVersRepertorioWSRepositoryManagerException"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="RepertorioWSSoap11Binding" type="ns:RepertorioWSPortType">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <wsdl:operation name="downloadRepository">
+            <soap:operation soapAction="urn:downloadRepository" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="RepertorioWSRepositoryManagerException">
+                <soap:fault use="literal" name="RepertorioWSRepositoryManagerException"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="downloadRepositoryLocale">
+            <soap:operation soapAction="urn:downloadRepositoryLocale" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="RepertorioWSRepositoryManagerException">
+                <soap:fault use="literal" name="RepertorioWSRepositoryManagerException"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="downloadRepositoryByVersLocale">
+            <soap:operation soapAction="urn:downloadRepositoryByVersLocale" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="RepertorioWSRepositoryManagerException">
+                <soap:fault use="literal" name="RepertorioWSRepositoryManagerException"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="uploadProcedimento">
+            <soap:operation soapAction="urn:uploadProcedimento" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="RepertorioWSRepositoryManagerException">
+                <soap:fault use="literal" name="RepertorioWSRepositoryManagerException"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getVersioneRemota">
+            <soap:operation soapAction="urn:getVersioneRemota" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="RepertorioWSRepositoryManagerException">
+                <soap:fault use="literal" name="RepertorioWSRepositoryManagerException"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="creaNuovoRepository">
+            <soap:operation soapAction="urn:creaNuovoRepository" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="RepertorioWSRepositoryManagerException">
+                <soap:fault use="literal" name="RepertorioWSRepositoryManagerException"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getUltimaVersione">
+            <soap:operation soapAction="urn:getUltimaVersione" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="RepertorioWSRepositoryManagerException">
+                <soap:fault use="literal" name="RepertorioWSRepositoryManagerException"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getVersione">
+            <soap:operation soapAction="urn:getVersione" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="RepertorioWSRepositoryManagerException">
+                <soap:fault use="literal" name="RepertorioWSRepositoryManagerException"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="downloadRepositoryByVers">
+            <soap:operation soapAction="urn:downloadRepositoryByVers" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="RepertorioWSRepositoryManagerException">
+                <soap:fault use="literal" name="RepertorioWSRepositoryManagerException"/>
+            </wsdl:fault>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="RepertorioWSSoap12Binding" type="ns:RepertorioWSPortType">
+        <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <wsdl:operation name="downloadRepository">
+            <soap12:operation soapAction="urn:downloadRepository" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="RepertorioWSRepositoryManagerException">
+                <soap12:fault use="literal" name="RepertorioWSRepositoryManagerException"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="downloadRepositoryLocale">
+            <soap12:operation soapAction="urn:downloadRepositoryLocale" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="RepertorioWSRepositoryManagerException">
+                <soap12:fault use="literal" name="RepertorioWSRepositoryManagerException"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="downloadRepositoryByVersLocale">
+            <soap12:operation soapAction="urn:downloadRepositoryByVersLocale" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="RepertorioWSRepositoryManagerException">
+                <soap12:fault use="literal" name="RepertorioWSRepositoryManagerException"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="uploadProcedimento">
+            <soap12:operation soapAction="urn:uploadProcedimento" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="RepertorioWSRepositoryManagerException">
+                <soap12:fault use="literal" name="RepertorioWSRepositoryManagerException"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getVersioneRemota">
+            <soap12:operation soapAction="urn:getVersioneRemota" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="RepertorioWSRepositoryManagerException">
+                <soap12:fault use="literal" name="RepertorioWSRepositoryManagerException"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="creaNuovoRepository">
+            <soap12:operation soapAction="urn:creaNuovoRepository" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="RepertorioWSRepositoryManagerException">
+                <soap12:fault use="literal" name="RepertorioWSRepositoryManagerException"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getUltimaVersione">
+            <soap12:operation soapAction="urn:getUltimaVersione" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="RepertorioWSRepositoryManagerException">
+                <soap12:fault use="literal" name="RepertorioWSRepositoryManagerException"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getVersione">
+            <soap12:operation soapAction="urn:getVersione" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="RepertorioWSRepositoryManagerException">
+                <soap12:fault use="literal" name="RepertorioWSRepositoryManagerException"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="downloadRepositoryByVers">
+            <soap12:operation soapAction="urn:downloadRepositoryByVers" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="RepertorioWSRepositoryManagerException">
+                <soap12:fault use="literal" name="RepertorioWSRepositoryManagerException"/>
+            </wsdl:fault>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="RepertorioWSHttpBinding" type="ns:RepertorioWSPortType">
+        <http:binding verb="POST"/>
+        <wsdl:operation name="downloadRepository">
+            <http:operation location="downloadRepository"/>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="downloadRepositoryLocale">
+            <http:operation location="downloadRepositoryLocale"/>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="downloadRepositoryByVersLocale">
+            <http:operation location="downloadRepositoryByVersLocale"/>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="uploadProcedimento">
+            <http:operation location="uploadProcedimento"/>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getVersioneRemota">
+            <http:operation location="getVersioneRemota"/>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="creaNuovoRepository">
+            <http:operation location="creaNuovoRepository"/>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getUltimaVersione">
+            <http:operation location="getUltimaVersione"/>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getVersione">
+            <http:operation location="getVersione"/>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="downloadRepositoryByVers">
+            <http:operation location="downloadRepositoryByVers"/>
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="RepertorioWS">
+        <wsdl:port name="RepertorioWSHttpSoap11Endpoint" binding="ns:RepertorioWSSoap11Binding">
+            <soap:address location="http://10.101.223.226:8090/RepertorioProc/services/RepertorioWS.RepertorioWSHttpSoap11Endpoint/"/>
+        </wsdl:port>
+        <wsdl:port name="RepertorioWSHttpSoap12Endpoint" binding="ns:RepertorioWSSoap12Binding">
+            <soap12:address location="http://10.101.223.226:8090/RepertorioProc/services/RepertorioWS.RepertorioWSHttpSoap12Endpoint/"/>
+        </wsdl:port>
+        <wsdl:port name="RepertorioWSHttpEndpoint" binding="ns:RepertorioWSHttpBinding">
+            <http:address location="http://10.101.223.226:8090/RepertorioProc/services/RepertorioWS.RepertorioWSHttpEndpoint/"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

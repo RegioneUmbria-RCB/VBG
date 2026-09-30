@@ -1,0 +1,1 @@
+INSERT INTO VERTICALIZZAZIONIPARAMETRIBASE(MODULO, PARAMETRO, DESCRIZIONE) VALUES ('NODO_PAGAMENTI', 'SOGGETTO_PENDENZA', 'Parametro che determina se la posizione debitoria deve essere aperta verso l''azienda o direttamente verso il richiedente. Se non popolato prendera'' di dafault il richiedente.');

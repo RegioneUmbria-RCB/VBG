@@ -1,0 +1,19 @@
+﻿<html>
+<body>
+    <!-- I dati del richiedente iniziano qui -->
+    <xsl:variable name="cfRichiedente" select="substring(Istanze/CODICEPRATICATEL,11,16)">
+    </xsl:variable>
+
+    <xsl:value-of select="$cfRichiedente" />
+
+    <xsl:for-each select="/Istanze/Richiedenti/IstanzeRichiedenti/Richiedente[CODICEFISCALE = $cfRichiedente]">
+        Nominativo:
+        <xsl:value-of select="NOMINATIVO" />
+
+        Nome:
+        <xsl:value-of select="NOME" />
+    </xsl:for-each>
+
+    <!-- I dati del richiedente finiscono qui -->
+</body>
+</html>

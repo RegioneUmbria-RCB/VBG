@@ -1,0 +1,912 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="https://www.e-lios.eu/halley/WSElios/" xmlns:s="http://www.w3.org/2001/XMLSchema" targetNamespace="https://www.e-lios.eu/halley/WSElios/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema targetNamespace="https://www.e-lios.eu/halley/WSElios/">
+      <s:complexType name="wReProtocollo">
+        <s:annotation>
+          <s:documentation>
+                        Oggetto di tipo wReProtocollo
+                    </s:documentation>
+        </s:annotation>
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Numero" type="s:int">
+            <s:annotation>
+              <s:documentation>
+                                Numero del protocollo per la ricerca
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="Anno" type="s:int">
+            <s:annotation>
+              <s:documentation>
+                                Anno del protocollo per la ricerca
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="AreaOmogenea" type="s:int">
+            <s:annotation>
+              <s:documentation>
+                                Area omogenea del protocollo (ottenibile con il wsConfigurazione)
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="0" maxOccurs="1" name="DataRegistrazione" nillable="true" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                Data di registrazione del protocollo per la ricerca
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="Oggetto" nillable="true" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                Oggetto
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="Tipo" nillable="true" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                Arrivo Partenza Interno
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="Categoria" nillable="true" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                Classificazione - Categoria
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="Classe" nillable="true" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                Classificazione - Classe
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="0" maxOccurs="1" name="Sottoclasse" nillable="true" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                Classificazione - Sottoclasse
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="0" maxOccurs="1" name="Fascicolo" nillable="true" type="s:int">
+            <s:annotation>
+              <s:documentation>
+                                Fascicolo in cui inserire il protocollo (ottenibile con il wsConfigurazione
+                                - in ricerca ritorna sempre 0)
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="0" maxOccurs="1" name="Fascicoli" nillable="true" type="tns:wReFascicoloArray">
+            <s:annotation>
+              <s:documentation>
+                                Fascicoli del protocollo
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="0" maxOccurs="1" name="Anagrafiche" nillable="true" type="tns:wReAnagraficaArray">
+            <s:annotation>
+              <s:documentation>
+                                Anagrafiche del protocollo
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="0" maxOccurs="1" name="Allegati" nillable="true" type="tns:wReAllegatoArray">
+            <s:annotation>
+              <s:documentation>
+                                Documenti del protocollo
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="0" maxOccurs="1" name="Uffici" nillable="true" type="tns:wReUfficioArray">
+            <s:annotation>
+              <s:documentation>
+                                Uffici del protocollo
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="Esito" type="s:int">
+            <s:annotation>
+              <s:documentation>
+                                Numero errore
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="MessaggioEsito" nillable="true" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                Descrizione errore
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="wReAllegatoArray">
+        <s:annotation>
+          <s:documentation>
+                        Un Array di oggetti wReAllegato
+                    </s:documentation>
+        </s:annotation>
+        <s:complexContent mixed="false">
+          <s:restriction base="soapenc:Array">
+            <s:attribute wsdl:arrayType="tns:wReAllegato[]" ref="soapenc:arrayType" />
+          </s:restriction>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="wReAnagraficaArray">
+        <s:annotation>
+          <s:documentation>
+                        Un Array di oggetti wReAnagrafica
+                    </s:documentation>
+        </s:annotation>
+        <s:complexContent mixed="false">
+          <s:restriction base="soapenc:Array">
+            <s:attribute wsdl:arrayType="tns:wReAnagrafica[]" ref="soapenc:arrayType" />
+          </s:restriction>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="wReFascicoloArray">
+        <s:annotation>
+          <s:documentation>
+                        Un Array di oggetti wReFascicolo
+                    </s:documentation>
+        </s:annotation>
+        <s:complexContent mixed="false">
+          <s:restriction base="soapenc:Array">
+            <s:attribute wsdl:arrayType="tns:wReFascicolo[]" ref="soapenc:arrayType" />
+          </s:restriction>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="wReUfficioArray">
+        <s:annotation>
+          <s:documentation>
+                        Un Array degli uffici wReUfficio
+                    </s:documentation>
+        </s:annotation>
+        <s:complexContent mixed="false">
+          <s:restriction base="soapenc:Array">
+            <s:attribute wsdl:arrayType="tns:wReUfficio[]" ref="soapenc:arrayType" />
+          </s:restriction>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="wReProtocolli">
+        <s:annotation>
+          <s:documentation>
+                        Array di tipo wReProtocolli
+                    </s:documentation>
+        </s:annotation>
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="0" name="Protocolli" nillable="true" type="tns:wReProtocolloArray">
+            <s:annotation>
+              <s:documentation>
+                                Lista protocolli trovati
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="Esito" type="s:int">
+            <s:annotation>
+              <s:documentation>
+                                Numero errore
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="MessaggioEsito" nillable="true" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                Descrizione errore
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="wReProtocolloArray">
+        <s:annotation>
+          <s:documentation>
+                        Protocolli trovati
+                    </s:documentation>
+        </s:annotation>
+        <s:complexContent mixed="false">
+          <s:restriction base="soapenc:Array">
+            <s:attribute wsdl:arrayType="tns:wReProtocollo[]" ref="soapenc:arrayType" />
+          </s:restriction>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="wReAllegato">
+        <s:annotation>
+          <s:documentation>
+                        Oggetto di tipo wReAllegato
+                    </s:documentation>
+        </s:annotation>
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Key" nillable="true" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                Identificativo del documento
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="Nome" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                Nome del file
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="Estensione" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                Estensione del file
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="Primario" nillable="true" type="s:int">
+            <s:annotation>
+              <s:documentation>
+                                Indica il documento primario
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="Contenuto" nillable="true" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                File in Base64
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="UrlRemota" nillable="true" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                Url di posizionamento del file
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="Esito" type="s:int">
+            <s:annotation>
+              <s:documentation>
+                                Numero errore
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="MessaggioEsito" nillable="true" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                Descrizione errore
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="wReAnagrafica">
+        <s:annotation>
+          <s:documentation>
+                        Oggetto di tipo wReAnagrafica
+                    </s:documentation>
+        </s:annotation>
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Nome" nillable="true" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                Nome
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="Cognome" nillable="true" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                Cognome
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="RagioneSociale" nillable="true" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                Ragione sociale
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="Tipologia" nillable="true" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                Tipo persona Fisica/Giuridica
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="Email" nillable="true" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                Indirizzo email
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="CodiceFiscale" nillable="true" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                Codice fiscale
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="PartitaIva" nillable="true" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                Partita Iva
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="Esito" type="s:int">
+            <s:annotation>
+              <s:documentation>
+                                Numero errore
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="MessaggioEsito" nillable="true" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                Descrizione errore
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="wReFascicolo">
+        <s:annotation>
+          <s:documentation>
+                        Oggetto di tipo wReFascicolo
+                    </s:documentation>
+        </s:annotation>
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int">
+            <s:annotation>
+              <s:documentation>
+                                Identificativo del fascicolo
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="Numero" type="s:int">
+            <s:annotation>
+              <s:documentation>
+                                Numero del fascicolo
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="Anno" type="s:int">
+            <s:annotation>
+              <s:documentation>
+                                Anno del fascicolo
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="Livello" type="s:int">
+            <s:annotation>
+              <s:documentation>
+                                Livello del fascicolo 1=Fascicolo 2=Sottofascicolo 3=inserto
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="IdPadre" type="s:int">
+            <s:annotation>
+              <s:documentation>
+                                Identificativo del padre del fascicolo (in caso di sottofascicolo o
+                                inserto)
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="AreaOmogenea" type="s:int">
+            <s:annotation>
+              <s:documentation>
+                                Area omogenea del fascicolo (ottenibile con il wsConfigurazione)
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="DataApertura" nillable="true" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                Data di apertura del fascicolo per la ricerca
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="Descrizione" nillable="true" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                Descrizione del fascicolo
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="Categoria" nillable="true" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                Classificazione - Categoria
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="Classe" nillable="true" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                Classificazione - Classe
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="0" maxOccurs="1" name="Sottoclasse" nillable="true" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                Classificazione - Sottoclasse
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="Esito" type="s:int">
+            <s:annotation>
+              <s:documentation>
+                                Numero errore
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="Stato" nillable="true" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                Stato del fascicolo
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="MessaggioEsito" nillable="true" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                Descrizione errore
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="wReUfficio">
+        <s:annotation>
+          <s:documentation>
+                        Oggetto di tipo wReUfficio
+                    </s:documentation>
+        </s:annotation>
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int">
+            <s:annotation>
+              <s:documentation>
+                                Codice Ufficio
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="Denominazione" nillable="true" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                Denominazione ufficio
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="0" maxOccurs="1" name="Tipo" nillable="true" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                Tipo ufficio ufficio 1 = "mittente" / 2 = "destinatario" in caso di
+                                protocollo interno
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="Esito" type="s:int">
+            <s:annotation>
+              <s:documentation>
+                                Numero errore
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="MessaggioEsito" nillable="true" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                Descrizione errore
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="wReEsito">
+        <s:annotation>
+          <s:documentation>
+                        Oggetto di tipo wReEsito
+                    </s:documentation>
+        </s:annotation>
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Esito" type="s:int">
+            <s:annotation>
+              <s:documentation>
+                                Esito login
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="MessaggioEsito" nillable="true" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                Descrizione esito login
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="FascicolaSoapIn">
+    <wsdl:part name="Token" type="s:string" />
+    <wsdl:part name="Ente" type="s:string">
+      <s:documentation>
+                Nome ente Halley (ottenibile con il wsConfigurazione)
+            </s:documentation>
+    </wsdl:part>
+    <wsdl:part name="Anno" type="s:int">
+      <s:documentation>
+                Anno protocollo
+            </s:documentation>
+    </wsdl:part>
+    <wsdl:part name="Numero" type="s:int">
+      <s:documentation>
+                Numero protocollo
+            </s:documentation>
+    </wsdl:part>
+    <wsdl:part name="AreaOmogenea" type="s:int">
+      <s:documentation>
+                Codice area omogenea (ottenibile con il wsConfigurazione)
+            </s:documentation>
+    </wsdl:part>
+    <wsdl:part name="ReFascicolo" type="tns:wReFascicolo">
+      <s:documentation>
+                Oggetto di tipo ReFascicolo
+            </s:documentation>
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="FascicolaSoapOut">
+    <wsdl:part name="return" type="tns:wReEsito">
+      <s:documentation>
+                Oggetto wReEsito
+            </s:documentation>
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="SendMailSoapIn">
+    <wsdl:part name="Token" type="s:string" />
+    <wsdl:part name="Ente" type="s:string">
+      <s:documentation>
+                Nome ente Halley (ottenibile con il wsConfigurazione)
+            </s:documentation>
+    </wsdl:part>
+    <wsdl:part name="Anno" type="s:int">
+      <s:documentation>
+                Anno protocollo
+            </s:documentation>
+    </wsdl:part>
+    <wsdl:part name="Numero" type="s:int">
+      <s:documentation>
+                Numero protocollo
+            </s:documentation>
+    </wsdl:part>
+    <wsdl:part name="AreaOmogenea" type="s:int">
+      <s:documentation>
+                Codice area omogenea (ottenibile con il wsConfigurazione)
+            </s:documentation>
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="SendMailSoapOut">
+    <wsdl:part name="return" type="tns:wReEsito">
+      <s:documentation>
+                Oggetto wReEsito
+            </s:documentation>
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="InsertSoapIn">
+    <wsdl:part name="Token" type="s:string" />
+    <wsdl:part name="Ente" type="s:string">
+      <s:documentation>
+                Nome ente Halley (ottenibile con il wsConfigurazione)
+            </s:documentation>
+    </wsdl:part>
+    <wsdl:part name="ReProtocollo" type="tns:wReProtocollo" />
+  </wsdl:message>
+  <wsdl:message name="InsertSoapOut">
+    <wsdl:part name="return" type="tns:wReProtocollo">
+      <s:documentation>
+                Oggetto di tipo ReProtocollo
+            </s:documentation>
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="AdvancedSearchSoapIn">
+    <wsdl:part name="Token" type="s:string" />
+    <wsdl:part name="Ente" type="s:string">
+      <s:documentation>
+                Nome ente Halley (ottenibile con il wsConfigurazione)
+            </s:documentation>
+    </wsdl:part>
+    <wsdl:part name="Fascicolati" type="s:string">
+      <s:documentation>
+                si/no o vuoto (lasciandolo vuoto estrae tutto)
+            </s:documentation>
+    </wsdl:part>
+    <wsdl:part name="RegistratoDal" type="s:string">
+      <s:documentation>
+                Data di registrazione dal
+            </s:documentation>
+    </wsdl:part>
+    <wsdl:part name="RegistratoAl" type="s:string">
+      <s:documentation>
+                Data di registrazione al
+            </s:documentation>
+    </wsdl:part>
+    <wsdl:part name="ReProtocollo" type="tns:wReProtocollo">
+      <s:documentation>
+                Oggetto di tipo wReProtocollo con parametri di ricerca
+            </s:documentation>
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="AdvancedSearchSoapOut">
+    <wsdl:part name="return" type="tns:wReProtocolli">
+      <s:documentation>
+                Restituisce un array di oggetti wReProtocollo
+            </s:documentation>
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="SearchSoapIn">
+    <wsdl:part name="Token" type="s:string" />
+    <wsdl:part name="Ente" type="s:string">
+      <s:documentation>
+                Nome ente Halley (ottenibile con il wsConfigurazione)
+            </s:documentation>
+    </wsdl:part>
+    <wsdl:part name="Anno" type="s:int">
+      <s:documentation>
+                Anno protocolli
+            </s:documentation>
+    </wsdl:part>
+    <wsdl:part name="AreaOmogenea" type="s:int">
+      <s:documentation>
+                Codice area omogenea (ottenibile con il wsConfigurazione)
+            </s:documentation>
+    </wsdl:part>
+    <wsdl:part name="DataRegistrazione" type="s:string">
+      <s:documentation>
+                Data di registrazione protocollo
+            </s:documentation>
+    </wsdl:part>
+    <wsdl:part name="Tipo" type="s:string">
+      <s:documentation>
+                Protocollo in arrivo/partenza/interno
+            </s:documentation>
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="SearchSoapOut">
+    <wsdl:part name="return" type="tns:wReProtocolli">
+      <s:documentation>
+                Restituisce un array di oggetti wReProtocollo
+            </s:documentation>
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetSoapIn">
+    <wsdl:part name="Token" type="s:string" />
+    <wsdl:part name="Ente" type="s:string">
+      <s:documentation>
+                Nome ente Halley (ottenibile con il wsConfigurazione)
+            </s:documentation>
+    </wsdl:part>
+    <wsdl:part name="Anno" type="s:int">
+      <s:documentation>
+                Anno protocolli
+            </s:documentation>
+    </wsdl:part>
+    <wsdl:part name="Numero" type="s:int">
+      <s:documentation>
+                Numero del protocollo
+            </s:documentation>
+    </wsdl:part>
+    <wsdl:part name="AreaOmogenea" type="s:int">
+      <s:documentation>
+                Codice area omogenea (ottenibile con il wsConfigurazione)
+            </s:documentation>
+    </wsdl:part>
+    <wsdl:part name="GetAllegati" type="s:int">
+      <s:documentation>
+                Indica se estrarre gli allegati (0 - Non li estrae / 1 solo il principale /
+                2 - Tutti / 3 - Estrae solo la lista senza contenuto)
+            </s:documentation>
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetSoapOut">
+    <wsdl:part name="return" type="tns:wReProtocollo">
+      <s:documentation>
+                Restituisce un oggetto wReProtocollo
+            </s:documentation>
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="AggiungiAllegatoSoapIn">
+    <wsdl:part name="Token" type="s:string" />
+    <wsdl:part name="Ente" type="s:string">
+      <s:documentation>
+                Nome ente Halley (ottenibile con il wsConfigurazione)
+            </s:documentation>
+    </wsdl:part>
+    <wsdl:part name="Anno" type="s:int">
+      <s:documentation>
+                Anno protocollo
+            </s:documentation>
+    </wsdl:part>
+    <wsdl:part name="Numero" type="s:int">
+      <s:documentation>
+                Numero del protocollo
+            </s:documentation>
+    </wsdl:part>
+    <wsdl:part name="AreaOmogenea" type="s:int">
+      <s:documentation>
+                Codice area omogenea (ottenibile con il wsConfigurazione)
+            </s:documentation>
+    </wsdl:part>
+    <wsdl:part name="Allegato" type="tns:wReAllegato">
+      <s:documentation>
+                Oggetto allegato di tipo wReAllegato
+            </s:documentation>
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="AggiungiAllegatoSoapOut">
+    <wsdl:part name="return" type="tns:wReProtocollo">
+      <s:documentation>
+                Restituisce un oggetto wReProtocollo
+            </s:documentation>
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetAllegatoSoapIn">
+    <wsdl:part name="Token" type="s:string" />
+    <wsdl:part name="Ente" type="s:string">
+      <s:documentation>
+                Nome ente Halley (ottenibile con il wsConfigurazione)
+            </s:documentation>
+    </wsdl:part>
+    <wsdl:part name="Key" type="s:string">
+      <s:documentation>
+                Id del documento
+            </s:documentation>
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetAllegatoSoapOut">
+    <wsdl:part name="return" type="tns:wReAllegato">
+      <s:documentation>
+                Restituisce un oggetto wReAllegato
+            </s:documentation>
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="wProtocolloSoap">
+    <wsdl:operation name="Fascicola" parameterOrder="Token Ente Anno Numero AreaOmogenea ReFascicolo">
+      <wsdl:documentation>
+                Spedizione protocollo
+            </wsdl:documentation>
+      <wsdl:input message="tns:FascicolaSoapIn" />
+      <wsdl:output message="tns:FascicolaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SendMail" parameterOrder="Token Ente Anno Numero AreaOmogenea">
+      <wsdl:documentation>
+                Spedizione protocollo
+            </wsdl:documentation>
+      <wsdl:input message="tns:SendMailSoapIn" />
+      <wsdl:output message="tns:SendMailSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Insert" parameterOrder="Token Ente ReProtocollo">
+      <wsdl:documentation>
+                Inserimento protocollo
+            </wsdl:documentation>
+      <wsdl:input message="tns:InsertSoapIn" />
+      <wsdl:output message="tns:InsertSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AdvancedSearch" parameterOrder="Token Ente Fascicolati RegistratoDal RegistratoAl ReProtocollo">
+      <wsdl:documentation>
+                Ricerca avanzata protocollo lista protocolli
+            </wsdl:documentation>
+      <wsdl:input message="tns:AdvancedSearchSoapIn" />
+      <wsdl:output message="tns:AdvancedSearchSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Search" parameterOrder="Token Ente Anno AreaOmogenea DataRegistrazione Tipo">
+      <wsdl:documentation>
+                Ricerca lista protocolli
+            </wsdl:documentation>
+      <wsdl:input message="tns:SearchSoapIn" />
+      <wsdl:output message="tns:SearchSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Get" parameterOrder="Token Ente Anno Numero AreaOmogenea GetAllegati">
+      <wsdl:documentation>
+                Ricerca protocollo
+            </wsdl:documentation>
+      <wsdl:input message="tns:GetSoapIn" />
+      <wsdl:output message="tns:GetSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AggiungiAllegato" parameterOrder="Token Ente Anno Numero AreaOmogenea Allegato">
+      <wsdl:documentation>
+                Aggiunta allegati a un  protocollo
+            </wsdl:documentation>
+      <wsdl:input message="tns:AggiungiAllegatoSoapIn" />
+      <wsdl:output message="tns:AggiungiAllegatoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllegato" parameterOrder="Token Ente Key">
+      <wsdl:documentation>
+                Aggiunta allegati a un  protocollo
+            </wsdl:documentation>
+      <wsdl:input message="tns:GetAllegatoSoapIn" />
+      <wsdl:output message="tns:GetAllegatoSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="wProtocolloSoap" type="tns:wProtocolloSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc" />
+    <wsdl:operation name="Fascicola">
+      <soap:operation soapAction="https://www.e-lios.eu/halley/WSElios/Fascicola" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="https://www.e-lios.eu/halley/WSElios/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" parts="Token Ente Anno Numero AreaOmogenea ReFascicolo" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="https://www.e-lios.eu/halley/WSElios/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" parts="return" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendMail">
+      <soap:operation soapAction="https://www.e-lios.eu/halley/WSElios/SendMail" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="https://www.e-lios.eu/halley/WSElios/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" parts="Token Ente Anno Numero AreaOmogenea" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="https://www.e-lios.eu/halley/WSElios/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" parts="return" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Insert">
+      <soap:operation soapAction="https://www.e-lios.eu/halley/WSElios/Insert" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="https://www.e-lios.eu/halley/WSElios/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" parts="Token Ente ReProtocollo" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="https://www.e-lios.eu/halley/WSElios/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" parts="return" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AdvancedSearch">
+      <soap:operation soapAction="https://www.e-lios.eu/halley/WSElios/AdvancedSearch" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="https://www.e-lios.eu/halley/WSElios/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" parts="Token Ente Fascicolati RegistratoDal RegistratoAl ReProtocollo" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="https://www.e-lios.eu/halley/WSElios/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" parts="return" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Search">
+      <soap:operation soapAction="https://www.e-lios.eu/halley/WSElios/Search" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="https://www.e-lios.eu/halley/WSElios/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" parts="Token Ente Anno AreaOmogenea DataRegistrazione Tipo" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="https://www.e-lios.eu/halley/WSElios/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" parts="return" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Get">
+      <soap:operation soapAction="https://www.e-lios.eu/halley/WSElios/Get" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="https://www.e-lios.eu/halley/WSElios/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" parts="Token Ente Anno Numero AreaOmogenea GetAllegati" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="https://www.e-lios.eu/halley/WSElios/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" parts="return" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AggiungiAllegato">
+      <soap:operation soapAction="https://www.e-lios.eu/halley/WSElios/AggiungiAllegato" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="https://www.e-lios.eu/halley/WSElios/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" parts="Token Ente Anno Numero AreaOmogenea Allegato" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="https://www.e-lios.eu/halley/WSElios/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" parts="return" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllegato">
+      <soap:operation soapAction="https://www.e-lios.eu/halley/WSElios/GetAllegato" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="https://www.e-lios.eu/halley/WSElios/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" parts="Token Ente Key" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="https://www.e-lios.eu/halley/WSElios/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" parts="return" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="wProtocollo">
+    <wsdl:port name="wProtocolloSoap" binding="tns:wProtocolloSoap">
+      <soap:address location="http://185.199.49.8:80/WSElios/wsProtocollo.php" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

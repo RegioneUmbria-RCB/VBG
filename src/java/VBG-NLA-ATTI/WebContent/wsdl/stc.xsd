@@ -1,0 +1,721 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://sigepro.init.it/rte" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://sigepro.init.it/rte"
+	xmlns:types="http://sigepro.init.it/rte/types" xmlns:xmime="http://www.w3.org/2005/05/xmlmime">
+    
+    <import namespace="http://sigepro.init.it/rte/types" schemaLocation="types.xsd" />
+	<simpleType name="XsdStcVersion">
+        <annotation>
+        	<documentation><![CDATA[
+
+#####################################################################
+			MODIFICHE VERSIONE V_1_14:
+#####################################################################        	
+   	aggiunti elementi per la cancellazione dei riferimenti dell'attività
+   	e per la ricerca delle pratiche collegate dall'attività
+	<xs:element name="CancellaAttivitaRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="token" type="xs:string"/>
+				<xs:element name="sportello" type="ns1:SportelloType"/>
+				<xs:element name="idAttivita" type="xs:string"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="RichiestaPraticaCollegataDaAttivitaDestinatariaRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="token" type="xs:string"/>
+				<xs:element name="sportello" type="ns1:SportelloType"/>
+				<xs:element name="idAttivita" type="xs:string"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="RichiestaPraticaCollegataDaAttivitaMittenteRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="token" type="xs:string"/>
+				<xs:element name="sportello" type="ns1:SportelloType"/>
+				<xs:element name="idAttivita" type="xs:string"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	        	
+#####################################################################
+			MODIFICHE VERSIONE V_1_13:
+#####################################################################        	
+
+Aggiunti elementi:
+
+<complexType name="LocalizzazioneNelComuneType">
+		.......
+		<element name="accessoTipo" type="string" maxOccurs="1" minOccurs="0"></element>
+		<element name="accessoNumero" type="string" maxOccurs="1" minOccurs="0"></element>
+		<element name="accessoDescrizione" type="string" maxOccurs="1" minOccurs="0"></element>
+		......
+			
+</complexType>
+
+<complexType name="PersonaGiuridicaType">
+    ....
+	<element name="dataInizioAttivita" type="date" maxOccurs="1" minOccurs="0"></element>
+    ....
+</complexType>
+			
+
+        	
+#####################################################################
+			MODIFICHE VERSIONE V_1_12:
+#####################################################################        	
+
+Aggiunti elementi:
+DETTAGLIOPRATICATYPE
+			<element name="naturaFo" type="tns:NaturaFoType" minOccurs="0" maxOccurs="1">
+				<annotation>
+					<documentation>
+						la natura del procedimento che viene impostato dal frontend
+					</documentation>
+				</annotation>			
+			</element>
+di tipo
+	<simpleType name="NaturaFoType">
+		<restriction base="string">
+			<enumeration value="comunicazione" />
+			<enumeration value="ordinario" />
+			<enumeration value="scia" />
+		</restriction>
+	</simpleType>   
+
+PROCURATYPE	
+<element name="documentoIdentita" type="tns:DocumentiType"
+				minOccurs="0" maxOccurs="1"></element>	
+	     	
+        	
+#####################################################################
+			MODIFICHE VERSIONE V_1_11:
+#####################################################################        	
+
+Aggiunti elementi:
+
+Aggiunto campo data(opzionale) a <complexType name="DocumentiType">
+
+<element name="data" type="date" maxOccurs="1" minOccurs="0"></element>  
+
+        	
+#####################################################################
+			MODIFICHE VERSIONE V_1_10:
+#####################################################################
+Rimossi elementi: 
+
+<complexType name="TipoDocumentoType" />
+
+Modificati elementi:
+
+<element name="tipoDocumento" type="string" minOccurs="0" maxOccurs="1" />
+
+<element name="documentiDaSostituire" type="tns:SostituzioniDocumentaliType" minOccurs="0" maxOccurs="unbounded"></element>
+
+Aggiunti elementi:
+
+   <complexType name="SostituzioniDocumentaliType">
+		<annotation>
+			<documentation>Sono i documenti che devono andare a sostituire quelli presenti 
+			in fase di integrazione.L'oggetto conterrà sia il codice del docuemnto da sostituire che quello che deve essere
+			sostituito.
+			</documentation>
+		</annotation>
+		<sequence>
+		    <element name="tipoDocumentoPratica">
+				<simpleType>
+					<restriction base="string">
+						<enumeration value="DOC_ISTANZA"></enumeration>
+						<enumeration value="DOC_ENDO"></enumeration>
+					</restriction>
+				</simpleType>
+			</element>
+			<element name="documentoDaSostituire" type="string" minOccurs="1" maxOccurs="1"></element>
+			<element name="nuovoDocumento" type="tns:AllegatiType" minOccurs="1" maxOccurs="1"></element>
+		</sequence>
+	</complexType>
+	
+	
+	Aggiunto nuovo elemento in OneriType
+	
+	<complexType name="OneriType">
+		<sequence>
+			...............
+			<element name="nonDovuto" type="boolean" maxOccurs="1" minOccurs="0"></element>
+			...............
+		</sequence>
+	</complexType>
+	
+	
+	
+#####################################################################
+			MODIFICHE VERSIONE V_1_9:
+#####################################################################
+Modificati Elementi:
+
+	<complexType name="DettaglioAttivitaType">
+		<sequence>
+			....
+			<element name="oraDataAttivita" type="string" minOccurs="0">
+				<simpleType>
+					<restriction base="string">
+						<pattern value="[0-2][0-9]:[0-5][0-9]"></pattern>
+					</restriction>
+				</simpleType>
+			</element>
+			....
+	</complexType name="DettaglioAttivitaType">		
+	
+	
+	<complexType name="RiferimentiPraticaType">
+		<sequence>
+			....
+			<element name="oraDataPratica" type="string" minOccurs="0">
+				<simpleType>
+					<restriction base="string">
+						<pattern value="[0-2][0-9]:[0-5][0-9]"></pattern>
+					</restriction>
+				</simpleType>
+			</element>
+		    ....
+ 	</complexType name="RiferimentiPraticaType">   
+ 	
+ 	
+ 	
+ 	<complexType name="DettaglioPraticaBreveType">
+		....
+		<element name="oraDataPratica" type="string" minOccurs="0">
+				<simpleType>
+					<restriction base="string">
+						<pattern value="[0-2][0-9]:[0-5][0-9]"></pattern>
+					</restriction>
+				</simpleType>		
+		</element>
+		....
+	</complexType name="DettaglioPraticaBreveType">
+			
+			
+			
+        	
+#####################################################################
+			MODIFICHE VERSIONE V_1_8:
+#####################################################################
+Modificati Elementi
+PersonaFisicaType
+			<element name="telefonoCellulare" type="string" maxOccurs="1" minOccurs="0"></element>
+			<element name="datiIscrizioneAlbo" type="tns:DatiIscrizioneAlboType" maxOccurs="1" minOccurs="0"></element>
+		
+PersonaGiuridicaType
+			<element name="telefonoCellulare" type="string" maxOccurs="1" minOccurs="0"></element>
+			<element name="datiInps" type="tns:DatiInpsType" maxOccurs="1" minOccurs="0"></element>
+			<element name="datiInail" type="tns:DatiInailType" maxOccurs="1" minOccurs="0"></element>
+			<element name="datiCassaEdile" type="tns:DatiCassaEdileType" maxOccurs="1" minOccurs="0"></element>
+			<element name="datiIscrizioneAlbo" type="tns:DatiIscrizioneAlboType" maxOccurs="1" minOccurs="0"></element>
+
+DocumentiType
+			<element name="annotazioni" type="string" maxOccurs="1" minOccurs="0"></element>
+		
+DettaglioPraticaVisuraType
+			<element name="tempisticaProcedimento" type="tns:TempisticaProcedimentoType" maxOccurs="1" minOccurs="0"></element>
+
+OneriType
+			<element name="annotazioni" type="string" maxOccurs="1" minOccurs="0"></element>
+		
+aggiunti elementi		
+		
+	<complexType name="TempisticaProcedimentoType">
+		<sequence>
+			<element name="dataInizio" type="date" maxOccurs="1" minOccurs="0"></element>
+			<element name="dataFine" type="date" maxOccurs="1" minOccurs="0"></element>
+			<element name="durataGG" type="int" maxOccurs="1" minOccurs="0"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="DatiInpsType">
+		<sequence>
+			<element name="numero" type="string"></element>
+			<element name="sedeIscrizione" type="tns:CodiceDescrizioneType"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="DatiInailType">
+		<sequence>
+			<element name="numero" type="string"></element>
+			<element name="sedeIscrizione" type="tns:CodiceDescrizioneType"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="DatiCassaEdileType">
+		<sequence>
+			<element name="numero" type="string"></element>
+			<element name="cassaEdile" type="tns:CodiceDescrizioneType"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="CodiceDescrizioneType">
+		<sequence>
+			<element name="codice" type="string" maxOccurs="1" minOccurs="0"></element>
+			<element name="descrizione" type="string" maxOccurs="1" minOccurs="0"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="DatiIscrizioneAlboType">
+		<sequence>
+			<element name="numeroIscrizione" type="string" maxOccurs="1" minOccurs="0"></element>
+			<element name="siglaProvincia" type="string" maxOccurs="1" minOccurs="0"></element>
+			<element name="tipoOrdineProfessionisti" type="tns:CodiceDescrizioneType" maxOccurs="1" minOccurs="0"></element>
+		</sequence>
+	</complexType>	
+
+
+        	
+        	
+#####################################################################
+			MODIFICHE VERSIONE V_1_7:
+#####################################################################
+	
+	Aggiunti elementi:
+	
+		<complexType name="ElementoValoreCampoDinamicoType">
+			<complexContent>
+				<extension base="tns:ValoreParametroType">
+					<sequence>
+						<element name="indice" minOccurs="0" maxOccurs="1" type="int"></element>
+						<element name="indiceMolteplicita" type="int" maxOccurs="1" minOccurs="0"></element>				
+					</sequence>
+				</extension>
+			</complexContent>	
+		</complexType>
+	
+	
+		<complexType name="ValoreCampoDinamicoType">		
+			<sequence>
+				<element name="nome" type="string"></element>
+				<element name="valore" type="tns:ElementoValoreCampoDinamicoType" minOccurs="1" maxOccurs="unbounded"></element>
+			</sequence>
+		</complexType>
+		<complexType name="MetaDatoType">
+			<sequence>
+				<element name="codice" type="string" maxOccurs="1" minOccurs="1"></element>
+				<element name="valore" type="string" maxOccurs="1" minOccurs="1"></element>
+			</sequence>
+		</complexType>
+	
+	Modificati gli elementi:
+	
+		<complexType name="AllegatiType">
+			<sequence>
+				<element name="id" type="string"></element>
+				<element name="allegato" type="string"></element>
+				<element name="file" type="tns:AllegatoBinarioType" minOccurs="0" maxOccurs="1"></element>
+				<element name="metaDati" type="tns:MetaDatoType" maxOccurs="unbounded" minOccurs="0"></element>
+			</sequence>
+		</complexType>
+	
+	
+		<complexType name="CampoDinamicoType">
+			<sequence>
+				<element name="proprieta" type="tns:ProprietaCampoDinamicoType" minOccurs="0" maxOccurs="1" />
+				<element name="valoreUtente" type="tns:ValoreCampoDinamicoType" minOccurs="1" maxOccurs="1" />
+			</sequence>
+		</complexType>
+
+	LocalizzazioneNelComuneType: aggiunto elemento non obbligatorio  cap
+			<element name="cap" type="string" maxOccurs="1" minOccurs="0"></element>
+			
+        	
+#####################################################################
+			MODIFICHE VERSIONE V_1_6:
+#####################################################################
+	
+	LocalizzazioneNelComuneType: aggiunti elementi non obbligatori  coordinate, tipo, uuid
+			<element name="coordinate" type="tns:CoordinateType" maxOccurs="1" minOccurs="0"></element>
+			<element name="tipo" type="tns:TipoLocalizzazioneType" maxOccurs="1" minOccurs="0"></element>
+			<element name="uuid" type="string" maxOccurs="1" minOccurs="0"></element>
+			
+			
+	Aggiunti elementi:
+	
+		<complexType name="CoordinateType">
+			<sequence>
+				<element name="latitudine" type="string" maxOccurs="1" minOccurs="1"></element>
+				<element name="longitudine" type="string" maxOccurs="1" minOccurs="1"></element>
+			</sequence>
+		</complexType>
+		
+		<complexType name="TipoLocalizzazioneType">
+			<sequence>
+				<element name="codice" type="string" maxOccurs="1" minOccurs="0"></element>
+				<element name="descrizione" type="string" maxOccurs="1" minOccurs="1"></element>
+			</sequence>
+		</complexType>        	
+        	
+#####################################################################
+			MODIFICHE VERSIONE V_1_5:
+#####################################################################
+	Aggiunti elementi:
+	<element name="AggiungiDocumentiRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string"></element>
+				<element name="sportelloMittente" type="types:SportelloType"></element>
+				<element name="sportelloDestinatario" type="types:SportelloType"></element>
+				<element name="idPraticaDest" type="string"></element>
+				<element name="documenti" type="types:DocumentiType" minOccurs="1" maxOccurs="unbounded"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="AggiungiDocumentiResponse">
+		<complexType>
+			<sequence>
+				<element name="dettaglioErrore" type="types:ErroreType" minOccurs="0" maxOccurs="unbounded"></element>
+			</sequence>
+		</complexType>
+	</element>
+	
+	EstremiAttoType: non obbligatori riferimento e data
+			<element name="riferimento" type="string" maxOccurs="1" minOccurs="0"></element>
+			<element name="data" type="date" maxOccurs="1" minOccurs="0"></element>
+			
+	
+#####################################################################
+			MODIFICHE VERSIONE V_1_4:
+#####################################################################
+
+	RiferimentoCatastaleType:
+		<element name="sezione" type="string" minOccurs="0" maxOccurs="1"/>
+		<element name="unitaImobiliare" type="string" minOccurs="0" maxOccurs="1"/>
+				
+		Aggiunti su campi di tipo binario aggiungere notazione {xmlns:xmime="http://www.w3.org/2005/05/xmlmime"}expectedContentTypes="application/octet-stream" per la gestione con datahandler dei file
+
+	DettaglioPraticaType:
+			<element name="codiceAccreditamentoSUAP" type="string" minOccurs="0" maxOccurs="1"/>
+			<element name="codicePraticaTelematica" type="string" minOccurs="0" maxOccurs="1"/>
+			<element name="insegna" type="string" minOccurs="0" maxOccurs="1"/>
+				
+				
+	TipoDocumentoType: Aggiunti all'enumeration i valori (derivati da Impresa in un Giorno)
+		<xs:enumeration value="SUAP-PDF">
+		<xs:enumeration value="SUAP-XML">
+		<xs:enumeration value="MDA-PDF"/>
+		<xs:enumeration value="MDA-XML"/>			
+
+#####################################################################
+			MODIFICHE VERSIONE V_1_3:
+#####################################################################
+	PersonaGiuridicaType
+	 modificata partitaiva
+		da
+			<element name="partitaIva" type="string"></element>
+		a	
+			<element name="partitaIva" type="string" minOccurs="0"></element>
+
+	PersonaFisicaType
+		aggiunto elemento corrispondenza di tipo tns:LocalizzazioneType.
+			<element name="corrispondenza" type="tns:LocalizzazioneType" 
+					minOccurs="0" maxOccurs="1">
+            	    <annotation>
+                		<documentation>Le informazioni dell'indirizzo dove inviare le comunicazioni. 
+				La sezione viene di solito compilata se diversa dalla sezione resid</documentation>
+                	</annotation>
+			</element>	
+
+	DettaglioPraticaType
+		modificata minoccurence di richiedente da 1 (obbligatoria) a 0 non obbligatoria	
+			<element name="richiedente" type="tns:RichiedenteType" minOccurs="0">	     	
+	
+		aggiunto dopo codiceComune
+			<element name="domicilioElettronico" type="string" minOccurs="0" maxOccurs="1">
+				<annotation>
+					<documentation>E' il domicilio elettronico di riferimento (tipicamente PEC) per ricevere comunicazioni in merito 
+					alla pratica da parte dei richiedenti/professionisti.</documentation>
+				</annotation>	
+			</element>
+			
+		aggiunto elemento annotazioni
+			<element name="annotazioni" type="string" minOccurs="0">
+				<annotation>
+					<documentation>Eventuali informazioni aggiuntive o note sulla pratica.</documentation>
+				</annotation>
+	     	</element>
+
+	DettaglioPraticaBreveType
+		modificata minoccurence di richiedente da 1 (obbligatoria) a 0 non obbligatoria	
+			<element name="richiedente" type="tns:RichiedenteType" minOccurs="0">
+
+	DettaglioPraticaType	
+	     	
+	OneriType 	    
+		aggiunto elemento obbligatorio
+	 		<element name="segno" type="tns:segnoType" maxOccurs="1" minOccurs="1">
+				<annotation>
+					<documentation>Determina se l'onere è in entrata o uscita</documentation>
+				</annotation>	 		
+	 		</element>
+
+
+		aggiunto il tipo "segnoType" enumeration (entrata/uscita) 
+
+		<simpleType name="segnoType">
+			<restriction base="string">
+				<enumeration value="ENTRATA" />
+				<enumeration value="USCITA" />
+			</restriction>
+		</simpleType>
+	OneriPagamentiType
+		modificato l'elemento "modalita"
+			da 
+				<element name="modalita">
+					<simpleType>
+						<restriction base="string">
+							<enumeration value="Contanti"></enumeration>
+							<enumeration value="Bollettino postale"></enumeration>
+							<enumeration value="Carta credito"></enumeration>
+							<enumeration value="Bancomat"></enumeration>
+							<enumeration value="VCY"></enumeration>
+							<enumeration value="Altro"></enumeration>
+						</restriction>
+					</simpleType>
+				</element>
+			a
+				<element name="modalita" minOccurs="0" maxOccurs="1" type="string"></element>
+		eliminato elemento "altraModalita"		
+        
+     LocalizzazioneNelComuneType
+             aggiunti
+                     <element name="fabbricato" type="string" minOccurs="0" maxOccurs="1"></element>
+                     <element name="km" type="string" minOccurs="0" maxOccurs="1"></element>
+                         
+ ]]>
+</documentation>
+        </annotation>
+        <restriction base="string">
+			<enumeration value="V_1_0" />
+			<enumeration value="V_1_1" />
+			<enumeration value="V_1_2" />
+			<enumeration value="V_1_3" />
+			<enumeration value="V_1_4" />
+			<enumeration value="V_1_5" />
+			<enumeration value="V_1_6" />
+			<enumeration value="V_1_7" />
+			<enumeration value="V_1_8" />
+			<enumeration value="V_1_9" />
+			<enumeration value="V_1_10" />
+			<enumeration value="V_1_11" />
+			<enumeration value="V_1_12" />
+			<enumeration value="V_1_13" />
+			<enumeration value="V_1_14" />
+		</restriction>
+	</simpleType>
+	<element name="LoginRequest">
+		<complexType>
+			<sequence>
+				<element name="username" type="string"></element>
+				<element name="password" type="string"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="LoginResponse">
+		<complexType>
+			<sequence>
+				<element name="result" type="boolean"></element>
+				<element name="token" type="string"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="CheckTokenRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="CheckTokenResponse">
+		<complexType>
+			<sequence>
+				<element name="result" type="boolean"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="DirezioneSportelloRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string"></element>
+				<element name="sportello" type="types:SportelloType"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="DirezioneSportelloResponse">
+		<complexType>
+			<sequence>
+				<element name="direzione" type="types:DirezioneType"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="NotificaAttivitaRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string"></element>
+				<element name="sportelloMittente" type="types:SportelloType"></element>
+				<element name="sportelloDestinatario" type="types:SportelloType"></element>
+				<element name="datiAttivita" type="types:DettaglioAttivitaType"></element>
+				<element name="rifPraticaDestinatario" type="types:RiferimentiPraticaType" maxOccurs="1" minOccurs="0"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="NotificaAttivitaResponse">
+		<complexType>
+			<choice minOccurs="1">
+				<element name="dettaglioattivita" type="types:RiferimentiAttivitaType" minOccurs="0" maxOccurs="1"></element>
+				<element name="dettaglioErrore" type="types:ErroreType" minOccurs="0" maxOccurs="unbounded"></element>
+			</choice>
+		</complexType>
+	</element>
+	<element name="AllegatoBinarioRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string"></element>
+				<element name="sportelloMittente" type="types:SportelloType"></element>
+				<element name="sportelloDestinatario" type="types:SportelloType"></element>
+				<element name="riferimentiAllegato" type="types:RiferimentiAllegatoType"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="AllegatoBinarioResponse">
+		<complexType>
+			<sequence>
+				<element name="mimeType" type="string" minOccurs="0" maxOccurs="1" />
+				<element name="binaryData" type="base64Binary" xmime:expectedContentTypes="application/octet-stream" />
+				<element name="fileName" type="string" />
+			</sequence>
+		</complexType>
+	</element>
+	<element name="RichiestaPraticaRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string"></element>
+				<element name="sportelloMittente" type="types:SportelloType"></element>
+				<element name="sportelloDestinatario" type="types:SportelloType"></element>
+				<element name="rifPratica" type="types:RiferimentiPraticaType"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="RichiestaPraticaResponse">
+		<complexType>
+			<sequence>
+				<element name="dettaglioPratica" type="types:DettaglioPraticaVisuraType" maxOccurs="1" minOccurs="0"></element>
+				<element name="dettaglioErrore" type="types:ErroreType" minOccurs="0" maxOccurs="unbounded"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="RichiestaPraticaCollegataRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string"></element>
+				<element name="sportelloMittente" type="types:SportelloType"></element>
+				<element name="sportelloDestinatario" type="types:SportelloType"></element>
+				<element name="idPraticaMitt" type="string"></element>
+				<element name="idProcedimentoMitt" type="string" maxOccurs="1" minOccurs="0"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="RichiestaPraticaCollegataResponse">
+		<complexType>
+			<sequence>
+				<element name="dettaglio" maxOccurs="1" minOccurs="0">
+					<complexType>
+						<sequence>
+							<element name="sportello" type="types:SportelloType"></element>
+							<element name="dettaglioPratica" type="types:DettaglioPraticaType"></element>
+						</sequence>
+					</complexType>
+				</element>
+				<element name="dettaglioErrore" type="types:ErroreType" maxOccurs="unbounded" minOccurs="0"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="InserimentoPraticaRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string"></element>
+				<element name="sportelloMittente" type="types:SportelloType"></element>
+				<element name="sportelloDestinatario" type="types:SportelloType"></element>
+				<element name="dettaglioPratica" type="types:DettaglioPraticaType"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="InserimentoPraticaResponse">
+		<complexType>
+			<choice minOccurs="1">
+				<element name="dettaglioPratica" type="types:RiferimentiPraticaType" minOccurs="0"></element>
+				<element name="dettaglioErrore" type="types:ErroreType" minOccurs="0" maxOccurs="unbounded"></element>
+			</choice>
+		</complexType>
+	</element>
+	<element name="RichiestaPraticheListaRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string"></element>
+				<element name="sportelloMittente" type="types:SportelloType"></element>
+				<element name="sportelloDestinatario" type="types:SportelloType"></element>
+				<element name="filtriUtenteConnesso" type="types:FiltriUtenteType" maxOccurs="1" minOccurs="0"></element>
+				<element name="filtriPratica" type="types:FiltriPraticaType" maxOccurs="1" minOccurs="1"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="RichiestaPraticheListaResponse">
+		<complexType>
+			<sequence>
+				<element name="dettaglioPratica" type="types:DettaglioPraticaBreveType" maxOccurs="unbounded" minOccurs="0"></element>
+				<element name="dettaglioErrore" type="types:ErroreType" minOccurs="0" maxOccurs="unbounded"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="AggiungiDocumentiRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string"></element>
+				<element name="sportelloMittente" type="types:SportelloType"></element>
+				<element name="sportelloDestinatario" type="types:SportelloType"></element>
+				<element name="idPraticaDest" type="string"></element>
+				<element name="documenti" type="types:DocumentiType" minOccurs="1" maxOccurs="unbounded"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="AggiungiDocumentiResponse">
+		<complexType>
+			<sequence>
+				<element name="dettaglioErrore" type="types:ErroreType" minOccurs="0" maxOccurs="unbounded"></element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="CancellaAttivitaRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string"/>
+				<element name="sportello" type="types:SportelloType"/>
+				<element name="idAttivita" type="string"/>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="RichiestaPraticaCollegataDaAttivitaDestinatariaRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string"/>
+				<element name="sportello" type="types:SportelloType"/>
+				<element name="idAttivita" type="string"/>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="RichiestaPraticaCollegataDaAttivitaMittenteRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string"/>
+				<element name="sportello" type="types:SportelloType"/>
+				<element name="idAttivita" type="string"/>
+			</sequence>
+		</complexType>
+	</element>
+</schema>

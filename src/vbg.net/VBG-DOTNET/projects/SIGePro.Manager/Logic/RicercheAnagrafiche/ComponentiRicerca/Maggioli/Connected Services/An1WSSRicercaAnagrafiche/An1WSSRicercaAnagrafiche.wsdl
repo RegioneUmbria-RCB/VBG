@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:intf="http://tempuri.org/" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:impl="http://tempuri.org/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema xmlns="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <xsd:element name="LeggiAnagrafica">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="IdSoggetto" type="xsd:string" />
+            <xsd:element name="CodiceFiscale" type="xsd:string" />
+            <xsd:element name="Utente" type="xsd:string" />
+            <xsd:element name="Ruolo" type="xsd:string" />
+            <xsd:element name="CodiceAmministrazione" type="xsd:string" />
+            <xsd:element name="CodiceAOO" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="LeggiAnagraficaResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="LeggiAnagraficaResult" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="LeggiAnagraficaResponse">
+    <wsdl:part name="parameters" element="impl:LeggiAnagraficaResponse" />
+  </wsdl:message>
+  <wsdl:message name="LeggiAnagraficaRequest">
+    <wsdl:part name="parameters" element="impl:LeggiAnagrafica" />
+  </wsdl:message>
+  <wsdl:portType name="An1WSSRicercaAnagrafiche">
+    <wsdl:operation name="LeggiAnagrafica">
+      <wsdl:input name="LeggiAnagraficaRequest" message="impl:LeggiAnagraficaRequest" />
+      <wsdl:output name="LeggiAnagraficaResponse" message="impl:LeggiAnagraficaResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="An1WSSRicercaAnagraficheSoapBinding" type="impl:An1WSSRicercaAnagrafiche">
+    <wsdlsoap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="LeggiAnagrafica">
+      <wsdlsoap:operation soapAction="http://tempuri.org/LeggiAnagrafica" />
+      <wsdl:input name="LeggiAnagraficaRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="LeggiAnagraficaResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="An1WSSRicercaAnagrafiche">
+    <wsdl:port name="An1WSSRicercaAnagrafiche" binding="impl:An1WSSRicercaAnagraficheSoapBinding">
+      <wsdlsoap:address location="http://sicrawebappserver:58000/client/services/An1WSSRicercaAnagrafiche" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

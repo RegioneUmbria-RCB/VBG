@@ -1,0 +1,258 @@
+﻿@using Init.SIGePro.Manager.DTO.TipiSoggetto;
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneAnagrafiche;
+@using Init.Sigepro.FrontEnd.AppLogic.GestionePresentazioneDomanda.GestioneAnagrafiche;
+@using System.Text;
+@using Init.Sigepro.FrontEnd.AppLogic.GestionePresentazioneDomanda;
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneTipiSoggetto;
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.DesignComuni.Messaggi
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.DesignComuni.Spinner
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards.CardButtons
+@using VBG.BlazorComponentsLibrary.EditFormComponents.DropDown
+@using VBG.BlazorComponentsLibrary.RisorseTestuali
+@using static Init.Sigepro.FrontEnd.AppLogic.ObjectSpace.PresentazioneIstanza.PresentazioneIstanzaDbV2;
+@inject ILogger<EditorAnagrafica> _logger;
+
+<ContenitoreRisorseTestuali Nome="editor-anagrafiche">
+
+    @if (MostraBottoneAggiungi)
+    {
+        @if (ButtonStyle == EditorAnagraficaButtonStyle.StepButton)
+        {
+            <StepButton Text="@TestoBottoneAggiungi" OnClick="() => NuovaAnagrafica()" Icon="StepButtonIcons.PlusCircle"></StepButton>
+        }
+        else
+        {
+            <button class="btn btn-primary w-100 mb-40 pt" @onclick="() => NuovaAnagrafica()">
+                <span class="rounded-icon">
+                    <SvgIcon CssClass="icon-light icon-sm" IconId="it-plus-circle"></SvgIcon>
+                </span>
+                @TestoBottoneAggiungi
+            </button>
+        }
+    }
+
+    <BasicModal @ref="_editingModal" OnClose="OnRicercaAnnullata" Size="ModalSizeEnum.Large">
+        <ModalHeader Titolo="@_modalTitle">
+
+            @if (_modalitaVisualizzazione == VisualizzazioneEnum.NuovaAnagrafica)
+            {
+                <p class="text-muted">Puoi inserire i dati di un nuovo soggetto inserendone il codice fiscale o partita iva oppure riportare automaticamente i tuoi dati anagrafici tramite la funzione <span class="fw-bold">"Utilizza i miei dati"</span></p>
+            }
+
+            I campi contraddistinti da un asterisco sono obbligatori
+        </ModalHeader>
+        <ErrorSummary Errori="_errori.ToArray()"></ErrorSummary>
+
+        @switch (_modalitaVisualizzazione)
+        {
+            case VisualizzazioneEnum.NuovaAnagrafica:
+                {
+                    <RicercaAnagrafica AnagraficaTrovata="OnRicercaAnagraficaRiuscita"
+                                       IgnoraRicercaBackofficePerPersoneFisiche="true"
+                                       EsistonoSoggettiPersoneFisiche="_soggettiPersonaFisica.Any()"
+                                       EsistonoSoggettiPersoneGiuridiche="_soggettiPersonaGiuridica.Any()">
+                    </RicercaAnagrafica>
+                    break;
+                }
+
+            case VisualizzazioneEnum.PersonaFisica:
+                {
+                    <EditorPersonaFisica InitialModel="@_editingPersonaFisica"
+                                         TipiSoggetto="@_soggettiPersonaFisica"
+                                         OnAcceptEdit="OnAcceptEditAnagrafica"
+                                         PermettiModificaDatiAnagrafici="@_datiAnagraficiModificabili"
+                                         PermettiModificaTipoSoggetto="true"
+                                         IdTipoSoggettoDefault="_idTipoSoggettoDefault">
+                    </EditorPersonaFisica>
+                    break;
+                }
+
+            case VisualizzazioneEnum.PersonaGiuridica:
+                {
+                    <EditorPersonaGiuridica InitialModel="@_editingPersonaGiuridica"
+                                            TipiSoggetto="@_soggettiPersonaGiuridica"
+                                            OnAcceptEdit="OnAcceptEditAnagrafica"
+                                            PermettiModificaDatiAnagrafici="@_datiAnagraficiModificabili"
+                                            PermettiModificaTipoSoggetto="true"
+                                            CodiceIntervento="@CodiceIntervento"
+                                            IdTipoSoggettoDefault="_idTipoSoggettoDefault">
+                    </EditorPersonaGiuridica>
+                    break;
+                }
+
+        }
+    </BasicModal>
+</ContenitoreRisorseTestuali>
+@code {
+
+    public enum VisualizzazioneEnum
+    {
+        NuovaAnagrafica,
+        PersonaFisica,
+        PersonaGiuridica
+    }
+
+    [Inject]
+    public IAnagraficheService _anagraficheService { get; set; } = default!;
+    [Inject]
+    public SpinnerService _spinnerService { get; set; } = default!;
+
+    [CascadingParameter(Name = "IdDomanda")]
+    public int IdDomanda { get; set; }
+
+    [CascadingParameter]
+    public ImpostazioniStepAnagrafiche ImpostazioniStep { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public EventCallback AnagraficaModificataOAggiunta { get; set; }
+    [Parameter, EditorRequired]
+    public TipiSoggettoInterventoDto TipiSoggettoIntervento { get; set; } = new();
+
+    [Parameter]
+    public string TestoBottoneAggiungi { get; set; } = "Aggiungi soggetto";
+    [Parameter]
+    public bool MostraBottoneAggiungi { get; set; } = true;
+    [Parameter, EditorRequired]
+    public int CodiceIntervento { get; set; } = -1;
+
+    [Parameter]
+    public EditorAnagraficaButtonStyle ButtonStyle { get; set; } = EditorAnagraficaButtonStyle.StepButton;
+
+    [Parameter]
+    public IEnumerable<int> IdSoggettiDaEscludere { get; set; } = Enumerable.Empty<int>();
+
+    private VisualizzazioneEnum _modalitaVisualizzazione = VisualizzazioneEnum.NuovaAnagrafica;
+    private bool _visibile = false;
+    private BasicModal? _editingModal;
+    private string _modalTitle = "Aggiungi soggetto";
+    private ANAGRAFERow? _editingPersonaFisica;
+    private ANAGRAFERow? _editingPersonaGiuridica;
+    private List<string> _errori = new List<string>();
+    private bool _datiAnagraficiModificabili = true;
+    private int? _idTipoSoggettoDefault;
+
+    private IEnumerable<DropDownItem> _soggettiPersonaFisica = Enumerable.Empty<DropDownItem>();
+    private IEnumerable<DropDownItem> _soggettiPersonaGiuridica = Enumerable.Empty<DropDownItem>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        RebindSoggettiAnagrafica(true);
+    }
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        //RebindSoggettiAnagrafica(true);
+    }
+
+    private async Task OnRicercaAnnullata()
+    {
+        this._editingModal?.Hide();
+        await Task.CompletedTask;
+    }
+
+    private async Task OnRicercaAnagraficaRiuscita(AnagraficaDomanda anagrafica)
+    {
+        await EditAnagrafica(anagrafica, true);
+    }
+
+    private void RebindSoggettiAnagrafica(bool applicaEsclusioni)
+    {
+        var pf = this.TipiSoggettoIntervento.PersoneFisiche;
+        var pg = this.TipiSoggettoIntervento.PersoneGiuridiche;
+
+        if(applicaEsclusioni)
+        {
+            pf = pf.Where(x => !IdSoggettiDaEscludere.Contains(x.Id ?? -1));
+            pg = pg.Where(x => !IdSoggettiDaEscludere.Contains(x.Id ?? -1));
+        }
+
+
+        this._soggettiPersonaFisica = pf.Select(x => new DropDownItem(x.Id.ToString(), x.Descrizione)).ToList();
+        this._soggettiPersonaGiuridica = pg.Select(x => new DropDownItem(x.Id.ToString(), x.Descrizione)).ToList();
+    }
+
+    private async Task EditAnagrafica(AnagraficaDomanda anagrafica, bool perAggiuntaSoggetto)
+    {
+        if (perAggiuntaSoggetto)
+        {
+            RebindSoggettiAnagrafica(true);
+        }
+        else
+        {
+            RebindSoggettiAnagrafica(false);
+        }
+
+        if (anagrafica.TipoPersona == TipoPersonaEnum.Fisica)
+        {
+            this._editingPersonaFisica = anagrafica.ToAnagrafeRow();
+            this._modalitaVisualizzazione = VisualizzazioneEnum.PersonaFisica;
+        }
+        else
+        {
+            this._editingPersonaGiuridica = anagrafica.ToAnagrafeRow();
+            this._modalitaVisualizzazione = VisualizzazioneEnum.PersonaGiuridica;
+        }
+
+        await Task.CompletedTask;
+    }
+
+    private async Task OnAcceptEditAnagrafica(AnagraficaDomanda anagraficaDomanda)
+    {
+        await _spinnerService.ShowSpinnerAsync(async () =>
+        {
+            try
+            {
+
+                this._errori.Clear();
+
+                this._anagraficheService.SalvaAnagrafica(this.IdDomanda, anagraficaDomanda);
+
+                await this.AnagraficaModificataOAggiunta.InvokeAsync();
+
+                this._editingModal?.Hide();
+
+            }
+            catch (Exception ex)
+            {
+                this._logger.LogError($"Errore in OnAcceptEdit: {ex}");
+
+                this._errori.Add(ex.Message);
+            }
+        });
+    }
+
+    public async Task NuovaAnagrafica(int? idTipoSoggetto = null)
+    {
+        RebindSoggettiAnagrafica(true);
+
+        await this._spinnerService.ShowSpinnerAsync(() =>
+        {
+            this._idTipoSoggettoDefault = idTipoSoggetto;
+            this._datiAnagraficiModificabili = true;
+
+            this._modalTitle = "Aggiungi soggetto";
+            this._modalitaVisualizzazione = VisualizzazioneEnum.NuovaAnagrafica;
+            this._editingModal?.Show();
+        });
+    }
+
+    public async Task ModificaAnagrafica(AnagraficaDomanda anagrafica)
+    {
+        await _spinnerService.ShowSpinnerAsync(async () =>
+        {
+
+            this._idTipoSoggettoDefault = null;
+            this._datiAnagraficiModificabili = this.ImpostazioniStep.RendiModificabiliDatiAnagraficheEsistenti;
+
+            this._modalTitle = "Modifica soggetto";
+            await EditAnagrafica(anagrafica, false);
+            this._editingModal?.Show();
+        });
+    }
+}

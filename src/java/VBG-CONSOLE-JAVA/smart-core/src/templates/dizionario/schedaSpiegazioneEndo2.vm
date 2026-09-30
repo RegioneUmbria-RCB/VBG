@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>
+			Scheda di Spiegazione
+	</title>
+</head>
+<body>
+
+<div id="subcontent">
+
+<fieldset  style="padding: 10px;line-height: 15pt;text-align: justify;">
+	<div class="sezione">
+		<div >
+			<div class="titolo2">
+				<b>$!alberoproc.VwAlberoproc.ScDescrizionepadre</b>
+			</div>
+			<div class="titolo" style="text-align: center">
+				<b>$!alberoproc.VwAlberoproc.ScDescrizionebreve</b>
+			</div>
+		</div>		
+	</div>
+</fieldset>	
+	<div class="clear"></div>
+	<br />
+	<fieldset  style="padding: 10px;line-height: 15pt;text-align: justify;">
+	<legend>B - Individuazione attività</legend>
+	<br />
+	$!stpCommand.InvioSchedaEndoTipo2.ParteRegionaleSchedaEndoTipo2.descrizioneRegionale
+	#if($stpCommand.InvioSchedaEndoTipo2.ParteLocaleSchedaEndoTipo2.DescrizioneLocale != "")
+	
+		<br />
+		Informazioni specifiche del comune: $!stpCommand.InvioSchedaEndoTipo2.ParteLocaleSchedaEndoTipo2.DescrizioneLocale
+	
+	#end
+	<br />
+	<fieldset  style="padding: 10px;line-height: 15pt;text-align: justify;">
+		<legend>B1 - ALTRI ELEMENTI INFORMATIVI SPECIFICI RELATIVI ALL'ATTIVITA'</legend>		
+	$!stpCommand.InvioSchedaEndoTipo2.ParteRegionaleSchedaEndoTipo2.AltreInfoRegionali
+	
+	#if( $stpCommand.InvioSchedaEndoTipo2.ParteLocaleSchedaEndoTipo2.AltreInfoLocali !="" )
+		<br />
+		$!stpCommand.InvioSchedaEndoTipo2.ParteLocaleSchedaEndoTipo2.AltreInfoLocali
+	#end
+	
+	</fieldset>
+	</fieldset>
+	<br />
+	<fieldset  style="padding: 10px;line-height: 15pt;text-align: justify;">
+	<legend>C - Che requisiti deve avere</legend>
+	<br />
+	<ol>
+		#if( $stpCommand.InvioSchedaEndoTipo2.ParteRegionaleSchedaEndoTipo2.ElencoRequisiti.RequisitiOggettivi.TestoRequisito != '' )
+		<li><b>Requisiti oggettivi</b><br />
+			$!stpCommand.InvioSchedaEndoTipo2.ParteRegionaleSchedaEndoTipo2.ElencoRequisiti.RequisitiOggettivi.TestoRequisito 
+		</li>
+		#end
+		#if( $stpCommand.InvioSchedaEndoTipo2.ParteRegionaleSchedaEndoTipo2.ElencoRequisiti.RequisitiSoggettiviMorali.TestoRequisito != '' )
+			<li><b>Requisiti soggettivi morali</b><br />
+				$!stpCommand.InvioSchedaEndoTipo2.ParteRegionaleSchedaEndoTipo2.ElencoRequisiti.RequisitiSoggettiviMorali.TestoRequisito
+			</li>
+		#end
+		#if( $stpCommand.InvioSchedaEndoTipo2.ParteRegionaleSchedaEndoTipo2.ElencoRequisiti.RequisitiSoggettiviProfessionali.TestoRequisito != '' )
+		<li><b>Requisiti soggettivi professionali</b><br />
+			$!stpCommand.InvioSchedaEndoTipo2.ParteRegionaleSchedaEndoTipo2.ElencoRequisiti.RequisitiSoggettiviProfessionali.TestoRequisito
+		</li>
+		#end
+		#if( $stpCommand.InvioSchedaEndoTipo2.ParteRegionaleSchedaEndoTipo2.ElencoRequisiti.RequisitiExtracomunitari.TestoRequisito != '' )
+		<li><b>Requisiti per i cittadini extracomunitari</b><br />
+			$!stpCommand.InvioSchedaEndoTipo2.ParteRegionaleSchedaEndoTipo2.ElencoRequisiti.RequisitiExtracomunitari.TestoRequisito 
+		</li>
+		#end
+	</ol>
+	<br />
+	<fieldset  style="padding: 10px;line-height: 15pt;text-align: justify;">
+	<legend>C1 - Riferimenti Normativi di cui al quadro C</legend>
+	<br />
+		<ol>
+		<li><b>Requisiti oggettivi</b><br />
+			#foreach( $var_oggettivi in $stpCommand.InvioSchedaEndoTipo2.ParteRegionaleSchedaEndoTipo2.ElencoRequisiti.RequisitiOggettivi.NormativaRequisito )			
+				$!var_oggettivi.Value <br />  
+			#end
+		</li>
+
+		<li><b>Requisiti soggettivi morali</b><br />
+			#foreach( $var_morali in $stpCommand.InvioSchedaEndoTipo2.ParteRegionaleSchedaEndoTipo2.ElencoRequisiti.RequisitiSoggettiviMorali.NormativaRequisito )
+				$!var_morali.Value <br />
+			#end
+		</li>
+		
+
+		<li><b>Requisiti soggettivi professionali</b><br />
+			#foreach( $var_professionali in $stpCommand.InvioSchedaEndoTipo2.ParteRegionaleSchedaEndoTipo2.ElencoRequisiti.RequisitiSoggettiviProfessionali.NormativaRequisito )
+				$!var_professionali.Value <br />   
+			#end
+		</li>
+		
+		<li><b>Requisiti per i cittadini extracomunitari</b><br />
+			#foreach( $var_extra in $stpCommand.InvioSchedaEndoTipo2.ParteRegionaleSchedaEndoTipo2.ElencoRequisiti.RequisitiExtracomunitari.NormativaRequisito )
+				$!var_extra.Value   <br />
+			#end
+		</li>
+	</ol>
+	</fieldset>
+	<br />
+	</fieldset>
+	<br />
+	<fieldset  style="padding: 10px;line-height: 15pt;text-align: justify;">
+	<legend>D - Endoprocedimenti relativi alla verifica dei requisiti previsti per i fabbricati e gli impianti</legend>
+	<br />
+	Prima di esaminare il quadro degli adempimenti eventualmente previsti per l'esercizio dell'attività  individuata nel quadro A 
+	è necessario verificare che siano stati svolti tutti gli adempimenti previsti dalla normativa per realizzare/modificare i fabbricati 
+	e gli impianti che verranno utilizzati per lo svolgimento dell'attività. 
+	In via generale per la realizzazione/modifica dei fabbricati e degli impianti relativi all'attività individuata nel quadro A 
+	è necessaria l'attivazione dei seguenti endoprocedimenti prima di quelli relativi all'esercizio dell'attività:
+	Nota bene: gli endoprocedimenti qui indicati devono essere attivati anche quando non è richiesta nessuna domanda/dichiarazione/notifica per 
+	l'esercizio dell'attività.
+	
+
+	<ol style="text-align: left;">
+	
+	
+#if( $stpCommand.InventarioprocedimentisPrima.size>0 )
+	
+		<li><b>Adempimenti da effettuare prima dell'inizio dell'intervento sul fabbricato e/o sugli impianti</b><br />
+		<div class="jmesa">
+		<table border="0"  cellpadding="2" cellspacing="0" class="table">
+			<thead>
+				<tr class="header">
+					<td width="5%" >Adempimento</td>
+					<td width="5%" >Codice dizionario</td>
+					<td width="10%">Nome endoprocedimento (da dizionario)</td>
+					<td width="2%">Obbligatorio</td>
+				</tr>
+			</thead>
+			<tbody class="tbody">
+			#foreach( $var in $stpCommand.InventarioprocedimentisPrima )	
+			
+				<tr>
+					<td>$!var.Chiave.Tipoendo.Tipifamiglieendo.Tipo</td>
+					<td>$!var.Chiave.Codiceancitel</td>
+	                <td>$!var.Chiave.Procedimento</td>
+	                <td>
+	                	#if( $var.Valore ) 
+	                		Sì
+	                	#else
+	                		no
+	                	#end
+					</td>
+				</tr>
+			#end
+			</tbody>
+		</table>
+		
+		<ul style="text-align: left; border-top: 1px dotted;">
+		<li><b>Adempimenti locali da effettuare prima dell'inizio dell'intervento sul fabbricato e/o sugli impianti</b><br />
+		<table border="0"  cellpadding="2" cellspacing="0" class="table">
+			<thead>
+				<tr class="header">
+					<td width="5%">Adempimento</td>
+					<td width="5%">Allegati</td>					
+				</tr>
+			</thead>
+			<tbody class="tbody">
+			#foreach( $var in $stpCommand.InvioSchedaEndoTipo2.ParteLocaleSchedaEndoTipo2.ElencoEndoPrevistiPrima.ElencoEndoLocali.EndoLocale )	
+				<tr class="">					
+					<td style="vertical-align: top">($!var.Codice) - $!var.Nome</td>
+					<td style="vertical-align: top">					
+					<table>					
+					#foreach( $q in  $var.ElencoQuadriStandard5.Quadro )
+						#foreach( $arqs in  $q.ElencoAllegatiRichiestiQuadro.AllegatoRichiesto )
+						<tr>
+							<td style="vertical-align: top">$!arqs.SpiegazioniAllegato </td>
+			    		</tr>
+			    		#end											
+					#end
+					</table>
+					</td>	                
+				</tr>
+				<tr>
+					<td colspan="2" style="border-bottom: 1px  dotted;">&nbsp;</td>
+				</tr>
+			#end
+			</tbody>
+		</table>
+		</li>
+		</ul>
+		
+		</div>
+		</li>
+		
+#end	
+		
+#if( $stpCommand.InventarioprocedimentisDopo.size>0 )
+	
+		<li><b>Adempimenti da effettuare dopo la conclusione dell'intervento sul fabbricato e/o sugli impianti</b><br />
+		<div class="jmesa">
+		<table border="0"  cellpadding="2" cellspacing="0" class="table">
+			<thead>
+				<tr class="header">
+					<td width="5%" >Adempimento</td>
+					<td width="5%" >Codice dizionario</td>
+					<td width="10%">Nome endoprocedimento (da dizionario)</td>
+					<td width="2%" >Obbligatorio</td>
+				</tr>
+			</thead>
+			<tbody class="tbody">
+			#foreach( $var in  $stpCommand.InventarioprocedimentisDopo )
+				<tr>
+					<td style="border:0px;"></td>
+					<td>$!var.Chiave.Codiceancitel</td>
+	                <td>$!var.Chiave.Procedimento</td>
+					<td>
+
+	                   	#if( $var.Valore ) 
+	                		Sì
+	                	#else
+	                		no
+	                	#end
+	                	
+					</td>	                
+				</tr>
+			#end
+			</tbody>
+		</table>
+		
+		<ul style="text-align: left;">
+		<li><b>Adempimenti locali da effettuare dopo la conclusione dell'intervento sul fabbricato e/o sugli impianti</b><br />
+		<table border="0"  cellpadding="2" cellspacing="0" class="table">
+		
+			<thead>
+				<tr class="header">
+					<td width="5%">Adempimento</td>
+					<td width="5%">Allegati</td>					
+				</tr>
+			</thead>
+			<tbody class="tbody">
+			#foreach( $var in  $stpCommand.InvioSchedaEndoTipo2.ParteLocaleSchedaEndoTipo2.ElencoEndoPrevistiDopo.ElencoEndoLocali.EndoLocale )
+
+				<tr>					
+					<td style="vertical-align: top">($!var.Codice) - $!var.Nome</td>
+					<td style="vertical-align: top">					
+					<table>		
+								
+					#foreach( $q in $var.ElencoQuadriStandard5.Quadro )
+						#foreach( $arqs  in $q.ElencoAllegatiRichiestiQuadro.AllegatoRichiesto )
+						<tr>
+							<td style="vertical-align: top">$!arqs.SpiegazioniAllegato</td>
+			    		</tr>
+			    		#end
+					#end
+					</table>
+					</td>	                
+				</tr>
+				<tr>
+					<td colspan="2" style="border-bottom: 1px  dotted;">&nbsp;</td>
+				</tr>
+			#end
+			</tbody>					
+		</table>
+		</li>
+		</ul>
+		
+		
+		</div>
+		</li>
+
+
+#end
+
+
+	</ol>
+	
+	
+	
+	
+	
+	
+	<br />
+	<fieldset  style="padding: 10px;line-height: 15pt;" >
+	<legend>D1 - Normativa applicabile agli endoprocedimenti indicati nei quadri D</legend>
+	<br />
+	Vengono indicati i riferimenti normativi degli endoprocedimenti specifici relativi all'attività. 
+	Per gli altri riferimenti normativi degli endoprocedimenti indicati al quadro D di carattere generale  
+	il riferimento è presente nelle schede di spiegazione dei singoli endoprocedimenti apribili nel quadro D.
+	<div class="jmesa">
+	<table border="0"  cellpadding="2" cellspacing="0" class="table">
+		<thead>
+			<tr class="header" >
+				<td width="5%" >Adempimento</td>
+				<td width="5%" >Norme Nazionali</td>
+				<td width="10%">Norme Regionali</td>
+			</tr>
+		</thead>
+		<tbody class="tbody">
+		
+		#foreach( $var in $stpCommand.InvioSchedaEndoTipo2.ParteRegionaleSchedaEndoTipo2.ElencoNormativeRegionaliEndoTipo1.NormativaRegionale )
+			<tr style="text-align: left;">
+				<td>
+				$!adempimentiMap.get($var.adempimentoNormativa)				
+				</td>
+                <td>$!var.NormaNazionale.Value</td>
+                <td>$!var.NormaRegionale.Value</td>
+			</tr>
+		#end	
+		</tbody>
+	</table>
+	</div>
+	</fieldset>
+	<br />
+	</fieldset>
+	<br />
+	<fieldset style="padding: 10px;line-height: 15pt;text-align: justify;"> 
+	<legend >E - Cosa serve per iniziare l'esercizio dell'attività</legend>
+	<br />
+	#if ( $stpCommand.InvioSchedaEndoTipo2.ParteRegionaleSchedaEndoTipo2.ModalitaAperturaStandard )
+	<ol>
+			$!stpCommand.InvioSchedaEndoTipo2.ParteRegionaleSchedaEndoTipo2.ModalitaAperturaStandard.value()
+	</ol>
+	#end
+	<br />
+	<fieldset  style="padding: 10px;line-height: 15pt;text-align: justify;" >
+	<legend >E1 Normativa applicabile agli endoprocedimenti indicati nei quadri E</legend>
+	<div class="jmesa">
+	<table border="0"  cellpadding="2" cellspacing="0" class="table">
+		<thead>
+			<tr class="header">
+				<td width="5%" >Adempimento</td>
+				<td width="5%" >Norme Nazionali</td>
+				<td width="10%">Norme Regionali</td>
+			</tr>
+		</thead>
+		<tbody class="tbody">
+		#foreach( $var in $stpCommand.InvioSchedaEndoTipo2.ParteRegionaleSchedaEndoTipo2.ElencoNormativeRegionaliEndoTipo2.NormativaRegionale )
+		
+			<tr>
+				<td>$!adempimentiMap.get($var.AdempimentoNormativa) $!var.AdempimentoNormativa</td>
+                <td>$!var.NormaNazionale.Value</td>
+                <td>$!var.NormaRegionale.Value</td>
+			</tr>
+			 
+		#end
+		</tbody>
+	</table>
+	</div>
+	</fieldset>
+	<br />
+	<fieldset  style="padding: 10px;line-height: 15pt;text-align: justify;">
+	<legend>E2 Se sono necessari endoprocedimenti per l'esercizio dell'attività  indicare cosa si deve fare per presentare la
+	documentazione</legend>
+	<br />
+	<ul>
+		<li>A chi si presenta la documentazione:<b>$!stpCommand.InvioSchedaEndoTipo2.ParteLocaleSchedaEndoTipo2.DocumentazioneLocale.DestinatarioDocumentazione</b>
+		
+		</li>
+		<li>Quando si può iniziare l'attività : <b>$!stpCommand.InvioSchedaEndoTipo2.ParteRegionaleSchedaEndoTipo2.DocumentazioneRegionaleEndoTipo2.QuandoIniziare</b></li>
+		<li>Precisare se sono necessarie altre comunicazioni prima di iniziare: <b>$!stpCommand.InvioSchedaEndoTipo2.ParteRegionaleSchedaEndoTipo2.DocumentazioneRegionaleEndoTipo2.AltreComunicazioniNecessarie</b></li>
+		<li>Tempi previsti per la conclusione del procedimento: <b>$!stpCommand.InvioSchedaEndoTipo2.ParteRegionaleSchedaEndoTipo2.DocumentazioneRegionaleEndoTipo2.TempiPrevistiConclusione</b></li>
+				
+			<li>Ulteriori annotazioni sulla documentazione: <b>$!stpCommand.InvioSchedaEndoTipo2.ParteLocaleSchedaEndoTipo2.DocumentazioneLocale.NoteDocumentazione</b></li>
+		
+	</ul>
+	</fieldset>
+	<br />
+	<fieldset style="padding: 10px;line-height: 15pt;text-align: justify;">
+	<legend>E2.1 Dichiarazioni relative alla specifica attività</legend>
+	<br />
+	$!stpCommand.InvioSchedaEndoTipo2.ParteRegionaleSchedaEndoTipo2.Tabella.Formulazione
+
+	</fieldset>
+	<br />
+	<fieldset style="padding: 10px;line-height: 15pt;text-align: justify;" >
+	<legend>E3 Quanto e come si deve pagare per gli endoprocedimenti indicati nei quadri E</legend>
+	<br />
+	<ul>
+		<li>Marche da bollo: <b>
+			$!stpCommand.InvioSchedaEndoTipo2.ParteRegionaleSchedaEndoTipo2.PagamentoRegionaleEndoTipo2.MarcheDaBollo
+			</b></li>
+		<li>Contributi/Oneri: <b>$!stpCommand.InvioSchedaEndoTipo2.ParteLocaleSchedaEndoTipo2.PagamentoLocale.ContributiOneri
+		&nbsp;$!stpCommand.InvioSchedaEndoTipo2.ParteLocaleSchedaEndoTipo2.PagamentoLocale.ContributiOneriValore</b>
+		</li>
+		<li>Diritti di segreteria: <b>$!stpCommand.InvioSchedaEndoTipo2.ParteLocaleSchedaEndoTipo2.PagamentoLocale.DirittiSegreteria</b>			
+		</li>
+		<li>Diritti di istruttoria SUAP: <b>$!stpCommand.InvioSchedaEndoTipo2.ParteLocaleSchedaEndoTipo2.pagamentoLocale.dirittiIstruttoriaSUAP
+		&nbsp;$!stpCommand.InvioSchedaEndoTipo2.ParteLocaleSchedaEndoTipo2.PagamentoLocale.DirittiIstruttoriaSUAPValore</b></li>
+		<li>Indicazioni sui pagamenti: <b>$!stpCommand.InvioSchedaEndoTipo2.ParteLocaleSchedaEndoTipo2.PagamentoLocale.NotePagamento</b>
+		</li>
+	</ul>
+	</fieldset>
+	<br />
+	<fieldset  style="padding: 10px;line-height: 15pt;">
+	<legend>E4 Elenco allegati da produrre e relative spiegazioni</legend>
+	<br />
+	<div class="jmesa">
+	<table border="0"  cellpadding="2" cellspacing="0" class="table">
+		<thead>
+			<tr class="header">
+				<td width="5%" >Adempimento</td>
+				<td width="5%" >Tipologia</td>
+				<td width="10%">Codice</td>
+				<td width="10%">Spiegazioni</td>
+			</tr>
+		</thead>
+		<tbody class="tbody">
+		#foreach( $var in $stpCommand.InvioSchedaEndoTipo2.ParteRegionaleSchedaEndoTipo2.ElencoAllegatiRichiesti.AllegatoRichiesto )
+		
+			<tr>
+				<td>$!var.AdempimentoAllegato</td>
+                <td>$!var.TipologiaAllegato</td>
+                <td>$!var.CodiceAllegato</td>
+                <td>$!var.SpiegazioniAllegato</td>
+			</tr>
+		
+		#end
+		</tbody>
+	</table>
+	</div>
+	</fieldset>
+	<br />
+	</fieldset>
+	<br />
+	<fieldset style="padding: 10px;line-height: 15pt;text-align: justify;">
+	<legend>F - Adempimenti successivi</legend>
+	<br />
+		$!stpCommand.InvioSchedaEndoTipo2.ParteRegionaleSchedaEndoTipo2.AdempimentiSuccessiviRegionali
+		
+		
+		$!stpCommand.InvioSchedaEndoTipo2.ParteLocaleSchedaEndoTipo2.AdempimentiSuccessiviLocali
+		
+	</fieldset>
+	<br />
+	<fieldset style="padding: 10px;line-height: 15pt;text-align: justify;">
+	<legend >G - Quando scade l'endoprocedimento relativo all'esercizio di attività</legend>
+	<br />
+	<ol>
+		<li>Indicare la data di scadenza: <b>$!stpCommand.InvioSchedaEndoTipo2.ParteRegionaleSchedaEndoTipo2.ScadenzaEndoTipo2.DataScadenza</b></li>
+		<li>Come si rinnova (indicare cosa bisogna fare per il rinnovo): <b>$!stpCommand.InvioSchedaEndoTipo2.ParteRegionaleSchedaEndoTipo2.ScadenzaEndoTipo2.ModalitaRinnovo</b></li>
+		<li>Dove si rinnova (indicare l'ente competente): <b>$!stpCommand.InvioSchedaEndoTipo2.ParteRegionaleSchedaEndoTipo2.ScadenzaEndoTipo2.EnteCompetenteRinnovo</b></li>
+	</ol>
+	</fieldset>
+	<br />
+	<fieldset  style="padding: 10px;line-height: 15pt;text-align: justify;">
+	<legend>H - Note</legend>
+	
+		$!stpCommand.InvioSchedaEndoTipo2.ParteRegionaleSchedaEndoTipo2.NoteRegionali
+		
+			<br />$!stpCommand.InvioSchedaEndoTipo2.ParteLocaleSchedaEndoTipo2.NoteLocali
+		
+		<br />
+		<fieldset style="padding: 10px;line-height: 15pt;">
+		<legend>Riepilogo validità scheda</legend>
+		<ul>
+			<li>Data inizio: <b>$!stpCommand.DataInizioValidita</b></li> 
+			<li>Data fine: <b>
+				#if ( $stpCommand.DataFineValidita == '31/12/9999' )
+					in corso di validità
+				#end
+				#if ( $stpCommand.DataFineValidita != '31/12/9999' )
+					$!stpCommand.DataFineValidita}
+				#end
+				</b></li>
+		</ul>
+		</fieldset>
+		<br />
+	</fieldset>
+	<br />
+</div>
+
+
+</body>
+</html>

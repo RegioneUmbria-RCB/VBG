@@ -1,0 +1,136 @@
+﻿@inject NavigationManager _navigationManager
+
+<nav class="breadcrumb-container" aria-label="Percorso di navigazione">
+    <ol class="breadcrumb">
+        @foreach (var item in _items)
+        {
+            <li class="@GetItemClass(item)" aria-current="@GetItemAriaCurrent(item)">
+                @if (UseIcons)
+                {
+                    <svg class="icon icon-sm icon-secondary align-top me-1" aria-hidden="true">
+                        <use href="@($"{SvgFilePath}{SvgIcon}")"></use>
+                    </svg>
+                }
+                
+                @if (item.Active)
+                {
+                    @item.Label
+                }
+                else
+                {
+                    <a href="@item.Url" @onclick="() => _OnItemClick(item)" @onclick:preventDefault>@item.Label</a>
+                    <span class="separator">/</span>
+                }                
+            </li>
+        }
+    </ol>
+</nav>
+
+@code {
+    /// <summary>
+    /// Show an icon between page links
+    /// </summary>
+    [Parameter]
+    public bool UseIcons { get; set; } = false;
+
+    /// <summary>
+    /// The icon to use among sprites.svg file
+    /// </summary>
+    [Parameter]
+    public string SvgIcon { get; set; } = "#it-link";
+
+    /// <summary>
+    /// The sprites.svg file path used for icons
+    /// </summary>
+    [Parameter]
+    public string SvgFilePath { get; set; } = "css/bootstrap-italia/svg/sprites.svg";
+
+    /// <summary>
+    /// Show breadcrumbs items based on current URI path.
+    /// NOTE: if set to true the Items property will be ignored
+    /// NOTE: you may need to pass a value for HomePage property
+    /// </summary>
+    [Parameter]
+    public bool UseCurrentPagePath { get; set; } = false;
+
+    /// <summary>
+    /// This property needs to be setted if your current home url path contains parameters separated with / 
+    /// 
+    /// </summary>
+    [Parameter]
+    public string HomePageParameters { get; set; } = "";
+
+    /// <summary>
+    /// Pages collection
+    /// BreadcrumbsItem.Label: the page name to display
+    /// BreadcrumbsItem.Uri: the page url link
+    /// BreadcrumbsItem.Active: set to true if it's the current page, false otherwise
+    /// </summary>
+    [Parameter]
+    public List<BreadcrumbsItem> Items { get; set; }
+
+    /// <summary>
+    /// A method to be executed on item click
+    /// </summary>
+    [Parameter]
+    public EventCallback OnItemClick { get; set; }
+
+    private List<BreadcrumbsItem> _items { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        if (UseCurrentPagePath)
+        {
+            string url = _navigationManager.Uri;
+            string home = _navigationManager.BaseUri + HomePageParameters;
+
+            if (url.Contains('#'))
+                url = url.Split('#')[0];
+
+            if (url.Contains('?'))
+                url = url.Split('?')[0];
+
+            url = url.Replace(home, "");
+
+            if (url.StartsWith('/'))
+                url = url.Substring(1);
+
+            string[] splitted = url.Split('/');
+
+            _items = new List<BreadcrumbsItem>();
+            _items.Add(new BreadcrumbsItem() { Label = "Home", Url = home });
+
+            for (int i=0; i<splitted.Length; i++)
+            {
+                home = $"{home}/{splitted[i]}";
+
+                _items.Add(new BreadcrumbsItem()
+                    {
+                        Active = i + 1 == splitted.Length,
+                        Label = splitted[i][0].ToString().ToUpper() + splitted[i].Substring(1), //Capitalize first letter
+                        Url = home
+                    });
+            }
+        }
+        else
+            _items = Items;
+    }
+
+    private string GetItemClass(BreadcrumbsItem item)
+    {
+        return item.Active ? "breadcrumb-item active" : "breadcrumb-item";
+    }
+
+    private string GetItemAriaCurrent(BreadcrumbsItem item)
+    {
+        return item.Active ? "page" : "";
+    }
+
+    private async Task _OnItemClick(BreadcrumbsItem item)
+    {
+        if (OnItemClick.HasDelegate)
+            await OnItemClick.InvokeAsync();
+
+        _navigationManager.NavigateTo(item.Url);
+    }
+}

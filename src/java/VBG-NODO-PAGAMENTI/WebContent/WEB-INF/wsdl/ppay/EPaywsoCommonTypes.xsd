@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema
+	targetNamespace="http://www.csi.it/epay/epaywso/types"
+	xmlns="http://www.w3.org/2001/XMLSchema"
+	xmlns:tns="http://www.csi.it/epay/epaywso/types"
+	elementFormDefault="qualified">
+
+	<annotation>
+		<documentation>Common Types</documentation>
+		<documentation>XSD versione 1.0.0</documentation>
+    </annotation>
+	
+	<simpleType name="TipoRichiestaType">
+		<restriction base="string">
+			<enumeration value="INSERISCI_LISTA_DI_CARICO" />
+			<enumeration value="AGGIORNA_POSIZIONI_DEBITORIE" />
+			<enumeration value="TRASMETTI_NOTIFICHE_PAGAMENTO" />
+			<enumeration value="TRASMETTI_AVVISI_SCADUTI" />
+			<enumeration value="TRASMETTI_FLUSSO_RENDICONTAZIONE" />
+			<enumeration value="TRASMETTI_FLUSSO_RENDICONTAZIONE_ESTESO" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="StatoRichiestaType">
+		<restriction base="string">
+			<enumeration value="IN_CORSO_DI_ACQUISIZIONE" />
+			<enumeration value="ERRORE_IN_FASE_DI_ACQUISIZIONE" />
+			<enumeration value="DA_ELABORARE" />
+			<enumeration value="ERRORE_IN_FASE_DI_ELABORAZIONE" />
+			<enumeration value="ELABORATA" />
+			<enumeration value="IN_CORSO_DI_ELABORAZIONE" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="TipoAggiornamentoType">
+		<restriction base="string">
+			<enumeration value="MODIFICA" />
+			<enumeration value="ANNULLAMENTO" />
+		</restriction>
+	</simpleType>
+
+	<element name="EPaywsoServiceResponse" type="tns:ResponseType" />
+
+	<complexType name="ResponseType">
+		<sequence>
+			<element name="Result" type="tns:ResultType" />
+		</sequence>
+	</complexType>
+
+	<complexType name="ResultType">
+		<sequence>
+			<element name="Codice" type="tns:CodiceEsitoType" />
+			<element name="Messaggio" type="tns:String500Type" minOccurs="0" />
+		</sequence>
+	</complexType>
+
+	<complexType name="EsitoInserimentoType">
+		<sequence>
+			<element name="ElencoPosizioniDebitorieInserite">
+				<complexType>
+					<sequence>
+						<element name="PosizioneDebitoriaInserita" type="tns:PosizioneDebitoriaType"
+							minOccurs="1" maxOccurs="1000" />
+					</sequence>
+				</complexType>
+			</element>
+		</sequence>
+	</complexType>
+
+	<complexType name="EsitoAggiornamentoType">
+		<sequence>
+			<element name="ElencoPosizioniDebitorieAggiornate">
+				<complexType>
+					<sequence>
+						<element name="PosizioneDebitoriaAggiornata" type="tns:PosizioneDebitoriaType"
+							minOccurs="1" maxOccurs="1000" />
+					</sequence>
+				</complexType>
+			</element>
+		</sequence>
+	</complexType>
+
+	<complexType name="PosizioneDebitoriaType">
+		<sequence>
+			<element name="IdPosizioneDebitoria" type="tns:String50Type"/>
+			<element name="IUV" type="tns:String35Type" minOccurs="0"/>
+			<element name="CodiceAvviso" type="tns:String35Type" minOccurs="0"/>
+			<element name="CodiceEsito" type="tns:CodiceEsitoType"/>
+			<element name="DescrizioneEsito" type="tns:String200Type" minOccurs="0"/>
+		</sequence>
+	</complexType>
+
+	<simpleType name="CodiceEsitoType">
+		<restriction base="string">
+			<pattern value="[012][0-9]{2}" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="TipoVersamento">
+		<restriction base="string">
+			<enumeration value="SPONTANEO"/>
+			<enumeration value="ATTESO"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="CodiceVersamentoType">
+		<restriction base="string">
+			<minLength value="1" />
+			<maxLength value="4" />
+		</restriction>
+	</simpleType>
+
+	<complexType name="EndpointType">
+		<sequence>
+			<element name="Protocol" default="http">
+				<simpleType>
+					<restriction base="string">
+						<enumeration value="http" />
+						<enumeration value="https" />
+					</restriction>
+				</simpleType>
+			</element>
+			<element name="Host" type="string" />
+			<element name="Context" type="string" />
+			<element name="Port" type="int" minOccurs="0" />
+			<element name="CredenzialiAutenticazione" minOccurs="0">
+				<complexType>
+					<sequence>
+						<element name="NomeUtente" type="string" minOccurs="1" />
+						<element name="Password" type="string" minOccurs="1" />
+					</sequence>
+				</complexType>
+			</element>
+		</sequence>
+	</complexType>
+
+	<complexType name="SoggettoType">
+		<sequence>
+			<choice>
+				<element name="PersonaFisica" type="tns:PersonaFisicaType" />
+				<element name="PersonaGiuridica" type="tns:PersonaGiuridicaType" />
+			</choice>
+			<element name="IdentificativoUnivocoFiscale" type="tns:String35Type" />
+			<element name="Indirizzo" type="tns:String70Type" minOccurs="0"/>
+			<element name="Civico" type="tns:String16Type" minOccurs="0"/>
+			<element name="CAP" type="tns:String16Type" minOccurs="0"/>
+			<element name="Localita" type="tns:String35Type" minOccurs="0"/>
+			<element name="Provincia" type="tns:String35Type" minOccurs="0"/>
+			<element name="Nazione" type="tns:NazioneType" minOccurs="0"/>
+			<element name="EMail" type="tns:EMailAddress" minOccurs="0"/>
+		</sequence>
+	</complexType>
+
+	<complexType name="PersonaFisicaType">
+		<sequence>
+			<element name="Cognome" type="tns:String70Type"/>
+			<element name="Nome" type="tns:String70Type"/>
+		</sequence>
+	</complexType>
+
+	<complexType name="PersonaGiuridicaType">
+		<sequence>
+			<element name="RagioneSociale" type="tns:String70Type"/>
+		</sequence>
+	</complexType>
+
+	<simpleType name="String2000Type">
+		<restriction base="string">
+			<minLength value="1" />
+			<maxLength value="2000" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="String1000Type">
+		<restriction base="string">
+			<minLength value="1" />
+			<maxLength value="1000" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="String500Type">
+		<restriction base="string">
+			<minLength value="1" />
+			<maxLength value="500" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="String400Type">
+		<restriction base="string">
+			<minLength value="1" />
+			<maxLength value="400" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="String256Type">
+		<restriction base="string">
+			<minLength value="1" />
+			<maxLength value="256" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="String250Type">
+		<restriction base="string">
+			<minLength value="1" />
+			<maxLength value="250" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="String200Type">
+		<restriction base="string">
+			<minLength value="1" />
+			<maxLength value="200" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="String150Type">
+		<restriction base="string">
+			<minLength value="1" />
+			<maxLength value="150" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="String140Type">
+		<restriction base="string">
+			<minLength value="1" />
+			<maxLength value="140" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="String135Type">
+		<restriction base="string">
+			<minLength value="1" />
+			<maxLength value="135" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="String100Type">
+		<restriction base="string">
+			<minLength value="1" />
+			<maxLength value="100" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="String80Type">
+		<restriction base="string">
+			<minLength value="1" />
+			<maxLength value="80" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="String70Type">
+		<restriction base="string">
+			<minLength value="1" />
+			<maxLength value="70" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="String50Type">
+		<restriction base="string">
+			<minLength value="1" />
+			<maxLength value="50" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="String35Type">
+		<restriction base="string">
+			<minLength value="1" />
+			<maxLength value="35" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="String30Type">
+		<restriction base="string">
+			<minLength value="1" />
+			<maxLength value="30" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="String16Type">
+		<restriction base="string">
+			<minLength value="1" />
+			<maxLength value="16" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="AnnoType">
+		<restriction base="integer">
+			<minInclusive value="1900" />
+			<maxInclusive value="2900" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="EMailAddress">
+		<restriction base="string">
+			<pattern value=".+@.+" />
+			<minLength value="1"/>
+			<maxLength value="256"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="ImportoType">
+		<restriction base="decimal">
+			<minInclusive value="0.00" />
+			<maxInclusive value="99999999.99" />
+			<fractionDigits value="2" />
+			<totalDigits value="10" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="ImportoSignedType">
+		<restriction base="decimal">
+			<minInclusive value="-99999999.99" />
+			<maxInclusive value="99999999.99" />
+			<fractionDigits value="2" />
+			<totalDigits value="10" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="DimensioneMBType">
+		<restriction base="decimal">
+			<minInclusive value="0.000" />
+			<maxInclusive value="9999999.999" />
+			<fractionDigits value="3" />
+			<totalDigits value="10" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="NazioneType">
+		<restriction base="string">
+			<pattern value="[A-Z]{2}" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="Numero6CifreType">
+		<restriction base="integer">
+			<minInclusive value="1" />
+			<maxInclusive value="999999" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="IBANType">
+		<restriction base="string">
+			<minLength value="1"/>
+			<maxLength value="35"/>
+		</restriction>
+	</simpleType>
+
+</schema>

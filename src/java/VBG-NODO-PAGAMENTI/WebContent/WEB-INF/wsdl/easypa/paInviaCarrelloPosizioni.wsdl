@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<definitions 
+	name="CarrelloPosizioniImplService" 
+	targetNamespace="http://services.sia.eu/" 
+	xmlns="http://schemas.xmlsoap.org/wsdl/" 
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:head="http://services.sia.eu/head" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:tns="http://services.sia.eu/">
+	<types>
+		
+		<xs:schema 
+			targetNamespace="http://services.sia.eu/head" version="1.0">
+			<xs:element name="paInviaCarrelloPosizioniHeader">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="user" type="xs:string" />
+						<xs:element name="password" type="xs:string" />
+						<xs:element name="abiCode" type="xs:string" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:schema>
+		
+		<xs:schema 	targetNamespace="http://services.sia.eu/" version="1.0">
+			
+			<xs:element name="paInviaCarrelloPosizioniRequest" type="tns:paInviaCarrelloPosizioniRequest" />
+			
+			<xs:element name="paInviaCarrelloPosizioniResponse" type="tns:paInviaCarrelloPosizioniResponse" /> 
+			
+			<xs:complexType name="paInviaCarrelloPosizioniRequest">
+				<xs:sequence>
+					<xs:element minOccurs="1" maxOccurs="5" name="paInviaCarrelloPosizioniLista" type="tns:paInviaCarrelloPosizioniListaType" /> 
+				</xs:sequence>
+			</xs:complexType>
+			
+			<xs:complexType name="paInviaCarrelloPosizioniListaType">
+				<xs:sequence>
+					<xs:element minOccurs="1" name="identificativoBeneficiario" type="xs:string" />
+					<xs:element minOccurs="0" name="ccp" type="xs:string" />
+					<xs:element minOccurs="0" name="codicePa" type="xs:string" />
+					<xs:element minOccurs="0" name="codiceServizio" type="xs:string" />
+					<xs:element minOccurs="1" name="tipoIdPagatore" type="xs:string" />
+					<xs:element minOccurs="1" name="identificativoPagatore" type="xs:string" />
+					<xs:element minOccurs="0" name="anagraficaPagatore" type="xs:string" />
+					<xs:element minOccurs="0" name="indirizzoPagatore" type="xs:string" />
+					<xs:element minOccurs="0" name="civicoPagatore" type="xs:string" />
+					<xs:element minOccurs="0" name="capPagatore" type="xs:string" />
+					<xs:element minOccurs="0" name="localitaPagatore" type="xs:string" />
+					<xs:element minOccurs="0" name="provinciaPagatore" type="xs:string" />
+					<xs:element minOccurs="0" name="codiceNazionePagatore" type="xs:string" />
+					<xs:element minOccurs="0" name="emailPagatore" type="xs:string" />
+					<xs:element minOccurs="0" name="dataScadenzaPagamento" type="xs:string" />
+					<xs:element minOccurs="1" name="importoPagamento" type="xs:decimal" />
+					<xs:element minOccurs="1" name="tipoFirmaRicevuta" type="xs:string" />
+					<xs:element minOccurs="0" name="tipoRiferimentoCreditore" type="xs:string" />
+					<xs:element minOccurs="0" name="codiceRiferimentoCreditore" type="xs:string" />
+					<xs:element minOccurs="0" name="identificativoUnivocoVersamento" type="xs:string" />
+					<xs:element minOccurs="1" maxOccurs="5" name="datiSingoloVersamento" type="tns:datiSingoloVersamentoListaType"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="datiSingoloVersamentoListaType">
+				<xs:sequence>
+					<xs:element minOccurs="1" name="importoSingoloVersamento" type="xs:decimal" />
+					<xs:element minOccurs="1" name="commissioniCaricoPa" type="xs:decimal" />
+					<xs:element minOccurs="0" name="ibanAccredito" type="xs:string" />
+					<xs:element minOccurs="0" name="bicAccredito" type="xs:string" />
+					<xs:element minOccurs="0" name="ibanAppoggio" type="xs:string" />
+					<xs:element minOccurs="0" name="bicAppoggio" type="xs:string" />
+					<xs:element minOccurs="0" name="credenzialiPagatore" type="xs:string" />
+					<xs:element minOccurs="1" name="causaleVersamento" type="xs:string" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="paInviaCarrelloPosizioniResponse">
+				<xs:sequence>
+					<xs:element minOccurs="1" name="paInviaCarrelloPosizioniOutput" type="tns:paInviaCarrelloPosizioniOutputType" /> 
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="paInviaCarrelloPosizioniOutputType">
+				<xs:sequence>
+					<xs:element minOccurs="1" name="esito" type="xs:string" />
+					<xs:element minOccurs="0" name="codiceErrore" type="xs:string" />
+					<xs:element minOccurs="0" name="descrizione" type="xs:string" />
+					<xs:element minOccurs="0" name="idTransazione" type="xs:string" />
+					<xs:element minOccurs="0" name="url" type="xs:string" />
+					<xs:element minOccurs="0" maxOccurs="5" name="iuvLista" type="tns:iuvListaType"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="iuvListaType">
+				<xs:sequence>
+					<xs:element minOccurs="1" name="identificativoUnivocoVersamento" type="xs:string" />
+				</xs:sequence>
+			</xs:complexType>
+		</xs:schema>
+	</types>
+	
+	<message name="paInviaCarrelloPosizioniRequest">
+		<part name="header" element="head:paInviaCarrelloPosizioniHeader" />
+		<part name="bodyrichiesta" element="tns:paInviaCarrelloPosizioniRequest" />
+	</message>
+	
+	<message name="paInviaCarrelloPosizioniResponse">
+		<part name="bodyrisposta" element="tns:paInviaCarrelloPosizioniResponse" /> 
+	</message>
+	
+	<portType name="PaInviaCarrelloPosizioni">
+		<operation name="paInviaCarrelloPosizioni">
+			<input name="paInviaCarrelloPosizioniRequest" message="tns:paInviaCarrelloPosizioniRequest" /> 
+			<output name="paInviaCarrelloPosizioniResponse" message="tns:paInviaCarrelloPosizioniResponse" />
+		</operation>
+	</portType>
+	<binding name="PaInviaCarrelloPosizioniBinding" type="tns:PaInviaCarrelloPosizioni">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" /> 
+		<operation name="paInviaCarrelloPosizioni">
+			<soap:operation soapAction=""/> 
+			<input>
+				<soap:header part="header" message="tns:paInviaCarrelloPosizioniRequest" use="literal" />
+				<soap:body parts="bodyrichiesta" use="literal" /> 
+			</input>
+			<output>
+				<soap:body use="literal" /> 
+			</output>
+		</operation>
+	</binding>
+	
+	<service name="PaInviaCarrelloPosizioniImplService">
+		<port name="PaInviaCarrelloPosizioniPort" binding="tns:PaInviaCarrelloPosizioniBinding">
+			<soap:address location="https://tst.pasemplice.eu/connettorenodo/services/soap/paInviaCarrelloPosizioni" /> 
+		</port>
+	</service>
+	
+</definitions>

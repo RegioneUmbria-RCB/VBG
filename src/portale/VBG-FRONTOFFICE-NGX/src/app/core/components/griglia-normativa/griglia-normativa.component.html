@@ -1,0 +1,32 @@
+@if (dataSource && dataSource.length) {
+  <div>
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th>Descrizione</th>
+          <th>Tipologia</th>
+          <th>Scarica</th>
+          <th>Link</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of dataSource; track item) {
+          <tr>
+            <td>{{ item.descrizione }}</td>
+            <td>{{ item.tipologia }}</td>
+            <td>
+              @if (item.codiceOggetto) {
+                <span
+                  class="link"
+                  (click)="onDownload(item.codiceOggetto?.toString())"
+                  >Scarica</span
+                  >
+                }
+              </td>
+              <td>&nbsp;</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }

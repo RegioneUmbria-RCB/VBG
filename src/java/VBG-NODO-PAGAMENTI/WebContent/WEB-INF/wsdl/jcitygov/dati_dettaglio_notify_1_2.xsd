@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:jcg_pagopa="http://schemi.informatica.maggioli.it/operations/jcgpagopa/notify/1_2"
+           targetNamespace="http://schemi.informatica.maggioli.it/operations/jcgpagopa/notify/1_2"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified"
+           version="1.0">
+
+    <!-- Simple Types -->
+    <xs:simpleType name="stEsito">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="OK"/>
+            <xs:enumeration value="Warning"/>
+            <xs:enumeration value="Error"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <!-- Simple Types -->
+
+    <!-- Complex Types -->
+    <xs:complexType name="ctEsito">
+        <xs:sequence>
+            <xs:element name="Esito" type="jcg_pagopa:stEsito" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="Messaggio" type="xs:string" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ctChiaviDebito">
+        <xs:sequence>
+            <xs:element name="IDPos" type="xs:string" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Identificativo della posizione debitoria.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="IDDeb" type="xs:string" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Identificativo del debito.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="CodiceTipoDebito" type="xs:string" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Codice del tipo debito relativo alla chiamata</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="CodiceIpaEnteCreditore" type="xs:string" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Codice ipa ente creditore</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ctEsitoDebitoCaricato">
+        <xs:sequence>
+            <xs:element name="chiaviDebito" type="jcg_pagopa:ctChiaviDebito" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Identificativo della posizione debitoria</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="numeroAvviso" type="xs:string" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>numero avviso calcolato dal connettore esterno</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="iuvNumeroAvviso" type="xs:string" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>iuv relativo al numero di avviso</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="esitoCaricamento" type="jcg_pagopa:ctEsito" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>esito e messaggio di eventuali errori di caricamento o rilascio IUV da parte del connettore che lo calcola</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="RichiestaNotificaCaricamentoDebito">
+        <xs:annotation>
+            <xs:documentation>Richiesta utilizzata per notificare gli esiti dei debiti caricati ed i numeri di avviso / iuv calcolati da terzi </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="esitiDebitiCaricati">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="esitoDebitoCaricato" type="jcg_pagopa:ctEsitoDebitoCaricato" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RispostaNotificaCaricamentoDebito">
+        <xs:annotation>
+            <xs:documentation/>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="Esito" type="jcg_pagopa:ctEsito" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="RichiestaNotificaPagamentoDebito">
+        <xs:annotation>
+            <xs:documentation>Richesta utilizzata per notificare il pagamento di un debit</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="chiaviDebito" type="jcg_pagopa:ctChiaviDebito" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Identificativo della posizione debitoria</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RispostaNotificaPagamentoDebito">
+        <xs:annotation>
+            <xs:documentation/>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="Esito" type="jcg_pagopa:ctEsito" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="RichiestaNotificaRendicontazionePagamento">
+        <xs:annotation>
+            <xs:documentation>Richiesta utilizzata per notificare i dati di rendicontazione: data valuta, IBAN  </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="chiaviDebito" type="jcg_pagopa:ctChiaviDebito" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Identificativo della posizione debitoria</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="DataRegolamento" type="xs:date" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Data Regolamento posizione debitoria.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="CodicePSP" type="xs:string" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Codice Identificativo del PSP.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="IBAN" type="xs:string" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Codice IBAN.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="isContoPostale" type="xs:boolean" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Flag che indica se il conto e` un conto Poste.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+
+    </xs:complexType>
+    <xs:complexType name="RispostaNotificaRendicontazionePagamento">
+        <xs:annotation>
+            <xs:documentation/>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="Esito" type="jcg_pagopa:ctEsito" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- WS Methods -->
+    <xs:element name="RichiestaNotificaCaricamentoDebito" type="jcg_pagopa:RichiestaNotificaCaricamentoDebito" />
+    <xs:element name="RispostaNotificaCaricamentoDebito" type="jcg_pagopa:RispostaNotificaCaricamentoDebito" />
+
+    <xs:element name="RichiestaNotificaRendicontazionePagamento" type="jcg_pagopa:RichiestaNotificaRendicontazionePagamento" />
+    <xs:element name="RispostaNotificaRendicontazionePagamento" type="jcg_pagopa:RispostaNotificaRendicontazionePagamento" />
+
+    <xs:element name="RichiestaNotificaPagamentoDebito" type="jcg_pagopa:RichiestaNotificaPagamentoDebito" />
+    <xs:element name="RispostaNotificaPagamentoDebito" type="jcg_pagopa:RispostaNotificaPagamentoDebito" />
+
+    <!-- WS Methods -->
+</xs:schema>

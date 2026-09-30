@@ -1,0 +1,79 @@
+﻿@using Init.Sigepro.FrontEnd.AppLogic.GestioneOggetti
+@using Init.Sigepro.FrontEnd.CoreServices.Markdown
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+<style type="text/css" media="all">
+    .contenitore-riepilogo {
+        width: 100%;
+        position: relative;
+    }
+
+    .riepilogo-domanda-html {
+        border-style: none;
+        width: 100%;
+    }
+
+    .contenitore-riepilogo .fac-simile {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1020;
+        pointer-events: none;
+        color: black;
+        overflow-y: hidden;
+    }
+
+        .contenitore-riepilogo .fac-simile::after {
+            transform: rotate(30deg);
+            text-align: center;
+            position: relative;
+            top: 40%;
+            color: rgba(0, 0, 0, 0.12);
+            font-weight: bold;
+            font-size: 5em;
+            content: "FAC-SIMILE";
+            display: block;
+        }
+</style>
+
+<StepCard Titolo="@TitoloFaseRiepilogo">
+    <StepCardSubtitle>@((MarkupString)new MarkdownString(DescrizioneFaseRiepilogo).ToHtml(false))</StepCardSubtitle>
+
+    @if (MostraRiepilogoDomanda)
+    {
+        <div class="contenitore-riepilogo">
+            @if (RiepilogoDomandaConfigurato)
+            {
+                <div class="fac-simile"></div>
+                <PdfViewerV2 DocumentGenerationCallback="DocumentGenerationCallback"></PdfViewerV2>
+            }
+            else
+            {
+                <p>Non configurato con riepilogo domanda</p>
+            }
+        </div>
+    }
+
+    @if (RiepilogoDomandaConfigurato)
+    {
+        <div class="mt-4">
+            <button class="btn btn-primary" @onclick="DownloadRiepilogo">Scarica riepilogo</button>
+        </div>
+    }
+</StepCard>
+
+@code {
+    [Parameter, EditorRequired]
+    public string TitoloFaseRiepilogo { get; set; } = "Riepilogo della domanda";
+    [Parameter, EditorRequired]
+    public string DescrizioneFaseRiepilogo { get; set; } = "Riepilogo della domanda";
+    [Parameter, EditorRequired]
+    public bool MostraRiepilogoDomanda { get; set; }
+    [Parameter, EditorRequired]
+    public bool RiepilogoDomandaConfigurato { get; set; }
+    [Parameter, EditorRequired]
+    public Func<Task<BinaryFile>> DocumentGenerationCallback { get; set; } = null!;
+    [Parameter, EditorRequired]
+    public EventCallback DownloadRiepilogo { get; set; }
+}

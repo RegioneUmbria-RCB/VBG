@@ -1,0 +1,556 @@
+﻿@page "/{IdComune}/{Software}/inserimento-istanza/gestione-anagrafiche/{idDomanda:int}/{stepId:int}"
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneTipiSoggetto
+@using Init.Sigepro.FrontEnd.AppLogic.Services.Domanda
+@using Init.Sigepro.FrontEnd.Infrastructure.StepsDomanda.Attributi
+@using VBG.BlazorComponentsLibrary
+@using VBG.BlazorComponentsLibrary.DesignComuni.Forms
+@using VBG.BlazorComponentsLibrary.DesignComuni.Messaggi
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards.CardButtons
+@using VBG.BlazorComponentsLibrary.EditFormComponents
+@using VBG.BlazorComponentsLibrary.EditFormComponents.DropDown
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.RisorseTestuali
+@using static Init.Sigepro.FrontEnd.AppLogic.ObjectSpace.PresentazioneIstanza.PresentazioneIstanzaDbV2
+
+@inherits GestioneAnagraficheStepPage<TipoSoggetto>
+
+
+<div class="descrizioneStep descrizione-step">
+    @((MarkupString)_testoDescrizioneStep)
+</div>
+
+@if (_richiedentiDataSource?.Any() ?? false)
+{
+    @foreach (var group in _richiedentiDataSource.GroupBy(x => x.InQualitaDi))
+    {
+        <StepCard Titolo="@group.Key">
+
+            @foreach (var item in group)
+            {
+                var anagrafica = item.Anagrafica;
+
+                <StepCardItem>
+                    @if (anagrafica.TipoSoggetto.RichiedeAnagraficaCollegata && anagrafica.AnagraficaCollegata == null)
+                    {
+                        <ErrorMessage>
+                            Il tipo soggetto <span class="fw-bold">@anagrafica.TipoSoggetto</span> deve essere collegato ad una persona giuridica.
+
+                            @if (DomandaCorrente.Anagrafiche.GetAnagraficheCollegabili().Any())
+                            {
+                                <span>Fai click su <span class="fw-bold">"Collega Azienda"</span> per collegarlo.</span>
+                            }
+                            else
+                            {
+                                <span>Utilizza la funzione <span class="fw-bold">"Aggiungi soggetto"</span> per inserire un'azienda e fai click su <span class="fw-bold">"Collega Azienda"</span> per collegarlo.</span>
+                            }
+                        </ErrorMessage>
+                    }
+
+                    <StepCardItemTitle Titolo="@($"{anagrafica.Nome} {anagrafica.Nominativo}")"></StepCardItemTitle>
+
+                    @if (!SolaLettura)
+                    {
+                        <StepCardButtonGroup DeleteVisible="true"
+                                             DeleteClick="() => MostraConfermaEliminazione(anagrafica)"
+                                             EditClick="() => OnRowEditAsync(anagrafica)"></StepCardButtonGroup>
+                    }
+                    
+
+                    @if (item.TipoPersona == Init.Sigepro.FrontEnd.AppLogic.GestionePresentazioneDomanda.GestioneAnagrafiche.TipoPersonaEnum.Fisica)
+                    {
+                        <StepCardInfo Titolo="Codice Fiscale">@anagrafica.Codicefiscale</StepCardInfo>
+                    }
+                    else
+                    {
+                        <StepCardInfo Titolo="Partita IVA">@anagrafica.PartitaIva</StepCardInfo>
+                    }
+
+
+                    @if (anagrafica.TipoSoggetto.RichiedeAnagraficaCollegata)
+                    {
+                        <FormCollegamentoAnagrafiche Anagrafica="anagrafica"
+                                                     AnagraficheCollegabili="_anagraficheCollegabili"
+                                                     OnAnagraficaCollegata="OnAnagraficaCollegataAsync"
+                                                     MessageContainer="MessageContainer"></FormCollegamentoAnagrafiche>
+                    }
+
+
+                    <StepCollapsibleContent>
+                        @switch (item.TipoPersona)
+                        {
+                            case Init.Sigepro.FrontEnd.AppLogic.GestionePresentazioneDomanda.GestioneAnagrafiche.TipoPersonaEnum.Fisica:
+                                <StepCollapsibleContentItem>
+                                    <h4 class="title-large-semi-bold">
+                                        <RisorsaTestuale IdRisorsa="dettagli-anagrafica.pf.titolo.dati-soggetto">
+                                            <ChildContent>
+                                                Dati del soggetto
+                                            </ChildContent>
+                                        </RisorsaTestuale>
+                                    </h4>
+                                    <StepCardInfo Titolo="Nome">
+                                        @anagrafica.Nome
+                                    </StepCardInfo>
+                                    <StepCardInfo Titolo="Cognome">
+                                        @anagrafica.Nominativo
+                                    </StepCardInfo>
+                                    <StepCardInfo Titolo="Sesso">
+                                        @anagrafica.Sesso
+                                    </StepCardInfo>
+                                    <StepCardInfo Titolo="Data di nascita">
+                                        @anagrafica.DatiNascita.Data?.ToShortDateString()
+                                    </StepCardInfo>
+                                    <StepCardInfo Titolo="Luogo di nascita">
+                                        @GetDatiComune(anagrafica.DatiNascita.CodiceComune)?.Comune
+                                    </StepCardInfo>
+                                    <StepCardInfo Titolo="Codice Fiscale">
+                                        @anagrafica.Codicefiscale
+                                    </StepCardInfo>
+                                    <StepCardInfo Titolo="Cittadinanza">
+                                        @if (anagrafica.IdCittadinanza != null)
+                                        {
+                                            @this.GetDatiCittadinanza(anagrafica.IdCittadinanza.Value.ToString())?.Descrizione
+                                        }
+                                        else
+                                        {
+                                            <p class="data-text">&nbsp;</p>
+                                        }
+                                    </StepCardInfo>
+                                </StepCollapsibleContentItem>
+
+                                @if (DettagliPf_ResidenzaVisible)
+                                {
+                                    <StepCollapsibleContentItem>
+                                        <h4 class="title-large-semi-bold mb-3">
+                                            <RisorsaTestuale IdRisorsa="dettagli-anagrafica.pf.titolo.residenza">
+                                                <ChildContent>
+                                                    Residenza
+                                                </ChildContent>
+                                            </RisorsaTestuale>
+                                        </h4>
+                                        <StepCardInfo Titolo="Residenza">
+                                            @($"{anagrafica.IndirizzoResidenza.Via}, {anagrafica.IndirizzoResidenza.Cap}  {anagrafica.IndirizzoResidenza.Citta} {this.GetDatiComune(anagrafica.IndirizzoResidenza.CodiceComune)?.Comune} ({anagrafica.IndirizzoResidenza.SiglaProvincia})")
+                                        </StepCardInfo>
+                                    </StepCollapsibleContentItem>
+                                }
+
+                                var soggetto = GetTipoSoggetto(anagrafica.TipoSoggetto.Id.Value);
+
+                                if (soggetto != null && soggetto.RichiedeDatiAlbo)
+                                {
+                                    <StepCollapsibleContentItem>
+                                        <h4 class="title-large-semi-bold mb-3">
+                                            <RisorsaTestuale IdRisorsa="dettagli-anagrafica.pf.albo-elenco">
+                                                <ChildContent>
+                                                    Dati elenco professionale
+                                                </ChildContent>
+                                            </RisorsaTestuale>
+                                        </h4>
+                                        <StepCardInfo Titolo="Elenco professionale">
+                                            @anagrafica.DatiIscrizioneAlboProfessionale.Descrizione
+                                        </StepCardInfo>
+                                        <StepCardInfo Titolo="Numero">
+                                            @anagrafica.DatiIscrizioneAlboProfessionale.Numero
+                                        </StepCardInfo>
+                                        @if (ShowProvinciaAlbo(anagrafica))
+                                        {
+                                            <StepCardInfo Titolo="Provincia">
+                                                @GetDatiProvincia(anagrafica.DatiIscrizioneAlboProfessionale.SiglaProvincia)?.Provincia
+                                            </StepCardInfo>
+                                        }
+                                        else
+                                        {
+                                            <StepCardInfo Titolo="Regione">
+                                                @GetDatiProvincia(anagrafica.DatiIscrizioneAlboProfessionale.SiglaProvincia)?.Provincia
+                                            </StepCardInfo>
+                                        }
+
+                                    </StepCollapsibleContentItem>
+                                }
+
+                                if (anagrafica.Contatti is not null)
+                                {
+                                    <StepCollapsibleContentItem>
+                                        <h4 class="title-large-semi-bold mb-3">
+                                            <RisorsaTestuale IdRisorsa="dettagli-anagrafica.pf.titolo.contatti">
+                                                <ChildContent>
+                                                    Contatti
+                                                </ChildContent>
+                                            </RisorsaTestuale>
+                                        </h4>
+                                        @if (DettagliPf_TelefonoVisible)
+                                        {
+                                            <StepCardInfo Titolo="Telefono">
+                                                @anagrafica.Contatti.Telefono
+                                            </StepCardInfo>
+                                        }
+                                        @if (DettagliPf_CellulareVisible)
+                                        {
+                                            <StepCardInfo Titolo="Cellulare">
+                                                @anagrafica.Contatti.TelefonoCellulare
+                                            </StepCardInfo>
+                                        }
+                                        @if (DettagliPf_EmailVisible)
+                                        {
+                                            <StepCardInfo Titolo="EMail">
+                                                @anagrafica.Contatti.Email
+                                            </StepCardInfo>
+                                        }
+                                        @if (DettagliPf_PecVisible)
+                                        {
+                                            <StepCardInfo Titolo="Pec">
+                                                @anagrafica.Contatti.Pec
+                                            </StepCardInfo>
+                                        }
+                                    </StepCollapsibleContentItem>
+                                }
+
+                                if (anagrafica.IndirizzoCorrispondenza is not null &&
+                                DettagliPf_CorrispondenzaVisibile)
+                                {
+                                    <StepCollapsibleContentItem>
+                                        <h4 class="title-large-semi-bold mb-3">
+                                            <RisorsaTestuale IdRisorsa="dettagli-anagrafica.pf.titolo.corrispondenza">
+                                                <ChildContent>
+                                                    Indirizzo per Corrispondenza
+                                                </ChildContent>
+                                            </RisorsaTestuale>
+                                        </h4>
+                                        <StepCardInfo Titolo="Residenza">
+                                            @($"{anagrafica.IndirizzoCorrispondenza.Via}, {anagrafica.IndirizzoCorrispondenza.Cap}  {anagrafica.IndirizzoCorrispondenza.Citta} {this.GetDatiComune(anagrafica.IndirizzoCorrispondenza.CodiceComune)?.Comune} ({anagrafica.IndirizzoCorrispondenza.SiglaProvincia})")
+                                        </StepCardInfo>
+                                    </StepCollapsibleContentItem>
+                                }
+                                break;
+
+                            case Init.Sigepro.FrontEnd.AppLogic.GestionePresentazioneDomanda.GestioneAnagrafiche.TipoPersonaEnum.Giuridica:
+                                <StepCollapsibleContentItem>
+                                    <h4 class="title-large-semi-bold mb-3">
+                                        <RisorsaTestuale IdRisorsa="dettagli-anagrafica.pg.titolo.dati-soggetto">
+                                            <ChildContent>
+                                                Dati del soggetto
+                                            </ChildContent>
+                                        </RisorsaTestuale>
+                                    </h4>
+                                    <StepCardInfo Titolo="Ragione sociale">
+                                        @anagrafica.Nominativo
+                                    </StepCardInfo>
+                                    <StepCardInfo Titolo="Forma giuridica">
+                                        @GetFormaGiuridica(anagrafica.IdFormagiuridica)?.FormaGiuridica
+                                    </StepCardInfo>
+                                    <StepCardInfo Titolo="Codice Fiscale Impresa">
+                                        @anagrafica.Codicefiscale
+                                    </StepCardInfo>
+                                    <StepCardInfo Titolo="Partita IVA">
+                                        @anagrafica.PartitaIva
+                                    </StepCardInfo>
+                                    <StepCardInfo Titolo="Data di costituzione">
+                                        @anagrafica.DataCostituzione?.ToShortDateString()
+                                    </StepCardInfo>
+                                </StepCollapsibleContentItem>
+
+                                @if (DettagliPg_SedeLegaleVisibile)
+                                {
+                                    var datiComune = GetDatiComune(anagrafica.IndirizzoResidenza.CodiceComune);
+
+                                    <StepCollapsibleContentItem>
+                                        <h4 class="title-large-semi-bold mb-3">
+                                            <RisorsaTestuale IdRisorsa="dettagli-anagrafica.pg.titolo.sede-legale">
+                                                <ChildContent>
+                                                    Sede legale
+                                                </ChildContent>
+                                            </RisorsaTestuale>
+                                        </h4>
+                                        <StepCardInfo Titolo="Comune">
+                                            @($"{datiComune?.Comune} ({datiComune?.SiglaProvincia})")
+                                        </StepCardInfo>
+                                        <StepCardInfo Titolo="Indirizzo">
+                                            @anagrafica.IndirizzoResidenza.Via
+                                        </StepCardInfo>
+                                        <StepCardInfo Titolo="Località">
+                                            @anagrafica.IndirizzoResidenza.Citta
+                                        </StepCardInfo>
+                                        <StepCardInfo Titolo="CAP">
+                                            @anagrafica.IndirizzoResidenza.Cap
+                                        </StepCardInfo>
+                                    </StepCollapsibleContentItem>
+                                }
+
+                                @if (DettagliPg_CciaaVisibile)
+                                {
+                                    <StepCollapsibleContentItem>
+                                        <h4 class="title-large-semi-bold mb-3">
+                                            <RisorsaTestuale IdRisorsa="dettagli-anagrafica.pg.titolo.cciaa">
+                                                <ChildContent>
+                                                    CCIAA
+                                                </ChildContent>
+                                            </RisorsaTestuale>
+                                        </h4>
+                                        <StepCardInfo Titolo="Numero">
+                                            @anagrafica.DatiIscrizioneCciaa.Numero
+                                        </StepCardInfo>
+                                        <StepCardInfo Titolo="Data">
+                                            @anagrafica.DatiIscrizioneCciaa.Data?.ToShortDateString()
+                                        </StepCardInfo>
+                                        <StepCardInfo Titolo="Comune">
+                                            @GetComuneProvinciaFormattati(anagrafica.DatiIscrizioneCciaa.CodiceComune)
+                                        </StepCardInfo>
+                                    </StepCollapsibleContentItem>
+                                }
+
+                                @if (DettagliPg_RegTribVisibile)
+                                {
+                                    <StepCollapsibleContentItem>
+                                        <h4 class="title-large-semi-bold mb-3">
+                                            <RisorsaTestuale IdRisorsa="dettagli-anagrafica.pg.titolo.reg-trib">
+                                                <ChildContent>
+                                                    Reg. Trib.
+                                                </ChildContent>
+                                            </RisorsaTestuale>
+                                        </h4>
+                                        <StepCardInfo Titolo="Numero">
+                                            @anagrafica.DatiIscrizioneRegTrib.Numero
+                                        </StepCardInfo>
+                                        <StepCardInfo Titolo="Data">
+                                            @anagrafica.DatiIscrizioneRegTrib.Data?.ToShortDateString()
+                                        </StepCardInfo>
+                                        <StepCardInfo Titolo="Comune">
+                                            @GetComuneProvinciaFormattati(anagrafica.DatiIscrizioneRegTrib.CodiceComune)
+                                        </StepCardInfo>
+                                    </StepCollapsibleContentItem>
+                                }
+
+                                @if (DettagliPg_ReaVisibile)
+                                {
+                                    <StepCollapsibleContentItem>
+                                        <h4 class="title-large-semi-bold mb-3">
+                                            <RisorsaTestuale IdRisorsa="dettagli-anagrafica.pg.titolo.rea">
+                                                <ChildContent>
+                                                    REA
+                                                </ChildContent>
+                                            </RisorsaTestuale>
+                                        </h4>
+                                        <StepCardInfo Titolo="Numero">
+                                            @anagrafica.DatiIscrizioneRea.Numero
+                                        </StepCardInfo>
+                                        <StepCardInfo Titolo="Data">
+                                            @anagrafica.DatiIscrizioneRea.Data?.ToShortDateString()
+                                        </StepCardInfo>
+                                        <StepCardInfo Titolo="Provincia">
+                                            @GetDatiProvincia(anagrafica.DatiIscrizioneRea.SiglaProvincia)?.Provincia
+                                        </StepCardInfo>
+                                    </StepCollapsibleContentItem>
+                                }
+
+                                @if (DettagliPg_InpsVisibile)
+                                {
+                                    <StepCollapsibleContentItem>
+                                        <h4 class="title-large-semi-bold mb-3">
+                                            <RisorsaTestuale IdRisorsa="dettagli-anagrafica.pg.titolo.inps">
+                                                <ChildContent>
+                                                    INPS
+                                                </ChildContent>
+                                            </RisorsaTestuale>
+                                        </h4>
+                                        <StepCardInfo Titolo="Numero">
+                                            @anagrafica.DatiIscrizioneInps.Matricola
+                                        </StepCardInfo>
+                                        <StepCardInfo Titolo="Sede">
+                                            @($"{anagrafica.DatiIscrizioneInps.DescrizioneSede} ({anagrafica.DatiIscrizioneInps.CodiceSede})")
+                                        </StepCardInfo>
+                                    </StepCollapsibleContentItem>
+                                }
+
+                                @if (DettagliPg_InailVisibile)
+                                {
+                                    <StepCollapsibleContentItem>
+                                        <h4 class="title-large-semi-bold mb-3">
+                                            <RisorsaTestuale IdRisorsa="dettagli-anagrafica.pg.titolo.inail">
+                                                <ChildContent>
+                                                    INAIL
+                                                </ChildContent>
+                                            </RisorsaTestuale>
+                                        </h4>
+                                        <StepCardInfo Titolo="Numero">
+                                            @anagrafica.DatiIscrizioneInail.Matricola
+                                        </StepCardInfo>
+                                        <StepCardInfo Titolo="Sede">
+                                            @($"{anagrafica.DatiIscrizioneInail.DescrizioneSede} ({anagrafica.DatiIscrizioneInail.CodiceSede})")
+                                        </StepCardInfo>
+                                    </StepCollapsibleContentItem>
+                                }
+
+                                @if (DettagliPg_TelefonoVisibile || DettagliPg_CellulareVisibile || DettagliPg_FaxVisibile || DettagliPg_EmailVisibile || DettagliPg_PecVisibile)
+                                {
+                                    <StepCollapsibleContentItem>
+                                        <h4 class="title-large-semi-bold mb-3">
+                                            <RisorsaTestuale IdRisorsa="dettagli-anagrafica.pg.titolo.contatti">
+                                                <ChildContent>
+                                                    Contatti
+                                                </ChildContent>
+                                            </RisorsaTestuale>
+                                        </h4>
+                                        @if (DettagliPg_TelefonoVisibile)
+                                        {
+                                            <StepCardInfo Titolo="Telefono">
+                                                @anagrafica.Contatti.Telefono
+                                            </StepCardInfo>
+                                        }
+                                        @if (DettagliPg_CellulareVisibile)
+                                        {
+                                            <StepCardInfo Titolo="Cellulare">
+                                                @anagrafica.Contatti.TelefonoCellulare
+                                            </StepCardInfo>
+                                        }
+                                        @if (DettagliPg_EmailVisibile)
+                                        {
+                                            <StepCardInfo Titolo="EMail">
+                                                @anagrafica.Contatti.Email
+                                            </StepCardInfo>
+                                        }
+                                        @if (DettagliPg_PecVisibile)
+                                        {
+                                            <StepCardInfo Titolo="Pec">
+                                                @anagrafica.Contatti.Pec
+                                            </StepCardInfo>
+                                        }
+                                        @if (DettagliPg_FaxVisibile)
+                                        {
+                                            <StepCardInfo Titolo="Fax">
+                                                @anagrafica.Contatti.Fax
+                                            </StepCardInfo>
+                                        }
+
+                                    </StepCollapsibleContentItem>
+                                }
+
+                                @if (anagrafica.IndirizzoCorrispondenza is not null &&
+                                            DettagliPg_CorrispondenzaVisibile)
+                                {
+                                    <StepCollapsibleContentItem>
+                                        <h4 class="title-large-semi-bold mb-3">
+                                            <RisorsaTestuale IdRisorsa="dettagli-anagrafica.pg.titolo.corrispondenza">
+                                                <ChildContent>
+                                                    Indirizzo per Corrispondenza
+                                                </ChildContent>
+                                            </RisorsaTestuale>
+                                        </h4>
+                                        <StepCardInfo Titolo="Residenza">
+                                            @($"{anagrafica.IndirizzoCorrispondenza.Via}, {anagrafica.IndirizzoCorrispondenza.Cap}  {anagrafica.IndirizzoCorrispondenza.Citta} {this.GetDatiComune(anagrafica.IndirizzoCorrispondenza.CodiceComune)?.Comune} ({anagrafica.IndirizzoCorrispondenza.SiglaProvincia})")
+                                        </StepCardInfo>
+                                    </StepCollapsibleContentItem>
+                                }
+                                break;
+                        }
+
+                    </StepCollapsibleContent>
+                </StepCardItem>
+
+            }
+        </StepCard>
+    }
+}
+
+@if (!SolaLettura)
+{
+    <button class="btn btn-primary w-100 mb-40 pt" @onclick="OnBtnNew">
+        <span class="rounded-icon">
+            <SvgIcon CssClass="icon-light icon-sm" IconId="it-plus-circle"></SvgIcon>
+        </span>
+        Aggiungi soggetto
+    </button>
+}
+
+<ConfirmationModal Titolo="Conferma eliminazione" Visible="_anagraficaDaEliminare is not null" ConfermaClick="OnConfermaEliminazioneAnagraficaAsync" AnnullaClick="() => _anagraficaDaEliminare = null">
+    <ModalBody>
+        Eliminare l'elemento selezionato?
+    </ModalBody>
+</ConfirmationModal>
+
+
+@switch (_currentView)
+{
+    case PageViews.NuovaAnagrafica:
+
+        <FormNuovaAnagrafica 
+                OnClose="() => _currentView = PageViews.Lista"
+                MessageContainer="MessageContainer"
+                OnNuovaAnagrficaRichiesta="OnNuovaAnagrficaRichiestaAsync">
+        </FormNuovaAnagrafica>
+        break;
+
+    case PageViews.EditPersonaFisica:
+
+        <DettagliAnagraficaPf IdComune="@IdComune" Software="@Software"
+                              CodiceIntervento="@CodiceIntervento"
+                              EmailOPecObbligatori="@EmailoPecObbligatori"
+                              TelefonoOCellulareObbligatori="@TelefonooCellulareObbligatori"
+                              PermettiModificaDatiAnagrafici="@_permettiModificaDatiAnagrafici"
+                              InitialModel="@_anagraficaDaModificare"
+                              GestioneSoggettoUnico="@GetGestioneSoggettoUnico()"
+                              OnBeforeAcceptEdit="@OnBeforeAcceptEdit"
+                              OnAcceptEdit="@OnAcceptEditAsync"
+                              OnCancelEdit="@OnCancelEdit"
+                              OnError="@OnErroreInserimentoAsync"
+                              OnClose="() => _currentView = PageViews.Lista"
+                              FetchAnagrafeData="@GetAnagrafeRow"
+                              FetchTipoSoggettoData="@GetTipoSoggetto"
+                              FetchComuni="@GetComuni"
+                              FetchComuneData="@GetDatiComune"
+                              FetchProvincie="GetProvincie"
+                              FetchProvinciaData="@GetDatiProvincia"
+                              FetchCittadinanzaData="@GetDatiCittadinanza"
+                              TitoloVisible="@this.DettagliPf_TitoloVisibile" TitoloObbligatorio="@this.DettagliPf_TitoloObbligatorio"
+                              ResidenzaVisible="@this.DettagliPf_ResidenzaVisible" ResidenzaObbligatoria="@this.DettagliPf_ResidenzaObbligatoria"
+                              TelefonoVisible="@this.DettagliPf_TelefonoVisible" TelefonoObbligatorio="@this.DettagliPf_TelefonoObbligatorio"
+                              CellulareVisible="@this.DettagliPf_CellulareVisible" CellulareObbligatorio="@this.DettagliPf_CellulareObbligatorio"
+                              TipiSoggettoPf="@this.GetTipiSoggettoPersFisica()"
+                              NumOccorrenzeTipoSoggetto="@_tipiSoggettoPfPresenti"
+                              CurrentTipoSoggetto="@this._currentTipoSoggetto"
+                              EmailVisible="@this.DettagliPf_EmailVisible" EmailObbligatoria="@this.DettagliPf_EmailObbligatoria"
+                              PecVisible="@this.DettagliPf_PecVisible" PecObbligatoria="@this.DettagliPf_PecObbligatoria"
+                              CorrispondenzaVisibile="@this.DettagliPf_CorrispondenzaVisibile" CorrispondenzaObbligatoria="@this.DettagliPf_CorrispondenzaObbligatoria"
+                              CittadinanzaVisible="@this.DettagliPf_CittadinanzaVisible" CittadinanzaObbligatoria="@this.DettagliPf_CittadinanzaObbligatoria"
+                              LimitaDatiAlbo="@this.DettagliPf_LimitaDatiAlbo">
+        </DettagliAnagraficaPf>
+
+        break;
+
+    case PageViews.EditPersonaGiuridica:
+        <DettagliAnagraficaPg IdComune="@IdComune" Software="@Software"
+                              CodiceIntervento="@CodiceIntervento"
+                              EmailOPecObbligatori="@EmailoPecObbligatori"
+                              TelefonoOCellulareObbligatori="@TelefonooCellulareObbligatori"
+                              PermettiModificaDatiAnagrafici="@_permettiModificaDatiAnagrafici"
+                              InitialModel="@_anagraficaDaModificare"
+                              OnBeforeAcceptEdit="@OnBeforeAcceptEdit"
+                              OnAcceptEdit="@OnAcceptEditAsync"
+                              OnCancelEdit="@OnCancelEdit"
+                              OnError="@OnErroreInserimentoAsync"
+                              OnClose="() => _currentView = PageViews.Lista"
+                              FetchAnagrafeData="@GetAnagrafeRow"
+                              FetchComuni="@GetComuni"
+                              FetchComuneData="@GetDatiComune"
+                              TipiSoggettoPg="@this.GetTipiSoggettoPersGiuridica()"
+                              NumOccorrenzeTipoSoggetto="@_tipiSoggettoPgPresenti"
+                              CurrentTipoSoggetto="@this._currentTipoSoggetto"
+                              FetchProvincie="GetProvincie"
+                              FetchProvinciaData="@GetDatiProvincia"
+                              SedeLegaleVisibile="@this.DettagliPg_SedeLegaleVisibile" SedeLegaleObbligatoria="@this.DettagliPg_SedeLegaleObbligatoria"
+                              DataCostituzioneVisibile="@this.DettagliPg_DataCostituzioneVisibile" DataCostituzioneObbligatoria="@this.DettagliPg_DataCostituzioneObbligatoria"
+                              TelefonoVisible="@this.DettagliPg_TelefonoVisibile" TelefonoObbligatorio="@this.DettagliPg_TelefonoObbligatorio"
+                              CellulareVisible="@this.DettagliPg_CellulareVisibile" CellulareObbligatorio="@this.DettagliPg_CellulareObbligatorio"
+                              FaxVisible="@this.DettagliPg_FaxVisibile" FaxObbligatorio="@this.DettagliPg_FaxObbligatorio"
+                              CciaaVisibile="@this.DettagliPg_CciaaVisibile" CciaaObbligatoria="@this.DettagliPg_CciaaObbligatoria"
+                              RegTribVisibile="@this.DettagliPg_RegTribVisibile" RegTribObbligatorio="@this.DettagliPg_RegTribObbligatorio"
+                              ReaVisibile="@this.DettagliPg_ReaVisibile" ReaObbligatoria="@this.DettagliPg_ReaObbligatoria"
+                              InpsVisibile="@this.DettagliPg_InpsVisibile" InpsObbligatoria="@this.DettagliPg_InpsObbligatoria"
+                              InailVisibile="@this.DettagliPg_InailVisibile" InailObbligatoria="@this.DettagliPg_InailObbligatoria"
+                              EmailVisible="@this.DettagliPg_EmailVisibile" EmailObbligatoria="@this.DettagliPg_EmailObbligatoria"
+                              PecVisible="@this.DettagliPg_PecVisibile" PecObbligatoria="@this.DettagliPg_PecObbligatoria"
+                              PartitaIvaVisibile="@this.DettagliPg_PartitaIvaVisibile" PartitaIvaObbligatoria="@this.DettagliPg_PartitaIvaObbligatoria"
+                              CorrispondenzaVisibile="@this.DettagliPg_CorrispondenzaVisibile" CorrispondenzaObbligatoria="@this.DettagliPg_CorrispondenzaObbligatoria">
+        </DettagliAnagraficaPg>
+        break;
+}

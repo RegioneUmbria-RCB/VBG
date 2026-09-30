@@ -1,0 +1,364 @@
+﻿@using Init.Sigepro.FrontEnd.AppLogic.Autenticazione.Vbg.AutenticazioneUtente
+@using Init.Sigepro.FrontEnd.AppLogic.Configurazione.V2
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneLoghi
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneMenu
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneOggetti
+@using Init.Sigepro.FrontEnd.AppLogic.Repositories.Interfaces
+@using Init.Sigepro.FrontEnd.CoreServices.GestioneUrl
+@using System.Net
+@using System.Web
+
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents.HeaderFooterLayoutAgid
+@using VBG.BlazorComponentsLibrary.DesignComuni.Spinner
+@using static VBG.BlazorComponentsLibrary.AccessibilityComponents.HeaderFooterLayoutAgid.HeaderFooterAgid
+
+@inherits LayoutComponentBase
+
+<CascadingValue Value="this" Name="Layout">
+    <PageTitle></PageTitle>
+
+    <StiliComuniCustom Alias="@_aliasSoftwareResolver.AliasComune"></StiliComuniCustom>
+
+    <HeaderFooterAgidComponent HeaderFooterData="_headerFooter" UrlHomepage="@GetUrlHomepage()" CustomUserMenuComponent="@(isCustomMenuEnabled ? RenderUserMenu() : null)">
+
+        <ChildContent>
+            <main id="main" class="layout-container">
+                <div class="container pt-4">
+                    @if (_navigationManager.Uri.Split("/").Last() != "benvenuto")
+                    {
+                        <Breadcrumbs Items="@_breadcrumbsItems"></Breadcrumbs>
+                    }
+                    <VbgPageTitle2></VbgPageTitle2>
+                    <MessageContainer @ref="messageContainer">
+                        @Body
+                    </MessageContainer>
+                </div>
+            </main>
+        </ChildContent>
+    </HeaderFooterAgidComponent>
+
+    <SpinnerComponent></SpinnerComponent>
+</CascadingValue>
+
+@* <LabelUpdaterComponent></LabelUpdaterComponent> *@
+
+@code {
+    [Inject]
+    public IAliasSoftwareResolver _aliasSoftwareResolver { get; set; } = default!;
+
+    [Inject]
+    public NavigationManager _navigationManager { get; set; } = default!;
+
+    [Inject]
+    public IAuthenticationDataResolver _authenticationDataResolver { get; set; } = default!;
+
+    [Inject]
+    public IConfigurazioneVbgRepository _configurazioneVbgRepository { get; set; } = default!;
+
+    [Inject]
+    public LoghiAreaRiservataService _loghiAreaRiservataService { get; set; } = default!;
+
+    [Inject]
+    public IUrlBuilder _urlBuilder { get; set; } = default!;
+
+    [Inject]
+    public IMenuService _menuService { get; set; } = default!;
+
+    [Inject]
+    public IConfigurazione<ParametriDomandaPNRR> _parametriDomandaPNRR { get; set; } = default!;
+
+    private MessageContainer? messageContainer;
+    const string homepage = "benvenuto";
+    private List<BreadcrumbsItem> _breadcrumbsItems = new List<BreadcrumbsItem>();
+
+    private HeaderFooterAgid? _headerFooter;
+    private HeaderFooterAgid.ServicesSection servizi = new HeaderFooterAgid.ServicesSection();
+    private bool isCustomMenuEnabled = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetHeaderFooterDataAsync();
+
+        messageContainer?.ClearAll();
+
+        await base.OnInitializedAsync();
+    }
+
+    private string GetBaseUrl()
+    {
+        return $"{_navigationManager.BaseUri}{_aliasSoftwareResolver.AliasComune}/{_aliasSoftwareResolver.Software}";
+    }
+
+    private string GetUrlHomepage()
+    {
+        return $"{GetBaseUrl()}/{homepage}";
+    }
+
+    private string GetLogoutUrl()
+    {
+        return $"{GetBaseUrl()}/logout";
+    }
+
+    private string GetAdminUrl()
+    {
+        return $"{GetBaseUrl()}/admin";
+    }
+
+    private async Task<HeaderFooterAgid?> GetFrontendMenuProxyDataAsync()
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(_parametriDomandaPNRR.Parametri.UrlLayoutConfigService))
+                return null;
+
+            HttpClient client = new HttpClient();
+
+            return await client.GetFromJsonAsync<HeaderFooterAgid>(_parametriDomandaPNRR.Parametri.UrlLayoutConfigService);
+        }
+        catch (Exception e)
+        {
+            //this._logger.LogError(e.ToString());
+            return null;
+        }
+    }
+
+    private RenderFragment RenderUserMenu() => builder =>
+    {
+        builder.OpenComponent<UserMenuComponent>(0);
+        builder.AddAttribute(1, "ServiziUtente", servizi);
+        builder.AddAttribute(2, "NomeCompletoUtente", _authenticationDataResolver.IsAuthenticated ? _authenticationDataResolver.DatiAutenticazione.DatiUtente.Nome : null);
+        builder.AddAttribute(3, "NomePaginaPrincipaleApp", "");
+        builder.AddAttribute(4, "UrlPaginaPrincipaleApp", "");
+        builder.AddAttribute(5, "LogoutUrl", GetLogoutUrl());
+        builder.CloseComponent();
+    };
+
+    private async Task GetUserMenuDataAsync()
+    {
+        List<HeaderFooterAgid.ServicesItem> servicesItems = new List<HeaderFooterAgid.ServicesItem>
+        {
+            new HeaderFooterAgid.ServicesItem
+            {
+                Title = "Esci",
+                Link = GetLogoutUrl(),
+                ExternalLink = false
+            }
+        };
+
+        if (_authenticationDataResolver.IsAuthenticated && _authenticationDataResolver.DatiAutenticazione.DatiUtente.UtenteTester)
+        {
+            servicesItems.Add(new HeaderFooterAgid.ServicesItem
+                {
+                    Title = "Funzionalità amministrative",
+                    Link = GetAdminUrl(),
+                    ExternalLink = false
+                });
+        }
+
+        servizi.Items = servicesItems.ToArray();
+
+        await Task.CompletedTask;
+    }
+
+    private async Task GetHeaderFooterDataAsync()
+    {
+        var data = await GetFrontendMenuProxyDataAsync();
+
+        if (data != null)
+        {
+            isCustomMenuEnabled = true;
+            await GetUserMenuDataAsync();
+            _headerFooter = data;
+            return;
+        }
+
+        var conf = this._configurazioneVbgRepository.LeggiConfigurazioneComune(this._aliasSoftwareResolver.Software);
+        var mainMenu = this._menuService.LoadMenu();
+
+        _headerFooter = await ToHeaderFooterAgidAsync(conf, mainMenu);
+    }
+
+    private async Task<HeaderFooterAgid> ToHeaderFooterAgidAsync(Init.Sigepro.FrontEnd.AppLogic.WebServiceReferences.IstanzeService.Configurazione conf, Init.Sigepro.FrontEnd.AppLogic.GestioneMenu.Model.MenuModel mainMenu)
+    {
+        HeaderFooterAgid headerFooterData = new HeaderFooterAgid();
+
+        #region TopHeader
+
+        var logoComune = await this._loghiAreaRiservataService.GetLogoAreaRiservataAsync(async url =>
+        {
+            using HttpClient client = new HttpClient();
+
+            var response = await client.GetByteArrayAsync(url);
+
+            return BinaryFile.FromFileData("logo.png", "image/png", response);
+        });
+
+        headerFooterData.TopHeader = new TopHeaderSection
+            {
+                Institution = new InstitutionSection
+                {
+                    Items = new InstitutionItem[]
+                    {
+                    new InstitutionItem
+                    {
+                        Title = conf.SCRITTAREGIONE,
+
+                        // Probabilmente andrà cambiato con l'url della regione che al momento non abbiamo
+                        Link = GetUrlHomepage()
+                    }
+                    }
+                }
+            };
+
+        #endregion
+
+        #region LeftSideHeader
+
+        headerFooterData.PageHeader = new PageHeaderSection
+            {
+                Logo = logoComune.ToDataUrl(),
+                Title = "Scrivania virtuale",
+                Subtitle = conf.DENOMINAZIONE
+            };
+
+        headerFooterData.PageHeader.MainMenu = new Mainmenu();
+        headerFooterData.PageHeader.MainMenu.Items = new MainmenuItem[] { };
+
+        List<SezioneMenuModel> dropDownHeaderMainMenuItems = new List<SezioneMenuModel>();
+        headerFooterData.PageHeader.DropDownMainMenu = new DropdownHeaderMenuModel();
+
+        foreach (var item in mainMenu.Sezioni)
+        {
+            var subMainMenu = new List<MenuItemModel>();
+
+            foreach (var subItem in item.SubMenu)
+            {
+                subMainMenu.Add(new MenuItemModel
+                    {
+                        Titolo = subItem.Titolo,
+                        Descrizione = subItem.Descrizione,
+                        Url = subItem.Url,
+                        Target = subItem.Target,
+                        MostraInHomePage = subItem.MostraInHomePage
+                    });
+            }
+
+
+            dropDownHeaderMainMenuItems.Add(new SezioneMenuModel
+                {
+                    Titolo = item.Titolo,
+                    Url = item.Url,
+                    Target = item.Target,
+                    SubMenu = subMainMenu.ToArray(),
+                });
+        }
+        headerFooterData.PageHeader.DropDownMainMenu.Sezioni = dropDownHeaderMainMenuItems.ToArray();
+
+        #endregion
+
+        #region RightSideHeader
+
+        headerFooterData.PageHeader.ArgsMenu = new Argsmenu();
+        headerFooterData.PageHeader.ArgsMenu.Items = new ArgsmenuItem[] { };
+
+        List<SezioneMenuModel> dropDownHeaderArgsMenuItems = new List<SezioneMenuModel>();
+        headerFooterData.PageHeader.DropDownArgsMenu = new DropdownHeaderMenuModel();
+
+        foreach (var item in mainMenu.MenuDestra)
+        {
+            var subArgsMenu = new List<MenuItemModel>();
+
+            foreach (var subItem in item.SubMenu)
+            {
+                subArgsMenu.Add(new MenuItemModel
+                    {
+                        Titolo = subItem.Titolo,
+                        Descrizione = subItem.Descrizione,
+                        Url = subItem.Url,
+                        Target = subItem.Target,
+                        MostraInHomePage = subItem.MostraInHomePage,
+                    });
+            }
+
+
+            dropDownHeaderArgsMenuItems.Add(new SezioneMenuModel
+                {
+                    Titolo = item.Titolo,
+                    Url = item.Url,
+                    Target = item.Target,
+                    SubMenu = subArgsMenu.ToArray()
+                });
+        }
+
+        headerFooterData.PageHeader.DropDownArgsMenu.MenuDestra = dropDownHeaderArgsMenuItems.ToArray();
+        #endregion
+
+        #region UserMenu
+
+        headerFooterData.TopHeader.Services = new ServicesSection();
+        headerFooterData.TopHeader.Services.Items = new ServicesItem[] { };
+
+        List<ServicesItem> userMenuItems = new List<ServicesItem>() { };
+
+        if (_authenticationDataResolver.IsAuthenticated && _authenticationDataResolver.DatiAutenticazione.DatiUtente.UtenteTester)
+        {
+            userMenuItems.Add(new ServicesItem
+                {
+                    Title = "Funzionalità amministrative",
+                    Link = $"{_navigationManager.BaseUri}{_aliasSoftwareResolver.AliasComune}/{_aliasSoftwareResolver.Software}/admin"
+                });
+        }
+
+        foreach (var item in mainMenu.MenuUtente)
+        {
+            // if (item.Url.Contains("logout.ashx"))
+            // {
+            userMenuItems.Add(new ServicesItem
+                    {
+                        Title = item.Titolo,
+                        Link = GetLogoutUrl(item.Url)
+                    }
+            );
+            // }
+        }
+
+        headerFooterData.TopHeader.Services.Items = userMenuItems.ToArray();
+
+        #endregion
+
+        headerFooterData.Status = "success";
+
+        return headerFooterData;
+    }
+
+    private string GetLogoutUrl(string url)
+    {
+        var uri = new Uri(url);
+
+        if (uri != null && !string.IsNullOrEmpty(uri.Query))
+            return _urlBuilder.Build("logout", uri.Query);
+
+        return _urlBuilder.Build("logout");
+    }
+
+    public void SetBreadcrumbItems(List<BreadcrumbsItem> items)
+    {
+        string baseUrl = $"{_navigationManager.BaseUri}{_aliasSoftwareResolver.AliasComune}/{_aliasSoftwareResolver.Software}";
+
+        var list = new List<BreadcrumbsItem>()
+            {
+                new BreadcrumbsItem()
+                {
+                    Label= "Home",
+                    Url = $"{baseUrl}/{homepage}"
+                }
+            };
+
+        list.AddRange(items);
+
+        _breadcrumbsItems = list;
+        StateHasChanged();
+    }
+
+}

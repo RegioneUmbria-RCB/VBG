@@ -1,0 +1,2827 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<setup xmlns="http://gruppoinit.it/sigepro/schemas/setup"
+	minimum-compatibility-major-release="1"
+	minimum-compatibility-minor-release="10">
+	<release major-release="1" minor-release="10">
+		<java-task id="TABELLE_VBG_1_10" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*"
+				value="1_10/oracle/DDL_01_10_01.SQL"></param>
+			<param name="filePath" for-dialect="*MySQL*"
+				value="1_10/mysql/DDL_01_10_01.SQL"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="1_10/sqlserver/DDL_01_10_01.SQL"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="ISO-8859-1"></param>
+		</java-task>
+		<java-task id="DATI_COMUNI_VBG_1_10" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*"
+				value="1_10/oracle/VBG_05_Comuni.SQL"></param>
+			<param name="filePath" for-dialect="*MySQL*"
+				value="1_10/mysql/VBG_05_Comuni.SQL"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="1_10/sqlserver/VBG_05_Comuni.SQL"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="ISO-8859-1"></param>
+		</java-task>
+		<java-task id="DATI_TABELLE_BASE_VBG_1_10" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*"
+				value="1_10/oracle/VBG_04_TabelleBase.SQL"></param>
+			<param name="filePath" for-dialect="*MySQL*"
+				value="1_10/mysql/VBG_04_TabelleBase.SQL"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="1_10/sqlserver/VBG_04_TabelleBase.SQL"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" for-dialect="*Oracle*" value="ISO-8859-1"></param>
+			<param name="characterEncoding" for-dialect="*MySQL*" value="ISO-8859-1"></param>
+			<param name="characterEncoding" for-dialect="*SQLServer*"
+				value="UTF-8"></param>
+		</java-task>
+		<java-task id="CHIAVI_INDICI_VBG_1_10" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*"
+				value="1_10/oracle/DDL_01_10_02.SQL"></param>
+			<param name="filePath" for-dialect="*MySQL*"
+				value="1_10/mysql/DDL_01_10_02.SQL"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="1_10/sqlserver/DDL_01_10_02.SQL"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="ISO-8859-1"></param>
+		</java-task>
+		<java-task id="VISTE_VBG_1_10" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*"
+				value="1_10/oracle/DDL_01_10_03.SQL"></param>
+			<param name="filePath" for-dialect="*MySQL*"
+				value="1_10/mysql/DDL_01_10_03.SQL"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="1_10/sqlserver/DDL_01_10_03.SQL"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="ISO-8859-1"></param>
+		</java-task>
+	</release>
+	<release major-release="1" minor-release="11">
+		<hql-task id="DELETE_CL_PERMMENU_SOFTWARE_NULL" autocommit="true">
+			<hql-script>
+				Delete from Clpermmenu c where c.software.codice is null
+			</hql-script>
+		</hql-task>
+		<!-- BEGIN SCRIPT AGGIORNAMENTO STRUTTURA -->
+		<java-task id="GEST_CDS_PK" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*"
+				value="1_11/oracle/DDL_01_11_00.SQL"></param>
+			<param name="filePath" for-dialect="*MySQL*"
+				value="1_11/mysql/DDL_01_11_00.SQL"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="1_11/sqlserver/DDL_01_11_00.SQL"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DROP_OLD_PK" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*"
+				value="1_11/oracle/DDL_01_11_01.SQL"></param>
+			<param name="filePath" for-dialect="*MySQL*"
+				value="1_11/mysql/DDL_01_11_01.SQL"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="1_11/sqlserver/DDL_01_11_01.SQL"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<!-- TASK AGGIUNTO PERCHE' IN SQL SERVER 2005 TUTTE LE MODIFICHE AI CAMPI 
+			SONO IMPEDITE DALLA PRESENZA DI CHIAVI PRIMARIE, ESTERNE O INDICI CHE VERTONO 
+			SULLA COLONNA DA MODIFICARE NON C'E' BISOGNO DI FARE LA STESSA OPERAZIONE 
+			PER ORACLE E MYSQL -->
+		<java-task id="ELIMINAZIONE_INDICI_SQLSERVER_1_11"
+			spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="1_11/sqlserver/VBG_03_ELIMINAZIONE_INDICI.SQL"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="TABELLE_1_VBG_1_11" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*"
+				value="1_11/oracle/DDL_01_11_02.SQL"></param>
+			<param name="filePath" for-dialect="*MySQL*"
+				value="1_11/mysql/DDL_01_11_02.SQL"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="1_11/sqlserver/DDL_01_11_02.SQL"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="VISTE_1_VBG_1_11" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*"
+				value="1_11/oracle/DDL_01_11_03.SQL"></param>
+			<param name="filePath" for-dialect="*MySQL*"
+				value="1_11/mysql/DDL_01_11_03.SQL"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="1_11/sqlserver/DDL_01_11_03.SQL"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DDL_1_11" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*"
+				value="1_11/oracle/DDL_01_11_04.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*"
+				value="1_11/mysql/DDL_01_11_04.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="1_11/sqlserver/DDL_01_11_04.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<!-- SOLO PER SQL SERVER SI RIATTIVANO GLI INDICI E LE PK SULLE TABELLE 
+			INTERESSATE DAI SUCCESSIVI INSERIMENTI O MODIFICHE ALLO SCOPO DI RENDERE 
+			PIU' PERFORMANTE L'OPERAZIONE -->
+		<java-task id="CREAZIONE_INDICI_SQLSERVER_1_11"
+			spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="1_11/sqlserver/VBG_04_CREAZIONE_INDICI_SQLSERVER.SQL"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="POPOLATE_TABELLE_BASE" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="1_11/TABELLE_BASE.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="InteressiLegaliBase" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*"
+				value="1_11/oracle/InteressiLegaliBase.SQL"></param>
+			<param name="filePath" for-dialect="*MySQL*"
+				value="1_11/mysql/InteressiLegaliBase.SQL"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="1_11/sqlserver/InteressiLegaliBase.SQL"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<!-- END SCRIPT AGGIORNAMENTO STRUTTURA -->
+		<hql-task id="UPDATE_DYN2T_MODELLI_SCHEDA" autocommit="true">
+			<hql-script>
+				update Dyn2Modellit d2mt set d2mt.codiceScheda =
+				concat('SCHEDA' ,cast(d2mt.id.codice as string)) where
+				d2mt.codiceScheda is null
+			</hql-script>
+		</hql-task>
+		<hql-task id="UPDATE_ANAGRAFE_000" autocommit="true">
+			<hql-script>
+				UPDATE Anagrafe a SET a.note=concat(concat(a.note , ' -
+				Codice comune nascita:') , a.comuneNascita.codicecomune ) WHERE
+				a.tipoanagrafe='G' and a.comuneNascita.codicecomune is not null
+			</hql-script>
+		</hql-task>
+		<hql-task id="UPDATE_ANAGRAFE_001" autocommit="true">
+			<hql-script>
+				UPDATE Anagrafe a SET a.comuneNascita.codicecomune=null WHERE
+				a.tipoanagrafe='G' and a.comuneNascita.codicecomune is not null
+			</hql-script>
+		</hql-task>
+		<hql-task id="UPDATE_ANAGRAFE_002" autocommit="true">
+			<hql-script>
+				UPDATE Anagrafe a set a.nome = '.' WHERE a.tipoanagrafe='F' AND a.nome is
+				null
+			</hql-script>
+		</hql-task>
+		<hql-task id="UPDATE_ANAGRAFE_003" autocommit="true">
+			<hql-script>
+				UPDATE Anagrafe a set a.sesso = null WHERE a.tipoanagrafe='G' AND a.sesso
+				is not null
+			</hql-script>
+		</hql-task>
+		<hql-task id="UPDATE_ANAGRAFE_004" autocommit="true">
+			<hql-script>
+				UPDATE Anagrafe a set a.datanascita = null WHERE a.tipoanagrafe='G' AND
+				a.datanascita is not null
+			</hql-script>
+		</hql-task>
+		<hql-task id="UPDATE_ANAGRAFE_005" autocommit="true">
+			<hql-script>
+				UPDATE Anagrafe a set a.nominativo = concat(concat(a.nominativo, ' '),
+				a.nome) WHERE a.tipoanagrafe='G' AND a.nome is not null
+			</hql-script>
+		</hql-task>
+		<hql-task id="UPDATE_ANAGRAFE_006" autocommit="true">
+			<hql-script>
+				UPDATE Anagrafe a set a.nome = null WHERE a.tipoanagrafe='G' AND a.nome is
+				not null
+			</hql-script>
+		</hql-task>
+		<hql-task id="UPDATE_ANAGRAFE_007" autocommit="true">
+			<hql-script>
+				UPDATE Anagrafe a set provincialr=null where provincialr=''
+			</hql-script>
+		</hql-task>
+		<hql-task id="UPDATE_ANAGRAFE_008" autocommit="true">
+			<hql-script>
+				UPDATE Anagrafe a set a.provinciarea=null where
+				a.provinciarea=''
+			</hql-script>
+		</hql-task>
+		<hql-task id="UPDATE_ANAGRAFE_009" autocommit="true">
+			<hql-script>
+				UPDATE Anagrafe a set a.provinciacorrispondenza=null
+				where a.provinciacorrispondenza=''
+			</hql-script>
+		</hql-task>
+		<hql-task id="UPDATE_ANAGRAFE_010" autocommit="true">
+			<hql-script>
+				UPDATE Anagrafe a set a.provinciaelencopro=null where
+				a.provinciaelencopro=''
+			</hql-script>
+		</hql-task>
+		<hql-task id="UPDATE_ANAGRAFE_011" autocommit="true">
+			<hql-script>
+				UPDATE Anagrafe a set
+				a.comunecomregditte.codicecomune=null WHERE
+				a.comunecomregditte.codicecomune=''
+			</hql-script>
+		</hql-task>
+		<hql-task id="UPDATE_ANAGRAFE_012" autocommit="true">
+			<hql-script>
+				UPDATE Anagrafe a set a.comuneregtrib.codicecomune=null
+				WHERE a.comuneregtrib.codicecomune=''
+			</hql-script>
+		</hql-task>
+		<hql-task id="UPDATE_ANAGRAFE_013" autocommit="true">
+			<hql-script>
+				UPDATE Anagrafe a set a.comuneNascita.codicecomune=null
+				WHERE a.comuneNascita.codicecomune=''
+			</hql-script>
+		</hql-task>
+		<hql-task id="UPDATE_ANAGRAFE_014" autocommit="true">
+			<hql-script>
+				UPDATE Anagrafe a set a.comuneResidenza.codicecomune=null
+				WHERE a.comuneResidenza.codicecomune=''
+			</hql-script>
+		</hql-task>
+		<hql-task id="UPDATE_ANAGRAFE_015" autocommit="true">
+			<hql-script>
+				UPDATE Anagrafe a set
+				a.comunecorrispondenza.codicecomune=null WHERE
+				a.comunecorrispondenza.codicecomune=''
+			</hql-script>
+		</hql-task>
+		<!-- NUOVE PKID -->
+		<java-task id="COMMEDILIZIEALLEGATI_GENERATE_ID"
+			spring-bean-id="upgrIdGeneratorTask" java-class="it.gruppoinit.upgr.core.task.IdGeneratorTask"
+			fail-on-error="false" autocommit="true">
+			<param name="entityClass"
+				value="it.gruppoinit.pal.gp.core.domain.CommedilizieAllegati"></param>
+			<param name="idColumnName" value="ID"></param>
+			<param name="oldPkColumns" value="IDCOMUNE,CODICECOMMISSIONE,IDALLEGATO"></param>
+		</java-task>
+		<java-task id="COMUNIASSOCIATISOFTWARE_GENERATE_ID"
+			spring-bean-id="upgrIdGeneratorTask" java-class="it.gruppoinit.upgr.core.task.IdGeneratorTask"
+			fail-on-error="false" autocommit="true">
+			<param name="entityClass"
+				value="it.gruppoinit.pal.gp.core.domain.Comuniassociatisoftware"></param>
+			<param name="idColumnName" value="ID"></param>
+			<param name="oldPkColumns" value="IDCOMUNE,CODICECOMUNE,SOFTWARE"></param>
+		</java-task>
+		<java-task id="DOCUMENTIISTANZA_GENERATE_ID" spring-bean-id="upgrCursorIdGeneratorTask"
+			java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.CursorIdGeneratorTask"
+			fail-on-error="false" autocommit="true">
+			<param name="tableName" value="DOCUMENTIISTANZA"></param>
+			<param name="idColumnName" value="ID"></param>
+			<param name="oldPkColumns" value="CODICEISTANZA,CODICEDOCUMENTO"></param>
+		</java-task>
+		<!-- Se su MySQL o SQLServer il task DOCUMENTIISTANZA_GENERATE_ID non funziona 
+			utilizzare quello commentato sotto <java-task id="DOCUMENTIISTANZA_GENERATE_ID" 
+			spring-bean-id="upgrIdGeneratorTask" java-class="it.gruppoinit.upgr.core.task.IdGeneratorTask" 
+			fail-on-error="false" autocommit="true"> <param name="entityClass" value="it.gruppoinit.pal.gp.core.domain.Documentiistanza"></param> 
+			<param name="idColumnName" value="ID"></param> <param name="oldPkColumns" 
+			value="IDCOMUNE,CODICEISTANZA,CODICEDOCUMENTO"></param> </java-task> -->
+		<java-task id="EMAIL_GENERATE_ID" spring-bean-id="upgrIdGeneratorTask"
+			java-class="it.gruppoinit.upgr.core.task.IdGeneratorTask"
+			fail-on-error="false" autocommit="true">
+			<param name="entityClass" value="it.gruppoinit.pal.gp.core.domain.Email"></param>
+			<param name="idColumnName" value="ID"></param>
+			<param name="oldPkColumns" value="IDCOMUNE,CODICEEMAIL,CODICEAMMINISTRAZIONE"></param>
+		</java-task>
+		<java-task id="EMAILANAGR_GENERATE_ID" spring-bean-id="upgrIdGeneratorTask"
+			java-class="it.gruppoinit.upgr.core.task.IdGeneratorTask"
+			fail-on-error="false" autocommit="true">
+			<param name="entityClass" value="it.gruppoinit.pal.gp.core.domain.Emailanagr"></param>
+			<param name="idColumnName" value="ID"></param>
+			<param name="oldPkColumns" value="IDCOMUNE,CODICEEMAIL,CODICEANAGRAFICA"></param>
+		</java-task>
+		<java-task id="ISTANZEALLEGATI_GENERATE_ID" spring-bean-id="upgrIdGeneratorTask"
+			java-class="it.gruppoinit.upgr.core.task.IdGeneratorTask"
+			fail-on-error="false" autocommit="true">
+			<param name="entityClass" value="it.gruppoinit.pal.gp.core.domain.Istanzeallegati"></param>
+			<param name="idColumnName" value="ID"></param>
+			<param name="oldPkColumns"
+				value="IDCOMUNE,CODICEISTANZA,CODICEINVENTARIO,NUMEROALLEGATO"></param>
+		</java-task>
+		<java-task id="MOVIMENTIALLEGATI_GENERATE_ID"
+			spring-bean-id="upgrIdGeneratorTask" java-class="it.gruppoinit.upgr.core.task.IdGeneratorTask"
+			fail-on-error="false" autocommit="true">
+			<param name="entityClass"
+				value="it.gruppoinit.pal.gp.core.domain.Movimentiallegati"></param>
+			<param name="idColumnName" value="ID"></param>
+			<param name="oldPkColumns" value="IDCOMUNE,IDALLEGATO,CODICEMOVIMENTO"></param>
+		</java-task>
+		<java-task id="SUBPROCEDURE_GENERATE_ID" spring-bean-id="upgrIdGeneratorTask"
+			java-class="it.gruppoinit.upgr.core.task.IdGeneratorTask"
+			fail-on-error="false" autocommit="true">
+			<param name="entityClass" value="it.gruppoinit.pal.gp.core.domain.Subprocedure"></param>
+			<param name="idColumnName" value="ID"></param>
+			<param name="oldPkColumns" value="IDCOMUNE,CODICEPROCEDURA,NUMEROSUBPROCEDURA"></param>
+		</java-task>
+		<java-task id="TIPIMOVIMENTO_DIS_GENERATE_ID"
+			spring-bean-id="upgrIdGeneratorTask" java-class="it.gruppoinit.upgr.core.task.IdGeneratorTask"
+			fail-on-error="false" autocommit="true">
+			<param name="entityClass" value="it.gruppoinit.pal.gp.core.domain.TipimovimentoDis"></param>
+			<param name="idColumnName" value="ID"></param>
+			<param name="oldPkColumns"
+				value="IDCOMUNE,CODICEISTANZA,TIPOMOVIMENTO,CODICEINVENTARIO,CODICEAMMINISTRAZIONE,DATASCAD"></param>
+		</java-task>
+		<!-- <java-task id="PROCEDIMENTIFO_GENERATE_ID" spring-bean-id="upgrCursorIdGeneratorTask" 
+			java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.CursorIdGeneratorTask" 
+			fail-on-error="false" autocommit="true"> <param name="tableName" value="PROCEDIMENTIFO"></param> 
+			<param name="idColumnName" value="ID"></param> <param name="oldPkColumns" 
+			value="TITOLO"></param> </java-task> -->
+		<!-- UPGR -->
+		<java-task id="UPGR_SOFTWAREATTIVI" spring-bean-id="upgrUpdateSoftwareAttiviTask"
+			java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.UpdateSoftwareAttiviTask"
+			fail-on-error="false" autocommit="true">
+		</java-task>
+		<!-- <java-task id="UPGR_TIPIMOVIMENTO_DIS" spring-bean-id="upgrUpdateTipimovimentoDisTask" 
+			java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.UpdateTipimovimentoDisTask" 
+			fail-on-error="false" autocommit="true"> </java-task> // Non va Eseguito 
+			upgranagrafeStorico <java-task id="UPGR_ANAGRAFESTORICO" spring-bean-id="upgrUpdateAnagrafeStoricoTask" 
+			java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.UpdateAnagrafeStoricoTask" 
+			fail-on-error="false" order-type="last" autocommit="true"> </java-task> -->
+		<java-task id="UPGR_AUTORIZZAZIONI" spring-bean-id="upgrUpdateAutorizzazioniTask"
+			java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.UpdateAutorizzazioniTask"
+			fail-on-error="false" autocommit="true">
+		</java-task>
+		<!-- COMMENTATO PERCHÈ NON FUNZIONANO LE STAMPE GMT <java-task id="UPGR_CODAMMSPORTELLOUNICO" 
+			spring-bean-id="upgrUpdateCodammsportellounicoTask" java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.UpdateCodammsportellounicoTask" 
+			fail-on-error="false"> </java-task> -->
+		<!-- <java-task id="UPGR_ISTANZEALLEGATI_ALLEGATI" spring-bean-id="upgrUpdateIstanzeAllegatiAllegatiTask" 
+			java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.UpdateIstanzeAllegatiAllegatiTask" 
+			fail-on-error="false" autocommit="true"> </java-task> -->
+		<!-- COMMENTATO PERCHè DALLA 2_63 NON ESISTE PIù LA CHIAVE PRIMARIA [IDCOMUNE,SOFTWARE] -->
+		<!--  
+		<java-task id="UPGR_MAILCONFIG" spring-bean-id="upgrUpdateMailConfigTask"
+			java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.UpdateMailConfigTask"
+			fail-on-error="false" autocommit="true" order-type="last">
+		</java-task>
+		-->
+		<java-task id="UPGR_MAPPATURE" spring-bean-id="upgrUpdateMappatureTask"
+			java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.UpdateMappatureTask"
+			fail-on-error="false" autocommit="true"></java-task>
+
+		<java-task id="UPGR_TIPOLOGIAPROTOCOLLO" spring-bean-id="upgrUpdateTipologiaProtocolloTask"
+			java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.UpdateTipologiaProtocolloTask"
+			fail-on-error="false" autocommit="true">
+		</java-task>
+		<!-- BEGIN SCRIPT AGGIORNAMENTO INDICI E CHIAVI ESTERNE -->
+		<java-task id="CREATE_NEW_PK" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*"
+				value="1_11/oracle/DDL_01_11_05.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*"
+				value="1_11/mysql/DDL_01_11_05.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="1_11/sqlserver/DDL_01_11_05.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="ELIMINAZIONE_INDICI_VBG_1_11" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*"
+				value="1_11/oracle/DDL_01_11_06.SQL"></param>
+			<param name="filePath" for-dialect="*MySQL*"
+				value="1_11/mysql/DDL_01_11_06.SQL"></param>
+			<!-- sqlserver NON ESEGUE QUESTO TASK PERCHE' HA GIA' DROPPATO TUTTE LE 
+				PK, FK E INDICI NEL TASK ELIMINAZIONE_INDICI_SQLSERVER_1_11 -->
+			<!-- <param name="filePath" for-dialect="*SQLServer*" value="1_11/sqlserver/DDL_01_11_06.SQL"></param> 
+				<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param> -->
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="TABELLE_2_VBG_1_11" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*"
+				value="1_11/oracle/DDL_01_11_07.SQL"></param>
+			<param name="filePath" for-dialect="*MySQL*"
+				value="1_11/mysql/DDL_01_11_07.SQL"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="1_11/sqlserver/DDL_01_11_07.SQL"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="MODIFICA_CAMPI_1_11" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*"
+				value="1_11/oracle/DDL_01_11_08.SQL"></param>
+			<param name="filePath" for-dialect="*MySQL*"
+				value="1_11/mysql/DDL_01_11_08.SQL"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="1_11/sqlserver/DDL_01_11_08.SQL"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="CREAZIONE_INDICI_VBG_1_11" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*"
+				value="1_11/oracle/DDL_01_11_09.SQL"></param>
+			<param name="filePath" for-dialect="*MySQL*"
+				value="1_11/mysql/DDL_01_11_09.SQL"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="1_11/sqlserver/DDL_01_11_09.SQL"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<!-- END SCRIPT AGGIORNAMENTO INDICI E CHIAVI ESTERNE -->
+	</release>
+	<release major-release="2" minor-release="0">
+		<java-task id="DDL_2_0" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_0/oracle/DDL_02_00.SQL"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_0/mysql/DDL_02_00.SQL"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_0/sqlserver/DDL_02_00.SQL"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="UPGR_COMUNIASSOCIATI" spring-bean-id="upgrUpdateComuniassociatiTask"
+			java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.UpdateComuniassociatiTask"
+			fail-on-error="false" autocommit="true" order-type="last">
+		</java-task>
+		<java-task id="DATI_2_0" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_0/DATI_2.0.SQL"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="1">
+		<java-task id="DDL_2_1" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_1/oracle/DDL_02_01.SQL"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_1/mysql/DDL_02_01.SQL"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_1/sqlserver/DDL_02_01.SQL"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_1" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_1/DATI_2_1.SQL"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="2">
+		<java-task id="DDL_2_2" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_2/oracle/DDL_02_02.SQL"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_2/mysql/DDL_02_02.SQL"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_2/sqlserver/DDL_02_02.SQL"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="3">
+		<java-task id="DDL_2_3" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_3/oracle/DDL_02_03.SQL"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_3/mysql/DDL_02_03.SQL"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_3/sqlserver/DDL_02_03.SQL"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_3" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_3/DATI_2_3.SQL"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<hql-task id="UPDATE_MENU_FLAG_ATTIVO" autocommit="true">
+			<hql-script>
+				UPDATE Menu m set m.flagAttivo=(case when m.attivo is
+				null then 0 else (case when m.attivo ='1' then 1 else 0 end) end)
+				WHERE m.flagAttivo is null
+			</hql-script>
+		</hql-task>
+		<hql-task id="UPDATE_MENUINFO_FLAG_ATTIVO" autocommit="true">
+			<hql-script>
+				UPDATE Menuinfo m set m.flagAttivo=(case when m.attivo is
+				null then 0 else (case when m.attivo ='1' then 1 else 0 end) end)
+				WHERE m.flagAttivo is null
+			</hql-script>
+		</hql-task>
+		<!-- SPOSTATO PER CAMPO SU AMMINISTRAZIONI STC_IDNODO -->
+		<java-task id="UPGR_PASSWORD_OPERATORI" spring-bean-id="upgrUpdatePasswordUtentiTask"
+			java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.UpdatePasswordUtentiTask"
+			fail-on-error="false" autocommit="true" order-type="last">
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="4">
+		<java-task id="DDL_2_4" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_4/oracle/DDL_02_04.SQL"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_4/mysql/DDL_02_04.SQL"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_4/sqlserver/DDL_02_04.SQL"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="5">
+		<java-task id="DDL_2_5" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_5/oracle/DDL_02_05.SQL"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_5/mysql/DDL_02_05.SQL"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_5/sqlserver/DDL_02_05.SQL"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_5" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_5/DATI_2_5.SQL"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="6">
+		<java-task id="DDL_2_6" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_6/oracle/DDL_02_06.SQL"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_6/mysql/DDL_02_06.SQL"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_6/sqlserver/DDL_02_06.SQL"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_6" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_6/DATI_2_6.SQL"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="7">
+		<java-task id="DDL_2_7" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_7/oracle/DDL_02_07.SQL"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_7/mysql/DDL_02_07.SQL"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_7/sqlserver/DDL_02_07.SQL"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="8">
+		<java-task id="DDL_2_8" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*"
+				value="2_8/oracle/DDL_02_08_00.SQL"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_8/mysql/DDL_02_08_00.SQL"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_8/sqlserver/DDL_02_08_00.SQL"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_8" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_8/DATI_2_8.SQL"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="INDICI_2_8" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*"
+				value="2_8/oracle/DDL_02_08_01.SQL"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_8/mysql/DDL_02_08_01.SQL"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_8/sqlserver/DDL_02_08_01.SQL"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="INSERT_ISTANZE_COLLEGATE" spring-bean-id="upgrInsertIstanzeCollegateTask"
+			autocommit="true" fail-on-error="false"
+			java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.InsertIstanzeCollegateTask">
+		</java-task>
+		<java-task id="UPDATE_CONTROMOV_OBBLIGATORI" spring-bean-id="upgrUpdateTipiContromovimentiObbligatoriTask"
+			autocommit="true" fail-on-error="false"
+			java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.UpdateTipiContromovimentiObbligatoriTask"
+			order-type="last">
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="9">
+		<java-task id="DDL_2_9" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_9/oracle/DDL_02_09.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_9/mysql/DDL_02_09.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_9/sqlserver/DDL_02_09.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_9" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_9/DATI_2_9.SQL"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="10">
+		<java-task id="DDL_2_10" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*"
+				value="2_10/oracle/DDL_02_10_00.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*"
+				value="2_10/mysql/DDL_02_10_00.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_10/sqlserver/DDL_02_10_00.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="INVENTARIOPROCEDIMENTIPEOPLE_GENERATE_ID"
+			spring-bean-id="upgrCursorIdGeneratorTask"
+			java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.CursorIdGeneratorTask"
+			fail-on-error="false" autocommit="true">
+			<param name="tableName" value="INVENTARIOPROCEDIMENTIPEOPLE"></param>
+			<param name="idColumnName" value="ID"></param>
+			<param name="oldPkColumns" value="CODICEINVENTARIO"></param>
+		</java-task>
+
+		<hql-task id="WARNING_INVENTARIOPROCEDIMENTIPEOPLE_GENERATE_ID"
+			autocommit="true">
+			<hql-script>
+				WARNING 001!!! Se su MySQL o SQLServer il task
+				INVENTARIOPROCEDIMENTIPEOPLE_GENERATE_ID non funziona utilizzare
+				quello commentato sotto
+			</hql-script>
+		</hql-task>
+		<!-- Se su MySQL o SQLServer il task DOCUMENTIISTANZA_GENERATE_ID non funziona 
+			utilizzare quello commentato sotto -->
+		<!-- <java-task id="INVENTARIOPROCEDIMENTIPEOPLE_GENERATE_ID" spring-bean-id="upgrIdGeneratorTask" 
+			java-class="it.gruppoinit.upgr.core.task.IdGeneratorTask" fail-on-error="false" 
+			autocommit="true"> <param name="entityClass" value="it.gruppoinit.pal.gp.core.domain.Inventarioprocedimentipeople"></param> 
+			<param name="idColumnName" value="ID"></param> <param name="oldPkColumns" 
+			value="IDCOMUNE,CODICEINVENTARIO"></param> </java-task> -->
+		<java-task id="DATI_2_10_0" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_10/DATI_2_10_0.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DDL_2_10_postJT" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*"
+				value="2_10/oracle/DDL_02_10_01.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*"
+				value="2_10/mysql/DDL_02_10_01.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_10/sqlserver/DDL_02_10_01.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_10" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_10/DATI_2_10.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="UPGR_FO_VISURA_CAMPI" spring-bean-id="upgrUpdateFoVisuraCampiTask"
+			java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.UpdateFoVisuraCampiTask"
+			fail-on-error="false">
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="11">
+		<java-task id="DDL_2_11" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_11/oracle/DDL_02_11.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_11/mysql/DDL_02_11.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_11/sqlserver/DDL_02_11.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_11" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_11/DATI_2_11.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="12">
+		<java-task id="DDL_2_12" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_12/oracle/DDL_02_12.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_12/mysql/DDL_02_12.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_12/sqlserver/DDL_02_12.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_12" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_12/DATI_2_12.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="13">
+		<java-task id="DDL_2_13" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_13/oracle/DDL_02_13.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_13/mysql/DDL_02_13.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_13/sqlserver/DDL_02_13.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_13" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_13/DATI_2_13.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="14">
+		<java-task id="DDL_2_14" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*"
+				value="2_14/oracle/DDL_02_14_00.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*"
+				value="2_14/mysql/DDL_02_14_00.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_14/sqlserver/DDL_02_14_00.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_14" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_14/DATI_2_14.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<!-- TASK CITTADINANZA -->
+		<java-task id="DDL_2_14_CITTADINANZA_DROP" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*"
+				value="2_14/oracle/DDL_02_14_01.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*"
+				value="2_14/mysql/DDL_02_14_01.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_14/sqlserver/DDL_02_14_01.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_14_CITTADINANZA_SCRIPT"
+			spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask"
+			autocommit="true">
+			<param name="filePath" for-dialect="*"
+				value="2_14/DATI_2_14_CITTADINANZA_SCRIPT.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DDL_2_14_CITTADINANZA_CREATE_FK"
+			spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*"
+				value="2_14/oracle/DDL_02_14_02.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*"
+				value="2_14/mysql/DDL_02_14_02.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_14/sqlserver/DDL_02_14_02.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<!-- END TASK CITTADINANZA -->
+		<!-- TASK TABELLE CART -->
+		<java-task id="DDL_2_14_CART_PRE" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*"
+				value="2_14/oracle/DDL_02_14_03.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*"
+				value="2_14/mysql/DDL_02_14_03.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_14/sqlserver/DDL_02_14_03.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="UPGR_2_14_CART_TIPOLOGIE_ENDO2"
+			spring-bean-id="upgrUpdateStpTipologieEndo2"
+			java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.UpdateStpTipologieEndo2"
+			fail-on-error="false">
+		</java-task>
+		<java-task id="DDL_2_14_CART_POST" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*"
+				value="2_14/oracle/DDL_02_14_04.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*"
+				value="2_14/mysql/DDL_02_14_04.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_14/sqlserver/DDL_02_14_04.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="UPGR_2_14_CART_CODICE_ENDO_REGIONALE"
+			spring-bean-id="upgrUpdateStpEndo1CR"
+			java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.UpdateStpEndo1CR"
+			fail-on-error="false">
+		</java-task>
+		<!-- END TASK TABELLE CART -->
+		<java-task id="UPGR_2_14_ISTANZEMAPPALI" spring-bean-id="upgrUpdateIstanzeMappaliTask"
+			java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.UpdateIstanzeMappaliTask"
+			fail-on-error="false" autocommit="true">
+		</java-task>
+		<!-- Task per spostare il codice_accreditamento presente sulla tabella 
+			configurazione, nella tabella comuniassociati software. -->
+		<java-task id="UPGR_2_14_CONFIGURAZIONE" spring-bean-id="upgrUpdateConfigurazioneTask"
+			java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.UpdateConfigurazioneTask"
+			fail-on-error="false" autocommit="true">
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="15">
+		<java-task id="DDL_2_15" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_15/oracle/DDL_02_15.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_15/mysql/DDL_02_15.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_15/sqlserver/DDL_02_15.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_15" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_15/DATI_2_15.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="16">
+		<java-task id="DDL_2_16" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_16/oracle/DDL_02_16.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_16/mysql/DDL_02_16.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_16/sqlserver/DDL_02_16.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_16" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_16/DATI_2_16.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="17">
+		<java-task id="DDL_2_17" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*"
+				value="2_17/oracle/DDL_02_17_00.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*"
+				value="2_17/mysql/DDL_02_17_00.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_17/sqlserver/DDL_02_17_00.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_17" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_17/DATI_2_17.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<!-- INVENTARIOPROCEDIMENTISOFTWARE -->
+		<java-task id="INVPROC_SOFTWARE_PRE_2_17" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*"
+				value="2_17/oracle/DDL_02_17_01.sql" />
+			<param name="filePath" for-dialect="*MySQL*"
+				value="2_17/mysql/DDL_02_17_01.sql" />
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_17/sqlserver/DDL_02_17_01.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$" />
+			<param name="characterEncoding" value="UTF-8" />
+		</java-task>
+		<java-task id="INVENTARIOPROCEDIMENTISOFTWARE_GENERATE_ID_2_17"
+			spring-bean-id="upgrCursorIdGeneratorTask"
+			java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.CursorIdGeneratorTask"
+			fail-on-error="false" autocommit="true">
+			<param name="tableName" value="INVENTARIOPROCEDIMENTISOFTWARE" />
+			<param name="idColumnName" value="ID" />
+			<param name="idComuneColumnName" value="IDCOMUNE" />
+			<param name="oldPkColumns" value="CODICEINVENTARIO,MODULOSOFTWARE" />
+			<param name="sequenceName" value="INVENTARIOPROCEDIMENTISOFTWARE.ID" />
+		</java-task>
+		<java-task id="INVPROC_SOFTWARE_POST2_17" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*"
+				value="2_17/oracle/DDL_02_17_02.sql" />
+			<param name="filePath" for-dialect="*MySQL*"
+				value="2_17/mysql/DDL_02_17_02.sql" />
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_17/sqlserver/DDL_02_17_02.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$" />
+			<param name="characterEncoding" value="UTF-8" />
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="18">
+		<java-task id="DDL_2_18" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*"
+				value="2_18/oracle/DDL_02_18_00.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*"
+				value="2_18/mysql/DDL_02_18_00.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_18/sqlserver/DDL_02_18_00.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_18" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_18/DATI_2_18.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DDL_2_18_LAST" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*"
+				value="2_18/oracle/DDL_02_18_01.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*"
+				value="2_18/mysql/DDL_02_18_01.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_18/sqlserver/DDL_02_18_01.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="19">
+		<java-task id="DDL_2_19" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_19/oracle/DDL_02_19.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_19/mysql/DDL_02_19.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_19/sqlserver/DDL_02_19.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_19" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_19/DATI_2_19.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="20">
+		<java-task id="DDL_2_20" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_20/oracle/DDL_02_20.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_20/mysql/DDL_02_20.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_20/sqlserver/DDL_02_20.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_20" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_20/DATI_2_20.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="21">
+		<java-task id="DDL_2_21" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_21/oracle/DDL_02_21.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_21/mysql/DDL_02_21.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_21/sqlserver/DDL_02_21.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_21" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_21/DATI_2_21.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="22">
+		<java-task id="DDL_2_22" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*"
+				value="2_22/oracle/DDL_02_22_00.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*"
+				value="2_22/mysql/DDL_02_22_00.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_22/sqlserver/DDL_02_22_00.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_22" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_22/DATI_2_22.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<!-- VERTICALIZZAZIONI -->
+		<java-task id="VERTICALIZZAZIONI_PRE_2_22" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*"
+				value="2_22/oracle/DDL_02_22_01.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*"
+				value="2_22/mysql/DDL_02_22_01.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_22/sqlserver/DDL_02_22_01.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="verticalizzazioni_GENERATE_ID_2_22"
+			spring-bean-id="upgrCursorIdGeneratorTask"
+			java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.CursorIdGeneratorTask"
+			fail-on-error="false" autocommit="true">
+			<param name="tableName" value="VERTICALIZZAZIONI" />
+			<param name="idColumnName" value="ID" />
+			<param name="idComuneColumnName" value="IDCOMUNE" />
+			<param name="oldPkColumns" value="MODULO,SOFTWARE" />
+			<param name="sequenceName" value="VERTICALIZZAZIONI.ID" />
+		</java-task>
+		<java-task id="verticalizzazioniparametri_GENERATE_ID_2_22"
+			spring-bean-id="upgrCursorIdGeneratorTask"
+			java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.CursorIdGeneratorTask"
+			fail-on-error="false" autocommit="true">
+			<param name="tableName" value="VERTICALIZZAZIONIPARAMETRI" />
+			<param name="idColumnName" value="ID" />
+			<param name="idComuneColumnName" value="IDCOMUNE" />
+			<param name="oldPkColumns" value="MODULO,PARAMETRO,SOFTWARE" />
+			<param name="sequenceName" value="VERTICALIZZAZIONIPARAMETRI.ID" />
+		</java-task>
+		<java-task id="VERTICALIZZAZIONI_POST_2_22" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*"
+				value="2_22/oracle/DDL_02_22_02.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*"
+				value="2_22/mysql/DDL_02_22_02.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_22/sqlserver/DDL_02_22_02.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<!-- PROTOCOLLOREGISTRI -->
+		<java-task id="PROTOCOLLOREGISTRI_PRE_2_22" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*"
+				value="2_22/oracle/DDL_02_22_03.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*"
+				value="2_22/mysql/DDL_02_22_03.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_22/sqlserver/DDL_02_22_03.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="PROTOCOLLOREGISTRI_GENERATE_ID_2_22"
+			spring-bean-id="upgrCursorIdGeneratorTask"
+			java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.CursorIdGeneratorTask"
+			fail-on-error="false" autocommit="true">
+			<param name="tableName" value="PROTOCOLLO_REGISTRI" />
+			<param name="idColumnName" value="ID" />
+			<param name="idComuneColumnName" value="IDCOMUNE" />
+			<param name="oldPkColumns" value="IDREGISTRO" />
+			<param name="sequenceName" value="PROTOCOLLO_REGISTRI.ID" />
+		</java-task>
+		<java-task id="PROTOCOLLOREGISTRI_POST_2_22" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*"
+				value="2_22/oracle/DDL_02_22_04.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*"
+				value="2_22/mysql/DDL_02_22_04.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_22/sqlserver/DDL_02_22_04.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="UPGR_CONFIGURAZIONIPROTOCOLLO_2_22"
+			spring-bean-id="upgrUpdate2_22ConfigurazioniProtocolloTask"
+			java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.Update2_22ConfigurazioniProtocolloTask"
+			fail-on-error="false" autocommit="true">
+		</java-task>
+
+
+		<!-- TABELLE PROTOCOLLO -->
+		<java-task id="TABELLEPROTOCOLLO_PRE_2_22" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*"
+				value="2_22/oracle/DDL_02_22_05.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*"
+				value="2_22/mysql/DDL_02_22_05.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_22/sqlserver/DDL_02_22_05.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="PROTOCOLLO_MEZZI_GENERATE_ID_2_22"
+			spring-bean-id="upgrCursorIdGeneratorTask"
+			java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.CursorIdGeneratorTask"
+			fail-on-error="false" autocommit="true">
+			<param name="tableName" value="PROTOCOLLO_MEZZI" />
+			<param name="idColumnName" value="ID" />
+			<param name="idComuneColumnName" value="IDCOMUNE" />
+			<param name="oldPkColumns" value="CODICE" />
+			<param name="sequenceName" value="PROTOCOLLO_MEZZI.ID" />
+		</java-task>
+		<java-task id="PROTOCOLLO_MODALITAINVIO_GENERATE_ID_2_22"
+			spring-bean-id="upgrCursorIdGeneratorTask"
+			java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.CursorIdGeneratorTask"
+			fail-on-error="false" autocommit="true">
+			<param name="tableName" value="PROTOCOLLO_MODALITAINVIO" />
+			<param name="idColumnName" value="ID" />
+			<param name="idComuneColumnName" value="IDCOMUNE" />
+			<param name="oldPkColumns" value="CODICE" />
+			<param name="sequenceName" value="PROTOCOLLO_MODALITAINVIO.ID" />
+		</java-task>
+
+		<java-task id="PROTOCOLLO_SEQUENZE_GENERATE_ID_2_22"
+			spring-bean-id="upgrCursorIdGeneratorTask"
+			java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.CursorIdGeneratorTask"
+			fail-on-error="false" autocommit="true">
+			<param name="tableName" value="PROTOCOLLO_SEQUENZE" />
+			<param name="idColumnName" value="ID" />
+			<param name="idComuneColumnName" value="IDCOMUNE" />
+			<param name="oldPkColumns" value="CODICESEQUENZA" />
+			<param name="sequenceName" value="PROTOCOLLO_SEQUENZE.ID" />
+		</java-task>
+
+		<java-task id="PROTOCOLLO_SMISTAMENTI_GENERATE_ID_2_22"
+			spring-bean-id="upgrCursorIdGeneratorTask"
+			java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.CursorIdGeneratorTask"
+			fail-on-error="false" autocommit="true">
+			<param name="tableName" value="PROTOCOLLO_SMISTAMENTI" />
+			<param name="idColumnName" value="ID" />
+			<param name="idComuneColumnName" value="IDCOMUNE" />
+			<param name="oldPkColumns" value="CODICE" />
+			<param name="sequenceName" value="PROTOCOLLO_SMISTAMENTI.ID" />
+		</java-task>
+
+		<java-task id="PROTOCOLLO_TIPIDOCUMENTO_GENERATE_ID_2_22"
+			spring-bean-id="upgrCursorIdGeneratorTask"
+			java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.CursorIdGeneratorTask"
+			fail-on-error="false" autocommit="true">
+			<param name="tableName" value="PROTOCOLLO_TIPIDOCUMENTO" />
+			<param name="idColumnName" value="ID" />
+			<param name="idComuneColumnName" value="IDCOMUNE" />
+			<param name="oldPkColumns" value="CODICE" />
+			<param name="sequenceName" value="PROTOCOLLO_TIPIDOCUMENTO.ID" />
+		</java-task>
+
+		<java-task id="PROTOCOLLO_UFFICIREGISTRI_GENERATE_ID_2_22"
+			spring-bean-id="upgrCursorIdGeneratorTask"
+			java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.CursorIdGeneratorTask"
+			fail-on-error="false" autocommit="true">
+			<param name="tableName" value="PROTOCOLLO_UFFICIREGISTRI" />
+			<param name="idColumnName" value="ID" />
+			<param name="idComuneColumnName" value="IDCOMUNE" />
+			<param name="oldPkColumns" value="CODICEREGISTRO" />
+			<param name="sequenceName" value="PROTOCOLLO_UFFICIREGISTRI.ID" />
+		</java-task>
+
+		<java-task id="TABELLEPROTOCOLLO_POST_2_22" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*"
+				value="2_22/oracle/DDL_02_22_06.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*"
+				value="2_22/mysql/DDL_02_22_06.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_22/sqlserver/DDL_02_22_06.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+
+	</release>
+	<release major-release="2" minor-release="23">
+		<java-task id="DDL_2_23" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_23/oracle/DDL_02_23.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_23/mysql/DDL_02_23.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_23/sqlserver/DDL_02_23.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_23" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_23/DATI_2_23.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="24">
+		<java-task id="DDL_2_24" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_24/oracle/DDL_02_24.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_24/mysql/DDL_02_24.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_24/sqlserver/DDL_02_24.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_24" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_24/DATI_2_24.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="25">
+		<java-task id="DDL_2_25" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_25/oracle/DDL_02_25.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_25/mysql/DDL_02_25.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_25/sqlserver/DDL_02_25.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_25" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_25/DATI_2_25.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="26">
+		<java-task id="DDL_2_26" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_26/oracle/DDL_02_26.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_26/mysql/DDL_02_26.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_26/sqlserver/DDL_02_26.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_26" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_26/DATI_2_26.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="27">
+		<java-task id="DDL_2_27" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_27/oracle/DDL_02_27.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_27/mysql/DDL_02_27.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_27/sqlserver/DDL_02_27.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_27" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_27/DATI_2_27.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="28">
+		<java-task id="DDL_2_28" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_28/oracle/DDL_02_28.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_28/mysql/DDL_02_28.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_28/sqlserver/DDL_02_28.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_28" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_28/DATI_2_28.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="29">
+		<java-task id="DDL_2_29" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_29/oracle/DDL_02_29.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_29/mysql/DDL_02_29.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_29/sqlserver/DDL_02_29.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_29" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_29/DATI_2_29.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="30">
+		<java-task id="DDL_2_30" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_30/oracle/DDL_02_30.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_30/mysql/DDL_02_30.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_30/sqlserver/DDL_02_30.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_30" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_30/DATI_2_30.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="31">
+		<java-task id="DDL_2_31" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_31/oracle/DDL_02_31.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_31/mysql/DDL_02_31.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_31/sqlserver/DDL_02_31.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_31" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_31/DATI_2_31.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="32">
+		<java-task id="DDL_2_32" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_32/oracle/DDL_02_32.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_32/mysql/DDL_02_32.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_32/sqlserver/DDL_02_32.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_32" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_32/DATI_2_32.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="33">
+		<java-task id="DDL_2_33" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_33/oracle/DDL_02_33.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_33/mysql/DDL_02_33.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_33/sqlserver/DDL_02_33.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_33" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_33/DATI_2_33.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="34">
+		<java-task id="DDL_2_34" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_34/oracle/DDL_02_34.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_34/mysql/DDL_02_34.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_34/sqlserver/DDL_02_34.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_34" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_34/DATI_2_34.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="35">
+		<java-task id="DDL_2_35" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_35/oracle/DDL_02_35.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_35/mysql/DDL_02_35.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_35/sqlserver/DDL_02_35.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_35" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_35/DATI_2_35.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="36">
+		<java-task id="DDL_2_36" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_36/oracle/DDL_02_36.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_36/mysql/DDL_02_36.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_36/sqlserver/DDL_02_36.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_36" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_36/DATI_2_36.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="37">
+		<java-task id="DDL_2_37" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_37/oracle/DDL_02_37.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_37/mysql/DDL_02_37.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_37/sqlserver/DDL_02_37.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_37" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_37/DATI_2_37.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="38">
+		<java-task id="DDL_2_38" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_38/oracle/DDL_02_38.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_38/mysql/DDL_02_38.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_38/sqlserver/DDL_02_38.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_38" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_38/DATI_2_38.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="39">
+		<java-task id="DDL_2_39" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_39/oracle/DDL_02_39.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_39/mysql/DDL_02_39.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_39/sqlserver/DDL_02_39.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_39" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_39/DATI_2_39.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="40">
+		<java-task id="DDL_2_40" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_40/oracle/DDL_02_40.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_40/mysql/DDL_02_40.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_40/sqlserver/DDL_02_40.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_40" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_40/DATI_2_40.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="41">
+		<java-task id="DDL_2_41" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_41/oracle/DDL_02_41.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_41/mysql/DDL_02_41.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_41/sqlserver/DDL_02_41.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_41" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_41/DATI_02_41.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="42">
+		<java-task id="DDL_2_42" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_42/oracle/DDL_02_42.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_42/mysql/DDL_02_42.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_42/sqlserver/DDL_02_42.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_42" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_42/DATI_02_42.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="43">
+		<java-task id="DDL_2_43" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_43/oracle/DDL_02_43.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_43/mysql/DDL_02_43.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_43/sqlserver/DDL_02_43.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_43" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_43/DATI_02_43.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="44">
+		<java-task id="DDL_2_44" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_44/oracle/DDL_02_44.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_44/mysql/DDL_02_44.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_44/sqlserver/DDL_02_44.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_44" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_44/DATI_02_44.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="45">
+		<java-task id="DDL_2_45" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_45/oracle/DDL_02_45.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_45/mysql/DDL_02_45.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_45/sqlserver/DDL_02_45.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_45" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_45/DATI_02_45.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="46">
+		<java-task id="DDL_2_46" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_46/oracle/DDL_02_46.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_46/mysql/DDL_02_46.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_46/sqlserver/DDL_02_46.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_46" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_46/DATI_02_46.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="47">
+		<java-task id="DDL_2_47" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_47/oracle/DDL_02_47.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_47/mysql/DDL_02_47.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_47/sqlserver/DDL_02_47.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_47" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_47/DATI_02_47.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="48">
+		<java-task id="DDL_2_48" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_48/oracle/DDL_02_48.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_48/mysql/DDL_02_48.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_48/sqlserver/DDL_02_48.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_48" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_48/DATI_02_48.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="49">
+		<java-task id="DDL_2_49" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_49/oracle/DDL_02_49.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_49/mysql/DDL_02_49.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_49/sqlserver/DDL_02_49.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_49" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_49/DATI_02_49.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="50">
+		<java-task id="DDL_2_50" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_50/oracle/DDL_02_50.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_50/mysql/DDL_02_50.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_50/sqlserver/DDL_02_50.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_50" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_50/DATI_02_50.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="51">
+		<java-task id="DDL_2_51" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_51/oracle/DDL_02_51.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_51/mysql/DDL_02_51.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_51/sqlserver/DDL_02_51.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_51" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_51/DATI_02_51.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="52">
+		<java-task id="DDL_2_52" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_52/oracle/DDL_02_52.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_52/mysql/DDL_02_52.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_52/sqlserver/DDL_02_52.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_52" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_52/DATI_02_52.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="53">
+		<java-task id="DDL_2_53" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_53/oracle/DDL_02_53.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_53/mysql/DDL_02_53.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_53/sqlserver/DDL_02_53.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_53" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_53/DATI_02_53.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="54">
+		<java-task id="DDL_2_54" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_54/oracle/DDL_02_54.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_54/mysql/DDL_02_54.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_54/sqlserver/DDL_02_54.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_54" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_54/DATI_02_54.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="55">
+		<java-task id="DDL_2_55" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_55/oracle/DDL_02_55.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_55/mysql/DDL_02_55.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_55/sqlserver/DDL_02_55.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_55" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_55/DATI_02_55.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>	
+		<java-task id="UPGR_DIMENSIONEMAX_ALLRGATI_AR"
+			spring-bean-id="upgrDimMassimAllegatoAR"
+			java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.UpdateDimMassimAllegatoAR"
+			fail-on-error="false" autocommit="true" order-type="last">
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="56">
+		<java-task id="DDL_2_56" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_56/oracle/DDL_02_56.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_56/mysql/DDL_02_56.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_56/sqlserver/DDL_02_56.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_56" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_56/DATI_02_56.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>	
+	</release>	
+	<release major-release="2" minor-release="57">
+		<java-task id="DDL_2_57" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_57/oracle/DDL_02_57.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_57/mysql/DDL_02_57.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_57/sqlserver/DDL_02_57.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_57" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_57/DATI_02_57.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>	
+	</release>
+	<release major-release="2" minor-release="58">
+		<java-task id="DDL_2_58" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_58/oracle/DDL_02_58.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_58/mysql/DDL_02_58.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_58/sqlserver/DDL_02_58.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_58" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_58/DATI_02_58.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>	
+	</release>
+	<release major-release="2" minor-release="59">
+		<java-task id="DDL_2_59" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_59/oracle/DDL_02_59.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_59/mysql/DDL_02_59.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_59/sqlserver/DDL_02_59.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_59" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_59/DATI_02_59.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>	
+	</release>	
+	<release major-release="2" minor-release="60">
+		<java-task id="DDL_2_60" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_60/oracle/DDL_02_60.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_60/mysql/DDL_02_60.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_60/sqlserver/DDL_02_60.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_60" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_60/DATI_02_60.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>	
+	</release>	
+	<release major-release="2" minor-release="61">
+		<java-task id="DDL_2_61" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_61/oracle/DDL_02_61.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_61/mysql/DDL_02_61.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_61/sqlserver/DDL_02_61.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_61" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_61/DATI_02_61.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>	
+	</release>
+	
+	<release major-release="2" minor-release="62">
+		<java-task id="DDL_2_62" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_62/oracle/DDL_02_62.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_62/mysql/DDL_02_62.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*"
+				value="2_62/sqlserver/DDL_02_62.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_62" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_62/DATI_02_62.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>	
+	</release>		
+	
+	<release major-release="2" minor-release="63"> 
+		<java-task id="DDL_2_63"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_63/oracle/DDL_02_63_00.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_63/mysql/DDL_02_63_00.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*" value="2_63/sqlserver/DDL_02_63_00.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<!-- UPGR della tabella  MAIL_CONFIG -->
+		<java-task id="UPGR_MAIL_CONFIG" spring-bean-id="upgrUpdateMailconfigTask2"
+			java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.UpdateMailconfigTask2"
+			fail-on-error="false" autocommit="true">
+		</java-task>
+		<java-task id="DDL_2_63_MAIL_CONFIG_DROP" spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_63/oracle/DDL_02_63_01.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_63/mysql/DDL_02_63_01.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*" value="2_63/sqlserver/DDL_02_63_01.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_63" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_63/DATI_02_63.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<!-- UPGR delle tabelle MOVIMENTIMAIL, PEC_INBOX-->
+		<java-task id="UPGR_MOVMAIL_PEC_INBOX" spring-bean-id="upgrUpdateMovMailAndPecInbox"
+			java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.UpdateMovMailAndPecInbox"
+			fail-on-error="false" autocommit="true" order-type="last">
+		</java-task>
+	</release>
+	
+	<release major-release="2" minor-release="64"> 
+		<java-task id="DDL_2_64"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_64/oracle/DDL_02_64.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_64/mysql/DDL_02_64.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*" value="2_64/sqlserver/DDL_02_64.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_64" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_64/DATI_02_64.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	
+	<release major-release="2" minor-release="65"> 
+		<java-task id="DDL_2_65"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_65/oracle/DDL_02_65.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_65/mysql/DDL_02_65.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*" value="2_65/sqlserver/DDL_02_65.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_65" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_65/DATI_02_65.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="UPGR_ELABORAZIONE_SUBENTRI_CONC" spring-bean-id="UpdateAutorizzazioniSubentriConcTask"
+  				java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.UpdateAutorizzazioniSubentriConcTask"
+  				fail-on-error="false" autocommit="true">
+  		</java-task>
+	</release>		
+	<release major-release="2" minor-release="66"> 
+		<java-task id="DDL_2_66"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_66/oracle/DDL_02_66.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_66/mysql/DDL_02_66.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*" value="2_66/sqlserver/DDL_02_66.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_66" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_66/DATI_02_66.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>		
+	<release major-release="2" minor-release="67"> 
+		<java-task id="DDL_2_67"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_67/oracle/DDL_02_67.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_67/mysql/DDL_02_67.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*" value="2_67/sqlserver/DDL_02_67.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_67" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_67/DATI_02_67.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="68"> 
+		<java-task id="DDL_2_68"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_68/oracle/DDL_02_68.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_68/mysql/DDL_02_68.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*" value="2_68/sqlserver/DDL_02_68.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_68" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_68/DATI_02_68.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="UPGR_CRYPT_2_68" spring-bean-id="upgrEncryptMailconfigTask"
+				java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.EncryptMailConfigTask"
+				fail-on-error="true" autocommit="true">
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="69"> 
+		<java-task id="DDL_2_69"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_69/oracle/DDL_02_69.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_69/mysql/DDL_02_69.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*" value="2_69/sqlserver/DDL_02_69.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_69" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_69/DATI_02_69.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="70"> 
+		<java-task id="DDL_2_70"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_70/oracle/DDL_02_70.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_70/mysql/DDL_02_70.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*" value="2_70/sqlserver/DDL_02_70.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_70" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_70/DATI_02_70.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="UPGR_UPDATE_AUTORIZ_SUBIMPOSTA_DATI_CONC" spring-bean-id="UpdateAutorizSubimpostaDatiConcTask"
+ 				java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.UpdateAutorizSubimpostaDatiConcTask"
+ 				fail-on-error="false" autocommit="true">
+		</java-task>
+		<java-task id="UPGR_ELABORAZIONE_SUBENTRI_CONC_201911" spring-bean-id="UpdateAutorizzazioniSubentriConcTask"
+  				java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.UpdateAutorizzazioniSubentriConcTask"
+  				fail-on-error="false" autocommit="true">
+  		</java-task>
+	</release>	
+	<release major-release="2" minor-release="71"> 
+		<java-task id="DDL_2_71"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_71/oracle/DDL_02_71.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_71/mysql/DDL_02_71.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*" value="2_71/sqlserver/DDL_02_71.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_71" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_71/DATI_02_71.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="72"> 
+		<java-task id="DDL_2_72"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_72/oracle/DDL_02_72.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_72/mysql/DDL_02_72.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*" value="2_72/sqlserver/DDL_02_72.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_72" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_72/DATI_02_72.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="73"> 
+		<java-task id="DDL_2_73"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_73/oracle/DDL_02_73.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_73/mysql/DDL_02_73.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*" value="2_73/sqlserver/DDL_02_73.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_73" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_73/DATI_02_73.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="74"> 
+		<java-task id="DDL_2_74"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_74/oracle/DDL_02_74.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_74/mysql/DDL_02_74.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*" value="2_74/sqlserver/DDL_02_74.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_74" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_74/DATI_02_74.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		
+		<java-task id="UPGR_UPDATE_MEDATADI_TDS_FILE" spring-bean-id="upgrUpdateOggettiMetadatiFileTsdTask"
+  				java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.UpdateOggettiMetadatiFileTsdTask"
+  				fail-on-error="false" autocommit="true">
+  		</java-task>
+	</release>
+	<release major-release="2" minor-release="75"> 
+		<java-task id="DDL_2_75"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_75/oracle/DDL_02_75.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_75/mysql/DDL_02_75.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*" value="2_75/sqlserver/DDL_02_75.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_75" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_75/DATI_02_75.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>	
+	<release major-release="2" minor-release="76"> 
+		<java-task id="DDL_2_76"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_76/oracle/DDL_02_76.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_76/mysql/DDL_02_76.sql"></param>
+			<param name="filePath" for-dialect="*SQLServer*" value="2_76/sqlserver/DDL_02_76.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_76" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_76/DATI_02_76.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>	
+	<release major-release="2" minor-release="77"> 
+		<java-task id="DDL_2_77"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_77/oracle/DDL_02_77.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_77/mysql/DDL_02_77.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_77" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_77/DATI_02_77.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="UPGR_DETT_POSIZIONI_DEBITORIE_2_77" 
+			spring-bean-id="upgrUpgrDettPosizioniDebitorieTask" 
+			java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.UpgrDettPosizioniDebitorieTask" 
+				fail-on-error="false">
+	 	</java-task>		
+		<java-task id="DDL_2_77_02"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_77/oracle/DDL_02_77_02.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_77/mysql/DDL_02_77_02.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>		
+	</release>		
+	<release major-release="2" minor-release="78"> 
+		<java-task id="DDL_2_78"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_78/oracle/DDL_02_78.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_78/mysql/DDL_02_78.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_78" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_78/DATI_02_78.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>		
+	<release major-release="2" minor-release="79"> 
+		<java-task id="DDL_2_79"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_79/oracle/DDL_02_79.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_79/mysql/DDL_02_79.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_79" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_79/DATI_02_79.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>			
+	<release major-release="2" minor-release="80"> 
+		<java-task id="DDL_2_80"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_80/oracle/DDL_02_80.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_80/mysql/DDL_02_80.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_80" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_80/DATI_02_80.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>	
+	<release major-release="2" minor-release="81"> 
+		<java-task id="DDL_2_81"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_81/oracle/DDL_02_81.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_81/mysql/DDL_02_81.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_81" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_81/DATI_02_81.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="UPGR_ONERI_RATEIZZAZIONI_GUID" spring-bean-id="UpgrOneriRateizzazioniGUIDTask"
+ 				java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.UpgrOneriRateizzazioniGUIDTask"
+ 				fail-on-error="false" autocommit="true">
+ 		</java-task>
+	</release>
+	<release major-release="2" minor-release="82"> 
+		<java-task id="DDL_2_82"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_82/oracle/DDL_02_82.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_82/mysql/DDL_02_82.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_82" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_82/DATI_02_82.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>	
+   	<release major-release="2" minor-release="83"> 
+		<java-task id="DDL_2_83"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_83/oracle/DDL_02_83.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_83/mysql/DDL_02_83.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_83" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_83/DATI_02_83.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>		
+   	<release major-release="2" minor-release="84"> 
+		<java-task id="DDL_2_84_0"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_84/oracle/DDL_02_84_0.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_84/mysql/DDL_02_84_0.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>		
+		<java-task id="DDL_2_84_1"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_84/oracle/DDL_02_84_1.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_84/mysql/DDL_02_84_1.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_84" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_84/DATI_02_84.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>				
+	<release major-release="2" minor-release="85"> 
+		<java-task id="DDL_2_85"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_85/oracle/DDL_02_85.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_85/mysql/DDL_02_85.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_85" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_85/DATI_02_85.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="86">
+ 		<java-task id="DDL_2_86"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_86/oracle/DDL_02_86.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_86/mysql/DDL_02_86.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_86" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_86/DATI_02_86.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="87">
+ 		<java-task id="DDL_2_87"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_87/oracle/DDL_02_87.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_87/mysql/DDL_02_87.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_87" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_87/DATI_02_87.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>	
+	<release major-release="2" minor-release="88">
+		<java-task id="DDL_2_88"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_88/oracle/DDL_02_88.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_88/mysql/DDL_02_88.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_88" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_88/DATI_02_88.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DISM_VERT_AREARIS_VIS_2_88" spring-bean-id="upgrDismissioneVertAreaRiservataVisura"
+ 				java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.UpgrDismissioneVertAreaRiservataVisura"
+ 				fail-on-error="false" autocommit="false">
+ 		</java-task>
+ 		
+	</release>	
+	<release major-release="2" minor-release="89">
+		<java-task id="DDL_2_89_00"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_89/oracle/DDL_02_89_00.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_89/mysql/DDL_02_89_00.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>	
+		<java-task id="UPGR_CF_ENTE_CREDITORE_VUOTO" spring-bean-id="upgrUpgrCfEnteCreditoreVuotoTask"
+ 				java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.UpgrCfEnteCreditoreVuotoTask"
+ 				fail-on-error="false" autocommit="false">
+ 		</java-task>
+		<java-task id="DDL_2_89_01"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_89/oracle/DDL_02_89_01.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_89/mysql/DDL_02_89_01.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="DATI_2_89" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_89/DATI_02_89.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task> 		
+	</release>
+	<release major-release="2" minor-release="90">
+		<java-task id="DDL_2_90"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_90/oracle/DDL_02_90.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_90/mysql/DDL_02_90.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>		
+		<java-task id="DATI_2_90" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_90/DATI_02_90.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task> 		
+	</release>		
+	<release major-release="2" minor-release="91">
+		<java-task id="DDL_2_91"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_91/oracle/DDL_02_91.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_91/mysql/DDL_02_91.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>		
+		<java-task id="DATI_2_91" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_91/DATI_02_91.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task> 		
+		<java-task id="UPGR_MOVIMENTIZIPLOGICO_TESTATA" spring-bean-id="upgrUpgrMovimentiZipLogicoTestata"
+			java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.UpgrMovimentiZipLogicoTestata"
+			fail-on-error="false">
+		</java-task>		
+	</release>
+	<release major-release="2" minor-release="92">
+		<java-task id="DDL_2_92"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_92/oracle/DDL_02_92.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_92/mysql/DDL_02_92.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>		
+		<java-task id="DATI_2_92" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_92/DATI_02_92.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task> 		
+	</release>	
+	<release major-release="2" minor-release="93">
+		<java-task id="DDL_2_93"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_93/oracle/DDL_02_93.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_93/mysql/DDL_02_93.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>		
+	</release>
+	<release major-release="2" minor-release="94">
+		<java-task id="DDL_2_94"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_94/oracle/DDL_02_94.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_94/mysql/DDL_02_94.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>		
+		<java-task id="DATI_2_94" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_94/DATI_02_94.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task> 		
+		<java-task id="UPGR_2_94_COMUNICAZIONI_COMM_DESTINATARI" spring-bean-id="upgrComunicazioniCommissioniDettDestinariTask"
+ 			java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.UpgrComunicazioniCommissioniDettDestinariTask" fail-on-error="false" autocommit="true">
+ 		</java-task>		
+	</release>		
+	<release major-release="2" minor-release="95">
+		<java-task id="DDL_2_95"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_95/oracle/DDL_02_95.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_95/mysql/DDL_02_95.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>		
+		<java-task id="DATI_2_95" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_95/DATI_02_95.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task> 		
+	</release>
+	<release major-release="2" minor-release="96">
+		<java-task id="DDL_2_96"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_96/oracle/DDL_02_96.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_96/mysql/DDL_02_96.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>		
+		<java-task id="DATI_2_96" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_96/DATI_02_96.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task> 		
+	</release>	
+	<release major-release="2" minor-release="97">
+		<java-task id="DDL_2_97"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_97/oracle/DDL_02_97.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_97/mysql/DDL_02_97.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>		
+		<java-task id="DATI_2_97" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_97/DATI_02_97.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task> 		
+	</release>
+	<release major-release="2" minor-release="98">
+		<java-task id="DDL_2_98"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_98/oracle/DDL_02_98.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_98/mysql/DDL_02_98.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>		
+		<java-task id="DATI_2_98" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_98/DATI_02_98.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task> 		
+		<java-task id="UPGR_UPDATE_MANIFESTAZIONI_CODICECOMUNE" spring-bean-id="upgrUpdateManifestazioniSenzaComuneTask"
+ 			java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.UpdateManifestazioniSenzaComuneTask"
+ 			fail-on-error="false" autocommit="true">	
+ 		</java-task>		
+	</release>
+	<release major-release="2" minor-release="99">
+		<java-task id="DDL_2_99"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_99/oracle/DDL_02_99.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_99/mysql/DDL_02_99.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>		
+		<java-task id="DATI_2_99" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_99/DATI_02_99.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task> 		
+	</release>
+	<release major-release="2" minor-release="100">
+		<java-task id="DDL_2_100"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_100/oracle/DDL_02_100.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_100/mysql/DDL_02_100.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>		
+		<java-task id="DATI_2_100" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_100/DATI_02_100.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task> 		
+	</release>
+	<release major-release="2" minor-release="101">
+		<java-task id="DDL_2_101"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_101/oracle/DDL_02_101.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_101/mysql/DDL_02_101.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>		
+		<java-task id="DATI_2_101" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_101/DATI_02_101.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task> 	
+		<java-task id="UPGR_UPDATE_WARNING_I_ATTIVITA" spring-bean-id="upgrUpdateWarningQueryIattivitaTask"
+ 			java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.UpdateWarningQueryIattivitaTask"
+ 			fail-on-error="false" autocommit="true">	
+ 		</java-task>	
+	</release>
+	<release major-release="2" minor-release="102">
+		<java-task id="DDL_2_102"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_102/oracle/DDL_02_102.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_102/mysql/DDL_02_102.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>		
+		<java-task id="DATI_2_102" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_102/DATI_02_102.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task> 	
+	</release>
+	<release major-release="2" minor-release="103">
+		<java-task id="DDL_2_103"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_103/oracle/DDL_02_103.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_103/mysql/DDL_02_103.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>		
+		<java-task id="DATI_2_103" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_103/DATI_02_103.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task> 	
+	</release>
+	<release major-release="2" minor-release="104">
+		<java-task id="DDL_2_104"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_104/oracle/DDL_02_104.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_104/mysql/DDL_02_104.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>		
+		<java-task id="DATI_2_104" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_104/DATI_02_104.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task> 	
+	</release>
+	<release major-release="2" minor-release="105">
+		<java-task id="DDL_2_105"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_105/oracle/DDL_02_105.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_105/mysql/DDL_02_105.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>		
+		<java-task id="DATI_2_105" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_105/DATI_02_105.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task> 	
+	</release>	
+	<release major-release="2" minor-release="106">
+		<java-task id="DDL_2_106"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_106/oracle/DDL_02_106.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_106/mysql/DDL_02_106.sql"></param>
+			<param name="commandSeparator" for-dialect="*SQLServer*" value="(?m)\bGO$"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>		
+		<java-task id="DATI_2_106" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_106/DATI_02_106.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task> 	
+	</release>	
+	<release major-release="2" minor-release="107">
+		<java-task id="DDL_2_107"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_107/oracle/DDL_02_107.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_107/mysql/DDL_02_107.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>		
+		<java-task id="DATI_2_107" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_107/DATI_02_107.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task> 	
+	</release>
+	<release major-release="2" minor-release="108">
+		<java-task id="DDL_2_108"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_108/oracle/DDL_02_108.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_108/mysql/DDL_02_108.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>		
+		<java-task id="DATI_2_108" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_108/DATI_02_108.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task> 	
+	</release>	
+	<release major-release="2" minor-release="109">
+		<java-task id="DDL_2_109"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_109/oracle/DDL_02_109.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_109/mysql/DDL_02_109.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>		
+		<java-task id="DATI_2_109" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_109/DATI_02_109.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task> 	
+	</release>
+	<release major-release="2" minor-release="110">
+		<!-- eseguite solo per mysql -->
+		<java-task id="UPGR_SISTEMA_TIPI_MOVIMENTI_DOPPI" spring-bean-id="upgrUpgrSistemaTipimovimentoDoppi"
+ 				java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.UpgrSistemaTipimovimentoDoppi"
+ 				fail-on-error="false" autocommit="true"> 				
+ 		</java-task> 		
+ 		<java-task id="UPGR_MY_SQL_TIPIMOV_UTF8_BIN" spring-bean-id="upgrUpgrMySQLTipimovimentoUtfBinTask"
+ 				java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.UpgrMySQLTipimovimentoUtfBin"
+ 				fail-on-error="false" autocommit="true">
+ 		</java-task>	
+		<!-- eseguite solo per mysql -->
+		<java-task id="DDL_2_110"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_110/oracle/DDL_02_110.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_110/mysql/DDL_02_110.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>		
+		<java-task id="DATI_2_110" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_110/DATI_02_110.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<!-- BEGIN NODO PAGAMENTI -->
+		<java-task id="UPGR_UPDATE_CONF_MAPPATURA_NODO_PAG_2_110" spring-bean-id="upgrUpdateConfigurazioniMappaturaNodoPagamentiTask"
+ 			java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.UpdateConfigurazioniMappaturaNodoPagamentiTask"
+ 			fail-on-error="false" autocommit="true">
+ 		</java-task>
+		<!-- END NODO PAGAMENTI -->
+		<!-- BEGIN COMMISSIONI EDILIZIE -->
+		<java-task id="UPGR_MENU_COMMISSIONI_TO_BASE_TASK" spring-bean-id="upgrUpgrMenuCommissioniToBaseTask"
+ 				java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.UpgrMenuCommissioniToBaseTask"
+ 				fail-on-error="false" autocommit="true"> 				
+ 		</java-task>
+ 		<java-task id="UPGR_COMM_EDILIZIE_PARERI_MOV_TASK" spring-bean-id="upgrUpgrCommediliziePareriTmovTask"
+ 				java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.UpgrCommediliziePareriTmovTask"
+ 				fail-on-error="false" autocommit="true">
+ 		</java-task>
+ 		<java-task id="UPGR_CDS_TO_COMMISSIONI_TASK" spring-bean-id="upgrUpgrCdsToCommissioniTask"
+ 				java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.UpgrCdsToCommissioniTask"
+ 				fail-on-error="false" autocommit="true">				
+ 		</java-task>
+		<!-- END COMMISSIONI EDILIZIE -->
+		<!-- BEGIN ISTANZE COLLEGATE -->	
+		<java-task id="UPGR_ISTANZECOLLEGATE_STESSA_ISTANZA" spring-bean-id="upgrUpgrCollegamentiIstanzeStessaIstanzaTask"
+			java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.UpgrCollegamentiIstanzeStessaIstanzaTask"
+			fail-on-error="false">
+		</java-task>
+		<java-task id="UPGR_ISTANZECOLLEGATE_DOPPIONI" spring-bean-id="upgrUpgrCollegamentiIstanzeDuplicateStessoProgressivoTask"
+			java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.UpgrCollegamentiIstanzeDuplicateStessoProgressivoTask"
+			fail-on-error="false">
+		</java-task>
+		<java-task id="UPGR_ISTANZECOLLEGATE_PROGRESSIVO_ORDINE" spring-bean-id="upgrUpgrDuplicatiProgressivoOrdineTask"
+			java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.UpgrDuplicatiProgressivoOrdineTask"
+			fail-on-error="false">
+		</java-task>
+		<java-task id="DDL_2_110_01_ISTANZE_COLLEGATE"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_110/oracle/DDL_2_110_01_ISTANZE_COLLEGATE.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_110/mysql/DDL_2_110_01_ISTANZE_COLLEGATE.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>		
+		<!-- END ISTANZE COLLEGATE -->
+	</release>
+	<release major-release="2" minor-release="111">
+		<java-task id="DATI_2_111" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_111/DATI_02_111.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task> 	
+	</release>
+	<release major-release="2" minor-release="112">
+		<java-task id="DDL_2_112"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_112/oracle/DDL_02_112.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_112/mysql/DDL_02_112.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>		
+		<java-task id="DATI_2_112" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_112/DATI_02_112.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task> 	
+	</release>	
+	<release major-release="2" minor-release="113">
+		<java-task id="DDL_2_113"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_113/oracle/DDL_02_113.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_113/mysql/DDL_02_113.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>		
+		<java-task id="DATI_2_113" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_113/DATI_02_113.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task> 	
+	</release>
+	<release major-release="2" minor-release="114">
+		<java-task id="DDL_2_114"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_114/oracle/DDL_02_114.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_114/mysql/DDL_02_114.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>		
+		<java-task id="DATI_2_114" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_114/DATI_02_114.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task> 	
+	</release>
+	<release major-release="2" minor-release="115">
+		<java-task id="DDL_2_115"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_115/oracle/DDL_02_115.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_115/mysql/DDL_02_115.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>		
+		<java-task id="DATI_2_115" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_115/DATI_02_115.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+		<java-task id="BOLLETTAZIONE_2_115" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*Oracle*" value="2_115/oracle/BOLLETTAZIONE_2_115.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_115/mysql/BOLLETTAZIONE_2_115.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task> 	
+ 		<java-task id="UPGR_PARAMETRI_COMUNICAZIONI_MANIFESTAZIONI" spring-bean-id="upgrUpgrParametriComunicazioniManifestazioniTask"
+ 			java-class="it.gruppoinit.pal.gp.core.features.comunicazioni.massive.upgr.UpgrParametriComunicazioniManifestazioniTask"
+ 			fail-on-error="false" autocommit="true">
+ 		</java-task>		
+	</release>		
+	<release major-release="2" minor-release="116">
+		<java-task id="DDL_2_116"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_116/oracle/DDL_02_116.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_116/mysql/DDL_02_116.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>		
+		<java-task id="DATI_2_116" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_116/DATI_02_116.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task> 	
+	</release>
+	<release major-release="2" minor-release="117">
+		<java-task id="DDL_2_117"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_117/oracle/DDL_02_117.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_117/mysql/DDL_02_117.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>		
+		<java-task id="DATI_2_117" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_117/DATI_02_117.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task> 	
+	</release>
+	<release major-release="2" minor-release="118">
+		<java-task id="DDL_2_118"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_118/oracle/DDL_02_118.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_118/mysql/DDL_02_118.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>		
+		<java-task id="DATI_2_118" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_118/DATI_02_118.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task> 	
+	</release>	
+	<release major-release="2" minor-release="119">
+		<java-task id="DDL_2_119"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_119/oracle/DDL_02_119.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_119/mysql/DDL_02_119.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>		
+		<java-task id="DATI_2_119" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_119/DATI_02_119.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task> 	
+	</release>
+	<release major-release="2" minor-release="120">
+		<java-task id="DDL_2_120"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_120/oracle/DDL_02_120.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_120/mysql/DDL_02_120.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>		
+		<java-task id="DATI_2_120" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_120/DATI_02_120.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="121">
+		<java-task id="DDL_2_121"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_121/oracle/DDL_02_121.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_121/mysql/DDL_02_121.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>		
+		<java-task id="DATI_2_121" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_121/DATI_02_121.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="122">
+		<java-task id="DDL_2_122"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_122/oracle/DDL_02_122.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_122/mysql/DDL_02_122.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>		
+		<java-task id="DATI_2_122" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_122/DATI_02_122.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="123">
+		<java-task id="DDL_2_123"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_123/oracle/DDL_02_123.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_123/mysql/DDL_02_123.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>		
+		<java-task id="DATI_2_123" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_123/DATI_02_123.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+ 		<java-task id="UPGR_FO_DOMANDE_PROVENIENZA" spring-bean-id="upgrUpgrFoDomandeProvenienzaTask"
+ 			java-class="it.gruppoinit.pal.gp.core.features.areariservata.upgr.UpgrFoDomandeProvenienzaTask"
+ 			fail-on-error="false" autocommit="true">
+ 		</java-task>
+	</release>
+	<release major-release="2" minor-release="124">
+		<java-task id="DDL_2_124"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_124/oracle/DDL_02_124.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_124/mysql/DDL_02_124.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>		
+		<java-task id="DATI_2_124" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_124/DATI_02_124.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="125">
+		<java-task id="DDL_2_125"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_125/oracle/DDL_02_125.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_125/mysql/DDL_02_125.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>		
+		<java-task id="DATI_2_125" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_125/DATI_02_125.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+	</release>
+	<release major-release="2" minor-release="126">
+        <java-task id="UPGR_ALLINEAMENTO_STRADARIO_JOB" spring-bean-id="upgrUpgrAllineamentoStradarioJobTask"
+            java-class="it.gruppoinit.pal.gp.core.features.stradario.allineamento.upgr.UpgrAllineamentoStradarioJobTask"
+            fail-on-error="false" autocommit="true">
+        </java-task>
+		<java-task id="DDL_2_126"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_126/oracle/DDL_02_126.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_126/mysql/DDL_02_126.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>		
+		<java-task id="DATI_2_126" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_126/DATI_02_126.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>		 
+	    <java-task id="UPGR_ABBONAMENTO_MOVIMENTI_2_126" spring-bean-id="upgrAbbonamentoMovimentiTask"
+           java-class="it.gruppoinit.pal.gp.backoffice.upgr.tasks.UpgrAbbonamentoMovimentiTask"
+			fail-on-error="false" autocommit="false">
+		</java-task>	
+	</release>
+	<release major-release="2" minor-release="127">
+		<java-task id="DDL_2_127"  spring-bean-id="upgrSQLFileTask" java-class="it.gruppoinit.upgr.core.task.SQLFileTask">
+			<param name="filePath" for-dialect="*Oracle*" value="2_127/oracle/DDL_02_127.sql"></param>
+			<param name="filePath" for-dialect="*MySQL*" value="2_127/mysql/DDL_02_127.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>		
+		<java-task id="DATI_2_127" spring-bean-id="upgrSQLFileTask"
+			java-class="it.gruppoinit.upgr.core.task.SQLFileTask" autocommit="true">
+			<param name="filePath" for-dialect="*" value="2_127/DATI_02_127.sql"></param>
+			<param name="characterEncoding" value="UTF-8"></param>
+		</java-task>
+        <java-task id="UPGR_SUAP_XML" spring-bean-id="upgrSuapXml"
+            java-class="it.gruppoinit.pal.gp.core.features.suapxml.upgr.UpgrSuapXmlTask"
+            fail-on-error="false" autocommit="true">
+        </java-task>
+	</release>
+</setup>

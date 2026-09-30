@@ -1,0 +1,230 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions name="GeneratorPdf" targetNamespace="http://e-fil.eu/GeneratorPdf" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="http://e-fil.eu/GeneratorPdf" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing">
+  <wsp:Policy wsu:Id="BasicHttpsBinding_IGeneratorPdfBytes_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:TransportToken>
+              <wsp:Policy>
+                <sp:HttpsToken RequireClientCertificate="false"/>
+              </wsp:Policy>
+            </sp:TransportToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256/>
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Strict/>
+              </wsp:Policy>
+            </sp:Layout>
+          </wsp:Policy>
+        </sp:TransportBinding>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xs:schema elementFormDefault="qualified" targetNamespace="http://e-fil.eu/GeneratorPdf" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/">
+      <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/"/>
+      <xs:import namespace="http://schemas.datacontract.org/2004/07/GeneratorPdfBytes.Service.Contracts"/>
+      <xs:element name="CreatePdfAvviso">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="request" nillable="true" type="q1:RichiestaCreaAvvisoPdf" xmlns:q1="http://e-fil.eu/GeneratorPdf"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="RichiestaCreaAvvisoPdf">
+        <xs:complexContent mixed="false">
+          <xs:extension base="q2:GeneratorPdfBytesAuthenticatedRequestBase" xmlns:q2="http://e-fil.eu/GeneratorPdf">
+            <xs:sequence>
+              <xs:element name="codiceEnteCreditore" nillable="true" type="xs:string"/>
+              <xs:element name="identificativoPosizione" nillable="true" type="xs:string"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="RichiestaCreaAvvisoPdf" nillable="true" type="q3:RichiestaCreaAvvisoPdf" xmlns:q3="http://e-fil.eu/GeneratorPdf"/>
+      <xs:complexType name="GeneratorPdfBytesAuthenticatedRequestBase">
+        <xs:sequence>
+          <xs:element name="IdApplicazione" type="ser:guid"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="GeneratorPdfBytesAuthenticatedRequestBase" nillable="true" type="q4:GeneratorPdfBytesAuthenticatedRequestBase" xmlns:q4="http://e-fil.eu/GeneratorPdf"/>
+      <xs:element name="CreatePdfAvvisoResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="CreatePdfAvvisoResult" nillable="true" type="q5:RispostaCreaAvvisoPdf" xmlns:q5="http://e-fil.eu/GeneratorPdf"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="RispostaCreaAvvisoPdf">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AvvisoPdf" nillable="true" type="xs:base64Binary"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="RispostaCreaAvvisoPdf" nillable="true" type="q6:RispostaCreaAvvisoPdf" xmlns:q6="http://e-fil.eu/GeneratorPdf"/>
+      <xs:complexType name="SoapFaultErroreInterno">
+        <xs:complexContent mixed="false">
+          <xs:extension base="q7:SoapFault" xmlns:q7="http://e-fil.eu/GeneratorPdf">
+            <xs:sequence/>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="SoapFaultErroreInterno" nillable="true" type="q8:SoapFaultErroreInterno" xmlns:q8="http://e-fil.eu/GeneratorPdf"/>
+      <xs:complexType name="SoapFault">
+        <xs:sequence>
+          <xs:element name="CodiceErrore" nillable="true" type="xs:string">
+            <xs:annotation>
+              <xs:appinfo>
+                <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/"/>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="DescrizioneErrore" nillable="true" type="xs:string">
+            <xs:annotation>
+              <xs:appinfo>
+                <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/"/>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="SoapFault" nillable="true" type="q9:SoapFault" xmlns:q9="http://e-fil.eu/GeneratorPdf"/>
+      <xs:element name="CreatePdfRT">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="request" nillable="true" type="q10:RichiestaCreaRTPdf" xmlns:q10="http://schemas.datacontract.org/2004/07/GeneratorPdfBytes.Service.Contracts"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="CreatePdfRTResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="CreatePdfRTResult" nillable="true" type="q11:RispostaCreaRTPdf" xmlns:q11="http://e-fil.eu/GeneratorPdf"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="RispostaCreaRTPdf">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="RTPdf" nillable="true" type="xs:base64Binary"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="RispostaCreaRTPdf" nillable="true" type="q12:RispostaCreaRTPdf" xmlns:q12="http://e-fil.eu/GeneratorPdf"/>
+    </xs:schema>
+    <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/">
+      <xs:element name="anyType" nillable="true" type="xs:anyType"/>
+      <xs:element name="anyURI" nillable="true" type="xs:anyURI"/>
+      <xs:element name="base64Binary" nillable="true" type="xs:base64Binary"/>
+      <xs:element name="boolean" nillable="true" type="xs:boolean"/>
+      <xs:element name="byte" nillable="true" type="xs:byte"/>
+      <xs:element name="dateTime" nillable="true" type="xs:dateTime"/>
+      <xs:element name="decimal" nillable="true" type="xs:decimal"/>
+      <xs:element name="double" nillable="true" type="xs:double"/>
+      <xs:element name="float" nillable="true" type="xs:float"/>
+      <xs:element name="int" nillable="true" type="xs:int"/>
+      <xs:element name="long" nillable="true" type="xs:long"/>
+      <xs:element name="QName" nillable="true" type="xs:QName"/>
+      <xs:element name="short" nillable="true" type="xs:short"/>
+      <xs:element name="string" nillable="true" type="xs:string"/>
+      <xs:element name="unsignedByte" nillable="true" type="xs:unsignedByte"/>
+      <xs:element name="unsignedInt" nillable="true" type="xs:unsignedInt"/>
+      <xs:element name="unsignedLong" nillable="true" type="xs:unsignedLong"/>
+      <xs:element name="unsignedShort" nillable="true" type="xs:unsignedShort"/>
+      <xs:element name="char" nillable="true" type="tns:char"/>
+      <xs:simpleType name="char">
+        <xs:restriction base="xs:int"/>
+      </xs:simpleType>
+      <xs:element name="duration" nillable="true" type="tns:duration"/>
+      <xs:simpleType name="duration">
+        <xs:restriction base="xs:duration">
+          <xs:pattern value="\-?P(\d*D)?(T(\d*H)?(\d*M)?(\d*(\.\d*)?S)?)?"/>
+          <xs:minInclusive value="-P10675199DT2H48M5.4775808S"/>
+          <xs:maxInclusive value="P10675199DT2H48M5.4775807S"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="guid" nillable="true" type="tns:guid"/>
+      <xs:simpleType name="guid">
+        <xs:restriction base="xs:string">
+          <xs:pattern value="[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:attribute name="FactoryType" type="xs:QName"/>
+      <xs:attribute name="Id" type="xs:ID"/>
+      <xs:attribute name="Ref" type="xs:IDREF"/>
+    </xs:schema>
+    <xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/GeneratorPdfBytes.Service.Contracts" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.datacontract.org/2004/07/GeneratorPdfBytes.Service.Contracts">
+      <xs:import namespace="http://e-fil.eu/GeneratorPdf"/>
+      <xs:complexType name="RichiestaCreaRTPdf">
+        <xs:complexContent mixed="false">
+          <xs:extension base="q1:GeneratorPdfBytesAuthenticatedRequestBase" xmlns:q1="http://e-fil.eu/GeneratorPdf">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="CodiceFiscalePartitaIva" nillable="true" type="xs:string"/>
+              <xs:element minOccurs="0" name="codiceEnteCreditore" nillable="true" type="xs:string"/>
+              <xs:element minOccurs="0" name="identificativoPosizione" nillable="true" type="xs:string"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="RichiestaCreaRTPdf" nillable="true" type="tns:RichiestaCreaRTPdf"/>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="IGeneratorPdfBytes_CreatePdfAvviso_InputMessage">
+    <wsdl:part name="parameters" element="tns:CreatePdfAvviso"/>
+  </wsdl:message>
+  <wsdl:message name="IGeneratorPdfBytes_CreatePdfAvviso_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CreatePdfAvvisoResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IGeneratorPdfBytes_CreatePdfAvviso_SoapFaultErroreInternoFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:SoapFaultErroreInterno"/>
+  </wsdl:message>
+  <wsdl:message name="IGeneratorPdfBytes_CreatePdfRT_InputMessage">
+    <wsdl:part name="parameters" element="tns:CreatePdfRT"/>
+  </wsdl:message>
+  <wsdl:message name="IGeneratorPdfBytes_CreatePdfRT_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CreatePdfRTResponse"/>
+  </wsdl:message>
+  <wsdl:portType name="IGeneratorPdfBytes">
+    <wsdl:operation name="CreatePdfAvviso">
+      <wsdl:input wsaw:Action="http://e-fil.eu/GeneratorPdf/IGeneratorPdfBytes/CreatePdfAvviso" message="tns:IGeneratorPdfBytes_CreatePdfAvviso_InputMessage"/>
+      <wsdl:output wsaw:Action="http://e-fil.eu/GeneratorPdf/IGeneratorPdfBytes/CreatePdfAvvisoResponse" message="tns:IGeneratorPdfBytes_CreatePdfAvviso_OutputMessage"/>
+      <wsdl:fault wsaw:Action="http://e-fil.eu/GeneratorPdf/IGeneratorPdfBytes/CreatePdfAvvisoSoapFaultErroreInternoFault" name="SoapFaultErroreInternoFault" message="tns:IGeneratorPdfBytes_CreatePdfAvviso_SoapFaultErroreInternoFault_FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="CreatePdfRT">
+      <wsdl:input wsaw:Action="http://e-fil.eu/GeneratorPdf/IGeneratorPdfBytes/CreatePdfRT" message="tns:IGeneratorPdfBytes_CreatePdfRT_InputMessage"/>
+      <wsdl:output wsaw:Action="http://e-fil.eu/GeneratorPdf/IGeneratorPdfBytes/CreatePdfRTResponse" message="tns:IGeneratorPdfBytes_CreatePdfRT_OutputMessage"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpsBinding_IGeneratorPdfBytes" type="tns:IGeneratorPdfBytes">
+    <wsp:PolicyReference URI="#BasicHttpsBinding_IGeneratorPdfBytes_policy"/>
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="CreatePdfAvviso">
+      <soap:operation soapAction="http://e-fil.eu/GeneratorPdf/IGeneratorPdfBytes/CreatePdfAvviso" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SoapFaultErroreInternoFault">
+        <soap:fault use="literal" name="SoapFaultErroreInternoFault" namespace=""/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="CreatePdfRT">
+      <soap:operation soapAction="http://e-fil.eu/GeneratorPdf/IGeneratorPdfBytes/CreatePdfRT" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="GeneratorPdf">
+    <wsdl:port name="BasicHttpsBinding_IGeneratorPdfBytes" binding="tns:BasicHttpsBinding_IGeneratorPdfBytes">
+      <soap:address location="https://localhost/GeneratorPdf.svc"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

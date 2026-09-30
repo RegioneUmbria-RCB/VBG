@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- edited with XMLSpy v2013 (http://www.altova.com) by  () -->
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+****                          TAS S.p.A.
+**** - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+****
+**** Project. . : IRIS
+****
+**** Nome . . . : IdpInformativaPagamento
+**** Versione . : 01.03-03
+****
+**** Descrizione: Invio Informativa di Pagamento
+****
+**** - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<xs:schema xmlns="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpInformativaPagamento"
+           xmlns:h="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpHeader"
+           xmlns:i="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpInclude"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpInformativaPagamento"
+           elementFormDefault="qualified">
+  <xs:import namespace="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpHeader"
+             schemaLocation="IdP.Header.xsd" />
+  <xs:import namespace="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpInclude"
+             schemaLocation="IdP.Include.xsd" />
+  <xs:element name="IdpInformativaPagamento"
+              type="IdpInformativaPagamento" />
+  <xs:element name="IdpVerificaStatoPagamento">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="h:IdpHeader" />
+        <xs:element name="IdpBody">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="IdPagamento"
+                          type="idPagamento"
+                          maxOccurs="unbounded">
+                <xs:annotation>
+                  <xs:documentation xml:lang="it">Lista dei pagamenti di cui si richiede lo stato</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="richiestaInformazioniPagamento"
+                          type="xs:boolean"
+                          minOccurs="0"
+                          maxOccurs="1" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="Versione"
+                    type="Versione"
+                    use="required" />
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="idPagamento">
+    <xs:simpleContent>
+      <xs:extension base="i:IdentificativoIdp">
+        <xs:attribute name="TipoPendenza"
+                      type="TipoDebito"
+                      use="required">
+          <xs:annotation>
+            <xs:documentation xml:lang="it">TipoPendenza identifica il tipo della pendenza come da RFC127</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="IdpInformativaPagamento">
+    <xs:sequence>
+      <xs:element ref="h:IdpHeader" />
+      <xs:element name="IdpBody"
+                  type="IdpBody" />
+    </xs:sequence>
+    <xs:attribute name="Versione"
+                  type="Versione"
+                  use="required" />
+  </xs:complexType>
+  <xs:simpleType name="Versione">
+    <xs:restriction base="i:Max15Text">
+      <xs:enumeration value="01.03-00" />
+      <xs:enumeration value="01.03-01" />
+      <xs:enumeration value="01.03-02" />
+      <xs:enumeration value="01.03-03">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">Versione contenente le seguenti modifiche: 1) Modifica all&#39;esito della VerificaStatoPagamento con l&#39;aggiunta dello stato Dettagliato dei pagamenti (pro integrazione OTF)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+	  <xs:enumeration value="01.03-04"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <!-- BODY -->
+  <xs:complexType name="IdpBody">
+    <xs:sequence>
+      <xs:element name="Pagamento"
+                  type="Pagamento"
+                  maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Pagamento">
+    <xs:sequence>
+      <!-- ID_PAGAMENTO E SOLUZIONE DELLA CONDIZIONE DI PAGAMENTO -->
+      <xs:element name="RiferimentoPagamento"
+                  type="RiferimentoPagamento" />
+      <!-- 
+                        PER PAGAMENTI ON-LINE: DATA E ORA DI ESECUZIONE DEL PAGAMENTO; 
+                        PER PAGAMENTI OFF-LINE: DATA VALUTA ACCREDITO SU CONTO TECNICO 
+                        -->
+      <xs:element name="DataOraPagamento"
+                  type="i:IdPDateTime" />
+      <!-- DATA SCADENZA DELLA CONDIZIONE DI PAGAMENTO -->
+      <xs:element name="DataScadenzaPagamento"
+                  type="i:IdPDateTime"
+                  minOccurs="0" />
+      <!-- IMPORTO DEL PAGAMENTO  -->
+      <xs:element name="Importo"
+                  type="i:Importo" />
+      <!-- IDENTIFICATIVO DEL DEBITORE: CODICE FISCALE/PARTITA IVA -->
+      <xs:element name="RiferimentoDebitore"
+                  type="i:IdentificativoIdp"
+                  minOccurs="0" />
+      <!-- 01.03-02 +ENUM TIPO_NOTIFICA -->
+      <xs:element name="Esito"
+                  type="TipoNotifica" />
+      <!--xs:element name="DescrizioneEsito" 
+                  type="i:Max256Text" 
+                  minOccurs="0" /-->
+      <!-- 01.03-02 IDENTIFICATIVO DEL PAGANTE  -->
+      <xs:element name="Pagante"
+                  type="Pagante"
+                  minOccurs="0" />
+      <!--  DATI DELLA TRANSAZIONE -->
+      <xs:element name="Transazione"
+                  type="Transazione"
+                  minOccurs="0" />
+      <!--xs:element name="Ordine"
+                  type="Ordine"
+                  minOccurs="0" /-->
+      <!-- 01.03-02 RICHIESTA INVIO QUIETANZA CARTACEA -->
+      <xs:element name="FlagQuietanzaCartacea"
+                  type="xs:boolean"
+                  minOccurs="0" />
+      <!-- NOTE PAGAMENTO -->
+      <xs:element name="Note"
+                  type="i:Max2000Text"
+                  minOccurs="0" />
+      <!-- 01.03-02 ALLEGATO -->
+      <xs:element name="Allegato"
+                  type="i:Allegato"
+                  minOccurs="0" />
+      <!-- 01.03-02 IDENTIFICATIVO DELLA PENDENZA DI TIPO PREDETERMINATO O SPONTANEO -->
+      <xs:element name="RiferimentoDebito"
+                  type="RiferimentoDebito"
+                  minOccurs="0" />
+      <!-- 01.03-02 (+)CAUSALE STRUTTURATA (CHIAVE, VALORE) PER I PAGAMENTI SPONTANEI LIBERI -->
+      <xs:element name="DescrizioneCausale"
+                  type="i:Max256Text"
+                  minOccurs="0" />
+      <!-- 01.03-02 (+)IUV ISO 11649:2009  -->
+      <xs:element name="IdentificativoUnivocoVersamento"
+                  type="i:IdentificativoIdp"
+                  minOccurs="0" />
+    </xs:sequence>
+  </xs:complexType>
+  <!-- 01.03-02 -->
+  <xs:complexType name="RiferimentoDebito">
+    <xs:sequence>
+      <xs:element name="Pendenza"
+                  type="i:IdentificativoIdp" />
+    </xs:sequence>
+    <xs:attribute name="TipoDebito"
+                  type="TipoDebito"
+                  use="required" />
+  </xs:complexType>
+  <!-- 01.03-02 (+)TIPO DELLA NOTIFICA-->
+  <xs:simpleType name="TipoNotifica">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ESEGUITO" />
+      <xs:enumeration value="REGOLATO" />
+      <xs:enumeration value="INCASSO" />
+    </xs:restriction>
+  </xs:simpleType>
+  <!-- IDENTIFICATIVO DEL PAGAMENTO PER (RFC127) -->
+  <xs:complexType name="RiferimentoPagamento">
+    <xs:sequence>
+      <xs:element name="IdPagamento"
+                  type="i:Max35Text" />
+    </xs:sequence>
+    <xs:attribute name="TipoPagamento"
+                  type="i:TipoPagamento"
+                  use="required" />
+    <!-- 01.03-02 SOLUZIONE DI PAGAMENTO (RATA,UNICA) -->
+  </xs:complexType>
+  <!-- Definizione dei dati di "Transazione" -->
+  <xs:complexType name="Transazione">
+    <xs:sequence>
+      <!--<xs:element name="CanalePagamento" type="i:Max35Text"/>-->
+      <xs:element name="CanalePagamento"
+                  type="CanalePagamento" />
+      <!--    <xs:element name="MezzoPagamento" type="i:Max35Text"/>-->
+      <xs:element name="MezzoPagamento"
+                  type="MezzoPagamento" />
+      <xs:element name="DettaglioCanalePagamento"
+                  type="i:DettaglioCanalePagamento"
+                  minOccurs="0" />
+      <!-- CODICE DELLA DISTINTA DI PAGAMENTO -->
+      <xs:element name="IdTransazione"
+                  type="i:Max35Text" />
+      <!-- DATA REGISTRAZIONE DA DISTINTA -->
+      <xs:element name="DataOraTransazione"
+                  type="i:IdPDateTime" />
+      <xs:element name="CodiceAutorizzazione"
+                  type="i:Max35Text"
+                  minOccurs="0" />
+      <xs:element name="DataOraAutorizzazione"
+                  type="i:IdPDateTime"
+                  minOccurs="0" />
+      <xs:element name="TipoSicurezza"
+                  type="i:Max35Text"
+                  minOccurs="0" />
+      <!-- IMPORTO DELLA TRANSAZIONE -->
+      <xs:element name="ImportoTransato"
+                  type="i:Importo" />
+      <xs:element name="DettaglioImportoTransato"
+                  type="DettaglioImportoTransato"
+                  minOccurs="0" />
+      <xs:element name="Descrizione"
+                  type="i:Max256Text"
+                  minOccurs="0" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="DettaglioImportoTransato">
+    <xs:sequence>
+      <xs:element name="Voce"
+                  type="Voce"
+                  maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Voce">
+    <xs:sequence>
+      <xs:element name="Descrizione"
+                  type="i:Max70Text" />
+      <xs:element name="Importo"
+                  type="i:Importo" />
+    </xs:sequence>
+    <xs:attribute name="Tipo"
+                  type="TipoVoce"
+                  use="required" />
+  </xs:complexType>
+  <xs:simpleType name="TipoVoce">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ImportoTransato" />
+      <xs:enumeration value="ImportoAutorizzato" />
+      <xs:enumeration value="ImportoCommissioni" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="TipoDebito">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1" />
+      <xs:maxLength value="35" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="Pagante">
+    <xs:sequence>
+      <xs:element name="IdPagante"
+                  type="i:Max35Text"
+                  minOccurs="0" />
+      <xs:element name="Descrizione"
+                  type="i:Max70Text"
+                  minOccurs="0" />
+    </xs:sequence>
+    <xs:attribute name="Tipo"
+                  type="i:Max35Text"
+                  default="CodiceFiscale" />
+  </xs:complexType>
+  <xs:complexType name="CanalePagamento">
+    <xs:sequence>
+      <xs:element name="Descrizione"
+                  type="i:Max140Text"
+                  minOccurs="0" />
+    </xs:sequence>
+    <xs:attribute name="Tipo"
+                  type="i:Max35Text"
+                  use="required" />
+  </xs:complexType>
+  <xs:complexType name="MezzoPagamento">
+    <xs:sequence>
+      <xs:element name="Descrizione"
+                  type="i:Max140Text"
+                  minOccurs="0" />
+    </xs:sequence>
+    <xs:attribute name="Tipo"
+                  type="i:Max35Text"
+                  use="required" />
+  </xs:complexType>
+</xs:schema>

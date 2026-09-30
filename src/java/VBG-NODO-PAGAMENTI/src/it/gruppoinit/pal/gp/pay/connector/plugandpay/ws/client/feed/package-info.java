@@ -1,0 +1,2 @@
+@javax.xml.bind.annotation.XmlSchema(namespace = "http://e-fil.eu/PnP/PlugAndPayFeed", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
+package it.gruppoinit.pal.gp.pay.connector.plugandpay.ws.client.feed;

@@ -1,0 +1,86 @@
+openapi: 3.0.1
+info:
+  title: PENTAHO UTILS
+  description: Componente di utility per le esportazioni tramite pentaho
+  version: 1.0.0
+servers:
+  - url: REDACTED
+    description: Local Environment
+  - url: REDACTED
+    description: Test Environment
+  - url: REDACTED
+    description: Production Environment
+paths:
+  /creaexcel:
+    post:
+      summary: Esporta i dati dinamici in colonne
+      description: Esporta i dati dinamici in colonne
+      requestBody:
+        description: Dati da incolonnare
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestExportExcel'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseExcel"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+components:
+  responses:
+    BadRequest:
+      description: Bad Request
+      content:
+        application/problem+json:
+          schema:
+            $ref: "#/components/schemas/Errore"
+  schemas:
+    RequestExportExcel:
+        type: object
+        properties:
+            dictionary:
+                type: array
+                items:
+                    $ref: "#/components/schemas/Dictionary"
+            data:
+                type: array
+                items:
+                    $ref: "#/components/schemas/Data"
+    Dictionary:
+        type: object
+        properties:
+            nome:
+              type: string
+            tipo:
+              type: string
+    Data:
+      type: object
+      properties:
+        riga:
+          type: array
+          items:
+            type: string
+    ResponseExcel:
+      type: object
+      properties:
+        contenuto:
+          type: string
+        nomefile:
+          type: string
+    Errore:
+      type: object
+      properties:
+        codice:
+          type: string
+          example: "400"
+        messaggio:
+          type: string
+          example: "Parametro URL_SERVIZIO non valorizzato nella configurazione E256-TT"
+        dettaglio:
+          type: string
+          example: "Stack dell'errore o qualsiasi log applicativo utile"

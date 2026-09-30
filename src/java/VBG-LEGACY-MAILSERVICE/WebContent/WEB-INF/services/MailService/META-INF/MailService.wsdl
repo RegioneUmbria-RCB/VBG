@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:tns="http://gruppoinit.it/MailService/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="MailService" targetNamespace="http://gruppoinit.it/MailService/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd1="http://gruppoinit.it/mailService/schemas/messages">
+    <wsdl:types>
+    	<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    		<xsd:import
+    			namespace="http://gruppoinit.it/mailService/schemas/messages"
+    			schemaLocation="MailService.xsd">
+    		</xsd:import></xsd:schema></wsdl:types>
+    <wsdl:message name="sendMailRequest">
+    	<wsdl:part name="messageIn" element="xsd1:MessageRequest"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="sendMailResponse">
+    	<wsdl:part name="messageOut" element="xsd1:MessageResponse"></wsdl:part>
+    </wsdl:message>
+    
+    <!-- Request and Response per invio email multi account -->
+    <wsdl:message name="sendMailRequest2">
+    	<wsdl:part name="messageIn" element="xsd1:MessageRequest2"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="sendMailResponse2">
+    	<wsdl:part name="messageOut" element="xsd1:MessageResponse2"></wsdl:part>
+    </wsdl:message>
+    
+    <wsdl:portType name="MailServicePortType">
+    	<wsdl:operation name="sendMail">
+            <wsdl:input message="tns:sendMailRequest"></wsdl:input>
+            <wsdl:output message="tns:sendMailResponse"></wsdl:output>
+    	</wsdl:operation>
+    	 <!-- Metodo per invio email multi account -->
+    	<wsdl:operation name="sendMail2">
+            <wsdl:input message="tns:sendMailRequest2"></wsdl:input>
+            <wsdl:output message="tns:sendMailResponse2"></wsdl:output>
+    	</wsdl:operation>
+    	
+    </wsdl:portType>
+        
+    <wsdl:binding name="MailServiceBinding"
+    	type="tns:MailServicePortType">
+    	<soap:binding style="document"
+    		transport="http://schemas.xmlsoap.org/soap/http" />
+    	<wsdl:operation name="sendMail">
+    		<soap:operation
+    			soapAction="http://gruppoinit.it/MailService/sendMail" />
+    		<wsdl:input>
+    			<soap:body use="literal" />
+    		</wsdl:input>
+    		<wsdl:output>
+    			<soap:body use="literal" />
+    		</wsdl:output>
+    	</wsdl:operation>
+    	
+    	<wsdl:operation name="sendMail2">
+    		<soap:operation
+    			soapAction="http://gruppoinit.it/MailService/sendMail2" />
+    		<wsdl:input>
+    			<soap:body use="literal" />
+    		</wsdl:input>
+    		<wsdl:output>
+    			<soap:body use="literal" />
+    		</wsdl:output>
+    	</wsdl:operation>
+    	
+    </wsdl:binding>
+    <wsdl:service name="MailService">
+		<wsdl:port name="MailServicePort" binding="tns:MailServiceBinding">
+			<soap:address location="http://www.example.org/" />
+		</wsdl:port>
+	</wsdl:service></wsdl:definitions>

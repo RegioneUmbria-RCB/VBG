@@ -1,0 +1,42 @@
+﻿@page "/{IdComune}/{Software}/dettaglioistanzaex/{UuidIstanza}/{GoBackUrl}"
+
+@using AreaRiservataCore.Pages.Visura
+@using VBG.BlazorComponentsLibrary.DesignComuni.Spinner
+
+@inherits BasePage
+
+<TitoloPagina>Dati Istanza</TitoloPagina>
+
+@if (this._istanza is not null)
+{
+    <VisuraExCtrl IdComune="@IdComune" Software="@Software" Istanza="@_istanza" LivelloAccessoVisura="@_livelloAccesso" GoBackUrl="@getGoBackUrl()">
+        <Bottoni>
+            <div class="d-md-flex d-grid gap-3 mb-3">
+                @if (_isBtnCloseVisible)
+                {
+                    <button type="button" class="btn btn-light" @onclick="OnBtnCloseAsync">Chiudi</button>
+                }
+                @if (_isBtnSurveryVisible)
+                {
+                    <button type="button" class="btn btn-primary" @onclick="OnBtnSurvey">Questionario di valutazione del servizio</button>
+                }
+                @if (_isBtnLoginVisible)
+                {
+                    <button type="button" class="btn btn-primary" @onclick="OnBtnLogin">Accedi per visualizzare i dati completi</button>
+                }
+                @if (_isBtnSummaryVisible)
+                {
+                    <button type="button" class="btn btn-primary" @onclick="OnBtnSummaryAsync">Rigenera riepilogo pratica</button>
+                }
+                @if (_isBtnDownloadZipVisible)
+                {
+                    <button type="button" class="btn btn-primary" @onclick="OnBtnDownloadZipAsync">Scarica documenti pratica</button>
+                }
+                @if (_isBtnShowInMapVisible)
+                {
+                    <button type="button" class="btn btn-primary" @onclick="OnBtnShowInMapAsync">Mostra in mappa</button>
+                }
+            </div>
+        </Bottoni>
+    </VisuraExCtrl>
+}

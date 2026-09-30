@@ -1,0 +1,23 @@
+
+#set($idSemantico = $item.File.IdSemantico)
+	#set($colspan = 1)
+	#if($item.File.Titolo && $item.File.Titolo.length() > 0)
+        <span>
+        	$!item.File.Titolo
+        </span>
+	#else
+		#set($colspan = 2)
+	#end
+	
+    	<div >
+    		#set($uploadedFiles = $helper.getUploadedFiles($item.File.IdSemantico, $rowIndex))
+    		#foreach($attachment in $uploadedFiles)
+    			<span class="boldchar">
+    				$attachment.NomeFile
+                </span>
+			#end
+			#if($uploadedFiles.size() == 0)
+				<span > . . . </span>
+			#end
+        </div>
+    

@@ -1,0 +1,17 @@
+<div class="button-grid" [ngClass]="gridClass">
+  @for (item of dataSource; track item) {
+    <div class="item">
+      <a [routerLink]="item.link || [urlService.url(redirUrl), item.id]">
+        <div class="item-body">
+          @if (item.sopratitolo) {
+            <h4>{{ item.sopratitolo }}</h4>
+          }
+          <h3 [innerHtml]="item.titolo"></h3>
+          @if (item.sottotitolo) {
+            <div>{{ item.sottotitolo }}</div>
+          }
+        </div>
+      </a>
+    </div>
+  }
+</div>

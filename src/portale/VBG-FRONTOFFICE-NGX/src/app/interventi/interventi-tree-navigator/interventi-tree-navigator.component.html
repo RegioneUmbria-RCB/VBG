@@ -1,0 +1,51 @@
+<div class="vista-albero">
+  <h3>{{ titoloSezione }}</h3>
+
+  @if (lastNode.length) {
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a>
+            <i class="glyphicon glyphicon-home" (click)="navigaNodo('-1')"></i>
+          </a>
+        </li>
+        @for (item of lastNode; track item; let i = $index) {
+<li [ngClass]="{
+                    'breadcrumb-item': i !== lastNode.length - 1,
+                    active: i === lastNode.length - 1
+                }">
+            @if (i !== lastNode.length - 1) {
+              <a (click)="navigaNodo(item.id)">
+                {{ item.descrizione }}
+              </a>
+            }
+            @if (i === lastNode.length - 1) {
+              <span>{{
+                item.descrizione
+              }}</span>
+            }
+          </li>
+        }
+      </ol>
+    </nav>
+  }
+
+  <div class="albero">
+    <ul>
+      @for (item of dataSource$ | async; track item) {
+        <li (click)="elementoSelezionato(item)">
+          @if (item.hasChilds) {
+            <i class="glyphicon glyphicon-folder-close"></i>
+          }
+          @if (!item.hasChilds) {
+            <i class="glyphicon glyphicon-file"></i>
+          }
+          {{ item.text }}
+          <div class="pull-right">
+            <i class="glyphicon glyphicon-chevron-right"></i>
+          </div>
+        </li>
+      }
+    </ul>
+  </div>
+</div>

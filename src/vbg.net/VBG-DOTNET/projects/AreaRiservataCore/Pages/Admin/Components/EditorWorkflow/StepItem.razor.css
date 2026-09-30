@@ -1,0 +1,61 @@
+﻿/* Per regolare la distanza tra le varie card*/
+div.card.shadow.step-item {
+    margin-bottom: 1rem;
+}
+
+    /* Per rimuovere lo spazio vuoto messo nelle card che altrimenti occuperebbero spazio inutile */
+    div.card.shadow.step-item::after {
+        margin-top: 0;
+    }
+
+.descrizione-step {
+    color: var(--text-secondary);
+    margin-bottom: 0;
+}
+
+/* Per evidenziare l'ultimo step aggiunto */
+.new-step {
+    border: 2px dotted var(--main-primary);
+}
+
+/* Per evidenziare l'elemento su cui mi trovo durante il drag and drop */
+.hovered-element {
+    transform: scale(1.03);
+}
+
+/* Per evidenziare l'elemento trascinato */
+.dragged-element {
+    border: 2px dotted var(--main-primary);
+}
+    /*Aggiunge una sorta di lampeggiamento al termine del drop*/
+    .dragged-element.dropped {
+        animation: flash 0.4s ease-in-out;
+    }
+
+/* Animazione drop*/
+@keyframes flash {
+    0% {
+        background-color: var(--bs-card-bg);
+        transform: scale(1);
+    }
+
+    50% {
+        background-color: #f7f7f7; /* Grigio chiarissimo */
+        transform: scale(1.01);
+    }
+
+    100% {
+        background-color: var(--bs-card-bg);
+        transform: scale(1);
+    }
+}
+
+/* Per evitare lo sfarfallio degli stili durante il trascinamento */
+.prevent-mouse-events {
+    pointer-events: none;
+}
+
+    /* Altrimenti la classe prevent-mouse-events impedisce di cliccare sui bottoni  */
+    .prevent-mouse-events button {
+        pointer-events: auto;
+    }

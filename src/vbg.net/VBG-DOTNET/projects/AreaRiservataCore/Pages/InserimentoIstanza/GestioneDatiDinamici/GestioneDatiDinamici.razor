@@ -1,0 +1,324 @@
+﻿@page "/{IdComune}/{Software}/inserimento-istanza/gestione-dati-dinamici/{idDomanda:int}/{stepId:int}"
+@using System.Diagnostics
+@using AreaRiservataCore.Pages.InserimentoIstanza.GestioneDatiDinamici.Components
+@using Init.Sigepro.FrontEnd.AppLogic.DatiDinamici
+@using Init.Sigepro.FrontEnd.AppLogic.DatiDinamici.FileUpload
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneAllegatiDomanda
+@using Init.Sigepro.FrontEnd.AppLogic.GestionePresentazioneDomanda.GestioneEndoprocedimenti
+@using Init.Sigepro.FrontEnd.CoreServices.GestionePresentazioneDomanda.Paginatore
+@using Init.Sigepro.FrontEnd.Infrastructure.StepsDomanda.Attributi
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.DatiDinamici
+@using VBG.DatiDinamici.Agid.WebControls
+@using VBG.DatiDinamici.WebControls.MaschereSolaLettura
+@inherits IstanzeStepPage
+
+<link href="./css/area-riservata/dati-dinamici-fixes.css" rel="stylesheet" type="text/css" />
+
+
+<div class="attributi-allegato legenda">
+    <div>
+        <div class="help-block">
+            <i class="fa fa-pencil"></i>= Scheda non ancora compilata
+        </div>
+        <div class="help-block">
+            <i class="fa fa-check"></i>= Scheda compilata con successo
+        </div>
+    </div>
+</div>
+<span class="fst-italic">@TestoCompilazioneSchedeObbligatorie</span>
+<br />
+<div class="lista-schede-richieste">
+
+    <GrigliaSchedeDinamiche Titolo="@TitoloSchedaCittadiniextracomunitari"
+                            DataSource="@_schedeCittadinoExtracomunitario"
+                            SchedaSelezionata="OnSchedaSelezionata"></GrigliaSchedeDinamiche>
+
+    <GrigliaSchedeDinamiche TitoloVisibile="@MostraTitoloSchedeIntervento"
+                            Titolo="@($"{TestoSchedeDellIntervento} \"{DomandaCorrente.AltriDati.Intervento}\"")"
+                            DataSource="@_schedeIntervento"
+                            SchedaSelezionata="OnSchedaSelezionata"></GrigliaSchedeDinamiche>
+
+    @foreach (var endo in this._schedeEndo)
+    {
+        <GrigliaSchedeDinamiche Titolo="@endo.Descrizione"
+                                DataSource="@endo.Schede"
+                                SchedaSelezionata="OnSchedaSelezionata"></GrigliaSchedeDinamiche>
+    }
+</div>
+
+@if (_schedaCorrente is not null)
+{
+    <ModalModelloDinamicoEditor Modello="_schedaCorrente.Scheda"
+                                CampiInSolaLettura="@_schedaCorrente.MascheraSolaLettura"
+                                OnClose="ChiudiModificaSchedaAsync"
+                                Title="@_schedaCorrente.Scheda.NomeModello"
+                                Size="ModalSizeEnum.ExtraLarge"
+                                OnModelSaved="SalvaSchedaCorrente">
+        <HeaderContent>
+            I campi contrassegnati da un asterisco sono obbligatori
+        </HeaderContent>
+    </ModalModelloDinamicoEditor>
+
+}
+
+
+
+
+@code {
+
+    public enum ViewEnum
+    {
+        Lista,
+        DettaglioScheda
+    }
+
+    [Inject]
+    IModelliDinamiciService _modelliDinamiciService { get; set; } = default!;
+
+    [Inject]
+    IAllegatiDomandaFoRepository _allegatiDomandaFoRepository { get; set; } = default!;
+
+    [CascadingParameter]
+    private PaginatoreStateService _paginatoreStateService { get; set; } = default!;
+
+    [StepProperty("Titolo della scheda\"Cittadino extracomunitario\"")]
+    public string TitoloSchedaCittadiniextracomunitari { get; set; } = "Modello per cittadini extracomunitari";
+
+    [StepProperty("Se impostato a true ignora la scheda per cittadini extracomunitari", ValoreDefault = "false")]
+    public bool IgnoraSchedaCittadinoExtracomunitario { get; set; } = false;
+
+    [StepProperty("Testo da mostrare per richiedere la compilazione delle schede obbligatorie", ValoreDefault = "(*) E' necessario compilare tutte le schede contrassegnate con un asterisco")]
+    public string TestoCompilazioneSchedeObbligatorie { get; set; } = "(*) E' necessario compilare tutte le schede contrassegnate con un asterisco";
+
+    [StepProperty("Testo della sezione \"Schede dell'intervento\"", ValoreDefault = "Schede dell'intervento")]
+    public string TestoSchedeDellIntervento { get; set; } = "Schede dell'intervento";
+
+    [StepProperty("Se impostato a true nella lista delle schede da compilare verrà mostrato il testo \"Schede dell'intervento NOME_INTERVENTO\"", ValoreDefault = "true")]
+    public bool MostraTitoloSchedeIntervento { get; set; } = true;
+
+    IDatiDinamiciFileUploadService? _datiDinamiciDomandaFileUpload;
+    IEnumerable<SchedeBindingItem> _schedeIntervento = Enumerable.Empty<SchedeBindingItem>();
+    IEnumerable<SchedeEndoBindingItem> _schedeEndo = Enumerable.Empty<SchedeEndoBindingItem>();
+    IEnumerable<SchedeBindingItem> _schedeCittadinoExtracomunitario = Enumerable.Empty<SchedeBindingItem>();
+    DettaglioSchedaBindingItem? _schedaCorrente;
+
+    bool _modelloContieneErrori = false;
+    bool _modelloModificato = true;
+    IEnumerable<int> _schedeDaRicompilare = Enumerable.Empty<int>();
+
+    // bool _showModalConfermaPerditaModifiche;
+    private BasicModal? _modalErroreSalvataggio;
+
+
+    protected override void OnInitializeStep()
+    {
+        // Non mi piace molto, dovrebbe essere iniettabile
+        _datiDinamiciDomandaFileUpload = new DatiDinamiciDomandaFileUploadService(IdDomanda.Value, _allegatiDomandaFoRepository);
+
+        _modelliDinamiciService.SincronizzaModelliDinamici(IdDomanda.Value, IgnoraSchedaCittadinoExtracomunitario);
+    }
+
+    protected override async Task OnLoadStepAsync()
+    {
+        await base.OnLoadStepAsync();
+        await BindListAsync();
+    }
+
+    protected override bool CanEnterStep()
+    {
+        return this.DomandaCorrente.DatiDinamici.Modelli.Count() > 0;
+    }
+
+    protected override bool CanExitStep()
+    {
+        if (this.DomandaCorrente.DatiDinamici.EsistonoModelliObbligatoriNonCompilati())
+        {
+            MessageContainer.AddError("Per proseguire è necessario compilare tutte le schede obbligatorie");
+
+            return false;
+        }
+
+        return true;
+    }
+
+    private async Task BindListAsync()
+    {
+        await _spinnerService.ShowSpinnerAsync(() =>
+        {
+            this._schedaCorrente = null;
+
+            this._schedeIntervento = this.DomandaCorrente
+                                        .DatiDinamici
+                                        .ModelliIntervento
+                                        .OrderBy(x => x.Ordine)
+                                        .Select(x => new SchedeBindingItem
+                                        {
+                                            Codice = x.Modello.IdModello,
+                                            Compilata = x.Modello.Compilato,
+                                            Descrizione = x.Modello.Descrizione,
+                                            Facoltativa = x.Modello.Facoltativo,
+                                            DaRicompilare = _schedeDaRicompilare.Contains(x.Modello.IdModello)
+                                        }).ToArray();
+
+            this._schedeEndo = this.DomandaCorrente
+                                        .Endoprocedimenti
+                                        .NonAcquisiti
+                                        .OrderByDescending(x => ValoreEndo(x))
+                                        .ThenBy(x => x.Ordine.OrdineFamiglia)
+                                        .ThenBy(x => x.Ordine.OrdineTipo)
+                                        .ThenBy(x => x.Ordine.OrdineEndo)
+                                        .ThenBy(x => x.Descrizione)
+                                        .Select(x => new SchedeEndoBindingItem
+                                        {
+                                            Descrizione = x.Descrizione,
+                                            Schede = this.DomandaCorrente
+                                                                    .DatiDinamici
+                                                                    .GetModelliEndo(x.Codice)
+                                                                    .OrderBy(y => y.Ordine)
+                                                                    .Select(scheda => new SchedeBindingItem
+                                                                    {
+                                                                        Codice = scheda.Modello.IdModello,
+                                                                        Compilata = scheda.Modello.Compilato,
+                                                                        Descrizione = scheda.Modello.Descrizione,
+                                                                        Facoltativa = scheda.Modello.Facoltativo,
+                                                                        DaRicompilare = _schedeDaRicompilare.Contains(scheda.Modello.IdModello)
+                                                                    }).ToList()
+                                        })
+                                        .Where(x => x.Schede.Count() > 0)
+                                        .ToList();
+
+            // Scheda cittadini extracomunitari
+            this._schedeCittadinoExtracomunitario = Enumerable.Empty<SchedeBindingItem>();
+            var modelloEc = this.DomandaCorrente.DatiDinamici.ModelloCittadinoExtracomunitario;
+
+            if (modelloEc != null)
+            {
+                _schedeCittadinoExtracomunitario = [
+                    new SchedeBindingItem
+                    {
+                        Codice = modelloEc.IdModello,
+                        Compilata = modelloEc.Compilato,
+                        Descrizione = this.TitoloSchedaCittadiniextracomunitari,
+                        Facoltativa = modelloEc.Facoltativo
+                    }];
+            }
+            this._paginatoreStateService.MostraPaginatore();
+        });
+
+    }
+
+    private int ValoreEndo(Endoprocedimento endo)
+    {
+        if (endo.Principale)
+            return 10000;
+
+        if (!endo.Facoltativo)
+            return 1000;
+
+        return 1;
+    }
+
+    async Task OnSchedaSelezionata(SchedeBindingItem scheda)
+    {
+        await _spinnerService.ShowSpinnerAsync(() =>
+            {
+                this._modelloModificato = false;
+                this._modelloContieneErrori = false;
+
+                this._paginatoreStateService.NascondiPaginatore();
+
+                this._schedaCorrente = CaricaSchedaDinamica(scheda.Codice, PrimoIndiceSelezionabileNellaScheda(scheda.Codice));
+            });
+    }
+
+    private int PrimoIndiceSelezionabileNellaScheda(int idScheda)
+    {
+        var indici = _modelliDinamiciService.GetIndiciScheda(IdDomanda.Value, idScheda);
+
+        return (indici == null || indici.Count() == 0) ? 0 : indici.First();
+    }
+
+    private DettaglioSchedaBindingItem CaricaSchedaDinamica(int idScheda, int indiceScheda = 0)
+    {
+        var scheda = _modelliDinamiciService.GetModelloDinamico(IdDomanda.Value, idScheda, indiceScheda);
+        var indiciScheda = _modelliDinamiciService.GetIndiciScheda(IdDomanda.Value, idScheda);
+
+        scheda.EseguiScriptCaricamento();
+
+        return new DettaglioSchedaBindingItem(scheda, new MascheraSolaLetturaVuota(), indiciScheda);
+    }
+
+    private async Task SalvaSchedaCorrente()
+    {
+        await _spinnerService.ShowSpinnerAsync(async () =>
+            {
+                try
+                {
+                    if (Salva())
+                    {
+                        await BindListAsync();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageContainer.ClearErrors();
+                    this.MessageContainer.AddError("Errore durante il salvataggio della scheda");
+                    Logger.Error($"Errore durante il salvataggio della scheda: {ex.Message}");
+                }
+            });
+    }
+
+    bool Salva()
+    {
+        try
+        {
+            if (_schedaCorrente == null)
+                return false;
+
+            _schedaCorrente.Scheda.ValidaModello();
+
+            var esitoSalvataggio = this._modelliDinamiciService.Salva(IdDomanda!.Value, _schedaCorrente.Scheda);
+
+            _schedeDaRicompilare = esitoSalvataggio.IdSchedeDaRicompilare;
+
+            return true;
+        }
+        catch (Exception ex) // Eccezione sollevata sia in fase di validazione modello che in fase di salvataggio
+        {
+            if (ex is ValidazioneModelloDinamicoException)
+            {
+                var errore = (ex as ValidazioneModelloDinamicoException).ListaErrori?.FirstOrDefault();
+
+                if (errore is not null)
+                {
+                    _jsRuntime.InvokeVoidAsync("scrollTo", $"{errore.IdCampo}_I{errore.Indice}");
+                }
+            }
+            // TODO: Log errore
+            // MostraErroreSalvataggio();
+            MessageContainer.AddError("Si è verificato un errore durante il salvataggio. Correggere i problemi segnalati e ripetere l'operazione");
+
+            return false;
+        }
+    }
+
+    async Task ChiudiModificaSchedaAsync()
+    {
+        await BindListAsync();
+    }
+
+    void OnModelStateChanged(bool modelloHaErrori)
+    {
+        Debug.WriteLine($"OnModelStateChanged this._modelloModificato={this._modelloModificato} this._modelloContieneErrori={this._modelloContieneErrori}");
+        this._modelloModificato = true;
+        this._modelloContieneErrori = modelloHaErrori;
+    }
+
+    // void CloseConfirmationModal()
+    // {
+    //     _showModalConfermaPerditaModifiche = false;
+
+    //     BindList();
+    // }
+}

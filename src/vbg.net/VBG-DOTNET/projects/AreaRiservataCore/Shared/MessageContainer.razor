@@ -1,0 +1,172 @@
+﻿@using Microsoft.JSInterop
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.DesignComuni.Messaggi.NotificheToast
+
+<NotificheToastSummary Messaggi="_messaggi" MessaggiChanged="(IEnumerable<MessaggioToast> msgs) => _messaggi = msgs.ToList()" AutoHide="true"></NotificheToastSummary>
+
+<CascadingValue Value="this">
+    @ChildContent
+</CascadingValue>
+
+@code {
+
+    [Inject]
+    public IJSRuntime _js { get; set; } = default!;
+
+    List<MessaggioToast> _messaggi = new List<MessaggioToast>();
+
+    private enum MessageType
+    {
+        Alert,
+        Warning,
+        Error
+    }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = default!;
+
+    public void AddAlert(string Text, bool RefreshUI = true)
+    {
+        AddMessage(MessageType.Alert, Text, RefreshUI);
+    }
+
+    public void AddAlert(IEnumerable<string>? msgs, bool RefreshUI = true)
+    {
+        if (msgs == null)
+            return;
+
+        int len = msgs.Count();
+
+        if (len > 0)
+        {
+            for (int i = 0; i < len - 1; i++)
+            {
+                AddMessage(MessageType.Alert, msgs.ElementAt(i), false);
+            }
+
+            AddMessage(MessageType.Alert, msgs.ElementAt(len - 1), RefreshUI);
+        }
+    }
+
+    public void AddWarning(string Text, bool RefreshUI = true)
+    {
+        AddMessage(MessageType.Warning, Text, RefreshUI);
+    }
+
+    public void AddWarning(IEnumerable<string>? msgs, bool RefreshUI = true)
+    {
+        if (msgs == null || !msgs.Any()) // Aggiunto controllo su any altrimenti il for successivo va in loop infinito se viene passato un enumerable vuoto
+            return;
+
+        int len = msgs.Count();
+
+        if (len > 0)
+        {
+            for (int i = 0; i < len - 1; i++)
+            {
+                AddMessage(MessageType.Warning, msgs.ElementAt(i), false);
+            }
+
+            AddMessage(MessageType.Warning, msgs.ElementAt(len - 1), RefreshUI);
+        }
+    }
+
+    public void AddError(string Text, bool RefreshUI = true)
+    {
+        AddMessage(MessageType.Error, Text, RefreshUI);
+    }
+
+    public void AddError(IEnumerable<string>? msgs, bool RefreshUI = true)
+    {
+        if (msgs == null || !msgs.Any()) // Aggiunto controllo su any altrimenti il for successivo va in loop infinito se viene passato un enumerable vuoto
+            return;
+
+        int len = msgs.Count();
+
+        if (len > 0)
+        {
+            for (int i = 0; i < len - 1; i++)
+            {
+                AddMessage(MessageType.Error, msgs.ElementAt(i), false);
+            }
+
+            AddMessage(MessageType.Error, msgs.ElementAt(len - 1), RefreshUI);
+        }
+    }
+
+    private void AddMessage(MessageType t, string s, bool stateHasChanged)
+    {
+        if (string.IsNullOrEmpty(s))
+            return;
+
+        var tipoMessaggio = TipoMessaggioToast.ERROR;
+
+        if (t == MessageType.Warning)
+            tipoMessaggio = TipoMessaggioToast.WARNING;
+
+        if (t == MessageType.Alert)
+            tipoMessaggio = TipoMessaggioToast.INFO;
+
+        var msg = new MessaggioToast()
+            {
+                Testo = s,
+                TipoMessaggio = tipoMessaggio
+            };
+
+        if (!_messaggi.Contains(msg))
+            _messaggi.Add(msg);
+
+
+        if (stateHasChanged)
+            this.StateHasChanged();
+    }
+
+    public void Refresh()
+    {
+        this.StateHasChanged();
+    }
+
+    public bool HasAlerts()
+    {
+        return this._messaggi.Where(x => x.TipoMessaggio == TipoMessaggioToast.INFO).Any();
+    }
+
+    public bool HasWarnings()
+    {
+        return this._messaggi.Where(x => x.TipoMessaggio == TipoMessaggioToast.WARNING).Any();
+    }
+
+    public bool HasErrors()
+    {
+        return this._messaggi.Where(x => x.TipoMessaggio == TipoMessaggioToast.ERROR).Any();
+    }
+
+    public void ClearAll()
+    {
+        this._messaggi = new List<MessaggioToast>();
+
+        this.StateHasChanged();
+    }
+
+    public void ClearAlerts()
+    {
+        this._messaggi.RemoveAll(x => x.TipoMessaggio == TipoMessaggioToast.INFO);
+
+        this.StateHasChanged();
+    }
+
+    public void ClearWarnings()
+    {
+        this._messaggi.RemoveAll(x => x.TipoMessaggio == TipoMessaggioToast.WARNING);
+
+        this.StateHasChanged();
+    }
+
+    public void ClearErrors()
+    {
+        this._messaggi.RemoveAll(x => x.TipoMessaggio == TipoMessaggioToast.ERROR);
+
+        this.StateHasChanged();
+    }
+
+}

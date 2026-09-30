@@ -1,0 +1,159 @@
+﻿@page "/{IdComune}/{Software}/inserimento-istanza/ssu/gestione-allegati/{idDomanda:int}/{stepId:int}"
+
+@using AreaRiservataCore.Pages.InserimentoIstanza.Allegati
+@using AreaRiservataCore.Pages.InserimentoIstanza.AllegatiEndo
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneAllegatiDomanda.Endoprocedimenti
+@using Init.Sigepro.FrontEnd.AppLogic.GestionePresentazioneDomanda.GestioneDocumenti
+@using Init.Sigepro.FrontEnd.CoreServices.GestioneOggetti
+@using Init.Sigepro.FrontEnd.CoreServices.GestionePresentazioneDomanda.Paginatore
+@using VBG.AppLogic.SSU.APICatalogoServizi.Client
+@using VBG.AppLogic.SSU.GestioneAllegati
+@using VBG.AppLogic.SSU.GestioneProcedimenti
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+
+
+
+@inherits IstanzeStepPage
+
+@if (this._listaAllegatiBinding != null && this._listaAllegatiBinding.Any())
+{
+    @foreach (var item in this._listaAllegatiBinding)
+    {
+        <div class="shadow mb-4 p-4 pe-2">
+            <div class="pb-4">
+                <div class="w-75">
+                    <h3>@item.Descrizione</h3>
+                </div>     
+            </div>
+            <ListaAllegati DataSource="@item.Allegati"
+                             OnDeleteFile="OnRimuoviDocumentoAsync"
+                             OnEditFile="DataBindAsync">
+            </ListaAllegati>
+        </div>
+    }
+}
+
+@code {
+    [Inject]
+    public SsuAllegatiService _allegatiService { get; set; } = default!;
+
+    [Inject]
+    public IAllegatiEndoprocedimentiService _allegatiEndoprocedimentiService { get; set; } = default!;
+    [CascadingParameter]
+    private PaginatoreStateService _paginatoreStateService { get; set; } = default!;
+
+    private List<ElementoListaAllegatiProcedimento> _listaAllegatiSsu = new List<ElementoListaAllegatiProcedimento>();
+    private SsuProcedimentiDomanda _procedimentiDomanda = new SsuProcedimentiDomanda();
+    private List<AllegatiEndoBindingItem> _listaAllegatiBinding = new List<AllegatiEndoBindingItem>();
+
+
+    protected override async Task OnLoadStepAsync()
+    {
+        await base.OnLoadStepAsync();
+
+        await this.DataBindAsync();
+    }
+
+    protected override async Task OnInitializeStepAsync()
+    {
+        await base.OnInitializeStepAsync();
+
+        await this._allegatiService.SincronizzaAllegatiAsync(this.IdDomanda.Value);
+    }
+
+    public async Task DataBindAsync()
+    {
+        await this._spinnerService.ShowSpinnerAsync(async() =>
+        {
+            try
+            {
+                this._listaAllegatiSsu = await _allegatiService.GetAllegatiAsync(IdDomanda.Value);
+
+                this._listaAllegatiBinding = new List<AllegatiEndoBindingItem>();
+
+                foreach (var item in this._listaAllegatiSsu)
+                {
+                    var allegatiEndo = this.DomandaCorrente.Documenti.Endo.GetByIdEndo(item.Procedimento.Id);
+
+                    if (allegatiEndo.Count() == 0)
+                    {
+                        continue;
+                    }
+
+                    var endoBindingItem = new AllegatiEndoBindingItem
+                    {
+                        Id = item.Procedimento.Id,
+                        Descrizione = item.Procedimento.Descrizione
+                    };
+
+                    endoBindingItem.Allegati = allegatiEndo.Select(allegatoEndo => new GrigliaAllegatiBindingItem
+                    {
+                        Id = allegatoEndo.Id,
+                        CodiceOggetto = allegatoEndo.AllegatoDellUtente == null ? null : allegatoEndo.AllegatoDellUtente.CodiceOggetto,
+                        IdDomanda = this.IdDomanda,
+                        Descrizione = allegatoEndo.Descrizione,
+                        Richiesto = allegatoEndo.Richiesto,
+                        RichiedeFirmaDigitale = allegatoEndo.RichiedeFirmaDigitale,
+                        FirmatoDigitalmente = allegatoEndo.AllegatoDellUtente == null ? false : allegatoEndo.AllegatoDellUtente.FirmatoDigitalmente,
+                        Ordine = allegatoEndo.Ordine,
+                        Note = allegatoEndo.Note,
+                        DimensioneMassima = allegatoEndo.DimensioneMassima * 1024,
+                        EstensioniAmmesse = allegatoEndo.EstensioniAmmesse
+                    })
+                            .OrderByDescending(x => x.Richiesto)
+                            .ThenBy(x => x.Descrizione)
+                            .ToList();
+
+                    this._listaAllegatiBinding.Add(endoBindingItem);
+
+                }
+
+                // this._listaAllegatiBinding.Sort((a, b) => a.Descrizione.CompareTo(b.Descrizione));
+            }
+            catch (Exception)
+            {
+                MessageContainer.AddError("Si è verificato un errore durante il recupero degli allegati");
+                this._paginatoreStateService.NascondiBottoneAvanti();
+            }
+            
+
+        });
+    }
+
+    protected override bool CanEnterStep()
+    {
+        return this.DomandaCorrente.Documenti.Endo.Documenti.Count() > 0;
+    }
+
+    protected override bool CanExitStep()
+    {
+        this.MessageContainer.ClearErrors();
+
+        var listaNomiFilesNonPresenti = this.DomandaCorrente.Documenti.Endo.GetNomiDocumentiRichiestiENonPresenti();
+
+        this.MessageContainer.AddError(listaNomiFilesNonPresenti.Select(x => string.Format("L'allegato \"{0}\" è obbligatorio", x)));
+
+        var listaFilesNonFirmati = this.DomandaCorrente.Documenti.Endo.Documenti.Where(x => x.RichiedeFirmaDigitale && x.AllegatoDellUtente != null && !x.AllegatoDellUtente.FirmatoDigitalmente);
+
+        this.MessageContainer.AddError(listaFilesNonFirmati.Select(x => string.Format("L'allegato \"{0}\" deve essere firmato digitalmente", x.Descrizione)));
+        this.MessageContainer.Refresh();
+
+        return listaNomiFilesNonPresenti.Count() == 0 && listaFilesNonFirmati.Count() == 0;
+    }
+
+    protected async Task OnRimuoviDocumentoAsync(int idAllegato)
+    {
+        try
+        {
+            this._allegatiEndoprocedimentiService.EliminaOggettoUtente(this.IdDomanda.Value, idAllegato);
+
+            await this.DataBindAsync();
+        }
+        catch (Exception ex)
+        {
+            this.MessageContainer.AddError("Errore durante l'eliminazione dell'allegato");
+            this.Logger.Error($"Errore durante l'eliminazione dell'allegato: {ex.Message}");
+        }
+    }
+
+}

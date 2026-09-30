@@ -1,0 +1,41 @@
+﻿@if (OneriDaPagareOnline.Any())
+{
+    <div class="card mb-2 border" id="totaleDaPagareOnline">
+        <div class="card-header">
+            Totale da pagare online
+        </div>
+        <div class="card-body">
+            <div id="riepilogoOneriOnline">
+
+                <table class="tabellaRiepilogoOneri table">
+                    <thead>
+                        <tr>
+                            <th>Causale</th>
+                            <th>Importo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var it in this.OneriDaPagareOnline)
+                        {
+                            <tr class="rigaCausale valoreOnere">
+                                <td>@it.Causale</td>
+                                <td class="importoOnere">@it.ImportoPagato.ToString("N2")</td>
+                            </tr>
+                        }
+
+                        <tr class="rigaCausale totale" style="font-weight: bold;">
+                            <td>Totale da pagare online</td>
+                            <td class="importoOnere">@this.OneriDaPagareOnline.Sum(x => x.ImportoPagato).ToString("N2")</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public IEnumerable<GrigliaOneriItem> OneriDaPagareOnline { get; set; } = Enumerable.Empty<GrigliaOneriItem>();
+}

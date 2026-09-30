@@ -1,0 +1,52 @@
+#set($idTesto = "testo_$item.Testo.Id")
+#set($idTesto = $helper.getUniqueId(${idTesto},${item.Testo}))
+#if($isTableTemplate)
+	#set($placeholder = "${esc.D}'{'index{0}'}'")
+	##$helper.debug(${rowIndex})
+	## ${index} al termine è un placeholder che viene sostituito lato client con l'indice della riga all'aggiunta di nuove righe
+	#set($idTesto = "${helper.buildIndexingSuffixWhithPlaceholder(${rowIndex},${placeholder},${templateNestingLevel})}") 
+	##$helper.debug($idTesto)
+#else
+	#set($idTesto = "${idTesto}${helper.buildIndexingSuffix($rowIndex)}")
+#end
+<div id="$idTesto" class="testo-cart-container">
+	#set($tooltiptext = ${helper.getTestoHelp($item.Testo)})
+	#set($classeDivCampo = "campo-cart-right")
+	#if($helper.renderFormLayout($item,$quadro))
+        <div class="label-cart" >
+        	&nbsp;
+        </div>
+	#else
+		#set($classeDivCampo = "campo-cart-left")
+	#end
+	<div class="testo-cart $classeDivCampo">
+	    <span >
+	    $item.Testo.Valore
+		</span>
+	</div>
+	#if($tooltiptext.length() > 0)
+		<span class="help_image" id="${idTesto}_help" title="${helper.escapeValueForHtmlAttribute($tooltiptext)}">
+			<label >(?)</label>
+        </span>
+	#end
+</div>
+	#set($attivo = $helper.evaluateExpression($item.Testo.Attivo,$rowIndex))
+	#if(!$attivo || $helper.isEspressioneDinamica($item.Testo.Attivo))
+		#if(!$isTableTemplate)
+			#set($jsScript = $helper.buildJavascriptToDynamicallyEnableElement($idTesto,$item.Testo.Attivo,2))
+			#if($jsScript != "")
+        	<script>
+        	##scrittura dello script che attiva e disattiva il campo dinamicamente in base ai valori assunti da altri campi
+			$(document).ready(function(){
+        	$jsScript
+			});
+        	</script>
+			#end
+		#else
+			#set($suffix = ${helper.buildIndexingSuffixWhithPlaceholder($rowIndex,"'' + newRowIndex{0} + ''",$templateNestingLevel)})
+			#set($jsScript = $helper.buildJavascriptToDynamicallyEnableElement($helper.getUniqueId("testo_$item.Testo.Id",${item.Testo}),$item.Testo.Attivo,$suffix,2))
+			#if($jsScript != "")
+				$helper.addScriptToCache($jsScript)
+			#end
+		#end
+	#end

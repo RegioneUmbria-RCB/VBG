@@ -1,0 +1,305 @@
+﻿@using AreaRiservataCore.Utils
+@using Init.Sigepro.FrontEnd.AppLogic.Autenticazione.Vbg
+@using Init.Sigepro.FrontEnd.AppLogic.Autenticazione.Vbg.AutenticazioneUtente
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneAllegatiDomanda.RiepilogoDomanda
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneInterventi
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneOggetti
+@using Init.Sigepro.FrontEnd.AppLogic.GestionePresentazioneDomanda
+@using Init.Sigepro.FrontEnd.AppLogic.GestionePresentazioneDomanda.GestioneDocumenti
+@using Init.Sigepro.FrontEnd.AppLogic.InvioDomanda
+@using Init.Sigepro.FrontEnd.AppLogic.InvioDomanda.MessaggiErroreInvio
+@using Init.Sigepro.FrontEnd.AppLogic.WsInterventi
+@using Init.Sigepro.FrontEnd.CoreServices.GestionePresentazioneDomanda.Paginatore
+@using Init.Sigepro.FrontEnd.CoreServices.GestioneTitoloPagina
+@using VBG.BlazorComponentsLibrary.DesignComuni.Spinner
+@using log4net
+
+
+
+@if (DomandaCorrente is not null && DatiConfigurazione is not null)
+{
+    @switch (_currentView)
+    {
+        case Constants.PDF_VIEW:
+            <RiepilogoPdfView DescrizioneFaseRiepilogo="@DatiConfigurazione.DescrizioneFaseRiepilogo"
+                              DocumentGenerationCallback="GeneraRiepilogoCallback"
+                              DownloadRiepilogo="ScaricaRiepilogoAsync"
+                              MostraRiepilogoDomanda="@DatiConfigurazione.MostraRiepilogoDomanda"
+                              TitoloFaseRiepilogo="@DatiConfigurazione.TitoloFaseRiepilogo"
+                              RiepilogoDomandaConfigurato="_configuratoConRiepilogoDomanda"></RiepilogoPdfView>
+
+            break;
+
+        case Constants.UPLOAD_VIEW:
+            <RiepilogoUploadView Close="InitLayout"
+                                 ConfermaInvio="() => _showConfirmationModal = true"
+                                 DescrizioneFaseInvio="@DatiConfigurazione.DescrizioneFaseInvio"
+                                 DomandaCorrente="DomandaCorrente"
+                                 MostraGrigliaNonSottoscrittori="@DatiConfigurazione.MostraGrigliaNonSottoscrittori"
+                                 MostraGrigliaSottoscrittori="@DatiConfigurazione.MostraGrigliaSottoscrittori"
+                                 ScaricaRiepilogo="ScaricaRiepilogoAsync"
+                                 SottotitoloFaseInvio="@DatiConfigurazione.SottotitoloFaseInvio"
+                                 TestoBottoneTrasferisciIstanza="@DatiConfigurazione.TestoBottoneTrasferisciIstanza"
+                                 TestoCheckDichiarazione="@DatiConfigurazione.TestoCheckDichiarazione"
+                                 TestoDichiarazione="@DatiConfigurazione.TestoDichiarazione"
+                                 TitoloFaseInvio="@DatiConfigurazione.TitoloFaseInvio"
+                                 TitoloGrigliaNonSottoscrittori="@DatiConfigurazione.TitoloGrigliaNonSottoscrittori"
+                                 TitoloGrigliaSottoscrittori="@DatiConfigurazione.TitoloGrigliaSottoscrittori"
+                                 VerificaFirmaSuRiepilogo="@DatiConfigurazione.VerificaFirmaSuRiepilogo"></RiepilogoUploadView>
+
+            break;
+
+        case Constants.ERROR_VIEW:
+            <StepCard Titolo="Riepilogo">
+                <div class="alert alert-danger" role="alert">
+                    @((MarkupString)_errorText)
+                </div>
+            </StepCard>
+
+            <div class="buttonContainer">
+                <button class="btn btn-outline-primary" @onclick="OnClose">Chiudi</button>
+            </div>
+            break;
+    }
+
+    <ConfirmationModal Titolo="Conferma i dati" Visible="_showConfirmationModal" ConfermaClick="@InviaDomandaAsync" AnnullaClick="() => _showConfirmationModal = false">
+        <ModalBody>
+            <ContenitoreRisorseTestuali Nome="modal-conferma-invio">
+                <RisorsaTestuale IdRisorsa="testo-conferma-dati">
+                    Procedendo, confermi la <span class="fw-bold">correttezza dei dati compilati</span>.<br />
+                    <br />
+                    Cliccando su "Conferma" non sarà possibile tornare indietro e annullare la procedura.
+                </RisorsaTestuale>
+            </ContenitoreRisorseTestuali>
+        </ModalBody>
+    </ConfirmationModal>
+}
+
+@code {
+
+    [Inject]
+    public RiepilogoDomandaAllegatoService _riepilogoDomandaService { get; set; } = default!;
+    [Inject]
+    public PaginatoreStateService _paginatoreStateService { get; private set; } = default!;
+    [Inject]
+    public IInterventiRepository _interventiRepository { get; set; } = default!;
+    [Inject]
+    protected IAuthenticationDataResolver _authenticationDataResolver { get; set; } = default!;
+    [Inject]
+    public VbgPageTitleService _pageTitleService { get; set; } = default!;
+    [Inject]
+    protected SpinnerService _spinnerService { get; set; } = default!;
+    [Inject]
+    public IMessaggioErroreInvioService _messaggioErroreService { get; set; } = default!;
+    [Inject]
+    protected FileDownloadHelper _fileDownloadHelper { get; set; } = default!;
+    // [Inject]
+    // public GenerazioneRiepilogoDomandaService _generazioneRiepilogoDomandaService { get; set; } = default!;
+
+    #region Parametri letti dal file xml
+
+    [Parameter, EditorRequired]
+    public DatiConfigurazioneRiepilogo DatiConfigurazione { get; set; } = default!;
+    #endregion
+
+    [CascadingParameter]
+    public MessageContainer MessageContainer { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public IDomandaOnlineReadInterface? DomandaCorrente { get; set; }
+    [Parameter, EditorRequired]
+    public EventCallback OnClose { get; set; }
+    [Parameter, EditorRequired]
+    public EventCallback<DatiIstanzaInviata> OnInvioRiuscito { get; set; }
+    [Parameter, EditorRequired]
+    public Func<Task<BinaryFile>> GeneraRiepilogoCallback { get; set; }
+    [Parameter, EditorRequired]
+    public IInvioDomandaService InvioDomandaService { get; set; }
+    [Parameter, EditorRequired]
+    public ParametriInvioDomanda ParametriInvioDomanda { get; set; }
+    [Parameter]
+    public bool MostraErroreSeInterventoNonDefinito { get; set; } = true;
+
+    private static class Constants
+    {
+        public const int PDF_VIEW = 0;
+        public const int UPLOAD_VIEW = 1;
+        public const int ERROR_VIEW = 2;
+    }
+
+    public UserAuthenticationResult UserAuthenticationResult
+    {
+        get { return this._authenticationDataResolver.DatiAutenticazione; }
+    }
+
+    private int _currentView = Constants.PDF_VIEW;
+    private bool _configuratoConRiepilogoDomanda = true;
+    private string _errorText = "";
+    private bool _showConfirmationModal;
+
+    private ILog _log => LogManager.GetLogger(typeof(RiepilogoDomandaMainComponent));
+
+    private int? IdDomanda => this.DomandaCorrente?.AltriDati.IdPresentazione;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        this._riepilogoDomandaService.ResetStatoRiepilogoDomanda(this.DomandaCorrente!.AltriDati.IdPresentazione);
+
+        this.InitLayout();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        if (firstRender)
+        {
+            this._paginatoreStateService.OnSend = new EventCallback(this, this.CmdProcedi_ClickAsync);
+
+        }
+    }
+
+    private void InitLayout()
+    {
+        this._currentView = Constants.PDF_VIEW;
+
+        var idIntervento = this.DomandaCorrente!.AltriDati.Intervento?.Codice;
+        var riepilogo = this.DomandaCorrente.Documenti.Intervento.GetRiepilogoDomanda();
+
+        if (idIntervento is not null && riepilogo is null)
+        {
+            this._configuratoConRiepilogoDomanda = false;
+            this.MessageContainer.AddError($"L'intervento selezionato \"[{idIntervento.Value}] - {this.DomandaCorrente.AltriDati.Intervento!.Descrizione}\" non è configurato con un riepilogo domanda");
+            this._paginatoreStateService.NascondiBottoneAvanti();
+            this._paginatoreStateService.NascondiBottoneInviaDomanda();
+
+            return;
+        }
+
+        this._paginatoreStateService.MostraBottoneInviaDomanda(this.DatiConfigurazione!.RichiedeFirmaDigitale ? "Firma domanda" : "Invia domanda");
+
+        if (idIntervento is not null)
+        {
+            var codiceComune = this.DomandaCorrente.AltriDati.CodiceComune;
+            var esitoVerificaAccesso = this._interventiRepository.VerificaAccessoIntervento(idIntervento.Value,codiceComune);
+
+            if (!esitoVerificaAccesso.Is(TipoAccessibilitaIntervento.Accessibile))
+            {
+                this.MessageContainer.AddError("L'intervento selezionato non è attivabile tramite domanda online. Selezionare un nuovo intervento.");
+
+                this._paginatoreStateService.NascondiBottoneInviaDomanda();
+
+                return;
+            }
+        }
+    }
+
+    private async Task CmdProcedi_ClickAsync()
+    {
+        if (this.DatiConfigurazione.RichiedeFirmaDigitale)
+        {
+            this._currentView = Constants.UPLOAD_VIEW;
+            this._pageTitleService?.SetTitle(this.DatiConfigurazione?.TitoloFaseInvio ?? "Firma e invio");
+            this._paginatoreStateService.NascondiBottoneInviaDomanda();
+
+            this.StateHasChanged();
+        }
+        else
+        {
+            this._showConfirmationModal = true;
+            await Task.CompletedTask;
+        }
+    }
+
+    /// <summary>
+    /// Effettua la trasmisisone della domanda al backoffice
+    /// </summary>
+    private async Task InviaDomandaAsync()
+    {
+        this._showConfirmationModal = false;
+
+        try
+        {
+            await this._spinnerService.ShowSpinnerAsync(async () =>
+            {
+                var esitoValidazione = await this.InvioDomandaService.ValidaDomandaAsync(this.IdDomanda!.Value);
+
+                if (!esitoValidazione.IsSuccess)
+                {
+                    foreach (var error in esitoValidazione.ErrorDetail!)
+                    {
+                        MessageContainer.AddError(error);
+                    }
+
+                    return;
+                }
+
+                var risultato = await this.InvioDomandaService.InviaDomandaAsync(this.IdDomanda!.Value, this.ParametriInvioDomanda);
+
+                if (risultato?.IsSuccess() ?? false)
+                {
+                    await this.OnInvioRiuscito.InvokeAsync(new DatiIstanzaInviata(this.IdDomanda.Value, risultato.CodiceIstanza, risultato.NumeroIstanza)
+                    {
+                        NumeroProtocollo = risultato.NumeroProtocollo,
+                        DataProtocollo = risultato.DataProtocollo
+                    });
+                }
+                else
+                {
+                    // mostro la view vei messaggi e nascondo il paginatore
+                    this._currentView = Constants.ERROR_VIEW;
+                    this._errorText = this._messaggioErroreService.GeneraMessaggioErrore(this.IdDomanda.Value);
+                    this._paginatoreStateService.NascondiPaginatore();
+                }
+                /*
+                if (!this.RiepilogoRichiedeFirma)
+                {
+                    await this._riepilogoDomandaService.RigeneraRiepilogoDomandaAsync(this.IdDomanda!.Value);
+                }
+
+                var parametriInvio = new ParametriInvioDomanda();
+
+                if (ConfigurazioneParametriInvioCallback is not null)
+                {
+                    ConfigurazioneParametriInvioCallback(parametriInvio);
+                }
+
+                var risultato = await this._invioDomandaService.InviaAsync(this.IdDomanda!.Value, parametriInvio);
+
+                if (risultato?.IsSuccess() ?? false)
+                {
+                    await OnInvioRiuscito.InvokeAsync(new DatiIstanzaInviata(this.IdDomanda.Value, risultato.CodiceIstanza, risultato.NumeroIstanza)
+                    {
+                        NumeroProtocollo = risultato.NumeroProtocollo,
+                        DataProtocollo = risultato.DataProtocollo
+                    });
+                }
+                else
+                {
+                    // mostro la view vei messaggi e nascondo il paginatore
+                    this._currentView = Constants.ERROR_VIEW;
+                    this._errorText = this._messaggioErroreService.GeneraMessaggioErrore(this.IdDomanda.Value);
+                    this._paginatoreStateService.NascondiPaginatore();
+                }
+                */
+            });
+        }
+        catch (Exception ex)
+        {
+            this.MessageContainer.AddError("Si è verificato un errore durante la trasmissione dei dati al comune");
+            this._log.Error($"il metodo {nameof(InviaDomandaAsync)} ha generato il seguente errore: {ex}");
+        }
+    }
+
+    private async Task ScaricaRiepilogoAsync()
+    {
+        await this._spinnerService.ShowSpinnerAsync(async () =>
+        {
+            var riepilogo = await this.GeneraRiepilogoCallback();
+
+            await this._fileDownloadHelper.DownloadFileAsync(riepilogo);
+        });
+    }
+}

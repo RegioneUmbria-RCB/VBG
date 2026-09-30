@@ -1,0 +1,144 @@
+﻿@using Init.Sigepro.FrontEnd.AppLogic.GestioneComuni;
+@using Init.Sigepro.FrontEnd.AppLogic.GestionePresentazioneDomanda.GestioneAnagrafiche;
+@using Init.Sigepro.FrontEnd.Infrastructure.StepsDomanda.Attributi;
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+
+@if (Anagrafica is not null)
+{
+    <StepCollapsibleContentItem Titolo="Anagrafica">
+        <StepCardInfo Titolo="Ragione sociale" CapitalizeText="true">@Anagrafica.NomeEsteso</StepCardInfo>
+
+            <StepCardInfoRow>
+                <StepCardInfoRowItem Titolo="Codice Fiscale" CssClass="text-uppercase">@Anagrafica.Codicefiscale</StepCardInfoRowItem>
+                <StepCardInfoRowItem Titolo="Partita Iva" CssClass="text-uppercase">@Anagrafica.PartitaIva</StepCardInfoRowItem>
+            </StepCardInfoRow>
+
+            <StepCardInfo Titolo="Data di costituzione">@Anagrafica.DataCostituzione?.ToString("dd/MM/yyyy")</StepCardInfo>
+
+        </StepCollapsibleContentItem>
+
+    @if (ImpostazioniStep.DettagliPg.CciaaVisibile)
+    {
+        <StepCollapsibleContentItem Titolo="CCIAA">
+
+            <StepCardInfoRow>
+                <StepCardInfoRowItem Titolo="Numero">@Anagrafica.DatiIscrizioneCciaa?.Numero</StepCardInfoRowItem>
+                    <StepCardInfoRowItem Titolo="Data">@Anagrafica.DatiIscrizioneCciaa?.Data?.ToString("dd/MM/yyyy")</StepCardInfoRowItem>
+                </StepCardInfoRow>
+                <StepCardInfo Titolo="Comune" CapitalizeText="true">@GetComune(@Anagrafica.DatiIscrizioneCciaa?.CodiceComune)</StepCardInfo>
+            </StepCollapsibleContentItem>
+    }
+
+    @if (ImpostazioniStep.DettagliPg.RegTribVisibile)
+    {
+        <StepCollapsibleContentItem Titolo="Reg trib">
+            <StepCardInfoRow>
+                <StepCardInfoRowItem Titolo="Numero">@Anagrafica.DatiIscrizioneRegTrib?.Numero</StepCardInfoRowItem>
+                    <StepCardInfoRowItem Titolo="Data" CapitalizeText="true">@Anagrafica.DatiIscrizioneRegTrib?.Data?.ToString("dd/MM/yyyy")</StepCardInfoRowItem>
+                </StepCardInfoRow>
+                <StepCardInfo Titolo="Comune" CapitalizeText="true">@GetComune(@Anagrafica.DatiIscrizioneRegTrib?.CodiceComune)</StepCardInfo>
+
+            </StepCollapsibleContentItem>
+    }
+
+    @if (ImpostazioniStep.DettagliPg.ReaVisibile)
+    {
+        <StepCollapsibleContentItem Titolo="REA">
+            <StepCardInfoRow>
+                <StepCardInfoRowItem Titolo="Numero">@Anagrafica.DatiIscrizioneRea?.Numero</StepCardInfoRowItem>
+                    <StepCardInfoRowItem Titolo="Data" CapitalizeText="true">@Anagrafica.DatiIscrizioneRegTrib?.Data?.ToString("dd/MM/yyyy")</StepCardInfoRowItem>
+                </StepCardInfoRow>
+                <StepCardInfo Titolo="Provincia" CapitalizeText="true">@GetProvincia(@Anagrafica.DatiIscrizioneRegTrib?.CodiceComune)</StepCardInfo>
+            </StepCollapsibleContentItem>
+    }
+
+    @if (ImpostazioniStep.DettagliPg.InpsVisibile)
+    {
+        <StepCollapsibleContentItem Titolo="INPS">
+            <StepCardInfoRow>
+                <StepCardInfoRowItem Titolo="Matricola">@Anagrafica.DatiIscrizioneInps?.Matricola</StepCardInfoRowItem>
+                    <StepCardInfoRowItem Titolo="Sede" CapitalizeText="true">@Anagrafica.DatiIscrizioneInps?.DescrizioneSede</StepCardInfoRowItem>
+                </StepCardInfoRow>
+            </StepCollapsibleContentItem>
+    }
+
+    @if (ImpostazioniStep.DettagliPg.InailVisibile)
+    {
+        <StepCollapsibleContentItem Titolo="Inail">
+            <StepCardInfoRow>
+                <StepCardInfoRowItem Titolo="Numero">@Anagrafica.DatiIscrizioneInail?.Matricola</StepCardInfoRowItem>
+                    <StepCardInfoRowItem Titolo="Sede" CapitalizeText="true">@Anagrafica.DatiIscrizioneInail?.DescrizioneSede</StepCardInfoRowItem>
+                </StepCardInfoRow>
+            </StepCollapsibleContentItem>
+    }
+
+    @if (ImpostazioniStep.DettagliPg.CorrispondenzaVisibile || ImpostazioniStep.DettagliPg.SedeLegaleVisibile)
+    {
+        <StepCollapsibleContentItem Titolo="Indirizzi">
+
+            @if (ImpostazioniStep.DettagliPg.SedeLegaleVisibile)
+            {
+                <StepCardInfo Titolo="Sede legale" CapitalizeText="true">@Anagrafica.IndirizzoResidenza?.ToString(_comuniService)</StepCardInfo>
+            }
+
+            @if (ImpostazioniStep.DettagliPg.CorrispondenzaVisibile)
+            {
+                <StepCardInfo Titolo="Indirizzo corrispondenza" CapitalizeText="true">@Anagrafica.IndirizzoCorrispondenza?.ToString(_comuniService)</StepCardInfo>
+            }
+        </StepCollapsibleContentItem>
+    }
+
+
+
+    <StepCollapsibleContentItem Titolo="Contatti">
+        <StepCardInfoRow>
+            <StepCardInfoRowItem Titolo="Telefono">@Anagrafica.Contatti.Telefono</StepCardInfoRowItem>
+                <StepCardInfoRowItem Titolo="Cellulare">@Anagrafica.Contatti.TelefonoCellulare</StepCardInfoRowItem>
+            </StepCardInfoRow>
+
+
+            <StepCardInfoRow>
+                <StepCardInfoRowItem Titolo="PEC">@Anagrafica.Contatti.Pec</StepCardInfoRowItem>
+                <StepCardInfoRowItem Titolo="Email">@Anagrafica.Contatti.Email</StepCardInfoRowItem>
+            </StepCardInfoRow>
+
+        </StepCollapsibleContentItem>
+}
+
+@code {
+    [Parameter, EditorRequired]
+    public AnagraficaDomanda? Anagrafica { get; set; }
+
+    [Parameter, StepProperty]
+    public bool CciaaVisibile { get; set; } = true;
+
+    [CascadingParameter]
+    public ImpostazioniStepAnagrafiche ImpostazioniStep { get; set; } = default!;
+
+    [Inject]
+    public IComuniService _comuniService { get; set; } = default!;
+
+    private string GetComune(string? codiceComune)
+    {
+        if (String.IsNullOrEmpty(codiceComune))
+        {
+            return String.Empty;
+        }
+
+        var comune = _comuniService.GetByCodiceComune(codiceComune);
+
+        return $"{comune.Comune} ({comune.SiglaProvincia})";
+    }
+
+    private string GetProvincia(string? siglaProvincia)
+    {
+        if (String.IsNullOrEmpty(siglaProvincia))
+        {
+            return String.Empty;
+        }
+
+        var provincia = _comuniService.GetDatiProvincia(siglaProvincia);
+
+        return $"{provincia.Provincia} ({provincia.SiglaProvincia})";
+    }
+}

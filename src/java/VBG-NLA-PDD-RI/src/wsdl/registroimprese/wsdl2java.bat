@@ -1,0 +1,1 @@
+C:\SVILUPPO\Frameworks\apache-cxf\apache-cxf-2.5.1\bin\wsdl2java.bat -b BindingRi.xml -client -frontend jaxws21 comunicazioniRea_logico.wsdl

@@ -1,0 +1,179 @@
+﻿@using Init.SIGePro.Manager.DTO.Interventi
+@using Init.Sigepro.FrontEnd.AppLogic.Autenticazione.Vbg.AutenticazioneUtente
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneInterventi
+@using Init.Sigepro.FrontEnd.AppLogic.Repositories.AmbitoRicercaIntervento
+@using VBG.BlazorComponentsLibrary.DesignComuni.Spinner
+
+
+@if (this.Intervento is not null)
+{
+    <PopupDettaglioIntervento @ref="@_popupDettaglioIntervento" />
+    <li>
+        <span class="@(this.Intervento.HaNodiFiglio? "folder" : "file")">
+            @if (this.Intervento.HaNodiFiglio)
+            {
+                if (this._nodiFiglioVisibili)
+                {
+                    <i class="fa fa-folder-open" aria-hidden="true" />
+                }
+                else
+                {
+                    <i class="fa fa-folder" aria-hidden="true" />
+                }
+            }
+            else
+            {
+                <i class="fa fa-file-text-o" aria-hidden="true" />
+            }
+
+            @if (this.Intervento.HaNote && this.MostraInformazioniIntervento)
+            {
+                <a @onclick="@DettaglioIntervento" aria-label="Ulteriori informazioni"><i class="fa fa-question" aria-hidden="true"></i></a>
+            }
+            else
+            {
+                <i class="fa" aria-hidden="true" style="margin-right: 0.5rem;"></i>
+            }
+            <span id="intervento_@this.Intervento.Codice" class="intervento @(this._selected ? "selected" : "")" role="treeitem" @onclick="OnClick" @onkeydown="OnEnterPress" style="margin-left: 0.5rem; cursor: pointer" tabindex="0">
+                @this.Intervento.Descrizione
+            </span>
+        </span>
+
+        @if (this._nodiFiglio.Any() && this._nodiFiglioVisibili)
+        {
+            <ul style="padding-inline-start:1em">
+                @foreach (var nodo in this._nodiFiglio)
+                {
+                    <AlberoInterventiItem Intervento="@nodo" AmbitoRicerca="@AmbitoRicerca" 
+                        NodoSelezionato="@OnNodoFiglioSelezionato" ScatenaEventoNodoSelezionatoSoltantoSulleFoglie="@ScatenaEventoNodoSelezionatoSoltantoSulleFoglie" 
+                        PercorsoSelezionato="@PercorsoSelezionato" />
+                }
+            </ul>
+        }
+    </li>
+}
+
+@code {
+    [Inject]
+    private SpinnerService _spinnerService { get; set; } = default!;
+    [Inject]
+    private IInterventiRepository _alberoProcRepository { get; set; } = default!;
+    [Inject]
+    private Microsoft.JSInterop.IJSRuntime _jsRuntime { get; set; } = default!;
+    [Inject]
+    private IAuthenticationDataResolver _authDataResolver { get; set; } = default!;
+
+    [Parameter]
+    public InterventoDto? Intervento { get; set; }
+    [Parameter]
+    public IAmbitoRicercaIntervento AmbitoRicerca { get; set; } = new AmbitoRicercaAreaRiservata(false);
+    [Parameter]
+    public EventCallback<InterventoDto> NodoSelezionato { get; set; }
+    [Parameter]
+    public bool ScatenaEventoNodoSelezionatoSoltantoSulleFoglie { get; set; } = true;
+    [Parameter]
+    public LinkedList<InterventoDto> PercorsoSelezionato { get; set; } = default!;
+    [Parameter]
+    public bool MostraInformazioniIntervento { get; set; } = true;
+    [Parameter, EditorRequired]
+    public string CodiceComune { get; set; } = "";
+
+    IEnumerable<InterventoDto> _nodiFiglio = Enumerable.Empty<InterventoDto>();
+    bool _nodiFiglioVisibili = false;
+    bool _selected = false;
+    PopupDettaglioIntervento? _popupDettaglioIntervento = default!;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (this.Intervento is not null)
+        {
+            if (this.PercorsoSelezionato?.FirstOrDefault(x => x.Codice == this.Intervento.Codice) is not null)
+            {
+                if (this.Intervento.HaNodiFiglio)
+                {
+                    if (!this._nodiFiglioVisibili)
+                    {
+                        await OnClick();
+                    }
+                }
+                else
+                {
+                    this._selected = true;                  
+                    await this._jsRuntime.InvokeVoidAsync("scrollTo", $"intervento_{this.Intervento.Codice}", (object)new { block = "center" });
+                    // await Task.Delay(1);
+                }
+
+                if (this.Intervento.Codice == this.PercorsoSelezionato.Last?.Value.Codice)
+                {
+                    await ScrollToCurrentElement();
+                    this._selected = true;
+                }
+            }
+        }
+        await base.OnParametersSetAsync();
+    }
+
+    async Task ScrollToCurrentElement()
+    {
+        await this._jsRuntime.InvokeVoidAsync("scrollTo", $"intervento_{this.Intervento.Codice}", (object)new { block = "center" });
+        await Task.Delay(1);
+    }
+
+    async Task OnClick()
+    {
+        await _spinnerService.ShowSpinnerAsync(async () =>
+            {
+                if (this.Intervento != null && this.Intervento.HaNodiFiglio)
+                {
+                    // Carico i nodi figlio
+
+                    if (this._nodiFiglio.Any())
+                    {
+                        this._nodiFiglioVisibili = !this._nodiFiglioVisibili;
+                    }
+                    else
+                    {
+                        this._nodiFiglio = await this._alberoProcRepository.GetSottonodiAsync(this.Intervento.Codice, this.AmbitoRicerca, this.CodiceComune);
+                        this._nodiFiglioVisibili = true;
+                    }
+
+                    if (!ScatenaEventoNodoSelezionatoSoltantoSulleFoglie)
+                    {
+                        await NodoSelezionato.InvokeAsync(this.Intervento);
+                    }
+                }
+                else
+                {
+                    this._selected = true;
+                    // Notifico il componente padre della selezione
+                    await NodoSelezionato.InvokeAsync(this.Intervento);
+                }
+            });
+    }
+
+    async Task OnNodoFiglioSelezionato(InterventoDto intervento)
+    {
+        await NodoSelezionato.InvokeAsync(intervento);
+    }
+
+    void DettaglioIntervento()
+    {
+        if (this.Intervento != null)
+        {
+            var intervento = _alberoProcRepository.GetDettagliIntervento(
+            this.Intervento.Codice,
+            new AmbitoRicercaAreaRiservata(this._authDataResolver.DatiAutenticazione?.DatiUtente.UtenteTester ?? false),
+            false);
+
+            _popupDettaglioIntervento?.MostraDettagli(intervento);
+        }       
+    }
+
+    async Task OnEnterPress(KeyboardEventArgs e)
+    {
+        if (e.Code == "Enter")
+        {
+           await OnClick();
+        }
+    }
+}

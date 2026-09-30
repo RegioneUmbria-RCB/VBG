@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans default-lazy-init="false"
+		xmlns="http://www.springframework.org/schema/beans" 
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:p="http://www.springframework.org/schema/p" 
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xmlns:context="http://www.springframework.org/schema/context" 
+		xmlns:jee="http://www.springframework.org/schema/jee"
+		xmlns:tx="http://www.springframework.org/schema/tx"
+		xmlns:security="http://www.springframework.org/schema/security"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+			http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+			http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.2.xsd">
+	
+	<security:global-method-security secured-annotations="enabled" jsr250-annotations="enabled" />
+	
+	<security:http auto-config="true" session-fixation-protection="migrateSession">		
+		<security:intercept-url pattern="/status/health" filters="none" />
+		<security:intercept-url pattern="/css/**" filters="none" />
+		<security:intercept-url pattern="/images/**" filters="none" />
+		<security:intercept-url pattern="/scripts/**" filters="none" />
+		<security:intercept-url pattern="/index.jsp" filters="none" />
+		<security:intercept-url pattern="/upgrade/**" filters="none" />
+		<!-- 
+		<security:intercept-url pattern="/import/**" filters="none" />
+		 -->
+		<security:intercept-url pattern="/scripts-upgr/**" filters="none" />
+		<security:intercept-url pattern="/css-upgr/**" filters="none" />
+		<security:intercept-url pattern="/welcome/login.htm" filters="none" />
+		<security:intercept-url pattern="/sessionTimeout.jsp" filters="none" />
+		<security:intercept-url pattern="/services/**" filters="none" />
+		<security:intercept-url pattern="/axisservices/**" filters="none" />
+		<security:intercept-url pattern="/servlet/**" filters="none" />
+		<security:intercept-url pattern="/applets/**" filters="none" />
+		<security:intercept-url pattern="/rssfeed/**" filters="none" />
+		<security:intercept-url pattern="/**" access="ROLE_USER,ROLE_ADMINISTRATOR" />
+		<!-- §§§BEGIN§§§ -->
+		<security:intercept-url pattern="/j_spring_security_switch_user" access="ROLE_ADMINISTRATOR"/>
+		<!-- §§§END§§§ -->
+		<security:intercept-url pattern="/j_spring_security_exit_user" access="ROLE_ADMINISTRATOR"/>
+		<security:form-login login-page="/welcome/login.htm"/>
+		<security:http-basic />
+		<!-- 
+		<security:concurrent-session-control max-sessions="1" exception-if-maximum-exceeded="false" />
+		-->
+	</security:http>
+	
+	<security:authentication-manager alias="authenticationManager" />
+	
+	<security:authentication-provider user-service-ref="userSecurityService" />
+	
+	<bean id="userSecurityService" class="it.gruppoinit.pal.gp.backoffice.service.impl.UserSecurityServiceImpl" />
+	
+	<!--  
+    <bean id="authenticationHandler" class="org.springframework.ws.soap.security.xwss.callback.SpringDigestPasswordValidationCallbackHandler">
+    	<property name="userDetailsService" ref="userSecurityService" />
+    </bean>
+	-->
+	<bean id="tokenAuthenticationFilter" class="it.gruppoinit.pal.gp.backoffice.web.util.TokenAuthenticationFilter">
+		<property name="externalDBResolver" ref="externalDBResolver" />
+	    <security:custom-filter before="BASIC_PROCESSING_FILTER"/>
+	</bean>
+	 <!-- §§§BEGIN§§§ -->
+	 
+	   	<bean id="switchUserProcessingFilter" class="it.gruppoinit.pal.gp.backoffice.web.filter.CustomSwitchUserFilter" autowire="byType">
+	       <security:custom-filter position="SWITCH_USER_FILTER"/>       
+	       <property name="targetUrl" value="/welcome/start.htm"/>
+	   	</bean>
+   	<!-- §§§END§§§ -->
+</beans>

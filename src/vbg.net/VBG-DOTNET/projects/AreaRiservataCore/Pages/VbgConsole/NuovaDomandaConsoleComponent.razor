@@ -1,0 +1,172 @@
+﻿@page "/{IdComune}/{Software}/console-nuova-domanda"
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneVbgConsole;
+@using Init.Sigepro.FrontEnd.Infrastructure.UrlsAndPaths;
+@using Microsoft.AspNetCore.WebUtilities;
+@using VBG.BlazorComponentsLibrary.DesignComuni.Spinner
+@using VBG.BlazorComponentsLibrary.RisorseTestuali
+@inherits BasePage
+
+<style>
+    .trasferimento {
+        margin-top: 10%;
+    }
+
+        .trasferimento .progress {
+            margin-bottom: 12px;
+        }
+
+        .trasferimento .panel,
+        .trasferimento .card {
+            max-width: 60%;
+            margin: 0 auto;
+        }
+
+        .trasferimento .panel-heading > h3,
+        .trasferimento .card-header > h3 {
+            font-weight: bold;
+        }
+
+        .trasferimento .panel-body,
+        .trasferimento .card-body {
+            line-height: 2em;
+        }
+
+    .selezione-comune  button {
+        border: 0;
+        background-color: transparent;
+        color: var(--font-accent-color);
+        margin: 0;
+        padding: 0;
+    }
+
+    .selezione-comune  button:hover {
+        text-decoration: underline;
+    }
+</style>
+
+@if (_urlConsole is not null)
+{
+    @if(_urlConsole.Count() == 1)
+    {
+        <div class="trasferimento">
+            <div class="card mb-2">
+                <div class="card-header">
+                    Trasferimento in corso
+                </div>
+                <div class="card-body">
+
+                    <div class="progress progress-striped active">
+                        <div class="progress-bar" style="width: 100%"></div>
+                    </div>
+
+                    In pochi secondi verrai automaticamente trasferito alla pagina richiesta.<br />
+                    Fai click su
+                    <a href="@_urlConsole.ElementAt(0).Url" class="redir-link">questo link</a>
+                    se non vuoi attendere
+                </div>
+            </div>
+
+        </div>
+    }
+    else
+    {
+        <h2>
+            <RisorsaTestuale IdRisorsa="vbg_nuova_domanda.titolo_pagina">Nuova pratica: selezione comune</RisorsaTestuale>
+        </h2>
+        <p>
+            <RisorsaTestuale IdRisorsa="vbg_nuova_domanda.descrizione_pagina">
+                In questa sezione è possibile selezionare il comune, tra quelli che hanno attivato il servizio, presso cui presentare una nuova domanda
+            </RisorsaTestuale>
+        </p>
+
+        <ul class="selezione-comune">
+            @foreach (var urlAccesso in _urlConsole)
+            {
+                <li>
+                    @if (!String.IsNullOrEmpty(urlAccesso.Url))
+                    {
+                        <button @onclick="() => RedirToConsole(urlAccesso)">@urlAccesso.Comune</button>
+                    }
+                    else
+                    {
+                        <span>@urlAccesso.Comune (servizio non attivo)</span>
+                    }
+                </li>
+            }
+        </ul>
+    }    
+}
+
+@code {
+    [Inject]
+    protected IVbgConsoleService _vbgConsoleService { get; set; } = default!;
+
+    private static class QuerystringConstants
+    {
+        public const string ReturnTo = "url-scrivania-virtuale";
+        public const string SelezionaIntervento = "SelezionaIntervento";
+    }
+
+    private class QsParameter : IQuerystringParameter
+    {
+        public QsParameter(string parameterName, string parameterStringValue)
+        {
+            ParameterName = parameterName;
+            ParameterStringValue = parameterStringValue;
+        }
+
+        public string ParameterName { get; } = "";
+
+        public string ParameterStringValue { get; } = "";
+    }
+
+    IEnumerable<UrlAccessoConsole> _urlConsole = Enumerable.Empty<UrlAccessoConsole>();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+        await DataBindAsync();
+    }
+
+    private async Task DataBindAsync()
+    {
+        await _spinnerService.ShowSpinnerAsync(async () =>
+            {
+                _urlConsole = _vbgConsoleService.GetUrlNuovaDomanda();
+
+                if (_urlConsole.Count() == 1)
+                {
+                    await RedirToConsole(_urlConsole.First());
+                    return;
+                }
+            });
+    }
+
+    private async Task RedirToConsole(UrlAccessoConsole urlAccessoConsole)
+    {
+        await _spinnerService.ShowSpinnerAsync(() =>
+            {
+                var uriLocale = _navigationManager.ToAbsoluteUri(_navigationManager.Uri);
+                var returnToUrl = this._navigationManager.ToAbsoluteUri(GetNavigationPathTo(""));
+
+                var selezionaIntervento = -1;
+
+                if (QueryHelpers.ParseQuery(uriLocale.Query).TryGetValue(QuerystringConstants.SelezionaIntervento, out var qsVal))
+                {
+                    selezionaIntervento = Convert.ToInt32(qsVal);
+                }
+
+                var qs = new List<IQuerystringParameter>();
+                qs.Add(new QsParameter(QuerystringConstants.ReturnTo, returnToUrl.ToString()));
+
+                if (selezionaIntervento > 0)
+                {
+                    qs.Add(new QsParameter(QuerystringConstants.SelezionaIntervento, selezionaIntervento.ToString()));
+                }
+
+                var url = this._vbgConsoleService.GenerateConsoleUrl(urlAccessoConsole, this.UserAuthenticationResult.DatiUtente, qs);
+
+                _navigationManager.NavigateTo(url);
+            });        
+    }
+}

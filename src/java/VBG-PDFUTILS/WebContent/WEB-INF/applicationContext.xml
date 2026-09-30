@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:jms="http://www.springframework.org/schema/jms" xmlns:amq="http://activemq.apache.org/schema/core"
+	xmlns:oxm="http://www.springframework.org/schema/oxm" xmlns:sws="http://www.springframework.org/schema/web-services" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms.xsd
+		http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core-5.3.0.xsd
+		http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm-1.5.xsd
+		http://www.springframework.org/schema/web-services http://www.springframework.org/schema/web-services/web-services-1.5.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
+
+
+	<context:property-placeholder location="classpath:deploy.properties" />
+
+	<bean name="configurazioneService" class="it.gruppoinit.pdfutils.service.impl.ConfigurazioneServiceImpl">
+		<property name="securityWebServiceClient" ref="securityWebServiceClient"></property>
+	</bean>
+	<bean name="pdfMappingService" class="it.gruppoinit.pdfutils.service.impl.PDFMappingServiceImpl">
+		<property name="securityWebServiceClient" ref="securityWebServiceClient"></property>
+		<property name="configurazioneService" ref="configurazioneService"></property>
+	</bean>
+	<bean id="securityWebServiceClient" class="it.gruppoinit.sigeprosecurity.ws.SigeproSecurityWebServiceClient">
+		<property name="sigeproSecurityUrl" value="${ws.token.url}"></property>
+		<property name="sigeproSecurityUserId" value="${ws.token.user}" />
+		<property name="sigeproSecurityUserPassword" value="${ws.token.pwd}" />
+	</bean>
+
+	<bean name="pdfWorkerService" class="it.gruppoinit.pdfutils.service.impl.PDFWorkerServiceImpl">
+		<property name="configurazioneService" ref="configurazioneService"></property>
+	</bean>
+
+	<!-- SPRING SIMPLE SCHEDULER CONFIGURATION-->
+	
+	<bean id="schedulerFatcoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="autoStartup" value="true" />
+		<property name="triggers">
+			<list>
+				<ref bean="simpleTrigger" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="jobDetail" ref="jobDetail" />
+		<!-- tempi espressi in millisecondi -->
+		<property name="startDelay" value="120000" />
+		<property name="repeatInterval" value="600000" />
+	</bean>
+	
+	<bean id="jobDetail" class="org.springframework.scheduling.quartz.JobDetailBean">
+		<property name="jobClass" value="it.gruppoinit.commons.tasks.TemporaryFileCleanerJob"></property>
+	</bean>
+</beans>

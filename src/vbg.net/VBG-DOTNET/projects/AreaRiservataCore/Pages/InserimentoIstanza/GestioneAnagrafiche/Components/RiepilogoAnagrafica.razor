@@ -1,0 +1,129 @@
+﻿@using Init.Sigepro.FrontEnd.AppLogic.GestionePresentazioneDomanda
+@using Init.Sigepro.FrontEnd.AppLogic.GestionePresentazioneDomanda.GestioneAnagrafiche;
+@using VBG.BlazorComponentsLibrary.DesignComuni.Messaggi
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards.CardButtons
+
+
+@if (Anagrafica is not null)
+{
+    <StepCardItem>
+
+        @if (Anagrafica.TipoSoggetto.RichiedeAnagraficaCollegata && Anagrafica.AnagraficaCollegata == null)
+        {
+            <ErrorMessage>
+                Il tipo soggetto <span class="fw-bold">@Anagrafica.TipoSoggetto</span> deve essere collegato ad una persona giuridica.
+
+                @if (DomandaCorrente.Anagrafiche.GetAnagraficheCollegabili().Any())
+                {
+                    <span>Fai click su <span class="fw-bold">"Collega Azienda"</span> per collegarlo.</span>
+                }
+                else
+                {
+                    <span>Utilizza la funzione <span class="fw-bold">"Aggiungi soggetto"</span> per inserire un'azienda e fai click su <span class="fw-bold">"Collega Azienda"</span> per collegarlo.</span>
+                }
+
+                
+                
+            </ErrorMessage>
+        }
+
+        @if (this.ModificaClick.HasDelegate)
+        {
+            <StepCardButtonGroup EditClick="ModificaAnagrafica" EditText="@ModificaText" DeleteClick="RichiediConfermaEliminazioneAnagrafica" DeleteVisible="@(EliminaVisibile && EliminaClick.HasDelegate)"></StepCardButtonGroup>
+        }
+
+        <StepCardItemTitle Titolo="@Anagrafica.NomeEsteso"></StepCardItemTitle>
+
+        @if (!String.IsNullOrEmpty(Anagrafica.Codicefiscale))
+        {
+            <StepCardInfo Titolo="Codice Fiscale">@Anagrafica.Codicefiscale</StepCardInfo>
+        }
+
+        @if (!String.IsNullOrEmpty(Anagrafica.PartitaIva))
+        {
+            <StepCardInfo Titolo="Partita Iva">@Anagrafica.PartitaIva</StepCardInfo>
+        }
+
+        @* <EditorCollegamentoAnagrafiche Anagrafica="Anagrafica" CollegamentoAnagraficaModificato="CollegamentoAnagraficaModificato"></EditorCollegamentoAnagrafiche> *@
+
+        <StepCollapsibleContent StartCollapsed="@StartCollapsed" HideCollapseButton="!StartCollapsed">
+            @if (Anagrafica.TipoPersona == TipoPersonaEnum.Fisica)
+            {
+                <RiepilogoPersonaFisica Anagrafica="@Anagrafica"></RiepilogoPersonaFisica>
+            }
+            else
+            {
+                <RiepilogoPersonaGiuridica Anagrafica="@Anagrafica"></RiepilogoPersonaGiuridica>
+            }
+        </StepCollapsibleContent>
+    </StepCardItem>
+
+
+    <ConfirmationModal Titolo="Conferma eliminazione soggetto" Visible="_mostraConfermaEliminazione" ConfermaClick="OnEliminazioneConfermata" AnnullaClick="OnEliminazioneAnnullata">
+        <ModalBody>
+            <div>
+                Sei sicuro di voler rimuovere il soggetto
+                <p>
+                    @Anagrafica
+                </p>
+                dalla domanda corrente?
+            </div>
+        </ModalBody>
+    </ConfirmationModal>
+}
+
+
+@code {
+    [CascadingParameter]
+    public IDomandaOnlineReadInterface? DomandaCorrente { get; set; }
+
+    [Parameter, EditorRequired]
+    public AnagraficaDomanda Anagrafica { get; set; } = default!;
+
+    [Parameter]
+    public EventCallback<int> ModificaClick { get; set; }
+
+    [Parameter]
+    public string ModificaText { get; set; } = "Modifica";
+
+    [Parameter]
+    public EventCallback<int> EliminaClick { get; set; }
+
+    [Parameter]
+    public bool EliminaVisibile { get; set; } = true;
+
+    [Parameter]
+    public bool StartCollapsed { get; set; } = true;
+
+
+    [Parameter]
+    public EventCallback CollegamentoAnagraficaModificato { get; set; }
+
+    bool _mostraConfermaEliminazione = false;
+
+    async Task ModificaAnagrafica()
+    {
+        await this.ModificaClick.InvokeAsync(this.Anagrafica.Id.Value);
+    }
+
+    async Task RichiediConfermaEliminazioneAnagrafica()
+    {
+        this._mostraConfermaEliminazione = true;
+
+        await Task.CompletedTask;
+    }
+
+    async Task OnEliminazioneConfermata()
+    {
+        await this.EliminaClick.InvokeAsync(this.Anagrafica.Id.Value);
+
+        this._mostraConfermaEliminazione = false;
+    }
+
+    void OnEliminazioneAnnullata()
+    {
+        this._mostraConfermaEliminazione = false;
+    }
+}

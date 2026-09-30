@@ -1,0 +1,586 @@
+swagger: '2.0'
+info:
+  title: _BOZZA_ Graduatoria Mercati
+  version: 0.0.1
+  description: |
+    API per il servizio di graduatoria mercati. <br><br>
+    
+    
+    ### Il servizio contiene i metodi per restituire le graduatorie dei mercati.
+    
+    
+    
+    ### Esempi di uso per il client
+    
+    #### Ottenere la graduatoria di un mercato in dato giorno
+    
+    1. Ottenere la lista dei giorni
+        ```http
+        GET /giorni
+        ```
+    
+    2. Ottenere la lista dei mercati
+        ```http
+        GET /mercati
+        ```
+        
+    3. Permettere all'utente di selezionare giorno e mercato desiderato
+    
+    4. Ottenere la graduatoria
+        ```http
+        GET /mercati/{mercatoId}/{giornoId}/graduatoria
+        ```
+        
+    5. Eventualmente scaricare il csv
+        ```http
+        GET /mercati/{mercatoId}/{giornoId}/graduatoria?format=csv&content_disposition=attachment
+        ```
+        
+    6. ottenere la graduatoria dalla descrizione del mercato/giorno
+      
+        ```http
+        GET /mercati/graduatoria?mercato=CINCINNATO LUN&giorno=LUN
+        ```
+    7. Scaricare il CSV la graduatoria dalla descrizione del mercato/giorno
+      
+        ```http
+        GET /mercati/graduatoria?mercato=CINCINNATO LUN&giorno=LUN&format=csv&content_disposition=attachment
+        ```        
+        
+        
+    <sub> 
+    Note: Questo YAML è stato pensato per fornire un servizio sia al mercante che agli ufficiali incaricati della gestione del mercato. 
+    </sub>
+     
+host: '__HOST__:443'
+schemes:
+  - https
+basePath: /areariservata2/services/rest/servizi-mercati
+produces:
+  - application/json
+paths:
+  '/giorni':
+    get:
+      summary: Lista dei giorni
+      description: |
+        Restituisce la lista dei possibili giorni in cui sono previsti mercati.
+        Utile per mostrare la select e disabilitare/modificare giorni senza toccare il front-end.
+      parameters:
+        - $ref: '#/parameters/xIdentitaCodiceFiscale'
+        - $ref: '#/parameters/xCodiceServizio'
+        - $ref: '#/parameters/xRequestId'
+      responses:
+        '200':
+          description: >-
+            La richiesta è andata a buon fine e restituisce l'array dei
+            giorni.
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_giorno'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/giorni/{giornoId}':
+    get:
+      summary: Dettaglio giorno
+      description: |
+        Permette di ottenere i dati del singolo giorno con `codice == {giornoId}`
+      parameters:
+        - $ref: '#/parameters/xIdentitaCodiceFiscale'
+        - $ref: '#/parameters/xCodiceServizio'
+        - $ref: '#/parameters/xRequestId'
+        - $ref: '#/parameters/giornoId'
+      responses:
+        '200':
+          description: >-
+            La richiesta è andata a buon fine e restituisce l'oggetto che rappresenta il dettaglio del giorno.
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request
+          schema:
+            $ref: '#/definitions/model_giorno'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/mercati':
+    get:
+      summary: Lista mercati
+      description: >
+        Restituisce la lista dei mercati.
+      parameters:
+        - $ref: '#/parameters/xIdentitaCodiceFiscale'
+        - $ref: '#/parameters/xCodiceServizio'
+        - $ref: '#/parameters/xRequestId'
+      responses:
+        '200':
+          description: >-
+            La richiesta è andata a buon fine e restituisce l'array contenente
+            i mercati
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/model_mercato'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/mercati/{mercatoId}':
+    get:
+      summary: Dettaglio mercato
+      description: >
+        Restituisce un oggetto che rappresenta il dettaglio del mercato con `codice == {mercatoId}`.
+      parameters:
+        - $ref: '#/parameters/xIdentitaCodiceFiscale'
+        - $ref: '#/parameters/xCodiceServizio'
+        - $ref: '#/parameters/xRequestId'
+        - $ref: '#/parameters/mercatoId'
+      responses:
+        '200':
+          description: >-
+            La richiesta è andata a buon fine e restituisce l'oggetto che rappresenta il mercato
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request
+          schema:
+            $ref: '#/definitions/model_mercato'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/mercati/{mercatoId}/{giornoId}/graduatoria':
+    get:
+      summary: Graduatoria mercato
+      produces:
+        - 'application/json'
+        - 'text/csv'
+      description: >
+        Dato un mercato, definito dal parametro nel path
+        `{mercatoId}`, ed un giorno, definito da `{giornoId}`, restituisce la graduatoria del mercato in quel giorno.
+      parameters:
+        - $ref: '#/parameters/xIdentitaCodiceFiscale'
+        - $ref: '#/parameters/xCodiceServizio'
+        - $ref: '#/parameters/xRequestId'
+        - $ref: '#/parameters/mercatoId'
+        - $ref: '#/parameters/giornoId'
+        - $ref: '#/parameters/format'
+        - $ref: '#/parameters/contentDisposition'
+      responses:
+        '200':
+          description: >-
+            La richiesta è andata a buon fine e restituisce un'array contenente la graduatoria del mercato
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+            Content-Disposition:
+              type: string
+              description: |
+                In caso di file, potrebbe essere necessario impostare questo header per permetterne il download piuttosto che la semplice visualizzazione.
+                L'header che indica se il browser deve mostrare il XLS (inline) o scaricarlo (attachment)
+          schema:
+            $ref: '#/definitions/model_graduatoria'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'
+  '/mercati/graduatoria':
+    get:
+      summary: Graduatoria mercato
+      produces:
+        - 'application/json'
+        - 'text/csv'
+      description: >
+        Dato un mercato e un giopno, definiti dai parametri di query 
+        `{mercato}`, ed un giorno, definito da `{giorno}`, restituisce la graduatoria del mercato in quel giorno.
+      parameters:
+        - $ref: '#/parameters/xIdentitaCodiceFiscale'
+        - $ref: '#/parameters/xCodiceServizio'
+        - $ref: '#/parameters/xRequestId'
+        - $ref: '#/parameters/mercato'
+        - $ref: '#/parameters/giorno'
+        - $ref: '#/parameters/format'
+        - $ref: '#/parameters/contentDisposition'
+      responses:
+        '200':
+          description: >-
+            La richiesta è andata a buon fine e restituisce un'array contenente la graduatoria del mercato
+          headers:
+            X-Request-ID:
+              type: string
+              description: Ritorno del parametro ricevuto nella request.
+            Content-Disposition:
+              type: string
+              description: |
+                In caso di file, potrebbe essere necessario impostare questo header per permetterne il download piuttosto che la semplice visualizzazione.
+                L'header che indica se il browser deve mostrare il csv (inline) o scaricarlo (attachment)
+          schema:
+            $ref: '#/definitions/model_graduatoria'
+        '400':
+          $ref: '#/responses/BadRequest'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '500':
+          $ref: '#/responses/InternalServerError'          
+parameters:
+  xIdentitaCodiceFiscale:
+    in: header
+    name: X-Identita-CodiceFiscale
+    description: Contiene il codice fiscale dell'utente loggato ottenuto tramite shibboleth
+    type: string
+    required: true
+  xCodiceServizio:
+    in: header
+    name: X-Codice-Servizio
+    description: Contiene una stringa identificativa del servizio chiamante (es.SANSOL)
+    type: string
+    required: true
+  xRequestId:
+    in: header
+    name: X-Request-ID
+    description: >-
+      Contiene un id univoco (`uuid v4`) della chiamata HTTP che viene generato
+      dal front-end, viene propagato agli strati successivi e viene restituito
+      al front-end assieme alla response, permettendo così di tracciare l'intero
+      ciclo di vita della richiesta
+    type: string
+    required: true
+  accept:
+    in: header
+    name: Accept
+    type: string
+    required: false
+    description: >-
+      Stabilisce qual è il tipo di ritorno atteso (`application/json`,
+      `application/pdf`, ecc)
+  mercatoId:
+    in: path
+    name: mercatoId
+    type: string
+    required: true
+    description: Il codice del mercato su cui operare
+  giornoId:
+    in: path
+    name: giornoId
+    type: string
+    required: true
+    description: Il codice del giorno su cui operare
+  mercato:
+    in: query
+    name: mercato
+    type: string
+    required: true
+    description: la descrizione del mercato su cui operare (es CINCINNATO LUN)
+  giorno:
+    in: query
+    name: giorno
+    type: string
+    required: true
+    description: la descrizione del giorno su cui operare (es LUN)  
+  titolareId:
+    in: path
+    name: titolareId
+    type: string
+    required: true
+    description: Il codice fiscale del titolare su cui operare
+  filter:
+    in: query
+    name: filter
+    type: string
+    required: true
+    description: >
+      Un oggetto JSON encoded come definito nel model <code>[Filtri]
+      ricetta</code>. 
+  search:
+    in: query
+    name: search
+    type: string
+    required: true
+    description: |
+      Una stringa contenente il testo da cercare
+  format:
+    in: query
+    name: format
+    type: string
+    required: false
+    description: |
+      Una stringa che permette di specificare il formato di ritorno atteso, al momento solamente csv. Ad esempio  `csv`. Se non presente il formato di default della risposta dovrebbe essere `json`
+  contentDisposition:
+    in: query
+    name: content_disposition
+    type: string
+    required: false
+    description: |
+      Permette al client di stabilire l'header `Content-Disposition` della risposta.
+      Se non impostato il valore di default dovrebbe essere `attachment`
+      
+      Esempio d'uso: `?content_disposition=attachment`
+      Esempio d'uso: `?content_disposition=inline`
+responses:
+  BadRequest:
+    description: >-
+      La richiesta fatta dal client è errata. Ad esempio non sono stati passati
+      tutti i campi obbligatori, uno dei campi è di un tipo non valido,
+      formattazione dei filtri errata ecc.
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+  Forbidden:
+    description: >-
+      L'utente non ha i permessi necessari per visualizzare queste risorse. <br>
+      Ad esempio un utente che sta provando ad ottenere le ricette di un altro
+      utente senza averne la delega.
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+  NotFound:
+    description: >-
+      La risorsa cercata non è stata trovata. <br> Questo errore viene
+      restituito quando si prova ad accedere alla singola risorsa e questa non
+      esiste. <br> Nel caso in cui si prova ad ottenere una lista e non ci sono
+      elementi, restituire 200 con un array vuoto
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+  InternalServerError:
+    description: >-
+      Si è verificato un'errore interno del server. (es. null pointer exception,
+      connessione al DB saltata ecc)
+    headers:
+      X-Request-ID:
+        type: string
+        description: Ritorno del parametro ricevuto nella request.
+    schema:
+      $ref: '#/definitions/errore'
+definitions:
+  model_mercato:
+    title: Mercato
+    description: |
+      Il model che rappresente il Mercato
+    type: object
+    properties:
+      codice:
+        type: string
+        description: |
+          Codice univoco del mercato
+      nome:
+        type: string
+        description: | 
+          Un nome user-frendly del mercato da mostrare nella UI
+        example: Mercato Rionale ACC Carlina
+    required:
+      - codice
+      - nome
+  model_giorno:
+    title: Giorno
+    description: |
+      Il model che rappresenta il giorno settimanale in cui si svolge il mercato
+    type: object
+    properties:
+      codice:
+        type: string
+        description: Il codice univoco del giorno
+        example: 0
+        enum:
+          - TODO Descrivere qui tutti i possibili stati
+      nome:
+        type: string
+        description: Un nome user-frendly da mostrare sulla UI
+        example: Lunedì
+    required:
+      - codice
+      - nome
+  model_graduatoria:
+    title: Graduatoria
+    description: |
+      Il model che rappresenta la graduatoria
+    type: object
+    properties:
+      id:
+        type: string
+        description: |
+          Un identificativo univoco della graduatoria
+      csv_stampabile:
+        type: boolean
+        description: |
+          Indica se la graduatoria può essere stampata in formato CSV
+      autorizzazioni:
+        type: array
+        items:
+          $ref: '#/definitions/model_autorizzazione'
+    required:
+      - id
+      - csv_stampabile
+      - autorizzazioni
+  model_autorizzazione:
+    title: Autorizzazione
+    description: |
+      Il model che rappresenta l'autorizzazione del titolare
+    type: object
+    properties:
+      id:
+        type: integer
+        description: |
+          identificativo univoco dell'autorizzazione
+        example: 15000
+      numero:
+        type: string
+        description: |
+          Il numero dell'autorizzazione.
+        example: 'AP/2002/00000086/I'
+      anno:
+        type: integer
+        description: |
+          Anno del rilascio dell'autorizzazione
+        example: 2002
+      originaria:
+        type: object
+        description: |
+          TODO: capire bene cosa indica questo campo nella UI
+      numero_presenze:
+        type: integer
+        description: |
+          Il numero di presenze dell'autorizzazione sul mercato nel giorno
+        example: 54
+      titolare:
+        $ref: '#/definitions/model_titolare'
+      comune_rilascio:
+        $ref: '#/definitions/model_comune'
+      mercato:
+        $ref: '#/definitions/model_mercato'
+      giorno:
+        $ref: '#/definitions/model_giorno'
+    required:
+      - id
+      - numero
+      - titolare
+      - mercato
+      - giorno
+      - numero_presenze
+  model_titolare:
+    title: Titolare
+    description: |
+      Il model che rappresenta il titolare delle autorizzazioni
+    type: object
+    properties:
+      denominazione:
+        type: string
+        description: |
+          La denominazione del titolare dell'autorizzazione
+      codice_fiscale:
+        type: string
+        description: |
+          Il codice fiscale del titolare dell'autorizzazione
+      partita_iva:
+        type: string
+        description: |
+          la partita iva del titolare dell'autorizzazione
+    required:
+      - denominazione
+  model_comune:
+    title: Comune
+    description: |
+      Il model che rappresenta il comune
+    type: object
+    properties:
+      nome:
+        type: string
+        description: |
+          Il nome del comune
+      nome_provincia:
+        type: string
+        description: |
+          Il nome della provincia
+      sigla_provincia:
+        type: string
+        description: |
+          La sigla della provincia
+    required:
+      - nome
+  errore:
+    title: '[ERRORE] Generico'
+    type: object
+    properties:
+      status:
+        type: integer
+        description: >-
+          Questo campo contiene lo status HTTP che rappresenta lo stato della
+          risposta. <br/><br/> Es. <ul>
+            <li>200: Ok</li>
+            <li>201: Created</li>
+            <li>400: Bad request</li>
+            <li>400: Bad request</li>
+            <li>403: Forbidden</li>
+            <li>404: Not found</li>
+            <li>500: Internal server error</li>
+          </ul>
+      code:
+        type: string
+        description: >-
+          Un codice univoco che permette di riconoscere e rintracciare l'errore
+          ad esempio nei logs
+      title:
+        type: string
+        description: Una descrizione user-friendly dell'errore
+      detail:
+        description: L'elenco dei singoli errori
+        type: array
+        items:
+          $ref: '#/definitions/errore_dettaglio'
+      links:
+        type: array
+        description: Eventuali link alla documentazione degli errori
+        items:
+          type: string
+          description: Il link alla documentazione
+    required:
+      - status
+      - code
+      - title
+  errore_dettaglio:
+    title: '[ERRORE] Dettaglio'
+    type: object
+    properties:
+      chiave:
+        type: string
+        description: Un codice univoco che descrive l'errore
+      valore:
+        type: string
+        description: Un nome user-friendy dell'errore generato
+    additionalProperties:
+      type: string
+    required:
+      - chiave
+      - valore
+  

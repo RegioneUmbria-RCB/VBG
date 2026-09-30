@@ -1,0 +1,640 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.paevolution.com/ws/pagamenti_types/" xmlns:tns="http://www.paevolution.com/ws/pagamenti_types/"
+	xmlns:xmime="http://www.w3.org/2005/05/xmlmime" elementFormDefault="qualified">
+
+	<element name="CaricamentoMassivoPosizioniDebitorieType">
+		<complexType>
+			<complexContent>
+				<extension base="tns:PayRequestType">					
+					<sequence minOccurs="1" maxOccurs="1">
+						<element name="identificativoOperazione" type="string" />
+						<element name="registrazione" minOccurs="1" maxOccurs="unbounded" type="tns:RegistrazioneContabileWsInType"></element>
+					</sequence>
+				</extension>
+			</complexContent>
+		</complexType>
+	</element>
+
+	<element name="InserisciPosizioniDebitorieType">
+		<complexType>
+			<complexContent>
+				<extension base="tns:PayRequestType">
+					<sequence>
+						<element name="accorpaPosizioni" type="boolean" minOccurs="1"/>
+						<element name="oggettoPagamentoUnico" type="string" minOccurs="0"/>
+						<element name="registrazione" type="tns:RegistrazioneContabileWsInType" minOccurs="1" maxOccurs="unbounded"></element>
+					</sequence>
+				</extension>
+			</complexContent>
+		</complexType>
+	</element>
+
+	<element name="OperazionePosizioniDebitorieResponseType">
+		<complexType>
+			<sequence minOccurs="1" maxOccurs="1">
+				<element name="esito" type="tns:EsitoType" />
+				<element name="messaggio" type="string"></element>
+				<element name="posizioniInserite" type="tns:ElencoPosizioniDebitorieEsitoType"></element>
+			</sequence>
+		</complexType>
+	</element>
+
+	<element name="AnnullaPosizioniDebitorieType">
+		<complexType>
+			<complexContent>
+				<extension base="tns:PayRequestType">
+					<sequence>
+						<element name="posizioniAnnullate" type="tns:ElencoPosizioniDebitorieType"></element>
+					</sequence>
+				</extension>
+			</complexContent>
+		</complexType>
+	</element>
+
+	<element name="AttivaSessionePagamentoType">
+		<complexType>
+			<complexContent>
+				<extension base="tns:PayRequestType">
+					<sequence>
+						<element name="riferimentoPosizione" type="tns:RiferimentoPosizioneDebitoriaType" minOccurs="1"></element>
+						<element name="urlRedirectEsito" type="string" minOccurs="0"></element>
+					</sequence>
+				</extension>
+			</complexContent>
+		</complexType>
+	</element>
+
+	<element name="AttivaSessionePagamentoResponseType" type="tns:AttivaSessionePagamentoResponseType"></element>
+
+	<element name="AttivaPagamentoOnTheFlyType">
+		<complexType>
+			<complexContent>
+				<extension base="tns:PayRequestType">
+					<sequence>
+						<element name="accorpaPosizioni" type="boolean" minOccurs="1"/>
+					    <element name="oggettoPagamentoUnico" type="string" minOccurs="0"/>					
+						<element name="registrazione" type="tns:RegistrazioneContabileWsInType" minOccurs="1" maxOccurs="unbounded"></element>
+						<element name="urlRedirectEsito" type="string" minOccurs="0"></element>
+					</sequence>
+				</extension>
+			</complexContent>
+		</complexType>
+	</element>
+
+	<element name="AttivaPagamentoOnTheFlyResponseType">
+		<complexType>
+			<sequence minOccurs="1" maxOccurs="1">
+				<element name="sessionePagamento" type="tns:AttivaSessionePagamentoResponseType"></element>
+				<element name="posizioneInserita" type="tns:EsitoOperazionePosizioneDebitoriaType" minOccurs="1" maxOccurs="unbounded"></element>
+			</sequence>
+		</complexType>
+	</element>
+
+	<element name="RiferimentoPosizioneDebitoriaType" type="tns:RiferimentoPosizioneDebitoriaType"></element>
+
+	<element name="VerificaStatoPosizioniType">
+		<complexType>
+			<complexContent>
+				<extension base="tns:PayRequestType">
+					<sequence>
+						<element name="posizione" type="tns:ElencoPosizioniDebitorieType" minOccurs="1" maxOccurs="1"></element>
+					</sequence>
+				</extension>
+			</complexContent>
+		</complexType>
+	</element>
+
+	<element name="VerificaStatoPosizioniResponseType">
+		<complexType>
+			<sequence minOccurs="1" maxOccurs="1">
+				<element name="esito" type="tns:EsitoType" />
+				<element name="messaggio" type="string"></element>
+				<element name="statoPosizioni" type="tns:ElencoStatoPosizioniType"></element>
+			</sequence>
+		</complexType>
+	</element>
+
+	<element name="NotificaPagamentoOffline">
+		<complexType>
+			<complexContent>
+				<extension base="tns:PayRequestType">
+					<sequence>
+						<element name="posizione" type="tns:ElencoPagamentiOfflineType" minOccurs="1" maxOccurs="1"></element>
+					</sequence>
+				</extension>
+			</complexContent>
+		</complexType>
+	</element>
+
+	<element name="InviaAvvisiPagamentoType">
+		<complexType>
+			<complexContent>
+				<extension base="tns:PayRequestType">
+					<sequence>
+						<element name="riferimentoPosizione" type="tns:RiferimentoPosizioneDebitoriaType" maxOccurs="unbounded" minOccurs="1"></element>
+					</sequence>
+				</extension>
+			</complexContent>
+		</complexType>
+	</element>
+
+	<element name="InviaAvvisoPagamentoResponseType" type="tns:ElencoDocumentiEsitoType">
+	</element>
+
+	<element name="GeneraFattureType">
+		<complexType>
+			<complexContent>
+				<extension base="tns:PayRequestType">
+					<sequence>
+						<element name="fatturaPerPosizione" type="tns:DatiFatturaType" maxOccurs="unbounded" minOccurs="1"></element>
+					</sequence>
+				</extension>
+			</complexContent>
+		</complexType>
+	</element>
+
+	<element name="GeneraFattureResponseType" type="tns:ElencoDocumentiEsitoType">
+	</element>
+
+	<element name="ScaricaRicevuteTelematicheType">
+		<complexType>
+			<complexContent>
+				<extension base="tns:PayRequestType">
+					<sequence>
+						<element name="riferimentoPosizione" type="tns:RiferimentoPosizioneDebitoriaType" maxOccurs="unbounded" minOccurs="1"></element>
+					</sequence>
+				</extension>
+			</complexContent>
+		</complexType>
+	</element>
+
+	<element name="ScaricaRicevuteTelematicheResponseType" type="tns:ElencoDocumentiEsitoType">
+	</element>
+
+	<element name="DocumentiPosizioneDebitoriaType">
+		<complexType>
+			<complexContent>
+				<extension base="tns:PayRequestType">
+					<sequence>
+						<element name="riferimentoPosizione" type="tns:RiferimentoPosizioneDebitoriaType" maxOccurs="1" minOccurs="1"></element>
+						<element name="tipoDocumento" type="tns:TipoDocumentoType" minOccurs="0" maxOccurs="1"></element>
+					</sequence>
+				</extension>
+			</complexContent>
+		</complexType>
+	</element>
+
+	<element name="ElencoDocumentiType">
+		<complexType>
+			<sequence>
+				<element name="tipoDocumento" type="tns:TipoDocumentoType" minOccurs="0" maxOccurs="3"></element>
+				<element name="erroreTipoDocumento" type="string" minOccurs="0" maxOccurs="1"></element>
+			</sequence>
+		</complexType>
+	</element>
+
+	<element name="InfoConnettoreRequestType" type="tns:PayRequestType">
+	</element>
+
+	<element name="InfoConnettoreResponseType" type="tns:InfoConnettoreType">
+	</element>
+
+	<complexType name="StatoPosizioneType">
+		<complexContent>
+			<extension base="tns:EsitoOperazionePosizioneDebitoriaType">
+				<sequence minOccurs="1" maxOccurs="1">
+					<element name="cronologiaStatiPosizione" type="tns:DettaglioStatoPosizioneType" minOccurs="0" maxOccurs="unbounded"></element>
+					<element name="datiPagamento" type="tns:DatiPagamentoType" minOccurs="0"></element>
+					<element name="statoPagamentoNativo" type="string" minOccurs="0"></element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="PayRequestType">
+		<attribute name="cfEnteCreditore" type="string" use="required"></attribute>
+	</complexType>
+
+	<complexType name="DettaglioStatoPosizioneType">
+		<sequence>
+			<element name="stato" type="tns:StatoPagamentoType" minOccurs="1" maxOccurs="1"></element>
+			<element name="descrizioneStato" type="string" minOccurs="1" maxOccurs="1"></element>
+			<element name="dataStato" type="dateTime" minOccurs="1" maxOccurs="1"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="AttivaSessionePagamentoResponseType">
+		<sequence>
+			<element name="esito" type="boolean" minOccurs="1"></element>
+			<element name="descEsito" type="string" minOccurs="0"></element>
+			<element name="idSessione" type="string" minOccurs="0"></element>
+			<element name="securityDigest" type="string" minOccurs="0"></element>
+			<element name="payUrl" type="string" minOccurs="0"></element>
+			<element name="httpMethodRequired" type="tns:HttpMethodType" minOccurs="0"></element>
+			<element name="formParams" type="tns:FormParametersType" minOccurs="0"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="SoggettoDebitoreType">
+		<annotation>
+			<documentation>dati anagrafici del soggetto debitore. se specificato solo 'cfpi' il nodo dei pagamenti cercherà di
+				recuperare i dati per CF o PI dalla tabella ANAGRAFE
+			</documentation>
+		</annotation>
+		<sequence>
+			<element name="nome" type="string" minOccurs="0"></element>
+			<element name="cognome" type="string" minOccurs="0"></element>
+			<element name="cfpi" type="tns:CodiceFiscalePartitaIvaType" minOccurs="1"></element>
+			<element name="cap" type="tns:CapType" minOccurs="0"></element>
+			<element name="via" type="string" minOccurs="0"></element>
+			<element name="civico" type="string" minOccurs="0"></element>
+			<element name="localita" type="string" minOccurs="0"></element>
+			<element name="provincia" type="string" minOccurs="0"></element>
+			<element name="stato" type="string" minOccurs="0"></element>
+			<element name="email" type="tns:EmailType" minOccurs="0"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="ElencoPosizioniDebitorieType">
+		<sequence minOccurs="1" maxOccurs="unbounded">
+			<element name="posizione" type="tns:RiferimentoPosizioneDebitoriaType" minOccurs="1" maxOccurs="unbounded">
+				<annotation>
+					<documentation>il limite massimo di posizioni debitorie che possono essere gestite in un'unica chiamata non è
+						definito a livello di XSD ma a livello di configurazione del sistema.
+					</documentation>
+				</annotation>
+			</element>
+		</sequence>
+	</complexType>
+
+	<complexType name="ElencoPosizioniDebitorieEsitoType">
+		<sequence minOccurs="1" maxOccurs="unbounded">
+			<element name="esitoPosizione" type="tns:EsitoOperazionePosizioneDebitoriaType" minOccurs="1" maxOccurs="unbounded">
+			</element>
+		</sequence>
+	</complexType>
+
+	<complexType name="RiferimentoPosizioneDebitoriaType">
+		<sequence>
+			<element name="idPosizione" type="integer" minOccurs="0"></element>
+			<element name="uuid" type="string" minOccurs="0"></element>
+			<element name="riferimentoClient" type="string" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="IUV" type="string" minOccurs="0"></element>
+			<element name="codiceAvviso" type="string" minOccurs="0"></element>
+			<element name="qrCode" type="string" minOccurs="0"></element>
+			<element name="descrizioneCausale" type="string" minOccurs="0"></element>
+			<element name="dataRegistrazione" type="dateTime" minOccurs="0"></element>
+			<element name="dataScadenza" type="dateTime" minOccurs="0"></element>
+			<element name="idRegistrazioneContabile" type="integer" minOccurs="0"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="EsitoOperazionePosizioneDebitoriaType">
+		<complexContent>
+			<extension base="tns:RiferimentoPosizioneDebitoriaType">
+				<sequence>
+					<element name="messaggio" type="string" minOccurs="0"></element>
+					<element name="codice_errore" type="string" minOccurs="0"></element>
+					<element name="esito" type="boolean"></element>
+					<element name="stato" type="tns:StatoPagamentoType"></element>
+					<element name="errore_temporaneo" type="boolean" minOccurs="0"></element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="EsitoDocumentoPosizioneDebitoriaType">
+		<complexContent>
+			<extension base="tns:EsitoOperazionePosizioneDebitoriaType">
+				<sequence>
+					<element name="nomeDocumento" type="string"></element>
+					<element name="statoDocumento" type="tns:StatoDocumentoType"></element>
+					<element name="tipoDocumento" type="tns:TipoDocumentoType" minOccurs="1" maxOccurs="1"></element>
+					<element name="documento" type="base64Binary" xmime:expectedContentTypes="application/octet-stream"></element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="ElencoDocumentiEsitoType">
+		<sequence minOccurs="1" maxOccurs="unbounded">
+			<element name="esitoPosizione" type="tns:EsitoDocumentoPosizioneDebitoriaType" minOccurs="1" maxOccurs="unbounded">
+			</element>
+		</sequence>
+	</complexType>
+
+	<complexType name="ElencoStatoPosizioniType">
+		<sequence minOccurs="1" maxOccurs="unbounded">
+			<element name="statoPosizioni" type="tns:StatoPosizioneType" minOccurs="1" maxOccurs="unbounded">
+			</element>
+		</sequence>
+	</complexType>
+
+	<complexType name="ElencoPagamentiOfflineType">
+		<sequence minOccurs="1" maxOccurs="unbounded">
+			<element name="posizione" type="tns:PagamentoOfflineType" minOccurs="1" maxOccurs="unbounded">
+				<annotation>
+					<documentation>il limite massimo di posizioni debitorie che possono essere gestite in un'unica chiamata non è
+						definito a livello di XSD ma a livello di configurazione del sistema.
+					</documentation>
+				</annotation>
+			</element>
+		</sequence>
+	</complexType>
+
+	<complexType name="PagamentoOfflineType">
+		<complexContent>
+			<extension base="tns:RiferimentoPosizioneDebitoriaType">
+				<sequence>
+					<element name="datiPagamento" type="tns:DatiPagamentoType" minOccurs="0"></element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="DatiPagamentoType">
+		<sequence>
+			<element name="dataOraPagamento" type="dateTime"></element>
+			<element name="importoPagato" type="tns:ImportoType"></element>
+			<element name="riferimentiPagamento" type="string" minOccurs="0"></element>
+			<element name="modalitaPagamento" type="string" minOccurs="0"></element>
+			<element name="descrizioneCausale" type="string" minOccurs="0"></element>
+			<element name="dataOraInizioTransazione" type="dateTime" minOccurs="0"></element>
+			<element name="dataOraAutorizzazione" type="dateTime" minOccurs="0"></element>
+			<element name="importoTransato" type="tns:ImportoType" minOccurs="0"></element>
+			<element name="importoCommissioni" type="tns:ImportoType" minOccurs="0"></element>
+			<element name="soggettoPagatore" type="tns:SoggettoDebitoreType" minOccurs="0"></element>
+			<element name="note" type="string" minOccurs="0"></element>
+			<element name="idPSP" type="string" minOccurs="0"></element>
+			<element name="ragioneSocialePSP" type="string" minOccurs="0"></element>
+			<element name="iuv" type="string" minOccurs="0"></element>
+			<element name="iur" type="string" minOccurs="0"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="DatiFatturaType">
+		<complexContent>
+			<extension base="tns:RiferimentoPosizioneDebitoriaType">
+				<sequence>
+					<element name="modalitaPagamento" type="string" minOccurs="0"></element>
+					<element name="dettaglio" type="tns:DettaglioFatturaType" minOccurs="0"></element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="DettaglioFatturaType">
+		<sequence>
+			<element name="rigaDettaglio" type="tns:RigaDettaglioFatturaType" minOccurs="1" maxOccurs="unbounded">
+			</element>
+		</sequence>
+	</complexType>
+
+	<complexType name="RigaDettaglioFatturaType">
+		<sequence>
+			<element name="importoTotale" type="tns:ImportoType" minOccurs="1">
+				<annotation>
+					<documentation>
+						L'importo deve essere considerato al netto dell'IVA.
+					</documentation>
+				</annotation>
+			</element>
+			<element name="descrizione" type="string" minOccurs="1"></element>
+			<element name="importoUnitario" type="tns:ImportoType" minOccurs="0">
+				<annotation>
+					<documentation>
+						L'importo deve essere considerato al netto dell'IVA.
+					</documentation>
+				</annotation>
+			</element>
+			<element name="numero" type="integer" minOccurs="0"></element>
+			<element name="aliquotaIva" type="integer" minOccurs="1"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="InfoConnettoreType">
+		<sequence>
+			<element name="nome" type="string"></element>
+			<element name="supportaPagamentoOTF" type="boolean"></element>
+			<element name="supportaInvioAvviso" type="boolean"></element>
+			<element name="supportaGenerazioneFattura" type="boolean"></element>
+			<element name="supportaDownloadRicevuta" type="boolean"></element>
+			<element name="generazioneFatturaObbligatoria" type="boolean"></element>
+			<element name="supportaAttivaSessionePagamento" type="boolean"></element>
+			<element name="supportaPagamentoOffLine" type="boolean"></element>
+			<element name="supportaModificaDataScadenza" type="boolean"></element>
+			<element name="supportaRataUnica" type="boolean"></element>
+			<element name="supportaCaricamentoMassivo" type="boolean"></element>
+			<element name="supportaModificaDataFineValidita" type="boolean"></element>
+		</sequence>
+	</complexType>
+
+	<simpleType name="CodiceFiscalePartitaIvaType">
+		<restriction base="string">
+			<pattern value="[0-9]{11}" />
+			<pattern value="[A-Z]{6}[0-9LMNPQRSTUV]{2}[ABCDEHLMPRST][0-9LMNPQRSTUV]{2}[A-Z][0-9LMNPQRSTUV]{3}[A-Z]" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="PartitaIvaType">
+		<restriction base="string">
+			<pattern value="[0-9]{11}" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="CapType">
+		<restriction base="string">
+			<pattern value="[0-9]{5}" />
+		</restriction>
+	</simpleType>
+
+	<!-- <simpleType name="CodiceIstatType"> <restriction base="string"> <pattern value="[0-9]{6}" /> </restriction> </simpleType> -->
+
+	<simpleType name="EmailType">
+		<restriction base="string">
+			<pattern value=".+@.+" />
+			<minLength value="1" />
+			<maxLength value="256" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="ImportoType">
+		<restriction base="decimal">
+			<minInclusive value="0.00" />
+			<maxInclusive value="99999999.99" />
+			<fractionDigits value="2" />
+			<totalDigits value="12" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="AnnoType">
+		<restriction base="integer">
+			<minInclusive value="1900" />
+			<maxInclusive value="2900" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="IvaType">
+		<restriction base="integer">
+			<minInclusive value="0" />
+			<maxInclusive value="100" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="EsitoType">
+		<restriction base="string">
+			<enumeration value="OK" />
+			<enumeration value="KO" />
+			<enumeration value="PARZIALE" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="StatoPagamentoType">
+		<restriction base="string">
+			<enumeration value="NON_ACQUISITO" />
+			<enumeration value="ACQUISITO" />
+			<enumeration value="TRASMESSO_A_PSP" />
+			<enumeration value="ATTIVATO_IN_PSP" />
+			<enumeration value="NOTIFICATO_DA_PSP" />
+			<enumeration value="RENDICONTATO_DA_IC" />
+			<enumeration value="ANNULLAMENTO_RICHIESTO" />
+			<enumeration value="ANNULLATO" />
+			<enumeration value="CON_ERRORE" />
+			<enumeration value="PAGATO_OFFLINE_DA_ANNULLARE" />
+			<enumeration value="PAGATO_OFFLINE_ANNULLATO" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="StatoDocumentoType">
+		<restriction base="string">
+			<enumeration value="RICHIESTO" />
+			<enumeration value="DISPONIBILE" />
+			<enumeration value="NON_DISPONIBILE" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="TipoDocumentoType">
+		<restriction base="string">
+			<enumeration value="FATTURA" />
+			<enumeration value="RICEVUTA" />
+			<enumeration value="AVVISO" />
+			<enumeration value="RICEVUTA_XML" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="HttpMethodType">
+		<restriction base="string">
+			<enumeration value="POST" />
+			<enumeration value="GET" />
+		</restriction>
+	</simpleType>
+
+	<complexType name="FormParametersType">
+		<sequence minOccurs="1" maxOccurs="1000">
+			<element name="param" type="tns:FormParamType"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="FormParamType">
+		<sequence>
+			<element name="paramName" type="string"></element>
+			<element name="value" type="string"></element>
+		</sequence>
+	</complexType>
+	
+	<element name="ModificaDataScadenzaType">
+		<complexType>
+			<complexContent>
+				<extension base="tns:PayRequestType">
+					<sequence>
+						<element name="riferimentoPosizione" type="tns:RiferimentoPosizioneDebitoriaType" maxOccurs="1" minOccurs="1"></element>
+						<element name="dataScadenza" type="date" maxOccurs="1" minOccurs="1"></element>
+					</sequence>
+				</extension>
+			</complexContent>
+		</complexType>
+	</element>
+	
+	<element name="ModificaDataScadenzaResponseType">
+		<complexType>
+			<sequence>
+				<element name="esito" type="tns:EsitoType"></element>
+				<element name="descrizioneEsito" minOccurs="0" maxOccurs="1" type="string"></element>
+			</sequence>
+		</complexType>
+	</element>
+	
+	<element name="ModificaDataFineValiditaType">
+		<complexType>
+			<complexContent>
+				<extension base="tns:PayRequestType">
+					<sequence>
+						<element name="riferimentoPosizione" type="tns:RiferimentoPosizioneDebitoriaType" maxOccurs="1" minOccurs="1"></element>
+						<element name="dataFineValidita" type="date" maxOccurs="1" minOccurs="1"></element>
+					</sequence>
+				</extension>
+			</complexContent>
+		</complexType>
+	</element>
+	
+	<element name="ModificaDataFineValiditaResponseType">
+		<complexType>
+			<sequence>
+				<element name="esito" type="tns:EsitoType"></element>
+				<element name="descrizioneEsito" minOccurs="0" maxOccurs="1" type="string"></element>
+			</sequence>
+		</complexType>
+	</element>
+	
+	<complexType name="RegistrazioneContabileWsInType">
+		<sequence>
+			<element name="data" type="date" minOccurs="0">
+				<annotation>
+					<documentation>se vuota la registrazione verrà effettuata con la data corrente</documentation>
+				</annotation>
+			</element>
+			<element name="descrizione" type="string" minOccurs="1"></element>
+			<element name="anno" type="tns:AnnoType" minOccurs="0">
+				<annotation>
+					<documentation>se vuoto viene derivato dal campo 'data'</documentation>
+				</annotation>
+			</element>
+			<element name="note" type="string" minOccurs="0"></element>
+			<element name="soggettoDebitore" type="tns:SoggettoDebitoreType" minOccurs="1"></element>
+			<sequence minOccurs="1" maxOccurs="unbounded">
+				<element name="rate" type="tns:PosizioneDebitoriaWsInType"></element>
+			</sequence>
+		</sequence>
+	</complexType>	
+
+	<complexType name="PosizioneDebitoriaWsInType">
+		<sequence>
+			<element name="descrizione" type="string"></element>
+			<element name="numeroRata" type="integer" minOccurs="0">
+				<annotation>
+					<documentation>se omesso o uguale a quello di un'altra rata dello stesso gruppo, verrà calcolato in base
+						all'ordine
+						in cui le rate sono elencate nel messaggio XML
+					</documentation>
+				</annotation>
+			</element>
+			<sequence minOccurs="1" maxOccurs="unbounded">
+				<element name="importi" type="tns:ImportoPagamentoWsInType" minOccurs="1" maxOccurs="unbounded"></element>
+			</sequence>
+			<element name="dataScadenza" type="date"></element>
+			<element name="riferimentiClient" type="string" minOccurs="0" maxOccurs="unbounded">
+				<annotation>
+					<documentation>
+					Lista dei riferimenti della posizione debitoria nel sistema che invoca il nodo pagamenti
+					</documentation>
+				</annotation>
+			</element>
+		</sequence>
+	</complexType>
+	<complexType name="ImportoPagamentoWsInType">
+		<sequence>
+			<element name="importo" type="tns:ImportoType" minOccurs="1"></element>
+			<element name="codiceMappatura" type="string" minOccurs="1"></element>			
+		</sequence>
+	</complexType>
+</schema>

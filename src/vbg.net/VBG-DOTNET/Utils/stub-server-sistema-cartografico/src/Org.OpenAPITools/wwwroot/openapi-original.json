@@ -1,0 +1,610 @@
+{
+  "openapi" : "3.0.1",
+  "info" : {
+    "description" : "Componente di integrazione con i sistemi di integrazione cartografica",
+    "title" : "Sistema di integrazione cartografica",
+    "version" : "1.0.0"
+  },
+  "servers" : [ {
+    "description" : "Local Environment",
+    "url" : "http://localhost:8080/sic/rest-api"
+  }, {
+    "description" : "Test Environment",
+    "url" : "https://devel3.vbg.community/sic/rest-api"
+  }, {
+    "description" : "Production Environment",
+    "url" : "https://backoffice.sigepro.it/sic/rest-api"
+  } ],
+  "security" : [ {
+    "bearerAuth" : [ ]
+  } ],
+  "paths" : {
+    "/{software}/innesco" : {
+      "post" : {
+        "description" : "Serve a recuperare la url del cartografico",
+        "parameters" : [ {
+          "description" : "Codice software",
+          "explode" : false,
+          "in" : "path",
+          "name" : "software",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "style" : "simple"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/InnescoRequest"
+              }
+            }
+          },
+          "description" : "Parametri per ottenere la url di innesco",
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/InnescoResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/BadRequest"
+          }
+        },
+        "summary" : "Metodo di innesco"
+      }
+    },
+    "/{software}/istanze/innesco" : {
+      "post" : {
+        "description" : "Serve a recuperare la url del cartografico",
+        "parameters" : [ {
+          "description" : "Codice software",
+          "explode" : false,
+          "in" : "path",
+          "name" : "software",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "style" : "simple"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/InnescoIstanzeRequest"
+              }
+            }
+          },
+          "description" : "Parametri per ottenere la url di innesco",
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/InnescoResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/BadRequest"
+          }
+        },
+        "summary" : "Metodo di innesco a partire da una lista di istanze"
+      }
+    },
+    "/{software}/parametri/{uuid}" : {
+      "get" : {
+        "description" : "Serve a recuperare le informazioni di quanto rappresentato sul cartografico",
+        "parameters" : [ {
+          "description" : "Codice software",
+          "explode" : false,
+          "in" : "path",
+          "name" : "software",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "style" : "simple"
+        }, {
+          "description" : "Id della sessione di editing da cui recuperare i parametri",
+          "explode" : false,
+          "in" : "path",
+          "name" : "uuid",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "style" : "simple"
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ParametriResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/BadRequest"
+          }
+        },
+        "summary" : "Metodo per recuperare i parametri salvati durante la lavorazione sul cartografico"
+      }
+    },
+    "/{software}/info" : {
+      "get" : {
+        "description" : "Recupero delle informazioni in merito al connettore configurato",
+        "parameters" : [ {
+          "description" : "Codice software",
+          "explode" : false,
+          "in" : "path",
+          "name" : "software",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "style" : "simple"
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ResponseInfo"
+                }
+              }
+            },
+            "description" : "OK"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/BadRequest"
+          }
+        },
+        "summary" : "Recupero delle informazioni in merito al connettore configurato"
+      }
+    }
+  },
+  "components" : {
+    "responses" : {
+      "BadRequest" : {
+        "content" : {
+          "application/problem+json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/Errore"
+            }
+          }
+        },
+        "description" : "Bad Request"
+      }
+    },
+    "schemas" : {
+      "Errore" : {
+        "additionalProperties" : false,
+        "properties" : {
+          "codice" : {
+            "example" : "400",
+            "type" : "string"
+          },
+          "messaggio" : {
+            "example" : "Parametro URL_SERVIZIO non valorizzato nella configurazione E256-TT",
+            "type" : "string"
+          },
+          "dettaglio" : {
+            "example" : "Stack dell'errore o qualsiasi log applicativo utile",
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
+      "InnescoRequest" : {
+        "additionalProperties" : false,
+        "example" : {
+          "utilizzo" : "INSERIMENTO",
+          "comune" : {
+            "codiceIstat" : "codiceIstat",
+            "nome" : "nome"
+          },
+          "localizzazioni" : [ {
+            "descrizione" : "descrizione",
+            "km" : "km",
+            "identificativo" : "identificativo",
+            "latitudine" : "latitudine",
+            "civico" : "civico",
+            "codViario" : "codViario",
+            "uuid" : "uuid",
+            "longitudine" : "longitudine"
+          }, {
+            "descrizione" : "descrizione",
+            "km" : "km",
+            "identificativo" : "identificativo",
+            "latitudine" : "latitudine",
+            "civico" : "civico",
+            "codViario" : "codViario",
+            "uuid" : "uuid",
+            "longitudine" : "longitudine"
+          } ],
+          "callback" : {
+            "cancelURL" : "cancelURL",
+            "callbackURL" : "callbackURL"
+          },
+          "chiamante" : "chiamante"
+        },
+        "properties" : {
+          "chiamante" : {
+            "type" : "string"
+          },
+          "utilizzo" : {
+            "enum" : [ "INSERIMENTO", "MODIFICA", "ELENCO" ],
+            "type" : "string"
+          },
+          "comune" : {
+            "$ref" : "#/components/schemas/Comune"
+          },
+          "callback" : {
+            "$ref" : "#/components/schemas/Callback"
+          },
+          "localizzazioni" : {
+            "items" : {
+              "$ref" : "#/components/schemas/Localizzazione"
+            },
+            "type" : "array"
+          }
+        },
+        "type" : "object"
+      },
+      "InnescoIstanzeRequest" : {
+        "additionalProperties" : false,
+        "example" : {
+          "utilizzo" : "INSERIMENTO",
+          "comune" : {
+            "codiceIstat" : "codiceIstat",
+            "nome" : "nome"
+          },
+          "uuidIstanze" : [ "uuidIstanze", "uuidIstanze" ],
+          "callback" : {
+            "cancelURL" : "cancelURL",
+            "callbackURL" : "callbackURL"
+          },
+          "chiamante" : "chiamante"
+        },
+        "properties" : {
+          "chiamante" : {
+            "type" : "string"
+          },
+          "utilizzo" : {
+            "enum" : [ "INSERIMENTO", "MODIFICA", "ELENCO" ],
+            "type" : "string"
+          },
+          "comune" : {
+            "$ref" : "#/components/schemas/Comune"
+          },
+          "callback" : {
+            "$ref" : "#/components/schemas/Callback"
+          },
+          "uuidIstanze" : {
+            "items" : {
+              "type" : "string"
+            },
+            "type" : "array"
+          }
+        },
+        "type" : "object"
+      },
+      "InnescoResponse" : {
+        "additionalProperties" : false,
+        "example" : {
+          "esito" : {
+            "esito" : "OK",
+            "exceptions" : [ "exceptions", "exceptions" ]
+          },
+          "method" : "GET",
+          "body" : [ {
+            "valore" : "valore",
+            "chiave" : "chiave"
+          }, {
+            "valore" : "valore",
+            "chiave" : "chiave"
+          } ],
+          "url" : "url"
+        },
+        "properties" : {
+          "url" : {
+            "type" : "string"
+          },
+          "method" : {
+            "enum" : [ "GET", "POST" ],
+            "type" : "string"
+          },
+          "body" : {
+            "items" : {
+              "$ref" : "#/components/schemas/BodyItem"
+            },
+            "type" : "array"
+          },
+          "esito" : {
+            "$ref" : "#/components/schemas/Esito"
+          }
+        },
+        "type" : "object"
+      },
+      "BodyItem" : {
+        "additionalProperties" : false,
+        "example" : {
+          "valore" : "valore",
+          "chiave" : "chiave"
+        },
+        "properties" : {
+          "chiave" : {
+            "type" : "string"
+          },
+          "valore" : {
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
+      "Esito" : {
+        "additionalProperties" : false,
+        "example" : {
+          "esito" : "OK",
+          "exceptions" : [ "exceptions", "exceptions" ]
+        },
+        "properties" : {
+          "esito" : {
+            "enum" : [ "OK", "KO" ],
+            "type" : "string"
+          },
+          "exceptions" : {
+            "items" : {
+              "type" : "string"
+            },
+            "type" : "array"
+          }
+        },
+        "type" : "object"
+      },
+      "ParametriResponse" : {
+        "additionalProperties" : false,
+        "example" : {
+          "geojson" : {
+            "geometry" : {
+              "coordinates" : [ [ 6.027456183070403, 6.027456183070403 ], [ 6.027456183070403, 6.027456183070403 ] ],
+              "type" : "type"
+            },
+            "id" : 0,
+            "type" : "type",
+            "properties" : ""
+          },
+          "esito" : {
+            "esito" : "OK",
+            "exceptions" : [ "exceptions", "exceptions" ]
+          },
+          "additionalProperties" : [ {
+            "valore" : "valore",
+            "chiave" : "chiave"
+          }, {
+            "valore" : "valore",
+            "chiave" : "chiave"
+          } ]
+        },
+        "properties" : {
+          "geojson" : {
+            "$ref" : "#/components/schemas/GeoJSON"
+          },
+          "additionalProperties" : {
+            "items" : {
+              "$ref" : "#/components/schemas/Parametro"
+            },
+            "type" : "array"
+          },
+          "esito" : {
+            "$ref" : "#/components/schemas/Esito"
+          }
+        },
+        "type" : "object"
+      },
+      "GeoJSON" : {
+        "additionalProperties" : false,
+        "example" : {
+          "geometry" : {
+            "coordinates" : [ [ 6.027456183070403, 6.027456183070403 ], [ 6.027456183070403, 6.027456183070403 ] ],
+            "type" : "type"
+          },
+          "id" : 0,
+          "type" : "type",
+          "properties" : ""
+        },
+        "properties" : {
+          "id" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "type" : {
+            "type" : "string"
+          },
+          "geometry" : {
+            "$ref" : "#/components/schemas/Geometry"
+          },
+          "properties" : { }
+        },
+        "type" : "object"
+      },
+      "Parametro" : {
+        "additionalProperties" : false,
+        "example" : {
+          "valore" : "valore",
+          "chiave" : "chiave"
+        },
+        "properties" : {
+          "chiave" : {
+            "type" : "string"
+          },
+          "valore" : {
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
+      "ResponseInfo" : {
+        "additionalProperties" : false,
+        "example" : {
+          "utilizzo" : {
+            "inserimento" : true,
+            "elenco" : true,
+            "modifica" : true
+          },
+          "connettore" : "connettore"
+        },
+        "properties" : {
+          "connettore" : {
+            "type" : "string"
+          },
+          "utilizzo" : {
+            "$ref" : "#/components/schemas/Utilizzo"
+          }
+        },
+        "type" : "object"
+      },
+      "Comune" : {
+        "additionalProperties" : false,
+        "example" : {
+          "codiceIstat" : "codiceIstat",
+          "nome" : "nome"
+        },
+        "properties" : {
+          "nome" : {
+            "type" : "string"
+          },
+          "codiceIstat" : {
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
+      "Callback" : {
+        "additionalProperties" : false,
+        "example" : {
+          "cancelURL" : "cancelURL",
+          "callbackURL" : "callbackURL"
+        },
+        "properties" : {
+          "callbackURL" : {
+            "type" : "string"
+          },
+          "cancelURL" : {
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
+      "Localizzazione" : {
+        "additionalProperties" : false,
+        "example" : {
+          "descrizione" : "descrizione",
+          "km" : "km",
+          "identificativo" : "identificativo",
+          "latitudine" : "latitudine",
+          "civico" : "civico",
+          "codViario" : "codViario",
+          "uuid" : "uuid",
+          "longitudine" : "longitudine"
+        },
+        "properties" : {
+          "uuid" : {
+            "type" : "string"
+          },
+          "identificativo" : {
+            "type" : "string"
+          },
+          "codViario" : {
+            "type" : "string"
+          },
+          "descrizione" : {
+            "type" : "string"
+          },
+          "civico" : {
+            "type" : "string"
+          },
+          "km" : {
+            "type" : "string"
+          },
+          "latitudine" : {
+            "type" : "string"
+          },
+          "longitudine" : {
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
+      "Geometry" : {
+        "additionalProperties" : false,
+        "example" : {
+          "coordinates" : [ [ 6.027456183070403, 6.027456183070403 ], [ 6.027456183070403, 6.027456183070403 ] ],
+          "type" : "type"
+        },
+        "properties" : {
+          "type" : {
+            "type" : "string"
+          },
+          "coordinates" : {
+            "items" : {
+              "$ref" : "#/components/schemas/Coordinata"
+            },
+            "type" : "array"
+          }
+        },
+        "type" : "object"
+      },
+      "Coordinata" : {
+        "items" : {
+          "type" : "number"
+        },
+        "type" : "array"
+      },
+      "Utilizzo" : {
+        "additionalProperties" : false,
+        "example" : {
+          "inserimento" : true,
+          "elenco" : true,
+          "modifica" : true
+        },
+        "properties" : {
+          "inserimento" : {
+            "type" : "boolean"
+          },
+          "modifica" : {
+            "type" : "boolean"
+          },
+          "elenco" : {
+            "type" : "boolean"
+          }
+        },
+        "type" : "object"
+      }
+    },
+    "securitySchemes" : {
+      "bearerAuth" : {
+        "bearerFormat" : "JWT",
+        "scheme" : "bearer",
+        "type" : "http"
+      }
+    }
+  }
+}

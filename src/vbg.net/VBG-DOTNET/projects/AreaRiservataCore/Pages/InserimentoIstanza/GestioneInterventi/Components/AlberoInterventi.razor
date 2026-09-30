@@ -1,0 +1,79 @@
+﻿@using Init.SIGePro.Manager.DTO.Interventi
+@using Init.Sigepro.FrontEnd.AppLogic.Autenticazione.Vbg.AutenticazioneUtente
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneInterventi
+@using Init.Sigepro.FrontEnd.AppLogic.Repositories.AmbitoRicercaIntervento
+@using Init.Sigepro.FrontEnd.AppLogic.WsInterventi
+
+@if (this._listaNodi.Any())
+{
+    <RicercaTestualeInterventi InterventoSelezionato="OnInterventoCercatoSelezionato"></RicercaTestualeInterventi>
+
+    <div>
+        <ul id="rootNode" class="filetree" role="tree">
+            @foreach (var nodo in this._listaNodi)
+            {
+                <AlberoInterventiItem Intervento="@nodo" AmbitoRicerca="@_ambitoRicerca" CodiceComune="@CodiceComune"
+                                      NodoSelezionato="@OnNodoSelezionato" ScatenaEventoNodoSelezionatoSoltantoSulleFoglie="@ScatenaEventoNodoSelezionatoSoltantoSulleFoglie"
+                                      PercorsoSelezionato="@PercorsoSelezionato" MostraInformazioniIntervento="@MostraInformazioniIntervento" />
+            }
+        </ul>
+    </div>
+}
+
+@code {
+    [Inject]
+    public IInterventiRepository _alberoProcRepository { get; set; } = default!;
+    [Inject]
+    public IAuthenticationDataResolver _authDataResolver { get; set; } = default!;
+
+    [Parameter]
+    public EventCallback<InterventoDto> NodoSelezionato { get; set; }
+    [Parameter]
+    public bool ScatenaEventoNodoSelezionatoSoltantoSulleFoglie { get; set; } = true;
+    [Parameter]
+    public LinkedList<InterventoDto> PercorsoSelezionato { get; set; } = default!;
+    [Parameter]
+    public bool MostraInformazioniIntervento { get; set; } = true;
+    [Parameter, EditorRequired]
+    public string CodiceComune { get; set; } = "";
+
+
+    IEnumerable<InterventoDto> _listaNodi = Enumerable.Empty<InterventoDto>();
+    IAmbitoRicercaIntervento _ambitoRicerca = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        var utenteTester = _authDataResolver.DatiAutenticazione?.DatiUtente?.UtenteTester ?? false;
+
+        this._ambitoRicerca = new AmbitoRicercaAreaRiservata(utenteTester);
+        this._listaNodi = await this._alberoProcRepository.GetSottonodiAsync(-1, this._ambitoRicerca, CodiceComune);
+    }
+
+    void OnNodoSelezionato(InterventoDto intervento)
+    {
+        //if (intervento.HaNodiFiglio)
+        //	return;
+
+        this.NodoSelezionato.InvokeAsync(intervento);
+    }
+
+    void OnInterventoCercatoSelezionato(int codiceIntervento)
+    {
+        var percorso = this._alberoProcRepository.GetAlberaturaNodoDaId2(codiceIntervento);
+
+        if (percorso is not null)
+        {
+            this.PercorsoSelezionato = percorso;
+
+            // commentato insieme al controllo if (intervento.HaNodiFiglio) nel metodo OnNodoSelezionato perchè la query che restituisce l'albero non gestisce correttamente la proprietà HaNodiFiglio
+            //OnNodoSelezionato(PercorsoSelezionato.ElementAt(PercorsoSelezionato.Count - 1));
+        }
+    }
+
+    void Rebind()
+    {
+
+    }
+}

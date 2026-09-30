@@ -1,0 +1,174 @@
+﻿@using Vbg.CoreControls
+@using System.Text.RegularExpressions
+@using Microsoft.JSInterop
+@using System.Collections
+@inherits MyBaseComponentDataBounded<IAutocompleteResult>
+@inject IJSRuntime JSRuntime;
+
+<div class="bwc-autocomplete mb-3 @_cssClasses" id="@UniqueID">
+    @if (ShowLabel)
+    {
+        <Vbg.CoreControls.LabelContainerComponent RelativeControlId="@HtmlId" ResourceId="@this.ResourceId" Value="@this.Label" Required="@this.Required"></Vbg.CoreControls.LabelContainerComponent>
+    }
+    <div class="input-group">
+        @if (!AddonADestra)
+        {
+            <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fa fa-search"></i></span>
+            </div>
+        }
+        <input type='text' id='@HtmlId' class="form-control ui-autocomplete-input" maxlength='@MaxLength?.ToString()' value="@Value" data-val="@SelectedItemValue" @oninput="@HandleInput" onkeypress="@OpenPopup()" disabled="@IsDisabled" autocomplete="off" />
+
+        @if (AddonADestra)
+        {
+            <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fa fa-search"></i></span>
+            </div>
+        }
+    </div>    
+
+    <div id="@PopupID" class="bwc-autocomplete-panel" style="display:block; max-height: 200px;">
+        <ul class="bwc-autocomplete-items bwc-autocomplete-list">
+            @foreach (IAutocompleteResult item in ServerValues != null ? ServerValues : Enumerable.Empty<object>() )
+            {
+                @if (!string.IsNullOrEmpty(PopupTemplate))
+                {
+                    @PopupTemplate
+                }
+                else
+                {
+                    <li class="bwc-autocomplete-list-item" @onclick="@(() => OnSelectItem(item))" onmousedown="Autocomplete.activeElement = null">
+                        <span>@(String.IsNullOrEmpty(@item.TextPrefix) ? "" : $"({item.TextPrefix}) ")@item.Text
+                        </span>
+                    </li>
+                }
+            }
+        </ul>
+    </div>
+
+</div>
+
+@code {
+    private string HtmlId
+    {
+        get
+        {
+            return $"ac{Id}_{MultiValueIndex}";
+        }
+    }
+
+    private string PopupID
+    {
+        get => $"popup{UniqueID}";
+    }
+
+    [Parameter]
+    public Func<string, Task<IEnumerable<IAutocompleteResult>>> ServiceData { get; set; }
+
+    [Parameter]
+    public string DataTextField { get; set; }
+
+    [Parameter]
+    public string DataValueField { get; set; }
+
+    [Parameter]
+    public bool AddonADestra { get; set; }
+
+    [Parameter]
+    public string PopupTemplate { get; set; }
+
+    IEnumerable<IAutocompleteResult> ServerValues;
+
+    string SelectedItemValue { get; set; }
+
+    private ValueDelayer inputValueDelayer;
+
+    protected override Task OnInitializedAsync()
+    {
+        inputValueDelayer = new ValueDelayer( 500 );
+        inputValueDelayer.Delayed += OnInputValueDelayed;
+
+        return base.OnInitializedAsync();
+    }
+
+    public void Dispose()
+    {
+        inputValueDelayer.Delayed -= OnInputValueDelayed;
+        inputValueDelayer = null;
+    }
+
+    private void OnInputValueDelayed( object sender, string value )
+    {
+        InvokeAsync( async () =>
+        {
+            Value = value;
+
+            var dictionary = new Dictionary<string, object>()
+            {
+                { "SenderId", Id },
+                { "ReceivedValue", Value },
+                { "MultiValueIndex", MultiValueIndex }
+            };
+
+            LoadServerValues();
+
+            await ValueChanged.InvokeAsync(dictionary);
+        } );
+    }
+
+    async Task HandleInput( ChangeEventArgs e )
+    {
+        inputValueDelayer.Update( e.Value != null ? e.Value.ToString() : string.Empty );
+
+        //await TextChanged.InvokeAsync( Text );
+    }
+
+    public async void LoadServerValues()
+    {
+        if (ServiceData != null)
+            ServerValues = await ServiceData.Invoke(Value);
+        else
+            ServerValues = Data.Where(x => x.Text.IndexOf(Value, StringComparison.CurrentCultureIgnoreCase) != -1);
+
+        SelectedItemValue = ServerValues.Where(x => x.Text.Equals(Value, StringComparison.CurrentCultureIgnoreCase))?.FirstOrDefault()?.Value;
+
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private string OpenPopup()
+    {
+        if (IsDisabled)
+        {
+            return string.Empty;
+        }
+
+        return $"Autocomplete.openPopup(this.parentNode, '{PopupID}', true)";
+    }
+
+    private async Task OnSelectItem(IAutocompleteResult item)
+    {
+        SelectedItemValue = item.Value;
+
+        await JSRuntime.InvokeVoidAsync("Autocomplete.closePopup", PopupID);
+
+        await SelectItem(item);
+    }
+
+    async Task SelectItem(IAutocompleteResult item)
+    {
+        Value = item.Text;
+
+        var dictionary = new Dictionary<string, object>()
+        {
+            { "SenderId", Id },
+            { "ReceivedValue", Value },
+            { "MultiValueIndex", MultiValueIndex }
+        };
+
+        //LoadServerValues();
+
+        await ValueChanged.InvokeAsync(dictionary);
+
+        //StateHasChanged();
+    }
+}

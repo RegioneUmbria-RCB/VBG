@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:jms="http://www.springframework.org/schema/jms" xmlns:amq="http://activemq.apache.org/schema/core"
+	xmlns:oxm="http://www.springframework.org/schema/oxm" xmlns:sws="http://www.springframework.org/schema/web-services" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms.xsd
+		http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core-5.3.0.xsd
+		http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm-1.5.xsd
+		http://www.springframework.org/schema/web-services http://www.springframework.org/schema/web-services/web-services-1.5.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
+	
+	<context:annotation-config />
+	  
+	<context:component-scan base-package="it.gruppoinit.service" />
+	
+	<context:property-placeholder location="classpath:deploy.properties" />
+	<bean id="stcWebServiceClient" class="it.gruppoinit.nlaproxy.service.stc.StcWebServiceClient">
+		<property name="timeout" value="${ws.timeout}"></property>
+		<property name="stcWsUrl" value="${stcWsUrl}" />
+		<property name="nlaUserId" value="${nlaUserId}" />
+		<property name="nlaPassword" value="${nlaPassword}" />
+		<property name="idNodo" value="${idNodo}" />
+		<property name="mtom" value="${stcMtomEnabled}" />
+	</bean>
+	<bean id="sigeproSecurityWebServiceClient" class="it.gruppoinit.sigeprosecurity.ws.SigeproSecurityWebServiceClient">
+		<property name="sigeproSecurityUrl" value="${ws.token.url}"></property>
+		<property name="sigeproSecurityUserId" value="${ws.token.user}" />
+		<property name="sigeproSecurityUserPassword" value="${ws.token.pwd}" />
+		<property name="idcomunealias" value="${ws.token.idcomunealias}" />
+	</bean>
+	<bean id="oggettiWSClient" class="it.gruppoinit.sigepro.definitions.oggetti.OggettiWSClient">
+		<property name="securityWebServiceClient" ref="sigeproSecurityWebServiceClient" />
+		<property name="urlServicesOggettiWSDL" value="${oggetti.ws.path.to.wsdl}" />
+		<property name="mtomEnabled" value="${oggetti.ws.mtom.enabled}" />
+		<property name="timeout" value="${ws.timeout}" />
+		<property name="attachLoggingInterceptors" value="${oggetti.ws.attach.logging.interceptors}" />
+		<property name="logInbound" ref="logInbound" />
+		<property name="logOutbound" ref="logOutbound" />
+	</bean>
+	<bean id="movimentiWsClient" class="it.gruppoinit.sigepro.definitions.movimenti.MovimentiWSClient">
+		<property name="mtomEnabled" value="${oggetti.ws.mtom.enabled}" />
+		<property name="securityWebServiceClient" ref="sigeproSecurityWebServiceClient" />
+		<property name="timeout" value="${ws.timeout}" />
+		<property name="urlServicesMovimentiWSDL" value="${movimenti.ws.path.to.wsdl}"></property>
+	</bean>
+	
+	<bean id="attiWSServiceClient" class="it.gruppoinit.ws.client.atti.AttiWSServiceClient">
+		<property name="timeout" value="${ws.timeout}"></property>
+		<property name="attiWsUrl" value="${attiWsUrl}" />
+		<property name="mtom" value="${attiMtomEnabled}" />
+		<property name="wsUsername" value="${attiWsUsername}" />
+	</bean>
+</beans>

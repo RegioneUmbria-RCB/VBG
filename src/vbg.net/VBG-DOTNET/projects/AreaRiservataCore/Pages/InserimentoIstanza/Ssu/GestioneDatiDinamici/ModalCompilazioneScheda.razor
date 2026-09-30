@@ -1,0 +1,56 @@
+﻿@using Init.Sigepro.FrontEnd.CoreServices.DatiDinamici.Ricerche
+@using VBG.AppLogic.SSU.APICatalogoServizi.Client
+@using VBG.AppLogic.SSU.GestioneDatiDinamici
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.DatiDinamici
+@using VBG.DatiDinamici.Agid.WebControls
+
+@if (_modello is not null)
+{
+    
+    <CascadingValue Value="_datiDinamiciSearchService">  @* Override del comportamento del searcher di default *@
+        <ModalModelloDinamicoEditor Modello="_modello"
+                                    OnClose="OnClose"
+                                    Title="@_modello.NomeModello"
+                                    Size="ModalSizeEnum.ExtraLarge"
+                                    OnModelSaved="SalvaSchedaCorrente">
+            <HeaderContent>
+                I campi contrassegnati da un asterisco sono obbligatori
+            </HeaderContent>
+        </ModalModelloDinamicoEditor>
+    </CascadingValue>
+}
+
+@code {
+
+    [Inject]
+    public CoreDatiDinamiciSearchService _datiDinamiciSearchService { get; set; } = default!;
+
+    [Inject]
+    public SsuDatiDinamiciLoader _datiDinamiciLoader { get; set; } = default!;
+
+    [CascadingParameter(Name = "IdDomanda")]
+    public int? IdDomanda { get; set; }
+
+    [Parameter]
+    public EventCallback OnClose { get; set; }
+    [Parameter]
+    public SchedaDinamica? Scheda { get; set; }
+    string _titoloScheda = "Caricamento in corso...";
+    ModelloDinamicoBase? _modello;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        if (Scheda is not null)
+        {
+            _modello = _datiDinamiciLoader.Load(IdDomanda!.Value, Scheda);
+        }
+    }
+
+    async Task SalvaSchedaCorrente()
+    {
+        await OnClose.InvokeAsync();
+    }
+}

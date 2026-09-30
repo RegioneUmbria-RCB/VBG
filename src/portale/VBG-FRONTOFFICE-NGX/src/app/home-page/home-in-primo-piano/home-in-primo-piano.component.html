@@ -1,0 +1,52 @@
+<div class="container-fluid sezione-home home-in-primo-piano">
+  <div class="container">
+    <h2>Cerca</h2>
+
+    <app-ricerca-interventi
+      [mostraInterventiRegionali]="mostraInterventiRegionali"
+      [mostraInterventiLocali]="mostraInterventiLocali"
+      >
+    </app-ricerca-interventi>
+
+    @if (mostraInterventiTop || mostraProcedimentiTop) {
+      <h2>
+        In primo piano
+      </h2>
+    }
+
+    <div class="row">
+      @if (mostraInterventiTop) {
+        <div class="col-md-6">
+          <div class="attivita-in-primo-piano">
+            <h3>{{ titoloAttivita }}</h3>
+            <ul>
+              @for (i of interventiTop$ | async; track i) {
+                <li>
+                  <a [routerLink]="[urlDettagliIntervento, i.id]">{{
+                    i.descrizione
+                  }}</a>
+                </li>
+              }
+            </ul>
+          </div>
+        </div>
+      }
+      @if (mostraProcedimentiTop) {
+        <div class="col-md-6">
+          <div class="attivita-in-primo-piano">
+            <h3>Procedimenti</h3>
+            <ul>
+              @for (p of procedimentiTop$ | async; track p) {
+                <li>
+                  <a [routerLink]="[urlDettagliProcedimento, p.id]">{{
+                    p.descrizione
+                  }}</a>
+                </li>
+              }
+            </ul>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>

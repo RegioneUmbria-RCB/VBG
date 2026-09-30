@@ -1,0 +1,145 @@
+﻿@using Init.Sigepro.FrontEnd.AppLogic.GestioneAnagrafiche
+@using Init.Sigepro.FrontEnd.AppLogic.GestionePresentazioneDomanda.GestioneAnagrafiche
+@using System.ComponentModel.DataAnnotations
+
+@using VBG.BlazorComponentsLibrary.DesignComuni.Forms
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.DesignComuni.Spinner
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+@using VBG.BlazorComponentsLibrary.EditFormComponents
+
+@if (Anagrafica is not null)
+{
+    @if (Anagrafica.AnagraficaCollegata != null)
+    {
+        <div class="float-end mt-2">
+            <button @onclick="() => _mostraPopupCollegaAzienda = true" class="text-decoration-none me-2"><span class="text-button-sm-semi t-primary">Modifica</span></button>
+        </div>
+        <p class="card-info">Azienda collegata <br> <span>@Anagrafica.AnagraficaCollegata.ToString()</span></p>
+    }
+    else
+    {
+        if (AnagraficheCollegabili.Any())
+        {
+            <button class="btn btn-primary mt-4" @onclick="() => _mostraPopupCollegaAzienda = true">Collega azienda</button>
+        }
+        else
+        {
+            <div class="t-alert">Non sono state trovate aziende collegabili. Utilizzare la funzionalità "Aggiungi soggetto" per aggiungere una o più aziende</div>
+        }
+    }
+
+    @if (_mostraPopupCollegaAzienda)
+    {
+        <FormModal OnClose="() => _mostraPopupCollegaAzienda = false" AlwaysVisible="true" Size="ModalSizeEnum.Large" Model="_model" FormId="collegaAnagrafica" ValidationCallBack="ValidationCallBackCollegamento" OnValidSubmit="OnRowConfirmAsync">
+            <ModalHeader Titolo="Collega azienda">
+                Seleziona l'azienda da collegare al soggetto <span class="fw-bold">@Anagrafica.NomeEsteso</span> (@Anagrafica.TipoSoggetto.Descrizione)
+                @* <ErrorSummary Errori="_errors"></ErrorSummary> *@
+            </ModalHeader>
+            <ModalBody>
+                <DataAnnotationsValidator></DataAnnotationsValidator>
+
+                <InputRadioGroup @bind-Value="_model.IdAnagraficaCollegata">
+                    @foreach (var x in AnagraficheCollegabili)
+                    {
+                        <div class="cmp-info-button-card mt-2 radio-card @(_model.IdAnagraficaCollegata == x.Id ? "has-border-green" : "")">
+                            <div class="form-check p-3">
+                                <InputRadio Value="x.Id" id="@($"radio{x.Id}")"></InputRadio>
+                                <label for="@($"radio{x.Id}")">
+                                    <h4 class="big-title card-header m-0 p-0 pb-2 text-break">@x.NomeEsteso</h4>
+                                </label>
+                                <small id="@($"radio{x.Id}-help")" class="form-text">
+
+                                    <StepCardInfo Titolo="In qualità di">@x.TipoSoggetto.Descrizione</StepCardInfo>
+
+                                    <div class="row">
+                                        @if (!String.IsNullOrEmpty(x.Codicefiscale))
+                                        {
+                                            <div class="col">
+                                                <StepCardInfo Titolo="Codice Fiscale">@x.Codicefiscale</StepCardInfo>
+                                            </div>
+                                        }
+
+                                        @if (!String.IsNullOrEmpty(x.PartitaIva))
+                                        {
+                                            <div class="col">
+                                                <StepCardInfo Titolo="Partita IVA">@x.PartitaIva</StepCardInfo>
+                                            </div>
+                                        }
+                                    </div>
+                                </small>
+                            </div>
+                        </div>
+                    }
+                </InputRadioGroup>
+            </ModalBody>
+            <ModalFooter>
+                <FormSubmitButton Form="collegaAnagrafica">Conferma</FormSubmitButton>
+            </ModalFooter>
+        </FormModal>
+    }
+
+}
+
+@code {
+
+    [Inject]
+    public SpinnerService _spinnerService { get; set; } = default!;
+    [Inject]
+    public IAnagraficheService _anagraficheService { get; set; } = default!;
+
+    private class FormModel
+    {
+        [Required]
+        public int? IdAnagraficaCollegata = null;
+
+    }
+
+    [Parameter, EditorRequired]
+    public AnagraficaDomanda? Anagrafica { get; set; }
+    [Parameter, EditorRequired]
+    public IEnumerable<AnagraficaDomanda> AnagraficheCollegabili { get; set; } = Enumerable.Empty<AnagraficaDomanda>();
+    [Parameter, EditorRequired]
+    public MessageContainer? MessageContainer { get; set; }
+    [Parameter, EditorRequired]
+    public EventCallback<CollegamentoAnagraficaEventArgs> OnAnagraficaCollegata { get; set; }
+
+    private FormModel _model = new();
+    private bool _mostraPopupCollegaAzienda = false;
+
+
+    private async Task OnRowConfirmAsync()
+    {
+        if (Anagrafica is null)
+        {
+            return;
+        }
+
+        //if (r.AziendaCollegata == null || string.IsNullOrEmpty(r.AziendaCollegata.Value)
+        if (_model.IdAnagraficaCollegata == null)
+            return;
+
+        _mostraPopupCollegaAzienda = false;
+
+        await OnAnagraficaCollegata.InvokeAsync(new CollegamentoAnagraficaEventArgs(Anagrafica.Id!.Value, _model.IdAnagraficaCollegata.Value));
+    }
+
+    private void ValidationCallBackCollegamento(FormMessageStore store)
+    {
+        if (MessageContainer is not null)
+        {
+            MessageContainer.ClearErrors();
+
+            if (_model.IdAnagraficaCollegata is null)
+            {
+                //var errMsg = $"Selezionare un'azienda da collegare all'anagrafica {Anagrafica.NomeEsteso}";
+                var errMsg = $"Selezionare un'azienda da collegare all'anagrafica";
+
+                store.Add(() => _model.IdAnagraficaCollegata, errMsg);
+
+                MessageContainer.AddError(errMsg);
+                //_errors = new[] { errMsg };
+            }
+        }
+    }
+}

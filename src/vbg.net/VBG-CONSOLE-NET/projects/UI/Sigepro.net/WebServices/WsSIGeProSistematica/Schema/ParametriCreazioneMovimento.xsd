@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="Allegato">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="NomeAllegato" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="NumeroIstanza" type="xs:string"/>
+
+  <xs:element name="CodiceProcedimento"  type="xs:string"/>
+
+  <xs:element name="NumeroProtocollo" type="xs:string"/>
+
+  <xs:element name="DataProtocollo" type="xs:string"/>
+
+  <xs:element name="DatiIstanzaMovimento">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="CodiceProcedimento" />
+        <xs:element ref="NumeroIstanza" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="DatiProtocolloMovimento">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="NumeroProtocollo" />
+        <xs:element ref="DataProtocollo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="ListaAllegati">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Allegato" maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="NomeAllegato" type="xs:string"/>
+
+  <xs:element name="ParametriCreazioneMovimento">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="TipoMovimento" />
+        <xs:element ref="DatiIstanzaMovimento" />
+        <xs:element ref="ListaAllegati" minOccurs="0" />
+        <xs:element ref="DatiProtocolloMovimento" minOccurs="0" />
+      </xs:sequence>
+      <xs:attribute name="versione" type="xs:NMTOKEN" use="required" fixed="2005-04-18" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="TipoMovimento" type="xs:string"/>
+</xs:schema>

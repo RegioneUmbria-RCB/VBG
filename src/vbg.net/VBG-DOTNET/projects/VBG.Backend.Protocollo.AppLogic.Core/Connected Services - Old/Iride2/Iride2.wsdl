@@ -1,0 +1,2616 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://tempuri.org/" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://tempuri.org/" xmlns:intf="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<!--WSDL created by Apache Axis version: 1.4
+Built on Apr 22, 2006 (06:55:48 PDT)-->
+	<wsdl:types>
+		<schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns="http://www.w3.org/2001/XMLSchema">
+			<element name="LeggiProtocollo">
+				<complexType>
+					<sequence>
+						<element name="AnnoProtocollo" type="xsd:short"/>
+						<element name="NumeroProtocollo" type="xsd:int"/>
+						<element name="Utente" type="xsd:string"/>
+						<element name="Ruolo" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="LeggiProtocolloResponse">
+				<complexType>
+					<sequence>
+						<element name="LeggiProtocolloResult" type="impl:DocumentoOut"/>
+					</sequence>
+				</complexType>
+			</element>
+			<complexType name="MittenteDestinatarioOut">
+				<sequence>
+					<element name="IdSoggetto" type="xsd:int"/>
+					<element maxOccurs="1" minOccurs="0" name="CognomeNome" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="PartitaIVA" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="ChiaveAlternativa" nillable="true" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<complexType name="ArrayOfMittenteDestinatarioOut">
+				<sequence>
+					<element maxOccurs="unbounded" minOccurs="0" name="item" type="impl:MittenteDestinatarioOut"/>
+				</sequence>
+			</complexType>
+			<complexType name="AllegatoOut">
+				<sequence>
+					<element name="Serial" type="xsd:int"/>
+					<element maxOccurs="1" minOccurs="0" name="TipoFile" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="ContentType" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Image" nillable="true" type="xsd:base64Binary"/>
+					<element maxOccurs="1" minOccurs="0" name="Commento" nillable="true" type="xsd:string"/>
+					<element name="IDBase" type="xsd:int"/>
+					<element name="Versione" type="xsd:short"/>
+					<element maxOccurs="1" minOccurs="0" name="TipoAllegato" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Schema" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="SottoEstensione" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Firmato" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="NomeAllegato" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Principale" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Pubblicato" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="CommentoBilingue" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Uri" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="UriImportato" nillable="true" type="xsd:boolean"/>
+					<element maxOccurs="1" minOccurs="0" name="Size" nillable="true" type="xsd:double"/>
+					<element name="flgPubblicabile" nillable="true" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<complexType name="ArrayOfAllegatoOut">
+				<sequence>
+					<element maxOccurs="unbounded" minOccurs="0" name="item" type="impl:AllegatoOut"/>
+				</sequence>
+			</complexType>
+			<complexType name="ImpegnoOut">
+				<sequence>
+					<element name="AnnoImpegno" type="xsd:int"/>
+					<element maxOccurs="1" minOccurs="0" name="NumeroImpegno" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="CapitoloImpegno" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="ArticoloImpegno" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="CodSiopeImpegno" nillable="true" type="xsd:string"/>
+					<element name="ImportoImpegno" type="xsd:double"/>
+					<element name="SoggettoImpegno" type="xsd:double"/>
+				</sequence>
+			</complexType>
+			<complexType name="ArrayOfImpegnoOut">
+				<sequence>
+					<element maxOccurs="unbounded" minOccurs="0" name="item" type="impl:ImpegnoOut"/>
+				</sequence>
+			</complexType>
+			<complexType name="AccertamentoOut">
+				<sequence>
+					<element name="AnnoAccertamento" type="xsd:int"/>
+					<element maxOccurs="1" minOccurs="0" name="NumeroAccertamento" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="CapitoloAccertamento" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="ArticoloAccertamento" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="CodSiopeAccertamento" nillable="true" type="xsd:string"/>
+					<element name="ImportoAccertamento" type="xsd:double"/>
+					<element name="SoggettoAccertamento" type="xsd:double"/>
+				</sequence>
+			</complexType>
+			<complexType name="ArrayOfAccertamentoOut">
+				<sequence>
+					<element maxOccurs="unbounded" minOccurs="0" name="item" type="impl:AccertamentoOut"/>
+				</sequence>
+			</complexType>
+			<complexType name="CentriDiCostoOut">
+				<sequence>
+					<element maxOccurs="1" minOccurs="0" name="Tipo" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Voce" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="CdC_provento" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Propon_ammor" nillable="true" type="xsd:string"/>
+					<element name="Importo" type="xsd:double"/>
+				</sequence>
+			</complexType>
+			<complexType name="ArrayOfCentriDiCostoOut">
+				<sequence>
+					<element maxOccurs="unbounded" minOccurs="0" name="item" type="impl:CentriDiCostoOut"/>
+				</sequence>
+			</complexType>
+			<complexType name="RegistroAssegnatoOut">
+				<sequence>
+					<element maxOccurs="1" minOccurs="0" name="TipoRegistro" nillable="true" type="xsd:string"/>
+					<element name="AnnoRegistro" type="xsd:int"/>
+					<element name="NumeroRegistro" type="xsd:int"/>
+					<element maxOccurs="1" minOccurs="0" name="DataRegistro" nillable="true" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<complexType name="ArrayOfRegistroAssegnatoOut">
+				<sequence>
+					<element maxOccurs="unbounded" minOccurs="0" name="item" type="impl:RegistroAssegnatoOut"/>
+				</sequence>
+			</complexType>
+			<complexType name="InteropOut">
+				<sequence>
+					<element maxOccurs="1" minOccurs="0" name="CodiceAmministrazione" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Denominazione" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="CodiceAOO" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="AOO" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Indirizzo" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="IndirizzoTelematico" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Localizzazione" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Riservato" nillable="true" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<complexType name="RispostaAlProtocolloOut">
+				<sequence>
+					<element maxOccurs="1" minOccurs="0" name="NumeroRegistrazioneRP" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="DataRegistrazioneRP" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="TipoRP" nillable="true" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<complexType name="ProtocolloGeneratoOut">
+				<sequence>
+					<element maxOccurs="1" minOccurs="0" name="NumeroRegistrazionePG" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="DataRegistrazionePG" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="TipoPG" nillable="true" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<complexType name="ArrayOfProtocolloGeneratoOut">
+				<sequence>
+					<element maxOccurs="unbounded" minOccurs="0" name="item" type="impl:ProtocolloGeneratoOut"/>
+				</sequence>
+			</complexType>
+			<complexType name="CorrispondenteOut">
+				<sequence>
+					<element name="IdSoggetto" type="xsd:int"/>
+					<element maxOccurs="1" minOccurs="0" name="Denominazione" nillable="true" type="xsd:string"/>
+					<element name="FlagAmministrazione" type="xsd:boolean"/>
+					<element maxOccurs="1" minOccurs="0" name="CodiceAmministrazione" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="AOO" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="CodiceAOO" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="UnitaOrganizzativa" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="NumeroRegistrazione" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="DataRegistrazione" nillable="true" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<complexType name="ArrayOfCorrispondenteOut">
+				<sequence>
+					<element maxOccurs="unbounded" minOccurs="0" name="item" type="impl:CorrispondenteOut"/>
+				</sequence>
+			</complexType>
+			<complexType name="CampoUtente">
+				<sequence>
+					<element maxOccurs="1" minOccurs="0" name="NomeCampo" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="TipoCampo" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="ValoreCampo" nillable="true" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<complexType name="ArrayOfCampoUtente">
+				<sequence>
+					<element maxOccurs="unbounded" minOccurs="0" name="item" type="impl:CampoUtente"/>
+				</sequence>
+			</complexType>
+			<complexType name="RecordUtente">
+				<sequence>
+					<element name="Progressivo" type="xsd:int"/>
+					<element maxOccurs="1" minOccurs="0" name="Campi" nillable="true" type="impl:ArrayOfCampoUtente"/>
+				</sequence>
+			</complexType>
+			<complexType name="ArrayOfRecordUtente">
+				<sequence>
+					<element maxOccurs="unbounded" minOccurs="0" name="item" type="impl:RecordUtente"/>
+				</sequence>
+			</complexType>
+			<complexType name="TabellaUtente">
+				<sequence>
+					<element maxOccurs="1" minOccurs="0" name="NomeTabella" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Righe" nillable="true" type="impl:ArrayOfRecordUtente"/>
+				</sequence>
+			</complexType>
+			<complexType name="ArrayOfTabellaUtente">
+				<sequence>
+					<element maxOccurs="unbounded" minOccurs="0" name="item" type="impl:TabellaUtente"/>
+				</sequence>
+			</complexType>
+			<complexType name="DocumentoOut">
+				<sequence>
+					<element name="IdDocumento" type="xsd:int"/>
+					<element name="AnnoProtocollo" type="xsd:short"/>
+					<element name="NumeroProtocollo" type="xsd:int"/>
+					<element name="DataProtocollo" nillable="true" type="xsd:dateTime"/>
+					<element maxOccurs="1" minOccurs="0" name="Oggetto" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="OggettoBilingue" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Origine" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Classifica" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Classifica_Descrizione" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="TipoDocumento" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="TipoDocumento_Descrizione" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="MittenteInterno" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="MittenteInterno_Descrizione" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="MittentiDestinatari" nillable="true" type="impl:ArrayOfMittenteDestinatarioOut"/>
+					<element name="DataDocumento" nillable="true" type="xsd:dateTime"/>
+					<element maxOccurs="1" minOccurs="0" name="NumeroDocumento" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="InCaricoA" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="InCaricoA_Descrizione" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="AnnoNumeroData" nillable="true" type="xsd:string"/>
+					<element name="AnnoPratica" type="xsd:short"/>
+					<element maxOccurs="1" minOccurs="0" name="NumeroPratica" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="AnnoNumeroPratica" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="LivelloDiSicurezza" nillable="true" type="xsd:string"/>
+					<element name="DataEvidenza" nillable="true" type="xsd:dateTime"/>
+					<element maxOccurs="1" minOccurs="0" name="DocAllegati" nillable="true" type="xsd:string"/>
+					<element name="DocumentoRiservato" type="xsd:boolean"/>
+					<element name="IterAttivo" type="xsd:int"/>
+					<element name="DataDiCarico" nillable="true" type="xsd:dateTime"/>
+					<element maxOccurs="1" minOccurs="0" name="UtenteDiInserimento" nillable="true" type="xsd:string"/>
+					<element name="DataInserimento" nillable="true" type="xsd:dateTime"/>
+					<element maxOccurs="1" minOccurs="0" name="Messaggio" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Allegati" nillable="true" type="impl:ArrayOfAllegatoOut"/>
+					<element maxOccurs="1" minOccurs="0" name="Impegni" nillable="true" type="impl:ArrayOfImpegnoOut"/>
+					<element maxOccurs="1" minOccurs="0" name="Accertamenti" nillable="true" type="impl:ArrayOfAccertamentoOut"/>
+					<element maxOccurs="1" minOccurs="0" name="CentriDiCosto" nillable="true" type="impl:ArrayOfCentriDiCostoOut"/>
+					<element maxOccurs="1" minOccurs="0" name="Registri" nillable="true" type="impl:ArrayOfRegistroAssegnatoOut"/>
+					<element maxOccurs="1" minOccurs="0" name="Interop" nillable="true" type="impl:InteropOut"/>
+					<element maxOccurs="1" minOccurs="0" name="RispostaAlProtocollo" nillable="true" type="impl:RispostaAlProtocolloOut"/>
+					<element maxOccurs="1" minOccurs="0" name="ProtocolliGenerati" nillable="true" type="impl:ArrayOfProtocolloGeneratoOut"/>
+					<element maxOccurs="1" minOccurs="0" name="Corrispondenti" nillable="true" type="impl:ArrayOfCorrispondenteOut"/>
+					<element maxOccurs="1" minOccurs="0" name="Errore" nillable="true" type="xsd:string"/>
+					<element name="IdPratica" type="xsd:int"/>
+					<element name="DataInizioPubblicazione" nillable="true" type="xsd:dateTime"/>
+					<element name="DataFinePubblicazione" nillable="true" type="xsd:dateTime"/>
+					<element maxOccurs="1" minOccurs="0" name="DatiUtente" nillable="true" type="impl:ArrayOfTabellaUtente"/>
+					<element name="DataProtocolloMittente" nillable="true" type="xsd:dateTime"/>
+					<element maxOccurs="1" minOccurs="0" name="NumeroProtocolloMittente" nillable="true" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<element name="LeggiDocumento">
+				<complexType>
+					<sequence>
+						<element name="IdDocumento" type="xsd:int"/>
+						<element name="Utente" type="xsd:string"/>
+						<element name="Ruolo" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="LeggiDocumentoResponse">
+				<complexType>
+					<sequence>
+						<element name="LeggiDocumentoResult" type="impl:DocumentoOut"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="InserisciProtocolloEAnagrafiche">
+				<complexType>
+					<sequence>
+						<element name="ProtoIn" type="impl:ProtocolloIn"/>
+					</sequence>
+				</complexType>
+			</element>
+			<complexType name="RecapitoIn">
+				<sequence>
+					<element maxOccurs="1" minOccurs="0" name="TipoRecapito" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="ValoreRecapito" nillable="true" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<complexType name="ArrayOfRecapitoIn">
+				<sequence>
+					<element maxOccurs="unbounded" minOccurs="0" name="item" type="impl:RecapitoIn"/>
+				</sequence>
+			</complexType>
+			<complexType name="MittenteDestinatarioIn">
+				<sequence>
+					<element maxOccurs="1" minOccurs="0" name="CodiceFiscale" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="CognomeNome" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Nome" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Indirizzo" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Localita" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="CodiceComuneResidenza" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="DataNascita" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="CodiceComuneNascita" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Nazionalita" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="DataInvio_DataProt" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Spese_NProt" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Mezzo" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="DataRicevimento" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="TipoSogg" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="TipoPersona" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Recapiti" nillable="true" type="impl:ArrayOfRecapitoIn"/>
+				</sequence>
+			</complexType>
+			<complexType name="ArrayOfMittenteDestinatarioIn">
+				<sequence>
+					<element maxOccurs="unbounded" minOccurs="0" name="item" type="impl:MittenteDestinatarioIn"/>
+				</sequence>
+			</complexType>
+			<complexType name="AllegatoIn">
+				<sequence>
+					<element maxOccurs="1" minOccurs="0" name="TipoFile" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="ContentType" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Image" nillable="true" type="xsd:base64Binary"/>
+					<element maxOccurs="1" minOccurs="0" name="Commento" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="IdAllegatoPrincipale" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Schema" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="NomeAllegato" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="TipoAllegato" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="URI" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Hash" nillable="true" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<complexType name="ArrayOfAllegatoIn">
+				<sequence>
+					<element maxOccurs="unbounded" minOccurs="0" name="item" type="impl:AllegatoIn"/>
+				</sequence>
+			</complexType>
+			<complexType name="ProtocolloIn">
+				<sequence>
+					<element maxOccurs="1" minOccurs="0" name="Data" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="DataProt" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="NumProt" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Classifica" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="TipoDocumento" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Oggetto" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="OggettoBilingue" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Origine" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="MittenteInterno" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="MittentiDestinatari" nillable="true" type="impl:ArrayOfMittenteDestinatarioIn"/>
+					<element maxOccurs="1" minOccurs="0" name="AggiornaAnagrafiche" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="InCaricoA" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="AnnoPratica" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="NumeroPratica" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="DataDocumento" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="NumeroDocumento" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="NumeroAllegati" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="DataEvid" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="OggettoStandard" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Utente" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Ruolo" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Allegati" nillable="true" type="impl:ArrayOfAllegatoIn"/>
+				</sequence>
+			</complexType>
+			<element name="InserisciProtocolloEAnagraficheResponse">
+				<complexType>
+					<sequence>
+						<element name="InserisciProtocolloEAnagraficheResult" type="impl:ProtocolloOut"/>
+					</sequence>
+				</complexType>
+			</element>
+			<complexType name="RegistroOut">
+				<sequence>
+					<element maxOccurs="1" minOccurs="0" name="TipoRegistro" nillable="true" type="xsd:string"/>
+					<element name="AnnoRegistro" type="xsd:short"/>
+					<element name="NumeroRegistro" type="xsd:int"/>
+				</sequence>
+			</complexType>
+			<complexType name="ArrayOfRegistroOut">
+				<sequence>
+					<element maxOccurs="unbounded" minOccurs="0" name="item" type="impl:RegistroOut"/>
+				</sequence>
+			</complexType>
+			<complexType name="AllegatoInseritoOut">
+				<sequence>
+					<element name="Serial" type="xsd:long"/>
+					<element name="IDBase" type="xsd:int"/>
+					<element name="Versione" type="xsd:short"/>
+				</sequence>
+			</complexType>
+			<complexType name="ArrayOfAllegatoInseritoOut">
+				<sequence>
+					<element maxOccurs="unbounded" minOccurs="0" name="item" type="impl:AllegatoInseritoOut"/>
+				</sequence>
+			</complexType>
+			<complexType name="ProtocolloOut">
+				<sequence>
+					<element name="IdDocumento" type="xsd:int"/>
+					<element name="AnnoProtocollo" type="xsd:short"/>
+					<element name="NumeroProtocollo" type="xsd:int"/>
+					<element name="DataProtocollo" nillable="true" type="xsd:dateTime"/>
+					<element maxOccurs="1" minOccurs="0" name="Messaggio" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Registri" nillable="true" type="impl:ArrayOfRegistroOut"/>
+					<element maxOccurs="1" minOccurs="0" name="Allegati" nillable="true" type="impl:ArrayOfAllegatoInseritoOut"/>
+					<element maxOccurs="1" minOccurs="0" name="Errore" nillable="true" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<element name="InserisciDocumentoEAnagrafiche">
+				<complexType>
+					<sequence>
+						<element name="ProtoIn" type="impl:ProtocolloIn"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="InserisciDocumentoEAnagraficheResponse">
+				<complexType>
+					<sequence>
+						<element name="InserisciDocumentoEAnagraficheResult" type="impl:ProtocolloOut"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="AggiungiAllegati">
+				<complexType>
+					<sequence>
+						<element name="NuoviAllegati" type="impl:NuoviAllegati"/>
+					</sequence>
+				</complexType>
+			</element>
+			<complexType name="NuoviAllegati">
+				<sequence>
+					<element maxOccurs="1" minOccurs="0" name="idDoc" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="annoProt" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="numProt" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="utente" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="ruolo" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Allegati" nillable="true" type="impl:ArrayOfAllegatoIn"/>
+				</sequence>
+			</complexType>
+			<element name="AggiungiAllegatiResponse">
+				<complexType>
+					<sequence>
+						<element name="AggiungiAllegatiResult" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="LeggiProtocolloMultiDB">
+				<complexType>
+					<sequence>
+						<element name="AnnoProtocollo" type="xsd:short"/>
+						<element name="NumeroProtocollo" type="xsd:int"/>
+						<element name="Utente" type="xsd:string"/>
+						<element name="Ruolo" type="xsd:string"/>
+						<element name="CodiceAmministrazione" type="xsd:string"/>
+						<element name="CodiceAOO" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="LeggiProtocolloMultiDBResponse">
+				<complexType>
+					<sequence>
+						<element name="LeggiProtocolloMultiDBResult" type="impl:DocumentoOut"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="LeggiDocumentoMultiDB">
+				<complexType>
+					<sequence>
+						<element name="IdDocumento" type="xsd:int"/>
+						<element name="Utente" type="xsd:string"/>
+						<element name="Ruolo" type="xsd:string"/>
+						<element name="CodiceAmministrazione" type="xsd:string"/>
+						<element name="CodiceAOO" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="LeggiDocumentoMultiDBResponse">
+				<complexType>
+					<sequence>
+						<element name="LeggiDocumentoMultiDBResult" type="impl:DocumentoOut"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="InserisciProtocolloEAnagraficheMultiDB">
+				<complexType>
+					<sequence>
+						<element name="ProtoIn" type="impl:ProtocolloIn"/>
+						<element name="CodiceAmministrazione" type="xsd:string"/>
+						<element name="CodiceAOO" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="InserisciProtocolloEAnagraficheMultiDBResponse">
+				<complexType>
+					<sequence>
+						<element name="InserisciProtocolloEAnagraficheMultiDBResult" type="impl:ProtocolloOut"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="InserisciDocumentoEAnagraficheMultiDB">
+				<complexType>
+					<sequence>
+						<element name="ProtoIn" type="impl:ProtocolloIn"/>
+						<element name="CodiceAmministrazione" type="xsd:string"/>
+						<element name="CodiceAOO" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="InserisciDocumentoEAnagraficheMultiDBResponse">
+				<complexType>
+					<sequence>
+						<element name="InserisciDocumentoEAnagraficheMultiDBResult" type="impl:ProtocolloOut"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="AggiungiAllegatiMultiDB">
+				<complexType>
+					<sequence>
+						<element name="NuoviAllegati" type="impl:NuoviAllegati"/>
+						<element name="CodiceAmministrazione" type="xsd:string"/>
+						<element name="CodiceAOO" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="AggiungiAllegatiMultiDBResponse">
+				<complexType>
+					<sequence>
+						<element name="AggiungiAllegatiMultiDBResult" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="Login">
+				<complexType>
+					<sequence>
+						<element name="Utente" type="xsd:string"/>
+						<element name="Password" type="xsd:string"/>
+						<element name="Ruolo" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="LoginResponse">
+				<complexType>
+					<sequence>
+						<element name="LoginResult" type="impl:LoginOut"/>
+					</sequence>
+				</complexType>
+			</element>
+			<complexType name="LoginOut">
+				<sequence>
+					<element maxOccurs="1" minOccurs="0" name="Utente" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Ruolo" nillable="true" type="xsd:string"/>
+					<element name="Autenticato" type="xsd:boolean"/>
+					<element maxOccurs="1" minOccurs="0" name="Messaggio" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Errore" nillable="true" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<element name="LoginMultiDB">
+				<complexType>
+					<sequence>
+						<element name="Utente" type="xsd:string"/>
+						<element name="Password" type="xsd:string"/>
+						<element name="Ruolo" type="xsd:string"/>
+						<element name="CodiceAmministrazione" type="xsd:string"/>
+						<element name="CodiceAOO" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="LoginMultiDBResponse">
+				<complexType>
+					<sequence>
+						<element name="LoginMultiDBResult" type="impl:LoginOut"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="RicercaAmministrazione">
+				<complexType>
+					<sequence>
+						<element name="CodiceAmmSoggetto" type="xsd:string"/>
+						<element name="CodiceAOOSoggetto" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="RicercaAmministrazioneResponse">
+				<complexType>
+					<sequence>
+						<element name="RicercaAmministrazioneResult" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="RicercaAmministrazioneMultiDB">
+				<complexType>
+					<sequence>
+						<element name="CodiceAmmSoggetto" type="xsd:string"/>
+						<element name="CodiceAOOSoggetto" type="xsd:string"/>
+						<element name="CodiceAmministrazione" type="xsd:string"/>
+						<element name="CodiceAOO" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="RicercaAmministrazioneMultiDBResponse">
+				<complexType>
+					<sequence>
+						<element name="RicercaAmministrazioneMultiDBResult" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="AggiungiAllegati2">
+				<complexType>
+					<sequence>
+						<element name="NuoviAllegati" type="impl:NuoviAllegati"/>
+						<element name="CodiceAmministrazione" type="xsd:string"/>
+						<element name="CodiceAOO" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="AggiungiAllegati2Response">
+				<complexType>
+					<sequence>
+						<element name="AggiungiAllegati2Result" type="impl:AllegatiInseritiOut"/>
+					</sequence>
+				</complexType>
+			</element>
+			<complexType name="AllegatiInseritiOut">
+				<sequence>
+					<element name="IdDocumento" type="xsd:int"/>
+					<element maxOccurs="1" minOccurs="0" name="Allegati" nillable="true" type="impl:ArrayOfAllegatoInseritoOut"/>
+					<element maxOccurs="1" minOccurs="0" name="Messaggio" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Errore" nillable="true" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<element name="InserisciDocumentoDaDM">
+				<complexType>
+					<sequence>
+						<element name="DocumentumIn" type="impl:DocumentumIn"/>
+						<element name="CodiceAmministrazione" type="xsd:string"/>
+						<element name="CodiceAOO" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<complexType name="DocumentumIn">
+				<sequence>
+					<element maxOccurs="1" minOccurs="0" name="ObjecID" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="TipoDocumento" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Oggetto" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Origine" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="MittenteInterno" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Utente" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Ruolo" nillable="true" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<element name="InserisciDocumentoDaDMResponse">
+				<complexType>
+					<sequence>
+						<element name="DocumentumOut" type="impl:DocumentumOut"/>
+					</sequence>
+				</complexType>
+			</element>
+			<complexType name="DocumentumOut">
+				<sequence>
+					<element name="IdDocumento" type="xsd:int"/>
+					<element name="AnnoProtocollo" type="xsd:short"/>
+					<element name="NumeroProtocollo" type="xsd:int"/>
+					<element name="DataProtocollo" nillable="true" type="xsd:dateTime"/>
+					<element maxOccurs="1" minOccurs="0" name="Registri" nillable="true" type="impl:ArrayOfRegistroOut"/>
+					<element maxOccurs="1" minOccurs="0" name="Messaggio" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Errore" nillable="true" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<element name="ModificaDocumentoEAnagrafiche">
+				<complexType>
+					<sequence>
+						<element name="ProtoIn" type="impl:ModificaProtocolloIn"/>
+						<element name="CodiceAmministrazione" type="xsd:string"/>
+						<element name="CodiceAOO" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<complexType name="ModificaProtocolloIn">
+				<sequence>
+					<element maxOccurs="1" minOccurs="0" name="IdDocumento" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="AnnoProtocollo" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="NumeroProtocollo" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Data" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Classifica" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="TipoDocumento" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Oggetto" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="OggettoBilingue" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Origine" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="MittenteInterno" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="MittentiDestinatari" nillable="true" type="impl:ArrayOfMittenteDestinatarioIn"/>
+					<element maxOccurs="1" minOccurs="0" name="AggiornaAnagrafiche" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="InCaricoA" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="AnnoPratica" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="NumeroPratica" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="DataDocumento" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="NumeroDocumento" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="NumeroAllegati" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="DataEvid" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Utente" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Ruolo" nillable="true" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<element name="ModificaDocumentoEAnagraficheResponse">
+				<complexType>
+					<sequence>
+						<element name="ModificaDocumentoEAnagraficheResult" type="impl:ModificaProtocolloOut"/>
+					</sequence>
+				</complexType>
+			</element>
+			<complexType name="ModificaProtocolloOut">
+				<sequence>
+					<element name="IdDocumento" type="xsd:int"/>
+					<element maxOccurs="1" minOccurs="0" name="Messaggio" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Errore" nillable="true" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<element name="CreaCopie">
+				<complexType>
+					<sequence>
+						<element name="CreaCopieIn" type="impl:CreaCopieIn"/>
+						<element name="CodiceAmministrazione" type="xsd:string"/>
+						<element name="CodiceAOO" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<complexType name="UODestinataria">
+				<sequence>
+					<element maxOccurs="1" minOccurs="0" name="Carico" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="TipoUO" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Data" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="NumeroCopie" nillable="true" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<complexType name="ArrayOfUODestinataria">
+				<sequence>
+					<element maxOccurs="unbounded" minOccurs="0" name="item" type="impl:UODestinataria"/>
+				</sequence>
+			</complexType>
+			<complexType name="CreaCopieIn">
+				<sequence>
+					<element maxOccurs="1" minOccurs="0" name="IdDocumento" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="AnnoProtocollo" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="NumeroProtocollo" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="FascicolaConOriginale" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="UODestinatarie" type="impl:ArrayOfUODestinataria"/>
+					<element maxOccurs="1" minOccurs="0" name="Utente" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Ruolo" nillable="true" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<element name="CreaCopieResponse">
+				<complexType>
+					<sequence>
+						<element name="CreaCopieResult" type="impl:CreaCopieOut"/>
+					</sequence>
+				</complexType>
+			</element>
+			<complexType name="CopiaCreata">
+				<sequence>
+					<element name="IdDocumentoCopia" type="xsd:int"/>
+					<element maxOccurs="1" minOccurs="0" name="Carico" nillable="true" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<complexType name="ArrayOfCopiaCreata">
+				<sequence>
+					<element maxOccurs="unbounded" minOccurs="0" name="item" type="impl:CopiaCreata"/>
+				</sequence>
+			</complexType>
+			<complexType name="CreaCopieOut">
+				<sequence>
+					<element maxOccurs="1" minOccurs="0" name="Messaggio" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Errore" nillable="true" type="xsd:string"/>
+					<element name="IdDocumentoSorgente" type="xsd:int"/>
+					<element maxOccurs="1" minOccurs="0" name="CopieCreate" nillable="true" type="impl:ArrayOfCopiaCreata"/>
+				</sequence>
+			</complexType>
+			<element name="LeggiBarcode">
+				<complexType>
+					<sequence>
+						<element name="Barcode" type="xsd:string"/>
+						<element name="Utente" type="xsd:string"/>
+						<element name="Ruolo" type="xsd:string"/>
+						<element name="CodiceAmministrazione" type="xsd:string"/>
+						<element name="CodiceAOO" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="LeggiBarcodeResponse">
+				<complexType>
+					<sequence>
+						<element name="LeggiBarcodeResult" type="impl:DocumentoOut"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="LeggiDocumentoString">
+				<complexType>
+					<sequence>
+						<element name="IdDocumento" type="xsd:int"/>
+						<element name="Utente" type="xsd:string"/>
+						<element name="Ruolo" type="xsd:string"/>
+						<element name="CodiceAmministrazione" type="xsd:string"/>
+						<element name="CodiceAOO" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="LeggiDocumentoStringResponse">
+				<complexType>
+					<sequence>
+						<element name="LeggiDocumentoStringResult" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="LeggiProtocolloString">
+				<complexType>
+					<sequence>
+						<element name="AnnoProtocollo" type="xsd:short"/>
+						<element name="NumeroProtocollo" type="xsd:int"/>
+						<element name="Utente" type="xsd:string"/>
+						<element name="Ruolo" type="xsd:string"/>
+						<element name="CodiceAmministrazione" type="xsd:string"/>
+						<element name="CodiceAOO" type="xsd:string"/>
+						<element name="OutputBreve" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="LeggiProtocolloStringResponse">
+				<complexType>
+					<sequence>
+						<element name="LeggiProtocolloStringResult" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="LeggiBarcodeString">
+				<complexType>
+					<sequence>
+						<element name="Barcode" type="xsd:string"/>
+						<element name="Utente" type="xsd:string"/>
+						<element name="Ruolo" type="xsd:string"/>
+						<element name="CodiceAmministrazione" type="xsd:string"/>
+						<element name="CodiceAOO" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="LeggiBarcodeStringResponse">
+				<complexType>
+					<sequence>
+						<element name="LeggiBarcodeStringResult" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="InserisciDocumentoEAnagraficheString">
+				<complexType>
+					<sequence>
+						<element name="ProtocolloInStr" type="xsd:string"/>
+						<element name="CodiceAmministrazione" type="xsd:string"/>
+						<element name="CodiceAOO" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="InserisciDocumentoEAnagraficheStringResponse">
+				<complexType>
+					<sequence>
+						<element name="InserisciDocumentoEAnagraficheStringResult" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="InserisciProtocolloEAnagraficheString">
+				<complexType>
+					<sequence>
+						<element name="ProtocolloInStr" type="xsd:string"/>
+						<element name="CodiceAmministrazione" type="xsd:string"/>
+						<element name="CodiceAOO" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="InserisciProtocolloEAnagraficheStringResponse">
+				<complexType>
+					<sequence>
+						<element name="InserisciProtocolloEAnagraficheStringResult" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="ModificaDocumentoEAnagraficheString">
+				<complexType>
+					<sequence>
+						<element name="ProtocolloInStr" type="xsd:string"/>
+						<element name="CodiceAmministrazione" type="xsd:string"/>
+						<element name="CodiceAOO" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="ModificaDocumentoEAnagraficheStringResponse">
+				<complexType>
+					<sequence>
+						<element name="ModificaDocumentoEAnagraficheStringResult" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="RicercaPerCodiceFiscaleString">
+				<complexType>
+					<sequence>
+						<element name="CodiceFiscale" type="xsd:string"/>
+						<element name="SoloProtocollo" type="xsd:string"/>
+						<element name="Utente" type="xsd:string"/>
+						<element name="Ruolo" type="xsd:string"/>
+						<element name="CodiceAmministrazione" type="xsd:string"/>
+						<element name="CodiceAOO" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="RicercaPerCodiceFiscaleStringResponse">
+				<complexType>
+					<sequence>
+						<element name="RicercaPerCodiceFiscaleStringResult" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="AggiungiAllegatiString">
+				<complexType>
+					<sequence>
+						<element name="NuoviAllegatiStr" type="xsd:string"/>
+						<element name="CodiceAmministrazione" type="xsd:string"/>
+						<element name="CodiceAOO" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="AggiungiAllegatiStringResponse">
+				<complexType>
+					<sequence>
+						<element name="AggiungiAllegatiStringResult" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="CreaCopieString">
+				<complexType>
+					<sequence>
+						<element name="CreaCopieInStr" type="xsd:string"/>
+						<element name="CodiceAmministrazione" type="xsd:string"/>
+						<element name="CodiceAOO" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="CreaCopieStringResponse">
+				<complexType>
+					<sequence>
+						<element name="CreaCopieStringResult" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="PubblicazioneDocumento">
+				<complexType>
+					<sequence>
+						<element name="Pubblicazione" type="xsd:string"/>
+						<element name="CodiceAmministrazione" type="xsd:string"/>
+						<element name="CodiceAOO" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="PubblicazioneDocumentoResponse">
+				<complexType>
+					<sequence>
+						<element name="PubblicazioneDocumentoResult" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="LeggiAnagrafica">
+				<complexType>
+					<sequence>
+						<element name="IdSoggetto" type="xsd:string"/>
+						<element name="CodiceFiscale" type="xsd:string"/>
+						<element name="Utente" type="xsd:string"/>
+						<element name="Ruolo" type="xsd:string"/>
+						<element name="CodiceAmministrazione" type="xsd:string"/>
+						<element name="CodiceAOO" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="LeggiAnagraficaResponse">
+				<complexType>
+					<sequence>
+						<element name="LeggiAnagraficaResult" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="LeggiCopie">
+				<complexType>
+					<sequence>
+						<element name="LeggiCopieIn" type="xsd:string"/>
+						<element name="CodiceAmministrazione" type="xsd:string"/>
+						<element name="CodiceAOO" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="LeggiCopieResponse">
+				<complexType>
+					<sequence>
+						<element name="LeggiCopieResult" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="EliminaAllegato">
+				<complexType>
+					<sequence>
+						<element name="EliminaAllegatoIn" type="xsd:string"/>
+						<element name="CodiceAmministrazione" type="xsd:string"/>
+						<element name="CodiceAOO" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="EliminaAllegatoResponse">
+				<complexType>
+					<sequence>
+						<element name="EliminaAllegatoResult" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="AnnullaDocumento">
+				<complexType>
+					<sequence>
+						<element name="AnnullaDocumentoIn" type="xsd:string"/>
+						<element name="CodiceAmministrazione" type="xsd:string"/>
+						<element name="CodiceAOO" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="AnnullaDocumentoResponse">
+				<complexType>
+					<sequence>
+						<element name="AnnullaDocumentoResult" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="CollegaDocumento">
+				<complexType>
+					<sequence>
+						<element name="CollegaDocumentoIn" type="xsd:string"/>
+						<element name="CodiceAmministrazione" type="xsd:string"/>
+						<element name="CodiceAOO" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="CollegaDocumentoResponse">
+				<complexType>
+					<sequence>
+						<element name="CollegaDocumentoResult" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="LeggiDocumentoPlus">
+				<complexType>
+					<sequence>
+						<element name="FiltroDocumento" type="xsd:string"/>
+						<element name="CodiceAmministrazione" type="xsd:string"/>
+						<element name="CodiceAOO" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="LeggiDocumentoPlusResponse">
+				<complexType>
+					<sequence>
+						<element name="LeggiDocumentoPlusResult" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="InserisciDatiUtente">
+				<complexType>
+					<sequence>
+						<element name="Appartenenza" type="xsd:string"/>
+						<element name="Identificativo" type="xsd:int"/>
+						<element name="DatiUtente" type="xsd:string"/>
+						<element name="Utente" type="xsd:string"/>
+						<element name="Ruolo" type="xsd:string"/>
+						<element name="CodiceAmministrazione" type="xsd:string"/>
+						<element name="CodiceAOO" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="InserisciDatiUtenteResponse">
+				<complexType>
+					<sequence>
+						<element name="InserisciDatiUtenteResult" type="impl:EsitoOperazione"/>
+					</sequence>
+				</complexType>
+			</element>
+			<complexType name="EsitoOperazione">
+				<sequence>
+					<element name="Esito" type="xsd:boolean"/>
+					<element maxOccurs="1" minOccurs="0" name="Messaggio" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Errore" nillable="true" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<element name="RicercaPerCodiceFiscale">
+				<complexType>
+					<sequence>
+						<element name="CodiceFiscale" type="xsd:string"/>
+						<element name="SoloProtocollo" type="xsd:string"/>
+						<element name="Utente" type="xsd:string"/>
+						<element name="Ruolo" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="RicercaPerCodiceFiscaleResponse">
+				<complexType>
+					<sequence>
+						<element name="RicercaPerCodiceFiscaleResult" type="impl:ProtocolliSoggettoOut"/>
+					</sequence>
+				</complexType>
+			</element>
+			<complexType name="ProtocolloSoggettoOut">
+				<sequence>
+					<element name="IdDocumento" type="xsd:int"/>
+					<element name="NumeroProtocollo" type="xsd:int"/>
+					<element maxOccurs="1" minOccurs="0" name="DataProtocollo" nillable="true" type="xsd:string"/>
+					<element name="AnnoProtocollazione" type="xsd:int"/>
+					<element maxOccurs="1" minOccurs="0" name="Origine" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Oggetto" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="MittenteDestinatario" nillable="true" type="xsd:string"/>
+					<element name="IdSoggetto" type="xsd:int"/>
+					<element maxOccurs="1" minOccurs="0" name="Cognome" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Nome" nillable="true" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<complexType name="ArrayOfProtocolloSoggettoOut">
+				<sequence>
+					<element maxOccurs="unbounded" minOccurs="0" name="item" type="impl:ProtocolloSoggettoOut"/>
+				</sequence>
+			</complexType>
+			<complexType name="ProtocolliSoggettoOut">
+				<sequence>
+					<element maxOccurs="1" minOccurs="0" name="Protocolli" nillable="true" type="impl:ArrayOfProtocolloSoggettoOut"/>
+					<element maxOccurs="1" minOccurs="0" name="Messaggio" nillable="true" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="Errore" nillable="true" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<element name="RicercaPerCodiceFiscaleMultiDB">
+				<complexType>
+					<sequence>
+						<element name="CodiceFiscale" type="xsd:string"/>
+						<element name="SoloProtocollo" type="xsd:string"/>
+						<element name="Utente" type="xsd:string"/>
+						<element name="Ruolo" type="xsd:string"/>
+						<element name="CodiceAmministrazione" type="xsd:string"/>
+						<element name="CodiceAOO" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="RicercaPerCodiceFiscaleMultiDBResponse">
+				<complexType>
+					<sequence>
+						<element name="RicercaPerCodiceFiscaleMultiDBResult" type="impl:ProtocolliSoggettoOut"/>
+					</sequence>
+				</complexType>
+			</element>
+		</schema>
+	</wsdl:types>
+
+	<wsdl:message name="LeggiProtocolloResponse">
+
+		<wsdl:part element="impl:LeggiProtocolloResponse" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="InserisciProtocolloEAnagraficheRequest">
+
+		<wsdl:part element="impl:InserisciProtocolloEAnagrafiche" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="LoginMultiDBRequest">
+
+		<wsdl:part element="impl:LoginMultiDB" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="AggiungiAllegatiRequest">
+
+		<wsdl:part element="impl:AggiungiAllegati" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="InserisciProtocolloEAnagraficheStringResponse">
+
+		<wsdl:part element="impl:InserisciProtocolloEAnagraficheStringResponse" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="AggiungiAllegatiStringResponse">
+
+		<wsdl:part element="impl:AggiungiAllegatiStringResponse" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="LeggiDocumentoPlusRequest">
+
+		<wsdl:part element="impl:LeggiDocumentoPlus" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="CreaCopieRequest">
+
+		<wsdl:part element="impl:CreaCopie" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="InserisciProtocolloEAnagraficheStringRequest">
+
+		<wsdl:part element="impl:InserisciProtocolloEAnagraficheString" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="AggiungiAllegatiStringRequest">
+
+		<wsdl:part element="impl:AggiungiAllegatiString" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="InserisciDocumentoEAnagraficheRequest">
+
+		<wsdl:part element="impl:InserisciDocumentoEAnagrafiche" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="LeggiProtocolloMultiDBRequest">
+
+		<wsdl:part element="impl:LeggiProtocolloMultiDB" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="RicercaAmministrazioneMultiDBResponse">
+
+		<wsdl:part element="impl:RicercaAmministrazioneMultiDBResponse" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="LeggiProtocolloStringRequest">
+
+		<wsdl:part element="impl:LeggiProtocolloString" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="LeggiDocumentoMultiDBResponse">
+
+		<wsdl:part element="impl:LeggiDocumentoMultiDBResponse" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="RicercaPerCodiceFiscaleResponse">
+
+		<wsdl:part element="impl:RicercaPerCodiceFiscaleResponse" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="LeggiProtocolloStringResponse">
+
+		<wsdl:part element="impl:LeggiProtocolloStringResponse" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="ModificaDocumentoEAnagraficheStringRequest">
+
+		<wsdl:part element="impl:ModificaDocumentoEAnagraficheString" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="LeggiDocumentoStringRequest">
+
+		<wsdl:part element="impl:LeggiDocumentoString" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="LeggiBarcodeStringResponse">
+
+		<wsdl:part element="impl:LeggiBarcodeStringResponse" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="InserisciProtocolloEAnagraficheMultiDBResponse">
+
+		<wsdl:part element="impl:InserisciProtocolloEAnagraficheMultiDBResponse" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="EliminaAllegatoRequest">
+
+		<wsdl:part element="impl:EliminaAllegato" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="RicercaPerCodiceFiscaleMultiDBResponse">
+
+		<wsdl:part element="impl:RicercaPerCodiceFiscaleMultiDBResponse" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="RicercaAmministrazioneMultiDBRequest">
+
+		<wsdl:part element="impl:RicercaAmministrazioneMultiDB" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="InserisciProtocolloEAnagraficheResponse">
+
+		<wsdl:part element="impl:InserisciProtocolloEAnagraficheResponse" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="LoginResponse">
+
+		<wsdl:part element="impl:LoginResponse" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="LeggiBarcodeRequest">
+
+		<wsdl:part element="impl:LeggiBarcode" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="ModificaDocumentoEAnagraficheRequest">
+
+		<wsdl:part element="impl:ModificaDocumentoEAnagrafiche" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="LeggiProtocolloMultiDBResponse">
+
+		<wsdl:part element="impl:LeggiProtocolloMultiDBResponse" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="CollegaDocumentoResponse">
+
+		<wsdl:part element="impl:CollegaDocumentoResponse" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="InserisciDocumentoDaDMResponse">
+
+		<wsdl:part element="impl:InserisciDocumentoDaDMResponse" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="LeggiDocumentoStringResponse">
+
+		<wsdl:part element="impl:LeggiDocumentoStringResponse" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="InserisciDocumentoDaDMRequest">
+
+		<wsdl:part element="impl:InserisciDocumentoDaDM" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="PubblicazioneDocumentoResponse">
+
+		<wsdl:part element="impl:PubblicazioneDocumentoResponse" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="LoginMultiDBResponse">
+
+		<wsdl:part element="impl:LoginMultiDBResponse" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="RicercaPerCodiceFiscaleStringRequest">
+
+		<wsdl:part element="impl:RicercaPerCodiceFiscaleString" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="EliminaAllegatoResponse">
+
+		<wsdl:part element="impl:EliminaAllegatoResponse" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="ModificaDocumentoEAnagraficheStringResponse">
+
+		<wsdl:part element="impl:ModificaDocumentoEAnagraficheStringResponse" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="InserisciDatiUtenteRequest">
+
+		<wsdl:part element="impl:InserisciDatiUtente" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="RicercaAmministrazioneRequest">
+
+		<wsdl:part element="impl:RicercaAmministrazione" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="CreaCopieStringResponse">
+
+		<wsdl:part element="impl:CreaCopieStringResponse" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="LeggiBarcodeStringRequest">
+
+		<wsdl:part element="impl:LeggiBarcodeString" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="RicercaPerCodiceFiscaleMultiDBRequest">
+
+		<wsdl:part element="impl:RicercaPerCodiceFiscaleMultiDB" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="CreaCopieResponse">
+
+		<wsdl:part element="impl:CreaCopieResponse" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="LeggiCopieResponse">
+
+		<wsdl:part element="impl:LeggiCopieResponse" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="AnnullaDocumentoRequest">
+
+		<wsdl:part element="impl:AnnullaDocumento" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="RicercaPerCodiceFiscaleRequest">
+
+		<wsdl:part element="impl:RicercaPerCodiceFiscale" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="RicercaPerCodiceFiscaleStringResponse">
+
+		<wsdl:part element="impl:RicercaPerCodiceFiscaleStringResponse" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="LeggiBarcodeResponse">
+
+		<wsdl:part element="impl:LeggiBarcodeResponse" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="LoginRequest">
+
+		<wsdl:part element="impl:Login" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="LeggiAnagraficaResponse">
+
+		<wsdl:part element="impl:LeggiAnagraficaResponse" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="LeggiCopieRequest">
+
+		<wsdl:part element="impl:LeggiCopie" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="AnnullaDocumentoResponse">
+
+		<wsdl:part element="impl:AnnullaDocumentoResponse" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="AggiungiAllegatiResponse">
+
+		<wsdl:part element="impl:AggiungiAllegatiResponse" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="InserisciDocumentoEAnagraficheStringResponse">
+
+		<wsdl:part element="impl:InserisciDocumentoEAnagraficheStringResponse" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="InserisciDatiUtenteResponse">
+
+		<wsdl:part element="impl:InserisciDatiUtenteResponse" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="LeggiDocumentoMultiDBRequest">
+
+		<wsdl:part element="impl:LeggiDocumentoMultiDB" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="InserisciDocumentoEAnagraficheMultiDBResponse">
+
+		<wsdl:part element="impl:InserisciDocumentoEAnagraficheMultiDBResponse" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="LeggiAnagraficaRequest">
+
+		<wsdl:part element="impl:LeggiAnagrafica" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="RicercaAmministrazioneResponse">
+
+		<wsdl:part element="impl:RicercaAmministrazioneResponse" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="InserisciDocumentoEAnagraficheResponse">
+
+		<wsdl:part element="impl:InserisciDocumentoEAnagraficheResponse" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="AggiungiAllegati2Request">
+
+		<wsdl:part element="impl:AggiungiAllegati2" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="InserisciProtocolloEAnagraficheMultiDBRequest">
+
+		<wsdl:part element="impl:InserisciProtocolloEAnagraficheMultiDB" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="AggiungiAllegatiMultiDBRequest">
+
+		<wsdl:part element="impl:AggiungiAllegatiMultiDB" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="ModificaDocumentoEAnagraficheResponse">
+
+		<wsdl:part element="impl:ModificaDocumentoEAnagraficheResponse" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="AggiungiAllegatiMultiDBResponse">
+
+		<wsdl:part element="impl:AggiungiAllegatiMultiDBResponse" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="PubblicazioneDocumentoRequest">
+
+		<wsdl:part element="impl:PubblicazioneDocumento" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="CollegaDocumentoRequest">
+
+		<wsdl:part element="impl:CollegaDocumento" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="AggiungiAllegati2Response">
+
+		<wsdl:part element="impl:AggiungiAllegati2Response" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="InserisciDocumentoEAnagraficheMultiDBRequest">
+
+		<wsdl:part element="impl:InserisciDocumentoEAnagraficheMultiDB" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="LeggiDocumentoRequest">
+
+		<wsdl:part element="impl:LeggiDocumento" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="LeggiDocumentoPlusResponse">
+
+		<wsdl:part element="impl:LeggiDocumentoPlusResponse" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="LeggiProtocolloRequest">
+
+		<wsdl:part element="impl:LeggiProtocollo" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="LeggiDocumentoResponse">
+
+		<wsdl:part element="impl:LeggiDocumentoResponse" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="InserisciDocumentoEAnagraficheStringRequest">
+
+		<wsdl:part element="impl:InserisciDocumentoEAnagraficheString" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:message name="CreaCopieStringRequest">
+
+		<wsdl:part element="impl:CreaCopieString" name="parameters"/>
+
+	</wsdl:message>
+
+	<wsdl:portType name="ProtocolloSoap">
+
+		<wsdl:operation name="LeggiProtocollo">
+
+			<wsdl:input message="impl:LeggiProtocolloRequest" name="LeggiProtocolloRequest"/>
+
+			<wsdl:output message="impl:LeggiProtocolloResponse" name="LeggiProtocolloResponse"/>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="LeggiDocumento">
+
+			<wsdl:input message="impl:LeggiDocumentoRequest" name="LeggiDocumentoRequest"/>
+
+			<wsdl:output message="impl:LeggiDocumentoResponse" name="LeggiDocumentoResponse"/>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="InserisciProtocolloEAnagrafiche">
+
+			<wsdl:input message="impl:InserisciProtocolloEAnagraficheRequest" name="InserisciProtocolloEAnagraficheRequest"/>
+
+			<wsdl:output message="impl:InserisciProtocolloEAnagraficheResponse" name="InserisciProtocolloEAnagraficheResponse"/>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="InserisciDocumentoEAnagrafiche">
+
+			<wsdl:input message="impl:InserisciDocumentoEAnagraficheRequest" name="InserisciDocumentoEAnagraficheRequest"/>
+
+			<wsdl:output message="impl:InserisciDocumentoEAnagraficheResponse" name="InserisciDocumentoEAnagraficheResponse"/>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="AggiungiAllegati">
+
+			<wsdl:input message="impl:AggiungiAllegatiRequest" name="AggiungiAllegatiRequest"/>
+
+			<wsdl:output message="impl:AggiungiAllegatiResponse" name="AggiungiAllegatiResponse"/>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="LeggiProtocolloMultiDB">
+
+			<wsdl:input message="impl:LeggiProtocolloMultiDBRequest" name="LeggiProtocolloMultiDBRequest"/>
+
+			<wsdl:output message="impl:LeggiProtocolloMultiDBResponse" name="LeggiProtocolloMultiDBResponse"/>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="LeggiDocumentoMultiDB">
+
+			<wsdl:input message="impl:LeggiDocumentoMultiDBRequest" name="LeggiDocumentoMultiDBRequest"/>
+
+			<wsdl:output message="impl:LeggiDocumentoMultiDBResponse" name="LeggiDocumentoMultiDBResponse"/>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="InserisciProtocolloEAnagraficheMultiDB">
+
+			<wsdl:input message="impl:InserisciProtocolloEAnagraficheMultiDBRequest" name="InserisciProtocolloEAnagraficheMultiDBRequest"/>
+
+			<wsdl:output message="impl:InserisciProtocolloEAnagraficheMultiDBResponse" name="InserisciProtocolloEAnagraficheMultiDBResponse"/>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="InserisciDocumentoEAnagraficheMultiDB">
+
+			<wsdl:input message="impl:InserisciDocumentoEAnagraficheMultiDBRequest" name="InserisciDocumentoEAnagraficheMultiDBRequest"/>
+
+			<wsdl:output message="impl:InserisciDocumentoEAnagraficheMultiDBResponse" name="InserisciDocumentoEAnagraficheMultiDBResponse"/>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="AggiungiAllegatiMultiDB">
+
+			<wsdl:input message="impl:AggiungiAllegatiMultiDBRequest" name="AggiungiAllegatiMultiDBRequest"/>
+
+			<wsdl:output message="impl:AggiungiAllegatiMultiDBResponse" name="AggiungiAllegatiMultiDBResponse"/>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="Login">
+
+			<wsdl:input message="impl:LoginRequest" name="LoginRequest"/>
+
+			<wsdl:output message="impl:LoginResponse" name="LoginResponse"/>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="LoginMultiDB">
+
+			<wsdl:input message="impl:LoginMultiDBRequest" name="LoginMultiDBRequest"/>
+
+			<wsdl:output message="impl:LoginMultiDBResponse" name="LoginMultiDBResponse"/>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="RicercaAmministrazione">
+
+			<wsdl:input message="impl:RicercaAmministrazioneRequest" name="RicercaAmministrazioneRequest"/>
+
+			<wsdl:output message="impl:RicercaAmministrazioneResponse" name="RicercaAmministrazioneResponse"/>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="RicercaAmministrazioneMultiDB">
+
+			<wsdl:input message="impl:RicercaAmministrazioneMultiDBRequest" name="RicercaAmministrazioneMultiDBRequest"/>
+
+			<wsdl:output message="impl:RicercaAmministrazioneMultiDBResponse" name="RicercaAmministrazioneMultiDBResponse"/>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="AggiungiAllegati2">
+
+			<wsdl:input message="impl:AggiungiAllegati2Request" name="AggiungiAllegati2Request"/>
+
+			<wsdl:output message="impl:AggiungiAllegati2Response" name="AggiungiAllegati2Response"/>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="InserisciDocumentoDaDM">
+
+			<wsdl:input message="impl:InserisciDocumentoDaDMRequest" name="InserisciDocumentoDaDMRequest"/>
+
+			<wsdl:output message="impl:InserisciDocumentoDaDMResponse" name="InserisciDocumentoDaDMResponse"/>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="ModificaDocumentoEAnagrafiche">
+
+			<wsdl:input message="impl:ModificaDocumentoEAnagraficheRequest" name="ModificaDocumentoEAnagraficheRequest"/>
+
+			<wsdl:output message="impl:ModificaDocumentoEAnagraficheResponse" name="ModificaDocumentoEAnagraficheResponse"/>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="CreaCopie">
+
+			<wsdl:input message="impl:CreaCopieRequest" name="CreaCopieRequest"/>
+
+			<wsdl:output message="impl:CreaCopieResponse" name="CreaCopieResponse"/>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="LeggiBarcode">
+
+			<wsdl:input message="impl:LeggiBarcodeRequest" name="LeggiBarcodeRequest"/>
+
+			<wsdl:output message="impl:LeggiBarcodeResponse" name="LeggiBarcodeResponse"/>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="LeggiDocumentoString">
+
+			<wsdl:input message="impl:LeggiDocumentoStringRequest" name="LeggiDocumentoStringRequest"/>
+
+			<wsdl:output message="impl:LeggiDocumentoStringResponse" name="LeggiDocumentoStringResponse"/>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="LeggiProtocolloString">
+
+			<wsdl:input message="impl:LeggiProtocolloStringRequest" name="LeggiProtocolloStringRequest"/>
+
+			<wsdl:output message="impl:LeggiProtocolloStringResponse" name="LeggiProtocolloStringResponse"/>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="LeggiBarcodeString">
+
+			<wsdl:input message="impl:LeggiBarcodeStringRequest" name="LeggiBarcodeStringRequest"/>
+
+			<wsdl:output message="impl:LeggiBarcodeStringResponse" name="LeggiBarcodeStringResponse"/>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="InserisciDocumentoEAnagraficheString">
+
+			<wsdl:input message="impl:InserisciDocumentoEAnagraficheStringRequest" name="InserisciDocumentoEAnagraficheStringRequest"/>
+
+			<wsdl:output message="impl:InserisciDocumentoEAnagraficheStringResponse" name="InserisciDocumentoEAnagraficheStringResponse"/>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="InserisciProtocolloEAnagraficheString">
+
+			<wsdl:input message="impl:InserisciProtocolloEAnagraficheStringRequest" name="InserisciProtocolloEAnagraficheStringRequest"/>
+
+			<wsdl:output message="impl:InserisciProtocolloEAnagraficheStringResponse" name="InserisciProtocolloEAnagraficheStringResponse"/>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="ModificaDocumentoEAnagraficheString">
+
+			<wsdl:input message="impl:ModificaDocumentoEAnagraficheStringRequest" name="ModificaDocumentoEAnagraficheStringRequest"/>
+
+			<wsdl:output message="impl:ModificaDocumentoEAnagraficheStringResponse" name="ModificaDocumentoEAnagraficheStringResponse"/>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="RicercaPerCodiceFiscaleString">
+
+			<wsdl:input message="impl:RicercaPerCodiceFiscaleStringRequest" name="RicercaPerCodiceFiscaleStringRequest"/>
+
+			<wsdl:output message="impl:RicercaPerCodiceFiscaleStringResponse" name="RicercaPerCodiceFiscaleStringResponse"/>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="AggiungiAllegatiString">
+
+			<wsdl:input message="impl:AggiungiAllegatiStringRequest" name="AggiungiAllegatiStringRequest"/>
+
+			<wsdl:output message="impl:AggiungiAllegatiStringResponse" name="AggiungiAllegatiStringResponse"/>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="CreaCopieString">
+
+			<wsdl:input message="impl:CreaCopieStringRequest" name="CreaCopieStringRequest"/>
+
+			<wsdl:output message="impl:CreaCopieStringResponse" name="CreaCopieStringResponse"/>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="PubblicazioneDocumento">
+
+			<wsdl:input message="impl:PubblicazioneDocumentoRequest" name="PubblicazioneDocumentoRequest"/>
+
+			<wsdl:output message="impl:PubblicazioneDocumentoResponse" name="PubblicazioneDocumentoResponse"/>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="LeggiAnagrafica">
+
+			<wsdl:input message="impl:LeggiAnagraficaRequest" name="LeggiAnagraficaRequest"/>
+
+			<wsdl:output message="impl:LeggiAnagraficaResponse" name="LeggiAnagraficaResponse"/>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="LeggiCopie">
+
+			<wsdl:input message="impl:LeggiCopieRequest" name="LeggiCopieRequest"/>
+
+			<wsdl:output message="impl:LeggiCopieResponse" name="LeggiCopieResponse"/>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="EliminaAllegato">
+
+			<wsdl:input message="impl:EliminaAllegatoRequest" name="EliminaAllegatoRequest"/>
+
+			<wsdl:output message="impl:EliminaAllegatoResponse" name="EliminaAllegatoResponse"/>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="AnnullaDocumento">
+
+			<wsdl:input message="impl:AnnullaDocumentoRequest" name="AnnullaDocumentoRequest"/>
+
+			<wsdl:output message="impl:AnnullaDocumentoResponse" name="AnnullaDocumentoResponse"/>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="CollegaDocumento">
+
+			<wsdl:input message="impl:CollegaDocumentoRequest" name="CollegaDocumentoRequest"/>
+
+			<wsdl:output message="impl:CollegaDocumentoResponse" name="CollegaDocumentoResponse"/>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="LeggiDocumentoPlus">
+
+			<wsdl:input message="impl:LeggiDocumentoPlusRequest" name="LeggiDocumentoPlusRequest"/>
+
+			<wsdl:output message="impl:LeggiDocumentoPlusResponse" name="LeggiDocumentoPlusResponse"/>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="InserisciDatiUtente">
+
+			<wsdl:input message="impl:InserisciDatiUtenteRequest" name="InserisciDatiUtenteRequest"/>
+
+			<wsdl:output message="impl:InserisciDatiUtenteResponse" name="InserisciDatiUtenteResponse"/>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="RicercaPerCodiceFiscale">
+
+			<wsdl:input message="impl:RicercaPerCodiceFiscaleRequest" name="RicercaPerCodiceFiscaleRequest"/>
+
+			<wsdl:output message="impl:RicercaPerCodiceFiscaleResponse" name="RicercaPerCodiceFiscaleResponse"/>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="RicercaPerCodiceFiscaleMultiDB">
+
+			<wsdl:input message="impl:RicercaPerCodiceFiscaleMultiDBRequest" name="RicercaPerCodiceFiscaleMultiDBRequest"/>
+
+			<wsdl:output message="impl:RicercaPerCodiceFiscaleMultiDBResponse" name="RicercaPerCodiceFiscaleMultiDBResponse"/>
+
+		</wsdl:operation>
+
+	</wsdl:portType>
+
+	<wsdl:binding name="ProtocolloSoapSoapBinding" type="impl:ProtocolloSoap">
+
+		<wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+		<wsdl:operation name="LeggiProtocollo">
+
+			<wsdlsoap:operation soapAction="http://tempuri.org/LeggiProtocollo"/>
+
+			<wsdl:input name="LeggiProtocolloRequest">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:input>
+
+			<wsdl:output name="LeggiProtocolloResponse">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="LeggiDocumento">
+
+			<wsdlsoap:operation soapAction="http://tempuri.org/LeggiDocumento"/>
+
+			<wsdl:input name="LeggiDocumentoRequest">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:input>
+
+			<wsdl:output name="LeggiDocumentoResponse">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="InserisciProtocolloEAnagrafiche">
+
+			<wsdlsoap:operation soapAction="http://tempuri.org/InserisciProtocolloEAnagrafiche"/>
+
+			<wsdl:input name="InserisciProtocolloEAnagraficheRequest">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:input>
+
+			<wsdl:output name="InserisciProtocolloEAnagraficheResponse">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="InserisciDocumentoEAnagrafiche">
+
+			<wsdlsoap:operation soapAction="http://tempuri.org/InserisciDocumentoEAnagrafiche"/>
+
+			<wsdl:input name="InserisciDocumentoEAnagraficheRequest">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:input>
+
+			<wsdl:output name="InserisciDocumentoEAnagraficheResponse">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="AggiungiAllegati">
+
+			<wsdlsoap:operation soapAction="http://tempuri.org/AggiungiAllegati"/>
+
+			<wsdl:input name="AggiungiAllegatiRequest">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:input>
+
+			<wsdl:output name="AggiungiAllegatiResponse">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="LeggiProtocolloMultiDB">
+
+			<wsdlsoap:operation soapAction="http://tempuri.org/LeggiProtocolloMultiDB"/>
+
+			<wsdl:input name="LeggiProtocolloMultiDBRequest">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:input>
+
+			<wsdl:output name="LeggiProtocolloMultiDBResponse">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="LeggiDocumentoMultiDB">
+
+			<wsdlsoap:operation soapAction="http://tempuri.org/LeggiDocumentoMultiDB"/>
+
+			<wsdl:input name="LeggiDocumentoMultiDBRequest">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:input>
+
+			<wsdl:output name="LeggiDocumentoMultiDBResponse">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="InserisciProtocolloEAnagraficheMultiDB">
+
+			<wsdlsoap:operation soapAction="http://tempuri.org/InserisciProtocolloEAnagraficheMultiDB"/>
+
+			<wsdl:input name="InserisciProtocolloEAnagraficheMultiDBRequest">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:input>
+
+			<wsdl:output name="InserisciProtocolloEAnagraficheMultiDBResponse">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="InserisciDocumentoEAnagraficheMultiDB">
+
+			<wsdlsoap:operation soapAction="http://tempuri.org/InserisciDocumentoEAnagraficheMultiDB"/>
+
+			<wsdl:input name="InserisciDocumentoEAnagraficheMultiDBRequest">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:input>
+
+			<wsdl:output name="InserisciDocumentoEAnagraficheMultiDBResponse">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="AggiungiAllegatiMultiDB">
+
+			<wsdlsoap:operation soapAction="http://tempuri.org/AggiungiAllegatiMultiDB"/>
+
+			<wsdl:input name="AggiungiAllegatiMultiDBRequest">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:input>
+
+			<wsdl:output name="AggiungiAllegatiMultiDBResponse">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="Login">
+
+			<wsdlsoap:operation soapAction="http://tempuri.org/Login"/>
+
+			<wsdl:input name="LoginRequest">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:input>
+
+			<wsdl:output name="LoginResponse">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="LoginMultiDB">
+
+			<wsdlsoap:operation soapAction="http://tempuri.org/LoginMultiDB"/>
+
+			<wsdl:input name="LoginMultiDBRequest">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:input>
+
+			<wsdl:output name="LoginMultiDBResponse">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="RicercaAmministrazione">
+
+			<wsdlsoap:operation soapAction="http://tempuri.org/RicercaAmministrazione"/>
+
+			<wsdl:input name="RicercaAmministrazioneRequest">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:input>
+
+			<wsdl:output name="RicercaAmministrazioneResponse">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="RicercaAmministrazioneMultiDB">
+
+			<wsdlsoap:operation soapAction="http://tempuri.org/RicercaAmministrazioneMultiDB"/>
+
+			<wsdl:input name="RicercaAmministrazioneMultiDBRequest">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:input>
+
+			<wsdl:output name="RicercaAmministrazioneMultiDBResponse">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="AggiungiAllegati2">
+
+			<wsdlsoap:operation soapAction="http://tempuri.org/AggiungiAllegati2"/>
+
+			<wsdl:input name="AggiungiAllegati2Request">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:input>
+
+			<wsdl:output name="AggiungiAllegati2Response">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="InserisciDocumentoDaDM">
+
+			<wsdlsoap:operation soapAction="http://tempuri.org/InserisciDocumentoDaDM"/>
+
+			<wsdl:input name="InserisciDocumentoDaDMRequest">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:input>
+
+			<wsdl:output name="InserisciDocumentoDaDMResponse">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="ModificaDocumentoEAnagrafiche">
+
+			<wsdlsoap:operation soapAction="http://tempuri.org/ModificaDocumentoEAnagrafiche"/>
+
+			<wsdl:input name="ModificaDocumentoEAnagraficheRequest">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:input>
+
+			<wsdl:output name="ModificaDocumentoEAnagraficheResponse">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="CreaCopie">
+
+			<wsdlsoap:operation soapAction="http://tempuri.org/CreaCopie"/>
+
+			<wsdl:input name="CreaCopieRequest">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:input>
+
+			<wsdl:output name="CreaCopieResponse">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="LeggiBarcode">
+
+			<wsdlsoap:operation soapAction="http://tempuri.org/LeggiBarcode"/>
+
+			<wsdl:input name="LeggiBarcodeRequest">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:input>
+
+			<wsdl:output name="LeggiBarcodeResponse">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="LeggiDocumentoString">
+
+			<wsdlsoap:operation soapAction="http://tempuri.org/LeggiDocumentoString"/>
+
+			<wsdl:input name="LeggiDocumentoStringRequest">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:input>
+
+			<wsdl:output name="LeggiDocumentoStringResponse">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="LeggiProtocolloString">
+
+			<wsdlsoap:operation soapAction="http://tempuri.org/LeggiProtocolloString"/>
+
+			<wsdl:input name="LeggiProtocolloStringRequest">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:input>
+
+			<wsdl:output name="LeggiProtocolloStringResponse">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="LeggiBarcodeString">
+
+			<wsdlsoap:operation soapAction="http://tempuri.org/LeggiBarcodeString"/>
+
+			<wsdl:input name="LeggiBarcodeStringRequest">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:input>
+
+			<wsdl:output name="LeggiBarcodeStringResponse">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="InserisciDocumentoEAnagraficheString">
+
+			<wsdlsoap:operation soapAction="http://tempuri.org/InserisciDocumentoEAnagraficheString"/>
+
+			<wsdl:input name="InserisciDocumentoEAnagraficheStringRequest">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:input>
+
+			<wsdl:output name="InserisciDocumentoEAnagraficheStringResponse">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="InserisciProtocolloEAnagraficheString">
+
+			<wsdlsoap:operation soapAction="http://tempuri.org/InserisciProtocolloEAnagraficheString"/>
+
+			<wsdl:input name="InserisciProtocolloEAnagraficheStringRequest">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:input>
+
+			<wsdl:output name="InserisciProtocolloEAnagraficheStringResponse">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="ModificaDocumentoEAnagraficheString">
+
+			<wsdlsoap:operation soapAction="http://tempuri.org/ModificaDocumentoEAnagraficheString"/>
+
+			<wsdl:input name="ModificaDocumentoEAnagraficheStringRequest">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:input>
+
+			<wsdl:output name="ModificaDocumentoEAnagraficheStringResponse">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="RicercaPerCodiceFiscaleString">
+
+			<wsdlsoap:operation soapAction="http://tempuri.org/RicercaPerCodiceFiscaleString"/>
+
+			<wsdl:input name="RicercaPerCodiceFiscaleStringRequest">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:input>
+
+			<wsdl:output name="RicercaPerCodiceFiscaleStringResponse">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="AggiungiAllegatiString">
+
+			<wsdlsoap:operation soapAction="http://tempuri.org/AggiungiAllegatiString"/>
+
+			<wsdl:input name="AggiungiAllegatiStringRequest">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:input>
+
+			<wsdl:output name="AggiungiAllegatiStringResponse">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="CreaCopieString">
+
+			<wsdlsoap:operation soapAction="http://tempuri.org/CreaCopieString"/>
+
+			<wsdl:input name="CreaCopieStringRequest">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:input>
+
+			<wsdl:output name="CreaCopieStringResponse">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="PubblicazioneDocumento">
+
+			<wsdlsoap:operation soapAction="http://tempuri.org/PubblicazioneDocumento"/>
+
+			<wsdl:input name="PubblicazioneDocumentoRequest">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:input>
+
+			<wsdl:output name="PubblicazioneDocumentoResponse">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="LeggiAnagrafica">
+
+			<wsdlsoap:operation soapAction="http://tempuri.org/LeggiAnagrafica"/>
+
+			<wsdl:input name="LeggiAnagraficaRequest">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:input>
+
+			<wsdl:output name="LeggiAnagraficaResponse">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="LeggiCopie">
+
+			<wsdlsoap:operation soapAction="http://tempuri.org/LeggiCopie"/>
+
+			<wsdl:input name="LeggiCopieRequest">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:input>
+
+			<wsdl:output name="LeggiCopieResponse">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="EliminaAllegato">
+
+			<wsdlsoap:operation soapAction="http://tempuri.org/EliminaAllegato"/>
+
+			<wsdl:input name="EliminaAllegatoRequest">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:input>
+
+			<wsdl:output name="EliminaAllegatoResponse">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="AnnullaDocumento">
+
+			<wsdlsoap:operation soapAction="http://tempuri.org/AnnullaDocumento"/>
+
+			<wsdl:input name="AnnullaDocumentoRequest">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:input>
+
+			<wsdl:output name="AnnullaDocumentoResponse">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="CollegaDocumento">
+
+			<wsdlsoap:operation soapAction="http://tempuri.org/CollegaDocumento"/>
+
+			<wsdl:input name="CollegaDocumentoRequest">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:input>
+
+			<wsdl:output name="CollegaDocumentoResponse">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="LeggiDocumentoPlus">
+
+			<wsdlsoap:operation soapAction="http://tempuri.org/LeggiDocumentoPlus"/>
+
+			<wsdl:input name="LeggiDocumentoPlusRequest">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:input>
+
+			<wsdl:output name="LeggiDocumentoPlusResponse">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="InserisciDatiUtente">
+
+			<wsdlsoap:operation soapAction="http://tempuri.org/InserisciDatiUtente"/>
+
+			<wsdl:input name="InserisciDatiUtenteRequest">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:input>
+
+			<wsdl:output name="InserisciDatiUtenteResponse">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="RicercaPerCodiceFiscale">
+
+			<wsdlsoap:operation soapAction="http://tempuri.org/RicercaPerCodiceFiscale"/>
+
+			<wsdl:input name="RicercaPerCodiceFiscaleRequest">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:input>
+
+			<wsdl:output name="RicercaPerCodiceFiscaleResponse">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+		<wsdl:operation name="RicercaPerCodiceFiscaleMultiDB">
+
+			<wsdlsoap:operation soapAction="http://tempuri.org/RicercaPerCodiceFiscaleMultiDB"/>
+
+			<wsdl:input name="RicercaPerCodiceFiscaleMultiDBRequest">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:input>
+
+			<wsdl:output name="RicercaPerCodiceFiscaleMultiDBResponse">
+
+				<wsdlsoap:body use="literal"/>
+
+			</wsdl:output>
+
+		</wsdl:operation>
+
+	</wsdl:binding>
+
+	<wsdl:service name="Protocollo">
+
+		<wsdl:port binding="impl:ProtocolloSoapSoapBinding" name="ProtocolloSoap">
+
+			<wsdlsoap:address location="https://campibisenzio.sicraweb.maggioli.cloud:443/client/services/ProtocolloSoap"/>
+
+		</wsdl:port>
+
+	</wsdl:service>
+
+</wsdl:definitions>

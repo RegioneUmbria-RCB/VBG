@@ -1,0 +1,68 @@
+﻿@using Init.Sigepro.FrontEnd.CoreServices.GestionePresentazioneDomanda
+@using VBG.AppLogic.SSU.GestioneCorrezioni
+@using VBG.AppLogic.SSU.GestioneProcedimenti
+
+@if (_correzioni.Any())
+{
+    <div class="alert alert-warning" role="alert">
+        <h4>Correzioni richieste</h4>
+
+        @foreach (var procedimento in _correzioni)
+        {
+            <h5>@procedimento.Procedimento</h5>
+
+            foreach (var correzione in procedimento.Correzioni)
+            {
+                <ul>
+                    <li>@correzione</li>
+                </ul>
+            }
+        }
+    </div>
+}
+
+@code {
+
+    [Inject]
+    public IGestioneCorrezioniSsuService _correzioniSsuService { get; set; } = default!;
+    [Inject]
+    public IdDomandaResolver _idDomandaResolver { get; set; } = default!;
+    [Inject]
+    public SsuProcedimentiService _ssuProcedimentiService { get; set; } = default!;
+
+    [Parameter]
+    public int? IdDomanda { get; set; } = default!;
+
+    public record class CorrezioniModel(string Procedimento, IEnumerable<string> Correzioni);
+
+    IEnumerable<CorrezioniModel> _correzioni = Enumerable.Empty<CorrezioniModel>();
+    Dictionary<int, string> _procedimenticache = new();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+
+        if (IdDomanda is not null)
+        {
+            await RicaricaListaCorrezioni(IdDomanda!.Value);
+        }
+    }
+
+    private async Task RicaricaListaCorrezioni(int idDomanda)
+    {
+        var correzioni = _correzioniSsuService.GetListaCorrezioniDaFare(idDomanda)
+                                              .GroupBy(x => new { x.CodiceEnte, x.IdProcedimento }, x => x.CorrezioneRichiesta);
+
+        var model = new List<CorrezioniModel>();
+
+        foreach (var correzione in correzioni)
+        {
+            var datiProc = await _ssuProcedimentiService.GetDettaglioProcedimentoAsync(correzione.Key.CodiceEnte, correzione.Key.IdProcedimento);
+
+            model.Add(new CorrezioniModel(datiProc.Descrizione, correzione.Select(x => x)));
+        }
+
+        _correzioni = model;
+    }
+
+}

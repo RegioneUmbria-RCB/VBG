@@ -1,0 +1,29 @@
+@if (dataSource && dataSource.length) {
+  <div class="griglia-endoprocedimenti">
+    <ul class="lista-endoprocedimenti">
+      @for (famiglia of dataSource; track famiglia) {
+        <li>
+          <div class="tipologia">{{ famiglia.famiglia }}</div>
+          <ul>
+            @for (tipologia of famiglia.tipologie; track tipologia) {
+              <li>
+                <div class="famiglia">{{ tipologia.nome }}</div>
+                <ul>
+                  @for (e of tipologia.endoprocedimenti; track e) {
+                    <li>
+                      <span
+                        class="link"
+                        (click)="onEndoprocedimentoSelezionato(e)"
+                        >{{ e.nome }}</span
+                        >
+                      </li>
+                    }
+                  </ul>
+                </li>
+              }
+            </ul>
+          </li>
+        }
+      </ul>
+    </div>
+  }

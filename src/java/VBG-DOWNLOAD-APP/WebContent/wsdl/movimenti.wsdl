@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:sch="http://gruppoinit.it/sigepro/schemas/messages/movimenti" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://gruppoinit.it/sigepro/definitions/movimenti" targetNamespace="http://gruppoinit.it/sigepro/definitions/movimenti">
+	<wsdl:types>
+		<schema xmlns="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://gruppoinit.it/sigepro/schemas/messages/movimenti" schemaLocation="movimenti.xsd" />
+		</schema>
+	</wsdl:types>
+	<wsdl:message name="MovimentiAllegatiInsertRequest">
+		<wsdl:part element="sch:MovimentiAllegatiInsertRequest" name="MovimentiAllegatiInsertRequest" />
+	</wsdl:message>
+	<wsdl:message name="MovimentiAllegatiInsertResponse">
+		<wsdl:part element="sch:MovimentiAllegatiInsertResponse" name="MovimentiAllegatiInsertResponse" />
+	</wsdl:message>
+	<wsdl:message name="MovimentiDownloadZipLogicoRequest">
+		<wsdl:part element="sch:MovimentiDownloadZipLogicoRequest" name="MovimentiDownloadZipLogicoRequest" />
+	</wsdl:message>
+	<wsdl:message name="MovimentiDownloadZipLogicoResponse">
+		<wsdl:part element="sch:MovimentiDownloadZipLogicoResponse" name="MovimentiDownloadZipLogicoResponse" />
+	</wsdl:message>
+	<wsdl:portType name="Movimenti">
+		<wsdl:operation name="MovimentiAllegatiInsert">
+			<wsdl:input message="tns:MovimentiAllegatiInsertRequest" name="MovimentiAllegatiInsertRequest" />
+			<wsdl:output message="tns:MovimentiAllegatiInsertResponse" name="MovimentiAllegatiInsertResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="MovimentiDownloadZipLogico">
+			<wsdl:input message="tns:MovimentiDownloadZipLogicoRequest" name="MovimentiDownloadZipLogicoRequest" />
+			<wsdl:output message="tns:MovimentiDownloadZipLogicoResponse" name="MovimentiDownloadZipLogicoResponse" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="MovimentiSoap11" type="tns:Movimenti">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="MovimentiAllegatiInsert">
+			<soap:operation soapAction="MovimentiAllegatiInsert" />
+			<wsdl:input name="MovimentiAllegatiInsertRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="MovimentiAllegatiInsertResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="MovimentiDownloadZipLogico">
+			<soap:operation soapAction="MovimentiDownloadZipLogico" />
+			<wsdl:input name="MovimentiDownloadZipLogicoRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="MovimentiDownloadZipLogicoResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="MovimentiService">
+		<wsdl:port binding="tns:MovimentiSoap11" name="MovimentiSoap11">
+			<soap:address location="http://devel9:8080/vbg/services/" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

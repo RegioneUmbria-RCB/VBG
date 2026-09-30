@@ -1,0 +1,285 @@
+﻿@using AreaRiservataCore.Shared.enums
+@using AreaRiservataCore.Pages.Visura
+@using Init.Sigepro.FrontEnd.AppLogic.WebServiceReferences.IstanzeService
+@using VBG.BlazorComponentsLibrary
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.EditFormComponents
+@using VBG.BlazorComponentsLibrary.EditFormComponents.DropDown
+@using VBG.BlazorComponentsLibrary.RisorseTestuali
+@using VBG.AreaRiservataCore.Controls;
+
+<div class="cmp-filter">
+    <div class="filter-section">
+        <h1 class="cmp-filter__title title-xxlarge">@Title</h1>
+        <div class="filter-wrapper d-flex align-items-center">
+            <button disabled="@Disabled" type="button" aria-labelledby="buttonFiltraScadenze" class="btn p-0 pe-2 shadow-none" data-bs-toggle="modal" data-bs-target="@($"#modal-{Id}")">
+                <span class="rounded-icon">
+                    <SvgIcon IconId="it-funnel" CssClass="icon-primary icon-xs me-1"></SvgIcon>
+                </span>
+                <span id="buttonFiltraScadenze">Filtra</span>
+            </button>
+            <div class="dropdown">
+                <button disabled="@Disabled" class="btn btn-dropdown dropdown-toggle shadow-none" type="button" id="@($"dropdownMenu-{Id}")" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-labelledby="buttonOrdinaScadenze" data-focus-mouse="false">
+                    <SvgIcon IconId="it-expand" CssClass="icon-expand icon-sm icon-primary"></SvgIcon>
+                    <span id="buttonOrdinaScadenze" class="dropdown__title">Ordina</span>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="@($"dropdownMenu-{Id}")" style="">
+                    <div class="link-list-wrapper">
+                        <ul class="link-list">
+                            <li>
+                                <a class="dropdown-item list-item" href="@_navigationManager.Uri" @onclick="async () => await SetOrder(OrderByDate.DataAscendente)" @onclick:preventDefault>
+                                    <span class="@(OrdinaPer switch { OrderByDate.DataDiscendente => "", OrderByDate.DataAscendente => "fw-bold"})">
+                                        <SvgIcon IconId="it-arrow-up" CssClass="icon-expand icon-sm icon-primary"></SvgIcon>Meno recente
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item list-item" href="@_navigationManager.Uri" @onclick="async () => await SetOrder(OrderByDate.DataDiscendente)" @onclick:preventDefault>
+                                    <span class="@(OrdinaPer switch { OrderByDate.DataAscendente => "", OrderByDate.DataDiscendente => "fw-bold"})">
+                                        <SvgIcon IconId="it-arrow-down" CssClass="icon-expand icon-sm icon-primary"></SvgIcon>Più recente
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="appliedFilters">
+        @if (this.filtriSelezionati is not null)
+        {
+            if (!string.IsNullOrEmpty(this.filtriSelezionati.DatiRichiedente))
+            {
+                <Chips Color="Enumerators.Color.PRIMARY" Text="Filtro Richiedente" ShowCloseButton="true" OnCloseClicked="() => OnFiltroClose(TipoFiltroScadenze.Richiedente)"></Chips>
+            }
+            if (this.filtriSelezionati.DataInizio != null)
+            {
+                <Chips Color="Enumerators.Color.PRIMARY" Text="Filtro Data Inizio" ShowCloseButton="true" OnCloseClicked="() => OnFiltroClose(TipoFiltroScadenze.DataInizio)"></Chips>
+            }
+            if (this.filtriSelezionati.DataFine != null)
+            {
+                <Chips Color="Enumerators.Color.PRIMARY" Text="Filtro Data Fine" ShowCloseButton="true" OnCloseClicked="() => OnFiltroClose(TipoFiltroScadenze.DataFine)"></Chips>
+            }
+            if (!string.IsNullOrEmpty(this.filtriSelezionati.DescrStatoIstanza))
+            {
+                <Chips Color="Enumerators.Color.PRIMARY" Text="Filtro Stato Istanza" ShowCloseButton="true" OnCloseClicked="() => OnFiltroClose(TipoFiltroScadenze.StatoIstanza)"></Chips>
+            }
+        }
+    </div>
+    <div class="cmp-input-search col-md-6">
+        <div class="form-group autocomplete-wrapper">
+            <div class="input-group">
+                <label for="@($"cerca-{Id}")" class="visually-hidden active">Cerca</label>
+                <DelayedTextInputComponent Id="@($"cerca-{Id}")" type="search" class="autocomplete form-control" placeholder="Cerca" name="scadenze"
+                                           Text="@RicercaTestuale"
+                                           RicercaChanged="FiltraPerRicercaTestuale"
+                                           Disabled="@Disabled">
+                </DelayedTextInputComponent>
+                <ul class="autocomplete-list"></ul>
+
+                <span class="autocomplete-icon" aria-hidden="true">
+                    <SvgIcon CssClass="icon-sm" IconId="it-search"></SvgIcon>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<ModalComponent Id="@($"modal-{Id}")" ShowCloseButton="true" ShowHeader="true" CssContentClass="h-100" Scrollable="true" OnModalClose="@OnModalClose">
+    <HeaderTemplate>
+        <h2 class="h3">Filtri</h2>
+    </HeaderTemplate>
+    <BodyTemplate>
+        <div class="row mb-5">
+            <div class="col-md-6">
+                <DateInput @bind-Value="filtriSelezionati!.DataInizio" Label="Dalla data"></DateInput>
+            </div>
+
+            <div class="col-md-6">
+                <DateInput @bind-Value="filtriSelezionati!.DataFine" Label="Alla data"></DateInput>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <DropDown Id="filtro-richiedente" Items="ListaRichiedenti"
+                                    TItem="string"
+                                    Label="Richiedente"
+                                    Value="filtriSelezionati.DatiRichiedente"
+                                    ValueChanged="EventCallback.Factory.Create(this, (string s) => filtriSelezionati.DatiRichiedente = s)"
+                                    ShowEmptyItem="true"
+                                    EmptyItemText=""
+                                    EmptyItemValue="">
+            </DropDown>
+        </div>
+
+        <div class="row mb-3">
+            <DropDown Items="ListaStati"
+                        TItem="string"
+                        Label="Stato istanza"
+                        Value="filtriSelezionati.DescrStatoIstanza"
+                        ValueChanged="EventCallback.Factory.Create(this, (string s) => filtriSelezionati.DescrStatoIstanza = s)"
+                        ShowEmptyItem="true"
+                        EmptyItemText=""
+                        EmptyItemValue="">
+            </DropDown>
+        </div>
+
+        <button class="btn btn-primary" data-bs-dismiss="modal" @onclick="FiltraScadenze"> Applica </button>
+        <button class="btn btn-secondary" data-bs-dismiss="modal" @onclick="@(async () => await ReimpostaFiltri())">Reimposta</button>
+    </BodyTemplate>
+</ModalComponent>
+
+
+@code {
+
+    [Inject]
+    public NavigationManager _navigationManager { get; set; } = default!;
+    [Inject]
+    public IAliasSoftwareResolver _aliasSoftwareResolver { get; set; } = default!;
+
+    /// <summary>
+    /// The component unique Id
+    /// </summary>
+    [Parameter, EditorRequired]
+    public string Id { get; set; } = default!;
+
+    /// <summary>
+    /// The Section title
+    /// </summary>
+    [Parameter]
+    public string Title { get; set; } = "";
+
+    /// <summary>
+    /// Choose the documents display order
+    /// </summary>
+    [Parameter]
+    public OrderByDate OrdinaPer { get; set; } = OrderByDate.DataAscendente;
+
+    /// <summary>
+    /// The event connected to OrdinaPer parameter
+    /// </summary>
+    [Parameter]
+    public EventCallback<OrderByDate> OrdinaChanged { get; set; }
+
+    /// <summary>
+    /// The filtering EventCallBack
+    /// </summary>
+    [Parameter]
+    public EventCallback<FiltroScadenze> FiltraChanged { get; set; }
+
+    /// <summary>
+    /// Choose if disabled
+    /// </summary>
+    [Parameter]
+    public bool Disabled { get; set; }
+
+    [Parameter]
+    public List<string>? ListaRichiedenti { get; set; } = default!;
+
+    [Parameter]
+    public List<string>? ListaStati { get; set; } = default!;
+
+    [Parameter]
+    public string RicercaTestuale { get; set; } = "";
+
+    private FiltroScadenze filtri = new();
+    private FiltroScadenze filtriSelezionati = new();
+
+    private async Task SetOrder(OrderByDate order)
+    {
+        OrdinaPer = order;
+
+        await OrdinaChanged.InvokeAsync(order);
+    }
+
+    protected override void OnInitialized()
+    {
+
+        base.OnInitialized();
+    }
+
+    private async Task OnFiltroClose(TipoFiltroScadenze tipoFiltro)
+    {
+        switch (tipoFiltro)
+        {
+            case TipoFiltroScadenze.DataInizio:
+                this.filtriSelezionati.DataInizio = null;
+
+                break;
+
+            case TipoFiltroScadenze.DataFine:
+                this.filtriSelezionati.DataFine = null;
+
+                break;
+
+            case TipoFiltroScadenze.StatoIstanza:
+                this.filtriSelezionati.DescrStatoIstanza = null;
+
+                break;
+
+            case TipoFiltroScadenze.Richiedente:
+                this.filtriSelezionati.DatiRichiedente = null;
+                break;
+
+        }
+
+        await FiltraScadenze();
+    }
+
+    private async Task FiltraScadenze()
+    {
+        if (filtriSelezionati.DataInizio != filtri.DataInizio)
+        {
+            filtri.DataInizio = filtriSelezionati.DataInizio;
+        }
+
+        if (filtriSelezionati.DataFine != filtri.DataFine)
+        {
+            filtri.DataFine = filtriSelezionati.DataFine;
+        }
+
+        if (filtriSelezionati.DatiRichiedente != filtri.DatiRichiedente)
+        {
+            filtri.DatiRichiedente = filtriSelezionati.DatiRichiedente;
+        }
+
+        if (filtriSelezionati.DescrStatoIstanza != filtri.DescrStatoIstanza)
+        {
+            filtri.DescrStatoIstanza = filtriSelezionati.DescrStatoIstanza;
+        }
+
+        filtri.DescrMovimentoDaFare = RicercaTestuale;
+
+        await FiltraChanged.InvokeAsync(filtri);
+        // ShowModal = false;
+    }
+
+    private async Task FiltraPerRicercaTestuale(string text)
+    {
+        RicercaTestuale = text;
+
+        await FiltraScadenze();
+    }
+
+    private void OnModalClose()
+    {
+        filtriSelezionati.DescrStatoIstanza = filtri.DescrStatoIstanza;
+        filtriSelezionati.DataInizio = filtri.DataInizio;
+        filtriSelezionati.DataFine = filtri.DataFine;
+        filtriSelezionati.DatiRichiedente = filtri.DatiRichiedente;
+
+        // ShowModal = false;
+    }
+
+    private async Task ReimpostaFiltri()
+    {
+        filtri = new FiltroScadenze();
+        filtriSelezionati = new FiltroScadenze();
+
+        await FiltraChanged.InvokeAsync(filtri);
+        // ShowModal = false;
+    }
+}

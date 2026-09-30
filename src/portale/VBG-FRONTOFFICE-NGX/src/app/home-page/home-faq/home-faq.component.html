@@ -1,0 +1,23 @@
+<div class="container-fluid sezione-home home-faq">
+  <div class="container">
+    <h2>Domande frequenti</h2>
+
+    <div class="lista-faq">
+      @for (f of topFaq$ | async; track f) {
+        <div class="faq-item">
+          <a [routerLink]="[urlDettaglioFaq, f.id]">
+            <div class="corpo-faq">
+              @if (f.descrizioneCategoria) {
+                <h3>
+                  <i class="glyphicon glyphicon-tag"></i>
+                  {{ f.descrizioneCategoria }}
+                </h3>
+              }
+              <h4 [innerHtml]="f.titolo"></h4>
+            </div>
+          </a>
+        </div>
+      }
+    </div>
+  </div>
+</div>

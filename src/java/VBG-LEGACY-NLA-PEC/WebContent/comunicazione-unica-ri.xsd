@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified"
+	xmlns="http://sitoregistroimprese.it/PraticheTelematiche/ComunicazioneUnicaRI/v1"
+	targetNamespace="http://sitoregistroimprese.it/PraticheTelematiche/ComunicazioneUnicaRI/v1">
+	<xs:simpleType name="CodiceEnte">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="AE" />
+			<xs:enumeration value="IL" />
+			<xs:enumeration value="IP" />
+			<xs:enumeration value="RI" />
+			<xs:enumeration value="AA" />
+			<xs:enumeration value="ML" />
+			<xs:enumeration value="SP" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="EmailAddress">
+		<xs:restriction base="xs:string">
+			<xs:pattern value=".*@.*" />
+			<xs:maxLength value="80" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CodiceProvincia">
+		<xs:restriction base="xs:string">
+			<xs:length value="2" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="StringDenominazione">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="80" />
+			<xs:minLength value="1" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CodiceFiscale">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="16" />
+			<xs:minLength value="11" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TipoAdempimento">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="01" />
+			<xs:enumeration value="02" />
+			<xs:enumeration value="03" />
+			<xs:enumeration value="04" />
+			<xs:enumeration value="05" />
+			<xs:enumeration value="06" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CodicePratica">
+		<xs:restriction base="xs:string">
+			<xs:length value="8" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="NumeroTelefonico">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="4" />
+			<xs:maxLength value="15" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CodiceQualifica">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="TITOLARE" />
+			<xs:enumeration value="LEGALE RAPPRESENTANTE" />
+			<xs:enumeration value="AMMINISTRATORE" />
+			<xs:enumeration value="SOCIO" />
+			<xs:enumeration value="LIQUIDATORE" />
+			<xs:enumeration value="CURATORE FALLIMENTARE" />
+			<xs:enumeration value="COMMISSARIO GIUDIZIARIO" />
+			<xs:enumeration value="NOTAIO" />
+			<xs:enumeration value="DELEGATO" />
+			<xs:enumeration value="CONSULENTE" />
+			<xs:enumeration value="PROFESSIONISTA INCARICATO" />
+			<xs:enumeration value="STUDIO ASSOCIATO" />
+			<xs:enumeration value="ASSOCIAZIONE DI CATEGORIA" />
+			<xs:enumeration value="CENTRO ELABORAZIONE DATI" />
+			<xs:enumeration value="ALTRO PREVISTO DALLA VIGENTE NORMATIVA" />
+			<xs:enumeration value="AGENZIA PER LE IMPRESE" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="NumeroProtocolloRI">
+		<xs:restriction base="xs:int">
+			<xs:minInclusive value="0" />
+			<xs:maxInclusive value="999999999" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SottoNumeroProtocolloRI">
+		<xs:restriction base="xs:int">
+			<xs:minInclusive value="0" />
+			<xs:maxInclusive value="9999" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="NumeroREA">
+		<xs:restriction base="xs:int">
+			<xs:minExclusive value="0" />
+			<xs:maxInclusive value="9999999" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="String80">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1" />
+			<xs:maxLength value="80" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="String50">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1" />
+			<xs:maxLength value="50" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="String10">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1" />
+			<xs:maxLength value="10" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="comunicazione-unica-RI">
+		<xs:complexType>
+			<xs:sequence>
+				<!-- ANAGRAFICA IMPRESA -->
+				<xs:element name="anagrafica-impresa">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="denominazione" type="StringDenominazione" />
+							<xs:element name="cod-fisc" type="CodiceFiscale"
+								minOccurs="0" />
+							<xs:element name="provincia-sede" type="CodiceProvincia" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<!-- OGGETTO COMUNICAZIONE -->
+				<xs:element name="oggetto">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="enti-destinatari">
+								<xs:complexType>
+									<xs:sequence minOccurs="1" maxOccurs="unbounded">
+										<xs:element name="ente">
+											<xs:complexType>
+												<xs:attribute name="cod" type="CodiceEnte" />
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="cod-pratica" use="required" type="CodicePratica" />
+						<xs:attribute name="adempimento" use="required"
+							type="TipoAdempimento" />
+					</xs:complexType>
+				</xs:element>
+				<!-- ESTREMI DICHIARANTE -->
+				<xs:element name="dichiarante">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="nome" type="String50" />
+							<xs:element name="cognome" type="String50" />
+							<xs:element name="qualifica" type="CodiceQualifica" />
+							<xs:element name="cod-fisc" type="CodiceFiscale" />
+							<xs:element name="email" type="EmailAddress" />
+							<xs:element name="tel" type="NumeroTelefonico" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<!-- DOMICILIO ELETTRONICO (PEC) -->
+				<xs:element name="domicilio-pec-impresa">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:choice>
+								<xs:element name="richiesta-indirizzo-pec">
+									<xs:complexType>
+										<xs:attribute name="email-notifica" type="EmailAddress"
+											use="required" />
+										<xs:attribute name="email-pec-richiesta" type="EmailAddress"
+											use="required" />
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="indirizzo-pec" type="EmailAddress" />
+							</xs:choice>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<!-- ELENCO ALLEGATI -->
+				<xs:element name="allegati">
+					<xs:complexType>
+						<xs:sequence minOccurs="1" maxOccurs="unbounded">
+							<xs:element name="allegato">
+								<xs:complexType>
+									<xs:attribute name="nome-file" type="String80" />
+									<xs:attribute name="cod-ente" type="CodiceEnte" />
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<!-- PARTE AD USO INTERNO DELL'UFFICIO -->
+				<xs:element name="protocollazione" minOccurs="0">
+					<xs:complexType>
+						<xs:attribute name="anno" type="xs:gYear" />
+						<xs:attribute name="numero-protocollo-ri" type="NumeroProtocolloRI" />
+						<xs:attribute name="sotto-numero-protocollo-ri" type="SottoNumeroProtocolloRI" />
+						<xs:attribute name="data-protocollo-ri" type="xs:date" />
+						<xs:attribute name="data-arrivo-comunicazione" type="xs:date" />
+						<xs:attribute name="data-inoltro-ente" type="xs:date" />
+						<xs:attribute name="numero-rea" type="NumeroREA" />
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="ufficio-ri" type="CodiceProvincia"
+				use="required" />
+			<xs:attribute name="sw-producer" type="String80" use="required" />
+			<xs:attribute name="sw-version" type="String10" use="required" />
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

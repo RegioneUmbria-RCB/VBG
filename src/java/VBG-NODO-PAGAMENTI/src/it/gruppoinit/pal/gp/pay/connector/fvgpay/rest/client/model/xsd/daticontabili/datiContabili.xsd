@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xsd:schema xmlns="http://www.insiel.it/pagamentifvg/datiContabili"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://www.insiel.it/pagamentifvg/datiContabili"
+	elementFormDefault="qualified" 
+	attributeFormDefault="unqualified">
+	
+	<xsd:element name="datiContabili">
+        <xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="codBilancio" type="CodBilancio" minOccurs="1" maxOccurs="unbounded"/>
+			</xsd:sequence>
+		</xsd:complexType>
+    </xsd:element>
+	<!--
+	<xsd:complexType name="DatiContabili">
+			<xsd:sequence>
+				<xsd:element name="codBilancio" type="CodBilancio" minOccurs="1" maxOccurs="unbounded"/>
+			</xsd:sequence>
+	</xsd:complexType>
+	-->
+	<xsd:complexType name="CodBilancio">
+			<xsd:sequence>
+				<xsd:element name="codCapitolo" type="CodCapitolo" minOccurs="1" />
+				<xsd:choice>
+					<xsd:element name="accertamento" type="Accertamento" minOccurs="0" maxOccurs="unbounded"/>
+					<xsd:element name="importo" type="xsd:double" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Campo numerico (due cifre per la parte decimale, il separatore dei centesimi è il punto "."). Deve essere diverso da "0.00".</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="Accertamento">
+			<xsd:sequence>
+				<xsd:element name="codAccertamento" type="CodAccertamento" minOccurs="1"/>
+				<xsd:element name="importo" type="xsd:double" minOccurs="1">
+					<xsd:annotation>
+						<xsd:documentation>Campo numerico (due cifre per la parte decimale, il separatore dei centesimi è il punto "."). Deve essere diverso da "0.00".</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:simpleType name="CodCapitolo">
+			<xsd:restriction base="xsd:string">
+				<xsd:pattern value="(([0-9]{4})+(/[0-9]{4})+(/[0-9]{6})+(/[0-9]{3}))*" />
+			</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="CodAccertamento">
+			<xsd:restriction base="xsd:string">
+				<xsd:pattern value="(([0-9]{4})+(/[0-9]{4})+(/[0-9]{9}))*" />
+			</xsd:restriction>
+	</xsd:simpleType>	
+	
+	
+</xsd:schema>

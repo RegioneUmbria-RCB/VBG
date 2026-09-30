@@ -1,0 +1,161 @@
+
+#set($idCampo = "campo_$item.File.Id")
+#set($idCampo = $helper.getUniqueId(${idCampo},${item.File}))
+###set($numDuplicati = $helper.countUniqueIds(${idCampo}))
+###if($rowIndex < 1 && !$isTableTemplate)
+##	#set($idCampo = $helper.getUniqueId(${idCampo}))
+###elseif($rowIndex > 0 && $numDuplicati > 0)
+##	#set($uidSep = $helper.getUniqueIdSeparator())
+##	#set($idCampo = "${idCampo}${uidSep}${numDuplicati}")
+###end
+#set($idSemantico = $item.File.IdSemantico)
+#set($idInput = $idSemantico)
+#if($isTableTemplate)
+	#set($placeholder = "${esc.D}'{'index{0}'}'")
+	#set($idCampo = "${idCampo}${helper.buildIndexingSuffixWhithPlaceholder($rowIndex,$placeholder,$templateNestingLevel)}")
+	#set($idInput = "${idInput}${helper.buildIndexingSuffixWhithPlaceholder($rowIndex,$placeholder,$templateNestingLevel)}")
+#else
+	#set($idCampo = "${idCampo}${helper.buildIndexingSuffix($rowIndex)}")
+	#set($idInput = "${idInput}${helper.buildIndexingSuffix($rowIndex)}")
+#end
+#if($item.File.MaxUpload == "unbounded")
+	#set($maxUploadAttribute = "0")
+#else
+	#set($maxUploadAttribute = $item.File.MaxUpload)
+#end
+<div id="$idCampo" class="campo-cart-container">
+	#set($tooltiptext = ${helper.getFileHelp($item.File)})
+	#set($classeDivCampo = "campo-cart-right")
+	#if($helper.renderFormLayout($item,$quadro))
+        <div class="label-cart" >
+        	$!item.File.Titolo&nbsp;
+        </div>
+	#else
+		#set($classeDivCampo = "campo-cart-left")
+	#end
+	#set($dsValidate = false)
+	#if($item.File.Firmato)
+		#set($dsValidate = true)
+	#end
+##	#if($item.File.Titolo && $item.File.Titolo.length() > 0)
+##    <div class="label-cart">
+##    	$!item.File.Titolo
+##    </div>
+##	#elseif($table || $isTableTemplate)
+##		#set($classeDivCampo = "campo-cart-left")
+##	#else
+##		<div class="label-cart" >
+##        	&nbsp;&nbsp;
+##        </div>
+##	#end
+##<form name="fileuploadform-$idInput" id="fileuploadform-$idInput" enctype="multipart/form-data">
+	<div id="fileupload-$idInput" class="campo-file-cart $classeDivCampo">
+    	##<input type="file" id="inputfile-$idInput" name="inputfile-$idInput" class="campo-file-cart"/>
+    	##<input type="hidden" id="idSemantico-$idInput" name="idSemantico" value="$idInput"/>
+    	##<input type="hidden" id="dsValidation-$idInput" name="dsValidation" value="$dsValidate"/>
+		<label for="fileupload-$idInput" class="mandatory-star mandatory-file-star" style="display:none;">*</label>
+        <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
+        <div class="row fileupload-buttonbar">
+            <div class="span7">
+                <!-- The fileinput-button span is used to style the file input field as button -->
+                <span class="btn btn-success fileinput-button">
+                    <i class="icon-plus icon-white"></i>
+                    <span>Carica files...</span>
+                    <input type="file" name="files[]" multiple>
+                </span>
+            </div>
+            <div>
+	 			<span class="icon-firmadigitale" title="I files caricati devono essere firmati digitalmente">
+					<label >(!)</label>
+		        </span>
+		    </div>
+            <!-- The global progress information -->
+            <div class="span5 fileupload-progress fade">
+                <!-- The global progress bar -->
+                <div class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                    <div class="bar" style="width:0%;"></div>
+                </div>
+                <!-- The extended global progress information -->
+                <div class="progress-extended">&nbsp;</div>
+            </div>
+        </div>
+        <br>
+        <!-- The table listing the files available for upload/download -->
+        <table role="presentation" class="table table-striped file-list">
+        	<tbody class="files" data-toggle="modal-gallery" data-target="#modal-gallery"></tbody>
+        </table>
+        <!-- Display error and warning icons -->
+		<div class="campo-cart-icons">
+			#if($tooltiptext.length() > 0)
+				<span class="help_image" id="${idInput}_help" title="${helper.escapeValueForHtmlAttribute($tooltiptext)}">
+					<label >(?)</label>
+	            </span>
+			#end
+			<span class="error_image" style="display:none;" title="">
+				<label >(!)</label>
+	        </span>
+			<span class="warning_image" style="display:none;" title="">
+				<label >(!)</label>
+	        </span>
+	    </div>
+        <input type="hidden" name="$idInput" id="empty-$idInput" value="" />
+    </div>
+##</form>
+	#set($fileTypes = "")
+	#if($item.File.Tipo)
+		#set($fileTypes =${helper.buildFileTypeRestrictionsString($item.File.Tipo)})
+	#end
+	#set($dbFilesArray = ${helper.buildUploadedFilesAsJsonObjectArray($item.File.IdSemantico,$rowIndex,$contextPath)})
+	#if(!$isTableTemplate)
+	<script>
+	$(document).ready(function(){
+		#set($uploadParamsJson =${helper.buildFileUploadAdditionalParamsJson($item.File)})
+		##scrittura dello script che crea il controllo MultiFile e ne imposta le proprietà che definiscono il comportamento
+		initializeMultiFile('$idInput',"$fileTypes",$maxUploadAttribute,$dbFilesArray,$uploadParamsJson);
+	});
+	</script>	
+	#else
+		#set($placeholder = "'' + newRowIndex{0} + ''")
+		#set($placeholder = ${helper.buildIndexingSuffixWhithPlaceholder($rowIndex,$placeholder,$templateNestingLevel)})
+		#set($uploadParamsJson =${helper.buildFileUploadAdditionalParamsJson($item.File,"'$helper.escapeForCssSelector(${item.File.IdSemantico})$placeholder")})
+		$helper.addScriptToCache("initializeMultiFile('${item.File.IdSemantico}${placeholder}','$fileTypes',$maxUploadAttribute,undefined,$uploadParamsJson);")
+	#end		
+	#set($attivo = $helper.evaluateExpression($item.File.Attivo,$rowIndex))
+	#if(!$attivo || $helper.isEspressioneDinamica($item.File.Attivo))
+		#if(!$isTableTemplate)
+			#set($jsScript = $helper.buildJavascriptToDynamicallyEnableElement($idCampo,$item.File.Attivo,2))
+        	<script>
+			$(document).ready(function(){
+            	##scrittura dello script che attiva e disattiva il campo dinamicamente in base ai valori assunti da altri campi
+        		$jsScript
+			});
+        	</script>
+		#else
+			#set($placeholder = "'' + newRowIndex{0} + ''")
+			#set($placeholder = ${helper.buildIndexingSuffixWhithPlaceholder($rowIndex,$placeholder,$templateNestingLevel)})
+			#set($jsScript = $helper.buildJavascriptToDynamicallyEnableElement($helper.getUniqueId("campo_$item.File.Id", ${item.File}),$item.File.Attivo,$placeholder,2))
+			#if($jsScript != "")
+				$helper.addScriptToCache($jsScript)
+			#end
+		#end
+	#end
+	#set($mandatory = $helper.evaluateExpression($item.File.Obbligatorio,$rowIndex))
+	#if($mandatory || $helper.isEspressioneDinamica($item.File.Obbligatorio))
+		#if(!$isTableTemplate)
+			#set($jsScript = $helper.buildJavascriptToDynamicallySetMandatoryElement($idInput,$item.File.Obbligatorio,2))
+        	<script>
+			$(document).ready(function(){
+            	##scrittura dello script che rende il campo obbligatorio dinamicamente in base ai valori assunti da altri campi
+        		$jsScript
+			});
+        	</script>
+		#else
+			#set($placeholder = "'' + newRowIndex{0} + ''")
+			#set($placeholder = ${helper.buildIndexingSuffixWhithPlaceholder($rowIndex,$placeholder,$templateNestingLevel)})
+			#set($jsScript = $helper.buildJavascriptToDynamicallySetMandatoryElement($item.File.IdSemantico,$item.File.Obbligatorio,$placeholder,2))
+			#if($jsScript != "")
+				$helper.addScriptToCache($jsScript)
+			#end
+		#end
+	#end
+</div>

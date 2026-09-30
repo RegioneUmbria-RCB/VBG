@@ -1,0 +1,33 @@
+﻿@typeparam T where T : class
+
+@if (Items?.Any() ?? false)
+{
+    <DetailCard>
+        <ul class="list-group list-group-flush">
+
+            @foreach (var item in Items.Select((x, idx) => new { Item = x, idx = idx+1} ))
+            {
+                <li class="list-group-item p-0 @(item.idx == 1 ? "" : "pt-4") @((item.idx == Items.Count()) ? "" : " border-bottom border-1 pb-4")">
+                     @ItemTemplate(item.Item)
+                </li>
+            }
+
+        </ul>
+    </DetailCard>
+}
+@code {
+    [Parameter, EditorRequired]
+    public RenderFragment<T> ItemTemplate { get; set; }
+    [Parameter, EditorRequired]
+    public IEnumerable<T> Items { get; set; } = Array.Empty<T>();
+
+    T? _lastItem;
+
+    override protected void OnParametersSet()
+    {
+        if(Items.Any())
+        {
+            _lastItem = Items.Last();
+        }
+    }
+}

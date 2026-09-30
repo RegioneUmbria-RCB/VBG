@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- edited with XMLSpy v2013 (http://www.altova.com) by  () -->
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+****                          TAS S.p.A.
+**** - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+****
+**** Project. . : IRIS
+****
+**** Nome . . . : IdpEsito
+**** Versione . : 01.03-03 Draft 01
+****
+**** Descrizione: Esito Standard
+****
+**** - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<xs:schema xmlns="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpEsito"
+           xmlns:h="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpHeader"
+           xmlns:i="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpInclude"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpEsito"
+           elementFormDefault="qualified">
+  <xs:import namespace="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpHeader"
+             schemaLocation="IdP.Header.xsd" />
+  <xs:import namespace="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpInclude"
+             schemaLocation="IdP.Include.xsd" />
+  <xs:element name="IdpEsito"
+              type="IdpEsito" />
+  <xs:element name="IdpEsitoOTF"
+              type="IdpEsitoOTF" />
+  <xs:complexType name="IdpEsitoOTF">
+    <xs:sequence>
+      <xs:element ref="h:IdpHeader" />
+      <xs:element name="IdpOTF"
+                  type="IdpOTFType"
+                  minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Presente solo in caso di esito di pendenze di tipo INSERT On-The-Fly</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="IdpBody"
+                  type="IdpBodyType" />
+    </xs:sequence>
+    <xs:attribute name="Versione"
+                  type="Versione"
+                  use="required" />
+  </xs:complexType>
+  <xs:complexType name="IdpOTFType">
+    <xs:sequence>
+      <xs:element name="IdSessioneGW"
+                  type="xs:string">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">Specifica il token di sessione aperta sul gateway IRIS a cui sara&#39; rediretto il debitore</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="UrlGW"
+                  type="xs:anyURI">
+        <xs:annotation>
+          <xs:documentation xml:lang="it">Specifica la URL del gateway IRIS a cui redirigere il debitore</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="Versione"
+                  type="Versione"
+                  use="required" />
+  </xs:complexType>
+  <xs:complexType name="IdpEsito">
+    <xs:sequence>
+      <xs:element ref="h:IdpHeader" />
+      <xs:element name="IdpBody"
+                  type="IdpBodyType" />
+    </xs:sequence>
+    <xs:attribute name="Versione"
+                  type="Versione"
+                  use="required" />
+  </xs:complexType>
+  <xs:simpleType name="Versione">
+    <xs:restriction base="i:Max15Text">
+      <xs:enumeration value="01.03-00" />
+      <xs:enumeration value="01.03-01" />
+      <xs:enumeration value="01.03-02" />
+	  <xs:enumeration value="01.03-03"/>
+	  <xs:enumeration value="01.03-04">
+		<xs:annotation>
+			<xs:documentation xml:lang="it">Versione con supporto a pagamenti On-The-Fly Multi ente</xs:documentation>
+		</xs:annotation>
+	  </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <!-- Definizione del Body -->
+  <xs:complexType name="IdpBodyType">
+    <xs:sequence>
+      <xs:element name="InfoMessaggio"
+                  type="InfoMessaggio" />
+      <xs:element name="InfoDettaglio"
+                  type="InfoDettaglio"
+                  minOccurs="0" />
+    </xs:sequence>
+  </xs:complexType>
+  <!-- Informativa Elaborazione del Messaggio -->
+  <xs:complexType name="InfoMessaggio">
+    <xs:sequence>
+      <xs:element name="Stato"
+                  type="StatoMessaggio" />
+      <xs:element name="Esiti"
+                  type="Esiti"
+                  minOccurs="0" />
+      <xs:element name="Note"
+                  type="i:Max2000Text"
+                  minOccurs="0" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="StatoMessaggio">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Elaborato Correttamente" />
+      <xs:enumeration value="Elaborato con Errori" />
+    </xs:restriction>
+  </xs:simpleType>
+  <!-- Informativa Elaborazione del Dettaglio del Messaggio -->
+  <xs:complexType name="InfoDettaglio">
+    <xs:sequence>
+      <xs:element name="Dettaglio"
+                  type="Dettaglio"
+                  maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Dettaglio">
+    <xs:sequence>
+      <xs:element name="Id"
+                  type="i:Max35Text" />
+      <xs:element name="Stato"
+                  type="StatoDettaglio" />
+      <xs:element name="Esiti"
+                  type="Esiti"
+                  minOccurs="0" />
+      <xs:element name="Note"
+                  type="i:Max2000Text"
+                  minOccurs="0" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="StatoDettaglio">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Scartato" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="Esiti">
+    <xs:sequence>
+      <xs:element name="Esito"
+                  type="Esito"
+                  maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Esito">
+    <xs:sequence>
+      <xs:element name="Codice"
+                  type="i:Max8Text" />
+      <!-- codice dell'esito -->
+      <xs:element name="Descrizione"
+                  type="i:Max256Text" />
+      <!-- descrizione codificata -->
+      <xs:element name="Elemento"
+                  type="xs:string"
+                  minOccurs="0" />
+      <!-- XPATH, Colonna della tabella, ecc. -->
+      <xs:element name="Note"
+                  type="xs:string"
+                  minOccurs="0" />
+      <!-- dettaglio variabile -->
+    </xs:sequence>
+  </xs:complexType>
+  
+	<xs:element name="IdpMultiEsitoOTF" 
+				type="IdpMultiEsitoOTF"/>
+	<xs:complexType name="IdpMultiEsitoOTF">
+		<xs:sequence>
+			<xs:element name="IdpOTF" 
+			            type="IdpOTFType" 
+						minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Presente solo in caso di esito positivo</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IdpEsitoOTF" 
+			            type="IdpMultiEsitoOTFElement" 
+						minOccurs="0" 
+						maxOccurs="unbounded">
+			<xs:annotation>
+				<xs:documentation>Presente solo in caso di esito negativo</xs:documentation>
+			</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="Versione" 
+		              type="Versione" 
+					  use="required"/>
+	</xs:complexType> 
+	<xs:complexType name="IdpMultiEsitoOTFElement">
+		<xs:sequence>
+			<xs:element name="E2EMsgId" 
+			            type="h:MsgId" 
+						maxOccurs="1" 
+						minOccurs="1">
+			</xs:element>
+			<xs:element name="IdpBody" 
+			            type="IdpBodyType"/>
+		</xs:sequence>
+
+	</xs:complexType>	
+  
+</xs:schema>

@@ -1,0 +1,33 @@
+<!-- Use this file to deploy some handlers/chains and services -->
+<!-- Two ways to do this: -->
+<!-- java org.apache.axis.client.AdminClient deploy.wsdd -->
+<!-- after the axis server is running -->
+<!-- or -->
+<!-- java org.apache.axis.utils.Admin client|server deploy.wsdd -->
+<!-- from the same directory that the Axis engine runs -->
+
+<deployment xmlns="http://xml.apache.org/axis/wsdd/" xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+	<!-- Services from cnsHandlerService WSDL service -->
+
+	<service name="cnsHandlerSoap11" provider="java:RPC" style="document" use="literal">
+		<parameter name="wsdlTargetNamespace" value="http://cnshandler.gruppoinit.it/ws" />
+		<parameter name="wsdlServiceElement" value="cnsHandlerService" />
+		<parameter name="schemaQualified" value="http://cnshandler.gruppoinit.it/schema" />
+		<parameter name="wsdlServicePort" value="cnsHandlerSoap11" />
+		<parameter name="className" value="it.gruppoinit.cnshandler.ws.CnsHandlerSoap11Skeleton" />
+		<parameter name="wsdlPortType" value="cnsHandler" />
+		<parameter name="typeMappingVersion" value="1.2" />
+		<parameter name="allowedMethods" value="*" />
+
+		<typeMapping xmlns:ns="http://cnshandler.gruppoinit.it/schema" qname="ns:>GetUserDataResponse" type="java:it.gruppoinit.cnshandler.schema.GetUserDataResponse"
+			serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" />
+		<typeMapping xmlns:ns="http://cnshandler.gruppoinit.it/schema" qname="ns:>GetUserDataRequest" type="java:it.gruppoinit.cnshandler.schema.GetUserDataRequest"
+			serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" />
+	</service>
+	<transport name="http">
+		<requestFlow>
+			<handler type="java:org.apache.axis.handlers.http.URLMapper" />
+		</requestFlow>
+	</transport>
+</deployment>

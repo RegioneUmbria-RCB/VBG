@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:simpleType name="TipoDocumentoPagamento">
+		<xs:annotation>
+			<xs:documentation>Definizione delle possibili tipologie di documenti in pagamento: 0 - Registrato, 1 - Spontaneo</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="0"/>
+			<xs:enumeration value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TipoSistemaPagamento">
+		<xs:annotation>
+			<xs:documentation>Definizione delle tipologie di sistemi di pagamento: BPASS = BankPass, BPASW = BankPass wallet, BPPR = BankPass di produzione, STFI = Setefi, RID = RID On-line, POSTA = Pagamento in posta, POST1 = Pagamento carta di credito con poste, POST2 = Pagamento banco-posta con poste, POST3 = Pagamento poste-pay con poste. Il contenuto va concordato in fase di configurazione dell'applicazione</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="BPASS"/>
+			<xs:enumeration value="BPASW"/>
+			<xs:enumeration value="BPPR"/>
+			<xs:enumeration value="STFI"/>
+			<xs:enumeration value="RID"/>
+			<xs:enumeration value="POSTA"/>
+			<xs:enumeration value="POST1"/>
+			<xs:enumeration value="POST2"/>
+			<xs:enumeration value="POST3"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TipoMetodoPagamento">
+		<xs:annotation>
+			<xs:documentation>Definizione delle tipologie di metodi di pagamento: CCANY = Carta Credito, WALLT = Portafoglio elettronico - wallet, RIDOL = RID On-line, CSI = Carta SI, CMAST = Carta MasterCard, CVISA = Carta VISA, CAMEX = Carta AmericanExpress, CDINR = Carta Diners, BLTPT = Bollettino postale, BONIF = Bonifico bancario o RID, CAURA = Carta Aura, CJCB = Carta JCB, CMAES = Carta Maestro, PPAY = Poste-Pay, BPOST = Banco posta. Il contenuto va concordato in fase di configurazione dell'applicazione</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="CCANY"/>
+			<xs:enumeration value="WALLT"/>
+			<xs:enumeration value="RIDOL"/>
+			<xs:enumeration value="CSI"/>
+			<xs:enumeration value="CMAST"/>
+			<xs:enumeration value="CVISA"/>
+			<xs:enumeration value="CAMEX"/>
+			<xs:enumeration value="CDINR"/>
+			<xs:enumeration value="BLTPT"/>
+			<xs:enumeration value="BONIF"/>
+			<xs:enumeration value="CAURA"/>
+			<xs:enumeration value="CJCB"/>
+			<xs:enumeration value="CMAES"/>
+			<xs:enumeration value="PPAY"/>
+			<xs:enumeration value="BPOST"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="TipoDatiPagamento">
+		<xs:sequence>
+			<xs:element name="SISTEMA" type="TipoSistemaPagamento"/>
+			<xs:element name="METODO" type="TipoMetodoPagamento"/>
+			<xs:element name="IDORDINE" type="xs:string"/>
+			<xs:element name="DATAORDINE" type="xs:dateTime"/>
+			<xs:element name="IDOPER" type="xs:string" minOccurs="0"/>
+			<xs:element name="DATAOPER" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="IDTRANS" type="xs:string" minOccurs="0"/>
+			<xs:element name="DATATRANS" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="IDAUT" type="xs:string" minOccurs="0"/>
+			<xs:element name="DATAAUT" type="xs:dateTime" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

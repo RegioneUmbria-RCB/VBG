@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>error</title>
+</head>
+<body>
+
+
+<!--/* ERRORI DI UN CAMPO SPECIFICO */-->
+<div th:fragment="field-errors(field)" 
+		class="invalid-feedback"		
+        th:if="${#fields.hasErrors('__${field}__')}" style="display: block">
+    <ul>
+        <li th:each="error : ${#fields.errors('__${field}__')}"
+            th:text="${error}" />
+    </ul>
+</div>
+
+
+<!--/* PARTI COMUNI DI TUTTI I FORM CRUD E ERRORI GLOBALI */-->
+<span th:fragment="common-parts">
+		     
+   <p th:if="${#fields.hasGlobalErrors()}" th:errors="*{global}" class="alert alert-danger fade show" style="display: block"></p>
+   <!--/* 
+   <div th:if="${#fields.hasAnyErrors()}">
+    <ul>
+       
+         <li th:each="e : ${#fields.detailedErrors()}">
+            <span th:text="${e.global}? '*' : ${e.fieldName}">The field name</span> |
+            <span th:text="${e.message}">The error message</span>
+            <br th:each="args: ${e.arguments}" th:text="${args}"/>
+        </li>
+        
+    </ul>
+	</div>
+   */-->
+</span>
+
+</body>
+</html>

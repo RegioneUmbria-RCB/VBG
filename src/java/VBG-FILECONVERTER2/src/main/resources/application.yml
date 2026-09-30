@@ -1,0 +1,49 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /fileconverter
+  
+spring:
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+  application: 
+    name: '@project.name@'
+
+management:
+  endpoint:
+    health:
+       show-details: always
+       probes:
+         enabled: true
+  endpoints:
+    web:
+      base-path: /actuator
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true    
+config:  
+  exportHtmlMatcherRegexp: <p [A-Za-z09\="-\:\\s>]*<br>[\r\n\t]*</p>
+  exportHtmlReplaceString:
+  gotenbergAttivo: true
+  gotenbergBaseUrl: REDACTED
+  gotenbergPdfA: true
+  gotenberg-pdf-a-version: PDF/A-3b
+
+
+jodconverter:
+  local:
+    enabled: true
+    format-options:
+      html:
+        store:
+          TEXT:
+            FilterOptions: EmbedImages
+
+      xhtml:
+        store:
+          TEXT:
+            FilterOptions: EmbedImages

@@ -1,0 +1,116 @@
+﻿@page "/{IdComune}/{Software}/accessoattilista"
+@using Init.Sigepro.FrontEnd.AppLogic.WsAccessoAtti
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.DesignComuni.NavScroll
+@using VBG.BlazorComponentsLibrary.RisorseTestuali
+
+@inherits BasePage
+
+<TitoloPagina>Accesso agli atti</TitoloPagina>
+<p>
+    <RisorsaTestuale IdRisorsa="lista_atti.descrizione_pagina">Descrizione accesso agli atti</RisorsaTestuale>
+</p>
+
+<NavScrollComponent Title="Indice di pagina">
+    <NavScrollComponentItem Label="Accesso agli atti" Id="listaAtti">
+        @if (!_isLoading)
+        {
+            if (DataSource != null && DataSource.Any())
+            {
+                <AccordionContainer>
+                    @foreach (KeyValuePair<int, BindingItem> kvp in DataSource)
+                    {
+                        @if (!string.IsNullOrEmpty(kvp.Value.Descrizione))
+                        {
+                            <h3 class="panel-title">@kvp.Value.Descrizione</h3>
+
+                            foreach (PraticaAccessoAtti pratica in kvp.Value.Pratiche)
+                            {
+                                var id = Guid.NewGuid();
+                                <div id="@($"atto-{id}")" @key="@($"atto-{id}")">
+                                    <AccordionItem StartingCollapsed="true"
+                                                   CollapsibleElementId="@($"acc-atto-{id}")"
+                                                   Title="@(string.IsNullOrEmpty(pratica.StringaNumeroIstanza) ? "Non definito" : pratica.StringaNumeroIstanza)"
+                                                   HeaderText="@(string.IsNullOrEmpty(pratica.StatoLavorazione) ? "non definito" : pratica.StatoLavorazione)"
+                                                   RenderTitleAsHtml="true"
+                                                   CssTitleClass="d-block text-truncate pe-4"
+                                                   ButtonWrapperClass="min-width-zero"
+                                                   HeaderElementId="@($"header-accordion-atto-{id}")">
+
+                                        <NonCollapsingUpperChildContent>
+                                            <p class="mb-2 fw-normal">
+                                                Protocollo:
+                                                <span class="label fw-bold">@(string.IsNullOrEmpty(pratica.StringaProtocollo) ? "non definito" : pratica.StringaProtocollo)</span>
+                                            </p>
+                                        </NonCollapsingUpperChildContent>
+
+                                        <ChildContent>
+                                            <p class="mb-2 fw-normal">
+                                                Localizzazione:
+                                                <span class="label fw-bold">@(string.IsNullOrEmpty(pratica.Localizzazione) ? "non definito" : pratica.Localizzazione)</span>
+                                            </p>
+
+                                            <p class="mb-2 fw-normal">
+                                                Richiedente:
+                                                <span class="label fw-bold">@(string.IsNullOrEmpty(pratica.Richiedente) ? "non definito" : pratica.Richiedente)</span>
+                                            </p>
+
+                                            <p class="mb-2 fw-normal">
+                                                Oggetto:
+                                                <span class="label fw-bold">@(string.IsNullOrEmpty(pratica.Oggetto) ? "non definito" : pratica.Oggetto)</span>
+                                            </p>
+
+                                            <p class="mb-2 fw-normal">
+                                                Presentata a:
+                                                <span class="label fw-bold">@(string.IsNullOrEmpty(pratica.SoftwareDescrizione) ? "non definito" : pratica.SoftwareDescrizione)</span>
+                                            </p>
+                                        </ChildContent>
+
+                                        <NonCollapsingLowerChildContent>
+                                            <div class="buttonContainer">
+                                                <button class="btn btn-primary justify-content-center" @onclick="@( () => GotoAsync("accessoattidettaglio", pratica.IdAccessoAtti, pratica.UUID))">Seleziona </button>
+                                            </div>
+                                        </NonCollapsingLowerChildContent>
+                                    </AccordionItem>
+                                </div>
+                            }
+                        }
+                    }
+                </AccordionContainer>
+            }
+            else
+            {
+                <div class="alert alert-info" role="alert">
+                    La lista degli atti è vuota
+                </div>
+            }
+        }
+        else
+        {
+            <AccordionContainer>
+                @for (int i = 0; i < 5; i++)
+                {
+                    <div id="@($"sk_{i}")">
+                        <AccordionItem CollapsibleElementId="@($"sk_{i}")" StartingCollapsed="false">
+                            <div class="skeleton">
+                                <div class="skeleton-text-bold bg-primary"></div>
+                                <div class="skeleton-text"></div>
+                                <br />
+                                <div class="skeleton-rectangle"></div>
+                                <br />
+                                <button type="button" class="btn btn-primary justify-content-center skeleton-button" data-focus-mouse="false" disabled>
+                                    Seleziona
+                                </button>
+                            </div>
+                        </AccordionItem>
+                    </div>
+                }
+            </AccordionContainer>
+        }
+
+
+        <div class="buttonContainer mt-3 mb-3">
+            <button class="btn btn-light" @onclick="OnBtnCloseAsync">Chiudi</button>
+        </div>
+    </NavScrollComponentItem>
+</NavScrollComponent>>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="https://www.e-lios.eu/halley/WSElios/" xmlns:s="http://www.w3.org/2001/XMLSchema" targetNamespace="https://www.e-lios.eu/halley/WSElios/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema targetNamespace="https://www.e-lios.eu/halley/WSElios/">
+      <s:complexType name="wReAutenticazione">
+        <s:annotation>
+          <s:documentation>
+                        Oggetto autenticazione
+                    </s:documentation>
+        </s:annotation>
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Token" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                Token di autenticazione
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="Esito" type="s:int">
+            <s:annotation>
+              <s:documentation>
+                                Esito login
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="MessaggioEsito" nillable="true" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                Descrizione esito login
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="wReEsito">
+        <s:annotation>
+          <s:documentation>
+                        Oggetto di tipo wReEsito
+                    </s:documentation>
+        </s:annotation>
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Esito" type="s:int">
+            <s:annotation>
+              <s:documentation>
+                                Esito login
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+          <s:element minOccurs="1" maxOccurs="1" name="MessaggioEsito" nillable="true" type="s:string">
+            <s:annotation>
+              <s:documentation>
+                                Descrizione esito login
+                            </s:documentation>
+            </s:annotation>
+          </s:element>
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="LoginSoapIn">
+    <wsdl:part name="Username" type="s:string">
+      <s:documentation>
+                Username operatore
+            </s:documentation>
+    </wsdl:part>
+    <wsdl:part name="Password" type="s:string">
+      <s:documentation>
+                Password operatore
+            </s:documentation>
+    </wsdl:part>
+    <wsdl:part name="Ente" type="s:string">
+      <s:documentation>
+                Ente su cui operare
+            </s:documentation>
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="LoginSoapOut">
+    <wsdl:part name="return" type="tns:wReAutenticazione">
+      <s:documentation>
+                Restituisce il token di autenticazione
+            </s:documentation>
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="wAutenticazioneSoap">
+    <wsdl:operation name="Login" parameterOrder="Username Password Ente">
+      <wsdl:documentation>
+                Get a complex type object
+            </wsdl:documentation>
+      <wsdl:input message="tns:LoginSoapIn" />
+      <wsdl:output message="tns:LoginSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="wAutenticazioneSoap" type="tns:wAutenticazioneSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc" />
+    <wsdl:operation name="Login">
+      <soap:operation soapAction="https://www.e-lios.eu/halley/WSElios/Login" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="https://www.e-lios.eu/halley/WSElios/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" parts="Username Password Ente" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="https://www.e-lios.eu/halley/WSElios/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" parts="return" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="wAutenticazione">
+    <wsdl:port name="wAutenticazioneSoap" binding="tns:wAutenticazioneSoap">
+      <soap:address location="http://185.199.49.8:80/WSElios/wsLogin.php" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

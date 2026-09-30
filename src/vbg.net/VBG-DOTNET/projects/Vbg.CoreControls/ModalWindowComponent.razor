@@ -1,0 +1,284 @@
+﻿@inherits MyBaseComponentMin
+
+@if (AllwaysPresentInDOM || visible)
+{
+    <div class="@($"modal fade show {CssClass}")"
+         id="@HtmlId" 
+         style="@getCssVisibility()"
+         tabindex="-1"
+         role="dialog"
+         aria-modal="true" 
+         aria-labelledby="@($"{HtmlId}_title")"
+         aria-describedby="modal-body">
+        <div class="modal-dialog @(String.IsNullOrEmpty(ModalCssClass) ? "" : ModalCssClass)" role="document">
+            <div class="modal-content">
+                @if (ShowHeader)
+                {
+                    <div class="modal-header" id="@($"{HtmlId}_title")">
+                        <h3 class="modal-title h5 no_toc">@HeaderTemplate</h3>
+                        @if (ShowCancelButton)
+                        {
+                            <button type="button" class="btn btn-close" @onclick="Hide" aria-label="Chiudi finestra modale"></button>
+                        }
+                    </div>
+                }
+
+                <div class="modal-body">
+                    @if (String.IsNullOrEmpty(BodyMarkupString))
+                    {
+                        @BodyTemplate
+                    }
+                    else
+                    {
+                        @((MarkupString)BodyMarkupString)
+                    }
+                </div>
+
+                @if (ShowFooter)
+                {
+                    <div class="modal-footer">
+                        @if (ShowOkButton)
+                        {
+                            <button type="button" class="btn btn-primary modal-ok-button @OkButtonCssClass" @onclick="Ok" disabled="@(!IsOkButtonEnabled)">@OkButtonText</button>
+                        }
+
+                        @if (ShowCancelButton)
+                        {
+                            <button type="button" class="btn btn-light modal-ko-button @CancelButtonCssClass" @onclick="Cancel">@CancelButtonText</button>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="modal-backdrop fade show @(String.IsNullOrEmpty(CssClass) ? "" : CssClass)" style="@getCssVisibility()"></div>
+}
+
+@code
+{
+    [Parameter]
+    public string ModalCssClass { get; set; } = "";
+
+    /// <summary>
+    /// The standard visibility behaviour add and remove the component from the DOM.
+    /// You can set the AllwaysPresentInDOM property to true in combination with the CssVisibility property to achieve a css client side visibility behaviour
+    /// Default: false
+    /// </summary>
+    [Parameter]
+    public bool AllwaysPresentInDOM { get; set; } = false;
+
+    public bool Visible => this.visible;
+
+    private bool visible { get; set; } = false;
+
+    private bool startingParameterSetted = false;
+
+    /// <summary>
+    /// This parameter define if the component is present in the DOM on page load
+    /// (This parameter is overtaken by AllwaysPresentInDOM)
+    /// Default: true
+    /// </summary>
+    [Parameter]
+    public bool StartVisible
+    {
+        set
+        {
+            if (startingParameterSetted)
+                return;
+
+            visible = value;
+            startingParameterSetted = true;
+        }
+        get => visible;
+    }
+
+    /// <summary>
+    /// CssVisibility sets the visibility of the component by CSS style
+    /// (It works only if the component is present in DOM)
+    /// Default: true
+    /// </summary>
+    [Parameter]
+    public bool CssVisibility { get; set; } = true; // works only if Visible property is true
+
+    /// <summary>
+    /// Set the component aria-label property
+    /// </summary>
+    [Parameter]
+    public string AriaLabel { get; set; } = "";
+
+    /// <summary>
+    /// Contains the template used in the Header of the modal window
+    /// (Visible only if ShowHeader property is true)
+    /// </summary>
+    [Parameter]
+    public RenderFragment HeaderTemplate { get; set; }
+
+    /// <summary>
+    /// Contains the template used in the Body of the modal window
+    /// (This parameter is overtaken by BodyMarkupString)
+    /// </summary>
+    [Parameter]
+    public RenderFragment BodyTemplate { get; set; }
+
+    /// <summary>
+    /// This parameter overwrite BodyTemplate!
+    /// The string contained in BodyMarkupString can contain html markup and will be rendered in the Body of the modal window
+    /// </summary>
+    [Parameter]
+    public string BodyMarkupString { get; set; } = "";
+
+    /// <summary>
+    /// Set the modal dialog Header visibility
+    /// Default: true
+    /// </summary>
+    [Parameter]
+    public bool ShowHeader { get; set; } = true;
+
+    /// <summary>
+    /// Set the modal dialog Footer visibility
+    /// Default: true
+    /// </summary>
+    [Parameter]
+    public bool ShowFooter { get; set; } = true;
+
+    /// <summary>
+    /// Set the Cancel button visibility
+    /// Default: true
+    /// </summary>
+    [Parameter]
+    public bool ShowCancelButton { get; set; } = true;
+
+    /// <summary>
+    /// Set the Ok button visibility
+    /// Default: true
+    /// </summary>
+    [Parameter]
+    public bool ShowOkButton { get; set; } = true;
+
+    /// <summary>
+    /// Set the Ok button text
+    /// Default: "Ok"
+    /// </summary>
+    [Parameter]
+    public string OkButtonText { get; set; } = "Ok";
+
+    /// <summary>
+    /// Set the Cancel button text
+    /// Default: "Chiudi"
+    /// </summary>
+    [Parameter]
+    public string CancelButtonText { get; set; } = "Chiudi";
+
+    /// <summary>
+    /// Add desired class to the Ok button
+    /// </summary>
+    [Parameter]
+    public string OkButtonCssClass { get; set; } = "";
+
+    /// <summary>
+    /// Add desired class to the Cancel button
+    /// </summary>
+    [Parameter]
+    public string CancelButtonCssClass { get; set; } = "";
+
+    /// <summary>
+    /// The event to fire on Ok button click
+    /// It takes ModalWindowButtonEventArgs as input parameter that can be used to cancel the event
+    /// </summary>
+    [Parameter]
+    public EventCallback<ModalWindowButtonEventArgs> OnOkButton { get; set; }
+
+    /// <summary>
+    /// The event to fire on Cancel button click
+    /// It takes ModalWindowButtonEventArgs as input parameter that can be used to cancel the event
+    /// </summary>
+    [Parameter]
+    public EventCallback<ModalWindowButtonEventArgs> OnCancelButton { get; set; }
+
+    /// <summary>
+    /// Set the enabled/disabled behaviour of Ok button 
+    /// Default: true
+    /// </summary>
+    [Parameter]
+    public bool IsOkButtonEnabled { get; set; } = true;
+
+    /// <summary>
+    /// Set if, after Ok button click, the modal window must hide or stay visible
+    /// Default: true
+    /// </summary>
+    [Parameter]
+    public bool HideWindowOnOkButton { get; set; } = true;
+
+    [Parameter]
+    public Dictionary<string, object>? Attributes { get; set; }
+
+
+    private string HtmlId => string.IsNullOrEmpty(ControlId) ? $"myModal_{UniqueID}" : ControlId;
+
+    public void Show()
+    {
+        visible = true;
+
+        this.StateHasChanged();
+    }
+
+    public void Hide()
+    {
+        visible = false;
+
+        this.StateHasChanged();
+    }
+
+    private async Task Cancel()
+    {
+        if (OnCancelButton.HasDelegate)
+        {
+            var args = new ModalWindowButtonEventArgs();
+
+            await OnCancelButton.InvokeAsync(args);
+
+            if (args.IsCanceled)
+            {
+                return;
+            }
+        }
+
+        Hide();
+    }
+
+    private async Task Ok()
+    {
+        if (OnOkButton.HasDelegate)
+        {
+            var args = new ModalWindowButtonEventArgs();
+
+            await OnOkButton.InvokeAsync(args);
+
+            if (args.IsCanceled)
+            {
+                return;
+            }
+        }
+
+        if (HideWindowOnOkButton)
+            Hide();
+    }
+
+    private string getAriaLabel()
+    {
+        if (!string.IsNullOrEmpty(AriaLabel))
+            return AriaLabel;
+
+        return "Modal Dialog";
+    }
+
+    private string getCssVisibility()
+    {
+        if (CssVisibility)
+            return "display:block";
+        else
+            return "display:none";
+    }
+
+
+}

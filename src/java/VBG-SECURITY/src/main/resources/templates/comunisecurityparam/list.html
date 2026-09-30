@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+     th:replace="~{decorator_main :: layout(~{::title}, ~{::section})}">
+<head>
+	<title th:text="#{label.parametri_di_configurazione}">label.parametri_di_configurazione</title>
+</head>
+<body>
+   <section class="section section-muted container"
+   	 th:attr="aria-describedby=titleSection">
+   
+   	<h1 id="titleSection" th:text="#{label.parametri_di_configurazione}">label.parametri_di_configurazione</h1>
+   
+				<form th:object="${comunisecurityparam}" th:action="@{/comunisecurityparam/update.htm}" method="post">
+				 
+				 <div th:each="parametro, itemStat : *{listaParametri}" class="row mb-4">					
+	
+					    <label class="form-label"
+					    	th:for="*{listaParametri[__${itemStat.index}__].id}" 
+					    	th:text="${parametro.id}">parametro.id</label>
+					    	
+					    <input type="text" class="form-control"  
+					    	th:field="*{listaParametri[__${itemStat.index}__].value}" 
+					    	th:id="*{listaParametri[__${itemStat.index}__].id}" 
+					    	th:value="*{listaParametri[__${itemStat.index}__].value}"
+					    	th:attr="aria-describedby=*{listaParametri[__${itemStat.index}__].id}+'_help'"
+					    	/>
+					    
+					    <small id="emailHelp" th:id="*{listaParametri[__${itemStat.index}__].id}+'_help'" 
+					    class="form-text" th:text="*{listaParametri[__${itemStat.index}__].note}">....</small>	 
+
+	                    <input type="hidden" th:field="*{listaParametri[__${itemStat.index}__].id}" id="el"/>
+					
+				 </div>					
+				 <div class="row">
+					<div class="form-group">
+						<div class="col-sm-offset-2 col-sm-10">
+							<button type="submit" 
+								id="goButtonMergeConvert" class="btn btn-primary" 
+								th:text="#{button.save}">button.save</button>
+							 
+							<button type="button" id="back" class="btn btn-secondary" 								
+								th:onclick="location.href=[[@{/}]]"
+												th:text="#{button.back}">button.back</button>
+						</div>
+					</div>
+				 </div>
+				</form>
+			
+  	
+  </section>
+</body>
+</html>

@@ -1,0 +1,117 @@
+﻿@using AreaRiservataCore.Utils
+@using Init.Sigepro.FrontEnd.AppLogic.GenerazioneDocumentiDomanda.GenerazioneDocumentiDomanda
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneConversioneFiles
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneOggetti
+@using Init.Sigepro.FrontEnd.AppLogic.PrecompilazionePDF
+@using Microsoft.JSInterop
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.DesignComuni.Spinner
+@using Microsoft.AspNetCore.Components.Web
+
+@inject IJSRuntime _jsRuntime
+@inject IPdfUtilsService _pdfUtilsService
+@inject GenerazioneDocumentoDomandaService _generaDocumentoService
+
+@if (CodiceOggetto.HasValue && IdDomanda.HasValue)
+{
+    @if (ChildContent != null)
+    {
+        <a href="#" class="@CssClass" onclick="return false;" target="_blank" tabindex="-1">
+            <button type="button" class="text-button-sm-semi t-primary bottone-allegato" @onclick="@OnDownloadFile" aria-labelledby="@_idDownloadButton">
+                <span id="@_idDownloadButton" class="nome-allegato">@ChildContent</span>
+            </button>
+        </a>
+    }
+    else
+    {
+        <a href="#" class="@CssClass" onclick="return false;" target="_blank" tabindex="-1">
+            <button type="button" class="text-button-sm-semi t-primary bottone-allegato" @onclick="@OnDownloadFile" aria-labelledby="@_idDownloadButton">
+                <SvgIcon CssClass="icon-sm me-2 icon-primary" IconId="@IconId"></SvgIcon>
+                <span id="@_idDownloadButton" class="nome-allegato">@Text</span>
+            </button>
+        </a>
+    }
+
+}
+
+@code {
+    [Inject]
+    public SpinnerService _spinnerService { get; set; } = default!;
+    [Inject]
+    protected FileDownloadHelper _fileDownloadHelper { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public int? CodiceOggetto { get; set; }
+
+    [Parameter, EditorRequired]
+    public int? IdDomanda { get; set; }
+
+    [Parameter]
+    public FormatoConversioneEnum? Formato { get; set; }
+
+    [Parameter]
+    public string Text { get; set; } = "Scarica";
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public string CssClass { get; set; }
+
+    [Parameter]
+    public string IconId { get; set; } = "it-file";
+
+    [Parameter]
+    public Func<bool> IfCanDownload { get; set; }
+
+    [Parameter]
+    public Action IfCanDownloadFailed { get; set; }
+
+    private string _idDownloadButton = "";
+
+    protected override Task OnParametersSetAsync()
+    {
+        this._idDownloadButton = $"buttonDownload-{Guid.NewGuid()}";
+
+        return base.OnParametersSetAsync();
+    }
+
+    private async Task OnDownloadFile()
+    {
+        bool checkCondition = true;
+
+        if (IfCanDownload != null)
+            checkCondition = IfCanDownload();
+
+        if (!checkCondition)
+        {
+            if (IfCanDownloadFailed != null)
+                IfCanDownloadFailed();
+
+            return;
+        }
+
+        await _spinnerService.ShowSpinnerAsync(async () =>
+            {
+                try
+                {
+                    BinaryFile f = null;
+
+                    if (Formato == FormatoConversioneEnum.PDFC)
+                        f = _pdfUtilsService.PrecompilaPdf(CodiceOggetto.Value, IdDomanda.Value);
+                    else if (Formato != null)
+                        f = _generaDocumentoService.GeneraDocumento(CodiceOggetto.Value, IdDomanda.Value, Formato.Value);
+                    else
+                    {
+                        return;
+                    }
+
+                    await _fileDownloadHelper.DownloadFileAsync(f);
+                }
+                catch (Exception ex)
+                {
+
+                }
+            });
+    }
+}

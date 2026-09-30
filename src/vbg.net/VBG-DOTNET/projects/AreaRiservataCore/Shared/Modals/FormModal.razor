@@ -1,0 +1,35 @@
+﻿@* @using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.EditFormComponents
+
+<VbgForm Id="@FormId" Model="@Model" OnValidSubmit="OnValidSubmit" OnInvalidSubmit="OnInvalidSubmit" ValidationCallBack="ValidationCallBack" OnValidationStateChanged="OnValidationStateChanged">
+    <BasicModal AlwaysVisible="@AlwaysVisible" Size="@Size" OnClose="OnClose">
+
+        @ChildContent
+
+    </BasicModal>
+</VbgForm>
+
+@code {
+    [Parameter]
+    public bool AlwaysVisible { get; set; } = true;
+    [Parameter]
+    public ModalSizeEnum Size { get; set; } = ModalSizeEnum.Normal;
+    [Parameter]
+    public EventCallback OnClose { get; set; }
+    [Parameter]
+    public EventCallback OnValidSubmit { get; set; }
+    [Parameter]
+    public EventCallback OnInvalidSubmit { get; set; }
+    [Parameter]
+    public EventCallback<FormMessageStore> ValidationCallBack { get; set; }
+    [Parameter]
+    public EventCallback<FormValidationStateChangedEventArgs> OnValidationStateChanged { get; set; }
+
+    [Parameter, EditorRequired]
+    public object? Model { get; set; }
+    [Parameter, EditorRequired]
+    public string FormId { get; set; } = "editor-form";
+    [Parameter, EditorRequired]
+    public RenderFragment? ChildContent { get; set; }
+}
+ *@

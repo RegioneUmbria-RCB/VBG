@@ -1,0 +1,21 @@
+FROM tomcat:9.0-jdk8-temurin-jammy
+ADD ./ext/jdbc/*.jar $CATALINA_HOME/lib
+ADD ./smart-servizi-console/target/*.war $CATALINA_HOME/webapps
+
+RUN apt-get update && \
+	apt-get --yes install --no-install-recommends unzip && \
+	rm -rf /var/cache/apt/archives /var/lib/apt/lists/*
+	
+WORKDIR $CATALINA_HOME/webapps
+RUN for FILE in *.war; do unzip $FILE -d ./${FILE%%.*}/; done && \
+	rm -rf *.war && \
+	apt-get -y remove unzip
+	
+RUN addgroup tomcat
+RUN useradd -g tomcat tomcat
+
+RUN chown -R tomcat:tomcat $CATALINA_HOME
+
+USER tomcat
+	
+WORKDIR $CATALINA_HOME

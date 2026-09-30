@@ -1,0 +1,294 @@
+#set($idCampo = "campo_${item.Campo.Id}")
+#set($idCampo = $helper.getUniqueId(${idCampo},${item.Campo}))
+##set($numDuplicati = $helper.countUniqueIds(${idCampo}))
+###if($rowIndex < 1 && !$isTableTemplate)
+##	#set($idCampo = $helper.getUniqueId(${idCampo}))
+###elseif($rowIndex > 0 && $numDuplicati > 0)
+##	#set($uidSep = $helper.getUniqueIdSeparator())
+##	#set($idCampo = "${idCampo}${uidSep}${numDuplicati}")
+###end
+#set($idSemantico = $item.Campo.IdSemantico)
+#set($idInput = $idSemantico)
+#if($isTableTemplate)
+	#set($placeholder = "${esc.D}'{'index{0}'}'")
+	#set($idCampo = "${idCampo}${helper.buildIndexingSuffixWhithPlaceholder($rowIndex,$placeholder,$templateNestingLevel)}")
+	#set($idInput = "${idInput}${helper.buildIndexingSuffixWhithPlaceholder($rowIndex,$placeholder,$templateNestingLevel)}")
+#else
+	#set($idCampo = "${idCampo}${helper.buildIndexingSuffix($rowIndex)}")
+	#set($idInput = "${idInput}${helper.buildIndexingSuffix($rowIndex)}")
+#end
+<div class="campo-cart-container" id="$idCampo" >
+	#set($isCheckBox = $helper.rendersAsCheckbox($item.Campo))
+	#set($isRadioButton = $helper.rendersAsRadioButton($item.Campo))
+	#set($autocompCfgs = false)
+	#set($autocompCfgs = $helper.getAutocompilersForIdSemantico($idSemantico))
+	#set($classeDivCampo = "campo-cart-right")
+	#if($helper.renderFormLayout($item, $quadro))
+		#if(!${helper.isRenderingSezione()})
+			#set($classeDivCampo = "$classeDivCampo campo-cart-nowidth")
+		#end
+        <div class="label-cart">
+        	$!item.Campo.Titolo&nbsp;
+        </div>
+	#else
+		#set($classeDivCampo = "campo-cart-left")
+	#end
+	<div class="campo-cart $classeDivCampo">
+	#set($tooltiptext = ${helper.getCampoHelp($item.Campo)})
+	## gestione valori multipli come select checkboxes o radiobuttons 
+	#set($readonly = "")
+	#if($item.Campo.isReadonly())
+		#set($readonly = "readonly='readonly'")
+	#end
+	#if($item.Campo.SetValori.Enumerazione)
+		#if($isCheckBox || $isRadioButton)
+			##checkboxes
+			#set($inputType = "checkbox")
+			#if($isRadioButton)
+				#set($inputType = "radio")
+			#end
+			#foreach($enumItem in $item.Campo.SetValori.Enumerazione.EnumItem)
+				#if(!$isTableTemplate && $helper.contieneValore($idSemantico,$rowIndex,$enumItem.Valore))
+					#set($checked = "checked='checked'")
+				#else
+					#set($checked = "")
+				#end
+				#set($valoriCount = $velocityCount - 1)
+				<div class="check-radio-wrap" #if(!$pdfOutput)name="$idInput"#end align="center">
+					<input type="$inputType" id="${idInput}_$valoriCount" name="$idInput" value="${helper.escapeValueForHtmlAttribute($enumItem.Valore)}" $checked $readonly/>
+                </div>
+				<label for="${idInput}_$valoriCount" class="mandatory-star" style="display:none;">*</label>
+				<label for="${idInput}_$valoriCount">$enumItem.Valore</label>
+				<div class="campo-cart-icons">
+					#if($tooltiptext.length() > 0)
+						<span class="help_image" id="${idInput}_$valoriCount_help" title="${helper.escapeValueForHtmlAttribute($tooltiptext)}">
+							<label >(?)</label>
+	                    </span>
+					#end
+					<span class="error_image" style="display:none;" title="">
+						<label >(!)</label>
+	                </span>
+					<span class="warning_image" style="display:none;" title="">
+						<label >(!)</label>
+	                </span>
+                </div>
+				<br />
+			#end
+		#else
+			##select
+			<select id="$idInput" name="$idInput" $readonly >
+			##if(!$helper.evaluateExpression($item.Campo.Obbligatorio,$rowIndex))
+				<option value="">&nbsp;</option>
+			##end
+			#foreach($enumItem in $item.Campo.SetValori.Enumerazione.EnumItem)
+				#if(!$isTableTemplate && $helper.contieneValore($idSemantico,$rowIndex,$enumItem.Valore))
+					#set($checked = "selected='selected'")
+				#else
+					#set($checked = "")
+				#end
+                <option value="${helper.escapeValueForHtmlAttribute($enumItem.Valore)}" $checked>$enumItem.Valore</option>
+			#end
+            </select>
+			<label for="$idInput" class="mandatory-star" style="display:none;">*</label>
+			<div class="campo-cart-icons">
+				#if($tooltiptext.length() > 0)
+					<span class="help_image" id="${idInput}_help" title="${helper.escapeValueForHtmlAttribute($tooltiptext)}">
+						<label >(?)</label>
+	                </span>
+				#end
+				<span class="error_image" style="display:none;" title="">
+					<label >(!)</label>
+	            </span>
+				<span class="warning_image" style="display:none;" title="">
+					<label >(!)</label>
+	            </span>
+            </div>
+		#end
+	#elseif($item.Campo.SetValori.Calendario)
+		#if(!$isTableTemplate)
+			#set($valore = "${helper.getValoreSingolo($idSemantico,$rowIndex)}")
+		#else
+			#set($valore = "")
+		#end
+		<input type="text" id="$idInput" name="$idInput" $readonly #if($item.Campo.MaxLength)maxlength="$item.Campo.MaxLength"#end #if($item.Campo.Size)size="$item.Campo.Size"#end value="$valore"/>
+		<label for="$idInput" class="mandatory-star" style="display:none;">*</label>
+		<div class="campo-cart-icons">
+			#if($tooltiptext.length() > 0)
+				<span class="help_image" id="${idInput}_help" title="${helper.escapeValueForHtmlAttribute($tooltiptext)}">
+					<label >(?)</label>
+	            </span>
+			#end
+			<span class="error_image" style="display:none;" title="">
+				<label >(!)</label>
+	        </span>
+			<span class="warning_image" style="display:none;" title="">
+				<label >(!)</label>
+	        </span>
+        </div>
+		#if(!$isTableTemplate)
+    	<script>
+    	$(document).ready(function(){
+    		$( "#$helper.escapeForCssSelector($idInput)" ).datepicker();
+			$( "#$helper.escapeForCssSelector($idInput)" ).change(function(){
+				isValidDate(this,true)
+			});
+    	});
+    	</script>
+		#else
+			#set($dateInputId = $helper.escapeForCssSelector("${idSemantico}"))
+			#set($placeholder = "'' + newRowIndex{0} + ''")
+			#set($dateInputId = "$dateInputId${helper.buildIndexingSuffixWhithPlaceholder($rowIndex,$placeholder,$templateNestingLevel)}")
+			$helper.addScriptToCache("$('#${dateInputId}').datepicker();")
+			$helper.addScriptToCache("$('#${dateInputId}').change(function(){isValidDate(this,true);});")
+		#end
+	##Campi di tipo Numerico implementati con jquery.autonumeric
+	#elseif($item.Campo.SetValori.Numerico)
+		#if(!$isTableTemplate)
+			#set($valore = "${helper.getValoreSingolo($idSemantico,$rowIndex)}")
+		#else
+			#set($valore = "")
+		#end
+		<input type="text" id="$idInput" name="$idInput" $readonly #if($item.Campo.MaxLength)maxlength="$item.Campo.MaxLength"#end #if($item.Campo.Size)size="$item.Campo.Size"#end value="$valore"/>
+		<label for="$idInput" class="mandatory-star" style="display:none;">*</label>
+		<div class="campo-cart-icons">
+			#if($tooltiptext.length() > 0)
+				<span class="help_image" id="${idInput}_help" title="${helper.escapeValueForHtmlAttribute($tooltiptext)}">
+					<label >(?)</label>
+	            </span>
+			#end
+			<span class="error_image" style="display:none;" title="">
+				<label >(!)</label>
+	        </span>
+			<span class="warning_image" style="display:none;" title="">
+				<label >(!)</label>
+	        </span>
+        </div>
+		#set($vMin = 'undefined')
+		#set($vMax = 'undefined')
+		##if($item.Campo.SetValori.Numerico.RangeValidita)
+			##set($vMin = $item.Campo.SetValori.Numerico.RangeValidita.Minimo)
+			##set($vMax = $item.Campo.SetValori.Numerico.RangeValidita.Massimo)
+		##end
+		#if(!$isTableTemplate)
+    	<script>
+    	$(document).ready(function(){
+			/*
+    		var options = {
+    			aSep: '.',
+				aDec: ','
+				//,aPad: false disabilita il padding automatico con zeri delle cifre decimali
+    		};
+			#if($item.Campo.SetValori.Numerico.MaxNumeroCifreDecimali)
+				options.mDec = ${item.Campo.SetValori.Numerico.MaxNumeroCifreDecimali.intValue()};
+			#end
+			## minNumeroCifreDecimali è garantito dal padding automatico con zeri fino a MaxNumeroCifreDecimali
+			## maxNumeroCifreIntere e' una validazione non supportata dal controllo JS e sarà implementata solo lato server
+			#if($item.Campo.SetValori.Numerico.RangeValidita.Minimo)
+				options.vMax = $helper.buildNumericMaxValueExpression($item.Campo.SetValori.Numerico);
+			#end
+			#if($item.Campo.SetValori.Numerico.RangeValidita.Massimo)
+				options.vMin = $helper.buildNumericMinValueExpression($item.Campo.SetValori.Numerico);
+			#end
+    		$( "#$helper.escapeForCssSelector($idInput)" ).autoNumeric(options);
+			*/
+			initializeNumericField('$idInput',${item.Campo.SetValori.Numerico.MaxNumeroCifreDecimali},$vMin,$vMax);
+    	});
+    	</script>
+		#else
+			#set($numInputId = ${idSemantico})
+			#set($placeholder = "'' + newRowIndex{0} + ''")
+			#set($numInputId = "$numInputId${helper.buildIndexingSuffixWhithPlaceholder($rowIndex,$placeholder,$templateNestingLevel)}")
+			$helper.addScriptToCache("initializeNumericField('$numInputId',${item.Campo.SetValori.Numerico.MaxNumeroCifreDecimali},$vMin,$vMax);")
+		#end
+	#else
+		#if(!$isTableTemplate)
+			#set($valore = "${helper.getValoreSingolo($idSemantico,$rowIndex)}")
+		#else
+			#set($valore = "")
+		#end
+		#if($helper.rendersAsTextarea($item.Campo))
+			<textarea id="$idInput" name="$idInput" cols="40" rows="5" #if($item.Campo.MaxLength)maxlength="$item.Campo.MaxLength"#end>$valore</textarea>
+		#else
+			<input type="text" id="$idInput" name="$idInput" $readonly #if($item.Campo.MaxLength)maxlength="$item.Campo.MaxLength"#end #if($item.Campo.Size)size="$item.Campo.Size"#end value="${helper.escapeValueForHtmlAttribute($valore)}"/>
+		#end
+		<label for="$idInput" class="mandatory-star" style="display:none;">*</label>
+		<div class="campo-cart-icons">
+			#if($tooltiptext.length() > 0)
+				<span class="help_image" id="${idInput}_help" title="${helper.escapeValueForHtmlAttribute($tooltiptext)}">
+					<label >(?)</label>
+	            </span>
+			#end
+			<span class="error_image" style="display:none;" title="">
+				<label >(!)</label>
+	        </span>
+			<span class="warning_image" style="display:none;" title="">
+				<label >(!)</label>
+	        </span>
+        </div>
+	#end
+	#set($attivo = $helper.evaluateExpression($item.Campo.Attivo,$rowIndex))
+	#if(!$attivo || $helper.isEspressioneDinamica($item.Campo.Attivo))
+		#if(!$isTableTemplate)
+			#set($jsScript = $helper.buildJavascriptToDynamicallyEnableElement($idCampo,$item.Campo.Attivo,2))
+			#if($jsScript != "")
+            	<script>
+            	//script che attiva e disattiva il campo dinamicamente in base ai valori assunti da altri campi
+    			$(document).ready(function(){
+            	$jsScript
+    			});
+            	</script>
+			#end
+		#else
+			#set($placeholder = "'' + newRowIndex{0} + ''")
+			#set($placeholder = ${helper.buildIndexingSuffixWhithPlaceholder($rowIndex,$placeholder,$templateNestingLevel)})
+			#set($jsScript = $helper.buildJavascriptToDynamicallyEnableElement($helper.getUniqueId("campo_$item.Campo.Id",${item.Campo}),$item.Campo.Attivo,$placeholder, 2))
+			#if($jsScript != "")
+				$helper.addScriptToCache($jsScript)
+			#end
+		#end
+	#end
+	#set($mandatory = $helper.evaluateExpression($item.Campo.Obbligatorio,$rowIndex))
+	#if($mandatory || $helper.isEspressioneDinamica($item.Campo.Obbligatorio))
+		#if(!$isTableTemplate)
+			#set($jsScript = $helper.buildJavascriptToDynamicallySetMandatoryElement($idInput,$item.Campo.Obbligatorio,2))
+			#if($jsScript != "")
+            	<script>
+            	//script che rende il campo obbligatorio dinamicamente in base ai valori assunti da altri campi
+    			$(document).ready(function(){
+            	$jsScript
+    			});
+            	</script>
+			#end
+		#else
+			#set($placeholder = "'' + newRowIndex{0} + ''")
+			#set($placeholder = ${helper.buildIndexingSuffixWhithPlaceholder($rowIndex,$placeholder,$templateNestingLevel)})
+			#set($jsScript = $helper.buildJavascriptToDynamicallySetMandatoryElement($idSemantico,$item.Campo.Obbligatorio,$placeholder, 2))
+			#if($jsScript != "")
+				$helper.addScriptToCache($jsScript)
+			#end
+		#end
+	#end
+	#if($autocompCfgs)
+		#foreach($autocompCfg in $autocompCfgs)
+    		#if(!$isTableTemplate)
+   				#set($suffix = ${helper.buildIndexingSuffix($rowIndex)})
+    			#set($jsScript = ${helper.buildJavascriptForAutocompiler($autocompCfg,$idSemantico,$suffix,$contextPath)})
+    			#if($jsScript != "")
+                	<script>
+                	//script che attiva la compilazione automatica dei campi se richiesta
+        			$(document).ready(function(){
+                	$jsScript
+        			});
+                	</script>
+    			#end
+    		#else
+    			#set($suffix = ${helper.buildIndexingSuffixWhithPlaceholder($rowIndex,"'' + newRowIndex{0} + ''",$templateNestingLevel)})
+    			#set($jsScript = $helper.buildJavascriptForAutocompiler($autocompCfg,$idSemantico,$suffix, $contextPath))
+    			#if($jsScript != "")
+    				$helper.addScriptToCache($jsScript)
+    			#end
+			#end
+		#end
+	#end
+    </div>	
+</div>

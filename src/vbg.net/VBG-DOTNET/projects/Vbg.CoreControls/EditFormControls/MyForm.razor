@@ -1,0 +1,108 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+@implements IDisposable
+
+<EditForm id="@Id" name="vbgFormComponent" EditContext="@_currentEditContext" OnInvalidSubmit="OnInvalidSubmit" OnValidSubmit="OnValidSubmit" novalidate>
+    <CascadingValue Value="@messageStore">
+            <DataAnnotationsValidator />
+            @if (ShowValidationSummary)
+            {
+                <ValidationSummary />
+            }
+            @ChildContent
+    </CascadingValue>
+</EditForm>
+
+@code {
+    [EditorRequired, Parameter] public RenderFragment? ChildContent { get; set; }
+    [EditorRequired, Parameter] public Object? Model { get; set; }
+    [Parameter] public string Id { get; set; }
+    [Parameter] public EventCallback OnInvalidSubmit { get; set; }
+    [Parameter] public EventCallback OnValidSubmit { get; set; }
+    [Parameter] public Action<FormMessageStore>? ValidationCallBack { get; set; }
+    //[Parameter] public Func<List<KeyValuePair<FieldIdentifier, string>>> ValidateDynamicFields { get; set; }
+    [Parameter] public bool ShowValidationSummary { get; set; } = false;
+
+    public EditContext? EditContext => _currentEditContext;
+
+    EditContext? _currentEditContext = null;
+
+    private ValidationMessageStore? messageStore;
+
+    protected override void OnInitialized()
+    {
+
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (Model is null)
+        {
+            throw new InvalidOperationException("Un form deve necessariamente essere associato ad un model");
+        }
+
+        var tempEditContext = new EditContext(Model);
+
+        if (tempEditContext.Model != _currentEditContext?.Model)
+        {
+            _currentEditContext = tempEditContext;
+            messageStore = new(_currentEditContext);
+
+            _currentEditContext.OnValidationRequested += OnValidationRequested;
+            //_currentEditContext.SetFieldCssClassProvider(new BootstrapCssClassProvider());
+        }
+    }
+
+    private void OnValidationRequested(object? sender, ValidationRequestedEventArgs e)
+    {
+        if (ValidationCallBack != null)
+        {
+            FormMessageStore store = new FormMessageStore(messageStore);
+            ValidationCallBack.Invoke(store);
+        }
+
+        //if (ValidateDynamicFields != null)
+        //{
+        //    List<KeyValuePair<FieldIdentifier, string>> vals = ValidateDynamicFields.Invoke();
+
+        //    messageStore.Clear();
+
+        //    if (vals?.Count > 0)
+        //    {
+        //        foreach (KeyValuePair<FieldIdentifier, string> kvp in vals)
+        //        {
+        //            messageStore?.Add(kvp.Key, kvp.Value);
+        //        }
+        //    }
+
+        //    this.StateHasChanged();
+        //}
+    }
+
+    public void AddValidationMessage(FieldIdentifier fieldIdentifier, string message)
+    {
+        messageStore.Add(fieldIdentifier, message);
+    }
+
+    public void ClearValidationMessage(FieldIdentifier fieldIdentifier)
+    {
+        messageStore.Clear(fieldIdentifier);
+    }
+
+    public void ClearValidationMessages()
+    {
+        messageStore.Clear();
+    }
+
+    void ResetValidationHanler()
+    {
+        if (_currentEditContext != null)
+        {
+            _currentEditContext.OnValidationRequested -= OnValidationRequested;
+        }
+    }
+
+    public void Dispose()
+    {
+        ResetValidationHanler();
+    }
+}

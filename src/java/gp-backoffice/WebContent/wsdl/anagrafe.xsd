@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://gruppoinit.it/sigepro/schemas/messages/anagrafe" xmlns:tns="http://gruppoinit.it/sigepro/schemas/messages/anagrafe"
+	elementFormDefault="qualified">
+	<element name="InserimentoAnagrafeRequest">
+		<annotation>
+			<documentation>La richiesta di inserimento/modifica di una scheda anagrafica
+			</documentation>
+		</annotation>
+		<complexType>
+			<all>
+				<element name="token" type="string" minOccurs="1" maxOccurs="1">
+					<annotation>
+						<documentation>Il token usato per l'autenticazione</documentation>
+					</annotation>
+				</element>
+				<element name="datiAnagrafici" type="tns:AnagrafeType" minOccurs="1" maxOccurs="1">
+					<annotation>
+						<documentation>I dati anagrafici che si vogliono inserire
+						</documentation>
+					</annotation>
+				</element>
+				<element name="tipoInserimento" minOccurs="0"
+					maxOccurs="1">
+					<annotation>
+						<documentation>
+Il tipo di inserimento che si sta facendo.
+valori possibili: 
+- AUTH_TYPE_REG:	registrazione utente tramite Form 
+- AUTH_TYPE_REG_SC: registrazione utente con	dispositivo smartcard/CIE/CNS 
+- AUTH_TYPE_REG_SSO: registrazione tramite sistemi SSO
+						</documentation>
+					</annotation>
+					<simpleType>
+						<restriction base="string">
+							<enumeration value="AUTH_TYPE_REG"></enumeration>
+							<enumeration value="AUTH_TYPE_REG_SC"></enumeration>
+							<enumeration value="AUTH_TYPE_REG_SSO"></enumeration>
+						</restriction>
+					</simpleType>
+				</element>
+				<element name="xmlDatiAnagrafici" type="string" minOccurs="0" maxOccurs="1">
+					<annotation>
+						<documentation>L'XML di tipo it.gruppoinit.wsanagrafe2.schema.Anagrafe che serve per creare eventuali richieste di registrazione da FO</documentation>
+					</annotation>
+				</element>
+			</all>
+		</complexType>
+	</element>
+	<element name="InserimentoAnagrafeResponse">
+		<complexType>
+			<all>
+				<element name="riferimentiAnagrafe" type="tns:RiferimentiAnagrafeType" />
+				<element name="errori" type="tns:ErroreType" minOccurs="0" maxOccurs="1"></element>
+			</all>
+		</complexType>
+	</element>
+	
+		<element name="InserimentoPersonaGiuridicaRequest">
+		<annotation>
+			<documentation>La richiesta di inserimento/modifica di una scheda anagrafica di tipo persona giuridica
+			</documentation>
+		</annotation>
+		<complexType>
+			<all>
+				<element name="token" type="string" minOccurs="1" maxOccurs="1">
+					<annotation>
+						<documentation>Il token usato per l'autenticazione</documentation>
+					</annotation>
+				</element>
+				<element name="datiAnagrafici" type="tns:AnagrafeGiuridicaType" minOccurs="1" maxOccurs="1">
+					<annotation>
+						<documentation>I dati anagrafici che si vogliono inserire
+						</documentation>
+					</annotation>
+				</element>
+			</all>
+		</complexType>
+	</element>
+	
+	
+	<complexType name="AnagrafeGiuridicaType">
+		<sequence>
+			<element name="riferimentiAnagrafe" type="tns:RiferimentiAnagrafeType" minOccurs="0" maxOccurs="1"></element>
+			<element name="denominazione" type="string" minOccurs="1" maxOccurs="1">
+				<annotation>
+					<documentation>la ragione sociale/denominazione impresa</documentation>
+				</annotation>
+			</element>
+			<element name="formaGiuridica" type="string" minOccurs="0" maxOccurs="1"></element>
+			<element name="codiceFiscale" type="string" minOccurs="1" maxOccurs="1"></element>
+			<element name="partitaIva" type="string" minOccurs="1" maxOccurs="1"></element>
+			<element name="dataCostituzione" type="date" minOccurs="0" maxOccurs="1"></element>
+			<element name="sedeLegale" type="tns:LocalizzazioneType" minOccurs="0" maxOccurs="1"></element>
+			<element name="corrispondenza" type="tns:LocalizzazioneType" minOccurs="0" maxOccurs="1"></element>
+			<!-- CCIAA -->
+			<element name="nrCCIAA" type="string" minOccurs="0" maxOccurs="1"></element>
+			<element name="comuneCCIAA" type="tns:ComuneType" minOccurs="0" maxOccurs="1"></element>
+			<element name="dataCCIAA" type="date" minOccurs="0" maxOccurs="1"></element>
+			<!-- END CCIAA -->
+			<!-- TRIB -->
+			<element name="nrTRIB" type="string" minOccurs="0" maxOccurs="1"></element>
+			<element name="comuneTRIB" type="tns:ComuneType" minOccurs="0" maxOccurs="1"></element>
+			<element name="dataTRIB" type="date" minOccurs="0" maxOccurs="1"></element>
+			<!-- END TRIB -->
+			<!-- REA -->
+			<element name="nrREA" type="string" minOccurs="0" maxOccurs="1"></element>
+			<element name="provinciaREA" type="string" minOccurs="0" maxOccurs="1"></element>
+			<element name="dataREA" type="date" minOccurs="0" maxOccurs="1"></element>
+			<!-- END REA -->			
+			<element name="telefono" type="string" minOccurs="0" maxOccurs="1"></element>
+			<element name="cellulare" type="string" minOccurs="0" maxOccurs="1"></element>
+			<element name="fax" type="string" minOccurs="0" maxOccurs="1"></element>
+			<element name="email" type="string" minOccurs="0" maxOccurs="1"></element>
+			<element name="pec" type="string" minOccurs="0" maxOccurs="1"></element>
+			<element name="referente" type="string" minOccurs="0" maxOccurs="1"></element>
+			<element name="strongAuthId" type="string" minOccurs="0" maxOccurs="1"></element>
+			<element name="password" type="string" minOccurs="0" maxOccurs="1"></element>
+			<element name="disabilitato" type="boolean" maxOccurs="1" minOccurs="0"></element>
+			<element name="dataDisabilitato" type="date" maxOccurs="1" minOccurs="0"></element>
+			<element name="note" type="string" maxOccurs="1" minOccurs="0"></element>
+		</sequence>
+	</complexType>
+	
+	<complexType name="RiferimentiAnagrafeType">
+		<sequence>
+			<element name="codiceanagrafe" type="integer" minOccurs="1"></element>
+			<element name="idcomune" type="string" minOccurs="1"></element>
+		</sequence>
+	</complexType>
+	<complexType name="AnagrafeType">
+		<sequence>
+			<element name="riferimentiAnagrafe" type="tns:RiferimentiAnagrafeType" minOccurs="0" maxOccurs="1"></element>
+			<element name="nome" type="string" minOccurs="1" maxOccurs="1">
+				<annotation>
+					<documentation>Il nome dell'anagrafica</documentation>
+				</annotation>
+			</element>
+			<element name="cognome" type="string" minOccurs="1" maxOccurs="1">
+				<annotation>
+					<documentation>Il Cognome dell'anagrafica</documentation>
+				</annotation>
+			</element>
+			<element name="codiceFiscale" type="string" minOccurs="1" maxOccurs="1"></element>
+			<element name="partitaIva" type="string" minOccurs="0" maxOccurs="1"></element>
+			<element name="tecnico" type="boolean" minOccurs="0" maxOccurs="1">
+				<annotation>
+					<documentation>Se true indica che l'anagrafica rappresenta un intermediario</documentation>
+				</annotation>
+			</element>
+			<element name="titolo" type="string" minOccurs="0" maxOccurs="1"></element>
+			<element name="sesso" minOccurs="1" maxOccurs="1">
+				<annotation>
+					<documentation>Indicare se Maschio (M) o Femmina (F)</documentation>
+				</annotation>
+				<simpleType>
+					<restriction base="string">
+						<enumeration value="M"></enumeration>
+						<enumeration value="F"></enumeration>
+					</restriction>
+				</simpleType>
+			</element>
+			<element name="dataNascita" type="date" minOccurs="0" maxOccurs="1"></element>
+			<element name="comuneNascita" type="tns:ComuneType" minOccurs="0" maxOccurs="1"></element>
+			<element name="residenza" type="tns:LocalizzazioneType" minOccurs="0" maxOccurs="1"></element>
+			<element name="corrispondenza" type="tns:LocalizzazioneType" minOccurs="0" maxOccurs="1"></element>
+			<element name="telefono" type="string" minOccurs="0" maxOccurs="1"></element>
+			<element name="fax" type="string" minOccurs="0" maxOccurs="1"></element>
+			<element name="email" type="string" minOccurs="0" maxOccurs="1"></element>
+			<element name="pec" type="string" minOccurs="0" maxOccurs="1"></element>
+			<element name="strongAuthId" type="string" minOccurs="0" maxOccurs="1"></element>
+			<element name="password" type="string" minOccurs="0" maxOccurs="1"></element>
+			<element name="disabilitato" type="boolean" maxOccurs="1" minOccurs="0"></element>
+			<element name="dataDisabilitato" type="date" maxOccurs="1" minOccurs="0"></element>
+			<element name="note" type="string" maxOccurs="1" minOccurs="0"></element>
+		</sequence>
+	</complexType>
+	<complexType name="LocalizzazioneType">
+		<sequence minOccurs="1">
+			<element name="indirizzo" type="string" minOccurs="1" maxOccurs="1"></element>
+			<element name="civico" type="string" minOccurs="0"></element>
+			<element name="localita" type="string" minOccurs="0"></element>
+			<element name="cap" type="string" minOccurs="0"></element>
+			<element name="comune" type="tns:ComuneType" minOccurs="0">
+			</element>
+			<element name="provincia" type="string" minOccurs="0"></element>
+		</sequence>
+	</complexType>
+	<complexType name="ComuneType">
+		<annotation>
+			<documentation>Sara' possibile decodificare il comune attraverso l'indicazione del CodiceCatastale (Es.D612), del CodiceIstat (Es. 048017) o del nome del comune (Es.
+				Firenze)
+			</documentation>
+		</annotation>
+		<choice minOccurs="1">
+			<element name="codiceCatastale" type="string"></element>
+			<element name="codiceIstat" type="string"></element>
+			<element name="comune" type="string"></element>
+		</choice>
+	</complexType>
+	<complexType name="ErroreType">
+		<sequence>
+			<element name="numeroErrore" type="string"></element>
+			<element name="descrizione" type="string"></element>
+		</sequence>
+	</complexType>
+</schema>

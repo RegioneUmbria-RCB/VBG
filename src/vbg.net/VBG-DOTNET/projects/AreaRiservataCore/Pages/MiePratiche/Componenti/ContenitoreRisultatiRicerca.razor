@@ -1,0 +1,142 @@
+﻿@using AreaRiservataCore.Pages.InserimentoIstanza
+@using AreaRiservataCore.Shared.enums
+@using Init.Sigepro.FrontEnd.AppLogic.Autenticazione.Vbg.AutenticazioneUtente
+@using Init.Sigepro.FrontEnd.AppLogic.GestionePresentazioneDomanda
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneVisuraIstanza
+@using Init.Sigepro.FrontEnd.AppLogic.Services.Domanda
+@using Init.Sigepro.FrontEnd.AppLogic.WebServiceReferences.IstanzeService
+@using Init.Utils
+@using PersonalLib2.Data.Providers
+@using VBG.AreaRiservataCore.Controls
+
+@using VBG.BlazorComponentsLibrary.DesignComuni.NavigationButtons
+@using static AreaRiservataCore.Pages.MiePratiche.IstanzePresentate
+@using static AreaRiservataCore.Pages.MiePratiche.Componenti.FiltriRisultatiRicerca
+
+<div class="cmp-card">
+    <div class="card">
+        <div class="card-header border-0 p-0 mb-lg-30 m-0">
+            <FiltriRisultatiRicerca Id="filtriPratiche"
+                                    Title="@TitoloPagina"
+                                    Mode="Mode"
+                                    IsBtnShowInMapVisible="IsBtnShowInMapVisible"
+                                    OnBtnShowInMapClicked="OnBtnShowInMapClicked"
+                                    OnFiltersChanged="OnFiltersChangedAsync" >
+            </FiltriRisultatiRicerca>
+        </div>
+        <div class="card-body p-0">
+            <ListaRisultatiRicerca IsLoading="this._isLoading" Items="this._dataSource" Mode="Mode"></ListaRisultatiRicerca>
+        </div>
+    </div>
+</div>
+
+@if (_dataSource?.Any() ?? false)
+{
+    <NavigationPager PaginaCorrente="this._paginaCorrente"
+                     TotalePagine="this.totalePagine"
+                     PaginaChanged="HandlePaginaChanged"
+                     Disabled="this._isLoading"
+                     ScrollOnPaginaChanged="NavigationPager.ScrollTo.PageBottom">
+    </NavigationPager>
+}
+
+@code {
+
+    [Inject]
+    private IVisuraService _visuraService { get; set; } = default!;
+    [Inject]
+    private ILogger<ContenitoreRisultatiRicerca> _log { get; set; } = default!;
+    [Inject]
+    private ISoftwareResolver _softwareResolver { get; set; } = default!;
+    [Inject]
+    private IAuthenticationDataResolver _authenticationDataResolver { get; set; } = default!;
+    [Inject]
+    private RichiestaListaPraticheService _richiestaListaPraticheService { get; set; } = default!;
+
+    private IEnumerable<IstanzaListItem> _dataSource = Enumerable.Empty<IstanzaListItem>();
+    private int totalePratiche = 0;
+    private int totalePagine = 0;
+    private int _paginaCorrente { get; set; } = 1;
+
+    private bool _isLoading = true;
+
+    [CascadingParameter]
+    public MessageContainer messageContainer { get; set; } = default!;
+
+    public int _pratichePerPagina { get; set; } = 10;
+
+    [Parameter]
+    public ViewMode Mode { get; set; } = ViewMode.ArchivioPratiche;
+
+    [Parameter]
+    public string TitoloPagina { get; set; } = "Pratiche";
+
+    [Parameter]
+    public EventCallback OnBtnShowInMapClicked { get; set; }
+
+    [Parameter]
+    public bool IsBtnShowInMapVisible { get; set; }
+
+    RichiestaListaPraticheV3 _richiestaListaPratiche = new RichiestaListaPraticheV3();
+
+
+    protected async override Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        await ApplyFiltersAsync();
+    }
+
+    private async Task OnFiltersChangedAsync(RichiestaListaPraticheV3 richiestaListaPratiche)
+    {
+        _richiestaListaPratiche = richiestaListaPratiche;
+        _paginaCorrente = 1;
+
+        await ApplyFiltersAsync();
+    }
+
+    private async Task HandlePaginaChanged(int page)
+    {
+        _paginaCorrente = page;
+
+        await ApplyFiltersAsync();
+    }
+
+    private async Task ApplyFiltersAsync()
+    {
+        messageContainer.ClearErrors();
+
+        _isLoading = true;
+
+        try
+        {
+            StateHasChanged();
+
+            var richiesta = _richiestaListaPraticheService.ConfiguraDatiRichiesta(this.Mode, this._richiestaListaPratiche);
+            var paginatore = new QueryPaginationRequest() { CurrentPage = _paginaCorrente - 1, PageSize = _pratichePerPagina };
+
+            var response = await this._visuraService.GetListaPratichePaginataAsync(richiesta, paginatore);
+            this._dataSource = response.Pratiche.ToIstanzaListItem();
+            this.totalePratiche = response.RecordCount;
+            this.totalePagine = response.TotalPages;
+        }
+        catch (Exception ex)
+        {
+            messageContainer.AddError("Si è verificato un errore durante la ricerca delle pratiche, si prega di riprovare inserendo uno più filtri");
+        }
+
+        _isLoading = false;
+
+        StateHasChanged();
+    }
+
+    public List<string> RecuperaUuid()
+    {
+        if (_dataSource != null && _dataSource.Any())
+        {
+            return _dataSource.Select(x => x.Uuid).ToList();
+        }
+
+        return new List<string>();
+    }
+}

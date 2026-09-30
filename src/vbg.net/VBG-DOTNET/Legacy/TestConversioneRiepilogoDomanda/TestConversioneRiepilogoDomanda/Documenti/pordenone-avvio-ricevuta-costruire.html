@@ -1,0 +1,401 @@
+﻿<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        body {
+            font-family: sans-serif;
+            font-size: 14px;
+            padding: 10%;
+        }
+
+            body > div {
+                margin-bottom: 14px;
+            }
+
+                body > div > p {
+                    margin-top: 0;
+                    margin-bottom: 14px;
+                    text-align: justify;
+                    text-indent: 28px;
+                }
+
+        td, th {
+            font-size: 14px;
+        }
+
+        .intestazione-data {
+            width: 100%;
+            text-align: right;
+        }
+
+        .intestazione-oggetto {
+            margin-bottom: 64px;
+            font-size: 14px;
+        }
+
+            .intestazione-oggetto td {
+                vertical-align: top;
+            }
+
+        .titolo {
+            font-weight: bold;
+            margin-top: 24px;
+        }
+
+        .centrato {
+            width: 100%;
+            text-align: center;
+        }
+
+        .giustificato {
+            width: 100%;
+            text-align: justify;
+        }
+
+        .sottolineato {
+            text-decoration: underline;
+        }
+
+        .tabella-tempistiche {
+            border: 1px solid #000;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+            .tabella-tempistiche td,
+            .tabella-tempistiche th {
+                border: 1px solid #000;
+                padding: 5px;
+            }
+
+            .tabella-tempistiche .col1 {
+                width: 50%;
+            }
+
+            .tabella-tempistiche .col2 {
+                width: 10%;
+                text-align: center;
+            }
+
+            .tabella-tempistiche .col3 {
+                width: 40%;
+            }
+
+        .tabella-invisibile {
+            border: 0;
+            border-collapse: collapse;
+        }
+
+            .tabella-invisibile td {
+                vertical-align: top;
+            }
+
+        .orari {
+            font-size: small;
+        }
+
+            .orari p {
+                text-indent: 0;
+            }
+
+        .firmato {
+            width: 50%;
+            margin-left: 50%;
+            text-align: center;
+            margin-bottom: 36px;
+        }
+
+        .distinti-saluti {
+            width: 50%;
+            text-align: center;
+            margin-top: 36px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <img src="data:image/png;base64,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" />
+    </div>
+    <div>
+        Rep. n. [-NRPROTOCOLLOISTANZA-]<br />
+        Pr.numero [-CODICEISTANZA-]
+    </div>
+    <div class="intestazione-data">
+        Pordenone, [-DATAODIERNA-]
+    </div>
+    <div class="intestazione-oggetto">
+        <table>
+            <tr>
+                <td class="titolo">OGGETTO:</td>
+                <td>
+                    COMUNE DI [-IST_COMUNE-]<br />
+                    DITTA: [-CO_RICHIEDENTE-]<br />
+                    ISTANZA/SCIA/COMUNICAZIONE PER [-PROCEDIMENTO-]<br />
+                    [-LOCALIZZAZIONE_INDIRIZZO-], [-LOCALIZZAZIONE_CIVICO-]<br />
+                    RICEVUTA DI AVVENUTA PRESENTAZIONE E, NEI CASI INDICATI, COMUNICAZIONE DI AVVIO DEL PROCEDIMENTO AI SENSI DELLA L. 241/90 E S.M.I.
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="centrato">
+        Ai sensi degli articoli 5 e18 bis della legge n. 241/1990 e del D.P.R. 160/2010:<br /><br />
+
+        SI ATTESTA<br />
+    </div>
+
+    <div class="giustificato">
+        l’avvenuta presentazione dell’ ISTANZA/SCIA/COMUNICAZIONE presentata dalla S.V. in data [-DATAPRESENTAZIONEISTANZA-],
+        prot.n. [-NRPROTOCOLLOISTANZA-], codice istanza [-CODICEISTANZA-], e
+    </div>
+
+    <div class="centrato">
+        SI COMUNICA QUANTO SEGUE:
+    </div>
+
+    <div>
+        <p>
+            L’ufficio presso cui può essere presa visione degli atti è l’Unità Operativa Complessa “POLITICHE ECONOMICHE E GESTIONE ASSOCIATA SUAP”.
+        </p>
+
+        <p>
+            In alternativa, la Vostra pratica - codice istanza [20] - può essere visionata on line all’interno del portale SUAP del Comune di Pordenone.
+        </p>
+
+        <p>
+            Alla voce "Le mie pratiche" sono visibili gli allegati presentati e/o integrati e gli atti emessi da questo SUAP o da altre amministrazioni coinvolte nel Vostro procedimento. Tutti gli atti e i documenti sono scaricabili e stampabili. E' anche visibile l'iter procedurale e il nome del responsabile dell’istruttoria.
+        </p>
+    </div>
+
+    <div class="titolo sottolineato">
+        TERMINI E RESPONSABILI DEI PROCEDIMENTI:
+    </div>
+
+    <div>
+        1. <span class="titolo">IN CASO DI ISTANZE:</span> i termini indicati di seguito si intendono a partire dalla data di presentazione delle istanze complete.
+    </div>
+
+    <div class="titolo">
+        Provvedimenti contenenti pareri/atti/nulla-osta di competenza di una unica amministrazione:
+    </div>
+
+    <div>
+        <table class="tabella-tempistiche">
+            <tr>
+                <th class="col1">Tipologia</th>
+                <th class="col2">GIORNI</th>
+                <th class="col3">RESPONSABILE DEL PROCEDIMENTO</th>
+            </tr>
+            <tr>
+                <td class="col1">Parere di conformità antincendio di competenza Comando Provinciale Vigili del Fuoco</td>
+                <td class="col2">60</td>
+                <td class="col3">
+                    Silvia Cigana<br />
+                    La presente costituisce comunicazione di avvio del procedimento ai sensi degli artt.7 e 8 della L. 241/1990
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col1">Procedimento unico contenente il provvedimento edilizio senza pareri/nulla osta di altre amministrazioni o con altri pareri di uffici comunali</td>
+                <td class="col2">60</td>
+                <td class="col3">Silvia Cigana</td>
+            </tr>
+
+            <tr>
+                <td class="col1">Adesione Autorizzazione Generale Emissioni in atmosfera – domanda non in regime di AUA</td>
+                <td class="col2">45</td>
+                <td class="col3">Provincia</td>
+            </tr>
+
+            <tr>
+                <td class="col1">Autorizzazione all’esercizio provvisorio  o provvedimento accertativo di collaudo per impianto distribuzione carburanti</td>
+                <td class="col2">30</td>
+                <td class="col3">Silvia Cigana</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="titolo">
+        Provvedimenti contenenti pareri/atti/nulla-osta di diverse amministrazioni:
+    </div>
+    <div>
+        <table class="tabella-tempistiche">
+            <tr>
+                <th class="col1">Tipologia</th>
+                <th class="col2">GIORNI</th>
+                <th class="col3">RESPONSABILE DEL PROCEDIMENTO</th>
+            </tr>
+
+            <tr>
+                <td class="col1">AUA - Autorizzazione unica ambientale </td>
+                <td class="col2">100</td>
+                <td class="col3">Provincia</td>
+            </tr>
+            <tr>
+                <td class="col1">AUA - Autorizzazione unica ambientale comprendente le emissioni in atmosfera</td>
+                <td class="col2">120</td>
+                <td class="col3">Provincia</td>
+            </tr>
+            <tr>
+                <td class="col1">Procedimento unico contenente il provvedimento edilizio con pareri/nulla osta di altre amministrazioni</td>
+                <td class="col2">55</td>
+                <td class="col3">Silvia Cigana</td>
+            </tr>
+            <tr>
+                <td class="col1">Procedimento unico contenente il provvedimento edilizio con pareri/nulla osta di altre amministrazioni preposte alla tutela ambientale, paesaggio, beni culturali, salute del cittadino</td>
+                <td class="col2">100</td>
+                <td class="col3">Silvia Cigana</td>
+            </tr>
+            <tr>
+                <td class="col1">Procedimento unico contenente l’Autorizzazione Unica all’installazione ed esercizio di impianto distribuzione carburanti</td>
+                <td class="col2">100</td>
+                <td class="col3">Silvia Cigana</td>
+            </tr>
+            <tr>
+                <td class="col1">Procedimento unico contenente l’autorizzazione alla installazione, variazione o dismissione depositi oli minerali</td>
+                <td class="col2">100</td>
+                <td class="col3">Silvia Cigana</td>
+            </tr>
+        </table>
+    </div>
+
+    <div>
+        <p>
+            In caso di ritardo nella chiusura dei procedimenti ci si può rivolgere all’arch. Maurizio Gobbato, dirigente del Settore IV del Comune di Pordenone e titolare del potere sostitutivo in caso di inerzia, perché, entro un termine pari alla metà di quello previsto, concluda il procedimento attraverso le strutture competenti o con la nomina di un commissario, ai sensi dell’art.2 della L.241/1990.
+        </p>
+    </div>
+
+    <div class="titolo">
+        2.  IN CASO DI SCIA/DIA (Segnalazione Certificata di Inizio Attività e Denuncia di Inizio Attività):
+    </div>
+    <div>
+        <table class="tabella-tempistiche">
+            <tr>
+                <th class="col1">Tipologia</th>
+                <th class="col2">GIORNI</th>
+                <th class="col3">RESPONSABILE DEL PROCEDIMENTO</th>
+            </tr>
+
+            <tr>
+                <td class="col1">SCIA - INIZIO ATTIVITA’ ANTINCENDIO</td>
+                <td class="col2">60</td>
+                <td class="col3">Silvia Cigana</td>
+            </tr>
+
+            <tr>
+                <td class="col1">SCIA - INIZIO ATTIVITA’ EDILIZIA o TELEFONIA MOBILE</td>
+                <td class="col2">30</td>
+                <td class="col3">vedere specifica sottostante</td>
+            </tr>
+
+            <tr>
+                <td class="col1">DIA - INIZIO ATTIVITA’ EDILIZIA</td>
+                <td class="col2">30</td>
+                <td class="col3">vedere specifica sottostante</td>
+            </tr>
+
+            <tr>
+                <td class="col1">PAS – PROCEDURA ABILITATIVA SEMPLIFICATA</td>
+                <td class="col2">30</td>
+                <td class="col3">vedere specifica sottostante</td>
+            </tr>
+        </table>
+    </div>
+
+    <div>
+        <p>
+            Per i suddetti procedimenti di SCIA e DIA la presente nota costituisce avvio del procedimento ai sensi degli artt. 7 e 8 della L. 241/1990.
+        </p>
+
+        <p>
+            Per le SCIA e DIA edilizie o di telefonia mobile o PAS il responsabile del procedimento è:
+            <ul>
+                <li>geom. Annamaria Saccomano per il Comune di Pordenone – tel. 0434-392465     </li>
+                <li>geom. Roberto Fratter per il Comune di Fontanafredda - tel. 0434-567616     </li>
+                <li>arch. Domenico Zingaro per il Comune di Roveredo in Piano – tel. 0434-388650</li>
+            </ul>
+        </p>
+
+        <p>
+            Le SCIA/DIA vengono inviate al Comando Provinciale dei Vigili del Fuoco o agli uffici Edilizia dei rispettivi Comuni, a seconda della materia, uffici che ne curano l’istruttoria.
+        </p>
+
+        <p>
+            In caso di SCIA: ai sensi dell’art. 19, comma 2 della legge n. 241/1990, l’attività oggetto della segnalazione certificata di inizio attività può essere iniziata dalla data di ricezione presso questa Amministrazione o altra data successiva a quella indicata nella SCIA.
+        </p>
+
+        <p>
+            In caso di accertata carenza dei requisiti e dei presupposti richiesti dalla vigente normativa per lo svolgimento dell’attività, sarà adottato il provvedimento di divieto di prosecuzione dell’attività e di rimozione degli eventuali effetti dannosi. Qualora sia possibile conformare l’attività intrapresa e i suoi effetti alla normativa vigente, con atto motivato che prevederà le misure necessarie alla conformazione, sarete invitati a provvedere entro un termine non inferiore a trenta giorni (sempre che sia possibile conformare l’attività). In difetto di adozione delle misure adottate, decorso il suddetto termine, l’attività si intende vietata.
+        </p>
+
+        <p>
+            In caso di DIA alternativa al permesso di costruire, ai sensi dell’art. 18 comma 2 della L.R. 19/2009, e in caso di PAS, procedura abilitativa semplificata per impianti a fonte rinnovabile, l’attività oggetto della denuncia di inizio attività può essere iniziata decorsi 30 giorni dalla data di ricezione presso questa Amministrazione o altra data successiva, indicata nel documento.
+        </p>
+    </div>
+
+    <div class="titolo">
+        3. IN CASO DI COMUNICAZIONE:
+    </div>
+    <div>
+        <p>L’Ufficio prende atto del contenuto della comunicazione senza adottare ulteriori provvedimenti.</p>
+        <p>Nel caso in cui siano riscontrate specifiche irregolarità, il medesimo Ufficio provvederà in merito entro il termine di 30 giorni dal ricevimento della suddetta comunicazione.</p>
+    </div>
+    <div>
+        <p>
+            Si segnala infine che avverso i provvedimenti di conclusione dei procedimenti è ammesso ricorso avanti al Tribunale Amministrativo Regionale entro 60 giorni, ovvero ricorso straordinario al Capo dello Stato entro 120 giorni dalla ricezione dello stesso.
+        </p>
+    </div>
+
+    <div class="distinti-saluti">
+        Distinti saluti.
+    </div>
+
+    <div>
+        <div class="firmato">
+            IL FUNZIONARIO TECNICO P.O<br />
+            Firmato dott.ssa Silvia Cigana
+        </div>
+    </div>
+
+    <div>
+
+    </div>
+
+    <div class="orari">
+        <p>
+            DIRIGENTE DEL SETTORE IV – GESTIONE TERRITORIO, INFRASTRUTTURE, AMBIENTE: arch. Maurizio Gobbato – tel. 0434 - 392447<br />
+            Responsabile dell’U.O.C. POLITICHE ECONOMICHE E GESTIONE ASSOCIATA SUAP: dott.ssa Silvia Cigana – tel. 0434 – 392454
+        </p>
+
+        <table class="tabella-invisibile">
+            <tr>
+                <td>Orario di apertura al pubblico:</td>
+                <td>
+                    dal lunedì al venerdì dalle ore 10:00 alle 12:45<br />
+                    ed il lunedì e giovedì dalle ore 15:30 alle 17:30
+                </td>
+            </tr>
+        </table>
+
+        <table class="tabella-invisibile">
+            <tr>
+                <td>e-mail:</td>
+                <td>
+                    <a href="mailto:attivitaeconomiche@comune.pordenone.it">attivitaeconomiche@comune.pordenone.it</a> <br />
+                    <a href="mailto:sportellounico@comune.pordenone.it">sportellounico@comune.pordenone.it</a>
+                </td>
+            </tr>
+            <tr>
+                <td>P.E.C.:</td>
+                <td><a href="mailto:suap.comunepn@certgov.fvg.it">suap.comunepn@certgov.fvg.it</a></td>
+            </tr>
+
+            <tr>
+                <td>FAX:</td>
+                <td>0434-392427</td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

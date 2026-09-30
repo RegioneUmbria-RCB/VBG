@@ -1,0 +1,1 @@
+C:\C:\sviluppo\apache-cxf-2.5.1\bin\wsdl2java.bat -all -frontend jaxws21 sigeproSecurity.wsdl

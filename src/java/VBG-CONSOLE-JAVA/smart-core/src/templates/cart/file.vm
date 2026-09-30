@@ -1,0 +1,218 @@
+
+#set($idCampo = "campo_$item.File.Id")
+#set($idCampo = $helper.getUniqueId(${idCampo},${item.File}))
+#set($idSemantico = $item.File.IdSemantico)
+#set($idInput = $idSemantico)
+#if($isTableTemplate)
+	#set($placeholder = "${esc.D}'{'index{0}'}'")
+	#set($idCampo = "${idCampo}${helper.buildIndexingSuffixWhithPlaceholder($rowIndex,$placeholder,$templateNestingLevel)}")
+	#set($idInput = "${idInput}${helper.buildIndexingSuffixWhithPlaceholder($rowIndex,$placeholder,$templateNestingLevel)}")
+#else
+	#set($idCampo = "${idCampo}${helper.buildIndexingSuffix($rowIndex)}")
+	#set($idInput = "${idInput}${helper.buildIndexingSuffix($rowIndex)}")
+#end
+#set($nomeInput = "[${idInput}]${item.File.Id}")
+#if($item.File.MaxUpload == "unbounded")
+	#set($maxUploadAttribute = "0")
+#else
+	#set($maxUploadAttribute = $item.File.MaxUpload)
+#end
+<div id="$idCampo" class="campo-cart-container">
+	#set($tooltiptext = ${helper.getFileHelp($item.File)})
+	#set($classeDivCampo = "campo-cart-right")
+	
+	#if($tooltiptext.indexOf('###')>=0)
+		#set($tooltiptext = $tooltiptext.replaceAll('###[A-Za-z0-9|]+###',''))	
+	#end	
+	#if($tooltiptext.indexOf('___')>=0)
+		#set($tooltiptext = $tooltiptext.replaceAll('___[A-Za-z0-9|\W]+___',''))	
+	#end	
+	#set($autocompCfgs = false)
+	#set($autocompCfgs = $helper.getAutocompilersForIdSemantico($idSemantico))
+	
+	
+	#if($helper.renderFormLayout($item,$quadro))
+        <div class="label-cart">
+        $!item.File.Titolo&nbsp;
+        #if($!item.File.Nota.indexOf('###')>=0)
+        	#set($indexTitolo = $!item.File.Nota.indexOf('###'))
+        	#set($lastIndexTitolo = $!item.File.Nota.lastIndexOf('###'))
+        	#set($indexTitolo = $indexTitolo + 3 ) 
+        	#set($stringaLink = $!item.File.Nota.substring($indexTitolo, $lastIndexTitolo) )
+        	#set($stringaLink = $stringaLink.replaceAll('###','')) 
+        	#set($indexPipe = $stringaLink.indexOf('|') )
+        	#set($valsIdComune  = $stringaLink.substring(0,$indexPipe))
+        	#set($indexPipe = $indexPipe + 1 ) 
+        	#set($valsCodiceOggetto  = $stringaLink.substring($indexPipe))
+			&nbsp;<a title="scarica il modello" class="init-autocompiler-button init-autocompiler-button-download" target="_blank" href="../ajax/downloadOggettoInFormato.htm?idcomuneOggetto=$valsIdComune&amp;idOggetto=$valsCodiceOggetto"><span>&nbsp;</span></a>
+        #end	
+        #if($!item.File.Nota.indexOf('___')>=0)
+			#set($indexTitolo = $!item.File.Nota.indexOf('___'))
+        	#set($lastIndexTitolo = $!item.File.Nota.lastIndexOf('___'))
+        	#set($indexTitolo = $indexTitolo + 3 ) 
+        	#set($stringaLink = $!item.File.Nota.substring($indexTitolo, $lastIndexTitolo) )
+        	#set($stringaLink = $stringaLink.replaceAll('___','')) 
+			&nbsp;<a title="Visualizza la modulistica" class="init-autocompiler-button init-autocompiler-button-link" target="_blank" href="$stringaLink"><span>&nbsp;</span></a>
+		#end
+        		
+        	
+        </div>
+	#else
+		#set($classeDivCampo = "campo-cart-left")
+	#end
+	#set($dsValidate = false)
+	#if($item.File.Firmato)
+		#set($dsValidate = true)
+	#end
+##	#if($item.File.Titolo && $item.File.Titolo.length() > 0)
+##    <div class="label-cart">
+##    	$!item.File.Titolo
+##    </div>
+##	#elseif($table || $isTableTemplate)
+##		#set($classeDivCampo = "campo-cart-left")
+##	#else
+##		<div class="label-cart" >
+##        	&nbsp;&nbsp;
+##        </div>
+##	#end
+##<form name="fileuploadform-$nomeInput" id="fileuploadform-$nomeInput" enctype="multipart/form-data">
+	<div id="fileupload-$nomeInput" class="campo-file-cart $classeDivCampo">
+    	##<input type="file" id="inputfile-$nomeInput" name="inputfile-$nomeInput" class="campo-file-cart"/>
+    	##<input type="hidden" id="idSemantico-$nomeInput" name="idSemantico" value="$nomeInput"/>
+    	##<input type="hidden" id="dsValidation-$nomeInput" name="dsValidation" value="$dsValidate"/>
+		<label for="fileupload-$nomeInput" class="mandatory-star mandatory-file-star" style="display:none;">*</label>
+        <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
+        <div class="row fileupload-buttonbar">
+            <div class="span7">
+                <!-- The fileinput-button span is used to style the file input field as button -->
+                <span class="btn btn-success fileinput-button">
+                    <i class="icon-plus icon-white"></i>
+                    <span>Carica files...</span>
+                    <input type="file" name="files[]" multiple>
+                </span>
+            </div>
+            <div>
+	 			<span class="icon-firmadigitale" title="I files caricati devono essere firmati digitalmente">
+					<label >(!)</label>
+		        </span>
+		    </div>
+            <!-- The global progress information -->
+            <div class="span5 fileupload-progress fade">
+                <!-- The global progress bar -->
+                <div class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                    <div class="bar" style="width:0%;"></div>
+                </div>
+                <!-- The extended global progress information -->
+                <div class="progress-extended">&nbsp;</div>
+            </div>
+        </div>
+        <br>
+        <!-- The table listing the files available for upload/download -->
+        <table role="presentation" class="table table-striped file-list">
+        	<tbody class="files" data-toggle="modal-gallery" data-target="#modal-gallery"></tbody>
+        </table>
+        <!-- Display error and warning icons -->
+		<div class="campo-cart-icons">
+			#if($tooltiptext.length() > 0)
+				<span class="help_image" id="${nomeInput}_help" title="${helper.escapeValueForHtmlAttribute($tooltiptext)}">
+					<label >(?)</label>
+	            </span>
+			#end
+			<span class="error_image" style="display:none;" title="">
+				<label >(!)</label>
+	        </span>
+			<span class="warning_image" style="display:none;" title="">
+				<label >(!)</label>
+	        </span>
+	    </div>
+        <input type="hidden" name="$nomeInput" id="empty-$nomeInput" value="" />
+    </div>
+##</form>
+	#set($fileTypes = "")
+	#if($item.File.Tipo)
+		#set($fileTypes = ${helper.buildFileTypeRestrictionsString($item.File.Tipo)})
+	#else
+		#set($fileTypes = ${helper.buildFileTypeRestrictionsString("")})
+	#end
+	#set($dbFilesArray = ${helper.buildUploadedFilesAsJsonObjectArray($item.File.IdSemantico,$rowIndex,$contextPath,${helper.getRiferimentoModulo($helper.modulo)})})
+	#if(!$isTableTemplate)
+		<script>
+		//$(document).ready(function(){
+		$(function(){ 
+			#set($uploadParamsJson =${helper.buildFileUploadAdditionalParamsJson($item.File,$rowIndex)})
+			##scrittura dello script che crea il controllo MultiFile e ne imposta le proprietà che definiscono il comportamento
+			initializeMultiFile('$nomeInput',"$fileTypes",$maxUploadAttribute,$dbFilesArray,$uploadParamsJson);
+		});
+		</script>	
+	#else
+		#set($placeholder = "'' + newRowIndex{0} + ''")
+		#set($placeholder = ${helper.buildIndexingSuffixWhithPlaceholder($rowIndex,$placeholder,$templateNestingLevel)})
+		#set($indexPlaceholder = ${helper.getIndexAsStringWithPlaceholder($rowIndex,"newRowIndex{0}",$templateNestingLevel)})
+		#set($uploadParamsJson = ${helper.buildFileUploadAdditionalParamsJson($item.File,$indexPlaceholder)})
+		$helper.addScriptToCache("initializeMultiFile('[${item.File.IdSemantico}${placeholder}]${item.File.Id}','$fileTypes',$maxUploadAttribute,undefined,$uploadParamsJson);")
+	#end		
+	#set($attivo = $helper.evaluateExpression($item.File.Attivo,$rowIndex))
+	$helper.registraStatoCampoAttivo($item,$rowIndex,${helper.getIdQuadro($quadro)},$attivo)
+	#if(!$attivo || $helper.isEspressioneDinamica($item.File.Attivo))
+		#if(!$isTableTemplate)
+			#set($jsScript = $helper.buildJavascriptToDynamicallyEnableElement($idCampo,$item.File.Attivo,2))
+        	<script>
+			//$(document).ready(function(){
+			$(function(){ 
+            	##scrittura dello script che attiva e disattiva il campo dinamicamente in base ai valori assunti da altri campi
+        		$jsScript
+			});
+        	</script>
+		#else
+			#set($placeholder = "'' + newRowIndex{0} + ''")
+			#set($placeholder = ${helper.buildIndexingSuffixWhithPlaceholder($rowIndex,$placeholder,$templateNestingLevel)})
+			#set($jsScript = $helper.buildJavascriptToDynamicallyEnableElement($helper.getUniqueId("campo_$item.File.Id", ${item.File}),$item.File.Attivo,$placeholder,2))
+			#if($jsScript != "")
+				$helper.addScriptToCache($jsScript)
+			#end
+		#end
+	#end
+	#set($mandatory = $helper.evaluateExpression($item.File.Obbligatorio,$rowIndex))
+	#if($mandatory || $helper.isEspressioneDinamica($item.File.Obbligatorio))
+		#if(!$isTableTemplate)
+			#set($jsScript = $helper.buildJavascriptToDynamicallySetMandatoryElement($idCampo,$item.File.Obbligatorio,2))
+        	<script>
+			//$(document).ready(function(){
+			$(function(){ 
+            	##scrittura dello script che rende il campo obbligatorio dinamicamente in base ai valori assunti da altri campi
+        		$jsScript
+			});
+        	</script>
+		#else
+			#set($placeholder = "'' + newRowIndex{0} + ''")
+			#set($placeholder = ${helper.buildIndexingSuffixWhithPlaceholder($rowIndex,$placeholder,$templateNestingLevel)})
+			#set($jsScript = $helper.buildJavascriptToDynamicallySetMandatoryElement($helper.getUniqueId("campo_$item.File.Id", ${item.File}),$item.File.Obbligatorio,$placeholder,2))
+			#if($jsScript != "")
+				$helper.addScriptToCache($jsScript)
+			#end
+		#end
+	#end
+	#if($autocompCfgs)
+		#foreach($autocompCfg in $autocompCfgs)
+    		#if(!$isTableTemplate)
+   				#set($suffix = ${helper.buildIndexingSuffix($rowIndex)})
+    			#set($jsScript = ${helper.buildJavascriptForAutocompiler($autocompCfg,${item.File},$suffix,$contextPath, $helper.getIdEndo())})
+    			#if($jsScript != "")
+                	<script>
+                	//script che attiva la compilazione automatica dei campi se richiesta
+        			//$(document).ready(function(){
+        			$(function(){ 
+                		$jsScript
+        			});
+                	</script>
+    			#end
+    		#else
+    			#set($suffix = ${helper.buildIndexingSuffixWhithPlaceholder($rowIndex,"'' + newRowIndex{0} + ''",$templateNestingLevel)})
+    			#set($jsScript = $helper.buildJavascriptForAutocompiler($autocompCfg,${item.File},$suffix, $contextPath, $helper.getIdEndo()))
+    			#if($jsScript != "")
+    				$helper.addScriptToCache($jsScript)
+    			#end
+			#end
+		#end
+	#end
+</div>

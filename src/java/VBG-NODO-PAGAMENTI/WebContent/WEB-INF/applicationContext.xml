@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:oxm="http://www.springframework.org/schema/oxm" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:task="http://www.springframework.org/schema/task" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	<task:annotation-driven />
+
+	<context:property-placeholder location="classpath:deploy.properties" ignore-unresolvable="true" order="1" />
+	<context:property-placeholder location="classpath:db.properties" order="2" />
+
+	<context:component-scan base-package="it" />
+
+	<bean id="deployProperties" class="it.gruppoinit.pal.gp.core.commons.DeployProperties">
+
+		<property name="idcomunealias" value="${idcomunealias}" />
+		<property name="installationId" value="${installationId}" />
+		<property name="wsOggettiMtom" value="${ws.oggetti.mtom}" />
+		<property name="wsEventiMtom" value="${ws.eventi.mtom}" />
+		<property name="wsBackendUrl" value="${ws.backend.url}" />
+		<property name="schedulerEnabled" value="${scheduler.enabled}" />
+	</bean>
+
+	<!-- Hibernate Configuration -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="${connection.driver.classname}" />
+		<property name="url" value="${connection.url}" />
+		<property name="username" value="${connection.username}" />
+		<property name="password" value="${connection.password}" />
+		<property name="validationQuery" value="SELECT 1 FROM DUAL" />
+		<property name="testOnBorrow" value="true" />
+		<property name="initialSize" value="${hibernate.c3p0.min_size}" />
+		<property name="maxActive" value="${hibernate.c3p0.max_size}" />
+		<property name="minIdle" value="${hibernate.c3p0.min_size}" />	
+	</bean>
+
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="packagesToScan">
+			<array>
+				<value>it.gruppoinit.pal.gp.pay.domain</value>
+				<value>it.gruppoinit.pal.gp.core.domain</value>
+			</array>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<prop key="hibernate.transaction.coordinator_class">${hibernate.transaction.coordinator_class}</prop>
+				<!-- <prop key="hibernate.connection.provider_class">${hibernate.connection.provider_class}</prop> <prop key="hibernate.connection.provider_class">org.hibernate.c3p0.internal.C3P0ConnectionProvider</prop> 
+					org.hibernate.service.jdbc.connections.internal.C3P0ConnectionProvider <prop key="hibernate.connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</prop> <prop key="hibernate.connection.driver_class">${hibernate.connection.driver_class}</prop> -->
+				<prop key="hibernate.connection.release_mode">${hibernate.connection.release_mode}</prop>
+				<prop key="hibernate.generate_statistics">${hibernate.generate_statistics}</prop>
+				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+				<prop key="hibernate.use_sql_comments">${hibernate.use_sql_comments}</prop>
+				<prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
+				<prop key="hibernate.cache.use_second_level_cache">${hibernate.cache.use_second_level_cache}</prop>
+				<prop key="hibernate.c3p0.min_size">${hibernate.c3p0.min_size}</prop>
+				<prop key="hibernate.c3p0.max_size">${hibernate.c3p0.max_size}</prop>
+				<prop key="hibernate.c3p0.acquire_increment">${hibernate.c3p0.acquire_increment}</prop>
+				<!-- <prop key="c3p0.numHelperThreads">${c3p0.numHelperThreads}</prop> <prop key="c3p0.checkoutTimeout">${c3p0.checkoutTimeout}</prop> <prop key="c3p0.maxIdleTimeExcessConnections">${c3p0.maxIdleTimeExcessConnections}</prop> -->
+				<prop key="hibernate.c3p0.timeout">${hibernate.c3p0.timeout}</prop>
+				<prop key="hibernate.c3p0.max_statements">${hibernate.c3p0.max_statements}</prop>
+				<prop key="hibernate.c3p0.idle_test_period">${hibernate.c3p0.idle_test_period}</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean name="openSessionInViewInterceptor" class="org.springframework.orm.hibernate5.support.OpenSessionInViewInterceptor">
+		<property name="sessionFactory" ref="sessionFactory" />
+		<!-- 
+		<property name="singleSession" value="true" />
+		 -->
+	</bean>
+	
+	<!-- <bean id="sessionFactory" class="org.springframework.aop.framework.ProxyFactoryBean"> <property name="proxyInterfaces"> <list> <value>org.hibernate.SessionFactory</value> </list> </property> <property 
+		name="targetSource" ref="sessionFactoryTarget" /> </bean> <bean id="sessionFactoryTarget" class="it.gruppoinit.pal.gp.core.db.SessionFactoryTargetSource"> <property name="dataSourceContainer" ref="dataSourceContainer" 
+		/> <property name="deployProperties" ref="deployProperties" /> </bean> <bean id="dataSourceContainer" class="it.gruppoinit.pal.gp.core.db.DataSourceContainer"> <property name="factoryWrappers"> <map></map> 
+		</property> <property name="externalDBResolver" ref="externalDBResolver" /> <property name="packageToScan"> <array> <value>it.gruppoinit.pal.gp.pay.domain</value> <value>it.gruppoinit.pal.gp.core.domain</value> 
+		</array> </property> <property name="lobHandler" ref="oracleLobHandler" /> </bean> -->
+
+	<bean id="txManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="defaultLobHandler" class="org.springframework.jdbc.support.lob.DefaultLobHandler" />
+<!-- 
+	Package jdbc.support.nativejdbc (NativeJdbcExtractor mechanism).
+Superseded by the native Connection.unwrap mechanism in JDBC 4. There is generally very little need for unwrapping these days, even against the Oracle JDBC driver.
+	<bean id="oracleLobHandler" class="org.springframework.jdbc.support.lob.OracleLobHandler">
+		<property name="nativeJdbcExtractor" ref="nativeJdbcExtractor" />
+	</bean>
+
+	<bean id="nativeJdbcExtractor" class="org.springframework.jdbc.support.nativejdbc.C3P0NativeJdbcExtractor" />
+-->
+	<!-- ASPECTJ CONFIGURATION -->
+	<aop:aspectj-autoproxy />
+
+	<aop:config>
+		<aop:pointcut id="webMethods" expression="execution(* (@org.springframework.stereotype.Controller *..*Controller).*(..)) || execution(* it.gruppoinit.pal.gp.pay.ws.PagamentiImpl.*(..))" />
+		<aop:pointcut id="serviceMethods" expression="execution(* it.gruppoinit.pal.gp.core.service.*Service.*(..)) || execution(* it.gruppoinit.pal.gp.pay.service.*Service.*(..)) " />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="serviceMethods" />
+	</aop:config>
+
+	<tx:advice id="txAdvice" transaction-manager="txManager">
+		<tx:attributes>
+			<tx:method name="find*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="is*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="check*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="exist*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="count*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="get*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="populate*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="validate*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="annullaPosizioniDebitorie" propagation="REQUIRED" read-only="true" />
+			<tx:method name="registraPagamentiOfflineEAnnulla" propagation="REQUIRED" read-only="true" />
+			<tx:method name="generaFatture" propagation="REQUIRED" read-only="true" />
+			<tx:method name="generaQRCode" propagation="REQUIRED" read-only="true" />
+			<tx:method name="generaIUV" propagation="REQUIRED" read-only="true" />
+			<tx:method name="creaEvento" propagation="REQUIRES_NEW" />
+			<tx:method name="aggiornaPosizioneDebitoria" propagation="REQUIRES_NEW" rollback-for="RuntimeException, it.gruppoinit.pal.gp.pay.exception.PayException" />
+			<tx:method name="registraStatoPosizioneDebitoria" propagation="REQUIRES_NEW" rollback-for="RuntimeException, it.gruppoinit.pal.gp.pay.exception.PayException" />
+			<tx:method name="registraAvvenutoPagamento" propagation="REQUIRES_NEW" rollback-for="RuntimeException, it.gruppoinit.pal.gp.pay.exception.PayException" />
+			<tx:method name="*Trans" propagation="REQUIRES_NEW" rollback-for="RuntimeException, it.gruppoinit.pal.gp.pay.exception.PayException" />
+			<tx:method name="notificaCambiamentoDiStato" no-rollback-for="Exception,RuntimeException" />
+			<tx:method name="notificaStatoRabbitMQ" no-rollback-for="Exception,RuntimeException" />
+			<tx:method name="notificaApiBackend" no-rollback-for="Exception,RuntimeException" />
+			<tx:method name="bindDomainObject" propagation="REQUIRED" />
+			<tx:method name="*" propagation="REQUIRED" />
+		</tx:attributes>
+	</tx:advice>
+
+	<!-- scheduler di quartz. I job e i trigger sono definiti dinamicamente a runtime in base alla configurazione dei servizi dei connettori -->
+	<bean id="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="configLocation" value="classpath:quartz.properties" />
+	</bean>
+		
+	<bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<!-- 
+		ATTENZIONE! il corePoolSize e MaxPoolSize vanno lasciati ad 1
+		in quanto potrebbero sorgere problemi di sequenzialità nell'esecuzione dei thread
+		che in un pool non viene garantita.
+		
+		see: How to Control Order
+			 Use a Single-Thread Executor: Configure a pool with a core and max size of 1 to force sequential, FIFO execution.
+		-->
+		<property name="corePoolSize" value="1" />
+		<property name="maxPoolSize" value="1" />
+		<property name="keepAliveSeconds" value="10" />
+		<property name="queueCapacity" value="6000" />
+	</bean>
+</beans>

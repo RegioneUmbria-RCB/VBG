@@ -1,0 +1,172 @@
+﻿@using VBG.AppLogic.SSU.GestioneProcedimenti
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+
+@if (Procedimento is not null)
+{
+    <div class="shadow mb-4 p-4 pe-2">
+        <div class="d-flex">
+            <div class="w-75">
+                <h3>@Procedimento.Descrizione</h3>
+            </div>
+            @if (!SolaLettura)
+            {
+                <div class="w-25 d-flex justify-content-end me-4 pe-2">
+                    <div>
+                        <button class="btn btn-outline-primary" type="button" @onclick="() => MarcaPerEliminazione(Procedimento)">
+                            Elimina
+                        </button>
+                    </div>
+                </div>
+            }
+        </div>
+
+        @if (Procedimento.FattispeciePrimarie.Count == 1)
+        {
+            <div class="d-flex">
+                <div class="w-75">
+                    <span class="mb-4 text-muted">@Procedimento.FattispeciePrimarie.First().Descrizione</span>
+                </div>
+                @* <div class="w-25 d-flex justify-content-end me-4 pe-2">
+                    @if (Procedimento.FattispeciePrimarie.First().Obbligatoria)
+                    {
+                        <div>
+                            <span class="badge bg-success fs-6">Obbligatoria</span>
+                        </div>
+                    }
+                    else
+                    {
+                        if (!SolaLettura)
+                        {
+                            <button type="button" @onclick="() => MarcaPerEliminazione(Procedimento.FattispeciePrimarie.First())">
+                                <SvgIcon CssClass="icon-sm icon-success" AriaLabel="Elimina fattispecie primaria" IconId="it-delete"></SvgIcon>
+                            </button>
+                        }
+                    } 
+                </div> *@
+            </div>
+        }
+
+        <div class="p-2 pt-4">
+            @foreach (var primaria in Procedimento.FattispeciePrimarie)
+            {
+                @if (primaria.FattispecieSecondarie.Any())
+                {
+                    <div class="it-list-wrapper mb-4 p-2">
+                        <ul class="it-list">
+                            @foreach (var secondaria in primaria.FattispecieSecondarie)
+                            {
+                                <li>
+                                    <div class="list-item">
+                                        <div class="it-right-zone">
+                                            <div>
+                                                <h4>@secondaria.Procedimento?.Descrizione</h4>
+                                                <span class="mb-2 text-muted">@secondaria.Descrizione</span>
+                                            </div>
+                                            @* <span class="it-multiple">
+                                                @if (secondaria.Obbligatoria)
+                                                {
+                                                    <span class="badge bg-success">Obbligatoria</span>
+                                                }
+                                                else
+                                                {
+                                                    if (!SolaLettura)
+                                                    {
+                                                        <button type="button" @onclick="() => MarcaPerEliminazione(secondaria)">
+                                                            <SvgIcon AriaLabel="Elimina fattispecie secondaria" IconId="it-delete"></SvgIcon>
+                                                        </button>
+                                                    }
+                                                }
+                                            </span> *@
+                                        </div>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+
+    <ConfirmationModal Visible="@(_fattispecieSecondariaDaEliminare is not null)" Titolo="Eliminazione fattispecie" AnnullaClick="() => _fattispecieSecondariaDaEliminare = null" ConfermaClick="OnConfermaEliminazioneFattispecieSecondaria">
+        <ModalBody>
+            Sei sicuro di voler eliminare la fattispecie <b>"@_fattispecieSecondariaDaEliminare?.Descrizione"</b>?
+        </ModalBody>
+    </ConfirmationModal>
+
+    <ConfirmationModal Visible="@(_fattispeciePrimariaDaEliminare is not null)" Titolo="Eliminazione fattispecie" AnnullaClick="() => _fattispeciePrimariaDaEliminare = null" ConfermaClick="OnConfermaEliminazioneFattispeciePrimaria">
+        <ModalBody>
+            Sei sicuro di voler eliminare la fattispecie <b>"@_fattispeciePrimariaDaEliminare?.Descrizione"</b>?
+        </ModalBody>
+    </ConfirmationModal>
+
+    <ConfirmationModal Visible="@(_procedimentoDaEliminare is not null)" Titolo="Eliminazione procedimento" AnnullaClick="() => _procedimentoDaEliminare = null" ConfermaClick="OnConfermaEliminazioneProcedimento">
+        <ModalBody>
+            Sei sicuro di voler eliminare il procedimento <b>"@_procedimentoDaEliminare?.Descrizione"</b>?
+        </ModalBody>
+    </ConfirmationModal>
+}
+
+
+@code {
+    [Parameter, EditorRequired]
+    public SsuProcedimentoDomanda? Procedimento { get; set; }
+    [Parameter, EditorRequired]
+    public EventCallback<SsuFattispecieSecondariaDomanda> EliminaFattispecieSecondaria { get; set; }
+    [Parameter, EditorRequired]
+    public EventCallback<SsuFattispeciePrimariaDomanda> EliminaFattispeciePrimaria { get; set; }
+    [Parameter, EditorRequired]
+    public EventCallback<SsuProcedimentoDomanda> EliminaProcedimento { get; set; }
+    [Parameter]
+    public bool SolaLettura { get; set; }
+
+    private SsuFattispecieSecondariaDomanda? _fattispecieSecondariaDaEliminare = null;
+    private SsuFattispeciePrimariaDomanda? _fattispeciePrimariaDaEliminare = null;
+    private SsuProcedimentoDomanda? _procedimentoDaEliminare = null;
+
+    private async Task MarcaPerEliminazione(SsuProcedimentoDomanda procedimento)
+    {
+        _procedimentoDaEliminare = procedimento;
+
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task MarcaPerEliminazione(SsuFattispeciePrimariaDomanda fattispecie)
+    {
+        _fattispeciePrimariaDaEliminare = fattispecie;
+
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task MarcaPerEliminazione(SsuFattispecieSecondariaDomanda fattispecie)
+    {
+        _fattispecieSecondariaDaEliminare = fattispecie;
+
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task OnConfermaEliminazioneFattispeciePrimaria()
+    {
+        var f = _fattispeciePrimariaDaEliminare;
+        _fattispeciePrimariaDaEliminare = null;
+
+        await EliminaFattispeciePrimaria.InvokeAsync(f);
+    }
+
+    private async Task OnConfermaEliminazioneFattispecieSecondaria()
+    {
+        var f = _fattispecieSecondariaDaEliminare;
+        _fattispecieSecondariaDaEliminare = null;
+
+        await EliminaFattispecieSecondaria.InvokeAsync(f);
+    }
+
+    private async Task OnConfermaEliminazioneProcedimento()
+    {
+        var proc = _procedimentoDaEliminare;
+
+        _procedimentoDaEliminare = null;
+
+        await EliminaProcedimento.InvokeAsync(proc);
+    }
+}

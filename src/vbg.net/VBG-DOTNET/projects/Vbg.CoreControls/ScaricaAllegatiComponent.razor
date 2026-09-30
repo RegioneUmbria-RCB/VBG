@@ -1,0 +1,67 @@
+﻿@using Init.Sigepro.FrontEnd.AppLogic.GestioneOggetti
+@using Microsoft.JSInterop
+@inject IOggettiService _oggettiService
+@inject IJSRuntime _jsRuntime
+
+@if (DataSource.Any())
+{
+    <div class="dropdown">
+        <button class="btn btn-light dropdown-toggle" type="button" id="@($"dropdownMenu{IdCounter}")" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            @_testoNumeroAllegati
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="@($"dropdownMenu{IdCounter}")">
+            @foreach (AllegatiData allegato in DataSource)
+            {
+                <li>
+                    <a class="dropdown-item" href="#">
+                        <h5>
+                            @allegato.Descrizione
+                        </h5>
+                        <div class="indent">
+                            <ScaricaOggettoComponent CodiceOggetto="@allegato.Id">
+                                @allegato.NomeFile
+
+                                @if (!String.IsNullOrEmpty(@allegato.Md5))
+                                {
+                                    @($"MD5: {allegato.Md5}")
+                                }
+                            </ScaricaOggettoComponent>
+                        </div>
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+}
+
+@code {
+    [Parameter, EditorRequired]
+    public IEnumerable<AllegatiData> DataSource { get; set; } = Enumerable.Empty<AllegatiData>();
+    [Parameter]
+    public int IdCounter { get; set; }
+
+    private string _testoNumeroAllegati = "";
+
+    public class AllegatiData
+    {
+        public int Id { get; set; }
+        public string Descrizione { get; set; } = "";
+        public string NomeFile { get; set; } = "";
+        //public string Url { get; set; }
+        public string Md5 { get; set; } = "";
+    }
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        if (this.DataSource == null)
+        {
+            this.DataSource = Enumerable.Empty<AllegatiData>();
+        }
+
+        var numeroAllegati = this.DataSource.Count();
+
+        _testoNumeroAllegati = $"{numeroAllegati} {(numeroAllegati == 1 ? "Allegato" : "Allegati")}";
+    }
+}

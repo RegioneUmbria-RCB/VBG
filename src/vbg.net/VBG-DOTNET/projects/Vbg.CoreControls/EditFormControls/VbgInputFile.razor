@@ -1,0 +1,250 @@
+﻿@using Init.Sigepro.FrontEnd.AppLogic.AllegatiDomanda
+@using Init.Sigepro.FrontEnd.AppLogic.Autenticazione.Vbg.AutenticazioneUtente
+@using Init.Sigepro.FrontEnd.AppLogic.Configurazione.V2
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneOggetti
+@using Init.Sigepro.FrontEnd.AppLogic.VerificaFirmaDigitale
+@using Init.Sigepro.FrontEnd.CoreServices.GestioneOggetti
+@using Microsoft.AspNetCore.Components.Forms
+@using System.Linq.Expressions
+@using System.Diagnostics.CodeAnalysis
+@using VBG.BlazorComponentsLibrary.DesignComuni.Spinner
+@inherits InputBase<int?>
+@implements IDisposable
+
+<div class="mb-3 @CssClass">
+	@if (!String.IsNullOrEmpty(Label))
+	{
+		@if (!String.IsNullOrEmpty(this.ResourceId))
+		{
+			<LabelContainerComponent RelativeControlId="@this.Id" ResourceId="@this.ResourceId" Value="@this.Label" Required="@this.Required" CanEditResourceText="@this._canEditResourceText"></LabelContainerComponent>
+		}
+		else
+		{
+			<label for="@this.Id">@Label</label>
+		}
+
+	}
+
+	@if (!this.Value.HasValue)
+	{
+		<InputFile OnChange="OnFileUpload" id="@this.Id" class="form-control" aria-label="Label" accept="@AcceptedFileTypes"></InputFile>
+		@if (this.DimensioneMassima > 0 || RichiedeFirmaDigitale)
+		{
+			<div class="help-block">
+				@if (this.DimensioneMassima > 0)
+				{
+					<div>Dimensione massima @GetHumanReadableFileSize(this.DimensioneMassima)</div>
+				}
+				@if (RichiedeFirmaDigitale)
+				{
+					<div>
+						Il file deve essere firmato digitalmente
+					</div>
+				}
+			</div>
+		}
+	}
+	else
+	{
+		<div class="input-group">
+			<div class="form-control">
+				<ScaricaOggettoComponent CodiceOggetto="@Value" Text="@_nomeFile"></ScaricaOggettoComponent>
+			</div>
+			<div class="input-group-btn">
+				<button title="elimina" class="btn btn-primary" @onclick="() => _modalConfirm?.Show()" @onclick:preventDefault>
+					<i class="fa fa-trash" aria-hidden="true" style="cursor:pointer"></i>
+					Elimina
+				</button>
+			</div>
+		</div>
+
+		<ModalWindowComponent @ref="_modalConfirm" OnOkButton="() => EliminaFileSelezionato()" CancelButtonText="Annulla">
+			<HeaderTemplate>
+				Eliminare il file selezionato?
+			</HeaderTemplate>
+			<BodyTemplate>
+				L'operazione non potrà essere annullata. Vuoi proseguire?
+			</BodyTemplate>
+		</ModalWindowComponent>
+
+	}
+
+	@if (ValidationFor != null)
+	{
+		<div class="form-control-validation help-block">
+			<ValidationMessage For="@ValidationFor" />
+		</div>
+	}
+</div>
+
+@code {
+	[Inject] public IAuthenticationDataResolver AuthenticationDataResolver { get; set; } = default!;
+	[Inject] public IVerificaFirmaDigitaleService _firmaDigitaleService { get; set; } = default!;
+	[Inject] public IOggettiService _oggettiService { get; set; } = default!;
+	[Inject] public SpinnerService _spinnerService { get; set; } = default!;
+	[Inject] public IConfigurazione<ParametriAllegati> _config { get; set; } = default!;
+
+	[CascadingParameter] ValidationMessageStore? MessageStore { get; set; }
+
+	[Parameter] public string Label { get; set; } = "";
+	[Parameter] public string Id { get; set; } = "";
+	[Parameter] public string ResourceId { get; set; } = "";
+	[Parameter] public bool Required { get; set; } = false;
+	[Parameter] public bool RichiedeFirmaDigitale { get; set; } = false;
+	[Parameter] public Expression<Func<int?>> ValidationFor { get; set; } = default!;
+	[Parameter] public string AcceptedFileTypes { get; set; } = "";
+	[Parameter] public EventHandler<VbgInputFileDeletedEventArgs>? OnFileDeleted { get; set; }
+	[Parameter] public EventHandler<VbgInputFileUploadedEventArgs>? OnFileUploaded { get; set; }
+	[Parameter] public long DimensioneMassima { get; set; } = 0;
+
+
+	bool _canEditResourceText => this.AuthenticationDataResolver.DatiAutenticazione?.DatiUtente?.UtenteTester ?? false;
+	string _nomeFile = "";
+	string _di = "";
+	ModalWindowComponent? _modalConfirm;
+
+	protected override async Task OnInitializedAsync()
+	{
+		await base.OnInitializedAsync();
+
+		if (EditContext is not null)
+		{
+			EditContext.OnValidationRequested += OnValidationRequested;
+		}
+	}
+
+	protected override void OnParametersSet()
+	{
+		if (String.IsNullOrEmpty(this.Id))
+		{
+			this.Id = Guid.NewGuid().ToString();
+		}
+
+		if (this.DimensioneMassima == 0)
+		{
+			this.DimensioneMassima = this._config.Parametri.DimensioneMassimaAllegato;
+		}
+
+
+		RicaricaDatiFile();
+
+		base.OnParametersSet();
+	}
+
+	void RicaricaDatiFile()
+	{
+		this._nomeFile = this.Value.HasValue ? this._oggettiService.GetNomeFile(this.Value.Value) : "";
+	}
+
+	void OnValidationRequested(object? sender, ValidationRequestedEventArgs e)
+	{
+		if (!this.Value.HasValue && this.Required)
+		{
+			if (ValidationFor is not null && MessageStore is not null)
+			{
+
+				MessageStore.Clear(FieldIdentifier);
+				MessageStore.Add(FieldIdentifier, "Campo obbligatorio");
+				EditContext.NotifyValidationStateChanged();
+			}
+		}
+	}
+
+	protected override bool TryParseValueFromString(string? value, [MaybeNullWhen(false)] out int? result, [NotNullWhen(false)] out string? validationErrorMessage)
+	{
+		validationErrorMessage = "";
+		result = String.IsNullOrEmpty(value) ? null : Convert.ToInt32(value);
+
+		return true;
+	}
+
+	async Task OnFileUpload(InputFileChangeEventArgs e)
+	{
+		if (e.File == null || e.File.Size == 0)
+		{
+			return;
+		}
+
+		using var spinner = await _spinnerService.StartSession();
+
+		IValidPostedFileSpecificationAsync specification = new ValidPostedFileSpecificationAsync(this._config);
+
+		if (RichiedeFirmaDigitale)
+		{
+			specification = specification.And(new FirmatoDigitalmentePostedFileSpecification(this._firmaDigitaleService));
+		}
+
+		MessageStore.Clear(FieldIdentifier);
+
+		try
+		{
+			var file = await e.File.ToBinaryFile(specification, this.DimensioneMassima != 0 ? this.DimensioneMassima : null);
+
+			var codiceOggetto = this._oggettiService.InserisciOggetto(file);
+
+			this.Value = codiceOggetto;
+			this.RicaricaDatiFile();
+
+			this.OnFileUploaded?.Invoke(this, new VbgInputFileUploadedEventArgs(this.Value.Value, this._nomeFile));
+
+			await this.ValueChanged.InvokeAsync(this.Value);
+		}
+		catch (Exception ex)
+		{
+			MessageStore.Add(FieldIdentifier, ex.Message);
+		}
+
+		EditContext.NotifyValidationStateChanged();
+	}
+
+	async Task EliminaFileSelezionato()
+	{
+		if (this.Value.HasValue)
+		{
+			try
+			{
+
+				var oldVal = this.Value.Value;
+
+				if (this.OnFileDeleted is not null)
+				{
+					this.OnFileDeleted.Invoke(this, new VbgInputFileDeletedEventArgs(oldVal));
+				}
+
+				// TODO: Eliminare il file da db???
+
+				this.Value = null;
+				await this.ValueChanged.InvokeAsync(this.Value);
+			}
+			catch (Exception ex)
+			{
+				MessageStore.Add(FieldIdentifier, ex.Message);
+			}
+		}
+	}
+
+	protected override void Dispose(bool disposing)
+	{
+		if (EditContext is not null)
+		{
+			EditContext.OnValidationRequested -= OnValidationRequested;
+		}
+		base.Dispose(disposing);
+	}
+
+	public static string GetHumanReadableFileSize(long len)
+	{
+		string[] sizes = { "B", "KB", "MB", "GB", "TB" };
+		int order = 0;
+		while (len >= 1024 && order < sizes.Length - 1)
+		{
+			order++;
+			len = len / 1024;
+		}
+
+		// Adjust the format string to your preferences. For example "{0:0.#}{1}" would
+		// show a single decimal place, and no space.
+		return String.Format("{0:0.##} {1}", len, sizes[order]);
+	}
+
+}

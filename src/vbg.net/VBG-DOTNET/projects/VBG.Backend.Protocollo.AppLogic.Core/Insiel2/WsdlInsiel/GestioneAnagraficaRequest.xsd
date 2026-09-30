@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2005 rel. 3 U (http://www.altova.com) by any (INSIEL S.p.A.) -->
+<xs:schema xmlns:gstAnaReq="http://insiel.it/protocollo/schemixsd/GestioneAnagraficaRequest" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tgen="http://insiel.it/protocollo/schemixsd/TipiGenerali" targetNamespace="http://insiel.it/protocollo/schemixsd/GestioneAnagraficaRequest" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:import namespace="http://insiel.it/protocollo/schemixsd/TipiGenerali" schemaLocation="tipi_generali.xsd"/>
+	<xs:element name="GestioneAnagraficaRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Utente" type="tgen:Utente"/>
+				<xs:choice>
+					<xs:element name="nuovaAnagrafica" type="gstAnaReq:datiNuovaAnagrafica"/>
+					<xs:element name="aggiornaAnagrafica" type="gstAnaReq:datiAggAnagrafica"/>
+					<xs:element name="cancellaAnagrafica" type="gstAnaReq:datiCancellaAnagrafica"/>
+				</xs:choice>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="datiNuovaAnagrafica">
+		<xs:complexContent>
+			<xs:extension base="gstAnaReq:datiAnagrafici">
+				<xs:sequence>
+					<xs:element name="cod_ana" type="xs:string" nillable="true" minOccurs="0"/>
+					<xs:element name="desc_ana" type="xs:string" nillable="false"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="datiAggAnagrafica">
+		<xs:complexContent>
+			<xs:extension base="gstAnaReq:datiAnagrafici">
+				<xs:sequence>
+					<xs:element name="cod_ana" type="xs:string" nillable="true" minOccurs="0"/>
+					<xs:element name="desc_ana" type="xs:string" nillable="true" minOccurs="0"/>
+					<xs:element name="cod_ana_agg" type="xs:string" nillable="true" minOccurs="0"/>
+					<xs:element name="desc_ana_agg" type="xs:string" nillable="true" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="datiAnagrafici">
+		<xs:sequence>
+			<xs:element name="cod_tipo_ana" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="cognome" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="nome" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="titolo" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="denominaz" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="indirizzo" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="localita" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="provincia" nillable="true" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:length value="2"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="cap" nillable="true" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:length value="5"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="stato" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="codfis" nillable="true" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:length value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="piva" nillable="true" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:length value="11"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="cod_qual_dipe" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="sigla" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="datanasc" type="xs:date" nillable="true" minOccurs="0"/>
+			<xs:element name="locnasc" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="provnasc" nillable="true" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:length value="2"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="sesso" nillable="true" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="M"/>
+						<xs:enumeration value="F"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="desc_ana_2" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="e_mail" nillable="true" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="cod_tipol_ana" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="fl_import_gd" type="xs:integer" nillable="true" minOccurs="0"/>
+			<xs:element name="fl_utilizza_prot" type="xs:integer" nillable="true" minOccurs="0"/>
+			<xs:element name="fl_no_albero" type="xs:integer" nillable="true" minOccurs="0"/>
+			<xs:element name="liv_abil" nillable="true" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="9"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="disattivato" nillable="true" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:enumeration value="0"/>
+						<xs:enumeration value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="datiCancellaAnagrafica">
+		<xs:choice>
+			<xs:element name="cod_ana" type="xs:string"/>
+			<xs:element name="desc_ana" type="xs:string"/>
+		</xs:choice>
+	</xs:complexType>
+</xs:schema>

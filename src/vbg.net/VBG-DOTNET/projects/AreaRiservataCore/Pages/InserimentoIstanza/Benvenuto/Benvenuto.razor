@@ -1,0 +1,273 @@
+﻿@page "/{IdComune}/{Software}/inserimento-istanza/benvenuto/{idDomanda:int}/{stepId:int}"
+@using System.ComponentModel.DataAnnotations
+@using System.Text
+@using Init.SIGePro.Manager.DTO.Comuni
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneComuni
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneInterventi
+@using Init.Sigepro.FrontEnd.AppLogic.PresentazioneIstanze.Workflow
+@using Init.Sigepro.FrontEnd.AppLogic.Services.Domanda
+@using Init.Sigepro.FrontEnd.AppLogic.WsInterventi
+@using Init.Sigepro.FrontEnd.CoreServices.GestionePresentazioneDomanda.Paginatore
+@using Init.Sigepro.FrontEnd.Infrastructure.StepsDomanda.Attributi
+@using Init.Sigepro.Frontend.AppLogic.WsComuniService
+@using Microsoft.AspNetCore.WebUtilities
+@using VBG.BlazorComponentsLibrary.EditFormComponents
+@using VBG.BlazorComponentsLibrary.EditFormComponents.DropDown
+@inherits IstanzeStepPage
+
+<style>
+    .etichetta-combo-comuni {
+        width: 100%;
+        max-width: 100%;
+        text-align: center;
+        margin-top: 2em;
+        font-size: 1.5em;
+    }
+</style>
+
+@if (this.CopiaDa is null)
+{
+    <div class="descrizioneStep descrizione-step">
+        @((MarkupString)_testoDescrizioneStep)
+    </div>
+
+    @if (!SolaLettura)
+    {
+        @if (MostraSelezioneComune)
+        {
+            <VbgForm Id="mainForm" Model="@_model">
+
+                <div id="pnlSelezioneComune">
+                    <label for="comboComuni" class="etichetta-combo-comuni">
+                        @TestoSelezionaComune
+                    </label>
+
+                    <div class="row">
+                        <div class="col-md-4"></div>
+
+                        <div class="col-md-4">
+                            <GenericDropDownForm Id="comboComuni"
+                                                 Value="_model.DatiComune"
+                                                 TItem="DatiComuneCompatto"
+                                                 OnChanged="(DatiComuneCompatto c) => _model.DatiComune = c"
+                                                 ValueExpression="() => _model.DatiComune"
+                                                 Selector="(x) => x.Comune"
+                                                 ValidationFor="() => _model.DatiComune"
+                                                 Items="@_comuni" ValueField="CodiceComune" TextField="Descrizione"
+                                                 ShowEmptyItem="true" EmptyItemText="" EmptyItemValue=""
+                                                 Required="true">
+                            </GenericDropDownForm>
+                        </div>
+
+                        <div class="col-md-4"></div>
+                    </div>
+
+                </div>
+
+                @* submit button invisible inserito per eliminare errore accessibilità *@
+                <button type="submit" aria-hidden="true" class="d-none"></button>
+            </VbgForm>
+        }
+    }
+    else
+    {
+        <div id="pnlSelezioneComune">
+            <label for="comboComuni" class="etichetta-combo-comuni">
+                Per il comune di
+            </label>
+
+            <div class="row">
+                <div class="col-md-4"></div>
+
+                <div class="col-md-4 text-center fs-4">
+                    @_comuniService.GetByCodiceComune(DomandaCorrente.AltriDati.CodiceComune)?.Comune
+                </div>
+
+                <div class="col-md-4"></div>
+            </div>
+
+        </div>
+    }
+}
+
+@code {
+
+    private static class Constants
+    {
+        public const string MsgErroreComuneNonSelezionato = "Per poter proseguire è necessario selezionare il comune per cui si vuole presentare l'istanza";
+        public const string QsParamSelezionaIntervento = "SelezionaIntervento";
+        public const string QsParamCopiaDa = "copia-da";
+    }
+
+    public class FormModel
+    {
+        public DatiComuneCompatto? DatiComune { get; set; }
+    }
+
+    private FormModel _model = new FormModel();
+    private IEnumerable<DatiComuneCompatto> _comuni = Enumerable.Empty<DatiComuneCompatto>();
+    private bool MostraSelezioneComune = false;
+    private string _testoDescrizioneStep = String.Empty;
+
+    [Inject]
+    private DatiDomandaService _datiDomandaService { get; set; } = default!;
+    [Inject]
+    private IWorkflowService _workflowService { get; set; } = default!;
+    [Inject]
+    private IInterventiRepository _interventiRepository { get; set; } = default!;
+    [Inject]
+    private IComuniAssociatiService _comuniAssociatiService { get; set; } = default!;
+    [Inject]
+    private IComuniService _comuniService { get; set; } = default!;
+    [CascadingParameter]
+    private PaginatoreStateService _paginatoreStateService { get; set; } = default!;
+
+    [SupplyParameterFromForm(Name = Constants.QsParamSelezionaIntervento)]
+    private int? SelezionaIntervento { get; set; }
+
+    [SupplyParameterFromQuery(Name = Constants.QsParamCopiaDa)]
+    public int? CopiaDa { get; set; }
+
+    [StepProperty]
+    public string TestoDescrizioneSteps { get; set; } = String.Empty;
+
+    [StepProperty]
+    public string SelezionaComune { get; set; } = String.Empty;
+
+    [StepProperty]
+    public string TestoSelezionaComune { get; set; } = "Seleziona il comune per cui vuoi presentare l'istanza";
+
+    [StepProperty]
+    public string EscludiComuni { get; set; } = String.Empty;
+
+    protected override void OnInitializeStep()
+    {
+        this._workflowService.ClearCacheDomanda(this.IdDomanda!.Value);
+        this._paginatoreStateService.MostraPaginatore();
+
+        if (CopiaDa is not null)
+        {
+            //DatabindCopiaDa();
+        }
+        else
+        {
+            DataBind();
+        }
+    }
+
+    protected override void OnBeforeExitStep()
+    {
+        // Todo: come effettuare la validazione????
+
+        _datiDomandaService.SetCodiceComune(this.IdDomanda!.Value, _model.DatiComune?.CodiceComune ?? "");
+
+        if (SelezionaIntervento.HasValue)
+        {
+            var verificaAccesso = _interventiRepository.VerificaAccessoIntervento(SelezionaIntervento.Value, _model.DatiComune?.CodiceComune ?? "");
+
+            if(verificaAccesso.Is(TipoAccessibilitaIntervento.Accessibile))
+            {
+                _datiDomandaService.ImpostaIdIntervento(this.IdDomanda!.Value, SelezionaIntervento.Value, (int?)null, true);
+            }
+        }
+
+        if (this.CopiaDa is not null)
+        {
+            _datiDomandaService.ImpostaIdDomandaCollegata(this.IdDomanda!.Value, this.CopiaDa.Value);
+        }
+    }
+
+    protected override bool CanExitStep()
+    {
+        if (SolaLettura)
+        {
+            return true;
+        }
+
+        var domanda = DomandaCorrente;
+        var codiceComuneSelezionato = domanda.AltriDati.CodiceComune;
+
+        if (String.IsNullOrEmpty(codiceComuneSelezionato))
+        {
+            MessageContainer.ClearErrors();
+            MessageContainer.AddError(Constants.MsgErroreComuneNonSelezionato);
+
+            return false;
+        }
+
+        if (SelezionaIntervento.HasValue)
+        {
+            var verificaAccesso = _interventiRepository.VerificaAccessoIntervento(SelezionaIntervento.Value, codiceComuneSelezionato);
+
+            if(!verificaAccesso.Is(TipoAccessibilitaIntervento.Accessibile))
+            {
+                MessageContainer.AddError(verificaAccesso.MessaggioErrore);
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private void DataBind()
+    {
+        this._testoDescrizioneStep = PreparaTestoPagina();
+
+        this._comuni = this._comuniAssociatiService.GetComuniAssociati(this.EscludiComuni?.Split(','))
+                                            .OrderBy(x => x.Comune)
+                                            .ToList();
+
+        var idComuneAssociatoSelezionato = DomandaCorrente.AltriDati.CodiceComune;
+
+        if (!String.IsNullOrEmpty(idComuneAssociatoSelezionato))
+        {
+            _model.DatiComune = this._comuni.FirstOrDefault(x => x.CodiceComune == idComuneAssociatoSelezionato);
+        }
+
+        MostraSelezioneComune = true;
+
+        if (this._comuni.Count() == 1)
+        {
+            MostraSelezioneComune = false;
+            _model.DatiComune = this._comuni.First();
+        }
+
+        if (!String.IsNullOrEmpty(this.SelezionaComune))
+        {
+            MostraSelezioneComune = false;
+
+            if (String.IsNullOrEmpty(idComuneAssociatoSelezionato))
+            {
+                var comune = this._comuni.FirstOrDefault(x => x.CodiceComune == this.SelezionaComune);
+
+                if (comune == null)
+                {
+                    // In alcune vecchie installazioni non sono presenti comuni associati e quindi il comune da selezionare non viene trovato
+                    comune = this._comuniService.GetByCodiceComune(this.SelezionaComune);
+                }
+
+                _model.DatiComune = comune;
+            }
+        }
+    }
+
+    private string PreparaTestoPagina()
+    {
+        string modelloTesto = TestoDescrizioneSteps;
+
+        if (modelloTesto.IndexOf("{0}") == -1)
+            return modelloTesto;
+
+        var sb = new StringBuilder();
+        var titoliSteps = this._workflowService.GetWorkflowByIdDomanda(this.IdDomanda!.Value)?.GetTitoliSteps() ?? Enumerable.Empty<string>();
+
+        sb.Append("<ol style=\" list-style:decimal; margin-left:2rem; \" class=\" mt-1 \">");
+
+        foreach (var titoloStep in titoliSteps)
+            sb.AppendFormat("<li>{0}</li>", titoloStep);
+
+        sb.Append("</ol>");
+
+        return String.Format(modelloTesto, sb.ToString());
+    }
+}

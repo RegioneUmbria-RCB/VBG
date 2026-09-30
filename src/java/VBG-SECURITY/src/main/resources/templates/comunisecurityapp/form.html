@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+     th:replace="~{decorator_main :: layout(~{::title}, ~{::section})}">
+<head>
+	<title th:text="#{label.applicazioni_autorizzate}">label.applicazioni_autorizzate</title>
+</head>
+<body>
+   <section class="section section-muted container"
+   	 th:attr="aria-describedby=titleSection">
+   
+   	<h1 id="titleSection" th:text="#{label.applicazioni_autorizzate}">label.applicazioni_autorizzate</h1>
+   
+				<form id="inviodati" th:object="${comunisecurityapp}" th:action="${displayMode ne 0 }?@{update.htm}:@{insert.htm}" method="post">
+				
+				 <div th:replace="~{fragments/forms :: common-parts}"></div>
+				
+				 
+				 <div class="row mb-4">					
+					    <label class="form-label" for="entity.id" th:text="#{label.applicazione}">label.applicazione</label>
+					    <input type="text" class="form-control" 
+							    	th:field="*{entity.id}"
+							    	id="entity.id" 
+							    	th:readonly="*{displayMode ne 0 }"
+							    	/>
+				
+						<div th:replace="~{fragments/forms :: field-errors('entity.id')}"></div>
+							    	
+				 </div>
+				 <div class="row mb-4">					
+					    <label class="form-label" for="entity.passwordClear" th:text="#{label.password}">label.password</label>
+					    <input type="text" class="form-control" 
+							    	th:field="*{entity.passwordClear}" 
+							    	id="entity.passwordClear" 		
+							    	aria-describedby='password_help'					    	
+							    	/>
+							    	
+							    	
+				    	<small id="password_help" class="form-text" 
+				    		th:text="#{label.help.password}">....</small>
+				    	
+
+						<div th:replace="~{fragments/forms :: field-errors('entity.password')}"></div>
+	
+				    	
+				 </div>					
+				 					
+				 <div class="row mb-4">					
+					    <label class="form-label" for="password" th:text="#{label.password_md5}">label.password_md5</label>
+					    <input type="text" class="form-control" 							    	 
+							    	id="password" 		
+							    	th:value="*{entity.password}"
+							    	disabled="true"
+							    	/>
+				 </div>		
+				<div class="row mb-4">					
+					    <label class="form-label" for="alias" th:text="#{label.alias}">label.alias</label>
+						<select class="form-control" 
+								 th:field="*{entity.comunisecurity}" id="alias">
+								 <option value="" />
+						      <option th:each="comunisecurity : ${listaAttivazioni}" 
+						             th:value="${comunisecurity.id}" 
+						             th:text="${comunisecurity.descrizione + ' ('+ comunisecurity.id + ')' }"></option>
+						</select>
+						
+														
+
+				 </div>
+				<div class="row mb-4 form-check form-switch">					
+					    <label class="form-check-label" for="admin" th:text="#{label.admin}">label.admin</label>
+ 						<input class="form-check-input" type="checkbox" role="switch" th:field="*{entity.admin}" id="admin" />
+				 </div>							 
+				 				 				 					
+				 <div class="row">
+					<div class="form-group">
+						<div class="col-sm-offset-2 col-sm-10">
+						
+							<button type="button" 
+								class="salva-action-form btn btn-primary" 
+								th:text="#{button.save}">button.save</button>
+								
+								<button type="button" th:if="*{displayMode ne 0 }"
+								class="elimina-action-form btn btn-secondary" 
+								th:text="#{button.delete}">button.delete</button>
+							 
+							<button type="button" id="back" class="btn btn-secondary" 								
+								th:onclick="location.href='list.htm'"
+												th:text="#{button.back}">button.back</button>
+						</div>
+					</div>
+				 </div>
+				</form>
+	<script th:inline="javascript">
+	
+	document.addEventListener("DOMContentLoaded", function() {
+
+		  document.querySelectorAll('.page-link').forEach(d => {
+			  
+			  d.addEventListener('click', async (e) => {
+				  cerca(d.dataset.page);				
+				});
+			  		
+
+		  });
+		  
+		  document.querySelectorAll('.salva-action-form').forEach(d => {
+
+				d.addEventListener('click', async (e) => {					
+					document.forms['inviodati'].submit();					
+				});
+
+			});
+		  
+		  document.querySelectorAll('.elimina-action-form').forEach(d => {
+
+				d.addEventListener('click', async (e) => {
+					if(confirm('[[#{javascript.confirm.delete}]]')){
+						document.forms['inviodati'].action='delete.htm';
+						document.forms['inviodati'].submit();
+					}
+				});
+
+			});
+		  
+		  
+	  });
+	
+	</script>		
+  	
+  </section>
+  
+  
+</body>
+</html>

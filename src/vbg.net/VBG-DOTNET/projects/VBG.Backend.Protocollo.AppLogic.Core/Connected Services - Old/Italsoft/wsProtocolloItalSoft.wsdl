@@ -1,0 +1,735 @@
+<definitions xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="urn:proWsProtocollo" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns="http://schemas.xmlsoap.org/wsdl/" targetNamespace="urn:proWsProtocollo">
+<types>
+<xsd:schema targetNamespace="urn:proWsProtocollo">
+<xsd:import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+<xsd:import namespace="http://schemas.xmlsoap.org/wsdl/"/>
+<xsd:complexType name="note">
+<xsd:complexContent>
+<xsd:restriction base="SOAP-ENC:Array">
+<xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:nota[]"/>
+</xsd:restriction>
+</xsd:complexContent>
+</xsd:complexType>
+<xsd:complexType name="nota">
+<xsd:all>
+<xsd:element name="oggetto" type="xsd:string"/>
+<xsd:element name="testo" type="xsd:string"/>
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="mittentiDestinatari">
+<xsd:complexContent>
+<xsd:restriction base="SOAP-ENC:Array">
+<xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:mittenteDestinatario[]"/>
+</xsd:restriction>
+</xsd:complexContent>
+</xsd:complexType>
+<xsd:complexType name="firmatario">
+<xsd:all>
+<xsd:element name="codice" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+<xsd:element name="ufficio" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="trasmissioni">
+<xsd:complexContent>
+<xsd:restriction base="SOAP-ENC:Array">
+<xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:trasmissione[]"/>
+</xsd:restriction>
+</xsd:complexContent>
+</xsd:complexType>
+<xsd:complexType name="trasmissioniInterne">
+<xsd:sequence>
+<xsd:element name="trasmissione" type="tns:trasmissione" minOccurs="0" maxOccurs="unbounded"/>
+</xsd:sequence>
+</xsd:complexType>
+<xsd:complexType name="mittenti">
+<xsd:sequence>
+<xsd:element name="mittenteDestinatario" type="tns:mittenteDestinatario" minOccurs="1" maxOccurs="unbounded"/>
+</xsd:sequence>
+</xsd:complexType>
+<xsd:complexType name="mittDest">
+<xsd:sequence>
+<xsd:element name="mittenteDestinatario" type="tns:mittenteDestinatario" minOccurs="1" maxOccurs="unbounded"/>
+</xsd:sequence>
+</xsd:complexType>
+<xsd:complexType name="destinatari">
+<xsd:sequence>
+<xsd:element name="mittenteDestinatario" type="tns:mittenteDestinatario" minOccurs="1" maxOccurs="unbounded"/>
+</xsd:sequence>
+</xsd:complexType>
+<xsd:complexType name="firmatari">
+<xsd:sequence>
+<xsd:element name="firmatario" type="tns:firmatario" minOccurs="1" maxOccurs="unbounded"/>
+</xsd:sequence>
+</xsd:complexType>
+<xsd:complexType name="mittenteDestinatario">
+<xsd:all>
+<xsd:element name="codice" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="denominazione" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+<xsd:element name="indirizzo" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="cap" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="citta" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="prov" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="email" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="CC" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="ufficio" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="codiceFiscale" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="notificheMail" type="tns:notificheMail" minOccurs="0"/>
+<xsd:element name="tipoSoggetto" type="xsd:string" minOccurs="0"/>
+<xsd:element name="codiceIPASoggetto" type="xsd:string" minOccurs="0"/>
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="trasmissione">
+<xsd:all>
+<xsd:element name="codiceDestinatario" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+<xsd:element name="descrizioneDestinatario" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="codiceUfficio" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+<xsd:element name="descrizioneUfficio" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="oggettoTrasmissione" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="gestione" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="responsabile" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="notificheMail" type="tns:notificheMail" minOccurs="0"/>
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="allegati">
+<xsd:complexContent>
+<xsd:restriction base="SOAP-ENC:Array">
+<xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:allegato[]"/>
+</xsd:restriction>
+</xsd:complexContent>
+</xsd:complexType>
+<xsd:complexType name="allegato">
+<xsd:all>
+<xsd:element name="id" type="xsd:string"/>
+<xsd:element name="tipoFile" type="xsd:string"/>
+<xsd:element name="nomeFile" type="xsd:string"/>
+<xsd:element name="estensione" type="xsd:string"/>
+<xsd:element name="stream" type="xsd:string"/>
+<xsd:element name="note" type="xsd:string"/>
+<xsd:element name="marcaDocumento" type="xsd:string"/>
+<xsd:element name="mettiAllaFirma" type="xsd:string"/>
+<xsd:element name="sha" type="xsd:string"/>
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="allegatiPrecaricati">
+<xsd:sequence>
+<xsd:element name="allegatoPrecaricato" type="tns:allegatoPrecaricato" minOccurs="0" maxOccurs="unbounded"/>
+</xsd:sequence>
+</xsd:complexType>
+<xsd:complexType name="allegatoPrecaricato">
+<xsd:all>
+<xsd:element name="idunivoco" type="xsd:string"/>
+<xsd:element name="hashfile" type="xsd:string"/>
+<xsd:element name="nomeFile" type="xsd:string"/>
+<xsd:element name="tipoFile" type="xsd:string"/>
+<xsd:element name="estensione" type="xsd:string"/>
+<xsd:element name="note" type="xsd:string"/>
+<xsd:element name="marcaDocumento" type="xsd:string"/>
+<xsd:element name="mettiAllaFirma" type="xsd:string"/>
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="itemProtocollo">
+<xsd:all>
+<xsd:element name="rowID" type="xsd:string"/>
+<xsd:element name="annoProtocollo" type="xsd:string"/>
+<xsd:element name="numeroProtocollo" type="xsd:string"/>
+<xsd:element name="dataProtocollo" type="xsd:string"/>
+<xsd:element name="oraProtocollo" type="xsd:string"/>
+<xsd:element name="segnatura" type="xsd:string"/>
+<xsd:element name="oggetto" type="xsd:string"/>
+<xsd:element name="note" type="tns:note"/>
+<xsd:element name="classificazione" type="xsd:string"/>
+<xsd:element name="classificazione_Descrizione" type="xsd:string"/>
+<xsd:element name="tipoProtocollo" type="xsd:string"/>
+<xsd:element name="tipoProtocollo_Descrizione" type="xsd:string"/>
+<xsd:element name="tipoDocumento" type="xsd:string"/>
+<xsd:element name="descrTipoDocumento" type="xsd:string"/>
+<xsd:element name="codiceUfficioFirmatario" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+<xsd:element name="descrizioneUfficioFirmatario" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="firmatario" type="xsd:string"/>
+<xsd:element name="firmatario_Descrizione" type="xsd:string"/>
+<xsd:element name="mittenti" type="tns:mittentiDestinatari"/>
+<xsd:element name="dataDocumento" type="xsd:string"/>
+<xsd:element name="protocolloMittente" type="xsd:string"/>
+<xsd:element name="dataEvidenza" type="xsd:string"/>
+<xsd:element name="documentoRiservato" type="xsd:string"/>
+<xsd:element name="dataDiCarico" type="xsd:string"/>
+<xsd:element name="codiceUfficioUtenteDiInserimento" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+<xsd:element name="descrizioneUfficioUtenteDiInserimento" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="utenteDiInserimento" type="xsd:string"/>
+<xsd:element name="dataInserimento" type="xsd:string"/>
+<xsd:element name="messaggio" type="xsd:string"/>
+<xsd:element name="formazione" type="xsd:string" minOccurs="0"/>
+<xsd:element name="formazione_agid" type="xsd:string" minOccurs="0"/>
+<xsd:element name="allegati" type="tns:allegati"/>
+<xsd:element name="numeroProtocolloAntecedente" type="xsd:string"/>
+<xsd:element name="annoProtocolloAntecedente" type="xsd:string"/>
+<xsd:element name="codiceFascicolo" type="xsd:string"/>
+<xsd:element name="tipoProtocolloAntecedente" type="xsd:string"/>
+<xsd:element name="tipoSpedizione" type="xsd:string"/>
+<xsd:element name="destinatari" type="tns:mittentiDestinatari"/>
+<xsd:element name="trasmissioniInterne" type="tns:trasmissioni"/>
+<xsd:element name="statoConservazione" type="xsd:string"/>
+<xsd:element name="dataConservazione" type="xsd:string"/>
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="itemEsitoFirma">
+<xsd:all>
+<xsd:element name="esitoFirma" type="xsd:string"/>
+<xsd:element name="annoProtocollo" type="xsd:string"/>
+<xsd:element name="dataProtocollo" type="xsd:string"/>
+<xsd:element name="numeroProtocollo" type="xsd:string"/>
+<xsd:element name="tipoProtocollo" type="xsd:string"/>
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="retProtocollo">
+<xsd:all>
+<xsd:element name="rowidProtocollo" type="xsd:string"/>
+<xsd:element name="annoProtocollo" type="xsd:string"/>
+<xsd:element name="numeroProtocollo" type="xsd:string"/>
+<xsd:element name="tipoProtocollo" type="xsd:string"/>
+<xsd:element name="dataProtocollo" type="xsd:string"/>
+<xsd:element name="segnatura" type="xsd:string"/>
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="retDocumento">
+<xsd:all>
+<xsd:element name="rowidDocumento" type="xsd:string"/>
+<xsd:element name="annoDocumento" type="xsd:string"/>
+<xsd:element name="numeroDocumento" type="xsd:string"/>
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="notificaMail">
+<xsd:all>
+<xsd:element name="stream" type="xsd:string"/>
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="statoNotifica">
+<xsd:all>
+<xsd:element name="stato" type="xsd:string"/>
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="datiProtocollo">
+<xsd:all>
+<xsd:element name="tipoProtocollo" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+<xsd:element name="ufficioOperatore" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+<xsd:element name="firmatari" type="tns:firmatari" minOccurs="1" maxOccurs="1"/>
+<xsd:element name="oggetto" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+<xsd:element name="tipoDocumento" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="numeroProtocolloAntecedente" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="annoProtocolloAntecedente" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="tipoProtocolloAntecedente" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="numeroProtocolloMittente" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="dataProtocolloMittente" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="dataArrivo" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="oraArrivo" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="protocolloEmergenza" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="mittenti" type="tns:mittenti" minOccurs="1" maxOccurs="1"/>
+<xsd:element name="destinatari" type="tns:destinatari" minOccurs="1" maxOccurs="1"/>
+<xsd:element name="classificazione" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+<xsd:element name="tipoSpedizione" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="trasmissioniInterne" type="tns:trasmissioniInterne" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="formazione" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="allegato" type="tns:allegato" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="allegatiPrecaricati" type="tns:allegatiPrecaricati" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="riservato" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="filtriRicercaProtocollo">
+<xsd:all>
+<xsd:element name="tipoProtocollo" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+<xsd:element name="oggetto" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="tipoDocumento" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="annoProtocollo" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="daNumeroProtocollo" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="aNumeroProtocollo" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="daDataProtocollo" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="aDataProtocollo" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="soggetto" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="ufficioCreatore" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="filtriFascicolo" type="tns:filtriFascicolo" minOccurs="0" maxOccurs="1"/>
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="filtriFascicolo">
+<xsd:all>
+<xsd:element name="codiceFascicolo" type="xsd:string"/>
+<xsd:element name="titolarioFascicolo" type="xsd:string"/>
+<xsd:element name="annoFascicolo" type="xsd:string"/>
+<xsd:element name="progressivoFascicolo" type="xsd:string"/>
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="elencoProtocolli">
+<xsd:complexContent>
+<xsd:restriction base="SOAP-ENC:Array">
+<xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:voceProtocollo[]"/>
+</xsd:restriction>
+</xsd:complexContent>
+</xsd:complexType>
+<xsd:complexType name="voceProtocollo">
+<xsd:all>
+<xsd:element name="rowID" type="xsd:string"/>
+<xsd:element name="tipoProtocollo" type="xsd:string"/>
+<xsd:element name="annoProtocollo" type="xsd:string"/>
+<xsd:element name="numeroProtocollo" type="xsd:string"/>
+<xsd:element name="dataProtocollo" type="xsd:string"/>
+<xsd:element name="oraProtocollo" type="xsd:string"/>
+<xsd:element name="oggetto" type="xsd:string"/>
+<xsd:element name="ufficioCreatore" type="xsd:string"/>
+<xsd:element name="descrizioneUfficioCreatore" type="xsd:string"/>
+<xsd:element name="soggetto" type="xsd:string"/>
+<xsd:element name="titolario" type="xsd:string"/>
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="datiDocumento">
+<xsd:all>
+<xsd:element name="tipoProtocollo" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+<xsd:element name="ufficioOperatore" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+<xsd:element name="firmatari" type="tns:firmatari" minOccurs="1" maxOccurs="1"/>
+<xsd:element name="oggetto" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+<xsd:element name="tipoDocumento" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="numeroProtocolloAntecedente" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="annoProtocolloAntecedente" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="tipoProtocolloAntecedente" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="mittenti" type="tns:mittenti" minOccurs="1" maxOccurs="1"/>
+<xsd:element name="destinatari" type="tns:destinatari" minOccurs="1" maxOccurs="1"/>
+<xsd:element name="classificazione" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+<xsd:element name="trasmissioniInterne" type="tns:trasmissioniInterne" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="formazione" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="tipoSpedizione" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="allegato" type="tns:allegato" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="allegatiPrecaricati" type="tns:allegatiPrecaricati" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="riservato" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="messageResult">
+<xsd:all>
+<xsd:element name="descrizione" type="xsd:string"/>
+<xsd:element name="tipoRisultato" type="xsd:string"/>
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="organigramma">
+<xsd:complexContent>
+<xsd:restriction base="SOAP-ENC:Array">
+<xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:rigaOrganigramma[]"/>
+</xsd:restriction>
+</xsd:complexContent>
+</xsd:complexType>
+<xsd:complexType name="rigaOrganigramma">
+<xsd:all>
+<xsd:element name="settore" type="xsd:string"/>
+<xsd:element name="codiceUfficio" type="xsd:string"/>
+<xsd:element name="descrizioneUfficio" type="xsd:string"/>
+<xsd:element name="codiceUtente" type="xsd:string"/>
+<xsd:element name="nominativo" type="xsd:string"/>
+<xsd:element name="ruolo" type="xsd:string"/>
+</xsd:all>
+</xsd:complexType>
+<xsd:complexType name="notificheMail">
+<xsd:complexContent>
+<xsd:restriction base="SOAP-ENC:Array">
+<xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:notifica[]"/>
+</xsd:restriction>
+</xsd:complexContent>
+</xsd:complexType>
+<xsd:complexType name="notifica">
+<xsd:all>
+<xsd:element name="rowidmail" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+<xsd:element name="tipomail" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+</xsd:all>
+</xsd:complexType>
+</xsd:schema>
+</types>
+<message name="GetItaEngineContextTokenRequest">
+<part name="userName" type="xsd:string"/>
+<part name="userPassword" type="xsd:string"/>
+<part name="domainCode" type="xsd:string"/>
+</message>
+<message name="GetItaEngineContextTokenResponse">
+<part name="return" type="xsd:string"/>
+</message>
+<message name="GetItaEngineContextTokenInfoRequest">
+<part name="token" type="xsd:string"/>
+<part name="domainCode" type="xsd:string"/>
+</message>
+<message name="GetItaEngineContextTokenInfoResponse">
+<part name="UserName" type="xsd:string"/>
+<part name="UserCode" type="xsd:string"/>
+</message>
+<message name="CheckItaEngineContextTokenRequest">
+<part name="token" type="xsd:string"/>
+<part name="domainCode" type="xsd:string"/>
+</message>
+<message name="CheckItaEngineContextTokenResponse">
+<part name="return" type="xsd:string"/>
+</message>
+<message name="DestroyItaEngineContextTokenRequest">
+<part name="token" type="xsd:string"/>
+<part name="domainCode" type="xsd:string"/>
+</message>
+<message name="DestroyItaEngineContextTokenResponse">
+<part name="return" type="xsd:string"/>
+</message>
+<message name="RicercaProtocolliRequest">
+<part name="token" type="xsd:string"/>
+<part name="filtri" type="tns:filtriRicercaProtocollo"/>
+</message>
+<message name="RicercaProtocolliResponse">
+<part name="elencoProtocolli" type="tns:elencoProtocolli"/>
+<part name="messageResult" type="tns:messageResult"/>
+</message>
+<message name="GetAllegatoRequest">
+<part name="token" type="xsd:string"/>
+<part name="id" type="xsd:string"/>
+<part name="blockSize" type="xsd:string"/>
+<part name="part" type="xsd:string"/>
+</message>
+<message name="GetAllegatoResponse">
+<part name="allegato" type="tns:allegato"/>
+<part name="messageResult" type="tns:messageResult"/>
+</message>
+<message name="GetProtocolloRequest">
+<part name="token" type="xsd:string"/>
+<part name="anno" type="xsd:string"/>
+<part name="numero" type="xsd:string"/>
+<part name="tipo" type="xsd:string"/>
+<part name="segnatura" type="xsd:string"/>
+</message>
+<message name="GetProtocolloResponse">
+<part name="items" type="tns:itemProtocollo"/>
+<part name="messageResult" type="tns:messageResult"/>
+</message>
+<message name="CheckDocumentoAllaFirmaRequest">
+<part name="token" type="xsd:string"/>
+<part name="numeroDocumento" type="xsd:string"/>
+</message>
+<message name="CheckDocumentoAllaFirmaResponse">
+<part name="items" type="tns:itemEsitoFirma"/>
+<part name="messageResult" type="tns:messageResult"/>
+</message>
+<message name="GetProtocolloFatturaRequest">
+<part name="token" type="xsd:string"/>
+<part name="fileFattura" type="xsd:string"/>
+</message>
+<message name="GetProtocolloFatturaResponse">
+<part name="items" type="tns:itemProtocollo"/>
+<part name="messageResult" type="tns:messageResult"/>
+</message>
+<message name="GetOrganigrammaRequest">
+<part name="token" type="xsd:string"/>
+</message>
+<message name="GetOrganigrammaResponse">
+<part name="organigramma" type="tns:organigramma"/>
+<part name="messageResult" type="tns:messageResult"/>
+</message>
+<message name="PutAllegatoRequest">
+<part name="token" type="xsd:string"/>
+<part name="anno" type="xsd:string"/>
+<part name="numero" type="xsd:string"/>
+<part name="tipo" type="xsd:string"/>
+<part name="tipoFile" type="xsd:string"/>
+<part name="nomeFile" type="xsd:string"/>
+<part name="estensione" type="xsd:string"/>
+<part name="stream" type="xsd:string"/>
+<part name="note" type="xsd:string"/>
+<part name="marcaDocumento" type="xsd:string"/>
+<part name="mettiAllaFirma" type="xsd:string"/>
+</message>
+<message name="PutAllegatoResponse">
+<part name="allegati" type="tns:allegati"/>
+<part name="messageResult" type="tns:messageResult"/>
+</message>
+<message name="PutAllegatoDocumentoAllaFirmaRequest">
+<part name="token" type="xsd:string"/>
+<part name="numero" type="xsd:string"/>
+<part name="tipoFile" type="xsd:string"/>
+<part name="nomeFile" type="xsd:string"/>
+<part name="estensione" type="xsd:string"/>
+<part name="stream" type="xsd:string"/>
+<part name="note" type="xsd:string"/>
+<part name="marcaDocumento" type="xsd:string"/>
+<part name="mettiAllaFirma" type="xsd:string"/>
+</message>
+<message name="PutAllegatoDocumentoAllaFirmaResponse">
+<part name="allegati" type="tns:allegati"/>
+<part name="messageResult" type="tns:messageResult"/>
+</message>
+<message name="PutProtocolloRequest">
+<part name="token" type="xsd:string"/>
+<part name="datiProtocollo" type="tns:datiProtocollo"/>
+</message>
+<message name="PutProtocolloResponse">
+<part name="datiProtocollo" type="tns:retProtocollo"/>
+<part name="messageResult" type="tns:messageResult"/>
+</message>
+<message name="PutDocumentoAllaFirmaRequest">
+<part name="token" type="xsd:string"/>
+<part name="datiDocumento" type="tns:datiDocumento"/>
+</message>
+<message name="PutDocumentoAllaFirmaResponse">
+<part name="datiDocumento" type="tns:retDocumento"/>
+<part name="messageResult" type="tns:messageResult"/>
+</message>
+<message name="NotificaMailProtocolloRequest">
+<part name="token" type="xsd:string"/>
+<part name="anno" type="xsd:string"/>
+<part name="numero" type="xsd:string"/>
+<part name="tipo" type="xsd:string"/>
+<part name="oggettoCustom" type="xsd:string"/>
+<part name="bodyCustom" type="xsd:string"/>
+<part name="accountCustom" type="xsd:string"/>
+</message>
+<message name="NotificaMailProtocolloResponse">
+<part name="statoNotifica" type="tns:statoNotifica"/>
+<part name="messageResult" type="tns:messageResult"/>
+</message>
+<message name="InsertDocumentoRequest">
+<part name="token" type="xsd:string"/>
+<part name="nomeFile" type="xsd:string"/>
+<part name="stream" type="xsd:string"/>
+</message>
+<message name="InsertDocumentoResponse">
+<part name="allegatoPrecaricato" type="tns:allegatoPrecaricato"/>
+<part name="messageResult" type="tns:messageResult"/>
+</message>
+<message name="GetNotificaMailProtocolloRequest">
+<part name="token" type="xsd:string"/>
+<part name="anno" type="xsd:string"/>
+<part name="numero" type="xsd:string"/>
+<part name="tipo" type="xsd:string"/>
+<part name="rowidmail" type="xsd:string"/>
+</message>
+<message name="GetNotificaMailProtocolloResponse">
+<part name="notificaMail" type="tns:notificaMail"/>
+<part name="messageResult" type="tns:messageResult"/>
+</message>
+<portType name="proWsProtocolloPortType">
+<operation name="GetItaEngineContextToken">
+<input message="tns:GetItaEngineContextTokenRequest"/>
+<output message="tns:GetItaEngineContextTokenResponse"/>
+</operation>
+<operation name="GetItaEngineContextTokenInfo">
+<input message="tns:GetItaEngineContextTokenInfoRequest"/>
+<output message="tns:GetItaEngineContextTokenInfoResponse"/>
+</operation>
+<operation name="CheckItaEngineContextToken">
+<input message="tns:CheckItaEngineContextTokenRequest"/>
+<output message="tns:CheckItaEngineContextTokenResponse"/>
+</operation>
+<operation name="DestroyItaEngineContextToken">
+<input message="tns:DestroyItaEngineContextTokenRequest"/>
+<output message="tns:DestroyItaEngineContextTokenResponse"/>
+</operation>
+<operation name="RicercaProtocolli">
+<input message="tns:RicercaProtocolliRequest"/>
+<output message="tns:RicercaProtocolliResponse"/>
+</operation>
+<operation name="GetAllegato">
+<input message="tns:GetAllegatoRequest"/>
+<output message="tns:GetAllegatoResponse"/>
+</operation>
+<operation name="GetProtocollo">
+<input message="tns:GetProtocolloRequest"/>
+<output message="tns:GetProtocolloResponse"/>
+</operation>
+<operation name="CheckDocumentoAllaFirma">
+<input message="tns:CheckDocumentoAllaFirmaRequest"/>
+<output message="tns:CheckDocumentoAllaFirmaResponse"/>
+</operation>
+<operation name="GetProtocolloFattura">
+<input message="tns:GetProtocolloFatturaRequest"/>
+<output message="tns:GetProtocolloFatturaResponse"/>
+</operation>
+<operation name="GetOrganigramma">
+<input message="tns:GetOrganigrammaRequest"/>
+<output message="tns:GetOrganigrammaResponse"/>
+</operation>
+<operation name="PutAllegato">
+<input message="tns:PutAllegatoRequest"/>
+<output message="tns:PutAllegatoResponse"/>
+</operation>
+<operation name="PutAllegatoDocumentoAllaFirma">
+<input message="tns:PutAllegatoDocumentoAllaFirmaRequest"/>
+<output message="tns:PutAllegatoDocumentoAllaFirmaResponse"/>
+</operation>
+<operation name="PutProtocollo">
+<input message="tns:PutProtocolloRequest"/>
+<output message="tns:PutProtocolloResponse"/>
+</operation>
+<operation name="PutDocumentoAllaFirma">
+<input message="tns:PutDocumentoAllaFirmaRequest"/>
+<output message="tns:PutDocumentoAllaFirmaResponse"/>
+</operation>
+<operation name="NotificaMailProtocollo">
+<input message="tns:NotificaMailProtocolloRequest"/>
+<output message="tns:NotificaMailProtocolloResponse"/>
+</operation>
+<operation name="InsertDocumento">
+<input message="tns:InsertDocumentoRequest"/>
+<output message="tns:InsertDocumentoResponse"/>
+</operation>
+<operation name="GetNotificaMailProtocollo">
+<input message="tns:GetNotificaMailProtocolloRequest"/>
+<output message="tns:GetNotificaMailProtocolloResponse"/>
+</operation>
+</portType>
+<binding name="proWsProtocolloBinding" type="tns:proWsProtocolloPortType">
+<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+<operation name="GetItaEngineContextToken">
+<soap:operation soapAction="http://bovillacollemandina.nuvolapalitalsoft.it/ws/Protocollo/proWsProtocollo.php/GetItaEngineContextToken" style="rpc"/>
+<input>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</input>
+<output>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</output>
+</operation>
+<operation name="GetItaEngineContextTokenInfo">
+<soap:operation soapAction="http://bovillacollemandina.nuvolapalitalsoft.it/ws/Protocollo/proWsProtocollo.php/GetItaEngineContextTokenInfo" style="rpc"/>
+<input>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</input>
+<output>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</output>
+</operation>
+<operation name="CheckItaEngineContextToken">
+<soap:operation soapAction="http://bovillacollemandina.nuvolapalitalsoft.it/ws/Protocollo/proWsProtocollo.php/CheckItaEngineContextToken" style="rpc"/>
+<input>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</input>
+<output>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</output>
+</operation>
+<operation name="DestroyItaEngineContextToken">
+<soap:operation soapAction="http://bovillacollemandina.nuvolapalitalsoft.it/ws/Protocollo/proWsProtocollo.php/DestroyItaEngineContextToken" style="rpc"/>
+<input>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</input>
+<output>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</output>
+</operation>
+<operation name="RicercaProtocolli">
+<soap:operation soapAction="http://bovillacollemandina.nuvolapalitalsoft.it/ws/Protocollo/proWsProtocollo.php/RicercaProtocolli" style="rpc"/>
+<input>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</input>
+<output>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</output>
+</operation>
+<operation name="GetAllegato">
+<soap:operation soapAction="http://bovillacollemandina.nuvolapalitalsoft.it/ws/Protocollo/proWsProtocollo.php/GetAllegato" style="rpc"/>
+<input>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</input>
+<output>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</output>
+</operation>
+<operation name="GetProtocollo">
+<soap:operation soapAction="http://bovillacollemandina.nuvolapalitalsoft.it/ws/Protocollo/proWsProtocollo.php/GetProtocollo" style="rpc"/>
+<input>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</input>
+<output>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</output>
+</operation>
+<operation name="CheckDocumentoAllaFirma">
+<soap:operation soapAction="http://bovillacollemandina.nuvolapalitalsoft.it/ws/Protocollo/proWsProtocollo.php/CheckDocumentoAllaFirma" style="rpc"/>
+<input>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</input>
+<output>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</output>
+</operation>
+<operation name="GetProtocolloFattura">
+<soap:operation soapAction="http://bovillacollemandina.nuvolapalitalsoft.it/ws/Protocollo/proWsProtocollo.php/GetProtocolloFattura" style="rpc"/>
+<input>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</input>
+<output>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</output>
+</operation>
+<operation name="GetOrganigramma">
+<soap:operation soapAction="http://bovillacollemandina.nuvolapalitalsoft.it/ws/Protocollo/proWsProtocollo.php/GetOrganigramma" style="rpc"/>
+<input>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</input>
+<output>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</output>
+</operation>
+<operation name="PutAllegato">
+<soap:operation soapAction="http://bovillacollemandina.nuvolapalitalsoft.it/ws/Protocollo/proWsProtocollo.php/PutAllegato" style="rpc"/>
+<input>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</input>
+<output>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</output>
+</operation>
+<operation name="PutAllegatoDocumentoAllaFirma">
+<soap:operation soapAction="http://bovillacollemandina.nuvolapalitalsoft.it/ws/Protocollo/proWsProtocollo.php/PutAllegatoDocumentoAllaFirma" style="rpc"/>
+<input>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</input>
+<output>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</output>
+</operation>
+<operation name="PutProtocollo">
+<soap:operation soapAction="http://bovillacollemandina.nuvolapalitalsoft.it/ws/Protocollo/proWsProtocollo.php/PutProtocollo" style="rpc"/>
+<input>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</input>
+<output>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</output>
+</operation>
+<operation name="PutDocumentoAllaFirma">
+<soap:operation soapAction="http://bovillacollemandina.nuvolapalitalsoft.it/ws/Protocollo/proWsProtocollo.php/PutDocumentoAllaFirma" style="rpc"/>
+<input>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</input>
+<output>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</output>
+</operation>
+<operation name="NotificaMailProtocollo">
+<soap:operation soapAction="http://bovillacollemandina.nuvolapalitalsoft.it/ws/Protocollo/proWsProtocollo.php/NotificaMailProtocollo" style="rpc"/>
+<input>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</input>
+<output>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</output>
+</operation>
+<operation name="InsertDocumento">
+<soap:operation soapAction="http://bovillacollemandina.nuvolapalitalsoft.it/ws/Protocollo/proWsProtocollo.php/InsertDocumento" style="rpc"/>
+<input>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</input>
+<output>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</output>
+</operation>
+<operation name="GetNotificaMailProtocollo">
+<soap:operation soapAction="http://bovillacollemandina.nuvolapalitalsoft.it/ws/Protocollo/proWsProtocollo.php/GetNotificaMailProtocollo" style="rpc"/>
+<input>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</input>
+<output>
+<soap:body use="encoded" namespace="" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+</output>
+</operation>
+</binding>
+<service name="proWsProtocollo">
+<port name="proWsProtocolloPort" binding="tns:proWsProtocolloBinding">
+<soap:address location="http://bovillacollemandina.nuvolapalitalsoft.it/ws/Protocollo/proWsProtocollo.php"/>
+</port>
+</service>
+</definitions>

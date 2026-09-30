@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="GenerazioneAvvisiService" targetNamespace="http://idp.tasgroup.it/GenerazioneAvvisi/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://idp.tasgroup.it/GenerazioneAvvisi/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:types>
+    <xs:schema targetNamespace="http://idp.tasgroup.it/GenerazioneAvvisi/" version="1.0" xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:import namespace="http://www.w3.org/2005/05/xmlmime"/>
+  <xs:element name="ElencoAvvisiType" type="tns:ElencoAvvisiType"/>
+
+  <xs:element name="ElencoIdentificativiType" type="tns:ElencoIdentificativiType"/>
+
+  <xs:element name="GeneraAvvisoRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="IdentificativoDominio" type="xs:string"/>
+        <xs:element name="IdentificativoUnivocoVersamento" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="GeneraAvvisoResponse" type="tns:GeneraAvvisoResponseType"/>
+
+  <xs:element name="GeneraAvvisoResponseType" type="tns:GeneraAvvisoResponseType"/>
+
+  <xs:element name="GeneraLottoAvvisiRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="IdentificativoDominio" type="xs:string"/>
+        <xs:element name="ElencoIdentificativi" type="tns:ElencoIdentificativiType"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="GeneraLottoAvvisiResponse" type="tns:GeneraLottoAvvisiResponseType"/>
+
+  <xs:element name="GeneraLottoAvvisiResponseType" type="tns:GeneraLottoAvvisiResponseType"/>
+
+  <xs:complexType name="ElencoIdentificativiType">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" name="IdentificativoUnivocoVersamento" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="GeneraLottoAvvisiResponseType">
+    <xs:complexContent>
+      <xs:extension base="tns:ResponseBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Body" type="tns:GeneraLottoAvvisiResponseBodyType"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="ResponseBase">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Fault" type="tns:FaultType"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="GeneraLottoAvvisiResponseBodyType">
+    <xs:sequence>
+      <xs:element name="IdentificativoDominio" type="xs:string"/>
+      <xs:element name="DimensioneLotto" type="xs:int"/>
+      <xs:element maxOccurs="unbounded" name="ElencoAvvisi" type="tns:ElencoAvvisiType"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ElencoAvvisiType">
+    <xs:sequence>
+      <xs:element name="AvvisoAnalogico" type="xs:base64Binary" xmime:expectedContentTypes="application/octet-stream"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="FaultType">
+    <xs:sequence>
+      <xs:element name="FaultCode" type="xs:string"/>
+      <xs:element name="FaultString" type="xs:string"/>
+      <xs:element name="FaultDescription" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="GeneraAvvisoResponseType">
+    <xs:complexContent>
+      <xs:extension base="tns:ResponseBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Body" type="tns:GeneraAvvisoResponseBodyType"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="GeneraAvvisoResponseBodyType">
+    <xs:sequence>
+      <xs:element name="AvvisoAnalogico" type="xs:base64Binary" xmime:expectedContentTypes="application/octet-stream"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="GeneraLottoAvvisiResponse">
+    <wsdl:part name="parameters" element="tns:GeneraLottoAvvisiResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GeneraLottoAvvisi">
+    <wsdl:part name="parameters" element="tns:GeneraLottoAvvisiRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GeneraAvviso">
+    <wsdl:part name="parameters" element="tns:GeneraAvvisoRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GeneraAvvisoResponse">
+    <wsdl:part name="parameters" element="tns:GeneraAvvisoResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="GenerazioneAvvisi">
+    <wsdl:operation name="GeneraLottoAvvisi">
+      <wsdl:input name="GeneraLottoAvvisi" message="tns:GeneraLottoAvvisi">
+    </wsdl:input>
+      <wsdl:output name="GeneraLottoAvvisiResponse" message="tns:GeneraLottoAvvisiResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GeneraAvviso">
+      <wsdl:input name="GeneraAvviso" message="tns:GeneraAvviso">
+    </wsdl:input>
+      <wsdl:output name="GeneraAvvisoResponse" message="tns:GeneraAvvisoResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="GenerazioneAvvisiServiceSoapBinding" type="tns:GenerazioneAvvisi">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="GeneraLottoAvvisi">
+      <soap:operation soapAction="http://idp.tasgroup.it/GenerazioneAvvisi/GeneraLottoAvvisi" style="document"/>
+      <wsdl:input name="GeneraLottoAvvisi">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="GeneraLottoAvvisiResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GeneraAvviso">
+      <soap:operation soapAction="http://idp.tasgroup.it/GenerazioneAvvisi/GeneraAvviso" style="document"/>
+      <wsdl:input name="GeneraAvviso">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="GeneraAvvisoResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="GenerazioneAvvisiService">
+    <wsdl:port name="GenerazioneAvvisiSOAP" binding="tns:GenerazioneAvvisiServiceSoapBinding">
+      <soap:address location="https://api.regione.umbria.it:443/pagoumbriagenerazioneavvisi/1.0"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

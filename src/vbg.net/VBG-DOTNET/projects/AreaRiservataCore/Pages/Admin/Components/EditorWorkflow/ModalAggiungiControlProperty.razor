@@ -1,0 +1,82 @@
+﻿@using System.ComponentModel.DataAnnotations
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.DesignComuni.Forms
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.EditFormComponents
+@using VBG.BlazorComponentsLibrary.EditFormComponents.DropDown
+@using static AreaRiservataCore.Utils.RoutesHelper
+
+
+<FormModal Size="ModalSizeEnum.ExtraLarge" OnClose="async () => await OnClose.InvokeAsync()" FormId="aggiungi_control_property_form" Model="@_proprietaDaAggiungere" OnValidSubmit="() => OnSaveProprieta()">
+    <ModalHeader Titolo="Aggiungi Control property" Size="ModalHeaderSizeEnum.Small">
+    </ModalHeader>
+    <ModalBody>
+        @if(ListaProprieta != null && ListaProprieta.Any())
+        {
+            this._descrizioneProprieta = ListaProprieta.FirstOrDefault(x => x.Nome == this._proprietaDaAggiungere.Nome)?.Descrizione ?? "";
+
+            <div class="py-1">
+                <GenericDropDownForm Id="dropdown-properties" 
+                      Label="Scegli una proprietà" 
+                      TItem="string"
+                      Items="_listaProprieta" 
+                      @bind-Value="this._proprietaDaAggiungere.Nome" 
+                      Required="true" 
+                      HelpText="@_descrizioneProprieta"
+                      ValidationFor="() => this._proprietaDaAggiungere.Nome">
+                </GenericDropDownForm>
+            </div>
+            
+            <div class="py-1">
+                <TextInputForm Id="valore_proprieta" @bind-Value="this._proprietaDaAggiungere.Valore" IsMultiline="true" Label="Valore" ValidationFor="() => this._proprietaDaAggiungere.Valore" />
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-info" role="alert">
+                Non ci sono proprietà da configurare per questo step.
+            </div> 
+        }
+
+    </ModalBody>
+    <ModalFooter>
+        <FormSubmitButton Form="aggiungi_control_property_form" IsButtonDisabled="(ListaProprieta is null || !ListaProprieta.Any())" Text="Aggiungi"></FormSubmitButton>
+    </ModalFooter>
+</FormModal>
+
+@code {
+
+    [Parameter]
+    public List<StepPropertyInfo> ListaProprieta { get; set; } = new List<StepPropertyInfo>();
+
+    [Parameter]
+    public EventCallback OnClose { get; set; }
+
+    [Parameter]
+    public EventCallback<ControlProperty?> OnSave { get; set; } = default!;
+
+    private ControlProperty _proprietaDaAggiungere = new ControlProperty();
+    private List<string> _listaProprieta { get; set; } = new List<string>();
+    private string _descrizioneProprieta = "";
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        if (ListaProprieta != null && ListaProprieta.Any())
+        {
+            foreach (var prop in ListaProprieta)
+            {
+                this._listaProprieta.Add(prop.Nome);
+            }
+
+            this._listaProprieta.Sort();
+        }
+    }
+
+    private async Task OnSaveProprieta()
+    {
+        await OnSave.InvokeAsync(this._proprietaDaAggiungere);
+    }
+}

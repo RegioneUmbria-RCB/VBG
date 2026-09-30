@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- edited with XMLSpy v2013 (http://www.altova.com) by  () -->
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+****                          TAS S.p.A.
+**** - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+****
+**** Project. . : IRIS
+****
+**** Nome . . . : IdpInclude
+**** Versione . : 01.03-04
+****
+**** Descrizione: Include Standard
+****
+**** - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpInclude" targetNamespace="http://www.cart.rete.toscana.it/servizi/iris_1_1/IdpInclude" elementFormDefault="qualified">
+	<xs:complexType name="DettaglioCanalePagamento">
+		<xs:sequence>
+			<xs:element name="Filiale" type="Max35Text" minOccurs="0"/>
+			<xs:element name="Sportello" type="Max35Text" minOccurs="0"/>
+			<xs:element name="IdTerminale" type="Max35Text" minOccurs="0"/>
+			<xs:element name="IdOperazione" type="Max35Text" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Allegato">
+		<xs:sequence>
+			<xs:element name="Titolo" type="Max70Text" minOccurs="0"/>
+			<xs:element name="Codifica" type="MIMETypeCode"/>
+			<xs:element name="Contenuto" type="xs:base64Binary"/>
+			<xs:element name="IdAntifalsificazione" type="Max4096Text" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="Tipo" type="ContentType" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="CIP">
+		<xs:sequence>
+			<xs:element name="Codice" type="Max256Text"/>
+		</xs:sequence>
+		<xs:attribute name="Tipo" type="Max10Text" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="CoordinateBancarie">
+		<xs:sequence>
+			<xs:element name="CodiceIBAN" type="IBANIdentifier"/>
+			<xs:element name="Beneficiario" type="Max70Text">
+				<xs:annotation>
+					<xs:documentation>01.03-02: Nome/Cognome o Ragione Sociale del Beneficiario</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- Numeric definition -->
+	<xs:simpleType name="Importo">
+		<xs:restriction base="xs:decimal">
+			<xs:fractionDigits value="3"/>
+			<xs:totalDigits value="13"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- Date/Time definition -->
+	<!--xs:simpleType name="IdPYear">
+        <xs:restriction base="xs:gYear">
+        </xs:restriction>
+        </xs:simpleType-->
+	<xs:simpleType name="IdPYear">
+		<xs:restriction base="xs:decimal">
+			<xs:fractionDigits value="0"/>
+			<xs:totalDigits value="4"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="IdPDate">
+		<xs:restriction base="xs:date">
+			<!--xs:pattern value="[0-9]{4}(-[0-9]{2})(-[0-9]{2})"/-->
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="IdPDateTime">
+		<xs:restriction base="xs:dateTime">
+			<!--xs:pattern value="[0-9]{4}(-[0-9]{2})(-[0-9]{2}(T[0-9]{2})(:[0-9]{2})(:[0-9]{2})"/-->
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- String definition -->
+	<xs:simpleType name="IdentificativoIdp">
+		<xs:restriction base="Max35Text">
+			<xs:pattern value="[a-zA-Z0-9._]{1,35}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TipoOperazione">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Insert"/>
+			<xs:enumeration value="UpdateStatus"/>
+			<!-- xs:enumeration value="UpdateMassivo"/ -->
+			<!-- 01.03-04: (-)UPDATE MASSIVO-->
+			<!-- 01.03-04  -->		
+			<xs:enumeration value="Replace"/>
+			<xs:enumeration value="Delete"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TipoOperazioneUpdateStatus">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Insert"/>
+			<xs:enumeration value="Update"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TipoMittente">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Cittadino"/>
+			<xs:enumeration value="Altro"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TipoDestinatario">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Cittadino"/>
+			<xs:enumeration value="Delegato">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">Soggetto delegato al pagamento della posizione debitoria</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Altro"/>
+			<!-- 01.03-02: (+)PAGAMENTI IN DELEGA -->
+			<!-- 01.03-02 -->
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TipoPagamento">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Pagamento a Rate"/>
+			<xs:enumeration value="Pagamento Unico"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="StatoPendenza">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Aperta"/>
+			<xs:enumeration value="Chiusa"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="StatoPagamento">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Non Pagato"/>
+			<xs:enumeration value="Pagato"/>
+			<xs:enumeration value="Non Pagabile"/>
+			<xs:enumeration value="Pagamento Irregolare">
+				<xs:annotation>
+					<xs:documentation xml:lang="it">Pagamento di un importo diverso dal dovuto</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<!-- 01.03-02: (+)PAGAMENTO IRREGOLARE-->
+			<!-- 01.03-02  -->
+			<xs:enumeration value="Pagamento Rimborsato"/>		
+			<!-- 01.03-04: (+)PAGAMENTO RIMBORSATO-->
+			<!-- 01.03-04  -->		
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- 01.03-02: ESITO RICHIESTA STATO PAGAMENTO OTF (RFC145) -->
+	<xs:simpleType name="VerificaStatoPagamento">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Posizione non presente">
+				<xs:annotation>
+					<xs:documentation>L&#39;identificativo fornito non riferisce una posizione debitoria registrata su IRIS</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Posizione non pagabile">
+				<xs:annotation>
+					<xs:documentation>L&#39;identificativo fornito riferisce una posizione debitoria non pagabile su IRIS</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Pagamento non eseguito"/>
+			<xs:enumeration value="Pagamento eseguito"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Divisa">
+		<xs:restriction base="Max3Text">
+			<xs:enumeration value="EUR"/>
+			<!--xs:pattern value="[A-Z]{3,3}"/-->
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="MIMETypeCode">
+		<xs:restriction base="Max4Text">
+			<xs:enumeration value="GIF_"/>
+			<xs:enumeration value="HTML"/>
+			<xs:enumeration value="JPEG"/>
+			<xs:enumeration value="LNK_"/>
+			<xs:enumeration value="MSWD"/>
+			<xs:enumeration value="MSEX"/>
+			<xs:enumeration value="MSPP"/>
+			<xs:enumeration value="PDF_"/>
+			<xs:enumeration value="PNG_"/>
+			<xs:enumeration value="TEXT"/>
+			<xs:enumeration value="XML_"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ContentType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Documento"/>
+			<xs:enumeration value="Ricevuta"/>
+			<xs:enumeration value="Quietanza"/>
+			<xs:enumeration value="NdC"/>
+			<!-- 01.03-04: (+)Nota di Credito-->
+			<!-- 01.03-04  -->		
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="IBANIdentifier">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[a-zA-Z]{2,2}[0-9]{2,2}[a-zA-Z0-9]{1,30}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max1Text">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max2Text">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max3Text">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="3"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max4Text">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="4"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max5Text">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="5"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max8Text">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="8"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max10Text">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="10"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max15Text">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max16Text">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="16"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max20Text">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max35Text">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="35"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max44Text">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="44"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max50Text">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max60Text">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="60"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max70Text">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="70"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max100Text">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max140Text">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="140"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max256Text">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="256"/>
+		</xs:restriction>
+	</xs:simpleType>	
+	<xs:simpleType name="Max512Text">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="512"/>
+		</xs:restriction>
+	</xs:simpleType>	
+	<xs:simpleType name="Max2000Text">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="2000"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max4096Text">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="4096"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="stNazione">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[A-Z]{2,2}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="stTipoSoggetto">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="F"/>
+			<xs:enumeration value="G"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	
+</xs:schema>

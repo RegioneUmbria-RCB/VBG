@@ -1,0 +1,143 @@
+<div id="modulo_$helper.getIdModulo()" class="modulo-cart" title="${helper.escapeValueForHtmlAttribute($helper.modulo.help)}">
+	<div style="width: 100%; font-weight: bolder; text-transform: uppercase; margin-bottom: 10px;margin-top: 10px; padding-left:5px;">
+		$NOMEPROCEDIMENTO
+	</div>
+	#set($rowIndex = $helper.nuovoIndiceIdSemantico())
+	#set($templateNestingLevel = -1)
+	#if(!$pdfOutput)
+		<ul>
+		
+		#foreach($quadro in $helper.Modulo.Quadro)
+			#set($tooltiptext = ${helper.getQuadroHelp($quadro)})
+			<li id="tab_quadro_${helper.getIdQuadro($quadro)}">
+				<a class="quadro-cart-tab-title" href="#quadro_${helper.getIdQuadro($quadro)}" title="${helper.escapeValueForHtmlAttribute($tooltiptext)}">
+					$quadro.Codice
+					##span per contenere eventuali icone che indicano la presenza di errori di validazione dell'input di questo tab
+					<span class="tab_error_image" id="quadro-${helper.getIdQuadro($quadro)}-errors" style="display:none;" title="">
+						<label >(0)</label>
+	                </span>
+					##span per contenere eventuali icone che indicano la presenza di warnings di validazione dell'input di questo tab
+					<span class="tab_warning_image" id="quadro-${helper.getIdQuadro($quadro)}-warnings" style="display:none;" title="">
+						<label >(0)</label>
+	                </span>
+                </a>
+			</li>
+		#end
+		
+		#foreach($quadro in $helper.QuadriAggiuntivi)
+			#set($tooltiptext = $quadro.Titolo)
+			<li id="tab_quadro_${helper.getIdQuadroDinamico($quadro)}">
+				<a class="quadro-cart-tab-title" href="#quadro_${helper.getIdQuadroDinamico($quadro)}" title="${helper.escapeValueForHtmlAttribute($tooltiptext)}">
+					$quadro.Titolo
+					##span per contenere eventuali icone che indicano la presenza di errori di validazione dell'input di questo tab
+					<span class="tab_error_image" id="quadro-${helper.getIdQuadroDinamico($quadro)}-errors" style="display:none;" title="">
+						<label >(0)</label>
+	                </span>
+					##span per contenere eventuali icone che indicano la presenza di warnings di validazione dell'input di questo tab
+					<span class="tab_warning_image" id="quadro-${helper.getIdQuadroDinamico($quadro)}.Id-warnings" style="display:none;" title="">
+						<label >(0)</label>
+	                </span>
+                </a>
+			</li>
+		#end
+		
+        </ul>
+	#end
+		
+	#foreach($quadron in $helper.Modulo.Quadro)
+		#set($isDinamico = $helper.isQuadroDinamico($quadron))
+		#if($isDinamico)
+			#set($quadro = $quadron.QuadroHelper)
+			#parse("/modellidinamici_v1_5/modello.vm")
+		#else
+			#set($quadro = $quadron)
+			#parse("/cart/quadro.vm")
+		#end
+		#if($primoQuadro && $primoModulo && !$pdfOutput && !$preview)
+			#set($primoQuadro = false)
+			<script >
+			jQuery(function(){
+				jQuery('#quadro_attivo').val('${helper.getIdQuadro($quadron)}');
+			});
+         </script>
+		#end
+	#end
+	
+	#foreach($quadro in $helper.QuadriAggiuntivi)
+		
+		#parse("/modellidinamici_v1_5/modello.vm")
+		#if($primoQuadro && $primoModulo && !$pdfOutput && !$preview)
+			#set($primoQuadro = false)
+			<script >
+			jQuery(function(){
+				jQuery('#quadro_attivo').val('${helper.getIdQuadroDinamico($quadro)}');
+			});
+            </script>
+		#end
+	#end
+	
+	#if(!$pdfOutput)
+    	<script>
+    	var tabs_modulo_$helper.getIdModuloForJsVariableName();
+    	jQuery(document).ready(function(){
+    		tabs_modulo_$helper.getIdModuloForJsVariableName() = jQuery( "#modulo_$helper.getIdModulo()" ).tabs();
+			tabs_modulo_${helper.getIdModuloForJsVariableName()}.on("tabsbeforeactivate",null,selectQuadroTabHandler);
+			jQuery('#tab_${helper.getIdModulo()}').data('tabs_quadri', tabs_modulo_${helper.getIdModuloForJsVariableName()});
+			jQuery('#tab_${helper.getIdModulo()}').data('titolo_modulo', "${helper.modulo.titolo}");
+			jQuery('#tab_${helper.getIdModulo()}').data('riferimento_modulo', "${helper.getRiferimentoModulo($helper.modulo)}");
+			riferimentiModuli[riferimentiModuli.length] = "${helper.getRiferimentoModulo($helper.modulo)}";
+			idModuli[idModuli.length] = "${helper.getIdModulo()}";
+			nomiModuli[nomiModuli.length] = "${helper.modulo.titolo}";
+    	});
+		
+		var info_quadri_modulo_$helper.getIdModuloForJsVariableName() = [];
+		
+		#set($elCount = 0);		
+		#foreach($quadro in $helper.Modulo.Quadro)
+			#set($qActive = true)
+			#if($quadro.Attivo)
+				#set($qActive = ${helper.evaluateExpression($quadro.Attivo,$rowIndex)})
+			#end
+    		#set($elCount = $elCount + 1);
+			info_quadri_modulo_${helper.getIdModuloForJsVariableName()}[$velocityCount -1] = 
+			{ 
+				idQuadro: "${helper.getIdQuadro($quadro)}",
+				attivo: $qActive
+			};
+			
+    		##scrittura dello script che attiva e disattiva i folder dei quadri in base ai valori assunti da altri campi
+    		#set($elementId = "tab_quadro_${helper.getIdQuadro($quadro)}")
+			#set($isDinamico = $helper.isQuadroDinamico($quadron))
+			#if($isDinamico)
+				#set($jsScript = $helper.buildJavascriptToDynamicallyEnableElementStar($elementId))
+			#else
+				#set($jsScript = $helper.buildJavascriptToDynamicallyEnableElement($elementId,$quadro.Attivo,2))
+			#end
+			#if($jsScript != "")
+				jQuery(function(){
+        			$jsScript
+    			});
+			#end
+    	#end
+    	
+		#foreach($quadro in $helper.QuadriAggiuntivi)
+    	
+    		info_quadri_modulo_${helper.getIdModuloForJsVariableName()}[$elCount + $velocityCount -1] = 
+			{ 
+				idQuadro: "${helper.getIdQuadroDinamico($quadro)}",
+				attivo: true // TODO ${helper.evaluateExpression($quadro.Attivo,$rowIndex)}
+			};
+    		##scrittura dello script che attiva e disattiva i folder dei quadri in base ai valori assunti da altri campi
+    		#set($elementId = "tab_quadro_${helper.getIdQuadroDinamico($quadro)}")
+			#set($jsScript = $helper.buildJavascriptToDynamicallyEnableElementStar($elementId))
+			#if($jsScript != "")
+				jQuery(function(){
+        			$jsScript
+    			});
+			#end
+    	#end
+		
+    	</script>
+    	
+	#end
+</div>

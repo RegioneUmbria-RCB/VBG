@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
+	<display-name>Firma Web 2.0</display-name>
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
+	<servlet>
+		<description>Servlet per il caricamento del file da firmare</description>
+		<display-name>UploadFileToSignServlet</display-name>
+		<servlet-name>UploadFileToSignServlet</servlet-name>
+		<servlet-class>it.gruppoinit.pal.firma.servlet.UploadFileToSignServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UploadFileToSignServlet</servlet-name>
+		<url-pattern>/uploadFileToSign</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<description>Servlet che esegue la firma</description>
+		<display-name>SignServlet</display-name>
+		<servlet-name>SignServlet</servlet-name>
+		<servlet-class>it.gruppoinit.pal.firma.servlet.SignServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SignServlet</servlet-name>
+		<url-pattern>/sign</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<description>Servlet per il download del file firmato</description>
+		<display-name>DownloadSignedFile</display-name>
+		<servlet-name>DownloadSignedFile</servlet-name>
+		<servlet-class>it.gruppoinit.pal.firma.servlet.DownloadSignedFileServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DownloadSignedFile</servlet-name>
+		<url-pattern>/downloadSignedFile</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<description>Servlet per il recupero della lista dei file da firmare</description>
+		<display-name>DownloadFileToSignListServlet</display-name>
+		<servlet-name>DownloadFileToSignListServlet</servlet-name>
+		<servlet-class>it.gruppoinit.pal.firma.servlet.DownloadFileToSignListServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DownloadFileToSignListServlet</servlet-name>
+		<url-pattern>/downloadFileToSignList</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<description>Servlet per il recupero del jnlp</description>
+		<display-name>JnlpDownloadServlet</display-name>
+		<servlet-name>JnlpDownloadServlet</servlet-name>
+		<servlet-class>it.gruppoinit.pal.firma.servlet.JnlpDownloadServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>JnlpDownloadServlet</servlet-name>
+		<url-pattern>/signApp</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<description>Apache CXF Endpoint</description>
+		<display-name>cxf</display-name>
+		<servlet-name>cxf</servlet-name>
+		<servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>cxf</servlet-name>
+		<url-pattern>/services/*</url-pattern>
+	</servlet-mapping>
+	<listener>
+		<listener-class>org.apache.commons.fileupload.servlet.FileCleanerCleanup</listener-class>
+	</listener>
+	<listener>
+		<listener-class>it.gruppoinit.pal.firma.servlet.AppServletContextListener</listener-class>
+	</listener>
+	<session-config>
+		<session-timeout>30</session-timeout>
+	</session-config>
+	<mime-mapping>
+		<extension>jnlp</extension>
+		<mime-type>application/x-java-jnlp-file</mime-type>
+	</mime-mapping>
+</web-app>

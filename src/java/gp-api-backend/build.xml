@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="upgr" default="sync_import">
+	<property name="lib-path" value="../gp-core/WebContent/WEB-INF/lib">
+	</property>
+	<property name="upgr_root" value="../Sigepro-UPGR">
+	</property>
+	<property name="upgr_classes" value="${upgr_root}/build/classes">
+	</property>
+	<property name="import_root" value="../Sigepro-IMPORT">
+	</property>
+	<property name="import_classes" value="${import_root}/build/classes">
+	</property>
+	<!-- ================================= 
+          target: upgr_jar crea il jar di upgr4j direttamente in WEB-INF/lib di VBG              
+         ================================= -->
+	<target name="upgr_jar" description="crea il init-upgr4j.jar in WEB-INF/lib">
+		<jar destfile="${lib-path}/init-upgr4j.jar" duplicate="add">
+			<fileset dir="${upgr_classes}">
+				<exclude name="**/*Job*" />
+			</fileset>
+			<manifest>
+				<attribute name="Manifest-Version" value="1.0" />
+			</manifest>
+		</jar>
+	</target>
+
+	<!-- ================================= 
+          target: upgr_quartz_jar crea il jar di upgr4j direttamente in WEB-INF/lib di VBG includendo anche le classi per il supporto di Quartz.             
+         ================================= -->
+	<target name="upgr_quartz_jar" description="crea il init-upgr4j.jar in WEB-INF/lib">
+		<jar destfile="${lib-path}/init-upgr4j.jar" duplicate="add">
+			<fileset dir="${upgr_classes}" />
+			<manifest>
+				<attribute name="Manifest-Version" value="1.0" />
+			</manifest>
+		</jar>
+	</target>
+	<!-- - - - - - - - - - - - - - - - - - 
+          target: sync_upgr copia in VBG tutti i files 
+          necessari per un war enterprise (che comprende UPGR)         
+         - - - - - - - - - - - - - - - - - -->
+	<target name="sync_upgr" depends="upgr_jar" description="copia in VBG tutti i files necessari per UPGR">
+		<!-- 
+            <copy  tofile="WebContent/WEB-INF/setup/setup.xsd" file="${upgr_root}/WebContent/WEB-INF/setup/setup.xsd" forceoverwrite="true"/>
+         -->
+		<copy todir="WebContent/WEB-INF/jsp">
+			<fileset dir="${upgr_root}/WebContent/WEB-INF/jsp" id="upgr-jsp">
+				<include name="**/*.jsp" />
+			</fileset>
+		</copy>
+		<copy todir="WebContent/images/upgr">
+			<fileset dir="${upgr_root}/WebContent/images/upgr" id="upgr-images">
+				<include name="**/*.png" />
+				<include name="**/*.gif" />
+				<include name="**/*.jpg" />
+				<include name="**/*.jpeg" />
+			</fileset>
+		</copy>
+		<!--
+    	<sync todir="WebContent/scripts-upgr">
+    		<fileset dir="${upgr_root}/WebContent/scripts-upgr" id="upgr-js">
+			    <include name="**/*.js"/>
+    			<include name="**/*.css"/>
+    			<include name="**/*.png"/>
+    			<include name="**/*.gif"/>
+    			<include name="**/*.html"/>
+			</fileset>
+    	</sync>
+    	<sync todir="WebContent/css-upgr">
+    		<fileset dir="${upgr_root}/WebContent/css-upgr" id="upgr-css">
+    			<include name="**/*.css"/>
+    			<include name="**/*.png"/>
+    			<include name="**/*.gif"/>
+			</fileset>
+    	</sync>
+    	-->
+	</target>
+
+	<!-- - - - - - - - - - - - - - - - - - 
+          target: clean_upgr elimina in Sigepro tutti i files di UPGR
+          per predisporre la creazione di un war NON enterprise (che NON comprende UPGR)         
+         - - - - - - - - - - - - - - - - - -->
+	<target name="clean_upgr">
+		<delete file="WebContent/WEB-INF/setup/setup.xsd" />
+		<delete file="${lib-path}/init-upgr4j.jar" />
+		<delete dir="WebContent/scripts-upgr" />
+		<delete dir="WebContent/css-upgr" />
+		<delete dir="WebContent/WEB-INF/jsp/upgr" />
+	</target>
+
+	<!-- - - - - - - - - - - - - - - - - - 
+          target: name  crea il war di Si.Ge.Pro. impacchettando 
+          tutto quello che si trova nelle directory di sigepro2                    
+         - - - - - - - - - - - - - - - - - -->
+	<target name="war_sigepro" description="crea il .war di VBG con i files presenti nel progetto sigepro2">
+		<war destfile="api-backend.war" basedir="WebContent" webxml="WebContent/WEB-INF/web.xml">
+			<classes dir="build/classes">
+			</classes>
+		</war>
+	</target>
+
+	<!-- - - - - - - - - - - - - - - - - - 
+          target: name  crea il war di Si.Ge.Pro. Enterprise 
+          integrando al suo interno anche UPGR4J                   
+         - - - - - - - - - - - - - - - - - -->
+	<target name="war_sigepro_upgr" depends="sync_upgr" description="crea il .war di VBG integrando al suo interno anche UPGR4J">
+		<antcall target="war_sigepro">
+		</antcall>
+	</target>
+
+	<!-- - - - - - - - - - - - - - - - - - 
+          target: name  crea il war di Si.Ge.Pro. 
+          integrando al suo interno anche IMPORT                   
+         - - - - - - - - - - - - - - - - - -->
+	<target name="war_sigepro_import" depends="sync_import" description="crea il .war di VBG integrando al suo interno anche IMPORT">
+		<antcall target="war_sigepro">
+		</antcall>
+	</target>
+
+	<!-- - - - - - - - - - - - - - - - - - 
+          target: name  crea il war di Si.Ge.Pro. Enterprise 
+          includendo nel deploy i files di UPGR4J e IMPORT           
+         - - - - - - - - - - - - - - - - - -->
+	<target name="war_sigepro_enterprise" depends="sync_upgr,sync_import" description="crea il .war di VBG integrato con UPGR4J e IMPORT">
+		<antcall target="war_sigepro">
+		</antcall>
+	</target>
+
+	<!-- - - - - - - - - - - - - - - - - - 
+          target: name  crea il war di Si.Ge.Pro. non Enterprise 
+          escludendo dal deploy i files di UPGR4J e IMPORT                
+         - - - - - - - - - - - - - - - - - -->
+	<target name="war_sigepro_no_enterprise" depends="clean_upgr,clean_import" description="crea il .war di Si.Ge.Pro senza UPGR4J">
+		<antcall target="war_sigepro">
+		</antcall>
+	</target>
+
+	<!-- ================================= 
+          target: import_jar crea il jar di Sigepro-import direttamente in WEB-INF/lib di sigepro2              
+         ================================= -->
+	<target name="import_jar" description="crea init-import.jar in gp-core/WEB-INF/lib">
+		<jar destfile="${lib-path}/init-import.jar" duplicate="add">
+			<fileset dir="${import_classes}" />
+			<manifest>
+				<attribute name="Manifest-Version" value="1.0" />
+			</manifest>
+		</jar>
+	</target>
+
+	<!-- - - - - - - - - - - - - - - - - - 
+          target: sync_import copia in Sigepro tutti i files 
+          necessari per iintegrare IMPORT in VBG         
+         - - - - - - - - - - - - - - - - - -->
+	<target name="sync_import" depends="import_jar" description="copia in Sigepro tutti i files necessari per IMPORT">
+		<copy todir="WebContent/WEB-INF/jsp">
+			<fileset dir="${import_root}/WebContent/WEB-INF/jsp" id="import-jsp">
+				<include name="**/*.jsp" />
+			</fileset>
+		</copy>
+		<!-- 
+    	<copy todir="WebContent/images/import" failonerror="false">
+    		<fileset dir="${import_root}/WebContent/images/import" id="import-images">
+    			<include name="**/*.png"/>
+    			<include name="**/*.gif"/>
+    			<include name="**/*.jpg"/>
+    			<include name="**/*.jpeg"/>
+			</fileset>
+    	</copy>
+    	-->
+	</target>
+
+	<target name="sync_all" depends="sync_upgr,sync_import" description="copia in Sigepro tutti i files necessari per UPGR4J e IMPORT">
+	</target>
+
+	<!-- - - - - - - - - - - - - - - - - - 
+          target: clean_import elimina in Sigepro tutti i files di IMPORT
+          per predisporre la creazione di un war NON enterprise (che NON comprende IMPORT)         
+         - - - - - - - - - - - - - - - - - -->
+	<target name="clean_import">
+		<delete file="${lib-path}/init-import.jar" />
+		<delete dir="WebContent/WEB-INF/jsp/import" />
+		<delete dir="WebContent/images/import" />
+	</target>
+
+	<target name="configurazione-sviluppo">
+		<propertyfile file="src/deploy.properties">
+			<entry key="ws.token.url" type="string" value="http://devel9:8080/ibcsecurity/services/sigeproSecurity.wsdl" />
+		</propertyfile>
+		<propertyfile file="src/db.properties">
+			<entry key="hibernate.c3p0.min_size" type="string" value="1" />
+			<entry key="hibernate.c3p0.max_size" type="string" value="5" />
+			<entry key="hibernate.c3p0.acquire_increment" type="string" value="1" />
+			<entry key="c3p0.numHelperThreads" type="string" value="1" />
+			<entry key="c3p0.checkoutTimeout" type="string" value="10000" />
+		</propertyfile>
+		<!-- 
+		<propertyfile file="src/log4j.properties">
+			<entry key="log4j.rootLogger" type="string" value="WARN, stdout" />
+		</propertyfile>
+		-->
+	</target>
+	<target name="configurazione-produzione">
+		<propertyfile file="src/deploy.properties">
+			<entry key="ws.token.url" type="string" value="http://localhost:8080/ibcsecurity/services/sigeproSecurity.wsdl" />
+		</propertyfile>
+		<propertyfile file="src/db.properties">
+			<entry key="hibernate.c3p0.min_size" type="string" value="20" />
+			<entry key="hibernate.c3p0.max_size" type="string" value="100" />
+			<entry key="hibernate.c3p0.acquire_increment" type="string" value="5" />
+			<entry key="c3p0.numHelperThreads" type="string" value="3" />
+			<entry key="c3p0.checkoutTimeout" type="string" value="10000" />
+		</propertyfile>
+		<propertyfile file="src/log4j.properties">
+			<entry key="log4j.rootLogger" type="string" value="WARN, logfile" />
+		</propertyfile>
+	</target>
+
+</project>

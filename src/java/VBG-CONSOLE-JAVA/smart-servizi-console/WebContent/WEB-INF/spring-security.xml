@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans 
+		xmlns="http://www.springframework.org/schema/beans" 
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:p="http://www.springframework.org/schema/p" 
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xmlns:context="http://www.springframework.org/schema/context" 
+		xmlns:jee="http://www.springframework.org/schema/jee"
+		xmlns:tx="http://www.springframework.org/schema/tx"
+		xmlns:security="http://www.springframework.org/schema/security"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+			http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+			http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.2.xsd">
+	
+	<security:global-method-security secured-annotations="enabled" jsr250-annotations="enabled" />
+	
+	<context:property-placeholder location="classpath:deploy.properties" />
+	
+	<security:http auto-config="true" session-fixation-protection="migrateSession">
+		<security:intercept-url pattern="/css/**" filters="none" />
+		<security:intercept-url pattern="/images/**" filters="none" />
+		<security:intercept-url pattern="/js/**" filters="none" />
+		<security:intercept-url pattern="/index.jsp" filters="none" />
+		<security:intercept-url pattern="/home/login.htm" filters="none" />
+		<security:intercept-url pattern="/home/registrazione.htm" filters="none" />
+		<security:intercept-url pattern="/sessionTimeout.jsp" filters="none" />
+		<security:intercept-url pattern="/services/**" filters="none" />
+		<security:intercept-url pattern="/servlet/**" filters="none" />
+		<security:intercept-url pattern="/servizi/**" filters="none" />
+		<security:intercept-url pattern="/json/**" filters="none" />
+		<security:intercept-url pattern="/public_json/**" filters="none" />
+		<security:intercept-url pattern="/compilazione/**" filters="none" />
+		<security:intercept-url pattern="/wsdl/*.wsdl" filters="none" />
+		<security:intercept-url pattern="/wsdl/*.xsd" filters="none" />
+		<security:intercept-url pattern="/comunica/init.htm" filters="none" />
+		<security:intercept-url pattern="/**" access="ROLE_USER, ROLE_GUEST" />
+		<security:form-login login-page="/home/login.htm" />
+		<security:http-basic />
+		<!-- 
+		<security:concurrent-session-control max-sessions="1" exception-if-maximum-exceeded="false" />
+		-->
+	</security:http>
+	
+	<security:authentication-manager alias="authenticationManager" />
+	
+	<security:authentication-provider user-service-ref="userSecurityService" />
+	
+	<bean id="userSecurityService" class="it.gruppoinit.pal.gp.areariservata.service.impl.UserSecurityServiceImpl" />
+	
+	<!--  
+    <bean id="authenticationHandler" class="org.springframework.ws.soap.security.xwss.callback.SpringDigestPasswordValidationCallbackHandler">
+    	<property name="userDetailsService" ref="userSecurityService" />
+    </bean>
+	-->
+	<bean id="tokenPartnerAppAuthenticationFilter" class="it.gruppoinit.pal.gp.areariservata.filter.TokenPartnerAppAuthenticationFilter">
+		<property name="externalDBResolver" ref="externalDBResolver" />
+		<property name="publicKeyCertFile" value="${authentication.public.key.cert}" />
+	    <security:custom-filter before="CAS_PROCESSING_FILTER"/>
+	</bean>
+	<bean id="tokenAuthenticationFilter" class="it.gruppoinit.pal.gp.areariservata.filter.TokenAuthenticationFilter">
+		<property name="externalDBResolver" ref="externalDBResolver" />		
+	    <security:custom-filter before="BASIC_PROCESSING_FILTER"/>
+	</bean>
+</beans>

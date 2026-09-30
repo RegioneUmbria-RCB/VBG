@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://gruppoinit.it/dossier" xmlns:tns="http://gruppoinit.it/dossier"
+	xmlns:xmime="http://www.w3.org/2005/05/xmlmime" elementFormDefault="qualified">
+	
+	
+	<element name="RiversaIstanzeRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string" maxOccurs="1" minOccurs="1"></element>
+				<element name="software" type="string" maxOccurs="1" minOccurs="1"></element>
+			</sequence>
+		</complexType>
+	</element>
+	
+	<element name="RiversaIstanzeResponse">
+		<complexType>
+			<sequence>
+				<element name="idComuneAlias" type="string" maxOccurs="1" minOccurs="1"></element>
+				<element name="idComune" type="string" maxOccurs="1" minOccurs="1"></element>
+				<element name="errore" type="string" maxOccurs="1" minOccurs="0"></element>
+				<element name="listaDettagli" type="tns:DettaglioReportType" maxOccurs="unbounded" minOccurs="0"></element>
+			</sequence>
+		</complexType>
+	</element>
+
+	<complexType name="DettaglioReportType">
+		<sequence>
+			<element name="software" type="string" maxOccurs="1" minOccurs="1"></element>
+			<element name="errore" type="string" maxOccurs="1" minOccurs="0"></element>
+			<element name="msg" type="string" maxOccurs="1" minOccurs="0"></element>
+		</sequence>
+	</complexType>	
+</schema>	

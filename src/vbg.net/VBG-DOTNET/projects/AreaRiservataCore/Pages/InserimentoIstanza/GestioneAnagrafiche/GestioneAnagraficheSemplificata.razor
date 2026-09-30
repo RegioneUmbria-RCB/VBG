@@ -1,0 +1,396 @@
+﻿@page "/{IdComune}/{Software}/inserimento-istanza/gestione-anagrafiche-semplificata/{idDomanda:int}/{stepId:int}"
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneTipiSoggetto
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.DesignComuni.Forms
+@using VBG.BlazorComponentsLibrary.DesignComuni.Messaggi
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards.CardButtons
+@using VBG.BlazorComponentsLibrary.EditFormComponents
+@using VBG.BlazorComponentsLibrary.EditFormComponents.DropDown
+
+@inherits GestioneAnagraficheStepPage<TipoSoggetto>
+
+<div class="descrizioneStep descrizione-step">
+    @((MarkupString)_testoDescrizioneStep)
+</div>
+
+@* @switch (currentView)
+{
+    case PageViews.Lista: *@
+<style type="text/css">
+    .editingColumn {
+        text-align: right;
+    }
+
+    .editingColumn a {
+        padding: 1rem;
+    }
+</style>
+
+
+@if (RichiedentiDataSource?.Any() ?? false)
+{
+    @foreach (var group in RichiedentiDataSource.GroupBy(x => x.InQualitaDi))
+    {
+        string sezione = group.FirstOrDefault().InQualitaDi;
+
+        <StepCard Titolo="@sezione">
+
+            @foreach (var item in group)
+            {
+                AziendeDataItems.Clear();
+
+                foreach (var i in item.AziendeCollegabili)
+                {
+                    AziendeDataItems.Add(new DropDownItem(i.Key.ToString(), i.Value));
+                }
+
+                ModelRichiedenti? rowModel = modelRichiedentiList.Find(x => x.Id == item.Id);
+
+                if (rowModel == null)
+                {
+                    rowModel = new()
+                    {
+                        Id = item.Id,
+                        Nominativo = item.Nominativo,
+                        InQualitaDi = item.InQualitaDi,
+                        AziendaCollegata = AziendeDataItems.Find(x => x.Text == item.AziendaCollegata),
+                        EditMode = false,
+                        ShowCommandButtons = true
+                    };
+
+                    modelRichiedentiList.Add(rowModel);
+                }
+                var anagrafica = this.DomandaCorrente.Anagrafiche.GetById(rowModel.Id.Value);
+
+                <StepCardItem>
+                    @if (anagrafica.TipoSoggetto.RichiedeAnagraficaCollegata && anagrafica.AnagraficaCollegata == null)
+                    {
+                        <ErrorMessage>
+                            Il tipo soggetto <span class="fw-bold">@anagrafica.TipoSoggetto</span> deve essere collegato ad una persona giuridica.
+
+                            @if (DomandaCorrente.Anagrafiche.GetAnagraficheCollegabili().Any())
+                            {
+                                <span>Fai click su <span class="fw-bold">Collega Azienda</span> per collegarlo.</span>
+                            }
+                            else
+                            {
+                                <span>Utilizza la funzione <span class="fw-bold">"Aggiungi soggetto"</span> per inserire un'azienda e fai click su <span class="fw-bold">"Collega Azienda"</span> per collegarlo.</span>
+                            }
+                        </ErrorMessage>
+                    }
+
+                    <StepCardItemTitle Titolo="@($"{anagrafica.Nome} {anagrafica.Nominativo}")"></StepCardItemTitle>
+
+                    <StepCardButtonGroup DeleteVisible="true"
+                                        DeleteClick="() => ShowConfirmationModal(rowModel)"
+                                        EditClick="() => OnRowEditAsync(rowModel)"></StepCardButtonGroup>
+
+                    @if (item.TipoPersona == Init.Sigepro.FrontEnd.AppLogic.GestionePresentazioneDomanda.GestioneAnagrafiche.TipoPersonaEnum.Fisica)
+                    {
+                        <StepCardInfo Titolo="Codice Fiscale">@anagrafica.Codicefiscale</StepCardInfo>
+                    }
+                    else
+                    {
+                        <StepCardInfo Titolo="Partita IVA">@anagrafica.PartitaIva</StepCardInfo>
+                    }
+
+                    @if (anagrafica.TipoSoggetto.RichiedeAnagraficaCollegata)
+                    {
+                        if (anagrafica.AnagraficaCollegata != null)
+                        {
+                            <div class="float-end mt-2">
+                                <button @onclick="ModificaCollegamento" class="text-decoration-none me-2"><span class="text-button-sm-semi t-primary">Modifica</span></button>
+                            </div>
+                            <p class="card-info">Azienda collegata <br> <span>@anagrafica.AnagraficaCollegata.ToString()</span></p>
+                        }
+                        else
+                        {
+                            if (DomandaCorrente.Anagrafiche.GetAnagraficheCollegabili().Any())
+                            {
+                                <button class="btn btn-primary mt-4" @onclick="() => _editModal?.Show()">Collega azienda</button>
+                            }
+                            else
+                            {
+                                <div class="t-alert">Non sono state trovate aziende collegabili. Utilizzare la funzionalità "Aggiungi soggetto" per aggiungere una o più aziende</div>
+                            }
+                        }
+
+
+                        <BasicModal @ref="_editModal" OnClose="() => _editModal?.Hide()">
+                            <ModalHeader Titolo="Collega azienda">
+                                Seleziona l'azienda da collegare al soggetto <span class="fw-bold">@anagrafica.NomeEsteso</span> (@anagrafica.TipoSoggetto.Descrizione)
+                                @* <ErrorSummary Errori="_errors"></ErrorSummary> *@
+                            </ModalHeader>
+                            <ModalBody>
+                                <VbgForm Id="collegaAnagrafica" Model="_model" ValidationCallBack="ValidationCallBackCollegamento" OnValidSubmit="() => OnRowConfirmAsync(rowModel)">
+                                    <DataAnnotationsValidator></DataAnnotationsValidator>
+                                    @if (DomandaCorrente is not null)
+                                    {
+                                        <InputRadioGroup @bind-Value="_model.IdAnagraficaCollegata">
+                                            @foreach (var x in DomandaCorrente.Anagrafiche.GetAnagraficheCollegabili().ToArray())
+                                            {
+                                                <div class="cmp-info-button-card mt-2 radio-card @(_model.IdAnagraficaCollegata == x.Id ? "has-border-green" : "")">
+                                                    <div class="form-check p-3">
+                                                        <InputRadio Value="x.Id" id="@($"radio{x.Id}")"></InputRadio>
+                                                        <label for="@($"radio{x.Id}")">
+                                                            <h4 class="big-title card-header m-0 p-0 pb-2 text-break">@x.NomeEsteso</h4>
+                                                        </label>
+                                                        <small id="@($"radio{x.Id}-help")" class="form-text">
+
+                                                            <StepCardInfo Titolo="In qualità di">@x.TipoSoggetto.Descrizione</StepCardInfo>
+
+                                                            <div class="row">
+                                                                @if (!String.IsNullOrEmpty(x.Codicefiscale))
+                                                                {
+                                                                    <div class="col">
+                                                                        <StepCardInfo Titolo="Codice Fiscale">@x.Codicefiscale</StepCardInfo>
+                                                                    </div>
+                                                                }
+
+                                                                @if (!String.IsNullOrEmpty(x.PartitaIva))
+                                                                {
+                                                                    <div class="col">
+                                                                        <StepCardInfo Titolo="Partita IVA">@x.PartitaIva</StepCardInfo>
+                                                                    </div>
+                                                                }
+                                                            </div>
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </InputRadioGroup>
+                                    }
+
+                                    @* submit button invisible inserito per eliminare errore accessibilità *@
+                                    <button type="submit" aria-hidden="true" hidden></button>
+                                </VbgForm>
+                            </ModalBody>
+
+                            <ModalFooter>
+                                <FormSubmitButton Form="collegaAnagrafica">Conferma</FormSubmitButton>
+                            </ModalFooter>
+                        </BasicModal>
+                    }
+
+                </StepCardItem>
+            }
+        </StepCard>
+               
+    }
+        
+}
+
+
+
+
+@* @if (cmdNuovoVisible)
+{ *@
+    <button class="btn btn-primary w-100 mb-40 pt" @onclick="OnBtnNew">
+        <span class="rounded-icon">
+            <SvgIcon CssClass="icon-light icon-sm" IconId="it-plus-circle"></SvgIcon>
+        </span>
+        @* @cmdNuovoText *@
+        Aggiungi soggetto
+    </button>
+@* } *@
+
+<ConfirmationModal Titolo="Conferma eliminazione" Visible="_showConfirmationModal" ConfermaClick="OnRowDeleteAsync" AnnullaClick="() => _showConfirmationModal = false">
+    <ModalBody>
+        Eliminare l'elemento selezionato?
+    </ModalBody>
+</ConfirmationModal>
+
+    @* <div class="bottoni">
+        @if (cmdNuovoVisible)
+        {
+            <button class="btn btn-primary" @onclick="OnBtnNew">@cmdNuovoText</button>
+        }                
+    </div>
+</div> *@
+@* break; *@
+
+@switch (currentView)
+{
+    case PageViews.NuovaAnagrafica:
+        <BasicModal AlwaysVisible="true" Size="ModalSizeEnum.Large" OnClose="() => currentView = PageViews.Lista">
+            <ModalHeader Titolo="@_titoloModal">
+            </ModalHeader>
+            <ModalBody>
+                <VbgForm Id="editor-persona-giuridica-form" Model="@modelNuovaAnagrafica">
+                    
+                    <div class="row">
+                        @if (tipoPersonaVisible)
+                        {
+                            <div class="mb-4">
+                                <DropDownForm Id="cmbTipoPersona"
+                                                Label="Tipo soggetto"
+                                                @bind-Value="modelNuovaAnagrafica.TipoPersona"
+                                                TItem="DropDownItem"
+                                                OnChanged="EventCallback.Factory.Create(this, (DropDownItem i) => { modelNuovaAnagrafica.TipoPersona = i; setLabelVerifica(i);  })"
+                                                Items="@TipoPersonaDataItems"
+                                                ShowEmptyItem="false"
+                                                ValidationFor="() => modelNuovaAnagrafica.TipoPersona"
+                                                Required="true">
+                                </DropDownForm>
+                            </div>
+                        }
+
+                        @* <div class="mb-4">
+                            <DropDownForm Id="tipoSoggetto"
+                                          Label="In qualità di"
+                                          @bind-Value="modelNuovaAnagrafica.TipoSoggetto"
+                                          TItem="DropDownItem"
+                                          OnChanged="EventCallback.Factory.Create(this, (DropDownItem i) => modelNuovaAnagrafica.TipoSoggetto = i)"
+                                          Items="@TipoSoggettoDataItems"
+                                          ShowEmptyItem="false"
+                                          ValidationFor="() => modelNuovaAnagrafica.TipoSoggetto"
+                                          Required="true">
+                            </DropDownForm>
+                        </div> *@
+                    </div>
+
+                    <div class="mb-4">
+                        <TextInputForm Id="txtCodiceFiscale"
+                                       Label="@getValueByLabelVerifica()"
+                                       @bind-Value="modelNuovaAnagrafica.CodiceFiscale"
+                                       ValidationFor="() => modelNuovaAnagrafica.CodiceFiscale"
+                                       Required="true"
+                                       ResourceId="@getResourceIdByLabelVerifica()">
+                        </TextInputForm>
+                    </div>
+
+                    @* submit button invisible inserito per eliminare errore accessibilità *@
+                    <button type="submit" aria-hidden="true" hidden></button>
+                </VbgForm>
+            </ModalBody>
+            <ModalFooter>
+                <button class="btn btn-primary fw-bold flex-even" type="submit" form="editor-persona-giuridica-form" aria-label="Conferma" @onclick="OnBtnFindAsync">Cerca</button>
+            </ModalFooter>
+        </BasicModal>
+
+        @* <MyForm Id="mainForm" Model="@modelNuovaAnagrafica">
+            <div class="row">
+                @if (tipoPersonaVisible)
+                {
+                    <DropDownForm Id="cmbTipoPersona"
+                            Label="Tipo soggetto"
+                            @bind-Value="modelNuovaAnagrafica.TipoPersona"
+                            TItem="DropDownItem"
+                            OnChanged="EventCallback.Factory.Create(this, (DropDownItem i) => { modelNuovaAnagrafica.TipoPersona = i; BindTipoSoggetto(); })"
+                            Items="@TipoPersonaDataItems"
+                            ShowEmptyItem="false" 
+                            ValidationFor="() => modelNuovaAnagrafica.TipoPersona"
+                            Required="true">
+                    </DropDownForm>
+                }
+                <DropDownForm Id="tipoSoggetto"
+                            Label="In qualità di"
+                            @bind-Value="modelNuovaAnagrafica.TipoSoggetto"
+                            TItem="DropDownItem"
+                            OnChanged="EventCallback.Factory.Create(this, (DropDownItem i) => modelNuovaAnagrafica.TipoSoggetto = i)"
+                            Items="@TipoSoggettoDataItems"
+                            ShowEmptyItem="false"
+                            ValidationFor="() => modelNuovaAnagrafica.TipoSoggetto"
+                            Required="true">
+                </DropDownForm>
+                
+            </div>
+
+            <div class="row">
+                <TextInputForm Id="txtCodiceFiscale" 
+                        Label="Codice fiscale"
+                        @bind-Value="modelNuovaAnagrafica.CodiceFiscale"
+                        CssClassContainer="has-feedback col-md-12"
+                        ShowCustomLabel="true"
+                        ValidationFor="() => modelNuovaAnagrafica.CodiceFiscale"
+                        Required="true">                    
+                </TextInputForm>
+            </div>
+        </MyForm>
+
+        <div class="bottoni">
+            <button class="btn btn-primary" @onclick="OnBtnFind">Cerca</button>
+            <button class="btn btn-light" @onclick="OnBtnAnnul">Annulla</button>
+        </div> *@
+        break;
+
+    case PageViews.EditPersonaFisica:
+        <BasicModal AlwaysVisible="true" Size="ModalSizeEnum.Large" OnClose="() => currentView = PageViews.Lista">
+            <ModalHeader Titolo="@_titoloModal">
+                <small class="text-muted">
+                    I campi contrassegnati con <sup>*</sup> sono obbligatori
+                </small>
+            </ModalHeader>
+            
+            <DettagliAnagraficaPf IdComune="@IdComune" Software="@Software"
+                          CodiceIntervento="@CodiceIntervento"
+                          EmailOPecObbligatori="@EmailoPecObbligatori"
+                          TelefonoOCellulareObbligatori="@TelefonooCellulareObbligatori"
+                          PermettiModificaDatiAnagrafici="@DettagliAnagrafica_PermettiModificaDatiAnagrafici" 
+                          InitialModel="@DettagliAnagrafica_DataSource"
+                          GestioneSoggettoUnico="@getGestioneSoggettoUnico()"
+                          OnAcceptEdit="@OnAcceptEditAsync"
+                          OnCancelEdit="@OnEndEdit"
+                          OnError="@OnErroreInserimentoAsync"
+                          FetchAnagrafeData="@GetAnagrafeRow"
+                          FetchTipoSoggettoData="@GetTipoSoggetto"
+                          FetchComuni="@GetComuni"
+                          FetchComuneData="@GetDatiComune"
+                          FetchProvincie="GetProvincie"
+                          FetchProvinciaData="@GetDatiProvincia"
+                          FetchCittadinanzaData="@GetDatiCittadinanza"
+                          TitoloVisible="@this.DettagliPf_TitoloVisibile" TitoloObbligatorio="@this.DettagliPf_TitoloObbligatorio"
+                          ResidenzaVisible="@this.DettagliPf_ResidenzaVisible" ResidenzaObbligatoria="@this.DettagliPf_ResidenzaObbligatoria"
+                          TelefonoVisible="@this.DettagliPf_TelefonoVisible" TelefonoObbligatorio="@this.DettagliPf_TelefonoObbligatorio"
+                          CellulareVisible="@this.DettagliPf_CellulareVisible" CellulareObbligatorio="@this.DettagliPf_CellulareObbligatorio"
+                          
+                          EmailVisible="@this.DettagliPf_EmailVisible" EmailObbligatoria="@this.DettagliPf_EmailObbligatoria"
+                          PecVisible="@this.DettagliPf_PecVisible" PecObbligatoria="@this.DettagliPf_PecObbligatoria"
+                          CorrispondenzaVisibile="@this.DettagliPf_CorrispondenzaVisibile" CorrispondenzaObbligatoria="@this.DettagliPf_CorrispondenzaObbligatoria"
+                                  CittadinanzaVisible="@this.DettagliPf_CittadinanzaVisible" CittadinanzaObbligatoria="@this.DettagliPf_CittadinanzaObbligatoria" PermettiModificaTipoSoggetto="@DettagliAnagrafica_PermettiModificaTipoSoggetto">
+            </DettagliAnagraficaPf>
+        </BasicModal>
+        break;
+
+    case PageViews.EditPersonaGiuridica:
+        <BasicModal AlwaysVisible="true" Size="ModalSizeEnum.Large" OnClose="() => currentView = PageViews.Lista">
+            <ModalHeader Titolo="@_titoloModal">
+                <small class="text-muted">
+                    I campi contrassegnati con <sup>*</sup> sono obbligatori
+                </small>
+            </ModalHeader>
+            
+            <DettagliAnagraficaPg IdComune="@IdComune" Software="@Software"
+                          CodiceIntervento="@CodiceIntervento"
+                          EmailOPecObbligatori="@EmailoPecObbligatori"
+                          TelefonoOCellulareObbligatori="@TelefonooCellulareObbligatori"
+                          PermettiModificaDatiAnagrafici="@DettagliAnagrafica_PermettiModificaDatiAnagrafici" 
+                          InitialModel="@DettagliAnagrafica_DataSource"
+                          OnAcceptEdit="@OnAcceptEditAsync"
+                          OnCancelEdit="@OnEndEdit"
+                          OnError="@OnErroreInserimentoAsync"
+                          FetchAnagrafeData="@GetAnagrafeRow"
+                          FetchComuni="@GetComuni"
+                          FetchComuneData="@GetDatiComune"
+                          FetchProvincie="GetProvincie"
+                          FetchProvinciaData="@GetDatiProvincia"
+                          SedeLegaleVisibile="@this.DettagliPg_SedeLegaleVisibile" SedeLegaleObbligatoria="@this.DettagliPg_SedeLegaleObbligatoria"
+                          DataCostituzioneVisibile="@this.DettagliPg_SedeLegaleVisibile" DataCostituzioneObbligatoria="@this.DettagliPg_SedeLegaleVisibile"
+                          TelefonoVisible="@this.DettagliPg_TelefonoVisibile" TelefonoObbligatorio="@this.DettagliPg_TelefonoObbligatorio"
+                          CellulareVisible="@this.DettagliPg_CellulareVisibile" CellulareObbligatorio="@this.DettagliPg_CellulareObbligatorio"
+                          FaxVisible="@this.DettagliPg_FaxVisibile" FaxObbligatorio="@this.DettagliPg_FaxObbligatorio"
+                          CciaaVisibile="@this.DettagliPg_CciaaVisibile" CciaaObbligatoria="@this.DettagliPg_CciaaObbligatoria"
+                          RegTribVisibile="@this.DettagliPg_RegTribVisibile" RegTribObbligatorio="@this.DettagliPg_RegTribObbligatorio"
+                          ReaVisibile="@this.DettagliPg_ReaVisibile" ReaObbligatoria="@this.DettagliPg_ReaObbligatoria"
+                          InpsVisibile="@this.DettagliPg_InpsVisibile" InpsObbligatoria="@this.DettagliPg_InpsObbligatoria"
+                          InailVisibile="@this.DettagliPg_InailVisibile" InailObbligatoria="@this.DettagliPg_InailObbligatoria"
+                          EmailVisible="@this.DettagliPg_EmailVisibile" EmailObbligatoria="@this.DettagliPg_EmailObbligatoria"
+                          PecVisible="@this.DettagliPg_PecVisibile" PecObbligatoria="@this.DettagliPg_PecObbligatoria"
+                          PartitaIvaVisibile="@this.DettagliPg_PartitaIvaVisibile" PartitaIvaObbligatoria="@this.DettagliPg_PartitaIvaObbligatoria"
+                                  CorrispondenzaVisibile="@this.DettagliPg_CorrispondenzaVisibile" CorrispondenzaObbligatoria="@this.DettagliPg_CorrispondenzaObbligatoria" PermettiModificaTipoSoggetto="@DettagliAnagrafica_PermettiModificaTipoSoggetto">
+            </DettagliAnagraficaPg>
+        </BasicModal>
+        break;
+}

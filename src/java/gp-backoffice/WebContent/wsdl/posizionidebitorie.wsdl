@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	 xmlns:sch="http://gruppoinit.it/sigepro/schemas/messages/posizionidebitorie" 
+	 xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	 xmlns:tns="http://gruppoinit.it/sigepro/definitions/posizionidebitorie" 
+	 targetNamespace="http://gruppoinit.it/sigepro/definitions/posizionidebitorie" 
+	 xmlns:p="http://www.w3.org/2001/XMLSchema">
+	<wsdl:types>
+		<schema xmlns="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://gruppoinit.it/sigepro/schemas/messages/posizionidebitorie" 
+				schemaLocation="posizionidebitorie.xsd" />
+		</schema>
+    </wsdl:types>
+    
+    <wsdl:message name="InserisciPosizioneDaOnereRateizzatoRequest">
+		<wsdl:part element="sch:InserisciPosizioneDaOnereRateizzatoRequest" name="InserisciPosizioneDaOnereRateizzatoRequest" />
+	</wsdl:message>
+	
+	<wsdl:message name="InserisciPosizioneDaOnereRateizzatoResponse">
+		<wsdl:part element="sch:InserisciPosizioneDaOnereRateizzatoResponse" name="InserisciPosizioneDaOnereRateizzatoResponse" />
+	</wsdl:message>
+    
+    
+	<wsdl:message name="InserisciPosizioneDaOnereRequest">
+		<wsdl:part element="sch:InserisciPosizioneDaOnereRequest" name="InserisciPosizioneDaOnereRequest" />
+	</wsdl:message>
+	
+	<wsdl:message name="InserisciPosizioneDaOnereResponse">
+		<wsdl:part element="sch:InserisciPosizioneDaOnereResponse" name="InserisciPosizioneDaOnereResponse" />
+	</wsdl:message>
+	<wsdl:portType name="Posizionidebitorie">
+	
+		<wsdl:operation name="InserisciPosizioneDaOnereRateizzato">
+			<wsdl:input message="tns:InserisciPosizioneDaOnereRateizzatoRequest" name="InserisciPosizioneDaOnereRateizzatoRequest" />
+			<wsdl:output message="tns:InserisciPosizioneDaOnereRateizzatoResponse" name="InserisciPosizioneDaOnereRateizzatoResponse" />
+		</wsdl:operation>
+		
+		<wsdl:operation name="InserisciPosizioneDaOnere">
+			<wsdl:input message="tns:InserisciPosizioneDaOnereRequest" name="InserisciPosizioneDaOnereRequest" />
+			<wsdl:output message="tns:InserisciPosizioneDaOnereResponse" name="InserisciPosizioneDaOnereResponse" />
+		</wsdl:operation>
+		
+	</wsdl:portType>
+	<wsdl:binding name="PosizionidebitorieSoap11" type="tns:Posizionidebitorie">
+	
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		
+		<wsdl:operation name="InserisciPosizioneDaOnereRateizzato">
+			<soap:operation soapAction="InserisciPosizioneDaOnereRateizzato" />
+			<wsdl:input name="InserisciPosizioneDaOnereRateizzatoRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="InserisciPosizioneDaOnereRateizzatoResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>	
+		
+		<wsdl:operation name="InserisciPosizioneDaOnere">
+			<soap:operation soapAction="InserisciPosizioneDaOnere" />
+			<wsdl:input name="InserisciPosizioneDaOnereRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="InserisciPosizioneDaOnereResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>		
+
+	</wsdl:binding>
+	<wsdl:service name="PosizionidebitorieWsService">
+		<wsdl:port binding="tns:PosizionidebitorieSoap11" name="PosizionidebitorieSoap11">
+			<soap:address location="http://devel9:8080/backend/services/" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

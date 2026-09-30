@@ -1,0 +1,25 @@
+﻿@using Vbg.CoreControls
+@inherits MyBaseComponentMin
+
+<div class="@_cssClasses" id="@UniqueID">    
+    @if (CanEditResourceText && !String.IsNullOrEmpty(this.ResourceId))
+    {
+        <label for='@RelativeControlId' class="form-label">
+            <LabelComponent ResourceId="@this.ResourceId" Value="@this.Value" Required="@this.Required" CanEditResourceText="@this.CanEditResourceText"></LabelComponent>
+        </label>
+    }
+    else
+    {
+        <label for='@RelativeControlId' class="form-label">@_renderFragment @if (Required) { <sup>*</sup> } </label>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public string RelativeControlId { get; set; }
+
+    private RenderFragment _renderFragment => (mybuilder) =>
+    {
+        mybuilder.AddMarkupContent(0, $"<text>{this.Value}</text>");
+    };
+}

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans default-lazy-init="false"
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd 
+	http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+
+	<context:property-placeholder location="classpath:deploy.properties" />
+
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+
+	<!-- CLIENTS -->
+
+	<bean id="stcWsClient" class="it.gruppoinit.pal.gp.core.ws.client.StcWsClient" />
+	
+	<bean id="parixGateWsClient" class="it.gruppoinit.pal.gp.core.ws.client.ParixGateWsClient" />
+	
+	<bean id="securityWSClient"
+		class="it.gruppoinit.pal.gp.core.ws.client.SecurityWSClient">
+		<property name="wsUrl" value="${ws.token.url}" />
+		<property name="username" value="${ws.token.user}" />
+		<property name="password" value="${ws.token.pwd}" />
+		<property name="timeout" value="15000" />
+	</bean>
+	<bean id="anagrafe2WsClient" class="it.gruppoinit.pal.gp.core.ws.client.Anagrafe2WsClient">
+		<property name="timeout" value="45000" />
+	</bean>
+	
+	<bean id="rfc186WsClient" class="it.gruppoinit.sigepro.suapengine.services.XengineWebServiceClient">
+	</bean>
+	
+	
+
+	<!-- SERVERS -->
+	
+	<bean id="anagrafeWS" class="it.gruppoinit.pal.gp.backoffice.ws.AnagrafeWS" />
+
+	<jaxws:endpoint id="anagrafe" implementor="#anagrafeWS"
+		address="/anagrafe" wsdlLocation="wsdl/anagrafe.wsdl">
+		<jaxws:properties>
+			<entry key="mtom-enabled" value="false" />
+			<entry key="attachment-memory-threshold" value="0" />
+			<!-- validazione disabilitata perchè provoca il caricamento in memoria 
+				degli allegati mtom -->
+			<entry key="schema-validation-enabled" value="false" />
+		</jaxws:properties>
+	</jaxws:endpoint>
+
+	
+	
+	 
+	<bean id="dizionariocartWS" class="it.gruppoinit.pal.gp.backoffice.ws.DizionariocartWS" />
+
+	<jaxws:endpoint id="dizionariocart" implementor="#dizionariocartWS"
+		address="/dizionariocart" wsdlLocation="wsdl/upload_dizionario.wsdl">
+		<jaxws:properties>
+			<entry key="mtom-enabled" value="true" />
+			<entry key="attachment-memory-threshold" value="0" />
+		
+			<entry key="schema-validation-enabled" value="false" />
+		</jaxws:properties>
+	</jaxws:endpoint>
+	
+
+	<bean id="mailconfigWS" class="it.gruppoinit.pal.gp.backoffice.ws.MailConfigWS" />
+
+	<jaxws:endpoint id="mailconfig" implementor="#mailconfigWS"
+		address="/mailconfig" wsdlLocation="wsdl/mailconfig.wsdl">
+		<jaxws:properties>
+			<entry key="mtom-enabled" value="false" />
+			<entry key="attachment-memory-threshold" value="0" />
+			<!-- validazione disabilitata perchè provoca il caricamento in memoria 
+				degli allegati mtom -->
+			<entry key="schema-validation-enabled" value="false" />
+		</jaxws:properties>
+	</jaxws:endpoint>
+
+	
+
+ 
+	<bean id="eventiWS" class="it.gruppoinit.pal.gp.backoffice.ws.EventiWS" />
+
+	<jaxws:endpoint id="eventi" implementor="#eventiWS"
+		address="/eventi" wsdlLocation="wsdl/eventi.wsdl">
+		<jaxws:properties>
+			<entry key="mtom-enabled" value="true" />
+			<entry key="attachment-memory-threshold" value="0" />
+			<!-- validazione disabilitata perchè provoca il caricamento in memoria 
+				degli allegati mtom -->
+			<entry key="schema-validation-enabled" value="true" />
+		</jaxws:properties>
+	</jaxws:endpoint>
+
+
+	
+	<bean id="oggettiWS" class="it.gruppoinit.pal.gp.backoffice.ws.OggettiWS" />
+
+	<jaxws:endpoint id="oggetti" implementor="#oggettiWS"
+		address="/oggetti" wsdlLocation="wsdl/oggetti.wsdl">
+		<jaxws:properties>
+			<entry key="mtom-enabled" value="true" />
+			<entry key="attachment-memory-threshold" value="0" />
+			<!-- validazione disabilitata perchè provoca il caricamento in memoria 
+				degli allegati mtom -->
+			<entry key="schema-validation-enabled" value="false" />
+		</jaxws:properties>
+	</jaxws:endpoint>
+
+	<bean id="regoleWS" class="it.gruppoinit.pal.gp.backoffice.ws.RegoleWS" />
+
+	<jaxws:endpoint id="regole" implementor="#regoleWS"
+		address="/regole" wsdlLocation="wsdl/regole.wsdl">
+		<jaxws:properties>
+			<entry key="mtom-enabled" value="false" />
+			<entry key="attachment-memory-threshold" value="0" />
+			<!-- validazione disabilitata perchè provoca il caricamento in memoria 
+				degli allegati mtom -->
+			<entry key="schema-validation-enabled" value="false" />
+		</jaxws:properties>
+	</jaxws:endpoint>
+	 
+	<bean id="responsabiliWS" class="it.gruppoinit.pal.gp.backoffice.ws.ResponsabiliWS" />
+	<!-- l'attributo address va specificato altrimenti un bug di cxf non avvia la webapp!!! -->
+	<jaxws:endpoint id="responsabili" implementor="#responsabiliWS" address="/responsabili">
+		<jaxws:properties>
+			<entry key="schema-validation-enabled" value="true" />
+		</jaxws:properties>
+	</jaxws:endpoint>
+	
+	
+	<bean id="stradarioWS" class="it.gruppoinit.pal.gp.backoffice.ws.StradarioWS" />
+	<!-- l'attributo address va specificato altrimenti un bug di cxf non avvia la webapp!!! -->
+	<jaxws:endpoint id="stradario" implementor="#stradarioWS" address="/stradario">
+		<jaxws:properties>
+			<entry key="schema-validation-enabled" value="true" />
+		</jaxws:properties>
+	</jaxws:endpoint>
+	<!-- INTERCEPTORS -->
+	
+	<bean id="logInbound" class="org.apache.cxf.interceptor.LoggingInInterceptor">
+		<property name="prettyLogging" value="false" />
+		<property name="limit" value="1024" />
+	</bean>
+	<bean id="logOutbound" class="org.apache.cxf.interceptor.LoggingOutInterceptor">
+		<property name="prettyLogging" value="false" />
+		<property name="limit" value="1024" />
+	</bean>
+	<bean id="cxf" class="org.apache.cxf.bus.spring.SpringBus">
+		<property name="inInterceptors">
+			<list>
+				<ref bean="logInbound" />
+			</list>
+		</property>
+		<property name="outInterceptors">
+			<list>
+				<ref bean="logOutbound" />
+			</list>
+		</property>
+		<property name="outFaultInterceptors">
+			<list>
+				<ref bean="logOutbound" />
+			</list>
+		</property>
+		<property name="inFaultInterceptors">
+			<list>
+				<ref bean="logInbound" />
+			</list>
+		</property>
+	</bean>
+</beans>

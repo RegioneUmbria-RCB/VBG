@@ -1,0 +1,95 @@
+﻿@page "/{IdComune}/{Software}/inserimento-istanza/gestione-privacy/{idDomanda:int}/{stepId:int}"
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneComuni
+@using Init.Sigepro.FrontEnd.AppLogic.Services.Domanda
+@using Init.Sigepro.FrontEnd.Infrastructure.StepsDomanda.Attributi
+@using Init.Sigepro.FrontEnd.CoreServices.Markdown;
+@inherits IstanzeStepPage
+
+<div class="card mb-2 border">
+	<div class="card-body">
+		@((MarkupString)String.Format(this._testoPrivacy, GetNomeComune()))
+	</div>
+</div>
+
+@if (MostraCheckAccettazione)
+{
+	<div class="form-check mt-4 mb-3 mt-md-40 mb-lg-40">
+		<div class="checkbox-body d-flex align-items-center">
+			<InputCheckbox id="privacy" @bind-Value="@_isChecked" disabled="@SolaLettura" />
+			<label class="title-small-semi-bold pt-1" for="privacy">@((MarkupString)TestoAccettazionePrivacy)</label>
+		</div>
+	</div>
+}
+
+
+@code {
+	[Inject]
+	private IComuniService _comuniService { get; set; } = default!;
+	[Inject]
+	public DatiDomandaService _datiDomandaService { get; set; } = default!;
+
+	[StepProperty]
+	public string MessaggioErrore { get; set; } = "Per proseguire è necessario leggere ed accettare le condizioni riportate";
+
+	[StepProperty]
+	public string TestoAccettazionePrivacy { get; set; } = "Accetto";
+
+	[StepProperty]
+	public string TestoPrivacy { get; set; } = "";
+
+	[StepProperty]
+	[Parameter]
+	public bool TestoPrivacyMarkdown { get; set; } = false;
+
+	[StepProperty]
+	public bool MostraCheckAccettazione { get; set; } = true;
+
+	bool _isChecked = false;
+	string _testoPrivacy = "";
+
+	protected override void OnInitializeStep()
+	{
+		this._isChecked = DomandaCorrente.AltriDati.FlagPrivacy;
+
+		if (!this.MostraCheckAccettazione)
+		{
+			this._isChecked = true;
+		}
+
+		this._testoPrivacy = this.TestoPrivacy;
+
+		if (this.TestoPrivacyMarkdown)
+		{
+			this._testoPrivacy = new MarkdownString(this._testoPrivacy).ToHtml();
+		}
+	}
+
+	protected override void OnBeforeExitStep()
+	{
+		_datiDomandaService.SetFlagPrivacy(IdDomanda.Value, _isChecked);
+	}
+
+	protected override bool CanExitStep()
+	{
+		if (!DomandaCorrente.AltriDati.FlagPrivacy)
+		{
+			MessageContainer.ClearErrors();
+			MessageContainer.AddError(this.MessaggioErrore);
+			return false;
+		}
+
+		return true;
+	}
+
+	private string GetNomeComune()
+	{
+        var comune = _comuniService.GetByCodiceComune(DomandaCorrente.AltriDati.CodiceComune);
+
+		if (comune == null)
+		{
+			return String.Empty;
+		}
+
+		return comune.Comune;
+	}
+}

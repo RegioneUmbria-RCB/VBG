@@ -1,0 +1,24 @@
+﻿@page "/{IdComune}/{Software}/inserimento-istanza/allegato-ldp/{idDomanda:int}/{stepId:int}"
+@using AreaRiservataCore.Pages.InserimentoIstanza.Components
+@using AreaRiservataCore.Pages.InserimentoIstanza;
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneIntegrazioneLDP.PraticheEdilizieSiena
+@using Init.Sigepro.FrontEnd.Infrastructure.StepsDomanda.Attributi;
+@inherits IstanzeStepPage
+
+    <SplashCaricamento></SplashCaricamento>
+
+
+@code {
+    [Inject]
+    protected IPraticheEdilizieSienaService _ldpService { get; set; } = default!;
+
+    [StepProperty]
+    public string NomeAllegato { get; set; } = String.Empty;
+
+    protected override bool CanEnterStep()
+    {
+        this._ldpService.AllegaPdfADomanda(IdDomanda.Value, this.NomeAllegato);
+
+        return false;
+    }
+}

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:sch="http://gruppoinit.it/sigepro/schemas/messages/rateizzazioni" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://gruppoinit.it/sigepro/definitions/rateizzazioni" targetNamespace="http://gruppoinit.it/sigepro/definitions/rateizzazioni">
+	<wsdl:types>
+		<schema xmlns="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://gruppoinit.it/sigepro/schemas/messages/rateizzazioni" schemaLocation="rateizzazioni.xsd" />
+		</schema>
+	</wsdl:types>
+	<wsdl:message name="RateizzazioniResponse">
+		<wsdl:part element="sch:RateizzazioniResponse" name="RateizzazioniResponse" />
+	</wsdl:message>
+	<wsdl:message name="RateizzazioniRequest">
+		<wsdl:part element="sch:RateizzazioniRequest" name="RateizzazioniRequest" />
+	</wsdl:message>
+	<wsdl:portType name="Rateizzazioni">
+		<wsdl:operation name="Rateizzazioni">
+			<wsdl:input message="tns:RateizzazioniRequest" name="RateizzazioniRequest" />
+			<wsdl:output message="tns:RateizzazioniResponse" name="RateizzazioniResponse" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="RateizzazioniSoap11" type="tns:Rateizzazioni">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="Rateizzazioni">
+			<soap:operation soapAction="getRateizzazioni" />
+			<wsdl:input name="RateizzazioniRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="RateizzazioniResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="RateizzazioniService">
+		<wsdl:port binding="tns:RateizzazioniSoap11" name="RateizzazioniSoap11">
+			<soap:address location="http://devel9:8080/vbg/services/" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

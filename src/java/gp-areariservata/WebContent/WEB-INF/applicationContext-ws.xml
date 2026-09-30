@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd 
+	http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
+	http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd">
+
+	<context:property-placeholder location="classpath:deploy.properties" />
+
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+
+	<!-- CLIENTS -->
+	
+	<bean id="stcWsClient" class="it.gruppoinit.pal.gp.core.ws.client.StcWsClient" />
+	
+	<bean id="parixGateWsClient" class="it.gruppoinit.pal.gp.core.ws.client.ParixGateWsClient" />
+	
+	<bean id="parixGateV2WsClient" class="it.gruppoinit.pal.gp.core.ws.client.ParixGateV2WsClient" />
+	
+	<bean id="adrierWsClient" class="it.gruppoinit.pal.gp.core.ws.client.AdrierWsClient" />
+	
+	<bean id="aaepcsiClient" class="it.gruppoinit.pal.gp.core.ws.client.AAEPCSIClient" />
+	
+	<bean id="LDPWsClient" class="it.gruppoinit.pal.gp.core.ws.client.LDPWsClient">
+	</bean>
+	
+	<bean id="arjStcWsClient" class="it.gruppoinit.pal.gp.areariservata.ws.client.ARJSTCWSClient">
+		<property name="stcWsUrl" value="${ws.stc.url}" />
+    	<property name="stcWsUser" value="${ws.stc.user}" />
+    	<property name="stcWsPassord" value="${ws.stc.pwd}" />
+    	<property name="stcIdNodoMitt" value="${ws.stc.id-nodo-mitt}" />
+    	<property name="stcIdNodoDest" value="${ws.stc.id-nodo-dest}" />
+    	<property name="timeout" value="${ws.stc.timeout}" />
+	</bean>
+	
+	<bean id="securityWSClient"
+		class="it.gruppoinit.pal.gp.core.ws.client.SecurityWSClient">
+		<property name="wsUrl" value="${ws.token.url}" />
+		<property name="username" value="${ws.token.user}" />
+		<property name="password" value="${ws.token.pwd}" />
+		<property name="timeout" value="15000" />
+	</bean>
+	<bean id="anagrafe2WsClient" class="it.gruppoinit.pal.gp.core.ws.client.Anagrafe2WsClient">
+		<property name="timeout" value="45000" />
+	</bean>
+	<bean id="wsAnagrafe2Helper" class="it.gruppoinit.pal.gp.areariservata.ws.client.WsAnagrafe2Helper">
+	</bean>
+	
+	<bean id="rfc186WsClient" class="it.gruppoinit.sigepro.suapengine.services.XengineWebServiceClient">
+	</bean>
+	
+	<bean id="reportWsClient" class="it.lineacomune.ws.ReportWSClient">
+		<property name="urlWS" value="${lineacomune.ws.report.url}" />
+	</bean>
+	
+	<bean id="filetemporaneiWsClient" class="it.lineacomune.ws.FileTemporaneiWSClient">
+		<property name="enable" value="${lineacomune.ws.filetemporanei.enable}" />
+		<property name="wsUrl" value="${lineacomune.ws.filetemporanei.url}" />
+		<property name="mtom" value="${lineacomune.ws.filetemporanei.mtom}" />
+	</bean>
+	
+	<bean id="firmaWsClient" class="it.gruppoinit.pal.gp.areariservata.ws.client.FirmaWSClient">
+		<property name="timeout" value="60000" />
+	</bean>
+
+	<!-- SERVERS -->
+
+	<bean id="nlaWS" class="it.gruppoinit.pal.gp.areariservata.ws.NlaWS">
+	</bean>
+
+	<jaxws:endpoint id="nla" implementor="#nlaWS" address="/nla" wsdlLocation="wsdl/nla.wsdl" />
+
+
+	<jaxrs:server id="restService" address="/rest">
+			<jaxrs:properties>
+			   <entry key="org.apache.cxf.endpoint.private" value="true"/>
+			</jaxrs:properties>
+			<jaxrs:serviceBeans>
+				<ref bean="backendRestService" />
+				<ref bean="graduatorieRestService" />
+				<ref bean="mercatiRestService" />
+				<ref bean="istanzeRestService" />
+				<ref bean="appAmbulantiRestService" />
+				<ref bean="abbonamentiRestService" />
+				<ref bean="autorizzazioniRestService" />
+				<ref bean="statusRestService" />
+			</jaxrs:serviceBeans>
+					
+			<jaxrs:providers>
+				<bean class="org.apache.cxf.jaxrs.provider.JSONProvider">
+					<property name="dropRootElement" value="true" />
+					<property name="supportUnwrapped" value="true" />
+					<property name="ignoreNamespaces" value="true" />
+					<property name="dropCollectionWrapperElement" value="true" />
+				</bean>
+			</jaxrs:providers>
+	</jaxrs:server>
+
+	<bean id="backendRestService" class="it.gruppoinit.pal.gp.areariservata.web.rest.BackendRestService" />
+	<bean id="graduatorieRestService" class="it.gruppoinit.pal.gp.areariservata.web.rest.GraduatorieRestService" />
+	<bean id="mercatiRestService" class="it.gruppoinit.pal.gp.areariservata.web.rest.MercatiRestService" />
+	<bean id="istanzeRestService" class="it.gruppoinit.pal.gp.areariservata.web.rest.IstanzeRestService" />
+	<bean id="appAmbulantiRestService" class="it.gruppoinit.pal.gp.areariservata.web.rest.AppAmbulantiRestService" />
+	<bean id="abbonamentiRestService" class="it.gruppoinit.pal.gp.areariservata.web.rest.AbbonamentiRestService" />
+	<bean id="autorizzazioniRestService" class="it.gruppoinit.pal.gp.areariservata.web.rest.AutorizzazioniRestService" />
+	<bean id="statusRestService" class="it.gruppoinit.pal.gp.areariservata.web.rest.StatusRestService" />
+
+	<!-- INTERCEPTORS -->
+	
+	<bean id="logInbound" class="org.apache.cxf.interceptor.LoggingInInterceptor">
+		<property name="prettyLogging" value="false" />
+		<property name="limit" value="128000" />
+	</bean>
+	<bean id="logOutbound" class="org.apache.cxf.interceptor.LoggingOutInterceptor">
+		<property name="prettyLogging" value="false" />
+		<property name="limit" value="128000" />
+	</bean>
+	<bean id="cxf" class="org.apache.cxf.bus.spring.SpringBus">
+		<property name="inInterceptors">
+			<list>
+				<ref bean="logInbound" />
+			</list>
+		</property>
+		<property name="outInterceptors">
+			<list>
+				<ref bean="logOutbound" />
+			</list>
+		</property>
+		<property name="outFaultInterceptors">
+			<list>
+				<ref bean="logOutbound" />
+			</list>
+		</property>
+		<property name="inFaultInterceptors">
+			<list>
+				<ref bean="logInbound" />
+			</list>
+		</property>
+	</bean>
+</beans>

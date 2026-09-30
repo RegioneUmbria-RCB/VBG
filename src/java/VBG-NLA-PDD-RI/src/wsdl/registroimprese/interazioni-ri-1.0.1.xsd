@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="unqualified" attributeFormDefault="unqualified"
+    targetNamespace="http://www.impresainungiorno.gov.it/schema/suap/ri/spc"
+    xmlns:ri="http://www.impresainungiorno.gov.it/schema/suap/ri/spc"
+    xmlns:pi="http://www.impresainungiorno.gov.it/schema/base"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0.0">
+    <!--  
+    -->
+    <xs:import namespace="http://www.impresainungiorno.gov.it/schema/base" schemaLocation="impresainungiorno.gov_tipi_elementari-1.0.0.xsd"/>
+    <!--  
+        
+        Servizio di verifica iscrizione impresa al RI
+        
+    -->
+    <xs:element name="IscrizioneImpresaRiSpcRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="codice-fiscale" type="pi:CodiceFiscale"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <!--  
+    -->
+    <xs:element name="IscrizioneImpresaRiSpcResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:choice>
+                    <xs:element name="errore" type="ri:ErroreDettaglioImpresa"/>
+                    <xs:sequence>
+                        <xs:element name="warning" type="ri:WarningDettaglioImpresa" minOccurs="0" maxOccurs="unbounded"/>
+                        <xs:element name="dati-identificativi">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="stato-impresa" type="pi:Stringa" minOccurs="0"/>
+                                    <xs:element name="denominazione" type="pi:Stringa"/>
+                                    <xs:element name="codice-fiscale" type="pi:CodiceFiscale"/>
+                                    <xs:element name="cciaa" type="pi:Stringa"/>
+                                    <xs:element name="nrea" type="pi:NumeroREA"/>
+                                    <xs:element name="partita-iva" type="pi:PartitaIVA" minOccurs="0"/>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="sede-legale" type="pi:IndirizzoConRecapiti"/>
+                        <xs:element name="attivita" type="pi:AttivitaISTAT" minOccurs="0" 
+                        	maxOccurs="unbounded"/>
+                        <xs:element name="unita-locale" type="ri:UnitaLocale" minOccurs="0"
+                            maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:choice>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    
+    <!-- 
+        
+        Tipi complessi
+        
+    -->
+    <xs:complexType name="ErroreDettaglioImpresa">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute name="codice" use="required">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:enumeration value="0">
+                                <xs:annotation>
+                                    <xs:documentation>Errore applicativo non previsto</xs:documentation>
+                                </xs:annotation>
+                            </xs:enumeration>
+                            <xs:enumeration value="1">
+                                <xs:annotation>
+                                    <xs:documentation>Errore di comunicazione con il Registro delle Imprese</xs:documentation>
+                                </xs:annotation>
+                            </xs:enumeration>
+                            <xs:enumeration value="2">
+                                <xs:annotation>
+                                    <xs:documentation>Codice Fiscale non presente nel Registro delle Imprese</xs:documentation>
+                                </xs:annotation>
+                            </xs:enumeration>
+                            <xs:enumeration value="3">
+                                <xs:annotation>
+                                    <xs:documentation>Sede legale non identificabile nel Registro delle Imprese</xs:documentation>
+                                </xs:annotation>
+                            </xs:enumeration>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:attribute>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <!--  
+    -->
+    <xs:complexType name="WarningDettaglioImpresa">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute name="codice" use="required">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:enumeration value="0">
+                                <xs:annotation>
+                                    <xs:documentation>Molte unita locali</xs:documentation>
+                                </xs:annotation>
+                            </xs:enumeration>
+                            <xs:enumeration value="1">
+                                <xs:annotation>
+                                    <xs:documentation>Impossibile recuperare le unita' locali</xs:documentation>
+                                </xs:annotation>
+                            </xs:enumeration>
+                            <xs:enumeration value="2">
+                                <xs:annotation>
+                                    <xs:documentation>Impossibile recuperare alcune unita' locali tra quelle disponibili</xs:documentation>
+                                </xs:annotation>
+                            </xs:enumeration>                            
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:attribute>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <!--  
+    -->
+    <xs:simpleType name="TipoFormatoRisposta">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="XML"/>
+            <xs:enumeration value="PDF"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <!--  
+    -->
+    <xs:complexType name="UnitaLocale">
+        <xs:complexContent>
+            <xs:extension base="pi:IndirizzoConRecapiti">
+                <xs:sequence>
+                 <xs:element name="attivita" type="pi:AttivitaISTAT" minOccurs="0" 
+                        	maxOccurs="unbounded"/>
+                <xs:element name="tipo-localizzazione" type="ri:TipoLocalizzazione" minOccurs="0"
+                			maxOccurs="unbounded" />
+                </xs:sequence>
+               
+                <xs:attribute name="progressivo" type="xs:nonNegativeInteger" use="required"/>               
+            </xs:extension>
+            
+
+        </xs:complexContent>
+    </xs:complexType>
+    
+        <xs:complexType name="TipoLocalizzazione">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute name="codice" use="required" type="xs:string"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+</xs:schema>

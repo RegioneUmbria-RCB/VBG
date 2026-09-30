@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:simpleType name="TipoAnno">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="\d{4}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CodiceFiscale">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="11"/>
+			<xs:maxLength value="16"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TipoCodiceEnte">
+		<xs:annotation>
+			<xs:documentation>Definizione delle tipologie di codice enti utilizzati: 1 - Codice Regulus, 2 - ISTAT, 3 - Belfiore</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="2"/>
+			<xs:enumeration value="3"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TipoCodiceFiscale">
+		<xs:annotation>
+			<xs:documentation>Definizione delle tipologie di codice fiscali possibili: I - intestatario, P - pagante</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="I"/>
+			<xs:enumeration value="P"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TipoStatoPagamentoFattura">
+		<xs:annotation>
+			<xs:documentation>Definizione dei possibili stati che le fatture possono assumere: 0 - Pagabile, 1 - Pagata, 4 - Non pagabile, 20 - In pagamento</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="0"/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="4"/>
+			<xs:enumeration value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TipoCanale">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TipoStatoDocumento">
+		<xs:annotation>
+			<xs:documentation>Definizione dei possibili stati relativi alle fasi evolutive del pagamento: 0 - Pagabile, 1 - Pagata, 2 - Iscritta a ruolo, 3 - Rateizzata, 4 - Non pagabile, 5 - Archiviata, 6 - Ricorso in atto, 9 - Annullata, 20 - In pagamento, 101 - NonTrovataNonPagabile</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="0"/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="2"/>
+			<xs:enumeration value="3"/>
+			<xs:enumeration value="4"/>
+			<xs:enumeration value="5"/>
+			<xs:enumeration value="6"/>
+			<xs:enumeration value="9"/>
+			<xs:enumeration value="20"/>
+			<xs:enumeration value="101"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

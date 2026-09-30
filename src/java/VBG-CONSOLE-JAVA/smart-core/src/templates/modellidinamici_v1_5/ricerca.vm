@@ -1,0 +1,29 @@
+#if($modelloHelper.isRenderForPrint())
+	<b>$decodedVal</b>
+#else
+	#set($size = $campo.getProprietaCampo("DescriptionBoxColumns","40"))
+	#set($forceListItems = $campo.getProprietaCampo("ForzaValoriEsistenti","true"))
+	#set($options = "{}")
+	#if($forceListItems == "true")
+		#set($options = "{forza_valori_esistenti: $forceListItems}")
+	#end
+	##$modelloHelper.debug($campo)
+	<div class="searchbox" style="padding-left: 0px">
+		<input id="${nameAttr}_ID" name="${nameAttr}_DESC"  size="${size}" value="$decodedVal" class="$classeCampo" starid='${idStar}'/>
+		<input type="hidden" id="${nameAttr}_ID_HIDDEN" name="${nameAttr}_ID" value="${val}" />
+	</div>
+	#if(!$isTemplate)
+	<script type="text/javascript">
+		#set($srchUrl = "../ajax/findRicercaDyncampi.htm")
+		#if($modelloHelper.isBackOffice())
+			#set($srchUrl = "../ajax/findRicercaDyn2Campi.htm")
+		#end
+		jQuery(document).ready(function(){
+			settaRicercaDyncampi('${nameAttr}_ID','${idCampo}','${srchUrl}',$options);
+		});
+	</script>
+	#else
+		#set($script = "settaRicercaDyncampi('FLD_${idCampo}_${campo.Indice}_' + newBlockIndex + '_ID','${idCampo}',$options);")
+		$blocco.addScript($script)
+	#end
+#end

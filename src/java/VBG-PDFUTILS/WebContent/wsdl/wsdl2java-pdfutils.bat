@@ -1,0 +1,1 @@
+C:\SVILUPPO\Frameworks\apache-cxf\apache-cxf-2.5.1\bin\wsdl2java.bat -p it.gruppoinit.pdfutils.schemas.messages -all -frontend jaxws21 pdfutils.wsdl

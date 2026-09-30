@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd 
+	http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
+	http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd">
+
+	<context:property-placeholder location="classpath:deploy.properties" />
+
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+
+	<!-- CLIENTS -->
+	
+	<bean id="stcWsClient" class="it.gruppoinit.pal.gp.core.ws.client.StcWsClient" />
+	
+	<bean id="parixGateWsClient" class="it.gruppoinit.pal.gp.core.ws.client.ParixGateWsClient">
+		<property name="parixgateWsUrl" value="${ws.parixgate.url}" />
+    	<property name="parixgateWsUser" value="${ws.parixgate.user}" />
+    	<property name="parixgateWsPassword" value="${ws.parixgate.psw}" />
+    	<property name="parixgateWsSwitchcontroll" value="${ws.parixgate.switchcontroll}" />
+    	<property name="trustStore" value="${javax.net.ssl.trustStore}" />
+    	<property name="trustStorePassword" value="${javax.net.ssl.trustStorePassword}" />
+    	<property name="keyStore" value="${javax.net.ssl.keyStore}" />
+    	<property name="keyStorePassword" value="${javax.net.ssl.keyStorePassword}" />    	
+	</bean>
+	
+	<bean id="arjStcWsClient" class="it.gruppoinit.pal.gp.areariservata.ws.client.ARJSTCWSClient">
+		<property name="stcWsUrl" value="${ws.stc.url}" />
+    	<property name="stcWsUser" value="${ws.stc.user}" />
+    	<property name="stcWsPassord" value="${ws.stc.pwd}" />
+    	<property name="stcIdNodoMitt" value="${ws.stc.id-nodo-mitt}" />
+    	<property name="stcIdNodoDest" value="${ws.stc.id-nodo-dest}" />
+    	<property name="timeout" value="${ws.stc.timeout}" />
+	</bean>
+	
+	<bean id="securityWSClient"
+		class="it.gruppoinit.pal.gp.core.ws.client.SecurityWSClient">
+		<property name="wsUrl" value="${ws.token.url}" />
+		<property name="username" value="${ws.token.user}" />
+		<property name="password" value="${ws.token.pwd}" />
+		<property name="timeout" value="15000" />
+	</bean>
+	<bean id="anagrafe2WsClient" class="it.gruppoinit.pal.gp.core.ws.client.Anagrafe2WsClient">
+		<property name="timeout" value="45000" />
+	</bean>
+	<bean id="wsAnagrafe2Helper" class="it.gruppoinit.pal.gp.areariservata.ws.client.WsAnagrafe2Helper">
+	</bean>
+	
+	
+	
+		<jaxrs:server id="restService" address="/api-rest/">
+		 <jaxrs:properties>
+	         <entry key="attachment-memory-threshold" value="404800"/>	    
+	     </jaxrs:properties>
+		<jaxrs:serviceBeans>
+			<ref bean="bancaDatiRestService" />
+		</jaxrs:serviceBeans>
+		<jaxrs:inInterceptors>
+			 <ref bean="interceptorInitializer"/>
+		</jaxrs:inInterceptors>
+		<jaxrs:providers>
+			<bean class="org.apache.cxf.jaxrs.provider.JSONProvider">
+				<property name="dropRootElement" value="true" />
+				<property name="supportUnwrapped" value="true" />
+				<property name="ignoreNamespaces" value="true" />
+				<property name="dropCollectionWrapperElement" value="true" />
+			</bean>
+		</jaxrs:providers>
+	</jaxrs:server>
+	<bean id="interceptorInitializer" class="it.gruppoinit.pal.gp.areariservata.web.rest.interceptors.InterceptorInitializer"/>
+	<bean id="bancaDatiRestService" class="it.gruppoinit.pal.gp.areariservata.web.rest.BancaDatiRestService" />
+
+	<!-- INTERCEPTORS -->
+	
+	<bean id="logInbound" class="org.apache.cxf.interceptor.LoggingInInterceptor">
+		<property name="prettyLogging" value="false" />
+		<property name="limit" value="2048" />
+	</bean>
+	<bean id="logOutbound" class="org.apache.cxf.interceptor.LoggingOutInterceptor">
+		<property name="prettyLogging" value="false" />
+		<property name="limit" value="2048" />
+	</bean>
+	<bean id="cxf" class="org.apache.cxf.bus.spring.SpringBus">
+		<property name="inInterceptors">
+			<list>
+				<ref bean="logInbound" />
+			</list>
+		</property>
+		<property name="outInterceptors">
+			<list>
+				<ref bean="logOutbound" />
+			</list>
+		</property>
+		<property name="outFaultInterceptors">
+			<list>
+				<ref bean="logOutbound" />
+			</list>
+		</property>
+		<property name="inFaultInterceptors">
+			<list>
+				<ref bean="logInbound" />
+			</list>
+		</property>
+	</bean>
+</beans>

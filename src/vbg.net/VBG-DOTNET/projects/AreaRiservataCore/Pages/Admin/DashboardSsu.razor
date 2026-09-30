@@ -1,0 +1,484 @@
+﻿@page "/{IdComune}/{Software}/admin/dashboardssu"
+@using AreaRiservataCore.Pages.Admin.Clients
+@using AreaRiservataCore.Shared.enums
+@using Init.Sigepro.FrontEnd.AppLogic.Autenticazione.Vbg
+@using Init.Sigepro.FrontEnd.AppLogic.Configurazione.V2
+@using Microsoft.Extensions.Options
+@using VBG.AppLogic.SSU.Configurazione
+@using VBG.AppLogic.SSU.DataAccess
+@using VBG.AppLogic.SSU.DataAccess.Dto
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.DesignComuni.NavScroll
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+@using VBG.BlazorComponentsLibrary.EditFormComponents
+@using AreaRiservataCore.Pages.Admin.Components
+@inherits BasePage
+
+@inject HttpClient _httpClient
+@inject DomandeNotificationClient _notifier
+@inject IOptions<SsuOptions> _ssuOptions;
+@inject SigeproSecurityProxy _sigeproSecurityProxy;
+
+<h3>Dashboard Domande SSU</h3>
+<div style="width: 20ch">
+    <Chips Text="@generatoreTextStatus" Color="generatoreColorStatus"></Chips>
+</div>
+
+@if (_ssuOptions.Value.Abilitato)
+{
+    <div class="row bg-light rounded-3 p-3 mb-2">
+        <div class="col-sm-12 col-lg-3">
+            <DashboardInfoBoxContainer InfoBoxes="mainDashboardInfoBoxes"></DashboardInfoBoxContainer>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <DashboardInfoBoxContainer>
+                <DashboardInfoBox IconClass="it-check"
+                                  Title="@StatiDomandaSsuEnum.Inviata.ToString()"
+                                  Items="domandeInStatoInviata.Select(d => (d.IdComune, d.FkIdDomanda))">
+                </DashboardInfoBox>
+            </DashboardInfoBoxContainer>            
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <DashboardInfoBoxContainer>
+                <DashboardInfoBox IconClass="it-note"
+                                  Title="@StatiDomandaSsuEnum.RicevutaGenerata.ToString()"
+                                  Items="domandeInStatoRicevutaGenerata.Select(d => (d.IdComune, d.FkIdDomanda))">
+                </DashboardInfoBox>
+            </DashboardInfoBoxContainer>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <DashboardInfoBoxContainer>
+                <DashboardInfoBox IconClass="it-mail"
+                                  Title="@StatiDomandaSsuEnum.RicevutaNotificataAStc.ToString()"
+                                  Items="domandeInStatoRicevutaNotificata.Select(d => (d.IdComune, d.FkIdDomanda))">
+                </DashboardInfoBox>
+            </DashboardInfoBoxContainer>
+        </div>
+    </div>
+    <div class="row border rounded-3 p-3 mb-2">
+        <div class="col-md-12">
+            <h5>Domande bloccate</h5>
+            <button class="btn btn-sm btn-primary mb-2" @onclick="LoadDomandeBloccate">Aggiorna</button>
+            <DashboardSsuFilter Id="filtriBloccate"
+                                Title="Filtro domande bloccate"
+                                FiltriChanged="HandleFiltriChanged"
+                                OrdinaPer="@ordinaPer"
+                                OrdinaChanged="HandleOrdineChanged"
+                                Disabled="false">
+            </DashboardSsuFilter>
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Comune</th>
+                        <th>Numero SSU</th>
+                        <th>Data Invio</th>
+                        <th>Stato</th>
+                        <th>Azioni</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (domandeBloccate == null)
+                    {
+                        <tr><td colspan="7">Caricamento...</td></tr>
+                    }
+                    else if (!domandeBloccate.Any())
+                    {
+                        <tr><td colspan="7">Nessuna domanda bloccata.</td></tr>
+                    }
+                    else
+                    {
+                        foreach (var d in domandeBloccate)
+                        {
+                            <tr>
+                                <td>@d.FkIdDomanda</td>
+                                <td>@d.IdComune</td>
+                                <td>@d.NumeroDomandaSsu</td>
+                                <td>@d.DataInvio.ToString("g")</td>
+                                <td>@d.StatoAsEnum</td>
+                                <td>
+                                    <button class="btn btn-sm btn-link p-0" @onclick="() => Sblocca(d.IdComune, d.FkIdDomanda)">Sblocca</button>
+                                    <button class="btn btn-sm btn-link p-0 ms-2" @onclick="() => LoadErrori(d.IdComune, d.FkIdDomanda)">Vedi Errori</button>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <BasicModal @ref="_modalErrori" OnClose="() => _modalErrori.Hide()">
+            <ModalHeader Titolo="">
+                <h5>Errori (Comune: <strong>@errorComune</strong> Domanda: <strong>@errorDomanda</strong>)</h5>
+            </ModalHeader>
+            <ModalBody>
+                <ul class="list-group list-group-sm">
+                    @if (selectedErrori == null)
+                    {
+                        <li class="list-group-item">Nessun errore selezionato.</li>
+                    }
+                    else if (!selectedErrori.Any())
+                    {
+                        <li class="list-group-item">Nessun errore presente.</li>
+                    }
+                    else
+                    {
+                        foreach (var e in selectedErrori)
+                        {
+                            <li class="list-group-item">@e.Data.ToString("g") — @e.Errore (@e.StatoAsEnum)</li>
+                        }
+                    }
+                </ul>
+            </ModalBody>
+            <ModalFooter>
+                <button class="btn btn-sm btn-danger mb-2" @onclick="DeleteErroriSelected" disabled="@(selectedErrori == null || !selectedErrori.Any())">Cancella gli errori</button>
+            </ModalFooter>
+        </BasicModal>
+
+    </div>
+}
+else
+{
+    <h5>Ssu non abilitato</h5>
+    <p>controlla le impostazioni nel file appsettings.json</p>
+}
+
+@code {
+    [CascadingParameter(Name = "Layout")]
+    public MainLayout Layout { get; set; } = default!;
+
+    private List<DashboardInfoBox> mainDashboardInfoBoxes = new();
+    private DashboardInfoBox daElaborareInfoBox = new()
+    {
+        IconClass = "it-exchange-circle",
+        Title = "Domande da elaborare",
+        Text = "0"
+    };
+    private DashboardInfoBox inErroreInfoBox = new()
+    {
+        IconClass = "it-error",
+        Title = "Errori totali",
+        Text = "0"
+    };
+    private List<FoDomandaSsuMinimalDto> domandeInStatoInviata = new();
+    private List<FoDomandaSsuMinimalDto> domandeInStatoRicevutaGenerata = new();
+    private List<FoDomandaSsuMinimalDto> domandeInStatoRicevutaNotificata = new();
+
+    private BasicModal _modalErrori = default!;
+    private IEnumerable<FoDomandeSsu>? domandeBloccate;
+    private IEnumerable<FoDomandeSsuAudit>? selectedErrori;
+    private string? errorComune;
+    private int errorDomanda;
+    private bool generatoreInEsecuzione = false;
+    private Enumerators.Color generatoreColorStatus => generatoreInEsecuzione ? Enumerators.Color.GREEN : Enumerators.Color.RED;
+    private string generatoreTextStatus => generatoreInEsecuzione ? "Generatore online" : "Generatore offline";
+
+    private OrderByDate ordinaPer = OrderByDate.DataDiscendente;
+
+    private async Task HandleOrdineChanged(OrderByDate ordine)
+    {
+        ordinaPer = ordine;
+
+        await LoadDomandeBloccate();
+    }
+
+    private FiltroIstanzeBloccate? parametriDiFiltro = default;
+
+    private async Task HandleFiltriChanged(FiltroIstanzeBloccate filtri)
+    {
+        parametriDiFiltro = filtri;
+
+        await LoadDomandeBloccate();
+    }
+
+    private string ApplicationToken => UserAuthenticationResult.Token; //potrebbe bastare anche il semplice token utente
+    private string BaseApiUrl => _ssuOptions.Value.BaseUrlApi;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!UtenteTester)
+        {
+            await GotoAsync("home");
+        }
+        else
+        {
+            var baseUrl = $"{_navigationManager.BaseUri}{IdComune}/{Software}";
+            var breadcrumbItems = new List<BreadcrumbsItem>()
+            {
+                new BreadcrumbsItem()
+                {
+                    Label = "Funzioni amministrative",
+                    Url = $"{baseUrl}/admin",
+                },
+                 new BreadcrumbsItem()
+                {
+                    Label = "Dashboard domande SSU",
+                    Url = $"{baseUrl}/admin/dashboardssu",
+                    Active = true
+                }
+            };
+
+            this.Layout.SetBreadcrumbItems(breadcrumbItems);
+
+            if (!_ssuOptions.Value.Abilitato)
+            {
+                domandeBloccate = Enumerable.Empty<FoDomandeSsu>();
+                return;
+            }
+
+            mainDashboardInfoBoxes.Add(daElaborareInfoBox);
+            mainDashboardInfoBoxes.Add(inErroreInfoBox);
+
+            _notifier.OnDomandaElaborabile += HandleDomandaElaborabile;
+            _notifier.OnTotDomandeDaElaborareChanged += HandleTotDomandeDaElaborareChanged;
+            _notifier.OnGeneratoreStatusChanged += HandleGeneratoreStatusChanged;
+            _notifier.OnNewErroreDomanda += HandleNewErroreDomanda;
+            _notifier.OnNuovoStatoDomanda += HandleStatoDomandaChanged;
+
+            // Prova ad avviare la connessione SignalR (una sola volta)
+            if (await _notifier.StartAsync())
+            {
+                inErroreInfoBox.Text = (await GetTotErrori()).ToString();
+                await GetStatiInizialiDomande();
+                await LoadDomandeBloccate();
+            }
+            else
+            {
+                MessageContainer.AddError("Impossibile connettersi al servizio di notifiche.");
+                domandeBloccate = Enumerable.Empty<FoDomandeSsu>();
+            }
+        }
+    }
+
+    private async Task HandleDomandaElaborabile(string idComune, int idDomanda, bool isElaborabile)
+    {
+        if (isElaborabile)
+        {
+            RimuoviDomandaBloccata(idComune, idDomanda);
+            await InvokeAsync(StateHasChanged);
+        }
+        else
+        {
+            await LoadDomandeBloccate();
+        }
+    }
+
+    private async Task HandleTotDomandeDaElaborareChanged(int count)
+    {
+        daElaborareInfoBox.Text = count.ToString();
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task HandleGeneratoreStatusChanged(bool isRunning)
+    {
+        generatoreInEsecuzione = isRunning;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task HandleNewErroreDomanda(string idComune, int idDomanda)
+    {
+        domandeInStatoInviata.RemoveAll(x =>
+            x.IdComune == idComune &&
+            x.FkIdDomanda == idDomanda
+        );
+
+        domandeInStatoRicevutaGenerata.RemoveAll(x =>
+            x.IdComune == idComune &&
+            x.FkIdDomanda == idDomanda
+        );
+
+        domandeInStatoRicevutaNotificata.RemoveAll(x =>
+            x.IdComune == idComune &&
+            x.FkIdDomanda == idDomanda
+        );
+
+        var tot = int.Parse(inErroreInfoBox.Text);
+        tot++;
+        inErroreInfoBox.Text = tot.ToString();
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task HandleStatoDomandaChanged(string idComune, int idDomanda, int vecchioStato, int nuovoStato)
+    {
+        switch(vecchioStato)
+        {
+            case (int)StatiDomandaSsuEnum.Inviata:
+                domandeInStatoInviata.RemoveAll(x =>
+                    x.IdComune == idComune &&
+                    x.FkIdDomanda == idDomanda
+                );
+
+                domandeInStatoRicevutaGenerata.Add(new FoDomandaSsuMinimalDto()
+                {
+                    IdComune = idComune,
+                    FkIdDomanda = idDomanda,
+                    Stato = nuovoStato
+                });
+
+                break;
+            case (int)StatiDomandaSsuEnum.RicevutaGenerata:
+                domandeInStatoRicevutaGenerata.RemoveAll(x =>
+                    x.IdComune == idComune &&
+                    x.FkIdDomanda == idDomanda
+                );
+
+                domandeInStatoRicevutaNotificata.Add(new FoDomandaSsuMinimalDto()
+                {
+                    IdComune = idComune,
+                    FkIdDomanda = idDomanda,
+                    Stato = nuovoStato
+                });
+
+                break;
+            case (int)StatiDomandaSsuEnum.RicevutaNotificataAStc:
+                domandeInStatoRicevutaNotificata.RemoveAll(x =>
+                    x.IdComune == idComune &&
+                    x.FkIdDomanda == idDomanda
+                );
+                break;
+        }
+
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private void RimuoviDomandaBloccata(string idComune, int idDomanda)
+    {
+        if (domandeBloccate is null)
+            return;
+
+        var lista = domandeBloccate.ToList();
+
+        var daRimuovere = lista.FirstOrDefault(d =>
+            d.IdComune == idComune &&
+            d.FkIdDomanda == idDomanda
+        );
+
+        if (daRimuovere != null)
+        {
+            lista.Remove(daRimuovere);
+            domandeBloccate = lista;
+        }
+    }
+
+
+    private async Task LoadDomandeBloccate()
+    {
+        try
+        {
+            if (!string.IsNullOrWhiteSpace(parametriDiFiltro?.idComune))
+            {
+                domandeBloccate = await _httpClient.GetFromJsonAsync<IEnumerable<FoDomandeSsu>>($"{BaseApiUrl}/bloccate/{parametriDiFiltro.idComune}/{ApplicationToken}");
+            }
+            else
+            {
+                domandeBloccate = await _httpClient.GetFromJsonAsync<IEnumerable<FoDomandeSsu>>($"{BaseApiUrl}/bloccate/{ApplicationToken}");
+            }
+
+            await InvokeAsync(StateHasChanged);
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine(ex.Message);
+        }
+    }
+
+    private async Task Sblocca(string idComune, int fkIdDomanda)
+    {
+        try
+        {
+            var resp = await _httpClient.PostAsync($"{BaseApiUrl}/sblocca/{idComune}/{fkIdDomanda}/{ApplicationToken}", null);
+            // if (resp.IsSuccessStatusCode)
+            // {
+            //     // il repository lato server chiamerà _notifier.NotifyAsync e quindi il componente riceverà l'evento
+            //     
+            //     await LoadAll();
+            // }
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine(ex.Message);
+        }
+    }
+
+    private async Task GetStatiInizialiDomande()
+    {
+        try
+        {
+            var domande = await _httpClient.GetFromJsonAsync<IEnumerable<FoDomandaSsuMinimalDto>>($"{BaseApiUrl}/statiiniziali/{ApplicationToken}");
+            
+            domandeInStatoInviata = domande
+                .Where(d => d.StatoAsEnum == StatiDomandaSsuEnum.Inviata)
+                .ToList();
+
+            domandeInStatoRicevutaGenerata = domande
+                .Where(d => d.StatoAsEnum == StatiDomandaSsuEnum.RicevutaGenerata)
+                .ToList();
+
+            domandeInStatoRicevutaNotificata = domande
+                .Where(d => d.StatoAsEnum == StatiDomandaSsuEnum.RicevutaNotificataAStc)
+                .ToList();
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine(ex.Message);
+        }
+    }
+
+    private async Task<int> GetTotErrori()
+    {
+        try
+        {
+            var tot = await _httpClient.GetFromJsonAsync<int>($"{BaseApiUrl}/errori/count/{ApplicationToken}");
+            return tot;
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine(ex.Message);
+            return 0;
+        }
+    }
+
+    private async Task LoadErrori(string idComune, int fkIdDomanda)
+    {
+        try
+        {
+            selectedErrori = await _httpClient.GetFromJsonAsync<IEnumerable<FoDomandeSsuAudit>>($"{BaseApiUrl}/errori/{idComune}/{fkIdDomanda}/{ApplicationToken}");
+            errorComune = idComune;
+            errorDomanda = fkIdDomanda;
+            _modalErrori.Show();
+            await InvokeAsync(StateHasChanged);
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine(ex.Message);
+        }
+    }
+
+    private async Task DeleteErroriSelected()
+    {
+        if (string.IsNullOrEmpty(errorComune) || errorDomanda == 0) 
+            return;
+
+        try
+        {
+            var resp = await _httpClient.DeleteAsync($"{BaseApiUrl}/errori/{errorComune}/{errorDomanda}/{ApplicationToken}");
+            if (resp.IsSuccessStatusCode)
+            {
+                selectedErrori = Enumerable.Empty<FoDomandeSsuAudit>();
+                inErroreInfoBox.Text = (await GetTotErrori()).ToString();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine(ex.Message);
+        }
+    }
+
+    public override void Dispose()
+    {
+        _notifier.OnDomandaElaborabile -= HandleDomandaElaborabile;
+
+        base.Dispose();
+    }
+}

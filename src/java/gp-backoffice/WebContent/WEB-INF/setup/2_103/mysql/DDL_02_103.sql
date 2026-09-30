@@ -1,0 +1,6 @@
+ALTER TABLE PEC_INBOX_ALLEGATI MODIFY FKIDPEC VARCHAR(200);
+ALTER TABLE PEC_INBOX MODIFY id VARCHAR(200);
+ALTER TABLE OGGETTI MODIFY PERCORSO VARCHAR(200) NULL;
+alter table albero_coefficienti_r modify tipo varchar(50) null;
+ALTER TABLE albero_coefficienti_r MODIFY codice_coefficente VARCHAR(6) NOT NULL;
+ALTER TABLE inventarioproc_endo ADD ordine NUMERIC(6,0);

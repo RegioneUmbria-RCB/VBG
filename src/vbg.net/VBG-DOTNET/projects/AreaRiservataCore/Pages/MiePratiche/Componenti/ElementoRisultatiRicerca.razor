@@ -1,0 +1,124 @@
+﻿@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+@using static AreaRiservataCore.Pages.MiePratiche.IstanzePresentate
+
+@inherits BasePage
+
+@if (Item is not null)
+{
+    <div id="@($"prat-{Item.Uuid}")" @key="@($"prat-{Item.Uuid}")">
+        <AccordionItem StartingCollapsed="true"
+                       CollapsibleElementId="@($"pratica-{Item.Uuid}")"
+                       Title="@(string.IsNullOrEmpty(Item.TipoIntervento) ? "non definito" : Item.TipoIntervento)"
+                       Sottotitolo="@($"Pratica numero {Item.NumeroIstanza} del {Item.DataPresentazione?.ToString("dd/MM/yyyy")}")"
+                       RenderTitleAsHtml="true"
+                       CssTitleClass="d-block text-truncate pe-4"
+                       ButtonWrapperClass="min-width-zero"
+                       HeaderElementId="@($"header-accordion-prat-{Item.Uuid}")">
+            <NonCollapsingUpperChildContent>
+                @if (Mode == ViewMode.IstanzePresentate)
+                {
+                    <p class="mb-2 fw-normal">
+                        Richiedente:
+                        <span class="label fw-bold">@(string.IsNullOrEmpty(Item.Richiedente) ? "non definito" : Item.Richiedente)</span>
+                    </p>
+                }
+            </NonCollapsingUpperChildContent>
+            <ChildContent>
+                <p class="mb-2 fw-normal">
+                    Numero protocollo:
+                    <span class="label fw-bold">@(string.IsNullOrEmpty(Item.NumeroProtocollo) ? "non definito" : Item.NumeroProtocollo)</span>
+                </p>
+                <p class="mb-2 fw-normal">
+                    Data protocollo:
+                    <span class="label fw-bold">@(Item.DataProtocollo.HasValue ? Item.DataProtocollo.Value.ToShortDateString() : "non definito")</span>
+                </p>
+
+
+                @switch (Mode)
+                {
+                    case ViewMode.ArchivioPratiche:
+                        if (!string.IsNullOrEmpty(Item.Oggetto))
+                        {
+                            <p class="mb-2 fw-normal">
+                                Oggetto:
+                                <span class="label fw-bold">@Item.Oggetto</span>
+                            </p>
+                        }
+                        if (!string.IsNullOrEmpty(Item.Azienda))
+                        {
+                            <p class="mb-2 fw-normal">
+                                Ragione sociale:
+                                <span class="label fw-bold">@Item.Azienda</span>
+                            </p>
+                        }
+                        if (!string.IsNullOrEmpty(Item.Fascicolo))
+                        {
+                            <p class="mb-2 fw-normal">
+                                Fascicolo:
+                                <span class="label fw-bold">@Item.Fascicolo</span>
+                            </p>
+                        }
+                        break;
+                    case ViewMode.IstanzePresentate:
+
+                        break;
+                }
+
+                <p class="mb-2 fw-normal">
+                    Localizzazione:
+                    <span class="label fw-bold">@(string.IsNullOrEmpty(Item.Localizzazione) ? "non definito" : Item.Localizzazione)</span>
+                </p>
+            </ChildContent>
+            <NonCollapsingLowerChildContent>
+                <div class="d-flex">
+                    @* <a href="@GetUrlDettagli(Item.Uuid, Mode)" class="btn btn-primary justify-content-center" data-focus-mouse="false">
+                        Mostra Dettagli
+                    </a> *@
+
+                    <button type="button" class="btn btn-primary justify-content-center" @onclick=@(async () => await GotoDettagli(Item.Uuid, Mode)) data-focus-mouse="false">
+                        Mostra Dettagli
+                    </button>
+
+                    @* @if (Mode == ViewMode.IstanzePresentate)
+                    {
+                        @* <a href="@GetNavigationPathTo($"nuovo-da-copia/{Item.Uuid}")" class="btn btn-secondary justify-content-center ms-1" data-focus-mouse="false">
+                            Usa come modello
+                        </a> *@
+
+                        @* <button type="button" class="btn btn-secondary justify-content-center ms-1" @onclick=@(async () => await GotoAsync($"nuovo-da-copia/{Item.Uuid}")) data-focus-mouse="false">
+                            Usa come modello
+                        </button> *@
+                    @* } *@
+                </div>
+
+            </NonCollapsingLowerChildContent>
+        </AccordionItem>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public ViewMode Mode { get; set; } = ViewMode.ArchivioPratiche;
+
+    [Parameter]
+    public IstanzaListItem Item { get; set; } = default!;
+
+    private string GetUrlDettagli(string uuid, ViewMode mode)
+    {
+        return GetNavigationPathTo($"{((mode == ViewMode.ArchivioPratiche) ? "dettaglioistanzaexarchivio" : "dettaglioistanzaex")}/{uuid}/archiviopratiche?showResults=true");
+    }
+
+    private async Task GotoDettagli(string uuid, ViewMode mode)
+    {
+        switch (mode)
+        {
+            case ViewMode.ArchivioPratiche:
+                await GotoAsync($"dettaglioistanzaexarchivio/{uuid}/archiviopratiche?showResults=true");
+                break;
+            case ViewMode.IstanzePresentate:
+                await GotoAsync($"dettaglioistanzaex/{uuid}/istanzepresentate?showResults=true");
+                break;
+        }
+    }
+}

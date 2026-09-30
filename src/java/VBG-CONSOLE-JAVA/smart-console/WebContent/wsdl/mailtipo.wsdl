@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:sch="http://gruppoinit.it/sigepro/schemas/messages/mailtipo" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://gruppoinit.it/sigepro/definitions/mailtipo" targetNamespace="http://gruppoinit.it/sigepro/definitions/mailtipo">
+	<wsdl:types>
+		<schema xmlns="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://gruppoinit.it/sigepro/schemas/messages/mailtipo" schemaLocation="mailtipo.xsd" />
+		</schema>
+	</wsdl:types>
+	<wsdl:message name="MailtipoResponse">
+		<wsdl:part element="sch:MailtipoResponse" name="MailtipoResponse" />
+	</wsdl:message>
+	<wsdl:message name="MailtipoFrontendRequest">
+		<wsdl:part element="sch:MailtipoFrontendRequest" name="MailtipoFrontendRequest" />
+	</wsdl:message>
+	<wsdl:message name="MailtipoRequest">
+		<wsdl:part element="sch:MailtipoRequest" name="MailtipoRequest" />
+	</wsdl:message>
+	<wsdl:portType name="Mailtipo">
+		<wsdl:operation name="Mailtipo">
+			<wsdl:input message="tns:MailtipoRequest" name="MailtipoRequest" />
+			<wsdl:output message="tns:MailtipoResponse" name="MailtipoResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="MailtipoFrontend">
+			<wsdl:input message="tns:MailtipoFrontendRequest" name="MailtipoFrontendRequest" />
+			<wsdl:output message="tns:MailtipoResponse" name="MailtipoFrontendResponse" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="MailtipoSoap11" type="tns:Mailtipo">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="Mailtipo">
+			<soap:operation soapAction="replaceOggettoCorpo" />
+			<wsdl:input name="MailtipoRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="MailtipoResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="MailtipoFrontend">
+			<soap:operation soapAction="mailtipoFrontendRequest" />
+			<wsdl:input name="MailtipoFrontendRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="MailtipoFrontendResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="MailtipoService">
+		<wsdl:port binding="tns:MailtipoSoap11" name="MailtipoSoap11">
+			<soap:address location="http://devel9:8080/vbg/services/" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

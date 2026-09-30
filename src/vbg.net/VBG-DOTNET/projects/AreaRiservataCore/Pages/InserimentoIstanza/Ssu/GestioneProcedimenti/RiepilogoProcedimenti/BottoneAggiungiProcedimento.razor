@@ -1,0 +1,30 @@
+﻿@using AreaRiservataCore.Pages.InserimentoIstanza.Ssu.GestioneProcedimenti.RiepilogoProcedimenti.SelezioneProcedimento
+@using VBG.AppLogic.SSU.GestioneProcedimenti
+<button class="btn btn-primary mb-3" @onclick="AggiungiProcedimento">
+    Aggiungi
+</button>
+
+@if (_mostraDialogAggiuntaProcedimento)
+{
+    <ModalModificaProcedimento OnClose="() => _mostraDialogAggiuntaProcedimento = false"
+                               ProcedimentoSelezionato="OnProcedimentoSelezionato"></ModalModificaProcedimento>
+}
+
+@code {
+
+    [Parameter, EditorRequired]
+    public EventCallback<SsuProcedimentoDomanda> ProcedimentoSelezionato { get; set; }
+
+    private bool _mostraDialogAggiuntaProcedimento = false;
+
+    void AggiungiProcedimento()
+    {
+        _mostraDialogAggiuntaProcedimento = true;
+    }
+
+    async Task OnProcedimentoSelezionato(SsuProcedimentoDomanda procedimento)
+    {
+        _mostraDialogAggiuntaProcedimento = false;
+        await ProcedimentoSelezionato.InvokeAsync(procedimento);
+    }
+}

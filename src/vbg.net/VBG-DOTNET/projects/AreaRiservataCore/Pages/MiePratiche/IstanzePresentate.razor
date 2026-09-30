@@ -1,0 +1,133 @@
+﻿@page "/{IdComune}/{Software}/istanzepresentate"
+@* @page "/{IdComune}/{Software}/istanzepresentate/{Pagina:int?}" *@
+
+@using AreaRiservataCore.Pages.MiePratiche.Componenti
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneLocalizzazioni.SIC
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.DesignComuni.NavScroll
+
+@inherits BasePage
+@implements IDisposable
+
+@* <TitoloPagina>Le mie pratiche</TitoloPagina> *@
+<PageTitle>Le mie pratiche</PageTitle>
+
+<div class="row">
+    <NavScrollComponent Title="Indice di pagina">
+        <NavScrollComponentItem Label="Le mie pratiche" Id="pratiche">
+            <ContenitoreRisultatiRicerca @ref="_contenitoreRisultati" 
+                Mode="ViewMode.IstanzePresentate" 
+                TitoloPagina="Le mie pratiche"
+                IsBtnShowInMapVisible="_isBtnShowInMapVisible"
+                OnBtnShowInMapClicked="OnBtnShowInMapAsync">
+            </ContenitoreRisultatiRicerca>
+        </NavScrollComponentItem>
+    </NavScrollComponent>
+</div>
+
+
+@code
+{
+    [CascadingParameter(Name = "Layout")]
+    public MainLayout Layout { get; set; } = default!;
+    [Inject]
+    public ISitCartograficoService _sitCartograficoService { get; set; } = default!;
+
+    private ContenitoreRisultatiRicerca? _contenitoreRisultati;
+    private bool _isBtnShowInMapVisible = true;
+
+    protected override void OnInitialized()
+    {
+        var baseUrl = $"{_navigationManager.BaseUri}{_authenticationDataResolver.DatiAutenticazione.Alias}/{Software}";
+        var breadcrumbItems = new List<BreadcrumbsItem>()
+            {
+                new BreadcrumbsItem()
+                {
+                    Label = "Le mie pratiche",
+                    Url = $"{baseUrl}/istanzepresentate",
+                    Active = true
+                }
+            };
+
+        this.Layout.SetBreadcrumbItems(breadcrumbItems);
+        this._pageTitleService?.SetTitle("");
+
+        base.OnInitialized();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        await this._spinnerService.ShowSpinnerAsync(async () =>
+        {
+            try
+            {
+                var feats = await this._sitCartograficoService.GetFeaturesAsync();
+                this._isBtnShowInMapVisible = feats.MostraMappaListaIstanze;
+            }
+            catch (Exception ex)
+            {
+                this.Logger.Error(ex.Message);
+                this.MessageContainer.AddWarning("Al momento non è possibile visualizzare la mappa. Riprovare più tardi");
+                this._isBtnShowInMapVisible = false;
+            }
+
+        });
+    }
+
+    private async Task OnBtnShowInMapAsync()
+    {
+        await this._spinnerService.ShowSpinnerAsync(async () =>
+        {
+            try
+            {
+                await RedirectAllaMappaAsync();
+            }
+            catch (Exception ex)
+            {
+                this.Logger.Error(ex.Message);
+                this.MessageContainer.AddError("Si è verificato un errore cercando di aprire la mappa. Riprovare più tardi");
+            }
+        });
+    }
+
+    private async Task RedirectAllaMappaAsync()
+    {
+        var listaUuid = _contenitoreRisultati?.RecuperaUuid();
+
+        if (listaUuid == null || !listaUuid.Any())
+        {
+            this.MessageContainer.AddError("Non ci sono pratiche da visualizzare nella mappa.");
+            return;
+        }
+
+        // var baseUri = new Uri(_navigationManager.BaseUri);
+
+        // var scheme = baseUri.Scheme;
+        // var host = baseUri.Host;
+        // var port = baseUri.IsDefaultPort ? string.Empty : $":{baseUri.Port}";
+        // // Estrai i primi 3 segmenti del path come "appName"
+        // var segments = new Uri(_navigationManager.Uri).AbsolutePath.Split('/', StringSplitOptions.RemoveEmptyEntries);
+        // var appName = "/" + string.Join('/', segments.Take(3));
+        // var token = this.UserAuthenticationResult.Token;
+
+        var callbackUrl = _navigationManager.Uri;
+        // var callbackUrl = $"{scheme}://{host}:{port}{appName}/istanzepresentate?1=1&Token={token}&AUTH_TYPE=AUTH_TYPE_LOGIN";
+
+        var response = await this._sitCartograficoService.GeneraURLMappaListaPraticheAsync(new GeneraURLMappaListaPraticheRequest
+        {
+            CallbackUrl = callbackUrl,
+            CancelUrl = "",
+            UuidIstanze = listaUuid
+        });
+
+        if (!String.IsNullOrEmpty(response.Errore))
+        {
+            this.MessageContainer.AddError(response.Errore);
+            return;
+        }
+
+        GotoExternalUrl(response.Url);
+    }
+}

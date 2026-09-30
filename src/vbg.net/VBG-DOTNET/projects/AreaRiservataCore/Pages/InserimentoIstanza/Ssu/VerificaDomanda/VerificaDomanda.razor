@@ -1,0 +1,61 @@
+﻿@page "/{IdComune}/{Software}/inserimento-istanza/ssu/verifica-domanda/{idDomanda:int}/{stepId:int}"
+@using System.Text
+@using Init.Sigepro.FrontEnd.CoreServices.GestionePresentazioneDomanda.Paginatore
+@using VBG.AppLogic.SSU.MapperValidator
+
+@inherits IstanzeStepPage
+
+
+@foreach (var errore in this._validazioneDomandaResult.Errori)
+{
+    <div class="alert alert-warning" role="alert">
+        @((MarkupString)errore)
+    </div>
+}
+
+
+@code {
+    [Inject]
+    public SsuValidatorService _ssuValidatorService { get; set; } = default!;
+    [CascadingParameter]
+    private PaginatoreStateService _paginatoreStateService { get; set; } = default!;
+
+    private EsitoValidazioneDomanda _validazioneDomandaResult = new EsitoValidazioneDomanda(Array.Empty<string>());
+
+    //TODO: da rimuovere una volta implementato il serivio di validaizone
+    // public bool NascondiErroriValidazione { get; set; } = true;
+
+    protected override async Task OnInitializeStepAsync()
+    {
+        try
+        {
+            await base.OnInitializeStepAsync();
+
+            await this._spinnerService.ShowSpinnerAsync(async () =>
+            {
+                this._validazioneDomandaResult = await this._ssuValidatorService.ValidaDomandaAsync(this.IdDomanda.Value);
+
+                if (this._validazioneDomandaResult.Errori.Any())
+                {
+                    this._paginatoreStateService.NascondiBottoneAvanti();
+                }
+            });
+        }
+        catch (Exception)
+        {
+            MessageContainer.AddError("Si è verificato un errore durante la validazione della domanda");
+            this._paginatoreStateService.NascondiBottoneAvanti();
+        }
+       
+    }
+
+    protected override bool CanEnterStep()
+    {
+        // if (NascondiErroriValidazione)
+        // {
+        //     return false;
+        // }
+
+        return !this._validazioneDomandaResult.ValidazioneRiuscita;
+    }
+}

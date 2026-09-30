@@ -1,0 +1,473 @@
+﻿@page "/{IdComune}/{Software}/inserimento-istanza/gestione-delega-a-trasmettere/{idDomanda:int}/{stepId:int}"
+@using AreaRiservataCore.Pages.InserimentoIstanza.GestioneDelegaATrasmettere.Components
+@using Init.Sigepro.FrontEnd.AppLogic.Autenticazione.Vbg.AutenticazioneUtente
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneDelegaATrasmettere
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneOggetti
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneOggetti.UrlDownloadOggetti
+@using Init.Sigepro.FrontEnd.AppLogic.GestionePresentazioneDomanda.GestioneAllegati
+@using Init.Sigepro.FrontEnd.AppLogic.Services.Domanda
+@using Init.Sigepro.FrontEnd.AppLogic.Services.Navigation
+@using Init.Sigepro.FrontEnd.Infrastructure.StepsDomanda.Attributi
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.DesignComuni.Download
+@using VBG.BlazorComponentsLibrary.DesignComuni.Forms
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards.CardButtons
+@using VBG.BlazorComponentsLibrary.DesignComuni.Utils
+@using VBG.BlazorComponentsLibrary.EditFormComponents
+@using VBG.BlazorComponentsLibrary.RisorseTestuali
+@using log4net
+@using static AreaRiservataCore.Pages.InserimentoIstanza.GestioneDelegaATrasmettere.Components.UploadFileView
+@inherits IstanzeStepPage
+
+<StepCard Titolo=" ">
+    <StepCardItem>
+        <StepCardButtonGroup EditText="@(_fileDelegaBindingItem?.CodiceOggetto is not null ? "Modifica" : "Carica documento")"
+                             EditClick="async () => await OpenModalModifica(_fileDelegaBindingItem, TipoDocumento.Delega)"
+                             DeleteText="Elimina"
+                             DeleteVisible="_fileDelegaBindingItem?.CodiceOggetto is not null"
+                             DeleteClick="async()=> await OnDelete(TipoDocumento.Delega)"></StepCardButtonGroup>
+
+        <StepCardItemTitle Titolo="@TitoloDichiarazioneDelega"></StepCardItemTitle>
+
+        @* <StepCardInfo Titolo=""> *@
+            <StepBadgeContainer>
+                @if (_fileDelegaBindingItem?.CodiceOggetto is not null)
+                {
+                    <BadgeComponent Type="BadgeComponent.BadgeCategoryEnum.SUCCESS">Compilato con successo</BadgeComponent>
+                }
+                else
+                {
+                    <BadgeComponent Type="BadgeComponent.BadgeCategoryEnum.DANGER">Obbligatorio</BadgeComponent>
+
+
+                    @if (RichiedeFirma)
+                    {
+                        <BadgeComponent Type="BadgeComponent.BadgeCategoryEnum.WARNING">Richiede firma digitale</BadgeComponent>
+                    }
+                }
+            </StepBadgeContainer>
+
+            @if (!String.IsNullOrEmpty(_ltrTestoDelega))
+            {
+                <div class="fw-normal mb-2">
+                    @((MarkupString)_ltrTestoDelega)
+                </div>
+            }
+
+            @if (_fileDelegaBindingItem?.CodiceOggetto is not null)
+            {
+                <StepDownloadButton CodiceOggetto="_fileDelegaBindingItem?.CodiceOggetto" Titolo="Documento"></StepDownloadButton>
+            }
+            else
+            {
+                <i class="fw-normal">
+                    Documento non ancora caricato
+                </i>
+            }
+        @* </StepCardInfo> *@
+    </StepCardItem>
+
+    @if (RichiedeDocumentoIdentita)
+    {
+        <StepCardItem>
+            <StepCardButtonGroup EditText="@(_fileDocIdentitaBindingItem?.CodiceOggetto is not null ? "Modifica" : "Carica documento")"
+                                 EditClick="async () => await OpenModalModifica(_fileDocIdentitaBindingItem, TipoDocumento.DocumentoIdentita)"
+                                 DeleteText="Elimina"
+                                 DeleteVisible="_fileDocIdentitaBindingItem?.CodiceOggetto is not null"
+                                 DeleteClick="async() => await OnDelete(TipoDocumento.DocumentoIdentita)"></StepCardButtonGroup>
+
+            <StepCardItemTitle Titolo="@TitoloDocumentoIdentita"></StepCardItemTitle>
+
+            @* <StepCardInfo Titolo=""> *@
+                <StepBadgeContainer>
+                    @if (_fileDocIdentitaBindingItem?.CodiceOggetto is not null)
+                    {
+                        <BadgeComponent Type="BadgeComponent.BadgeCategoryEnum.SUCCESS">Compilato con successo</BadgeComponent>
+                    }
+                    else
+                    {
+                        <BadgeComponent Type="BadgeComponent.BadgeCategoryEnum.DANGER">Obbligatorio</BadgeComponent>
+
+
+                        @if (RichiedeFirmaDocumentoIdentita)
+                        {
+                            <BadgeComponent Type="BadgeComponent.BadgeCategoryEnum.WARNING">Richiede firma digitale</BadgeComponent>
+                        }
+                    }
+                </StepBadgeContainer>
+
+                @if (!String.IsNullOrEmpty(_ltrTestoDocumentoIdentita))
+                {
+                    <div class="fw-normal mb-2">
+                        @((MarkupString)_ltrTestoDocumentoIdentita)
+                    </div>
+                }
+
+                @if (_fileDocIdentitaBindingItem?.CodiceOggetto is not null)
+                {
+                    <StepDownloadButton CodiceOggetto="_fileDocIdentitaBindingItem?.CodiceOggetto" Titolo="Documento"></StepDownloadButton>
+                }
+                else
+                {
+                    <i class="fw-normal">
+                        Documento non ancora caricato
+                    </i>
+                }
+            @* </StepCardInfo> *@
+        </StepCardItem>
+    }
+</StepCard>
+
+@if (_showModalModifica)
+{
+    <BasicModal OnClose="CloseModalModifica" AlwaysVisible="true" Size="ModalSizeEnum.Small">
+        <ModalHeader Titolo="@_titoloModalModifica"></ModalHeader>
+        <ModalBody>
+            <VbgForm Id="formUpload" Model="@_model" OnValidSubmit="CaricaFile">
+                @if (_model.TipoDocumento == TipoDocumento.Delega && CodiceOggettoPdfCompilabile > 0)
+                {
+                    <div class="mb-2">
+                        <label>Modello da scaricare@(_model.RichiedeFirma ? ", firmare" : "") e ricaricare</label>
+                        <button class="btn btn-primary w-100 mb-4 p-2" @onclick="DownloadModelloAsync">Scarica</button>
+                    </div>
+                }
+                    
+                <FormUpload Label="@(_model.RichiedeFirma ? "Documento firmato" : "Documento")"
+                            @bind-Value="_model.CodiceOggetto"
+                            Obbligatorio="_model.Obbligatorio"
+                            VerificaFirmaDigitale="_model.RichiedeFirma"
+                            ValidationFor="() => _model.CodiceOggetto"></FormUpload>
+            </VbgForm>
+        </ModalBody>
+        <ModalFooter>
+            <FormSubmitButton Form="formUpload"></FormSubmitButton>
+        </ModalFooter>
+    </BasicModal>
+}
+
+
+<ConfirmationModal Titolo="Eliminazione documento" Visible="_showDeleteConfirm" AnnullaClick="() => _showDeleteConfirm = false" ConfermaClick="OnEliminaFile">
+    <ModalBody>
+
+            Sei sicuro di voler eliminare il documento selezionato? <span class="fw-bold">L'operazione non potrà essere annullata.</span>
+
+    </ModalBody>
+</ConfirmationModal>
+
+
+
+@code {
+    public class Model
+    {
+        public int? CodiceOggetto { get; set; }
+        public bool RichiedeFirma { get; set; }
+        public TipoDocumento TipoDocumento { get; set; }
+        public bool Obbligatorio { get; set; }
+    }
+
+    public enum TipoDocumento
+    {
+        Delega,
+        DocumentoIdentita
+    }
+
+    [Inject]
+    private IDelegaATrasmettereService DelegaATrasmettereService { get; set; } = default!;
+
+    [Inject]
+    private IAuthenticationDataResolver _authDataResolver { get; set; } = default!;
+
+    [Inject]
+    public DownloadHelperService _downloadHelper { get; set; } = default!;
+
+    [StepProperty("Titolo del pannello \"Delega a trasmettere\"")]
+    public string TitoloDichiarazioneDelega { get; set; } = "Delega a trasmettere";
+    [StepProperty("Testo da mostrare nella dichiarazione della delega. Può utilizzare il segnaposto {0} per riportare il nominativo della domanda corrente")]
+    public string TestoDichiarazioneDelega { get; set; } = String.Empty;
+    [StepProperty("Testo del link per scaricare il modello precompilato", ValoreDefault = "Scarica il modello precompilato")]
+    public string TestoLinkDownload { get; set; } = "Scarica il modello precompilato";
+    [StepProperty("Codice oggetto del modello di delega precompilabile")]
+    public int CodiceOggettoPdfCompilabile { get; set; } = -1;
+    [StepProperty("Se impostato a true e il soggetto che presenta la pratica è procuratore del richiedente allora la ddelega non viene richiesta", ValoreDefault = "false")]
+    public bool IgnoraDelegaSeProcuratoreDelRichiedente { get; set; } = false;
+    [StepProperty("Se impostato a true la delega a trasmettere va firmata digitalmente", ValoreDefault = "false")]
+    public bool RichiedeFirma { get; set; } = false;
+    [StepProperty("Se impostato a true andrà allegato anche il documento di identità del delegante", ValoreDefault = "false")]
+    public bool RichiedeDocumentoIdentita { get; set; } = false;
+    [StepProperty("Titolo della sezione \"Documento d'identità\"", ValoreDefault = "Documento d'identità")]
+    public string TitoloDocumentoIdentita { get; set; } = "Documento d'identità";
+    [StepProperty("Testo della sezione \"Documento d'identità\"", ValoreDefault = "")]
+    public string TestoDocumentoIdentita { get; set; } = "";
+    [StepProperty("Se impostato a true la il documento d'identità caricato va firmata digitalmente", ValoreDefault = "false")]
+    public bool RichiedeFirmaDocumentoIdentita { get; set; } = false;
+
+    string _ltrTestoDelega = "";
+    string _ltrTitoloDocumentoIdentita = "";
+    string _ltrTestoDocumentoIdentita = "";
+
+    FileCaricatoBindingItem? _fileDelegaBindingItem;
+    FileCaricatoBindingItem? _fileDocIdentitaBindingItem;
+
+    bool _showModalModifica;
+    bool _showDeleteConfirm;
+    public Model _model { get; set; } = new Model();
+    private string _titoloModalModifica = "";
+    private TipoDocumento _tipoDocumentoDaEliminare;
+
+    bool VerificaAccessoAllaPagina()
+    {
+        var codiceFiscaleUtente = _authDataResolver.DatiAutenticazione.DatiUtente.Codicefiscale;
+
+        // Se l'utente che sta presentando la domanda è uno dei richiedenti la delega non serve
+        var count = this.DomandaCorrente.Anagrafiche.GetRichiedenti()
+                    .Where(x => x.Codicefiscale.ToUpperInvariant() == codiceFiscaleUtente)
+                    .Count();
+
+        if (count != 0)
+            return false;
+
+        // Nel caso in cui il flag sia impostato e l'utente che presenta la pratica non è uno dei richiedenti
+        // Allora verifico se l'utente è uno dei procuratori dei richiedenti
+        if (this.IgnoraDelegaSeProcuratoreDelRichiedente)
+        {
+            var utenteIsProcuratoreDelRichiedente = this.DomandaCorrente
+                                                                        .Anagrafiche
+                                                                        .GetRichiedenti()
+                                                                        .Where(x => this.DomandaCorrente.Procure.GetCodiceFiscaleDelProcuratoreDi(x.Codicefiscale) == codiceFiscaleUtente)
+                                                                        .Count() > 0;
+
+            if (utenteIsProcuratoreDelRichiedente)
+                return false;
+        }
+
+        return true;
+    }
+
+    protected override bool CanEnterStep()
+    {
+        if (VerificaAccessoAllaPagina())
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    protected override void OnLoadStep()
+    {
+        DataBind();
+    }
+
+    protected override bool CanExitStep()
+    {
+        MessageContainer.ClearAll();
+
+        if (this._fileDelegaBindingItem == null)
+        {
+            MessageContainer.AddError("Per proseguire è necessario caricare la delega a trasmettere");
+
+            return false;
+        }
+
+        if (RichiedeDocumentoIdentita && this._fileDocIdentitaBindingItem == null)
+        {
+            MessageContainer.AddError("Per proseguire è necessario caricare il documento di identità del delegante");
+
+            return false;
+        }
+
+        return true;
+    }
+
+    void DataBind()
+    {
+        this._ltrTestoDelega = String.Format(this.TestoDichiarazioneDelega, this.UserAuthenticationResult.DatiUtente.ToString(), this.UserAuthenticationResult.DatiUtente.Codicefiscale);
+
+        this._ltrTitoloDocumentoIdentita = this.TitoloDocumentoIdentita;
+        this._ltrTestoDocumentoIdentita = this.TestoDocumentoIdentita;
+
+        this._fileDelegaBindingItem = ToFileCaricato(this.DomandaCorrente.DelegaATrasmettere.Allegato);
+        this._fileDocIdentitaBindingItem = ToFileCaricato(this.DomandaCorrente.DelegaATrasmettere.DocumentoIdentita);
+    }
+
+
+    FileCaricatoBindingItem? ToFileCaricato(AllegatoDellaDomanda allegato)
+    {
+        if (allegato == null)
+        {
+            return null;
+        }
+
+        return new FileCaricatoBindingItem(allegato.CodiceOggetto, allegato.NomeFile, allegato.FirmatoDigitalmente);
+    }
+
+    async Task OnCaricamentoDelega()
+    {
+        await _spinnerService.ShowSpinnerAsync(() =>
+        {
+            try
+            {
+                MessageContainer.ClearErrors();
+
+                this.DelegaATrasmettereService.SalvaAllegato(this.IdDomanda.Value, _model.CodiceOggetto.Value);
+
+                DataBind();
+            }
+            catch (Exception ex)
+            {
+                this.Logger.ErrorFormat($"Errore durante il caricamento della delega: {ex.Message}");
+
+                MessageContainer.AddError("Errore durante il caricamento della delega a trasmettere");
+            }
+        });
+    }
+
+    void OnCancellazioneDelega(FileCaricatoBindingItem file)
+    {
+        this.DelegaATrasmettereService.EliminaDelegaATrasmettere(this.IdDomanda.Value);
+
+        this.DataBind();
+    }
+
+    async Task OnCaricamentoDocumento()
+    {
+        await _spinnerService.ShowSpinnerAsync(() =>
+        {
+            try
+            {
+                MessageContainer.ClearErrors();
+
+                this.DelegaATrasmettereService.SalvaDocumentoIdentita(this.IdDomanda.Value, _model.CodiceOggetto.Value);
+
+                DataBind();
+            }
+            catch (Exception ex)
+            {
+                this.Logger.ErrorFormat($"Errore durante il caricamento del documento di identità: {ex.Message}");
+
+                MessageContainer.AddError("Errore durante il caricamento del documento di identità");
+            }
+        });
+    }
+
+    void OnCancellazioneDocumento(FileCaricatoBindingItem file)
+    {
+        this.DelegaATrasmettereService.EliminaDocumentoIdentita(this.IdDomanda.Value);
+
+        this.DataBind();
+    }
+
+    async Task OpenModalModifica(FileCaricatoBindingItem? file, TipoDocumento tipoDoc)
+    {
+        if (file is not null)
+            _model.CodiceOggetto = file.CodiceOggetto;
+
+        switch (tipoDoc)
+        {
+            case TipoDocumento.Delega:
+                _model.RichiedeFirma = RichiedeFirma;
+                _model.TipoDocumento = TipoDocumento.Delega;
+                _model.Obbligatorio = true;
+                _titoloModalModifica = "Caricamento file delega";
+                break;
+
+            case TipoDocumento.DocumentoIdentita:
+                _model.RichiedeFirma = RichiedeFirmaDocumentoIdentita;
+                _model.TipoDocumento = TipoDocumento.DocumentoIdentita;
+                _model.Obbligatorio = true;
+                _titoloModalModifica = "Caricamento documento di identità";
+                break;
+
+            default:
+                break;
+        }
+
+        _showModalModifica = true;
+        await Task.CompletedTask;      
+    }
+
+    private async Task OnDelete(TipoDocumento tipoDoc)
+    {
+        _tipoDocumentoDaEliminare = tipoDoc;
+        _showDeleteConfirm = true;
+
+        await Task.CompletedTask;
+    }
+
+    private async Task CloseModalModifica()
+    {
+        _model = new Model();
+        _showModalModifica = false;
+
+        await Task.CompletedTask;
+    }
+
+    private async Task CaricaFile()
+    {
+        if (_model.CodiceOggetto is null)
+            return;
+
+        switch (_model.TipoDocumento)
+        {
+            case TipoDocumento.Delega:
+                await OnCaricamentoDelega();
+                break;
+
+            case TipoDocumento.DocumentoIdentita:
+                await OnCaricamentoDocumento();
+                break;
+
+            default:
+                break;
+        }
+
+        await CloseModalModifica();
+    }
+
+    async Task DownloadModelloAsync()
+    {
+        if (CodiceOggettoPdfCompilabile <= 0)
+            return;
+
+        await _spinnerService.ShowSpinnerAsync(async () =>
+        {
+            await _downloadHelper.DownloadFileAsync(CodiceOggettoPdfCompilabile);
+        });
+    }
+
+    async Task OnEliminaFile()
+    {
+        await _spinnerService.ShowSpinnerAsync(() =>
+        {
+            try
+            {
+                switch (_tipoDocumentoDaEliminare)
+                {
+                    case TipoDocumento.Delega:
+                        if(_fileDelegaBindingItem is not null)
+                            OnCancellazioneDelega(_fileDelegaBindingItem);
+                        break;
+
+                    case TipoDocumento.DocumentoIdentita:
+                        if(_fileDocIdentitaBindingItem is not null)
+                            OnCancellazioneDocumento(_fileDocIdentitaBindingItem);
+                        break;
+
+                    default:
+                        break;
+                }
+
+                _showDeleteConfirm = false;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error($"Errore durante l'eliminazione del file: {ex.Message}");
+            }
+        });
+    }
+
+}
+
+

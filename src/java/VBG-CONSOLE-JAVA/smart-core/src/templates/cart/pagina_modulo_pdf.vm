@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<style>
+	.monospaceboldchar{
+		font-weight: bold;
+		font-family: monospace;
+	}
+	.boldchar{
+		font-weight: bold;
+	}
+	h1{
+		font-size: 8px;
+	}
+	h2{
+		font-size: 8px;
+	}
+	strong {
+		font: inherit;
+	}
+	.quadro-cart{
+		page-break-after: always;
+	}
+	.rigaModello{
+		page-break-inside: auto;
+	}
+	.titolomodulo{
+		background-color:#a0a0a0;
+		box-sizing: border-box;
+		width: 100%;
+		font-size: 12px;		
+		font-weight: bolder;	
+		padding:5px;
+		border: 1px solid;
+	}
+	.titoloquadro{
+		margin-top: 4px;
+		background-color:#c0c0c0;
+		box-sizing: border-box;
+		width: 100%;
+		font-size: 10px;
+		padding:5px;
+		border: 1px solid;
+		font-weight: bold;
+	}
+	.titolotabella{
+		background-color: #c0c0c0;
+		box-sizing: border-box;
+		width: 100%;
+		font-size: 10px;
+		font-weigth: bolder;		
+		padding:5px;		
+	}
+	.titolosezione{
+		background-color:b0b0b0;
+		box-sizing: border-box;
+		width: 100%;
+		font-size: 10px;
+		padding:5px;
+		border: 1px solid;
+	}
+	.colonnatitolo{
+	}
+	.colonnadati{
+	}
+	p{
+		margin: 5px;
+	}
+	body{
+		font-family: Tahoma, Arial;
+		font-size: 8px;
+		margin-left:10px;
+		margin-right:10px;		
+	}	
+	li{
+	list-style: none;
+	}
+	
+</style>
+<title>$helper.Modulo.Titolo</title>
+</head>
+<body>
+	<div class="titolomodulo">$helper.Modulo.Titolo</div>
+	##visualizzare in PDF il valore di modulo.help?
+		#set($rowIndex = $helper.nuovoIndiceIdSemantico())
+    	#foreach($quadro in $helper.Modulo.Quadro)
+    		#set($renderQuadro = ${helper.evaluateExpression($quadro.Attivo,$rowIndex)})
+    		#if($renderQuadro)
+    			#parse("/cart/quadro_pdf.vm")
+    		#end
+    	#end
+    	
+	<br />
+				
+    	#if( $isModulisticaNazionaleEnabled == true )
+    	
+    		#if($MODULISTICANAZIONALE_VALORE == "SCIA" )
+    			<br />[X] SCIA:
+    			<br />Il/la sottoscritto/a presenta le segnalazioni e/o comunicazioni indicate nel quadro riepilogativo allegato.
+			#end
+    		#if( $MODULISTICANAZIONALE_VALORE == "SCIA_UNICA" )
+				<br />[X] SCIA UNICA (SCIA + altre segnalazioni, comunicazioni e notifiche):
+    			<br />Il/la sottoscritto/a presenta le segnalazioni e/o comunicazioni indicate nel quadro riepilogativo allegato.
+			#end
+			#if( $MODULISTICANAZIONALE_VALORE == "SCIA_CONDIZIONATA" )
+				<br />[X] SCIA CONDIZIONATA (SCIA o SCIA unica + richiesta di autorizzazione):
+				<br />Il/la sottoscritto/a presenta richiesta di acquisizione, da parte dell'Amministrazione, delle autorizzazioni indicate nel quadro riepilogativo allegato.
+				<br />Il/la sottoscritto/a e' consapevole di non poter iniziare l'attivita' fino al rilascio dei relativi atti di assenso, che verra' comunicato dallo Sportello Unico.	
+			#end
+			#if( $MODULISTICANAZIONALE_VALORE == "AUTORIZZAZIONE" )
+				<br />[X] DOMANDA DI AUTORIZZAZIONE: 
+				<br />Il/la sottoscritto/a presenta le segnalazioni e/o comunicazioni indicate nel quadro riepilogativo allegato.
+			#end	
+			#if( $MODULISTICANAZIONALE_VALORE == "AUTORIZZAZIONE_ALTRA_AUTORIZZAZIONE" )
+				<br />[X]DOMANDA DI AUTORIZZAZIONE + DOMANDA PER IL RILASCIO DI ALTRE AUTORIZZAZIONI:
+				<br />Il/la sottoscritto/a presenta richiesta di acquisizione, da parte dell'Amministrazione, delle autorizzazioni indicate nel quadro riepilogativo allegato.
+			#end			
+			#if( $MODULISTICANAZIONALE_VALORE == "AUTORIZZAZIONE_SCIA" )
+				<br />[X] DOMANDA DI AUTORIZZAZIONE + SCIA: 
+				<br />Il/la sottoscritto/a presenta le segnalazioni e/o comunicazioni indicate nel quadro riepilogativo allegato.
+			#end
+		
+		#end  
+</body>
+</html>

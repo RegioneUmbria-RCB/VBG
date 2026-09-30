@@ -1,0 +1,632 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ####################################################################################### -->
+<!-- VERSIONE 1.0 -->
+<!-- DATA REDAZIONE: 01-06-2009 -->
+<!-- ####################################################################################### -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" attributeFormDefault="unqualified">
+	<xs:element name="MODELLO_COMMERCIO" type="modComT"/>
+	<xs:complexType name="modComT">
+		<xs:all>
+			<xs:element ref="TESTATA"/>
+			<xs:element ref="DICHIARANTE" minOccurs="0"/>
+			<xs:element ref="DATI_MODELLO_COM"/>
+			<!--xs:element ref="COM-HEADER"/-->
+		</xs:all>
+	</xs:complexType>
+	<xs:element name="TESTATA" type="testata"/>
+	<xs:complexType name="testata">
+		<xs:all>
+			<xs:element ref="COMUNE"/>
+			<xs:element ref="MODELLO"/>
+			<xs:element ref="RIQUADRI_VARIAZIONI" minOccurs="0"/>
+			<xs:element ref="PRATICA"/>
+			<xs:element ref="IMPRESA"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:element name="COMUNE" type="comune"/>
+	<xs:complexType name="comune">
+		<xs:all>
+			<xs:element name="PROVINCIA_COMUNE" type="provinciaItaObbl"/>
+			<xs:element name="NOME_COMUNE" type="assenzaCampoObbligatorio"/>
+			<xs:element name="CODICE_ISTAT_COMUNE" type="codIstatCT"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="modello">
+		<xs:all>
+			<xs:element name="CODICE_MODELLO" type="codiceModelloType"/>
+			<xs:element name="NOME_MODELLO" type="xs:string" minOccurs="0"/>
+			<xs:element name="MODALITA_COMPILAZIONE" type="modalitaCompilazione" minOccurs="0"/>
+			<xs:element name="CLASSE_ESERCIZIO" type="xs:string" minOccurs="0"/>
+			<xs:element name="TIPOLOGIA_ESERCIZIO" type="tipologiaEsercizio"/>
+			<xs:element name="DESC_TIPOLOGIA_ESERCIZIO" type="assenzaCampoObbligatorio"/>
+			<xs:element name="CODICE_SUBENTRO" type="codiceSubentro" minOccurs="0"/>
+			<xs:element name="CODICE_APERTURA" type="codiceApertura" minOccurs="0"/>
+			<xs:element name="CODICE_VARIAZIONE" type="codiceVariazione" minOccurs="0"/>
+			<xs:element name="CODICE_CESSAZIONE" type="codiceCessazione" minOccurs="0"/>
+			<xs:element name="DESCRIZIONE" type="xs:string" minOccurs="0"/>
+			<xs:element name="DATA_DECORRENZA" type="dataIta" minOccurs="0"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:element name="MODELLO" type="modello"/>
+	<xs:element name="DATA_CESSAZIONE" type="dataIta"/>
+	<xs:simpleType name="codiceModelloType">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:whiteSpace value="collapse"/>
+			<xs:enumeration value="COM0"/>
+			<xs:enumeration value="COM1"/>
+			<xs:enumeration value="COM2"/>
+			<xs:enumeration value="COM3"/>
+			<xs:enumeration value="COM4"/>
+			<xs:enumeration value="COM5"/>
+			<xs:enumeration value="COM6"/>
+			<xs:enumeration value="COM6BIS"/>
+			<xs:enumeration value="COM7"/>
+			<xs:enumeration value="COM8"/>
+			<xs:enumeration value="COM9"/>
+			<xs:enumeration value="IA"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="dataIta">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="10"/>
+			<xs:whiteSpace value="collapse"/>
+			<xs:pattern value="[0]{0}|[0-9]{2,2}/[0-9]{2,2}/[0-9]{4,4}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="dataItaObblig">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="10"/>
+			<xs:whiteSpace value="collapse"/>
+			<xs:pattern value="[0-9]{2,2}/[0-9]{2,2}/[0-9]{4,4}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="modalitaCompilazione">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="COM"/>
+			<xs:enumeration value="TEL"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="cap">
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:pattern value="[0]{0,1}|[0-9]{5}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="provincia">
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:pattern value="[0]{0}|[a-zA-Z]{2}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="provinciaItaObbl">
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:pattern value="[a-zA-Z]{2}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="nrea">
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:pattern value="[0-9]{0,9}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="codFisc">
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:pattern value="[0]{0}|[a-zA-Z]{6}[0-9]{2}[a-zA-Z]{1}[0-9]{2}[a-zA-Z]{1}[0-9]{3}[a-zA-Z]{1}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="piva">
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:pattern value="[0]{0}|[0-9]{11}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tipologiaEsercizio">
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="1"/>
+			<xs:enumeration value="V"/>
+			<xs:enumeration value="M"/>
+			<xs:enumeration value="G"/>
+			<xs:enumeration value="S"/>
+			<xs:enumeration value="C"/>
+			<xs:enumeration value="A"/>
+			<xs:enumeration value="D"/>
+			<xs:enumeration value="Y"/>
+			<xs:enumeration value="T"/>
+			<xs:enumeration value="W"/>
+			<xs:enumeration value="I"/>
+			<xs:enumeration value="Q"/>
+			<xs:enumeration value="B"/>
+			<xs:enumeration value="E"/>
+			<xs:enumeration value="F"/>
+			<xs:enumeration value="H"/>
+			<xs:enumeration value="L"/>
+			<xs:enumeration value="N"/>
+			<xs:enumeration value="O"/>
+			<xs:enumeration value="P"/>
+			<xs:enumeration value="R"/>
+			<xs:enumeration value="Z"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="codiceSubentro">
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:enumeration value=""/>
+			<xs:enumeration value="V"/>
+			<xs:enumeration value="N"/>
+			<xs:enumeration value="S"/>
+			<xs:enumeration value="U"/>
+			<xs:enumeration value="Z"/>
+			<xs:enumeration value="A"/>
+			<xs:enumeration value="C"/>
+			<xs:enumeration value="F"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="codiceApertura">
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:enumeration value=""/>
+			<xs:enumeration value="N"/>
+			<xs:enumeration value="C"/>
+			<xs:enumeration value="S"/>
+			<xs:enumeration value="U"/>
+			<xs:enumeration value="P"/>
+			<xs:enumeration value="R"/>
+			<xs:enumeration value="I"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="codiceVariazione">
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:enumeration value=""/>
+			<xs:enumeration value="T"/>
+			<xs:enumeration value="S"/>
+			<xs:enumeration value="A"/>
+			<xs:enumeration value="M"/>
+			<xs:enumeration value="U"/>
+			<xs:enumeration value="B"/>
+			<xs:enumeration value="X"/>
+			<xs:enumeration value="W"/>
+			<xs:enumeration value="C"/>
+			<xs:enumeration value="L"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="codiceCessazione">
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:enumeration value=""/>
+			<xs:enumeration value="A"/>
+			<xs:enumeration value="C"/>
+			<xs:enumeration value="D"/>
+			<xs:enumeration value="F"/>
+			<xs:enumeration value="O"/>
+			<xs:enumeration value="N"/>
+			<xs:enumeration value="T"/>
+			<xs:enumeration value="U"/>
+			<xs:enumeration value="X"/>
+			<xs:enumeration value="Y"/>
+			<xs:enumeration value="R"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="codiceAmpliatoRidotto">
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:pattern value="[ARar]?"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="siNo">
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:pattern value="[SNsn]?"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="siNoObblig">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:whiteSpace value="collapse"/>
+			<xs:enumeration value="S"/>
+			<xs:enumeration value="N"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="codiceStagionalePermanente">
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:pattern value="[SNPsnp]?"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="codiceAggiuntoEliminato">
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:pattern value="[AEae]?"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="trueFalse">
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:pattern value="true|false"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="codIstatCT">
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:length value="6"/>
+			<xs:pattern value="[0-9]*"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="riquadriVariazioni">
+		<xs:all>
+			<xs:element name="INDICATORE_VARIAZIONE_SUPERFICIE_ALIMENTARE" type="codiceAmpliatoRidotto" minOccurs="0"/>
+			<xs:element name="INDICATORE_VARIAZIONE_SUPERFICIE_NON_ALIMENTARE" type="codiceAmpliatoRidotto" minOccurs="0"/>
+			<xs:element name="INDICATORE_VARIAZIONE_SUPERFICIE_VENDITA" type="codiceAmpliatoRidotto" minOccurs="0"/>
+			<xs:element name="INDICATORE_VARIAZIONE_SETTORE_ALIMENTARE" type="codiceAggiuntoEliminato" minOccurs="0"/>
+			<xs:element name="INDICATORE_VARIAZIONE_SETTORE_NON_ALIMENTARE" type="codiceAggiuntoEliminato" minOccurs="0"/>
+			<xs:element name="INDICATORE_VARIAZIONE_SUPERFICIE_FARMACIA" type="codiceAmpliatoRidotto" minOccurs="0"/>
+			<xs:element name="INDICATORE_VARIAZIONE_SETTORE_FARMACIA" type="codiceAggiuntoEliminato" minOccurs="0"/>
+			<xs:element name="INDICATORE_VARIAZIONE_SUPERFICIE_MONOPOLIO" type="codiceAmpliatoRidotto" minOccurs="0"/>
+			<xs:element name="INDICATORE_VARIAZIONE_SETTORE_MONOPOLIO" type="codiceAggiuntoEliminato" minOccurs="0"/>
+			<xs:element name="INDICATORE_VARIAZIONE_SUPERFICIE_CARBURANTI" type="codiceAmpliatoRidotto" minOccurs="0"/>
+			<xs:element name="INDICATORE_VARIAZIONE_SETTORE_CARBURANTI" type="codiceAggiuntoEliminato" minOccurs="0"/>
+			<xs:element ref="CESSAZIONE" minOccurs="0"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="cessazione">
+		<xs:all>
+			<xs:element ref="DATA_CESSAZIONE"/>
+			<xs:element name="CAUSALE_CESSAZIONE" type="xs:string"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:element name="CESSAZIONE" type="cessazione"/>
+	<xs:element name="RIQUADRI_VARIAZIONI" type="riquadriVariazioni"/>
+	<xs:complexType name="pratica">
+		<xs:all>
+			<xs:element name="CHIAVE_INTERNA_PRATICA" type="assenzaCampoObbligatorio"/>
+			<xs:element name="NUMERO_PROTOCOLLO_COMUNE" type="xs:string" minOccurs="0"/>
+			<xs:element name="NUMERO_PROTOCOLLO_COMUNE_INTERNO" type="xs:string" minOccurs="0"/>
+			<xs:element name="DATA_PRESENTAZIONE_MODELLO" type="dataItaObblig"/>
+			<xs:element name="NUMERO_AUTORIZZAZIONE" type="xs:string" minOccurs="0"/>
+			<xs:element name="STATO_AVANZAMENTO_PRATICA" type="xs:string" minOccurs="0"/>
+			<xs:element name="DATA_EVASIONE_MODELLO" type="dataItaObblig"/>
+			<xs:element name="ESITO_ISTRUTTORIA" type="esito" minOccurs="0"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:element name="PRATICA" type="pratica"/>
+	<xs:simpleType name="cciaa">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0]{0}|[a-zA-Z][a-zA-Z]"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="esito">
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:enumeration value=""/>
+			<xs:enumeration value="B"/>
+			<xs:enumeration value="C"/>
+			<xs:enumeration value="I"/>
+			<xs:enumeration value="A"/>
+			<xs:enumeration value="S"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="assenzaCampoObbligatorio">
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="sesso">
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:pattern value="[0]{0}|[FMfm]{1}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="impresa">
+		<xs:all>
+			<xs:element name="CODICE_FISCALE" type="codFiscImpresa"/>
+			<xs:element name="PARTITA_IVA" type="piva" minOccurs="0"/>
+			<xs:element name="PROVINCIA_CAMERA_DI_COMMERCIO" type="cciaa" minOccurs="0"/>
+			<xs:element name="NUMERO_REA" type="nrea" minOccurs="0"/>
+			<xs:element name="NUMERO_RI" type="xs:string" minOccurs="0"/>
+			<xs:element name="COMUNE" minOccurs="0"/>
+			<xs:element name="PROVINCIA" type="provincia" minOccurs="0"/>
+			<xs:element name="VIA" minOccurs="0"/>
+			<xs:element name="NUMERO_CIVICO" minOccurs="0"/>
+			<xs:element name="CAP" type="cap" minOccurs="0"/>
+			<xs:element name="PROGRESSIVO_UNITA_LOCALE" type="xs:string" minOccurs="0"/>
+			<xs:element name="PROGRESSIVO_ESERCIZIO" type="xs:string" minOccurs="0"/>
+			<xs:element name="DENOMINAZIONE" minOccurs="0"/>
+			<xs:element name="TELEFONO" type="xs:string" minOccurs="0"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:element name="IMPRESA" type="impresa"/>
+	<xs:complexType name="dichiarante">
+		<xs:all>
+			<xs:element name="CODICE_FISCALE_DICHIARANTE" type="codFisc" minOccurs="0"/>
+			<xs:element name="COGNOME_DICHIARANTE" type="xs:string" minOccurs="0"/>
+			<xs:element name="NOME_DICHIARANTE" type="xs:string" minOccurs="0"/>
+			<xs:element name="DATA_NASCITA_DICHIARANTE" type="dataIta" minOccurs="0"/>
+			<xs:element name="CITTADINANZA_DICHIARANTE" type="xs:string" minOccurs="0"/>
+			<xs:element name="SESSO_DICHIARANTE" type="sesso" minOccurs="0"/>
+			<xs:element name="STATO_NASCITA_DICHIARANTE" type="xs:string" minOccurs="0"/>
+			<xs:element name="PROVINCIA_NASCITA_DICHIARANTE" type="provincia" minOccurs="0"/>
+			<xs:element name="COMUNE_NASCITA_DICHIARANTE" type="xs:string" minOccurs="0"/>
+			<xs:element name="PROVINCIA_RESIDENZA_DICHIARANTE" type="provincia" minOccurs="0"/>
+			<xs:element name="COMUNE_RESIDENZA_DICHIARANTE" type="xs:string" minOccurs="0"/>
+			<xs:element name="VIA_RESIDENZA_DICHIARANTE" type="xs:string" minOccurs="0"/>
+			<xs:element name="NUMERO_CIVICO_RESIDENZA_DICHIARANTE" type="xs:string" minOccurs="0"/>
+			<xs:element name="CAP_RESIDENZA_DICHIARANTE" type="cap" minOccurs="0"/>
+			<xs:element name="RUOLO_DICHIARANTE" type="xs:string" minOccurs="0"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:element name="DICHIARANTE" type="dichiarante"/>
+	<xs:simpleType name="codFiscImpresa">
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:pattern value="[a-zA-Z]{6}[0-9]{2}[a-zA-Z]{1}[0-9]{2}[a-zA-Z]{1}[0-9]{3}[a-zA-Z]{1}|[0-9]{11}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="DATI_MODELLO_COM" type="datiModelloCom"/>
+	<xs:complexType name="datiModelloCom">
+		<xs:sequence>
+			<xs:element name="NOTE" type="xs:string" minOccurs="0"/>
+			<xs:element ref="LOCALIZZAZIONE_ESERCIZIO" maxOccurs="unbounded"/>
+			<xs:element ref="CARATTERISTICHE_ESERCIZIO"/>
+			<xs:element ref="CENTRO_COMMERCIALE" minOccurs="0"/>
+			<xs:element name="INDICATORE_NUOVO_ESERCIZIO" type="xs:string" minOccurs="0"/>
+			<xs:element ref="ESERCIZI_CONCENTRATI" minOccurs="0"/>
+			<xs:element ref="SUBENTRO" minOccurs="0"/>
+			<xs:element ref="ATTIVITA" minOccurs="0"/>
+			<xs:element ref="SPACCI_INTERNI" minOccurs="0"/>
+			<xs:element ref="DISTRIBUTORI_AUTOMATICI" minOccurs="0"/>
+			<xs:element ref="DATI_COMMERCIO_ELETTRONICO" minOccurs="0"/>
+			<xs:element ref="CONVERSIONE_AUTORIZZAZIONE" minOccurs="0"/>
+			<xs:element ref="MERCATO" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="LOCALIZZAZIONE_ESERCIZIO" type="localizzazioneEsercizio"/>
+	<xs:complexType name="localizzazioneEsercizio">
+		<xs:all>
+			<xs:element name="CHIAVE_FISICA_ESERCIZIO" type="xs:string" minOccurs="0"/>
+			<xs:element name="INDIRIZZO" type="xs:string" minOccurs="0"/>
+			<xs:element name="CODICE_VIA" type="xs:string" minOccurs="0"/>
+			<xs:element name="NUMERO_CIVICO" type="xs:string" minOccurs="0"/>
+			<xs:element name="CODICE_NUMERO_CIVICO" type="xs:string" minOccurs="0"/>
+			<xs:element name="CAP" type="cap" minOccurs="0"/>
+			<xs:element name="COMUNE" type="xs:string" minOccurs="0"/>
+			<xs:element name="PRESSO" type="xs:string" minOccurs="0"/>
+			<xs:element name="CODICE_STRADARIO" type="xs:string" minOccurs="0"/>
+			<xs:element name="CODICE_CIRCOSCRIZIONE" type="xs:string" minOccurs="0"/>
+			<xs:element name="CODICE_ZONA_COMMERCIALE" type="xs:string" minOccurs="0"/>
+			<xs:element name="NUMERO_TELEFONO" type="xs:string" minOccurs="0"/>
+			<xs:element name="PROGRESSIVO_LOCALIZZAZIONE_CAMERA_DI_COMMERCIO" type="xs:string" minOccurs="0"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:element name="CARATTERISTICHE_ESERCIZIO" type="CaratteristicheEsercizio"/>
+	<xs:simpleType name="superf">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0]{0}|[0-9]{1,5}[.]{0,1}[0-9]{0,2}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!--xs:simpleType name="superfObbli">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:pattern value="[0]{0}|[0-9]{1,5}[.]{0,1}[0-9]{0,2}"/>
+		</xs:restriction>
+	</xs:simpleType-->
+	<xs:simpleType name="numEserc">
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:pattern value="[0]{0}|[0-9]{1,6}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="CaratteristicheEsercizio">
+		<xs:all>
+			<xs:element name="INDICATORE_ALIMENTARE" type="siNoObblig"/>
+			<xs:element name="SUPERFICIE_ALIMENTARE" type="superf" minOccurs="0"/>
+			<xs:element name="INDICATORE_NON_ALIMENTARE" type="siNoObblig"/>
+			<xs:element name="SUPERFICIE_NON_ALIMENTARE" type="superf" minOccurs="0"/>
+			<xs:element name="INDICATORE_FARMACIA" type="siNoObblig"/>
+			<xs:element name="INDICATORE_MONOPOLIO" type="siNoObblig"/>
+			<xs:element name="INDICATORE_CARBURANTI" type="siNoObblig"/>
+			<xs:element name="SUPERFICIE_TABELLE_SPECIALI" type="superf" minOccurs="0"/>
+			<xs:element name="SUPERFICIE_COMPLESSIVA" type="superf" minOccurs="0"/>
+			<xs:element name="INDICATORE_STAGIONALE" type="codiceStagionalePermanente"/>
+			<xs:element name="DATA_INIZIO_STAGIONE" type="dataIta" minOccurs="0"/>
+			<xs:element name="DATA_FINE_STAGIONE" type="dataIta" minOccurs="0"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:element name="CENTRO_COMMERCIALE" type="CentroCommerciale"/>
+	<xs:complexType name="CentroCommerciale">
+		<xs:all>
+			<xs:element name="INDICATORE_CENTRO_COMMERCIALE" type="siNo" minOccurs="0"/>
+			<xs:element name="DENOMINAZIONE_CENTRO_COMMERCIALE" type="xs:string" minOccurs="0"/>
+			<xs:element name="CODICE_CENTRO_COMMERCIALE" type="xs:string" minOccurs="0"/>
+			<xs:element name="NUMERO_PROVVEDIMENTO_CENTRO_COMMERCIALE" type="xs:string" minOccurs="0"/>
+			<xs:element name="DATA_PROVVEDIMENTO_CENTRO_COMMERCIALE" type="dataIta" minOccurs="0"/>
+			<xs:element name="ENTE_PROVVEDIMENTO_CENTRO_COMMERCIALE" type="xs:string" minOccurs="0"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:element name="ESERCIZI_CONCENTRATI" type="EseciziConcentrati"/>
+	<xs:complexType name="EseciziConcentrati">
+		<xs:sequence>
+			<xs:element name="NUMERO_ESERCIZI_CONCENTRATI" type="numEserc" minOccurs="0"/>
+			<xs:element ref="GRUPPO_ESERCIZI_CONCENTRATI" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="GRUPPO_ESERCIZI_CONCENTRATI" type="GruppoEserciziConcentrati"/>
+	<xs:complexType name="GruppoEserciziConcentrati">
+		<xs:all>
+			<xs:element name="TITOLARE" type="xs:string" minOccurs="0"/>
+			<xs:element name="CODICE_FISCALE" type="codFisc" minOccurs="0"/>
+			<xs:element name="INDIRIZZO" type="xs:string" minOccurs="0"/>
+			<xs:element name="NUMERO_AUTORIZZAZIONE" type="xs:string" minOccurs="0"/>
+			<xs:element name="DATA_AUTORIZZAZIONE" type="dataIta" minOccurs="0"/>
+			<xs:element name="METRI_QUADRI" type="superf" minOccurs="0"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:element name="SUBENTRO" type="Subentro"/>
+	<xs:complexType name="Subentro">
+		<xs:all>
+			<xs:element name="DENOMINAZIONE_SUBENTRO" type="xs:string" minOccurs="0"/>
+			<xs:element name="CODICE_FISCALE_IMPRESA_SUBENTRO" type="codFisc" minOccurs="0"/>
+			<xs:element name="NUMERO_AUTORIZZAZIONE_SUBENTRO" type="xs:string" minOccurs="0"/>
+			<xs:element name="DATA_AUTORIZZAZIONE_SUBENTRO" type="dataIta" minOccurs="0"/>
+			<xs:element name="TIPO_SUBENTRO" type="xs:string" minOccurs="0"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:element name="ATTIVITA" type="Attivita"/>
+	<xs:complexType name="Attivita">
+		<xs:all>
+			<xs:element name="CODICE_ATTIVITA_PREVALENTE" type="codAttPrevalente" minOccurs="0"/>
+			<xs:element name="DESCRIZIONE_ATTIVITA_PREVALENTE" type="xs:string" minOccurs="0"/>
+			<xs:element name="CODICE_ATTIVITA_SECONDARIA" type="xs:string" minOccurs="0"/>
+			<xs:element name="DESCRIZIONE_ATTIVITA_SECONDARIA" type="xs:string" minOccurs="0"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:element name="SPACCI_INTERNI" type="SpacciInterni"/>
+	<xs:complexType name="SpacciInterni">
+		<xs:all>
+			<xs:element name="DENOMINAZIONE_ENTE_SPACCIO_INTERNO" type="xs:string" minOccurs="0"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:element name="DISTRIBUTORI_AUTOMATICI" type="DistribAut"/>
+	<xs:complexType name="DistribAut">
+		<xs:sequence>
+			<xs:element ref="GRUPPO_DISTRIBUTORI_AUTOMATICI" maxOccurs="unbounded"/>
+			<xs:element ref="TIPOLOGIA_ATTIVITA_DISTRIBUTORI_AUTOMATICI"/>
+			<xs:element ref="SETTORE_MERCEOLOGICO_DISTRIBUTORI_AUTOMATICI"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="GRUPPO_DISTRIBUTORI_AUTOMATICI" type="GruppoDistrAutomatici"/>
+	<xs:complexType name="GruppoDistrAutomatici">
+		<xs:all>
+			<xs:element name="INDIRIZZO" type="xs:string" minOccurs="0"/>
+			<xs:element name="NUMERO_CIVICO" type="xs:string" minOccurs="0"/>
+			<xs:element name="PRESSO" type="xs:string" minOccurs="0"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:element name="TIPOLOGIA_ATTIVITA_DISTRIBUTORI_AUTOMATICI" type="TipologiaDistrAutomatici"/>
+	<xs:complexType name="TipologiaDistrAutomatici">
+		<xs:all>
+			<xs:element name="INDICATORE_AREA_PUBBLICA" type="siNo" minOccurs="0"/>
+			<xs:element name="INDICATORE_AREA_PRIVATA" type="siNo" minOccurs="0"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:element name="SETTORE_MERCEOLOGICO_DISTRIBUTORI_AUTOMATICI" type="SettMercDistrAutomatici"/>
+	<xs:complexType name="SettMercDistrAutomatici">
+		<xs:all>
+			<xs:element name="INDICATORE_ALIMENTARE" type="siNo" minOccurs="0"/>
+			<xs:element name="INDICATORE_NON_ALIMENTARE" type="siNo" minOccurs="0"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:element name="DATI_COMMERCIO_ELETTRONICO" type="DatiComElettr"/>
+	<xs:complexType name="DatiComElettr">
+		<xs:all>
+			<xs:element name="INDICATORE_LOCALE_SEPARATO" type="siNo" minOccurs="0"/>
+			<xs:element name="INDICATORE_ALTRA_ATTIVITA" type="siNo" minOccurs="0"/>
+			<xs:element name="CODICE_ALTRA_ATTIVITA" type="xs:string" minOccurs="0"/>
+			<xs:element name="INDICATORE_TIPO_DEPOSITO_MERCI" type="proprioTerzi" minOccurs="0"/>
+			<xs:element name="INDIRIZZO_DEPOSITO_MERCI" type="xs:string" minOccurs="0"/>
+			<xs:element name="URL_SITO_WEB" type="xs:string" minOccurs="0"/>
+			<xs:element name="URL_PORTALE_WEB" type="xs:string" minOccurs="0"/>
+			<xs:element name="INDICATORE_SITO_INDIVIDUALE_COLLETTIVO" type="siNo" minOccurs="0"/>
+			<xs:element name="INDICATORE_VARIAZIONE_SITO_WEB" type="siNo" minOccurs="0"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:element name="CONVERSIONE_AUTORIZZAZIONE" type="ConversioneAutorizzazione"/>
+	<xs:complexType name="ConversioneAutorizzazione">
+		<xs:all>
+			<xs:element name="NUMERO_AUTORIZZAZIONE_PRECEDENTE" type="xs:string" minOccurs="0"/>
+			<xs:element name="DATA_AUTORIZZAZIONE_PRECEDENTE" type="dataIta" minOccurs="0"/>
+			<xs:element name="COMUNE_AUTORIZZAZIONE_PRECEDENTE" type="xs:string" minOccurs="0"/>
+			<xs:element name="INTESTATARIO_AUTORIZZAZIONE_PRECEDENTE" type="xs:string" minOccurs="0"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:simpleType name="mercato">
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:pattern value="[0]{0}|[GSMAgsma]{1}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="codAttPrevalente">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="5050"/>
+			<xs:enumeration value="5211"/>
+			<xs:enumeration value="5212"/>
+			<xs:enumeration value="5221"/>
+			<xs:enumeration value="5222"/>
+			<xs:enumeration value="5223"/>
+			<xs:enumeration value="5224"/>
+			<xs:enumeration value="5225"/>
+			<xs:enumeration value="5226"/>
+			<xs:enumeration value="52274"/>
+			<xs:enumeration value="5231"/>
+			<xs:enumeration value="5232"/>
+			<xs:enumeration value="5233"/>
+			<xs:enumeration value="5241"/>
+			<xs:enumeration value="5242"/>
+			<xs:enumeration value="5243"/>
+			<xs:enumeration value="5244"/>
+			<xs:enumeration value="5245"/>
+			<xs:enumeration value="5246"/>
+			<xs:enumeration value="5247"/>
+			<xs:enumeration value="5248"/>
+			<xs:enumeration value="5250"/>
+			<xs:enumeration value=""/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="proprioTerzi">
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:pattern value="[0]{0}|[PTpt]{1}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="giornoSett">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="LUN"/>
+			<xs:enumeration value="MAR"/>
+			<xs:enumeration value="MER"/>
+			<xs:enumeration value="GIO"/>
+			<xs:enumeration value="VEN"/>
+			<xs:enumeration value="SAB"/>
+			<xs:enumeration value="DOM"/>
+			<xs:enumeration value=""/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="MERCATO" type="Mercato"/>
+	<xs:complexType name="Mercato">
+		<xs:all>
+			<xs:element name="NOME_MERCATO" type="xs:string" minOccurs="0"/>
+			<xs:element name="FREQUENZA_MERCATO" type="mercato" minOccurs="0"/>
+			<xs:element name="ALTRO" type="xs:string" minOccurs="0"/>
+			<xs:element ref="GIORNI_SVOLGIMENTO" minOccurs="0"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:element name="GIORNI_SVOLGIMENTO" type="GiorniSvolgimento"/>
+	<xs:complexType name="GiorniSvolgimento">
+		<xs:all>
+			<xs:element name="GIORNO_SETTIMANA" type="giornoSett"/>
+			<xs:element name="NUMERO_POSTEGGI" type="xs:string"/>
+			<xs:element name="MQ_POSTEGGI" type="superf"/>
+		</xs:all>
+	</xs:complexType>
+	<!--xs:element name="FONTE_PROVENIENZA_DATI" type="fonteProvenienzaDati"/>
+	<xs:simpleType name="fonteProvenienzaDati">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="COM"/>
+			<xs:enumeration value="TEL"/>
+		</xs:restriction>
+	</xs:simpleType-->
+	<!--xs:element name="COM-HEADER" type="comHeader"/>
+	<xs:complexType name="comHeader">
+		<xs:sequence>
+			<xs:element ref="FONTE_PROVENIENZA_DATI"/>
+		</xs:sequence>
+		<xs:attribute name="comunicazione" type="xs:string"/>
+		<xs:attribute name="etichetta" type="xs:string"/>
+		<xs:attribute name="avanzamento" type="xs:string"/>
+		<xs:attribute name="pk" type="xs:string"/>
+	</xs:complexType-->
+</xs:schema>

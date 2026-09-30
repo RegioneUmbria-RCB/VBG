@@ -1,0 +1,104 @@
+{{for menu itemVar="~menuItem"}}
+<li class="dropdown menu-root" data-menu-id='{{:#index}}'>
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{:nome}}</a>
+    <ul class="dropdown-menu mega-menu">
+        <li>
+            <div class="yamm-content">
+                <div class="row menu-row">
+
+                    <div class="col-md-3 menu-navigazione-sx left-panel" >
+                        <div class="ricerca-testuale">
+                            <div class="input-group ricerca-menu" data-panel-id="MENU_RICERCA">
+                                <span class="input-group-addon" id="basic-addon1">
+                                    <i class="glyphicon glyphicon-search"></i>
+                                </span>
+                                <input type="text" class="form-control" placeholder="Cosa stai cercando?" aria-describedby="basic-addon1">
+                            </div>
+                        </div>
+
+                        <div class="pannello-preferiti" data-menu-name="{{:~menuItem.nome}}">
+                            <div class="gruppo-menu" data-toggle="#software-preferiti-{{:#index}}">
+                                <a href="#" class="espandi-menu">
+                                    Preferiti 
+                                    <i class="glyphicon glyphicon-menu-up"></i>
+                                </a>
+                            </div>
+
+                            <ul class="scelta-software tutti-software" id="software-preferiti-{{:#index}}" >
+                                {{for softwarePreferiti}}
+                                    <li class="voce-menu">
+                                        <i class="glyphicon glyphicon-star rimuovi-preferiti" data-software-id="{{:codice}}" /><!--
+                                        --><a href="#" class="seleziona-software" data-panel-id="{{:codice}}">{{:nome}}</a>
+                                    </li>
+                                {{/for}}
+
+                                <li class="no-preferiti">
+                                    <i>Non sono presenti software preferiti</i>
+                                </li>
+                                
+                            </ul>                        
+                        </div>
+                        <div class="gruppo-menu" data-toggle="#scelta-software-{{:#index}}">
+                            <a href="#" class="espandi-menu">
+                                Tutti i software
+                                <i class="glyphicon glyphicon-menu-up"></i>
+                            </a>
+                        </div>
+
+                        <ul class="scelta-software tutti-software" id="scelta-software-{{:#index}}" >
+                            {{for software}}
+                                <li class="voce-menu">
+                                    <i class="glyphicon glyphicon-star-empty aggiungi-preferiti" data-software-id="{{:codice}}-{{:id}}" data-menu-name="{{:~menuItem.nome}}"></i><!--
+                                    --><a href="#" class="seleziona-software" data-panel-id="{{:codice}}-{{:id}}">{{:nome}}</a>
+                                </li>
+                            {{/for}}
+                        </ul>
+                    </div>
+
+                    <div class="col-md-9 menu-navigazione-dx right-panel">
+                        <div class="inner">
+                            <div>
+                                <div class="MENU_RICERCA pannello-menu" data-panel-id="MENU_RICERCA">
+                                    <h1>{{:~menuItem.nome}} / Ricerca testuale</h1>
+                                    <div class="menu-spiegazione-ricerca">
+                                        
+                                    </div>
+                                    <div class="menu-lista-risultati menu-container">
+                                    </div>
+                                    <div class="menu-no-risultati">
+                                        Nessun risultato trovato
+                                    </div>                            
+                                </div>
+
+                                {{for software}}
+
+                                <div class="{{:id}} pannello-menu ricercabile" data-panel-id="{{:codice}}-{{:id}}">
+
+                                    <h1>{{:~menuItem.nome}} / {{:nome}}</h1>
+                                    <div class="menu-container">
+
+                                        {{for sezioni}}
+
+                                        <div class="menu-sezione">
+                                            <h2>{{:nome}}</h2>
+                                            <ul>
+                                                {{for voci}}
+                                                <li><a href="{{:link}}" class='voce-dizionario'>{{:nome}}</a></li>
+                                                {{/for}}
+                                            </ul>
+                                        </div>
+                                        {{/for}}
+
+                                    </div>
+
+                                </div>
+                                {{/for}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</li>
+{{/for}}

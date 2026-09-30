@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="distribuzione-applicazione" default="distribuzione">
+	
+	<property environment="env"/>
+	<property name="project.encoding" value="utf-8" />
+	
+
+	<target name="distribuzione">
+	
+		
+		<antcall target="make_war">
+			<param name="componente" value="smart-console"/>
+			<param name="warname" value="console"/>
+		</antcall>
+		
+		<antcall target="make_war">
+			<param name="componente" value="smart-servizi-console"/>
+			<param name="warname" value="servizi-console"/>
+		</antcall>
+		
+		
+	</target>
+	
+		<target name="make_war">
+			
+
+	        	<delete dir="${basedir}/${componente}/build/classes"/>
+	    		<delete dir="${basedir}/${componente}/target"/>
+	
+				<mkdir dir="${basedir}/${componente}/build/classes"/>
+				<mkdir dir="${basedir}/${componente}/target"/>
+			
+			
+					<path id="src.path">
+					  <pathelement location="${basedir}/smart-core/src" />
+					  <pathelement location="${basedir}/${componente}/src" />
+					</path>
+			
+	        	<javac  includejavaruntime="true" 
+	        			includeantruntime="true" 
+	        			source="1.6" target="1.6" 
+	        			encoding="${project.encoding}"
+	        			destdir="${basedir}/${componente}/build/classes" 
+	        			debug="false" fork="true">
+	        		<src refid="src.path" />
+	        		<classpath refid="compile.classpath" />
+	        	</javac>			
+				
+				<copy todir="${basedir}/${componente}/build/classes">
+				  <fileset dir="${basedir}/smart-core/src">
+				  	<exclude name="**/*.java"/>
+				    <include name="**/*.*"/>
+				  	<include name="LICENSE"/>
+				  </fileset>
+			    </copy>
+				<copy todir="${basedir}/${componente}/build/classes">
+				  <fileset dir="${basedir}/${componente}/src">
+				  	<exclude name="**/*.java"/>
+				    <include name="**/*.*"/>
+				  	<include name="LICENSE"/>
+				  </fileset>
+			    </copy>
+
+				
+				<war destfile = "${basedir}/${componente}/target/${warname}.war" 
+						webxml="${basedir}/${componente}/WebContent/WEB-INF/web.xml">
+					  <fileset dir="${basedir}/smart-core/WebContent" />
+				      <fileset dir="${basedir}/${componente}/WebContent" />				
+				      <classes dir="${basedir}/${componente}/build/classes"/>			  
+				</war>
+				
+			</target>
+	
+	
+	<path id="compile.classpath">
+		<fileset dir="${basedir}\ext\tomcat">
+		    	<include name="**/*.jar"/>
+	  	</fileset>
+		<fileset dir="${basedir}\smart-core\WebContent\WEB-INF\lib">
+	    	<include name="**/*.jar"/>
+	  	</fileset>		
+	 </path>
+		
+	
+</project>

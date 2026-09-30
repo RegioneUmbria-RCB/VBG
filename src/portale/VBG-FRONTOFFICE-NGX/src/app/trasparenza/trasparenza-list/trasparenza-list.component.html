@@ -1,0 +1,318 @@
+<app-inner-page-layout>
+  <div class="trasparenza">
+    <h3>Archivio pratiche</h3>
+    <div [ngClass]="{ 'has-error': fieldCampiObbligatori }">
+      <p class="help-block">{{ messaggioCampiObbligatori }}</p>
+    </div>
+
+    @if (!caricamentoInCorso && !risultatiVisibili) {
+      <div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="numero-pratica"
+                >{{ etichettaNumeroPratica }}*</label
+                >
+                <input
+                  id="numero-pratica"
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="model.numeroPratica"
+                            [ngClass]="{
+                                'ng-touched': fieldCampiObbligatori,
+                                'invalid-field': fieldCampiObbligatori
+                            }"
+                  />
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="numero-protocollo"
+                  >{{ etichettaNumeroProtocollo }}*</label
+                  >
+                  <input
+                    id="numero-protocollo"
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="model.numeroProtocollo"
+                            [ngClass]="{
+                                'ng-touched': fieldCampiObbligatori,
+                                'invalid-field': fieldCampiObbligatori
+                            }"
+                    />
+                </div>
+              </div>
+              @if (mostraAnnoProtocollo) {
+                <div class="col-md-2">
+                  <div class="form-group">
+                    <label for="anno-protocollo"
+                      >{{ etichettaAnnoProtocollo }}*</label
+                      >
+                      <input
+                        type="text"
+                        id="anno-protocollo"
+                        maxlength="4"
+                        class="form-control"
+                        [(ngModel)]="model.annoProtocollo"
+                        />
+                    </div>
+                  </div>
+                }
+              </div>
+              @if (!nascondiReferente) {
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="referente-pratica">{{
+                        etichettaReferente
+                      }}</label>
+                      <input
+                        id="referente-pratica"
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="model.referente"
+                        />
+                    </div>
+                  </div>
+                </div>
+              }
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="data-dal">{{ etichettaDallaData }}</label>
+                    <input
+                      type="date"
+                      id="data-dal"
+                      class="form-control input-date"
+                      [(ngModel)]="model.dataDal"
+                      />
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="data-al">{{ etichettaAllaData }}</label>
+                    <input
+                      type="date"
+                      id="data-al"
+                      class="form-control input-date"
+                      [(ngModel)]="model.dataAl"
+                            [class.invalid-field]="
+                                validazioneIntervalloDateFallita
+                            "
+                      [min]="model.dataDal"
+                      />
+                    @if (validazioneIntervalloDateFallita) {
+                      <span
+                        class="text-danger"
+                        >La data selezionata non è valida</span
+                        >
+                      }
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="stato">{{ etichettaStato }}</label>
+                      <select
+                        class="form-control"
+                        id="selezione-stato"
+                        [(ngModel)]="model.stato"
+                        >
+                        <option value=""></option>
+                        @for (statoVar of statiIstanza$ | async; track statoVar) {
+                          <option
+                            [ngValue]="statoVar.id"
+                            >
+                            {{ statoVar.stato }}
+                          </option>
+                        }
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="selezione-comune">{{
+                        etichettaComune
+                      }}</label>
+                      <select
+                        class="form-control"
+                        id="selezione-comune"
+                        [(ngModel)]="model.comune"
+                        >
+                        <option value=""></option>
+                        @for (comune of comuniAssociati$ | async; track comune) {
+                          <option
+                            [ngValue]="comune.codiceComune"
+                            >
+                            {{ comune.comune }}
+                          </option>
+                        }
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-4 ricerca-indirizzo">
+                    <div
+                      class="form-group"
+                      [ngClass]="{ 'has-error': fieldIndirizzoInvalid }"
+                      >
+                      <label for="indirizzo"
+                        >{{ etichettaIndirizzo }}*
+                        @if (fieldIndirizzoInvalid) {
+                          <sup>*</sup>
+                          }</label
+                          >
+                          <input
+                            id="indirizzo"
+                            type="text"
+                            class="form-control"
+                            [(ngModel)]="model.indirizzo"
+                            (keyup)="ricercaStradario()"
+                            (blur)="onRicercaStradarioBlur()"
+                            [ngClass]="{
+                                'ng-touched': fieldCampiObbligatori,
+                                'invalid-field': fieldCampiObbligatori
+                            }"
+                            />
+                          @if (fieldIndirizzoInvalid) {
+                            <p class="help-block">
+                              Campo obbligatorio
+                            </p>
+                          }
+                        </div>
+                        @if (
+                          risultatoRicercaStradario !== null &&
+                          risultatoRicercaStradario !== undefined &&
+                          risultatoRicercaStradario.d.ItemCount > 0
+                          ) {
+                          <div
+                            class="search-results"
+                            >
+                            <ul>
+                              @for (
+                                risultato of risultatoRicercaStradario.d
+                                .Items | slice: 0:5
+                                ; track
+                                risultato) {
+                                <li
+                                (click)="
+                                    chiudiRicerca(
+                                        risultato.Descrizione,
+                                        risultato.Codice
+                                    )
+                                "
+                                  >
+                                  <span>{{ risultato.Descrizione }}</span>
+                                </li>
+                              }
+                            </ul>
+                          </div>
+                        }
+                      </div>
+                      <div class="col-md-2">
+                        <div class="form-group">
+                          <label for="civico">{{ etichettaCivico }}</label>
+                          <input
+                            type="text"
+                            id="civico"
+                            class="form-control"
+                            [(ngModel)]="model.civico"
+                            />
+                        </div>
+                      </div>
+                    </div>
+                    @if (mostraDatiCatastali) {
+                      <div class="row">
+                        <div class="col-md-2">
+                          <div class="form-group">
+                            <label for="tipoCatasto">{{ etichettaTipoCatasto }}</label>
+                            <select
+                              id="tipoCatasto"
+                              class="form-control"
+                              [(ngModel)]="model.tipoCatasto">
+                              <option value=""></option>
+                              <option value="F">Fabbricati</option>
+                              <option value="T">Terreni</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-md-2">
+                          <div class="form-group"
+                            [ngClass]="{ 'has-error': fieldFoglioInvalid }">
+                            <label for="foglio">{{ etichettaFoglio }}*
+                              @if (fieldFoglioInvalid) {
+                                <sup>*</sup>
+                              }
+                            </label>
+                            <input
+                              type="text"
+                              id="foglio"
+                              class="form-control"
+                              [(ngModel)]="model.foglio"
+                            [ngClass]="{
+                                'ng-touched': fieldCampiObbligatori,
+                                'invalid-field': fieldCampiObbligatori
+                            }"
+                              />
+                            @if (fieldFoglioInvalid) {
+                              <p class="help-block">
+                                Campo obbligatorio
+                              </p>
+                            }
+                          </div>
+                        </div>
+                        <div class="col-md-2">
+                          <div class="form-group">
+                            <label for="particella">{{ etichettaParticella }}</label>
+                            <input
+                              type="text"
+                              id="particella"
+                              class="form-control"
+                              [(ngModel)]="model.particella"
+                              />
+                          </div>
+                        </div>
+                        <div class="col-md-2">
+                          <div class="form-group">
+                            <label for="sub">{{ etichettaSub }}</label>
+                            <input
+                              type="text"
+                              id="sub"
+                              class="form-control"
+                              [(ngModel)]="model.sub"
+                              />
+                          </div>
+                        </div>
+                      </div>
+                    }
+                    <!--
+                    <pre>
+                      {{model | json}}
+                    </pre>
+                    -->
+                    <div>
+                      <div class="btn btn-primary" (click)="onCercaClick()">
+                        Cerca
+                      </div>
+                    </div>
+                  </div>
+                }
+
+                @if (caricamentoInCorso) {
+                  <app-loader></app-loader>
+                }
+
+                <app-tabella-trasparenza
+                  [dataSource]="this.listaDataSource$ | async"
+                  [recordsPerPagina]="recordsPerPagina"
+                  [caricamentoInCorso]="caricamentoInCorso"
+                  (nuovaRicerca)="onNuovaRicercaClick()"
+                  (ricaricaDataSource)="onRicaricaDataSource($event)"
+                  >
+                </app-tabella-trasparenza>
+              </div>
+            </app-inner-page-layout>

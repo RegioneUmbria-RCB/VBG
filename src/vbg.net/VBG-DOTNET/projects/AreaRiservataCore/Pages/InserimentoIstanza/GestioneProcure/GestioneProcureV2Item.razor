@@ -1,0 +1,155 @@
+﻿@using Init.Sigepro.FrontEnd.AppLogic.Services.Domanda
+
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.DesignComuni.Download
+@using VBG.BlazorComponentsLibrary.DesignComuni.Forms
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.DesignComuni.Spinner
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards.CardButtons
+@using static AreaRiservataCore.Pages.InserimentoIstanza.GestioneProcure.GestioneProcureV2
+
+@if (Procura is not null)
+{
+    <StepCard Titolo="@Procura.NomeProcurato" Sottotitolo="Rappresentato da">
+        <StepCardItem>
+            <StepCardButtonGroup EditText="@(Procura.CodiceOggetto.HasValue ? "Modifica" : "Carica documento")"
+                                 EditClick="async () => await Edit.InvokeAsync(Procura)"
+                                 DeleteText="Elimina"
+                                 DeleteVisible="false"
+                                 DeleteClick="async () => await ShowConfirmationModal()"></StepCardButtonGroup>
+
+            <StepCardItemTitle Titolo="@Procura.NomeProcuratore" Sottotitolo="Procuratore"></StepCardItemTitle>
+            <StepCardInfo Titolo="Documento Procura">
+                <StepBadgeContainer>
+                    @if (Procura.CodiceOggetto is not null)
+                    {
+                        <BadgeComponent Type="BadgeComponent.BadgeCategoryEnum.SUCCESS">Compilato con successo</BadgeComponent>
+                    }
+                    else
+                    {
+                        @if (Procura.AllegatoNecessitaFirma)
+                        {
+                            <BadgeComponent Type="BadgeComponent.BadgeCategoryEnum.DANGER">Obbligatorio</BadgeComponent>
+                        }
+
+                        @if (Procura.RichiedeFirmaDigitale)
+                        {
+                            <BadgeComponent Type="BadgeComponent.BadgeCategoryEnum.WARNING">Richiede firma digitale</BadgeComponent>
+                        }
+                    }
+                </StepBadgeContainer>
+
+                @if (Procura.CodiceOggetto is not null)
+                {
+                    @* <div class="float-end mt-2">
+                        <button @onclick="() => ShowConfirmationModal()" class="text-decoration-none me-2"><span class="text-button-sm-semi t-alert">Elimina</span></button>
+                    </div> *@
+
+                    <DownloadButton CodiceOggetto="Procura.CodiceOggetto"></DownloadButton>
+                }
+            </StepCardInfo>
+                                
+            @if (Procura.RichiedeCaricamentoDocumentoIdentita)
+            {
+                <StepCardInfo Titolo="Documento d'identità">
+                    <StepBadgeContainer>
+                        @if (Procura.DocIdentitaCodiceOggetto is not null)
+                        {
+                            <BadgeComponent Type="BadgeComponent.BadgeCategoryEnum.SUCCESS">Compilato con successo</BadgeComponent>
+                        }
+                        else
+                        {
+                            @if (Procura.AllegatoNecessitaFirma)
+                            {
+                                <BadgeComponent Type="BadgeComponent.BadgeCategoryEnum.DANGER">Obbligatorio</BadgeComponent>
+                            }
+
+                            @if (Procura.RichiedeFirmaDigitale)
+                            {
+                                <BadgeComponent Type="BadgeComponent.BadgeCategoryEnum.WARNING">Richiede firma digitale</BadgeComponent>
+                            }
+                        }
+                    </StepBadgeContainer>
+
+                    @if (Procura.DocIdentitaCodiceOggetto is not null)
+                    {
+                        @* <div class="float-end mt-2">
+                            <button @onclick="() => ShowConfirmationModal()" class="text-decoration-none me-2"><span class="text-button-sm-semi t-alert">Elimina</span></button>
+                        </div> *@
+
+                        <DownloadButton CodiceOggetto="Procura.DocIdentitaCodiceOggetto"></DownloadButton>
+                    }
+                </StepCardInfo>
+            }
+
+        </StepCardItem>
+    </StepCard>
+
+    <ConfirmationModal Titolo="Conferma eliminazione" Visible="_showDeleteConfirm" ConfermaClick="OnRowDeleteAsync" AnnullaClick="() => _showDeleteConfirm = false">
+        <ModalBody>
+            @_deleteMsg
+        </ModalBody>
+    </ConfirmationModal>
+}
+
+
+@code {
+    [Inject]
+    public SpinnerService _spinnerService { get; set; } = default!;
+    [Inject]
+    public ProcureService _procureService { get; set; } = default!;
+
+    [CascadingParameter]
+    public MessageContainer? messageContainer { get; set; }
+
+    private bool _showDeleteConfirm = false;
+    private string? _deleteMsg;
+
+    [Parameter]
+    public ProcuraItem Procura { get; set; }
+    [Parameter]
+    public EventCallback<ProcuraItem> Edit { get; set; }
+
+
+    private async Task ShowConfirmationModal()
+    {
+        _showDeleteConfirm = true;
+        _deleteMsg = Procura.RichiedeCaricamentoDocumentoIdentita ? "Eliminare la procura e il relativo documento d'identità?" : "Si desidera eliminare la procura?";
+
+        await Task.CompletedTask;
+    }
+
+    private async Task OnRowDeleteAsync()
+    {
+        if (Procura is null)
+        {
+            return;
+        }
+
+        await _spinnerService.ShowSpinnerAsync(() =>
+            {
+                try
+                {
+                    this._procureService.EliminaOggettoProcura(Procura.IdDomanda.Value, Procura.CodiceFiscaleProcurato, Procura.CodiceFiscaleProcuratore);
+                    Procura.CodiceOggetto = null;
+
+                    if (Procura.RichiedeCaricamentoDocumentoIdentita)
+                    {
+                        this._procureService.EliminaOggettoDocIdentita(Procura.IdDomanda.Value, Procura.CodiceFiscaleProcurato, Procura.CodiceFiscaleProcuratore);
+                        Procura.DocIdentitaCodiceOggetto = null;
+                    }
+                        
+
+
+                    _showDeleteConfirm = false;
+
+                    StateHasChanged();
+                }
+                catch (Exception ex)
+                {
+                    this.messageContainer?.AddError($"Si è verificato un errore durante l'eliminazione del file: {ex.Message}");
+                }
+            });
+    }
+}

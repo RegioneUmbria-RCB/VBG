@@ -1,0 +1,209 @@
+﻿@using static Vbg.CoreControls.AcessibilityControls.Enumerators;
+
+@if (!string.IsNullOrEmpty(LinkURL))
+{
+    @if (ShowTooltip)
+    {
+        <a class="@GetAvatarClass()" href="@LinkURL" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="@Enumerators.GetPositionClass(TooltipPosition)" title="@($"<strong>{Text}</strong><br/><em>{TooltipSubtext}</em>")">
+            @if (!string.IsNullOrEmpty(ImageURL))
+            {
+                <img src="@ImageURL" alt="@Text">
+            }
+            else if (!string.IsNullOrEmpty(Icon))
+            {
+                <svg class="@GetIconClass()"><use href="@($"{SvgFilePath}#{Icon}")"></use></svg>
+                <span class="visually-hidden">@Text</span>
+            }
+            else
+            {
+                <p aria-hidden="true">@GetAbbreviation()</p>
+                <span class="visually-hidden">@Text</span>
+            }
+        </a>
+    }
+    else
+    {
+        <a class="@GetAvatarClass()" href="@LinkURL">
+            @if (!string.IsNullOrEmpty(ImageURL))
+            {
+                <img src="@ImageURL" alt="@Text">
+            }
+            else if (!string.IsNullOrEmpty(Icon))
+            {
+                <svg class="@GetIconClass()"><use href="@($"{SvgFilePath}#{Icon}")"></use></svg>
+                <span class="visually-hidden">@Text</span>
+            }
+            else
+            {
+                <p aria-hidden="true">@GetAbbreviation()</p>
+                <span class="visually-hidden">@Text</span>
+            }
+        </a>
+    }
+}
+else
+{
+    @*@if (ShowTooltip) // for accessibility reasons the tooltip can be used on interactive and keyboard driven elements only
+    {
+        <div class="@GetAvatarClass()" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="@Enumerators.GetPositionClass(TooltipPosition)" data-bs-original-title="<strong>@Text</strong><br/><em>@TooltipSubtext</em>" title="<strong>@Text</strong><br/><em>@TooltipSubtext</em>">
+            @if (!string.IsNullOrEmpty(ImageURL))
+            {
+                <img src="@ImageURL" alt="@Text">
+            }
+            else if (!string.IsNullOrEmpty(Icon))
+            {
+                <svg class="@GetIconClass()"><use href="@($"{SvgFilePath}#{Icon}")"></use></svg>
+                <span class="visually-hidden">@Text</span>
+            }
+            else
+            {
+                <p aria-hidden="true">@GetAbbreviation()</p>
+                <span class="visually-hidden">@Text</span>
+            }
+        </div>
+    }
+    else
+    {*@
+        <div class="@GetAvatarClass()">
+            @if (!string.IsNullOrEmpty(ImageURL))
+            {
+                <img src="@ImageURL" alt="@Text">
+            }
+            else if (!string.IsNullOrEmpty(Icon))
+            {
+                <svg class="@GetIconClass()"><use href="@($"{SvgFilePath}#{Icon}")"></use></svg>
+                <span class="visually-hidden">@Text</span>
+            }
+            else
+            {
+                <p aria-hidden="true">@GetAbbreviation()</p>
+                <span class="visually-hidden">@Text</span>
+            }
+        </div>
+    @*}*@
+}
+
+
+@code {
+    /// <summary>
+    /// The Avatar Size enumeration. Default is MEDIUM 
+    /// </summary>
+    [Parameter]
+    public Size Size { get; set; } = Size.MEDIUM;
+
+    /// <summary>
+    /// If LinkURL value is set, a click on the Avatar will redirect to the specified URL
+    /// </summary>
+    [Parameter]
+    public string LinkURL { get; set; }
+
+    /// <summary>
+    /// The Avatar Text used in: Descriptions, Alternative Text, Abbreviations, Tooltip Title
+    /// </summary>
+    [Parameter]
+    public string Text { get; set; }
+
+    /// <summary>
+    /// If ImageURL value is set, the Avatar will render the image instead of the Text
+    /// NOTE: ImageURL property overrides Icon and Color property
+    /// </summary>
+    [Parameter]
+    public string ImageURL { get; set; }
+
+    /// <summary>
+    /// If Icon value is set, the Avatar will render the Icon instead of the Text
+    /// NOTE: ImageURL property overrides Icon property
+    /// </summary>
+    [Parameter]
+    public string Icon { get; set; }
+
+    /// <summary>
+    /// If Color value is set, the Avatar will render with the background selected color or the fill Icon selected color
+    /// NOTE: ImageURL property overrides Color property
+    /// Default: NONE
+    /// </summary>
+    [Parameter]
+    public Color Color { get; set; } = Color.NONE;
+
+    /// <summary>
+    /// If set to true a default tooltip will show on mouseOver
+    /// NOTE: The Text propery will be used as Tooltip
+    /// NOTE: use TooltipPosition and TooltipSubtext to modify the layout
+    /// </summary>
+    [Parameter]
+    public bool ShowTooltip { get; set; } = false;
+
+    /// <summary>
+    /// Change tooltip diplay position
+    /// Default: LEFT
+    /// NOTE: Tooltip must be explicitly enabled via javascript.
+    /// var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    /// var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+    ///     return new bootstrap.Tooltip(tooltipTriggerEl);
+    /// });
+    /// </summary>
+    [Parameter]
+    public Position TooltipPosition { get; set; } = Position.LEFT;
+
+    /// <summary>
+    /// If TooltipSubtext value is set, it will be displayed in the tooltip under the Text
+    /// </summary>
+    [Parameter]
+    public string TooltipSubtext { get; set; }
+
+    /// <summary>
+    /// The sprites.svg file path used for icons
+    /// </summary>
+    [Parameter]
+    public string SvgFilePath { get; set; } = "css/bootstrap-italia/svg/sprites.svg";
+
+
+    private string GetAvatarClass()
+    {
+        if (Color == Color.NONE || !string.IsNullOrEmpty(Icon) || !string.IsNullOrEmpty(ImageURL))
+            return $"avatar {Enumerators.GetSizeClass(Size)}";
+
+        return $"avatar avatar-{Enumerators.GetFillColor(Color)} {Enumerators.GetSizeClass(Size)}";
+    }
+
+    private string GetIconClass()
+    {
+        if (Color == Color.NONE)
+            return "icon";
+
+        return $"icon icon-{Enumerators.GetFillColor(Color)}";
+    }
+
+    private string GetAbbreviation()
+    {
+        if (string.IsNullOrEmpty(Text))
+            return string.Empty;
+
+        string s = string.Empty;
+
+        switch (Size)
+        {
+            case Size.X_SMALL:
+            case Size.SMALL:
+                s = Text.Trim().ToUpper()[0].ToString();
+                break;
+
+            default:
+                string[] splitted = Text.Trim().ToUpper().Split(' ');
+
+                if (splitted.Length > 1)
+                {
+                    s += splitted[0][0];
+                    s += splitted[1][0];
+                }
+                else
+                {
+                    s = splitted[0].Substring(0, 2);
+                }
+
+                break;
+        }
+
+        return s;
+    }
+}

@@ -1,0 +1,122 @@
+﻿@using Init.Sigepro.FrontEnd.AppLogic.GestioneOggetti;
+@using Init.Sigepro.FrontEnd.CoreServices.GestioneOggetti;
+@using VBG.AreaRiservataCore.Controls
+@using VBG.BlazorComponentsLibrary.DesignComuni.Forms
+
+@if (this.OneriGiaPagati.Any())
+{
+    <div class="card mb-2 border" id="bloccoCaricamentoBollettino">
+
+        <div class="card-header">
+            Oneri pagati
+        </div>
+        <div class="card-body">
+            <div id="riepilogoOneriPagati">
+                <table class="tabellaRiepilogoOneri table">
+                    <thead>
+                        <tr>
+                            <th>Causale</th>
+                            <th>Importo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var it in this.OneriGiaPagati)
+                        {
+                            <tr class="rigaCausale valoreOnere">
+                                <td>@it.Causale</td>
+                                <td class="importoOnere">@it.ImportoPagato.ToString("N2")</td>
+                            </tr>
+                        }
+
+                        <tr class="rigaCausale totale" style="font-weight: bold;">
+                            <td>Oneri già pagati</td>
+                            <td class="importoOnere">@this.OneriGiaPagati.Sum(x => x.ImportoPagato).ToString("N2")</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card-header">
+            @TitoloCaricamentoBollettino
+        </div>
+        <div class="card-body">
+            @if (!this._model.CodiceOggetto.HasValue)
+            {
+                @((MarkupString)DescrizioneCaricamentoBollettino)
+            }
+            else
+            {
+                @((MarkupString)DescrizioneCaricamentoBollettinoEffettuato)
+            }
+            <EditForm Model="@_model">
+                <FormUpload @bind-Value="_model.CodiceOggetto"
+                            OnFileChanged="OnFileChanged"
+                            Obbligatorio="true"
+                            VerificaFirmaDigitale="_model.RichiedeFirma"
+                            ValidationFor="() => _model.CodiceOggetto">
+                </FormUpload>
+            </EditForm>
+        </div>
+
+    </div>
+}
+
+@code {
+    [Inject]
+    public IOggettiService _oggettiService { get; set; } = default!;
+    [Inject]
+    public IPostedFileSpecificationFactoryAsync _postedFileSpecificationFactoryAsync { get; set; } = default!;
+
+    [Parameter]
+    public IEnumerable<GrigliaOneriItem> OneriGiaPagati { get; set; } = Enumerable.Empty<GrigliaOneriItem>();
+    [Parameter]
+    public bool VerificaFirmaDigitaleBollettino { get; set; } = false;
+    [Parameter]
+    public string TitoloCaricamentoBollettino { get; set; } = "";
+    [Parameter]
+    public int? CodiceOggetto { get; set; }
+    [Parameter]
+    public string DescrizioneCaricamentoBollettino { get; set; } = "";
+    [Parameter]
+    public string DescrizioneCaricamentoBollettinoEffettuato { get; set; } = "";
+    [Parameter]
+    public EventCallback<BinaryFile> OnAttestazioneDiPagamentoCaricata { get; set; }
+    [Parameter]
+    public EventCallback OnAttestazioneDiPagamentoRimossa { get; set; }
+
+    UploaderItem _model = new();
+    IValidPostedFileSpecificationAsync? _validPostedFileSpecificationAsync;
+
+    protected override void OnParametersSet()
+    {
+        this._model = new UploaderItem
+            {
+                CodiceOggetto = this.CodiceOggetto,
+                // FileName = this.CodiceOggetto.HasValue ? this._oggettiService.GetNomeFile(this.CodiceOggetto.Value) : "",
+                // ModalitaInserimento = !this.CodiceOggetto.HasValue,
+                RichiedeFirma = this.VerificaFirmaDigitaleBollettino
+            };
+
+        this._validPostedFileSpecificationAsync = this._postedFileSpecificationFactoryAsync.Get(
+       new FileValidationFlags
+       {
+           FirmatoDigitalmente = VerificaFirmaDigitaleBollettino,
+           Obbligatorio = true
+       });
+    }
+
+    private async Task OnFileChanged(FormFileChangedEventArgs e)
+    {        
+        switch(e.Event)
+        {
+            case FromEvent.OnChange:
+                await this.OnAttestazioneDiPagamentoCaricata.InvokeAsync(BinaryFile.FromFileData(e.FileRef?.FileName, e.FileRef?.ContentType, e.FileRef?.FileContent));
+                break;
+
+            case FromEvent.OnDelete:
+                await this.OnAttestazioneDiPagamentoRimossa.InvokeAsync();
+                break;
+        }
+    }
+}

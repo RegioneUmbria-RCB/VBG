@@ -1,0 +1,74 @@
+﻿@using System.ComponentModel.DataAnnotations
+@using System.Reflection
+@using AreaRiservataCore.Utils
+@using Init.Sigepro.FrontEnd.AppLogic.PresentazioneIstanze.Workflow
+@using Init.Sigepro.FrontEnd.AppLogic.PresentazioneIstanze.Workflow.V2
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.DesignComuni.Forms
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards.CardButtons
+@using VBG.BlazorComponentsLibrary.EditFormComponents
+@using static VBG.BlazorComponentsLibrary.AccessibilityComponents.BadgeComponent
+@using static Init.Sigepro.FrontEnd.AppLogic.PresentazioneIstanze.Workflow.V2.WorkflowDescriptor
+@using static AreaRiservataCore.Utils.RoutesHelper
+
+
+<div class="@($"card shadow step-item {CssClass}")">
+    <div class="card-body prevent-mouse-events">
+        @if (NuovoStep)
+        {
+            <BadgeComponent Type="BadgeCategoryEnum.INFO">Nuovo</BadgeComponent>
+        }
+
+        @if (Step.Disabled)
+        {
+            <BadgeComponent Type="BadgeCategoryEnum.WARNING">Disabilitato</BadgeComponent>
+        }
+
+        @if (!ReadOnly)
+        {
+            <div class="d-flex float-end mt-2">
+                <button type="button" class="text-decoration-none me-2" @onclick="async () => await OnModifica.InvokeAsync(Step)"><span class="text-button-sm-semi t-primary">Modifica</span></button>
+                <button type="button" class="text-decoration-none"><span class="text-button-sm-semi t-alert" @onclick="async () => await OnElimina.InvokeAsync(Step)">Elimina</span></button>
+            </div>
+        }
+
+        <p class="title-medium-semi-bold t-primary">@Step.Title</p>
+
+        <hr>
+
+        <p class="descrizione-step">
+            @(!string.IsNullOrEmpty(this._stepDescriptor.Descrizione) ? ((MarkupString)this._stepDescriptor.Descrizione) : "Descrizione non disponibile.")
+        </p>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public Step Step { get; set; } = new Step();
+
+    [Parameter]
+    public EventCallback<Step> OnElimina { get; set; }
+
+    [Parameter]
+    public EventCallback<Step> OnModifica { get; set; }
+
+    [Parameter]
+    public bool ReadOnly { get; set; }
+
+    [Parameter]
+    public string CssClass { get; set; } = "";
+
+    [Parameter]
+    public bool NuovoStep { get; set; }
+
+    private StepDescriptor _stepDescriptor = new StepDescriptor();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        this._stepDescriptor = WorkflowDescriptor.GetStepDescriptor(Step.StepId);
+    }
+}

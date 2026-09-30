@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 rel. 2 (http://www.altova.com) by TeaM DJiNN (TeaM DJiNN) -->
+<xs:schema xmlns:ps="http://www.impresainungiorno.gov.it/schema/suap/pratica" xmlns:se="http://www.impresainungiorno.gov.it/schema/suap/ente" xmlns:pi="http://www.impresainungiorno.gov.it/schema/base" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.impresainungiorno.gov.it/schema/suap/ente" elementFormDefault="unqualified" attributeFormDefault="unqualified" version="1.1.0">
+	<xs:import namespace="http://www.impresainungiorno.gov.it/schema/base" schemaLocation="impresainungiorno.gov_tipi_elementari-1.0.0.xsd"/>
+	<xs:import namespace="http://www.impresainungiorno.gov.it/schema/suap/pratica" schemaLocation="pratica_suap-2.0.0.xsd"/>
+	<!-- 
+        Modello di cooperazione tra le altre pubbliche amministrazioni (ente) e lo sportello SUAP competente
+    -->
+	<xs:element name="cooperazione-ente-suap" type="se:CooperazioneEnteSUAP"/>
+	<!-- 
+        Modello di cooperazione tra lo sportello SUAP competente e le altre pubbliche amministrazioni (ente)
+    -->
+	<xs:element name="cooperazione-suap-ente" type="se:CooperazioneSUAPEnte"/>
+	<!--  
+        
+        Definizione del messaggio di cooperazione tra pubbliche amministrazioni e SUAP relativo ad una pratica SUAP - Art. 10 Allegato tecnico DPR160/2010 - Specifiche tecniche per la cooperazione
+        
+    -->
+	<xs:complexType name="CooperazioneEnteSUAP">
+		<xs:sequence>
+			<xs:element name="info-schema">
+				<xs:complexType>
+					<xs:attribute name="versione" use="required">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:pattern value="(\d+.)?\d+.\d+(-beta)?"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+					<xs:attribute name="data" type="xs:date" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="intestazione">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="ente-mittente" type="ps:EstremiEnte"/>
+						<xs:element name="suap-competente" type="ps:EstremiSuap"/>
+						<xs:group ref="se:RiferimentoPratica"/>
+						<xs:group ref="se:ComunicazioneEnte"/>
+					</xs:sequence>
+					<xs:attribute name="progressivo" type="xs:int"/>
+					<xs:attribute name="totale" type="xs:int"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="allegato" type="se:AllegatoCooperazione" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!--  
+        
+        Definizione del messaggio di cooperazione tra SUAP e pubbliche amministrazioni relativo ad una pratica SUAP - Art. 10 Allegato tecnico DPR160/2010 - Specifiche tecniche per la cooperazione
+        
+    -->
+	<xs:complexType name="CooperazioneSUAPEnte">
+		<xs:sequence>
+			<xs:element name="info-schema">
+				<xs:complexType>
+					<xs:attribute name="versione" use="required">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:pattern value="(\d+.)?\d+.\d+(-beta)?"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+					<xs:attribute name="data" type="xs:date" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="intestazione">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="suap-competente" type="ps:EstremiSuap"/>
+						<xs:element name="ente-destinatario" type="ps:EstremiEnte" maxOccurs="unbounded"/>
+						<xs:group ref="se:RiferimentoPratica"/>
+						<xs:group ref="se:ComunicazioneEnte"/>
+					</xs:sequence>
+					<xs:attribute name="progressivo" type="xs:int"/>
+					<xs:attribute name="totale" type="xs:int"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="allegato" type="se:AllegatoCooperazione" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- 
+        
+        Definizione dei componenti della comunicazione di Cooperazione 
+        
+    -->
+	<xs:group name="ComunicazioneEnte">
+		<xs:sequence>
+			<xs:element name="oggetto-comunicazione" type="se:OggettoCooperazione"/>
+			<xs:element name="testo-comunicazione" type="pi:Stringa" minOccurs="0"/>
+			<xs:element name="protocollo" type="ps:ProtocolloSUAP"/>
+		</xs:sequence>
+	</xs:group>
+	<!--  
+		Testo della comunicazione
+    -->
+	<xs:complexType name="OggettoCooperazione">
+		<xs:simpleContent>
+			<xs:extension base="pi:Stringa">
+				<xs:attribute name="tipo-cooperazione" type="pi:Stringa">
+					<xs:annotation>
+						<xs:documentation>Il tipo di cooperazione puo' assumere i seguenti valori:
+							"condivisione" - primo invio della pratica all'ente
+							"conferenza-servizi" - convocazione della conferenza dei servizi
+							"richiesta-integrazione" - richiesta di integrazione documentale
+							"integrazione-documentale" - invio dell'integrazione documentale richiesta
+							"rilascio-provvedimento" - rilascio del provvedimento finale
+							"altro" - comunicazione generica
+						</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<!--
+		Dati della pratica originale
+	-->
+	<xs:group name="RiferimentoPratica">
+		<xs:sequence>
+			<xs:element name="codice-pratica" type="pi:Stringa">
+				<xs:annotation>
+					<xs:documentation>Questo elemento, se presente, e' un codice identificativo univoco della pratica valido
+                        nel dominio del SUAP competente.
+                        Si suggerisce di utilizzare la codifica dello stardard naming dei file CF-GGMMAAAA-HHMM.NNN
+                        Es: DPRTNT00A01A012T-08072010-1730
+                    </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="impresa" type="ps:AnagraficaImpresa"/>
+			<xs:element name="oggetto-pratica" type="ps:OggettoComunicazione"/>
+			<xs:element name="protocollo-pratica-suap" type="ps:ProtocolloSUAP"/>
+			<xs:element name="protocollo-ri" type="ps:ProtocolloRI" minOccurs="0"/>
+		</xs:sequence>
+	</xs:group>
+	<!--  
+		Allegato generico - permette qualunque nome e controlla solo il tipo di allegato
+    -->
+	<xs:complexType name="AllegatoCooperazione">
+		<xs:complexContent>
+			<xs:extension base="ps:BaseAllegatoSUAP">
+				<xs:attribute name="nome-file" type="se:TipoFileAllegatoCooperazione" use="required"/>
+				<xs:attribute name="cod" type="pi:Stringa"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!--  
+    -->
+	<xs:simpleType name="TipoFileAllegatoCooperazione">
+		<xs:annotation>
+			<xs:documentation>
+            CF-GGMMAAAA-HHMM.NNN.PDF.P7M   o   CF-GGMMAAAA-HHMM.NNN.PDF 
+            Es: DPRTNT00A01A012T-08072010-1733.01243.pdf.p7m
+            Formati ammessi: pdf; pdf.p7m; xml; dwf; dwf.p7m; svg; svg.p7m; jpg; jpg.p7m
+        </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[\.\dA-Za-z\-]*\.(([Pp][Dd][Ff])|([Pp][Dd][Ff]\.[Pp]7[Mm])|([Xx][Mm][Ll])|([Dd][Ww][Ff])|([Dd][Ww][Ff]\.[Pp]7[Mm])|([Ss][Vv][Gg])|([Ss][Vv][Gg]\.[Pp]7[Mm])|([Jj][Pp][Gg])|([Jj][Pp][Gg]\.[Pp]7[Mm]))"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

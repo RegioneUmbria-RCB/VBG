@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration>
+ 
+<configuration>
+  <import class="ch.qos.logback.classic.encoder.PatternLayoutEncoder"/>
+  <import class="ch.qos.logback.classic.AsyncAppender"/>
+  <import class="de.siegmar.logbackgelf.GelfTcpAppender"/>
+  <import class="ch.qos.logback.core.ConsoleAppender"/>
+  <import class="de.siegmar.logbackgelf.GelfEncoder"/>
+  <springProperty name="application.name" source="spring.application.name"/>
+  
+  <appender name="STDOUT" class="ConsoleAppender">
+    <encoder class="PatternLayoutEncoder">
+      <pattern>%green(%date) %highlight(%-5level) %yellow([%file:%line]) %blue(: %msg%n)</pattern>
+      <charset>UTF-8</charset>
+    </encoder>
+  </appender>
+ 
+  <appender name="GELF" class="GelfTcpAppender">
+    <graylogHost>vbg.graylog</graylogHost>
+    <graylogPort>12201</graylogPort>
+    <encoder class="GelfEncoder">
+    	<staticField>app_name:${application.name}</staticField>
+    </encoder>
+  </appender>
+ 
+  <appender name="ASYNC GELF" class="AsyncAppender">
+    <appender-ref ref="GELF"/>
+    <neverBlock>true</neverBlock>
+  </appender>
+  
+  <appender name = "FILE" class = "ch.qos.logback.core.rolling.RollingFileAppender">
+      <File>./logs/pentaho-utils.log</File>
+      <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+      	<fileNamePattern>./logs/pentaho-utils.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+      		<maxFileSize>10MB</maxFileSize>
+	      	<maxHistory>30</maxHistory>
+	      	<totalSizeCap>30GB</totalSizeCap>
+      </rollingPolicy>
+      <encoder>
+         <pattern>[%d{"yyyy-MM-dd'T'HH:mm:ss.SSS"}] [%C] [%t] [%L] [%-5p] %m%n</pattern>
+      </encoder>
+   </appender>
+ 
+  <root level="DEBUG">
+    <appender-ref ref="STDOUT"/>
+    <appender-ref ref = "FILE"/>
+  </root>
+  <logger name="it.paabs" level="DEBUG" additivity="false">
+    <appender-ref ref="STDOUT"/>
+    <appender-ref ref = "FILE"/>
+  </logger>
+
+</configuration>

@@ -1,0 +1,91 @@
+#set($funzioneAttivazione = false)
+#set($dichiaraFunzione = false)
+#if($regolaAtt)
+	#set($funzioneAttivazione = $regoleHelper.recuperaFunzioneElaborazioneRegola(${d2md}))
+	#if(!$funzioneAttivazione)
+		#set($funzioneAttivazione = $regoleHelper.generaFunzioneElaborazioneRegola(${d2md}))
+		#set($dichiaraFunzione = true)
+	#end
+#end
+#if(!$isTemplate)
+	##$modelloHelper.debug($funzioneAttivazione)
+	#if($funzioneAttivazione)
+		#if($dichiaraFunzione)
+		<script type="text/javascript">
+			$funzioneAttivazione.definizioneFunzione()
+			##set($args = [])
+			##set($foo = $args.add(""))
+			##set($foo = $args.add("0"))
+			##set($foo = $args.add("true"))
+			applicaRegolaAttivazione_${regolaHandle} = function(element){
+				var idx = getFieldIndex(element);
+				if(idx == -1){
+					idx = ${indiceScheda};
+				}
+				var idxm = getFieldMultiplicity(element);
+				var idxb = getFieldBlockIndex(element);
+				//attivazione campi esterni al blocco
+				var activate = ${funzioneAttivazione.NomeFunzione}(idx,idxm,idxb,true,false)
+				activateElements(activate,"${regolaHandle}",idx,idxm,idxb,false);
+				if(idxb > -1){
+					//attivazione campi stesso blocco
+					activate = ${funzioneAttivazione.NomeFunzione}(idx,idxm,idxb,true,true)
+					activateElements(activate,"${regolaHandle}",idx,idxm,idxb,true);
+				}
+			};
+			
+			jQuery(document).ready(function(){
+			#set($bindOnChange = $funzioneAttivazione.CampiOnChange)
+			##$modelloHelper.debug($bindOnChange)
+			#if($bindOnChange && $bindOnChange.size() > 0)
+				var tempFields;
+				## TODO spostare il ciclo sui campi attivi all'interno della funzione applicaRegolaAttivazione
+				#foreach($bindTo in $bindOnChange)
+				tempFields = jQuery("[name^='FLD_${bindTo.Id.Codice}_']");
+				tempFields.each(function(index,element){
+					applicaRegolaAttivazione_${regolaHandle}(element);
+				});
+				//bindFields.add(tempFields);
+				tempFields.change(function(event){
+					applicaRegolaAttivazione_${regolaHandle}(event.target);
+				});
+				#end
+			#else
+				applicaRegolaAttivazione_${regolaHandle}();
+			#end
+			});
+		</script>
+		#end
+	#end
+#else
+	##generazione script per attivazione dinamica dei campi nelle nuove righe aggiunte e per la rielaborazione delle regole alla cancellazione del blocco
+	#if($funzioneAttivazione)
+		##.1 regole di attivazione del campo o testo
+		#set($script = "var field = jQuery(${esc.q}[name^='FLD_${idCampo}_${indiceScheda}_${esc.q} + newBlockIndex + ${esc.q}']${esc.q});")
+		$blocco.addScript($script)
+		#set($script = "applicaRegolaAttivazione_${regolaHandle}(field);")
+		$blocco.addScript($script)
+	#end
+	##.2 regole di attivazione che devono verificare il valore del campo per attivare altri campi nello stesso blocco
+	#if($campo && !$modelloHelper.isContestoIndefinito())
+		#set($regoleDipendenti = $campo.getRegoleDipendenti())
+		##$modelloHelper.debug($regoleDipendenti)
+		#if($regoleDipendenti && $regoleDipendenti.size() > 0)
+			#foreach($regolaDip in $regoleDipendenti)
+				##aggiunta nuova blocco
+				#set($script = "var field = jQuery(${esc.q}[name^='FLD_${idCampo}_${campo.Indice}_${esc.q} + newBlockIndex + ${esc.q}']${esc.q});")
+				$blocco.addScript($script)
+				#set($script = "field.change(function(event){applicaRegolaAttivazione_REG_${regolaDip.getId().getCodice()}(event.target)});")
+				$blocco.addScript($script)
+				#set($script = "applicaRegolaAttivazione_REG_${regolaDip.getId().getCodice()}(field);")
+				$blocco.addScript($script)
+				##eliminazione blocco
+				#set($script = "var field = jQuery(${esc.q}[name^='FLD_${idCampo}_${campo.Indice}_${esc.q} + deleteBlockIndex + ${esc.q}']${esc.q});")
+				$blocco.addScript($script,"eliminazione")
+				#set($script = "applicaRegolaAttivazione_REG_${regolaDip.getId().getCodice()}(field);")
+				$blocco.addScript($script,"eliminazione")
+			#end
+		#end
+	#end
+#end
+	

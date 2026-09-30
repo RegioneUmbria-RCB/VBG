@@ -1,0 +1,150 @@
+﻿@using Init.Sigepro.FrontEnd.AppLogic.PresentazioneIstanze.Workflow.V2
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.DesignComuni.Forms
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.EditFormComponents
+@using VBG.BlazorComponentsLibrary.EditFormComponents.DropDown
+@using static Init.Sigepro.FrontEnd.AppLogic.PresentazioneIstanze.Workflow.V2.WorkflowDescriptor
+@using static AreaRiservataCore.Utils.RoutesHelper
+@using static AreaRiservataCore.Pages.Admin.Components.EditorWorkflow.StepsContainer
+
+<VbgForm @ref="_form" Id="aggiungi_step_form" Model="@_stepDaAggiungere.StepInfo" OnValidSubmit="() => AggiungiStep()">
+    <BasicModal AlwaysVisible="true" Size="ModalSizeEnum.ExtraLarge" OnClose="async () => await OnClose.InvokeAsync()" >
+        <ModalHeader Titolo="Aggiungi step" Size="ModalHeaderSizeEnum.Small">
+        </ModalHeader>
+        <ModalBody>
+
+            @if (this._isStepDeprecato)
+            {
+                <div class="alert alert-warning" role="alert">
+                    <span class="fw-bold">Attenzione! </span> Lo step selezionato è deprecato.
+                </div>
+            }
+
+            <div class="py-1">
+                <GenericDropDownForm Id="dropdown-stepId"
+                                     Label="Tipologia step"
+                                     TItem="Step"
+                                     Items="this._listaStep"
+                                     Value="this._stepSelezionato"
+                                     ValueChanged="(Step item) => PrecompilaConValoriDefault(item)"
+                                     ValueExpression="() => this._stepSelezionato"
+                                     ValidationFor="() => this._stepSelezionato"
+                                     HelpText="@this._helpTextStep"
+                                     TextField="Title"
+                                     ValueField="StepId"
+                                     Selector="(x) => x.Title">
+                </GenericDropDownForm>
+            </div>
+            
+            <div class="py-1">
+                <DropDownForm Id="posizione_step"
+                              Label="Posizione"
+                              TItem="DropDownItem"
+                              Items="@_listaPosizioniSteps"
+                              @bind-Value="_posizioneStep">
+                </DropDownForm>
+            </div>
+            
+            <div class="py-1">
+                <TextInputForm Id="nome_step" @bind-Value="_stepDaAggiungere.StepInfo.Title" Label="Titolo" Required="true" ValidationFor="() => _stepDaAggiungere.StepInfo.Title" />
+            </div>
+
+            <div class="py-1">
+                <TextInputForm Id="descrizione_step" @bind-Value="_stepDaAggiungere.StepInfo.Description" IsMultiline="true" Label="Descrizione" ValidationFor="() => _stepDaAggiungere.StepInfo.Description" />
+            </div>
+        </ModalBody>
+        <ModalFooter>
+            <FormSubmitButton Form="aggiungi_step_form" IsButtonDisabled="false" Text="Aggiungi"></FormSubmitButton>
+        </ModalFooter>
+    </BasicModal>
+</VbgForm>
+
+@code {
+
+    [Parameter]
+    public EventCallback OnClose { get; set; }
+
+    [Parameter]
+    public EventCallback<StepDaAggiungere> OnSave { get; set; }
+
+    [Parameter]
+    public List<Step> ListaStep { get; set; } = new List<Step>();
+
+    private List<DropDownItem> _listaPosizioniSteps = new List<DropDownItem>();
+    private List<Step> _listaStep = new List<Step>();
+    private Step _stepSelezionato = new Step();
+    private DropDownItem _posizioneStep = default!;
+    private StepDaAggiungere _stepDaAggiungere = new StepDaAggiungere();
+    private StepDescriptor _stepDescriptor = new StepDescriptor();
+    private VbgForm _form = new VbgForm();
+    private bool _isStepDeprecato;
+    private string _helpTextStep = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        foreach (WorkflowSteps stepId in Enum.GetValues(typeof(WorkflowSteps)))
+        {
+            if (stepId == WorkflowSteps.Undefined)
+            {
+                continue;
+            }
+
+            this._stepDescriptor = WorkflowDescriptor.GetStepDescriptor(stepId);
+            this._listaStep.Add(new Step
+            {
+                StepId = stepId,
+                Title = this._stepDescriptor.Titolo,
+                Control = this._stepDescriptor.CorePath,           
+            });
+        }
+
+        this._listaStep = this._listaStep.OrderBy(x => x.Title).ToList();
+        this._stepSelezionato = this._listaStep.First();
+
+        await PrecompilaConValoriDefault(this._stepSelezionato);
+
+        this._posizioneStep = new DropDownItem("0", "step iniziale");
+        this._listaPosizioniSteps.Add(this._posizioneStep);
+
+        if (ListaStep.Any())
+        {
+            for (int i = 1; i <= ListaStep.Count; i++)
+            {
+                if (i < ListaStep.Count)
+                {
+                    this._listaPosizioniSteps.Add(new DropDownItem(i.ToString(), $"dopo {ListaStep[i - 1].Title} / prima di {ListaStep[i].Title}"));
+                }
+                else
+                {
+                    this._listaPosizioniSteps.Add(new DropDownItem(i.ToString(), $"step finale"));
+                }
+            }
+        }    
+    }
+
+    private async Task AggiungiStep()
+    {
+        this._stepDaAggiungere.Posizione = Convert.ToInt32(this._posizioneStep.Value);
+
+        await OnClose.InvokeAsync();
+        await OnSave.InvokeAsync(this._stepDaAggiungere);
+    }
+
+    private async Task PrecompilaConValoriDefault(Step item)
+    {
+        this._stepSelezionato = item;
+        this._stepDaAggiungere.StepInfo.StepId = this._stepSelezionato.StepId;
+        this._stepDaAggiungere.StepInfo.Title = this._stepSelezionato.Title;
+        this._stepDaAggiungere.StepInfo.Control = this._stepSelezionato.Control;
+
+        this._stepDescriptor = WorkflowDescriptor.GetStepDescriptor(this._stepSelezionato.StepId);
+        this._isStepDeprecato = this._stepDescriptor.Deprecato;
+        this._helpTextStep = this._stepDescriptor.Descrizione;
+
+        await Task.Delay(1);
+        this._form.EditContext?.Validate();
+    }
+}

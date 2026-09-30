@@ -1,0 +1,53 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net10.0;net48</TargetFrameworks>
+		<RootNamespace>Init.SIGePro.Manager</RootNamespace>
+		<Configurations>Debug;Release</Configurations>
+		<Platforms>AnyCPU</Platforms>
+		<LangVersion>10.0</LangVersion>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="MimeKitLite" Version="[3.4.0]" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+		<PackageReference Include="SharpZipLib" Version="1.4.2" />
+		<PackageReference Include="System.Text.Json" Version="10.0.10" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\SIGePro.Manager.Authentication\SIGePro.Manager.Authentication.csproj" />
+		<ProjectReference Include="..\SIGePro.Manager.Configuration\SIGePro.Manager.Configuration.csproj" />
+		<ProjectReference Include="..\SIGePro.Manager.Utils\SIGePro.Manager.Utils.csproj" />
+		<ProjectReference Include="..\SIGePro.Manager.Validator\SIGePro.Manager.Validator.csproj" />
+		<ProjectReference Include="..\SIGePro.Manager.VerticalizzazioniBase\SIGePro.Manager.VerticalizzazioniBase.csproj" />
+		<ProjectReference Include="..\SIGePro.Manager.Verticalizzazioni\SIGePro.Manager.Verticalizzazioni.csproj" />
+		<!--<ProjectReference Include="..\VBG.Backend.SIT.Verticalizzazioni\VBG.Backend.SIT.Verticalizzazioni.csproj" />-->
+		<ProjectReference Include="..\Vbg.EventBus\Vbg.EventBus.csproj" />
+		<ProjectReference Include="..\VBG.Shared.Infrastructure\VBG.Shared.Infrastructure.csproj" />
+		<ProjectReference Include="..\IntegrazioneCUnicoWS\IntegrazioneCUnicoWS.csproj" />
+		<ProjectReference Include="..\Init.Utils\Init.Utils.csproj" />
+		<ProjectReference Include="..\PersonalLib2\PersonalLib2.csproj" />
+		<ProjectReference Include="..\SIGePro.Data\SIGePro.Data.csproj" />
+		<ProjectReference Include="..\SIGePro.Exceptions\SIGePro.Exceptions.csproj" />
+		<ProjectReference Include="..\SIGePro.Manager.DTO\SIGePro.Manager.DTO.csproj" />
+	</ItemGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
+		<PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+	</ItemGroup>
+
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net48' ">
+		<!--<Reference Include="System.Web" />
+		<Reference Include="System.ServiceModel" />-->
+		<Reference Include="System.Data.DataSetExtensions" />
+		<PackageReference Include="Ninject.Web.Common" Version="3.3.2" />
+	</ItemGroup>
+
+</Project>

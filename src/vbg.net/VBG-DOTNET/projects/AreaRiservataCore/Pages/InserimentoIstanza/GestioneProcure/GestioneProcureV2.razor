@@ -1,0 +1,169 @@
+﻿@page "/{IdComune}/{Software}/inserimento-istanza/gestione-procure/{idDomanda:int}/{stepId:int}"
+@using Init.Sigepro.FrontEnd.AppLogic.Exceptions
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneComuni
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneDatiExtra
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneOggetti.UrlDownloadOggetti
+@using Init.Sigepro.FrontEnd.AppLogic.Services.Domanda
+@using Init.Sigepro.FrontEnd.CoreServices.GestioneOggetti
+@using Init.Sigepro.FrontEnd.Infrastructure.StepsDomanda.Attributi
+@using VBG.AreaRiservataCore.Controls
+@using VBG.BlazorComponentsLibrary.DesignComuni.Download
+@using VBG.BlazorComponentsLibrary.DesignComuni.Forms
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards.CardButtons
+@using VBG.BlazorComponentsLibrary.EditFormComponents
+@using VBG.BlazorComponentsLibrary.EditFormComponents.FileUpload
+@inherits IstanzeStepPage
+
+@if (_dataSource.Any())
+{    
+    @foreach (var item in _dataSource)
+    {
+        <GestioneProcureV2Item Procura="item" Edit="OnEdit"></GestioneProcureV2Item>
+    }
+
+    @if (_editingItem is not null)
+    {
+        <GestioneProcureV2EditForm Procura="_editingItem"
+                                   OnCancel="() => _editingItem = null"
+                                   OnError="OnUploadError"
+                                   OnUploadSuccesful="OnUploadSuccesful">
+        </GestioneProcureV2EditForm>
+    }
+}
+
+@code {
+
+    // [Inject]
+    // public IUrlDownloadOggettiService _urlDownloadOggettiService { get; set; } = default!;
+
+
+    [StepProperty]
+    public bool RichiedeFirmaDigitale { get; set; } = true;
+
+    [StepProperty]
+    public bool RichiedeCaricamentoDocumentoIdentita { get; set; } = false;
+
+    IEnumerable<ProcuraItem> _dataSource = Enumerable.Empty<ProcuraItem>();
+    ProcuraItem? _editingItem;
+
+    protected override async Task OnInitializeStepAsync()
+    {
+        await base.OnInitializeStepAsync();
+
+        await this.DataBindAsync();
+    }
+
+    private async Task DataBindAsync()
+    {
+        await _spinnerService.ShowSpinnerAsync(() =>
+        {        
+            this._dataSource = this.DomandaCorrente
+                .Procure
+                .Procure
+                .Where(x => x.Procuratore != null)
+                .Select(x => new ProcuraItem
+                    {
+                        IdDomanda = IdDomanda,
+                        CodiceFiscaleProcuratore = x.Procuratore.CodiceFiscale,
+                        CodiceFiscaleProcurato = x.Procurato.CodiceFiscale,
+                        NomeProcurato = x.Procurato.Nominativo,
+                        NomeProcuratore = x.Procuratore.Nominativo,
+                        CodiceOggetto = x.Allegato?.CodiceOggetto,
+                        AllegatoPresente = x.Allegato != null,
+                        // PathDownload = x.Allegato != null ? this._urlDownloadOggettiService.GetUrlDownload(x.Allegato.CodiceOggetto) : String.Empty,
+                        NomeFile = x.Allegato != null ? x.Allegato.NomeFile : String.Empty,
+                        IsFirmatoDigitalmente = x.Allegato != null ? x.Allegato.FirmatoDigitalmente : false,
+                        RichiedeFirmaDigitale = RichiedeFirmaDigitale,
+                        RichiedeCaricamentoDocumentoIdentita = RichiedeCaricamentoDocumentoIdentita,
+                        DocIdentitaCodiceOggetto = x.DocumentoIdentita?.CodiceOggetto,
+                        DocIdentitaPresente = x.DocumentoIdentita != null,
+                        // DocIdentitaPathDownload = x.DocumentoIdentita != null ? this._urlDownloadOggettiService.GetUrlDownload(x.DocumentoIdentita.CodiceOggetto) : String.Empty,
+                        DocIdentitaNomeFile = x.DocumentoIdentita != null ? x.DocumentoIdentita.NomeFile : String.Empty,
+                    }).ToList();
+        });
+    }
+
+    protected override bool CanEnterStep()
+    {
+        return this.DomandaCorrente.Procure.Procure.Where(x => x.Procuratore != null).Count() > 0;
+    }
+
+    protected override bool CanExitStep()
+    {
+        this.MessageContainer.ClearErrors();
+
+        // Si può uscire dallo step solo se per tutti i richiedenti procurati è stato caricato il file che ne attesta la procura
+        // e se i files caricati sono firmati digitalmente
+        var numeroProcuratoriNonValidi = this.DomandaCorrente
+                                                    .Procure
+                                                    .Procure
+                                                    .Where(x => x.Allegato == null && x.Procuratore != null)
+                                                    .Count();
+
+        if (numeroProcuratoriNonValidi > 0)
+        {
+            this.MessageContainer.AddError("Per proseguire è necessario caricare tutti i documenti comprovanti la procura speciale");
+
+            return false;
+        }
+
+        if (this.RichiedeCaricamentoDocumentoIdentita)
+        {
+            var numeroDocumentiIdentitaNonValidi = this.DomandaCorrente
+                                                            .Procure
+                                                            .Procure
+                                                            .Where(x => x.DocumentoIdentita == null && x.Procuratore != null)
+                                                            .Count();
+
+            if (numeroDocumentiIdentitaNonValidi > 0)
+            {
+                this.MessageContainer.AddError("Per proseguire è necessario caricare i documenti di identità di tutti i procuratori");
+
+                return false;
+            }
+        }
+
+        if (!this.RichiedeFirmaDigitale)
+            return true;
+
+        var procureNonFirmate = this.DomandaCorrente.Procure
+                                                    .Procure
+                                                    .Where(x => x.Allegato != null && x.Procuratore != null && !x.Allegato.FirmatoDigitalmente);
+
+        if (procureNonFirmate.Count() == 0)
+            return true;
+
+        foreach (var procura in procureNonFirmate)
+        {
+            var errStr = String.Format("Il file attestante la procura di {0} relativamente a {1} non è firmato digitalmente", procura.Procuratore.Nominativo, procura.Procurato.Nominativo);
+
+            this.MessageContainer.AddError(errStr, false);
+        }
+
+        this.MessageContainer.Refresh();
+
+        return false;
+    }
+
+    private async Task OnEdit(ProcuraItem item)
+    {
+        _editingItem = item;
+
+        await Task.CompletedTask;
+    }
+
+    private async Task OnUploadError(string message)
+    {
+        MessageContainer.AddError(message);
+
+        await Task.CompletedTask;
+    }
+
+    private async Task OnUploadSuccesful()
+    {
+        await DataBindAsync();
+        _editingItem = null;
+    }
+}

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" 
+	xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" 
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s="http://www.w3.org/2001/XMLSchema" 
+	xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+	targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="GeneraRiepilogo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="tokenApplicativo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="uidPratica" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GeneraRiepilogoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GeneraRiepilogoResult" type="tns:BinaryFile" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="BinaryFile">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="FileName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="MimeType" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FileContent" mime:expectedContentTypes="application/octet-stream" type="s:base64Binary" />
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GeneraRiepilogoSoapIn">
+    <wsdl:part name="parameters" element="tns:GeneraRiepilogo" />
+  </wsdl:message>
+  <wsdl:message name="GeneraRiepilogoSoapOut">
+    <wsdl:part name="parameters" element="tns:GeneraRiepilogoResponse" />
+  </wsdl:message>
+  <wsdl:portType name="riepilogo_praticaSoap">
+    <wsdl:operation name="GeneraRiepilogo">
+      <wsdl:input message="tns:GeneraRiepilogoSoapIn" />
+      <wsdl:output message="tns:GeneraRiepilogoSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="riepilogo_praticaSoap" type="tns:riepilogo_praticaSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GeneraRiepilogo">
+      <soap:operation soapAction="http://tempuri.org/GeneraRiepilogo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="riepilogo_praticaSoap12" type="tns:riepilogo_praticaSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GeneraRiepilogo">
+      <soap12:operation soapAction="http://tempuri.org/GeneraRiepilogo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="riepilogo_pratica">
+    <wsdl:port name="riepilogo_praticaSoap" binding="tns:riepilogo_praticaSoap">
+      <soap:address location="http://devel3/frontoffice/AreaRiservata/webservices/istanze/visura/riepilogo-pratica.asmx" />
+    </wsdl:port>
+    <wsdl:port name="riepilogo_praticaSoap12" binding="tns:riepilogo_praticaSoap12">
+      <soap12:address location="http://devel3/frontoffice/AreaRiservata/webservices/istanze/visura/riepilogo-pratica.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

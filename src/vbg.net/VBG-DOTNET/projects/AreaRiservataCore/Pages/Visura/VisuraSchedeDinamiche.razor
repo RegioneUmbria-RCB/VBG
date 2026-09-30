@@ -1,0 +1,82 @@
+﻿@using AreaRiservataCore.Shared.DetailCards
+@using Init.Sigepro.FrontEnd.AppLogic.DatiDinamici.Visura
+@using Init.Sigepro.FrontEnd.AppLogic.WebServiceReferences.IstanzeService
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.DesignComuni.Spinner
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+@using VBG.DatiDinamici
+@using VBG.DatiDinamici.Agid.WebControls
+
+
+@if (_dataSource?.Any() ?? false)
+{
+    <div class="dati-dinamici-readonly">
+
+        <DetailCardGroup Title="Schede della domanda">
+
+            <DetailCardList Items="_dataSource">
+                <ItemTemplate Context="item">
+                    <DetailCardAction Text="Mostra" OnClick="() => MostraModelloAsync(item)"></DetailCardAction>
+                    <DetailCardTitle>@item.Descrizione</DetailCardTitle>
+                </ItemTemplate>
+            </DetailCardList>
+
+        </DetailCardGroup>
+    </div>
+
+    @if (_modello is not null)
+    {
+        <BasicModal OnClose="() => _modello = null" AlwaysVisible="true" Size="ModalSizeEnum.Large">
+            <ModalHeader Titolo="@_modello.NomeModello" Size="ModalHeaderSizeEnum.Small">
+            </ModalHeader>
+            <ModalBody>
+                <ModelloDinamicoReadonlyRenderer Modello="_modello" />
+            </ModalBody>
+            <ModalFooter CancelText="Chiudi">
+            </ModalFooter>
+        </BasicModal>
+    }
+}
+
+@code {
+    [Inject]
+    public IVisuraDatiDinamiciService _datiDinamiciService { get; set; } = default!;
+
+    [Inject]
+    public SpinnerService _spinnerService { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public IEnumerable<VisuraTitoloModelloDinamicoIstanza>? DataSource { get; set; }
+
+    [Parameter, EditorRequired]
+    public Istanze Istanza { get; set; }
+
+    private record class ListItem(int Id, string Descrizione);
+
+    private IEnumerable<ListItem>? _dataSource;
+
+    private ModelloDinamicoIstanza? _modello;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+
+        this._dataSource = this.DataSource?.Select(x => new ListItem(x.Id, x.Descrizione));
+    }
+
+    private async Task<ModelloDinamicoIstanza> RicaricaSchedaAsync(int idScheda)
+    {
+        return await this._spinnerService.ShowSpinnerAsync(() =>
+        {
+            var modello = this._datiDinamiciService.GetModello(this.Istanza, idScheda);
+
+            return Task.FromResult(modello);
+        });
+    }
+
+    private async Task MostraModelloAsync(ListItem item)
+    {
+        this._modello = await this.RicaricaSchedaAsync(item.Id);
+    }
+}

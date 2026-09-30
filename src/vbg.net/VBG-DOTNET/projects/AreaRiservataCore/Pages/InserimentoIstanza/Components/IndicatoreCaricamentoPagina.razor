@@ -1,0 +1,31 @@
+﻿<CascadingValue Value="@this">
+    <div id="indicatore-caricamento-pagina" class="indicatore-caricamento-pagina">
+        <div>
+            <h2>Caricamento in corso...</h2>
+            <div>
+                <div class="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+            </div>
+        </div>
+    </div>
+    
+    @ChildContent
+
+</CascadingValue>
+
+@code {
+    [Inject]
+    public IJSRuntime _jsRuntime { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public RenderFragment ChildContent { get; set; } = default!;
+
+    public async Task PageLoadingStarted()
+    {
+        await _jsRuntime.InvokeVoidAsync("window._indicatoreCaricamentoPagina.show");
+    }
+
+    public async Task PageLoadingCompleted()
+    {
+        await _jsRuntime.InvokeVoidAsync("window._indicatoreCaricamentoPagina.hide");
+    }
+}

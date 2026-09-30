@@ -1,0 +1,131 @@
+﻿@page "/{IdComune}/{Software}/inserimento-istanza/gestione-localizzazioni-modena/{idDomanda:int}/{stepId:int}"
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneDomicilioElettronico
+@using Init.Sigepro.FrontEnd.AppLogic.GestionePresentazioneDomanda.GestioneAnagrafiche
+@using Init.Sigepro.FrontEnd.AppLogic.Services.Domanda
+@using Init.Sigepro.FrontEnd.Infrastructure.StepsDomanda.Attributi
+@inherits IstanzeStepPage
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/css/bootstrap-select.min.css">
+<link rel="stylesheet" href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/css/ol.css" type="text/css" />
+<link href="./css/area-riservata/gestione-localizzazioni-modena.css" rel="stylesheet" type="text/css" />
+
+<div class="contenitore-mappa">
+    <div class="row">
+        <div class="col-sm-9 col-md-10 col-lg-8 col-xl-7">
+            <div class="mb-3 row">
+
+                <div class="col-md-2">
+                    <label class="col-form-label pull-right" for="lista_fogli">
+                        Foglio
+                    </label>
+                </div>
+
+                <div class="col-md-2">
+                    <select id="lista_fogli" class="form-control align_right selectpicker"
+                        data-live-search="true" data-width="10em">
+                    </select>
+                </div>
+
+                <div class="col-md-2">
+                    <label class="col-form-label pull-right" for="lista_mappali_select" id="lista_mappali_label">
+                        Mappale
+                    </label>
+                </div>
+
+                <div class="col-md-2" id="particella_area">
+                    <select id="lista_mappali_select" class="form-control align_right selectpicker"
+                        data-live-search="true" data-width="10em" style="display: none">
+                    </select>
+                    <select id="lista_mappali_alt_text" class="form-control align_right selectpicker"
+                        data-width="10em">
+                        <option value="">--</option>
+                    </select>
+                </div>
+
+                <div class="col-md-2">
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addPartkeyManually">
+                        Aggiungi Particella non in mappa
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-8 col-md-9 col-lg-9">
+            <div id="map" class="map"></div>
+        </div>
+        <div class="col-sm-4 col-md-3 col-lg-3">
+
+            <div class="card mb-2" id="selection_block" style="display: none;">
+
+                <div class="card-header">
+                    <span id="foglio_selezionato"></span>
+                    <a class="badge text-bg-danger pull-right" href="#" id="annulla_selezione">X</a>
+                </div>
+
+                <div class="card-body" style="overflow-y: auto; overflow-x: hidden; /* display: none; */height: 20em;">
+                    <!-- LISTA PARTICELLE GRAFICHE SELEZIONATE -->
+                    <b id="titolo_particelle_grafiche">Particelle Grafiche</b>
+                    <ul id="lista_particelle_selezionate" class="list-group list-group-flush dropdown"></ul>
+                    <b id="titolo_particelle_manuali">Particelle non in mappa</b>
+                    <ul id="lista_particelle_create" class="list-group list-group-flush dropdown"></ul>
+                </div>
+
+                <!-- BOTTONI "conferma" e "aggiungi"--->
+                <ul class="nav nav-pills nav-fill ">
+                    <li class="nav-item" style="width: 100%; margin-bottom: 0">
+                        <button id="cmdConferma" class="btn btn-primary" style="display: none" @onclick="CmdConferma_ClickAsync">Conferma</button>
+                        <div class="btn btn-primary" href="#" id="conferma_selezione" style="display: none; width: 100%">Conferma</div>
+                    </li>
+                </ul>
+                <input type="hidden" id="hidValoriSelezionati" name="hidValoriSelezionati">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addPartkeyManually" tabindex="-1" role="dialog" aria-labelledby="addPartkeyManuallyLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addPartkeyManuallyLabel">Aggiungi Particella non presente in mappa</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Comune</th>
+                            <th scope="col">Sezione</th>
+                            <th scope="col">Foglio</th>
+                            <th scope="col">Particella</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>F257</td>
+                            <td>_</td>
+                            <td>
+                                <span id="foglio_selezionato_form_add"></span>
+                            </td>
+                            <td>
+                                <input type="text" id="nuova_particella_input" name="nuova_particella" value="" placeholder="" maxlength="5">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+                <button type="button" class="btn btn-primary" id="button_confirm_modal_particella">Aggiungi</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+

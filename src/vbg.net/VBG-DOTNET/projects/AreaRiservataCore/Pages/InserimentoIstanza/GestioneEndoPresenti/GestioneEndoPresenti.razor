@@ -1,0 +1,164 @@
+﻿@page "/{IdComune}/{Software}/inserimento-istanza/gestione-endo-presenti/{idDomanda:int}/{stepId:int}"
+@using AreaRiservataCore.Pages.InserimentoIstanza.GestioneEndoPresenti.Componenti
+@using Init.SIGePro.Manager.DTO.Endoprocedimenti
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneEndoprocedimenti
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneEndoprocedimenti.EndoAcquisiti
+@using System.ComponentModel.DataAnnotations
+@using Init.Sigepro.FrontEnd.AppLogic.GestioneOggetti
+@using Init.Sigepro.FrontEnd.AppLogic.VerificaFirmaDigitale
+@using Init.Sigepro.FrontEnd.CoreServices.GestioneOggetti
+@using Init.Sigepro.FrontEnd.Infrastructure.StepsDomanda.Attributi;
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.DesignComuni.Forms
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+@using VBG.BlazorComponentsLibrary.EditFormComponents
+@using VBG.BlazorComponentsLibrary.EditFormComponents.DropDown
+@using VBG.BlazorComponentsLibrary.EditFormComponents.FileUpload
+@inherits IstanzeStepPage
+
+@if (this._model is not null)
+{
+    <StepCard Titolo=" ">
+        @foreach (var endo in this._model.EndoPresenti)
+        {
+            <RiepilogoEndoPresente Endo="endo" 
+                                   TestoCheckPossessoTitolo="@TestoCheckPossessoTitolo"
+                                   LabelTipoTitolo="@LabelTipoTitolo" OnEdit="BeginEditAsync"></RiepilogoEndoPresente>
+        }
+    </StepCard>
+
+    <EditorEndoPresente Endo="@_editingItem"
+					OnCancelEdit="CancelEditAsync"
+					OnAcceptEdit="AcceptEdit"
+                        TestoCheckPossessoTitolo="@TestoCheckPossessoTitolo"
+                        LabelTipoTitolo="@LabelTipoTitolo"></EditorEndoPresente>
+}
+
+@code {
+
+
+    [Inject] public IEndoAcquisitiService _endoprocedimentiService { get; set; } = default!;
+
+    [StepProperty("Se impostato a true ignora il caricamento degli allegati anche se la configurazione del tipo titolo lo richiede")]
+    public bool IgnoraCaricamentoAllegati { get; set; } = true;
+
+    [StepProperty("Se impostato a true ignora il caricamento degli allegati anche se la configurazione del tipo titolo lo richiede")]
+    public string TestoCheckPossessoTitolo { get; set; } = "Sono in possesso dell'autorizzazione/titolo abilitativo";
+
+    [StepProperty("Etichetta del tipo titolo")]
+    public string LabelTipoTitolo { get; set; } = "Tipo titolo";
+
+    private EndoPresentiBindingModel? _model;
+    private EndoPresenteBindingItem? _editingItem;
+
+    protected override bool CanEnterStep()
+    {
+        return this.DomandaCorrente.Endoprocedimenti.Endoprocedimenti.Any(x => x.PermetteVerificaAcquisizione);
+    }
+
+    protected override async Task OnLoadStepAsync()
+    {
+        await dataBindAsync();
+        await base.OnLoadStepAsync();
+    }
+
+    async Task dataBindAsync()
+    {
+        await _spinnerService.ShowSpinnerAsync(() =>
+        {
+            this._model = new EndoPresentiBindingModel(
+                this.DomandaCorrente.Endoprocedimenti,
+                _endoprocedimentiService,
+                IgnoraCaricamentoAllegati
+            );
+        });
+    }
+
+    protected override void OnBeforeExitStep()
+    {
+        MessageContainer.ClearErrors();
+
+        try
+        {
+            if (this._model == null)
+            {
+                return;
+            }
+
+            var endoAcquisiti = this._model.EndoPresenti.Where(x => x.Presente).ToArray();
+
+            if (this._model.EndoPresenti.Any(x => !x.IsValid))
+            {
+                var errori = endoAcquisiti.Where(x => !x.IsValid).Select(x => $"{x.Descrizione}: {x.SelectedTipoTitoloItem} Selezionare un tipo atto");
+                MessageContainer.AddError(errori);
+                this.StateHasChanged();
+                return;
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.Error($"Il metodo {nameof(OnBeforeExitStep)} ha restituito il seguente errore: {ex.Message}");
+        }
+    }
+
+    protected override bool CanExitStep()
+    {
+        return !this._model.EndoPresenti?.Where(x => !x.IsValid).Any() ?? false;
+    }
+
+    async Task BeginEditAsync(EndoPresenteBindingItem endo)
+    {
+        await _spinnerService.ShowSpinnerAsync(() =>
+        {
+            this._editingItem = endo;
+        });
+    }
+
+    async Task AcceptEdit(EndoPresenteBindingItem endo)
+    {
+        if (this._model is null)
+        {
+            return;
+        }
+
+        await _spinnerService.ShowSpinnerAsync(async () =>
+        {
+            await SalvaEndoAcquisitiAsync();
+
+            this._editingItem = null;
+
+            await dataBindAsync();
+        });
+    }
+
+    private async Task SalvaEndoAcquisitiAsync()
+    {
+        var endoAcquisiti = this._model.EndoPresenti.Where(x => x.Presente).ToArray();
+
+        await _endoprocedimentiService.SalvaEndoAcquisitiAsync(IdDomanda.Value, endoAcquisiti.Select(x =>
+        {
+            int codice = x.CodiceInventario;
+            string descrizione = x.Descrizione;
+            string codiceTipoTitolo = x.SelectedTipoTitoloItem?.Value;
+            string descrizioneTipoTitolo = x.SelectedTipoTitoloItem.Text;
+            string numeroAtto = x.SelectedTipoTitoloItemFlags.Numero ? x.NumeroAtto : "";
+            string dataAtto = x.SelectedTipoTitoloItemFlags.Data ? x.DataAtto.Value.ToString("dd/MM/yyyy") : "";
+            string rilasciatoDa = x.SelectedTipoTitoloItemFlags.RilasciatoDa ? x.RilasciatoDa : "";
+            string note = x.Note;
+
+            return new DatiEndoprocedimentoPresente(true, codice, descrizione, codiceTipoTitolo, descrizioneTipoTitolo, numeroAtto, dataAtto, rilasciatoDa, note);
+        }));
+
+        foreach (var endo in endoAcquisiti.Where(x => x.SelectedTipoTitoloItemFlags.Allegato))
+        {
+            await _endoprocedimentiService.AllegaFileAEndoAcquisitoAsync(IdDomanda.Value, endo.CodiceInventario, endo.CodiceOggetto);
+        }
+    }
+
+    async Task CancelEditAsync()
+    {
+        this._editingItem = null;
+
+        await dataBindAsync();
+    }
+}

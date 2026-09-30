@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://gruppoinit.it/sigepro/schemas/messages/istanze" elementFormDefault="qualified" xmlns:xmime="http://www.w3.org/2005/05/xmlmime"
+	xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://gruppoinit.it/sigepro/schemas/messages/istanze"
+	xmlns:base="http://gruppoinit.it/sigepro/schemas/messages/base"	
+	xmlns:sch="http://gruppoinit.it/sigepro/definitions/anagrafe">
+	
+	<import id="oggettiBase" schemaLocation="backoffice_oggetti_base.xsd" namespace="http://gruppoinit.it/sigepro/schemas/messages/base" />
+	<import schemaLocation="anagrafe.xsd" namespace="http://gruppoinit.it/sigepro/schemas/messages/anagrafe"  />
+	
+	<!-- REQUEST -->
+	
+	<element name="SoggettiCollegatiInsertByIdentificativoRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string" minOccurs="1" maxOccurs="1"/>
+				<element name="identificativiAnagrafeType" type="tns:IdentificativiAnagrafeType" minOccurs="1" maxOccurs="1" /> 
+				<element name="codiceTipologiaSoggetto" type="int" minOccurs="1" maxOccurs="1" /> 
+				<element name="codiceIstanza" type="int" minOccurs="1" maxOccurs="1" />
+				<element name="isNonInserireSeTipologiaPresente" type="boolean" minOccurs="1" maxOccurs="1" />  
+			</sequence>
+		</complexType>
+	</element>
+	
+	<element name="IstanzeRuoliRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string" minOccurs="1" maxOccurs="1"/>
+				<element name="codiceRuolo" type="int" minOccurs="1" maxOccurs="1" /> 
+				<element name="codiceIstanza" type="int" minOccurs="1" maxOccurs="1" />  
+			</sequence>
+		</complexType>
+	</element>
+	<element name="IstanzeResponsabiliRequest">
+		<complexType>
+			<sequence>
+				<element name="token" type="string" minOccurs="1" maxOccurs="1"/>
+				<element name="codiceResponsabile" type="int" minOccurs="1" maxOccurs="1" /> 
+				<element name="codiceIstanza" type="int" minOccurs="1" maxOccurs="1" />  
+			</sequence>
+		</complexType>
+	</element>
+	<!-- RESPONSE -->
+	
+	<element name="SoggettiCollegatiInsertByIdentificativoResponse">
+		<complexType>
+			<sequence>
+				<element name="codiceSoggetto" type="integer"  minOccurs="0" maxOccurs="1"/>
+				<element name="nominativo" type="string"  minOccurs="0" maxOccurs="1"/>
+				<element name="EsitoOperazioneType" type="base:EsitoOperazioneType" />
+			</sequence>
+		</complexType>
+	</element>
+
+	<element name="IstanzeRuoliResponse">
+		<complexType>
+			<sequence>
+				<element name="EsitoOperazioneType" type="base:EsitoOperazioneType" minOccurs="1" maxOccurs="1"/>
+			</sequence>
+		</complexType>
+	</element>
+	
+	<element name="IstanzeResponsabiliResponse">
+		<complexType>
+			<sequence>
+				<element name="EsitoOperazioneType" type="base:EsitoOperazioneType" minOccurs="1" maxOccurs="1"/>
+			</sequence>
+		</complexType>
+	</element>
+	
+	<!-- COMPLEX TYPE -->
+	
+	
+	<complexType name="IdentificativiAnagrafeType">
+	  	<sequence>
+	  	  <choice>
+		        <element name="partitaIva" type="string"/>
+		     	<element name="codiceFiscale" type="string"/> 
+				<element name="codiceAnagrafica" type="int"/>
+		 </choice>
+		 <element name="tipoanagrafeEnum" type="tns:TipoanagrafeEnum" default="NON_SPECIFICATO"></element>
+		</sequence>
+	</complexType>
+	
+	
+	<simpleType name="TipoanagrafeEnum">
+		<restriction base="string">
+			<enumeration value="G"></enumeration>
+			<enumeration value="F"></enumeration>
+			<enumeration value="NON_SPECIFICATO"></enumeration>
+		</restriction>
+	</simpleType>
+	
+	
+	
+	
+	
+	
+
+		
+</schema>
+
+

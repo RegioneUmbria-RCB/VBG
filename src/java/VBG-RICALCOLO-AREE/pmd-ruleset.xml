@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<ruleset name="Custom rules"
+         xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.net/ruleset_2_0_0.xsd">
+
+    <description>
+        Regole personalizzate PMD per il progetto
+    </description>
+
+    <!-- Evita metodi che modificano parametri -->
+    <rule ref="category/java/bestpractices.xml/AvoidReassigningParameters"/>
+
+    <!-- Metodi troppo complessi -->
+    <rule ref="category/java/design.xml/CyclomaticComplexity">
+        <properties>
+            <property name="classReportLevel" value="80"/>
+            <property name="methodReportLevel" value="10"/>
+        </properties>
+    </rule>
+
+    <!-- Campi o variabili inutilizzate -->
+    <rule ref="category/java/bestpractices.xml/UnusedLocalVariable"/>
+    <rule ref="category/java/bestpractices.xml/UnusedPrivateField"/>
+    
+  	<!-- Import non necessari -->
+  	<rule ref="category/java/codestyle.xml/UnnecessaryImport"/>
+</ruleset>

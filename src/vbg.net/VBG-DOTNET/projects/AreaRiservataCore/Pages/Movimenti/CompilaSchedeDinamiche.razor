@@ -1,0 +1,58 @@
+﻿@page "/{IdComune}/{Software}/compilaschededinamiche/{IdMovimento:int}/{Step:int?}/{*GoBackUrl}"
+@using VBG.BlazorComponentsLibrary.DesignComuni.NavScroll
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+@using VBG.DatiDinamici.Agid.WebControls
+
+@using static Init.Sigepro.FrontEnd.GestioneMovimenti.ViewModels.CompilazioneSchedeDinamicheViewModel
+@inherits MovimentiBasePage
+
+<style type="text/css">
+    .fa-check {
+        color: green;
+    }
+</style>
+
+
+<TitoloPagina>@_viewModel.GetTitoloMovimentoDaEffettuare()</TitoloPagina>
+
+<div id="contenutoStep">
+    <div>
+        <NavScrollComponent Title="Indice di pagina">
+            @* <h3>Schede da compilare</h3> *@
+            <StepCard Titolo="Schede da compilare">
+                <StepCardItem>
+                    @foreach (SchedaDinamica item in _dataSource != null ? _dataSource : Enumerable.Empty<object>())
+                    {
+                        string icon = item.Compilata ? "fa-check" : "fa-pencil";
+
+                        <StepCardInfo Titolo="">
+                            <i class="fa @icon" aria-hidden="true"></i>
+                            <a href="#" @onclick="@(() => ApriSchedaDinamicaAsync(item.IdScheda))" @onclick:preventDefault target="_blank" title="@($"Compila {@item.Descrizione}")">@item.Descrizione</a>
+                        </StepCardInfo>
+                    }
+                </StepCardItem>
+            </StepCard>
+
+
+            <div id="bottoniMovimento" class="d-flex gap-3 mb-3">
+                <button class="btn btn-light" @onclick="OnBtnBackAsync">Torna indietro</button>
+                <button class="btn btn-primary" @onclick="OnBtnNextAsync">Procedi</button>
+            </div>
+        </NavScrollComponent>
+
+        @if (_schedaDaCompilare is not null)
+        {
+            <CascadingValue Value="@_datiDinamiciDomandaFileUpload">
+                <ModalModelloDinamicoEditor Modello="_schedaDaCompilare"
+                                            CampiInSolaLettura="@_mascheraSolaLettura"
+                                            OnClose="OnBtnClose"
+                                            Title="@_schedaDaCompilare.NomeModello"
+                                            OnModelSaved="OnBtnSave">
+                    <HeaderContent>
+                        I campi contrassegnati da un asterisco sono obbligatori
+                    </HeaderContent>
+                </ModalModelloDinamicoEditor>
+            </CascadingValue>
+        }
+    </div>
+</div>

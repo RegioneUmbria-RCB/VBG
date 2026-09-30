@@ -1,0 +1,103 @@
+﻿@using Init.Sigepro.FrontEnd.AppLogic.GestioneOneri
+@using Init.Sigepro.FrontEnd.AppLogic.Pagamenti.NodoPagamenti
+@using VBG.BlazorComponentsLibrary.DesignComuni.Forms
+@using VBG.BlazorComponentsLibrary.DesignComuni.Modals
+@using VBG.BlazorComponentsLibrary.EditFormComponents
+@using VBG.BlazorComponentsLibrary.EditFormComponents.DropDown
+
+@if (Pagamento is not null)
+{
+    <FormModal OnClose="OnCancelEdit" AlwaysVisible="true" Size="ModalSizeEnum.Large" Model="Pagamento" FormId="formOneri" OnValidSubmit="OnValidEdit" ValidationCallBack="ValidationCallback">
+        <ModalHeader Titolo="@Pagamento.Causale"></ModalHeader>
+        <ModalBody>                
+                <DropDownForm @bind-Value="Pagamento.ModalitaPagamento"
+                              Label="Modalità pagamento"
+                              Items="ModalitaPagamento"
+                              ValidationFor="() => Pagamento.ModalitaPagamento"
+                              Required="true"></DropDownForm>
+
+                @if (Pagamento.ModalitaPagamentoAsEnum != ModalitaPagamentoOnereEnum.NonDovuto)
+                {
+                    @if (Pagamento.Importo != 0.0m)
+                    {
+                        <FormTextReadonly Titolo="Importo">€ @Pagamento.Importo.ToString("N2")</FormTextReadonly>
+                    }
+                    else
+                    {
+                        <NumericInputForm @bind-Value="Pagamento.ImportoPagato"
+                                          Label="Importo"
+                                          ValoreMin="0.001"
+                                          ValoreMax="99999"
+                                          Required="true"
+                                          ValidationFor="() => Pagamento.ImportoPagato"></NumericInputForm>
+                    }
+                }
+
+                @if (Pagamento.ModalitaPagamentoAsEnum == ModalitaPagamentoOnereEnum.GiaPagato)
+                {
+                    <GenericDropDownForm @bind-Value="Pagamento.TipoPagamento"
+                                         Label="Tipo pagamento"
+                                         Items="TipiPagamento"
+                                         ValueField="@nameof(TipoPagamento.Codice)"
+                                         TextField="@nameof(TipoPagamento.Descrizione)"
+                                         Selector="(x) => x?.Descrizione"
+                                         ValidationFor="() => Pagamento.TipoPagamento"
+                                         Required="true"></GenericDropDownForm>
+
+                    <DateInputForm @bind-Value="Pagamento.DataPagamento"
+                                   Label="Data pagamento"
+                                   ValidationFor="() => Pagamento.DataPagamento"
+                                   Required="true"></DateInputForm>
+
+                    <TextInputForm @bind-Value="Pagamento.RiferimentoPagamento"
+                                   Label="Riferimenti pagamento"
+                                   Required="true"
+                                   ValidationFor="() => Pagamento.RiferimentoPagamento"></TextInputForm>
+                }
+        </ModalBody>
+        <ModalFooter>
+            <FormSubmitButton Form="formOneri"></FormSubmitButton>
+        </ModalFooter>
+    </FormModal>
+}
+
+@code {
+    [Parameter, EditorRequired]
+    public GrigliaPagamentiItem? Pagamento { get; set; }
+    [Parameter, EditorRequired]
+    public IEnumerable<TipoPagamento> TipiPagamento { get; set; } = Enumerable.Empty<TipoPagamento>();
+    [Parameter, EditorRequired]
+    public IEnumerable<DropDownItem> ModalitaPagamento { get; set; } = new List<DropDownItem>();
+
+    [Parameter, EditorRequired]
+    public EventCallback OnCancelEdit { get; set; }
+    [Parameter, EditorRequired]
+    public EventCallback<GrigliaPagamentiItem> OnAcceptEdit { get; set; }
+
+
+
+    void ValidationCallback(FormMessageStore msg)
+    {
+        if (this.Pagamento == null)
+        {
+            return;
+        }           
+
+        // if (this.Pagamento.ModalitaPagamentoAsEnum == ModalitaPagamentoOnereEnum.GiaPagato)
+        // {
+        //     if (this.Pagamento.TipoPagamento is null)
+        //         msg.Add(() => this.Pagamento.TipoPagamento, $"Campo obbligatorio");
+
+        //     if (!this.Pagamento.DataPagamento.HasValue)
+        //         msg.Add(() => this.Pagamento.DataPagamento, $"Campo obbligatorio");
+
+        //     if (String.IsNullOrEmpty(this.Pagamento.RiferimentoPagamento))
+        //         msg.Add(() => this.Pagamento.RiferimentoPagamento, $"Campo obbligatorio");
+        // }
+    }
+
+    async Task OnValidEdit()
+    {
+        await this.OnAcceptEdit.InvokeAsync(this.Pagamento);
+    }
+}

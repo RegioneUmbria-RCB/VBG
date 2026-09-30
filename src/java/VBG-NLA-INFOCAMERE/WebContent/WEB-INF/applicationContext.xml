@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:oxm="http://www.springframework.org/schema/oxm" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<task:annotation-driven />
+
+	<!-- <context:property-placeholder location="classpath:deploy.properties" /> -->
+	
+	
+	<context:property-placeholder
+			location="classpath:deploy.properties" />
+	
+	<!-- SIGEPRO Security -->
+
+	<bean id="sigeproSecurityWSClient"
+		class="it.gruppoinit.sigeprosecurity.ws.SigeproSecurityWSClient">
+		<property name="sigeproSecurityUrl"
+			value="${ws.token.url}" />
+		<property name="sigeproSecurityUserId" value="${ws.token.user}" />
+		<property name="sigeproSecurityUserPassword" value="${ws.token.pwd}" />
+	</bean>
+	
+	<!-- SIGEPRO Regole -->
+	
+	<bean id="regoleWSClient" class="it.gruppoinit.sigepro.definitions.regole.RegoleWSClient">
+		<property name="backendWsHostURL" value="${ws.backend.url}/backend/services/regole?wsdl" />
+	</bean>
+	
+	<bean id="sitWSClient" class="it.gruppoinit.sigepro.definitions.wssit.SitWSClient">
+		<property name="sitWsHostURL" value="${ws.sit.url}" />
+	</bean>
+
+	<!-- SIGEPRO Eventi -->
+	
+	<bean id="eventiWsClient" class="it.gruppoinit.sigepro.definitions.eventi.EventiWSClient">
+		<property name="mtomEnabled" value="true"/>
+		<property name="timeout" value="30000"/>
+		<property name="eventiWsUrl" value="${ws.backend.url}/backend/services/eventi?wsdl"/>
+	</bean>
+	
+ 
+    <bean id="deployProperties"
+		class="it.gruppoinit.service.DeployProperties">
+		<constructor-arg index="0"  value="${ws.token.url}" />
+		<constructor-arg index="1"  value="${ws.token.user}" />
+		<constructor-arg index="2"  value="${ws.token.pwd}" />
+		<constructor-arg index="3"  value="${stc.url}" />
+		<constructor-arg index="4"  value="${stc.userid}" />
+		<constructor-arg index="5"  value="${stc.password}" />
+		<constructor-arg index="6"  value="${stc.mtom}" />
+		<constructor-arg index="7"  value="${stc.timeout}" />
+		<constructor-arg index="8"  value="${stc.idNodoMittente}" />
+		<constructor-arg index="9"  value="${stc.idEnteMittente}" />
+		<constructor-arg index="10" value="${stc.idSportelloMittente}" />
+		<constructor-arg index="11" value="${stc.idNodoDestinatario}" />
+		<constructor-arg index="12" value="${stc.idSportelloDestinatario}" />
+		<constructor-arg index="13" value="${ws.eventi.mtom}" />
+		<constructor-arg index="14" value="${ws.backend.url}" />
+		<constructor-arg index="15" value="${idcomune.alias}" />
+	</bean>
+	 
+
+	<!-- SIGEPRO STC -->
+	
+	<bean id="stcWebServiceClient" class="it.init.sigepro.rte.definitions.StcWSClient">
+		<property name="timeout" value="${stc.timeout}" />
+		<property name="stcWsUrl" value="${stc.url}" />
+		<!-- UTENTE STC = Username e password di come sieder viene identificato da STC -->
+		<property name="nlaUserId" value="${stc.userid}" />
+		<property name="nlaPassword" value="${stc.password}" />
+		<!-- <property name="idNodoDestinatario" value="400" /> il nodo 400 in laboratorio è il BACKOFFICE
+		<property name="idEnteDestinatario" value="B553" /> L'ente destinatario va popolato dinamicamente con l'ALIAS dell'attivazione
+		<property name="idSportelloDestinatario" value="CE" />
+		Su BACKOFFICE: Archivi - Archivi Base - Amministrazioni
+		<property name="idNodoMittente" value="1234" />
+		<property name="idEnteMittente" value="SIEDER" />
+		<property name="idSportelloMittente" value="SIEDER" /> -->
+		<property name="mtom" value="${stc.mtom}" />
+	</bean>
+	
+	<!--  Client ws oggetti -->
+	
+	<bean id="oggettiWSClient" class="it.gruppoinit.sigepro.definitions.oggetti.OggettiWSClient">
+		<property name="sigeproSecurityWSClient" ref="sigeproSecurityWSClient" />
+		<property name="urlServicesOggettiWSDL" value="${oggetti.ws.url}" />
+		<property name="mtomEnabled" value="${oggetti.ws.mtom}" />
+		<property name="timeout" value="${oggetti.ws.timeout}" />
+		<property name="attachLoggingInterceptors" value="${oggetti.ws.attach.logging.interceptors}" />
+		<property name="logInbound" ref="logInbound" />
+		<property name="logOutbound" ref="logOutbound" />
+	</bean>
+	
+	
+	<bean id="pddServiceSUAPWS" class="it.gruppoinit.impresainungiorno.PddServiceSUAPWS">
+		<property name="mtomEnabled" value="${infocamere.ente.suap.ws.mtom}" />
+		<property name="timeout" value="${infocamere.ente.suap.ws.timeout}" />
+	</bean>
+	
+	
+	
+	<!-- CONFIGURAZIONE PER IL JOB SCHEDULER   	 -->
+
+	
+</beans>

@@ -1,0 +1,45 @@
+﻿@using AreaRiservataCore.Shared.DetailCards
+@using VBG.BlazorComponentsLibrary.AccessibilityComponents
+@using VBG.BlazorComponentsLibrary.DesignComuni.StepCards
+@if (DataSource?.Any() ?? false)
+{
+    <DetailCardGroup Title="Autorizzazioni">
+
+        <DetailCardList Items="DataSource">
+            <ItemTemplate Context="item">
+                <DetailCardTitle>@item.Descrizione</DetailCardTitle>
+                <DetailCardSubtitle>
+                    @item.Numero del @item.Data?.ToString("dd/MM/yyyy")
+                    
+                    <BadgeComponent Type="@(item.Attiva ? BadgeComponent.BadgeCategoryEnum.SUCCESS : BadgeComponent.BadgeCategoryEnum.DANGER)">@item.Stato</BadgeComponent>
+                </DetailCardSubtitle>
+
+                <div class="row">
+                    @if (item.DataScadenza.HasValue)
+                    {
+                        <div class="col">
+                            <DetailCardInfo Title="Data Scadenza">@item.DataScadenza?.ToString("dd/MM/yyyy")</DetailCardInfo>
+                        </div>
+                    }
+
+                    @if (item.DataCessazione.HasValue)
+                    {
+                        <div class="col">
+                            <DetailCardInfo Title="Data Cessazione">@item.DataCessazione?.ToString("dd/MM/yyyy")</DetailCardInfo>
+                        </div>
+                    }
+                </div>
+@* 
+
+                @if (!String.IsNullOrEmpty(item.Note))
+                {
+                    <DetailCardInfo Title="Note">@item.Note</DetailCardInfo>
+                } *@
+            </ItemTemplate>
+        </DetailCardList>
+    </DetailCardGroup>
+}
+
+@code {
+
+}

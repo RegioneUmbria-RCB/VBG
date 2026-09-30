@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://areariservata.gp.pal.gruppoinit.it/domain" 
+	elementFormDefault="qualified" 
+	xmlns="http://www.w3.org/2001/XMLSchema" 
+	xmlns:tns="http://areariservata.gp.pal.gruppoinit.it/domain"
+	xmlns:types="http://sigepro.init.it/rte/types"
+	xmlns:xmime="http://www.w3.org/2005/05/xmlmime">
+
+	<import namespace="http://sigepro.init.it/rte/types" schemaLocation="types.xsd" />
+
+	<simpleType name="VersioneType">
+		<restriction base="string">
+			<enumeration value="V_1_0" />
+		</restriction>
+	</simpleType>
+
+	<element name="NuovaIstanzaType">
+		<complexType>
+			<sequence>
+				<element name="dettaglioPratica" type="types:DettaglioPraticaType"></element>
+				<element name="listaPDFSchedeDinamiche" type="tns:PDFSchedaDinamicaType" minOccurs="0" maxOccurs="unbounded"></element>
+				<element name="versione" type="tns:VersioneType"></element>
+			</sequence>
+		</complexType>
+	</element>
+	
+	<complexType name="PDFSchedaDinamicaType">
+		<sequence>
+			<element name="scheda" type="types:SchedaType"></element>
+			<element name="bloccoMultiplo" type="boolean"></element>
+			<element name="firmaObbligatoria" type="boolean"></element>
+			<element name="allegatoDaUtente" type="boolean"></element>
+			<element name="documento" type="types:DocumentiType"></element>
+			<element name="listaPDFBlocchiSchedaDinamica" type="tns:PDFSchedaDinamicaBloccoType" minOccurs="0" maxOccurs="unbounded"></element>
+		</sequence>
+	</complexType>
+	
+	<complexType name="PDFSchedaDinamicaBloccoType">
+		<sequence>
+			<element name="codice" type="integer"></element>
+			<element name="firmaObbligatoria" type="boolean"></element>
+			<element name="allegatoDaUtente" type="boolean"></element>
+			<element name="documento" type="types:DocumentiType"></element>
+		</sequence>
+	</complexType>
+	
+</schema>

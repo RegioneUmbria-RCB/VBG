@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:intf="urn:DefaultNamespace" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:impl="urn:DefaultNamespace" xmlns="http://schemas.xmlsoap.org/wsdl/" targetNamespace="urn:DefaultNamespace" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:DefaultNamespace">
+      <xsd:import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+      <xsd:complexType name="StatusProtocollo">
+        <xsd:sequence>
+          <xsd:element name="CodStato" type="xsd:short" />
+          <xsd:element name="DescrStato" nillable="true" type="xsd:string" />
+          <xsd:element name="Anno" type="xsd:short" />
+          <xsd:element name="Numero" type="xsd:long" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="StatusDestinatari">
+        <xsd:sequence>
+          <xsd:element name="CodStato" type="xsd:short" />
+          <xsd:element name="DescrStato" nillable="true" type="xsd:string" />
+          <xsd:element name="Indirizzo" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Destinatario">
+        <xsd:sequence>
+          <xsd:element name="Destinatario" nillable="true" type="xsd:string" />
+          <xsd:element name="Indirizzo" nillable="true" type="xsd:string" />
+          <xsd:element name="UO" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="DestinatarioCaricoConoscenza">
+        <xsd:sequence>
+          <xsd:element name="Destinatario" nillable="true" type="xsd:string" />
+          <xsd:element name="UO" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="DestinatarioArray">
+        <xsd:sequence>
+          <xsd:element name="rowsFetched" type="xsd:short" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="destinatarioArray" nillable="true" type="impl:Destinatario" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="destinatarioCaricoConoscenzaArray" nillable="true" type="impl:DestinatarioCaricoConoscenza" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="StatusSetDestinatari">
+        <xsd:sequence>
+          <xsd:element name="CodStato" type="xsd:short" />
+          <xsd:element name="DescrStato" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="StatusCheckUO">
+        <xsd:sequence>
+          <xsd:element name="CodStato" type="xsd:short" />
+          <xsd:element name="DescrStato" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="UO">
+        <xsd:sequence>
+          <xsd:element name="Descrizione" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="UOArray">
+        <xsd:sequence>
+          <xsd:element name="rowsFetched" type="xsd:short" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="uoArray" nillable="true" type="impl:UO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="RuoloPermesso">
+        <xsd:sequence>
+          <xsd:element name="Nome" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="RuoliPermessoArray">
+        <xsd:sequence>
+          <xsd:element name="rowsFetched" type="xsd:short" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="ruoloPermessoArray" nillable="true" type="impl:RuoloPermesso" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="StatusCheckFunzionario">
+        <xsd:sequence>
+          <xsd:element name="CodStato" type="xsd:short" />
+          <xsd:element name="DescrStato" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Funzionario">
+        <xsd:sequence>
+          <xsd:element name="Descrizione" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="FunzionarioArray">
+        <xsd:sequence>
+          <xsd:element name="rowsFetched" type="xsd:short" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="funzionarioArray" nillable="true" type="impl:Funzionario" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="StatusCheckProtocollo">
+        <xsd:sequence>
+          <xsd:element name="CodStato" type="xsd:short" />
+          <xsd:element name="Descizione" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="IstatArray">
+        <xsd:sequence>
+          <xsd:element name="rowsFetched" type="xsd:short" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="istat" type="xsd:long" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="getDestinatariPerConoscenzaResponse">
+    <wsdl:part name="getDestinatariPerConoscenzaReturn" type="impl:DestinatarioArray" />
+  </wsdl:message>
+  <wsdl:message name="setDestinatariPerCaricoResponse">
+    <wsdl:part name="setDestinatariPerCaricoReturn" type="impl:StatusSetDestinatari" />
+  </wsdl:message>
+  <wsdl:message name="setDestinatariPerConoscenzaRequest">
+    <wsdl:part name="istatEnte" type="xsd:long" />
+    <wsdl:part name="anno" type="xsd:short" />
+    <wsdl:part name="numero" type="xsd:long" />
+    <wsdl:part name="destinatario" type="xsd:string" />
+    <wsdl:part name="uo" type="xsd:string" />
+    <wsdl:part name="isRuoloPermesso" type="xsd:boolean" />
+  </wsdl:message>
+  <wsdl:message name="check4UOResponse">
+    <wsdl:part name="check4UOReturn" type="impl:StatusCheckUO" />
+  </wsdl:message>
+  <wsdl:message name="getElencoIstatRequest" />
+  <wsdl:message name="check4UORequest">
+    <wsdl:part name="istatEnte" type="xsd:long" />
+    <wsdl:part name="descrizione" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="setDestinatariPerConoscenzaResponse">
+    <wsdl:part name="setDestinatariPerConoscenzaReturn" type="impl:StatusSetDestinatari" />
+  </wsdl:message>
+  <wsdl:message name="getDestinatariPerConoscenzaRequest">
+    <wsdl:part name="istatEnte" type="xsd:long" />
+    <wsdl:part name="anno" type="xsd:short" />
+    <wsdl:part name="numero" type="xsd:long" />
+  </wsdl:message>
+  <wsdl:message name="setDestinatariPerCaricoRequest">
+    <wsdl:part name="istatEnte" type="xsd:long" />
+    <wsdl:part name="anno" type="xsd:short" />
+    <wsdl:part name="numero" type="xsd:long" />
+    <wsdl:part name="destinatario" type="xsd:string" />
+    <wsdl:part name="uo" type="xsd:string" />
+    <wsdl:part name="isRuoloPermesso" type="xsd:boolean" />
+  </wsdl:message>
+  <wsdl:message name="check4DestinatarioRequest">
+    <wsdl:part name="istatEnte" type="xsd:long" />
+    <wsdl:part name="descrizione" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="set4ProtocolloInternoResponse">
+    <wsdl:part name="set4ProtocolloInternoReturn" type="impl:StatusProtocollo" />
+  </wsdl:message>
+  <wsdl:message name="search4FunzionarioRequest">
+    <wsdl:part name="istatEnte" type="xsd:long" />
+    <wsdl:part name="descrizione" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="setAllegato4ProtocolloResponse">
+    <wsdl:part name="setAllegato4ProtocolloReturn" type="impl:StatusCheckProtocollo" />
+  </wsdl:message>
+  <wsdl:message name="set4ProtocolloEntrataRequest">
+    <wsdl:part name="istatEnte" type="xsd:long" />
+    <wsdl:part name="mittente" type="xsd:string" />
+    <wsdl:part name="indirizzo" type="xsd:string" />
+    <wsdl:part name="oggetto" type="xsd:string" />
+    <wsdl:part name="UO" type="xsd:string" />
+    <wsdl:part name="destinatarioUO" type="xsd:string" />
+    <wsdl:part name="destinatarioFunz" type="xsd:string" />
+    <wsdl:part name="destinatarioSecUO" type="xsd:string" />
+    <wsdl:part name="destinatarioSecFunz" type="xsd:string" />
+    <wsdl:part name="destinatarioSecCC" type="xsd:boolean" />
+    <wsdl:part name="funzionario" type="xsd:string" />
+    <wsdl:part name="annoAntecedente" type="xsd:string" />
+    <wsdl:part name="numeroAntecedente" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="check4FunzionarioResponse">
+    <wsdl:part name="check4FunzionarioReturn" type="impl:StatusCheckFunzionario" />
+  </wsdl:message>
+  <wsdl:message name="getDestinatariPerCaricoRequest">
+    <wsdl:part name="istatEnte" type="xsd:long" />
+    <wsdl:part name="anno" type="xsd:short" />
+    <wsdl:part name="numero" type="xsd:long" />
+  </wsdl:message>
+  <wsdl:message name="set4ProtocolloUscitaResponse">
+    <wsdl:part name="set4ProtocolloUscitaReturn" type="impl:StatusProtocollo" />
+  </wsdl:message>
+  <wsdl:message name="check4DestinatarioResponse">
+    <wsdl:part name="check4DestinatarioReturn" type="impl:StatusDestinatari" />
+  </wsdl:message>
+  <wsdl:message name="search4DestinatariRequest">
+    <wsdl:part name="istatEnte" type="xsd:long" />
+    <wsdl:part name="descrizione" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="search4UOResponse">
+    <wsdl:part name="search4UOReturn" type="impl:UOArray" />
+  </wsdl:message>
+  <wsdl:message name="search4UORequest">
+    <wsdl:part name="istatEnte" type="xsd:long" />
+    <wsdl:part name="descrizione" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="getElencoIstatResponse">
+    <wsdl:part name="getElencoIstatReturn" type="impl:IstatArray" />
+  </wsdl:message>
+  <wsdl:message name="search4DestinatariResponse">
+    <wsdl:part name="search4DestinatariReturn" type="impl:DestinatarioArray" />
+  </wsdl:message>
+  <wsdl:message name="set4ProtocolloUscitaRequest">
+    <wsdl:part name="istatEnte" type="xsd:long" />
+    <wsdl:part name="destinatario" type="xsd:string" />
+    <wsdl:part name="indirizzo" type="xsd:string" />
+    <wsdl:part name="oggetto" type="xsd:string" />
+    <wsdl:part name="UO" type="xsd:string" />
+    <wsdl:part name="destinatarioSec" type="xsd:string" />
+    <wsdl:part name="indirizzoDestinatarioSec" type="xsd:string" />
+    <wsdl:part name="destinatarioSecCC" type="xsd:boolean" />
+    <wsdl:part name="funzionario" type="xsd:string" />
+    <wsdl:part name="annoAntecedente" type="xsd:string" />
+    <wsdl:part name="numeroAntecedente" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="check4FunzionarioRequest">
+    <wsdl:part name="istatEnte" type="xsd:long" />
+    <wsdl:part name="descrizione" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="getDestinatariPerCaricoResponse">
+    <wsdl:part name="getDestinatariPerCaricoReturn" type="impl:DestinatarioArray" />
+  </wsdl:message>
+  <wsdl:message name="setAllegato4ProtocolloRequest">
+    <wsdl:part name="istatEnte" type="xsd:long" />
+    <wsdl:part name="anno" type="xsd:short" />
+    <wsdl:part name="numero" type="xsd:long" />
+    <wsdl:part name="file" type="xsd:string" />
+    <wsdl:part name="nomeFile" type="xsd:string" />
+    <wsdl:part name="descrizione" type="xsd:string" />
+    <wsdl:part name="principale" type="xsd:boolean" />
+  </wsdl:message>
+  <wsdl:message name="set4ProtocolloEntrataResponse">
+    <wsdl:part name="set4ProtocolloEntrataReturn" type="impl:StatusProtocollo" />
+  </wsdl:message>
+  <wsdl:message name="search4FunzionarioResponse">
+    <wsdl:part name="search4FunzionarioReturn" type="impl:FunzionarioArray" />
+  </wsdl:message>
+  <wsdl:message name="search4RuoliPermessoRequest">
+    <wsdl:part name="istatEnte" type="xsd:long" />
+    <wsdl:part name="descrizione" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="search4RuoliPermessoResponse">
+    <wsdl:part name="search4RuoliPermessoReturn" type="impl:RuoliPermessoArray" />
+  </wsdl:message>
+  <wsdl:message name="set4ProtocolloInternoRequest">
+    <wsdl:part name="istatEnte" type="xsd:long" />
+    <wsdl:part name="mittente" type="xsd:string" />
+    <wsdl:part name="indirizzo" type="xsd:string" />
+    <wsdl:part name="oggetto" type="xsd:string" />
+    <wsdl:part name="UO" type="xsd:string" />
+    <wsdl:part name="destinatarioUO" type="xsd:string" />
+    <wsdl:part name="destinatarioFunz" type="xsd:string" />
+    <wsdl:part name="destinatarioSecUO" type="xsd:string" />
+    <wsdl:part name="destinatarioSecFunz" type="xsd:string" />
+    <wsdl:part name="destinatarioSecCC" type="xsd:boolean" />
+    <wsdl:part name="funzionario" type="xsd:string" />
+    <wsdl:part name="annoAntecedente" type="xsd:string" />
+    <wsdl:part name="numeroAntecedente" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:portType name="WS_Anagrafica">
+    <wsdl:operation name="set4ProtocolloUscita" parameterOrder="istatEnte destinatario indirizzo oggetto UO destinatarioSec indirizzoDestinatarioSec destinatarioSecCC funzionario annoAntecedente numeroAntecedente">
+      <wsdl:input name="set4ProtocolloUscitaRequest" message="impl:set4ProtocolloUscitaRequest" />
+      <wsdl:output name="set4ProtocolloUscitaResponse" message="impl:set4ProtocolloUscitaResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="set4ProtocolloEntrata" parameterOrder="istatEnte mittente indirizzo oggetto UO destinatarioUO destinatarioFunz destinatarioSecUO destinatarioSecFunz destinatarioSecCC funzionario annoAntecedente numeroAntecedente">
+      <wsdl:input name="set4ProtocolloEntrataRequest" message="impl:set4ProtocolloEntrataRequest" />
+      <wsdl:output name="set4ProtocolloEntrataResponse" message="impl:set4ProtocolloEntrataResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="set4ProtocolloInterno" parameterOrder="istatEnte mittente indirizzo oggetto UO destinatarioUO destinatarioFunz destinatarioSecUO destinatarioSecFunz destinatarioSecCC funzionario annoAntecedente numeroAntecedente">
+      <wsdl:input name="set4ProtocolloInternoRequest" message="impl:set4ProtocolloInternoRequest" />
+      <wsdl:output name="set4ProtocolloInternoResponse" message="impl:set4ProtocolloInternoResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="check4Destinatario" parameterOrder="istatEnte descrizione">
+      <wsdl:input name="check4DestinatarioRequest" message="impl:check4DestinatarioRequest" />
+      <wsdl:output name="check4DestinatarioResponse" message="impl:check4DestinatarioResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="search4Destinatari" parameterOrder="istatEnte descrizione">
+      <wsdl:input name="search4DestinatariRequest" message="impl:search4DestinatariRequest" />
+      <wsdl:output name="search4DestinatariResponse" message="impl:search4DestinatariResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getDestinatariPerCarico" parameterOrder="istatEnte anno numero">
+      <wsdl:input name="getDestinatariPerCaricoRequest" message="impl:getDestinatariPerCaricoRequest" />
+      <wsdl:output name="getDestinatariPerCaricoResponse" message="impl:getDestinatariPerCaricoResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getDestinatariPerConoscenza" parameterOrder="istatEnte anno numero">
+      <wsdl:input name="getDestinatariPerConoscenzaRequest" message="impl:getDestinatariPerConoscenzaRequest" />
+      <wsdl:output name="getDestinatariPerConoscenzaResponse" message="impl:getDestinatariPerConoscenzaResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="setDestinatariPerCarico" parameterOrder="istatEnte anno numero destinatario uo isRuoloPermesso">
+      <wsdl:input name="setDestinatariPerCaricoRequest" message="impl:setDestinatariPerCaricoRequest" />
+      <wsdl:output name="setDestinatariPerCaricoResponse" message="impl:setDestinatariPerCaricoResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="setDestinatariPerConoscenza" parameterOrder="istatEnte anno numero destinatario uo isRuoloPermesso">
+      <wsdl:input name="setDestinatariPerConoscenzaRequest" message="impl:setDestinatariPerConoscenzaRequest" />
+      <wsdl:output name="setDestinatariPerConoscenzaResponse" message="impl:setDestinatariPerConoscenzaResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="check4UO" parameterOrder="istatEnte descrizione">
+      <wsdl:input name="check4UORequest" message="impl:check4UORequest" />
+      <wsdl:output name="check4UOResponse" message="impl:check4UOResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="search4UO" parameterOrder="istatEnte descrizione">
+      <wsdl:input name="search4UORequest" message="impl:search4UORequest" />
+      <wsdl:output name="search4UOResponse" message="impl:search4UOResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="search4RuoliPermesso" parameterOrder="istatEnte descrizione">
+      <wsdl:input name="search4RuoliPermessoRequest" message="impl:search4RuoliPermessoRequest" />
+      <wsdl:output name="search4RuoliPermessoResponse" message="impl:search4RuoliPermessoResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="check4Funzionario" parameterOrder="istatEnte descrizione">
+      <wsdl:input name="check4FunzionarioRequest" message="impl:check4FunzionarioRequest" />
+      <wsdl:output name="check4FunzionarioResponse" message="impl:check4FunzionarioResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="search4Funzionario" parameterOrder="istatEnte descrizione">
+      <wsdl:input name="search4FunzionarioRequest" message="impl:search4FunzionarioRequest" />
+      <wsdl:output name="search4FunzionarioResponse" message="impl:search4FunzionarioResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="setAllegato4Protocollo" parameterOrder="istatEnte anno numero file nomeFile descrizione principale">
+      <wsdl:input name="setAllegato4ProtocolloRequest" message="impl:setAllegato4ProtocolloRequest" />
+      <wsdl:output name="setAllegato4ProtocolloResponse" message="impl:setAllegato4ProtocolloResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getElencoIstat">
+      <wsdl:input name="getElencoIstatRequest" message="impl:getElencoIstatRequest" />
+      <wsdl:output name="getElencoIstatResponse" message="impl:getElencoIstatResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="DominoSoapBinding" type="impl:WS_Anagrafica">
+    <wsdlsoap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc" />
+    <wsdl:operation name="set4ProtocolloUscita">
+      <wsdlsoap:operation soapAction="set4ProtocolloUscita" />
+      <wsdl:input name="set4ProtocolloUscitaRequest">
+        <wsdlsoap:body use="encoded" namespace="urn:DefaultNamespace" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="set4ProtocolloUscitaResponse">
+        <wsdlsoap:body use="encoded" namespace="urn:DefaultNamespace" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="set4ProtocolloEntrata">
+      <wsdlsoap:operation soapAction="set4ProtocolloEntrata" />
+      <wsdl:input name="set4ProtocolloEntrataRequest">
+        <wsdlsoap:body use="encoded" namespace="urn:DefaultNamespace" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="set4ProtocolloEntrataResponse">
+        <wsdlsoap:body use="encoded" namespace="urn:DefaultNamespace" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="set4ProtocolloInterno">
+      <wsdlsoap:operation soapAction="set4ProtocolloInterno" />
+      <wsdl:input name="set4ProtocolloInternoRequest">
+        <wsdlsoap:body use="encoded" namespace="urn:DefaultNamespace" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="set4ProtocolloInternoResponse">
+        <wsdlsoap:body use="encoded" namespace="urn:DefaultNamespace" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="check4Destinatario">
+      <wsdlsoap:operation soapAction="check4Destinatario" />
+      <wsdl:input name="check4DestinatarioRequest">
+        <wsdlsoap:body use="encoded" namespace="urn:DefaultNamespace" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="check4DestinatarioResponse">
+        <wsdlsoap:body use="encoded" namespace="urn:DefaultNamespace" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="search4Destinatari">
+      <wsdlsoap:operation soapAction="search4Destinatari" />
+      <wsdl:input name="search4DestinatariRequest">
+        <wsdlsoap:body use="encoded" namespace="urn:DefaultNamespace" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="search4DestinatariResponse">
+        <wsdlsoap:body use="encoded" namespace="urn:DefaultNamespace" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getDestinatariPerCarico">
+      <wsdlsoap:operation soapAction="getDestinatariPerCarico" />
+      <wsdl:input name="getDestinatariPerCaricoRequest">
+        <wsdlsoap:body use="encoded" namespace="urn:DefaultNamespace" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="getDestinatariPerCaricoResponse">
+        <wsdlsoap:body use="encoded" namespace="urn:DefaultNamespace" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getDestinatariPerConoscenza">
+      <wsdlsoap:operation soapAction="getDestinatariPerConoscenza" />
+      <wsdl:input name="getDestinatariPerConoscenzaRequest">
+        <wsdlsoap:body use="encoded" namespace="urn:DefaultNamespace" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="getDestinatariPerConoscenzaResponse">
+        <wsdlsoap:body use="encoded" namespace="urn:DefaultNamespace" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setDestinatariPerCarico">
+      <wsdlsoap:operation soapAction="setDestinatariPerCarico" />
+      <wsdl:input name="setDestinatariPerCaricoRequest">
+        <wsdlsoap:body use="encoded" namespace="urn:DefaultNamespace" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="setDestinatariPerCaricoResponse">
+        <wsdlsoap:body use="encoded" namespace="urn:DefaultNamespace" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setDestinatariPerConoscenza">
+      <wsdlsoap:operation soapAction="setDestinatariPerConoscenza" />
+      <wsdl:input name="setDestinatariPerConoscenzaRequest">
+        <wsdlsoap:body use="encoded" namespace="urn:DefaultNamespace" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="setDestinatariPerConoscenzaResponse">
+        <wsdlsoap:body use="encoded" namespace="urn:DefaultNamespace" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="check4UO">
+      <wsdlsoap:operation soapAction="check4UO" />
+      <wsdl:input name="check4UORequest">
+        <wsdlsoap:body use="encoded" namespace="urn:DefaultNamespace" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="check4UOResponse">
+        <wsdlsoap:body use="encoded" namespace="urn:DefaultNamespace" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="search4UO">
+      <wsdlsoap:operation soapAction="search4UO" />
+      <wsdl:input name="search4UORequest">
+        <wsdlsoap:body use="encoded" namespace="urn:DefaultNamespace" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="search4UOResponse">
+        <wsdlsoap:body use="encoded" namespace="urn:DefaultNamespace" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="search4RuoliPermesso">
+      <wsdlsoap:operation soapAction="search4RuoliPermesso" />
+      <wsdl:input name="search4RuoliPermessoRequest">
+        <wsdlsoap:body use="encoded" namespace="urn:DefaultNamespace" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="search4RuoliPermessoResponse">
+        <wsdlsoap:body use="encoded" namespace="urn:DefaultNamespace" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="check4Funzionario">
+      <wsdlsoap:operation soapAction="check4Funzionario" />
+      <wsdl:input name="check4FunzionarioRequest">
+        <wsdlsoap:body use="encoded" namespace="urn:DefaultNamespace" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="check4FunzionarioResponse">
+        <wsdlsoap:body use="encoded" namespace="urn:DefaultNamespace" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="search4Funzionario">
+      <wsdlsoap:operation soapAction="search4Funzionario" />
+      <wsdl:input name="search4FunzionarioRequest">
+        <wsdlsoap:body use="encoded" namespace="urn:DefaultNamespace" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="search4FunzionarioResponse">
+        <wsdlsoap:body use="encoded" namespace="urn:DefaultNamespace" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setAllegato4Protocollo">
+      <wsdlsoap:operation soapAction="setAllegato4Protocollo" />
+      <wsdl:input name="setAllegato4ProtocolloRequest">
+        <wsdlsoap:body use="encoded" namespace="urn:DefaultNamespace" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="setAllegato4ProtocolloResponse">
+        <wsdlsoap:body use="encoded" namespace="urn:DefaultNamespace" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getElencoIstat">
+      <wsdlsoap:operation soapAction="getElencoIstat" />
+      <wsdl:input name="getElencoIstatRequest">
+        <wsdlsoap:body use="encoded" namespace="urn:DefaultNamespace" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="getElencoIstatResponse">
+        <wsdlsoap:body use="encoded" namespace="urn:DefaultNamespace" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="WS_AnagraficaService">
+    <wsdl:port name="Domino" binding="impl:DominoSoapBinding">
+      <wsdlsoap:address location="http://lc2000:43880/PE/PeA/aed-documenti.nsf/WS-Anagrafica?OpenWebService" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
